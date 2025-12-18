@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Heart, MapPin, MessageCircle, Settings, LogOut, Camera, Star, Eye } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Heart, MapPin, MessageCircle, Settings, LogOut, Camera, Star, Eye, TrendingUp, Award, Zap, Gift } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ProfileStats } from "@/components/ProfileStats";
+import { ProfileCompletion } from "@/components/ProfileCompletion";
+import { RecentVisitors } from "@/components/RecentVisitors";
+import { MutualMatches } from "@/components/MutualMatches";
 
 export default function Profile() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<"overview" | "stats" | "visitors" | "matches">("overview");
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -21,7 +27,6 @@ export default function Profile() {
     const userData = users.find((u: any) => u.username === currentUser);
     setUser(userData);
 
-    // Load user photos
     const userPhotos = JSON.parse(localStorage.getItem("userPhotos") || "[]");
     setPhotos(userPhotos);
   }, [router]);
@@ -32,6 +37,8 @@ export default function Profile() {
   };
 
   if (!user) return null;
+
+  const completionPercentage = 60;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
@@ -70,19 +77,78 @@ export default function Profile() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Profile Card */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Premium Upgrade Banner */}
+          <Card className="p-6 mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                  <Zap className="text-white" size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black mb-1">Unlock Premium Features!</h3>
+                  <p className="text-gray-700">Get 10x more matches with unlimited messaging & advanced filters</p>
+                </div>
+              </div>
+              <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700" asChild>
+                <Link href="/premium">
+                  <Gift size={20} className="mr-2" />
+                  Upgrade Now
+                </Link>
+              </Button>
+            </div>
+          </Card>
+
+          {/* Tab Navigation */}
+          <div className="flex gap-2 mb-6 overflow-x-auto">
+            <Button
+              variant={activeTab === "overview" ? "default" : "outline"}
+              onClick={() => setActiveTab("overview")}
+              className={activeTab === "overview" ? "bg-pink-600 hover:bg-pink-700" : ""}
+            >
+              Overview
+            </Button>
+            <Button
+              variant={activeTab === "stats" ? "default" : "outline"}
+              onClick={() => setActiveTab("stats")}
+              className={activeTab === "stats" ? "bg-pink-600 hover:bg-pink-700" : ""}
+            >
+              <TrendingUp size={16} className="mr-2" />
+              Statistics
+            </Button>
+            <Button
+              variant={activeTab === "visitors" ? "default" : "outline"}
+              onClick={() => setActiveTab("visitors")}
+              className={activeTab === "visitors" ? "bg-pink-600 hover:bg-pink-700" : ""}
+            >
+              <Eye size={16} className="mr-2" />
+              Visitors
+            </Button>
+            <Button
+              variant={activeTab === "matches" ? "default" : "outline"}
+              onClick={() => setActiveTab("matches")}
+              className={activeTab === "matches" ? "bg-pink-600 hover:bg-pink-700" : ""}
+            >
+              <Heart size={16} className="mr-2" />
+              Matches
+            </Button>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Profile Card - Always Visible */}
             <div className="lg:col-span-1">
-              <Card className="p-6 space-y-6">
+              <Card className="p-6 space-y-6 sticky top-24">
                 <div className="text-center">
                   {photos.length > 0 ? (
-                    <img
-                      src={photos[0]}
-                      alt="Profile"
-                      className="w-32 h-32 mx-auto rounded-full object-cover border-4 border-pink-200 mb-4"
-                    />
+                    <div className="relative inline-block">
+                      <img
+                        src={photos[0]}
+                        alt="Profile"
+                        className="w-32 h-32 mx-auto rounded-full object-cover border-4 border-pink-200 mb-4"
+                      />
+                      <div className="absolute bottom-4 right-0 bg-green-500 w-8 h-8 rounded-full border-4 border-white"></div>
+                    </div>
                   ) : (
                     <div className="w-32 h-32 mx-auto rounded-full bg-pink-600 flex items-center justify-center text-white text-5xl font-bold mb-4">
                       {user.username.charAt(0).toUpperCase()}
@@ -133,91 +199,99 @@ export default function Profile() {
                   </Button>
                 </div>
               </Card>
-
-              <Card className="p-6 mt-6">
-                <h3 className="font-bold text-lg mb-4">Profile Stats</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Profile Views:</span>
-                    <span className="font-bold text-pink-600">127</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Likes Received:</span>
-                    <span className="font-bold text-pink-600">43</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Messages:</span>
-                    <span className="font-bold text-blue-600">12</span>
-                  </div>
-                </div>
-              </Card>
             </div>
 
-            {/* Main Content */}
+            {/* Dynamic Content Area */}
             <div className="lg:col-span-2 space-y-6">
-              <Card className="p-6">
-                <h3 className="text-2xl font-bold mb-4">Welcome to iWantSexNow.ch!</h3>
-                <p className="text-gray-600 mb-6">
-                  Your profile is now active. Start browsing members and making connections. Complete your profile to increase your visibility and get more matches.
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <Button size="lg" className="bg-pink-600 hover:bg-pink-700" asChild>
-                    <Link href="/members">Browse Members</Link>
-                  </Button>
-                  <Button size="lg" variant="outline" asChild>
-                    <Link href="/upload-photos">Upload Photos</Link>
-                  </Button>
-                </div>
-              </Card>
+              {activeTab === "overview" && (
+                <>
+                  <ProfileCompletion completionPercentage={completionPercentage} />
 
-              <Card className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center flex-shrink-0">
-                    <Star className="text-white" size={24} />
+                  <Card className="p-6">
+                    <h3 className="text-2xl font-bold mb-4">Quick Actions</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <Button size="lg" className="bg-pink-600 hover:bg-pink-700" asChild>
+                        <Link href="/members">
+                          <Eye size={20} className="mr-2" />
+                          Browse Members
+                        </Link>
+                      </Button>
+                      <Button size="lg" variant="outline" asChild>
+                        <Link href="/upload-photos">
+                          <Camera size={20} className="mr-2" />
+                          Add Photos
+                        </Link>
+                      </Button>
+                      <Button size="lg" variant="outline" asChild>
+                        <Link href="/messages">
+                          <MessageCircle size={20} className="mr-2" />
+                          Messages
+                        </Link>
+                      </Button>
+                      <Button size="lg" variant="outline" asChild>
+                        <Link href="/favorites">
+                          <Heart size={20} className="mr-2" />
+                          Favorites
+                        </Link>
+                      </Button>
+                    </div>
+                  </Card>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <Card className="p-4 text-center hover:shadow-lg transition-shadow cursor-pointer">
+                      <div className="text-4xl font-black text-blue-600 mb-2">332</div>
+                      <div className="text-sm text-gray-600 font-medium">Profile Views</div>
+                      <div className="text-xs text-green-600 mt-1">+28 today</div>
+                    </Card>
+                    <Card className="p-4 text-center hover:shadow-lg transition-shadow cursor-pointer">
+                      <div className="text-4xl font-black text-pink-600 mb-2">88</div>
+                      <div className="text-sm text-gray-600 font-medium">Total Likes</div>
+                      <div className="text-xs text-green-600 mt-1">+12 today</div>
+                    </Card>
+                    <Card className="p-4 text-center hover:shadow-lg transition-shadow cursor-pointer">
+                      <div className="text-4xl font-black text-purple-600 mb-2">23</div>
+                      <div className="text-sm text-gray-600 font-medium">Mutual Matches</div>
+                      <div className="text-xs text-green-600 mt-1">+3 new</div>
+                    </Card>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">Upgrade to Premium</h3>
-                    <p className="text-gray-700 mb-4">
-                      Get unlimited messages, advanced filters, and exclusive features. Stand out from the crowd!
-                    </p>
-                    <Button className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700" asChild>
-                      <Link href="/premium">View Plans</Link>
-                    </Button>
-                  </div>
-                </div>
-              </Card>
 
-              <Card className="p-6">
-                <h3 className="text-xl font-bold mb-4">Recent Visitors</h3>
-                <p className="text-gray-600">No visitors yet. Share your profile to get more views!</p>
-              </Card>
-
-              <Card className="p-6">
-                <h3 className="text-xl font-bold mb-4">Your Matches</h3>
-                <p className="text-gray-600">Start browsing to find your matches!</p>
-              </Card>
-
-              {photos.length > 0 && (
-                <Card className="p-6">
-                  <h3 className="text-xl font-bold mb-4">Your Photos ({photos.length})</h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    {photos.map((photo, index) => (
-                      <img
-                        key={index}
-                        src={photo}
-                        alt={`Photo ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                    ))}
-                  </div>
-                  <Button variant="outline" className="w-full mt-4" asChild>
-                    <Link href="/upload-photos">
-                      <Camera size={18} className="mr-2" />
-                      Manage Photos
-                    </Link>
-                  </Button>
-                </Card>
+                  {photos.length > 0 && (
+                    <Card className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-xl font-bold">Your Photos ({photos.length})</h3>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link href="/upload-photos">
+                            <Camera size={16} className="mr-2" />
+                            Manage
+                          </Link>
+                        </Button>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        {photos.map((photo, index) => (
+                          <div key={index} className="relative group">
+                            <img
+                              src={photo}
+                              alt={`Photo ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg"
+                            />
+                            {index === 0 && (
+                              <Badge className="absolute top-2 left-2 bg-pink-600 border-0 text-xs">
+                                Profile
+                              </Badge>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </Card>
+                  )}
+                </>
               )}
+
+              {activeTab === "stats" && <ProfileStats />}
+
+              {activeTab === "visitors" && <RecentVisitors />}
+
+              {activeTab === "matches" && <MutualMatches />}
             </div>
           </div>
         </div>
