@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MobileNav } from "@/components/MobileNav";
-import { Heart, Star, Shield, Clock, MapPin, Phone, Mail, CheckCircle, Award, Lock, Eye, MessageCircle, Calendar, DollarSign, Sparkles, Crown, Verified } from "lucide-react";
+import { Heart, Star, Shield, Clock, MapPin, Phone, Mail, CheckCircle, Award, Lock, Eye, MessageCircle, Calendar, DollarSign, Sparkles, Crown, Verified, Search } from "lucide-react";
 import Link from "next/link";
 
 export default function EscortZurich() {
