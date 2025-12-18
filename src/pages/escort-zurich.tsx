@@ -121,14 +121,14 @@ export default function EscortZurich() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
-                <Crown className="text-yellow-500" size={36} />
-                <div className="absolute inset-0 bg-yellow-500/20 blur-xl group-hover:bg-yellow-500/40 transition-all" />
+                <Heart className="text-pink-600 fill-pink-600" size={36} />
+                <div className="absolute inset-0 bg-pink-600/20 blur-xl group-hover:bg-pink-600/40 transition-all" />
               </div>
               <div>
                 <span className="text-2xl font-black text-white tracking-tight">
-                  Elite Escorts
+                  iWantSexNow.ch
                 </span>
-                <div className="text-xs text-yellow-500 font-semibold tracking-wider">ZÜRICH PREMIUM</div>
+                <div className="text-xs text-pink-500 font-semibold tracking-wider">ZÜRICH ESCORTS</div>
               </div>
             </Link>
             
@@ -167,8 +167,8 @@ export default function EscortZurich() {
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {/* Animated Badge */}
             <div className="animate-fade-in-down">
-              <Badge className="bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 border-0 text-black text-lg px-8 py-3 font-bold shadow-2xl shadow-yellow-500/50">
-                <Crown size={20} className="mr-2" />
+              <Badge className="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 border-0 text-white text-lg px-8 py-3 font-bold shadow-2xl shadow-pink-500/50">
+                <Heart size={20} className="mr-2" />
                 Zürich's #1 Premium Escort Service
               </Badge>
             </div>
@@ -779,11 +779,11 @@ export default function EscortZurich() {
           <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Crown className="text-yellow-500" size={24} />
-                <span className="text-xl font-bold text-white">Elite Escorts</span>
+                <Heart className="text-pink-600 fill-pink-600" size={24} />
+                <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
               </div>
               <p className="text-gray-400 text-sm">
-                Zürich's premier luxury escort service
+                Zürich's premier escort service platform
               </p>
             </div>
             <div>
@@ -811,7 +811,7 @@ export default function EscortZurich() {
             </div>
           </div>
           <div className="border-t border-white/10 pt-8 text-center">
-            <p className="text-gray-400 text-sm">© 2025 Elite Escorts Zürich. All rights reserved. | 18+ Only | Licensed & Legal</p>
+            <p className="text-gray-400 text-sm">© 2025 iWantSexNow.ch Zürich. All rights reserved. | 18+ Only | Licensed & Legal</p>
           </div>
         </div>
       </footer>
