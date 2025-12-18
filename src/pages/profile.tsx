@@ -14,7 +14,7 @@ export default function Profile() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [photos, setPhotos] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<"overview" | "stats" | "visitors" | "matches">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "stats" | "visitors" | "matches" | "activity" | "payments">("overview");
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -25,7 +25,83 @@ export default function Profile() {
 
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     const userData = users.find((u: any) => u.username === currentUser);
-    setUser(userData);
+    
+    // Initialize user with default data if needed
+    if (userData) {
+      // Ensure activity log exists
+      if (!userData.activityLog) {
+        userData.activityLog = [];
+      }
+      
+      // Ensure payment history exists
+      if (!userData.paymentHistory) {
+        userData.paymentHistory = [];
+      }
+      
+      // Add some sample data for demo
+      if (userData.activityLog.length === 0) {
+        userData.activityLog = [
+          {
+            id: Date.now(),
+            type: "profile_view",
+            description: "Your profile was viewed by Sarah",
+            timestamp: new Date().toISOString(),
+            metadata: { viewer: "Sarah", location: "Zürich" }
+          },
+          {
+            id: Date.now() - 1000,
+            type: "message_sent",
+            description: "You sent a message to Emma",
+            timestamp: new Date(Date.now() - 3600000).toISOString(),
+            metadata: { recipient: "Emma" }
+          },
+          {
+            id: Date.now() - 2000,
+            type: "profile_like",
+            description: "Mia liked your profile",
+            timestamp: new Date(Date.now() - 7200000).toISOString(),
+            metadata: { liker: "Mia" }
+          }
+        ];
+      }
+      
+      if (userData.paymentHistory.length === 0) {
+        userData.paymentHistory = [
+          {
+            id: Date.now(),
+            type: "membership",
+            description: "Monthly Membership - Gold",
+            amount: 29.90,
+            currency: "CHF",
+            status: "completed",
+            timestamp: new Date().toISOString(),
+            method: "credit_card"
+          },
+          {
+            id: Date.now() - 1000,
+            type: "promotion",
+            description: "Profile Boost - 100 views",
+            amount: 10.00,
+            currency: "CHF",
+            status: "completed",
+            timestamp: new Date(Date.now() - 86400000).toISOString(),
+            method: "credit_card"
+          },
+          {
+            id: Date.now() - 2000,
+            type: "gift",
+            description: "Virtual Gift sent to Nina",
+            amount: 5.00,
+            currency: "CHF",
+            status: "completed",
+            timestamp: new Date(Date.now() - 172800000).toISOString(),
+            method: "credit_card"
+          }
+        ];
+      }
+      
+      setUser(userData);
+    }
 
     const userPhotos = JSON.parse(localStorage.getItem("userPhotos") || "[]");
     setPhotos(userPhotos);
@@ -33,12 +109,131 @@ export default function Profile() {
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
+    localStorage.removeItem("userSession");
     router.push("/");
   };
 
   if (!user) return null;
 
   const completionPercentage = 60;
+
+  // Activity tab content
+  const ActivityLog = () => (
+    <Card className="p-6">
+      <h3 className="text-2xl font-bold mb-6">Recent Activity</h3>
+      <div className="space-y-4">
+        {user.activityLog.slice(0, 10).map((activity: any) => {
+          const getIcon = () => {
+            switch(activity.type) {
+              case "profile_view": return <Eye size={20} className="text-blue-600" />;
+              case "message_sent": return <MessageCircle size={20} className="text-purple-600" />;
+              case "profile_like": return <Heart size={20} className="text-pink-600 fill-pink-600" />;
+              case "login": return <LogOut size={20} className="text-green-600 rotate-180" />;
+              case "registration": return <Star size={20} className="text-yellow-600 fill-yellow-600" />;
+              default: return <Award size={20} className="text-gray-600" />;
+            }
+          };
+
+          return (
+            <div key={activity.id} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                {getIcon()}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-gray-900">{activity.description}</p>
+                <p className="text-sm text-gray-600">{new Date(activity.timestamp).toLocaleString()}</p>
+                {activity.metadata && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {Object.entries(activity.metadata).map(([key, value]) => (
+                      <Badge key={key} variant="outline" className="text-xs">
+                        {key}: {value as string}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
+  );
+
+  // Payment history tab content
+  const PaymentHistory = () => {
+    const totalSpent = user.paymentHistory.reduce((sum: number, payment: any) => sum + payment.amount, 0);
+    
+    return (
+      <div className="space-y-6">
+        <Card className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-green-900 mb-1">Total Spent</h3>
+              <p className="text-4xl font-black text-green-600">CHF {totalSpent.toFixed(2)}</p>
+              <p className="text-sm text-green-700 mt-1">All time</p>
+            </div>
+            <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center">
+              <TrendingUp className="text-white" size={40} />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold">Payment History</h3>
+            <Button variant="outline" size="sm">
+              Download Statement
+            </Button>
+          </div>
+          
+          <div className="space-y-3">
+            {user.paymentHistory.map((payment: any) => {
+              const getTypeColor = () => {
+                switch(payment.type) {
+                  case "membership": return "text-purple-600 bg-purple-100";
+                  case "promotion": return "text-orange-600 bg-orange-100";
+                  case "gift": return "text-pink-600 bg-pink-100";
+                  case "content": return "text-blue-600 bg-blue-100";
+                  default: return "text-gray-600 bg-gray-100";
+                }
+              };
+
+              return (
+                <div key={payment.id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
+                  <div className="flex items-start gap-4 flex-1">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${getTypeColor()}`}>
+                      {payment.type === "membership" && <Award size={24} />}
+                      {payment.type === "promotion" && <Zap size={24} />}
+                      {payment.type === "gift" && <Gift size={24} />}
+                      {payment.type === "content" && <Star size={24} />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900">{payment.description}</p>
+                      <div className="flex items-center gap-3 mt-1">
+                        <p className="text-sm text-gray-600">
+                          {new Date(payment.timestamp).toLocaleDateString()}
+                        </p>
+                        <Badge 
+                          className={payment.status === "completed" ? "bg-green-500" : "bg-yellow-500"} 
+                        >
+                          {payment.status}
+                        </Badge>
+                        <span className="text-xs text-gray-500">{payment.method.replace("_", " ")}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl font-bold text-gray-900">CHF {payment.amount.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500">{payment.currency}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
@@ -66,8 +261,10 @@ export default function Profile() {
                 <Heart size={20} />
               </Link>
             </Button>
-            <Button variant="ghost" size="icon">
-              <Settings size={20} />
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/account-settings">
+                <Settings size={20} />
+              </Link>
             </Button>
             <Button variant="ghost" onClick={handleLogout}>
               <LogOut size={20} className="mr-2" />
@@ -133,6 +330,22 @@ export default function Profile() {
               <Heart size={16} className="mr-2" />
               Matches
             </Button>
+            <Button
+              variant={activeTab === "activity" ? "default" : "outline"}
+              onClick={() => setActiveTab("activity")}
+              className={activeTab === "activity" ? "bg-pink-600 hover:bg-pink-700" : ""}
+            >
+              <Award size={16} className="mr-2" />
+              Activity
+            </Button>
+            <Button
+              variant={activeTab === "payments" ? "default" : "outline"}
+              onClick={() => setActiveTab("payments")}
+              className={activeTab === "payments" ? "bg-pink-600 hover:bg-pink-700" : ""}
+            >
+              <TrendingUp size={16} className="mr-2" />
+              Payments
+            </Button>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-6">
@@ -185,11 +398,17 @@ export default function Profile() {
                     <span className="text-gray-600">Email:</span>
                     <span className="font-medium text-sm">{user.email}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Member Since:</span>
+                    <span className="font-medium text-sm">{new Date(user.createdAt).toLocaleDateString()}</span>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full bg-pink-600 hover:bg-pink-700">
-                    Edit Profile
+                  <Button className="w-full bg-pink-600 hover:bg-pink-700" asChild>
+                    <Link href="/account-settings">
+                      Edit Profile
+                    </Link>
                   </Button>
                   <Button variant="outline" className="w-full" asChild>
                     <Link href="/upload-photos">
@@ -292,6 +511,10 @@ export default function Profile() {
               {activeTab === "visitors" && <RecentVisitors />}
 
               {activeTab === "matches" && <MutualMatches />}
+
+              {activeTab === "activity" && <ActivityLog />}
+
+              {activeTab === "payments" && <PaymentHistory />}
             </div>
           </div>
         </div>
