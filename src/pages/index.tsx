@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Heart, MessageCircle, Star, Shield, Zap, Users } from "lucide-react";
+import { Search, MapPin, Heart, MessageCircle, Star, Shield, Zap, Users, Calendar, Gift, Image } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -81,6 +81,18 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <Button variant="ghost" asChild>
               <Link href="/members">Browse</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/stories">
+                <Image size={18} className="mr-2" />
+                Stories
+              </Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/events">
+                <Calendar size={18} className="mr-2" />
+                Events
+              </Link>
             </Button>
             <Button variant="ghost" asChild>
               <Link href="/about">About</Link>
@@ -200,6 +212,48 @@ export default function Home() {
           <Button size="lg" variant="outline" className="text-lg px-8" asChild>
             <Link href="/members">View All Profiles</Link>
           </Button>
+        </div>
+      </section>
+
+      {/* New Features Section */}
+      <section className="bg-gradient-to-r from-purple-600 to-pink-600 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-black text-white mb-4">Exciting New Features!</h2>
+            <p className="text-xl text-white/90">More ways to connect and have fun</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
+              <div className="w-16 h-16 mx-auto rounded-full bg-pink-100 flex items-center justify-center mb-4">
+                <Image className="text-pink-600" size={32} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Stories</h3>
+              <p className="text-gray-600 mb-4">Share your moments and see what others are up to</p>
+              <Button variant="outline" asChild>
+                <Link href="/stories">View Stories</Link>
+              </Button>
+            </Card>
+            <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
+              <div className="w-16 h-16 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                <Calendar className="text-purple-600" size={32} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Events</h3>
+              <p className="text-gray-600 mb-4">Join local meetups and dating events near you</p>
+              <Button variant="outline" asChild>
+                <Link href="/events">Browse Events</Link>
+              </Button>
+            </Card>
+            <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
+              <div className="w-16 h-16 mx-auto rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+                <Gift className="text-yellow-600" size={32} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Virtual Gifts</h3>
+              <p className="text-gray-600 mb-4">Send thoughtful gifts to make someone's day</p>
+              <Button variant="outline" asChild>
+                <Link href="/gifts">Send Gift</Link>
+              </Button>
+            </Card>
+          </div>
         </div>
       </section>
 
