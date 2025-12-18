@@ -238,112 +238,120 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black text-pink-600">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/messages">
-                <MessageCircle size={20} />
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/members">
-                <Eye size={20} />
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/favorites">
-                <Heart size={20} />
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/account-settings">
-                <Settings size={20} />
-              </Link>
-            </Button>
-            <Button variant="ghost" onClick={handleLogout}>
-              <LogOut size={20} className="mr-2" />
-              Logout
-            </Button>
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/" className="flex items-center gap-2">
+              <Heart className="text-pink-600 fill-pink-600" size={28} />
+              <span className="text-xl md:text-2xl font-black text-pink-600">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-2 md:gap-3">
+              <Button variant="ghost" size="icon" asChild className="hidden sm:flex">
+                <Link href="/messages">
+                  <MessageCircle size={20} />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" asChild className="hidden sm:flex">
+                <Link href="/members">
+                  <Eye size={20} />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" asChild className="hidden md:flex">
+                <Link href="/favorites">
+                  <Heart size={20} />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <Link href="/account-settings">
+                  <Settings size={20} />
+                </Link>
+              </Button>
+              <Button variant="ghost" onClick={handleLogout} size="sm" className="hidden sm:flex">
+                <LogOut size={18} className="mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="max-w-7xl mx-auto">
-          {/* Premium Upgrade Banner */}
-          <Card className="p-6 mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">
-            <div className="flex items-center justify-between gap-4 flex-wrap">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-                  <Zap className="text-white" size={32} />
+          {/* Premium Upgrade Banner - Mobile Optimized */}
+          <Card className="p-4 md:p-6 mb-6 md:mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3 md:gap-4 flex-1">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center flex-shrink-0">
+                  <Zap className="text-white" size={24} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black mb-1">Unlock Premium Features!</h3>
-                  <p className="text-gray-700">Get 10x more matches with unlimited messaging & advanced filters</p>
+                  <h3 className="text-lg md:text-2xl font-black mb-1">Unlock Premium Features!</h3>
+                  <p className="text-sm md:text-base text-gray-700">Get 10x more matches with unlimited messaging & advanced filters</p>
                 </div>
               </div>
-              <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700" asChild>
+              <Button size="sm" className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 whitespace-nowrap" asChild>
                 <Link href="/premium">
-                  <Gift size={20} className="mr-2" />
+                  <Gift size={16} className="mr-2" />
                   Upgrade Now
                 </Link>
               </Button>
             </div>
           </Card>
 
-          {/* Tab Navigation */}
-          <div className="flex gap-2 mb-6 overflow-x-auto">
+          {/* Tab Navigation - Mobile Scrollable */}
+          <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
             <Button
               variant={activeTab === "overview" ? "default" : "outline"}
               onClick={() => setActiveTab("overview")}
-              className={activeTab === "overview" ? "bg-pink-600 hover:bg-pink-700" : ""}
+              className={`${activeTab === "overview" ? "bg-pink-600 hover:bg-pink-700" : ""} whitespace-nowrap text-sm`}
+              size="sm"
             >
               Overview
             </Button>
             <Button
               variant={activeTab === "stats" ? "default" : "outline"}
               onClick={() => setActiveTab("stats")}
-              className={activeTab === "stats" ? "bg-pink-600 hover:bg-pink-700" : ""}
+              className={`${activeTab === "stats" ? "bg-pink-600 hover:bg-pink-700" : ""} whitespace-nowrap text-sm`}
+              size="sm"
             >
-              <TrendingUp size={16} className="mr-2" />
+              <TrendingUp size={14} className="mr-1" />
               Statistics
             </Button>
             <Button
               variant={activeTab === "visitors" ? "default" : "outline"}
               onClick={() => setActiveTab("visitors")}
-              className={activeTab === "visitors" ? "bg-pink-600 hover:bg-pink-700" : ""}
+              className={`${activeTab === "visitors" ? "bg-pink-600 hover:bg-pink-700" : ""} whitespace-nowrap text-sm`}
+              size="sm"
             >
-              <Eye size={16} className="mr-2" />
+              <Eye size={14} className="mr-1" />
               Visitors
             </Button>
             <Button
               variant={activeTab === "matches" ? "default" : "outline"}
               onClick={() => setActiveTab("matches")}
-              className={activeTab === "matches" ? "bg-pink-600 hover:bg-pink-700" : ""}
+              className={`${activeTab === "matches" ? "bg-pink-600 hover:bg-pink-700" : ""} whitespace-nowrap text-sm`}
+              size="sm"
             >
-              <Heart size={16} className="mr-2" />
+              <Heart size={14} className="mr-1" />
               Matches
             </Button>
             <Button
               variant={activeTab === "activity" ? "default" : "outline"}
               onClick={() => setActiveTab("activity")}
-              className={activeTab === "activity" ? "bg-pink-600 hover:bg-pink-700" : ""}
+              className={`${activeTab === "activity" ? "bg-pink-600 hover:bg-pink-700" : ""} whitespace-nowrap text-sm`}
+              size="sm"
             >
-              <Award size={16} className="mr-2" />
+              <Award size={14} className="mr-1" />
               Activity
             </Button>
             <Button
               variant={activeTab === "payments" ? "default" : "outline"}
               onClick={() => setActiveTab("payments")}
-              className={activeTab === "payments" ? "bg-pink-600 hover:bg-pink-700" : ""}
+              className={`${activeTab === "payments" ? "bg-pink-600 hover:bg-pink-700" : ""} whitespace-nowrap text-sm`}
+              size="sm"
             >
-              <TrendingUp size={16} className="mr-2" />
+              <TrendingUp size={14} className="mr-1" />
               Payments
             </Button>
           </div>
@@ -519,6 +527,16 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }

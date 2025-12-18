@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, MapPin, MessageCircle, Star, Search as SearchIcon, Filter, Camera, Eye, Calendar } from "lucide-react";
+import { Heart, MapPin, MessageCircle, Star, Search as SearchIcon, Filter, Camera, Eye, Calendar, Zap, Gift } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -31,6 +31,7 @@ export default function Members() {
   });
 
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Extended mock profiles with detailed info
   const allProfiles = [
@@ -212,37 +213,72 @@ export default function Members() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black text-pink-600">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/messages">Messages</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/favorites">Favorites</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/profile">Profile</Link>
-            </Button>
-            <Button className="bg-pink-600 hover:bg-pink-700" asChild>
-              <Link href="/premium">Go Premium</Link>
-            </Button>
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/" className="flex items-center gap-2">
+              <Heart className="text-pink-600 fill-pink-600" size={28} />
+              <span className="text-xl md:text-2xl font-black text-pink-600">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-2 md:gap-3">
+              <Button variant="ghost" size="sm" asChild className="hidden sm:flex">
+                <Link href="/messages">Messages</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="hidden sm:flex">
+                <Link href="/favorites">Favorites</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="hidden md:flex">
+                <Link href="/profile">Profile</Link>
+              </Button>
+              <Button className="bg-pink-600 hover:bg-pink-700 text-sm md:text-base" size="sm" asChild>
+                <Link href="/premium">Premium</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex gap-6">
-          {/* Advanced Filters Sidebar */}
-          <Card className="w-80 p-6 h-fit sticky top-24">
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        {/* Premium Upgrade Banner - Mobile Optimized */}
+        <Card className="p-4 md:p-6 mb-6 md:mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3 md:gap-4 flex-1">
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center flex-shrink-0">
+                <Zap className="text-white" size={24} />
+              </div>
+              <div>
+                <h3 className="text-lg md:text-2xl font-black mb-1">Unlock Premium Features!</h3>
+                <p className="text-sm md:text-base text-gray-700">Get 10x more matches with unlimited messaging & advanced filters</p>
+              </div>
+            </div>
+            <Button size="sm" className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 whitespace-nowrap" asChild>
+              <Link href="/premium">
+                <Gift size={16} className="mr-2" />
+                Upgrade Now
+              </Link>
+            </Button>
+          </div>
+        </Card>
+
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Mobile Filter Toggle */}
+          <div className="lg:hidden">
+            <Button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              variant="outline"
+              className="w-full"
+            >
+              <Filter size={18} className="mr-2" />
+              {showMobileFilters ? "Hide Filters" : "Show Filters"}
+            </Button>
+          </div>
+
+          {/* Filters Sidebar - Responsive */}
+          <Card className={`${showMobileFilters ? 'block' : 'hidden'} lg:block w-full lg:w-80 p-4 md:p-6 h-fit lg:sticky lg:top-24`}>
             <div className="flex items-center gap-2 mb-6">
               <Filter size={24} className="text-pink-600" />
-              <h2 className="text-2xl font-bold">Advanced Filters</h2>
+              <h2 className="text-xl md:text-2xl font-bold">Advanced Filters</h2>
             </div>
 
             <div className="space-y-6">
@@ -376,19 +412,19 @@ export default function Members() {
             </div>
           </Card>
 
-          {/* Results */}
+          {/* Results - Mobile Optimized */}
           <div className="flex-1">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
               <div>
-                <h1 className="text-4xl font-black mb-2">Browse Members</h1>
-                <p className="text-gray-600">{filteredProfiles.length} profiles match your criteria</p>
+                <h1 className="text-3xl md:text-4xl font-black mb-2">Browse Members</h1>
+                <p className="text-sm md:text-base text-gray-600">{filteredProfiles.length} profiles match your criteria</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto">
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="icon"
                   onClick={() => setViewMode("grid")}
-                  className={viewMode === "grid" ? "bg-pink-600 hover:bg-pink-700" : ""}
+                  className={`${viewMode === "grid" ? "bg-pink-600 hover:bg-pink-700" : ""} flex-1 sm:flex-none`}
                 >
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                     <rect x="2" y="2" width="7" height="7" />
@@ -401,7 +437,7 @@ export default function Members() {
                   variant={viewMode === "list" ? "default" : "outline"}
                   size="icon"
                   onClick={() => setViewMode("list")}
-                  className={viewMode === "list" ? "bg-pink-600 hover:bg-pink-700" : ""}
+                  className={`${viewMode === "list" ? "bg-pink-600 hover:bg-pink-700" : ""} flex-1 sm:flex-none`}
                 >
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                     <rect x="2" y="3" width="16" height="3" />

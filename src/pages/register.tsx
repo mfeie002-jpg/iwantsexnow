@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, AlertCircle, CheckCircle2, Loader2, Eye, EyeOff } from "lucide-react";
+import { Heart, AlertCircle, CheckCircle2, Loader2, Eye, EyeOff, Shield, Lock, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -167,19 +167,35 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl p-8 shadow-2xl">
-        <div className="text-center mb-8">
+      <Card className="w-full max-w-3xl p-6 md:p-8 shadow-2xl">
+        <div className="text-center mb-6 md:mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <Heart className="text-pink-600 fill-pink-600" size={28} md:size={32} />
+            <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
               iWantSexNow.ch
             </span>
           </Link>
-          <h1 className="text-4xl font-black mb-2">Create Your Account</h1>
-          <p className="text-gray-600">Join thousands of singles in Switzerland</p>
+          <h1 className="text-3xl md:text-4xl font-black mb-2">Create Your Account</h1>
+          <p className="text-base md:text-xl text-gray-600">Join thousands of singles in Switzerland</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Trust Badges - Mobile Optimized */}
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-8 pb-6 md:pb-8 border-b">
+          <Badge variant="outline" className="text-xs md:text-sm">
+            <Shield size={14} className="mr-1" />
+            100% Secure
+          </Badge>
+          <Badge variant="outline" className="text-xs md:text-sm">
+            <Lock size={14} className="mr-1" />
+            Private & Discreet
+          </Badge>
+          <Badge variant="outline" className="text-xs md:text-sm">
+            <CheckCircle size={14} className="mr-1" />
+            Verified Profiles
+          </Badge>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           {/* Account Type Selection */}
           <div className="space-y-2">
             <Label>I want to *</Label>
@@ -481,7 +497,7 @@ export default function Register() {
             type="submit"
             size="lg"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg h-14"
+            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-base md:text-lg h-12 md:h-14"
           >
             {loading ? (
               <>

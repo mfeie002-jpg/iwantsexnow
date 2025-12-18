@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, AlertCircle, Loader2, Eye, EyeOff } from "lucide-react";
+import { Heart, AlertCircle, Loader2, Eye, EyeOff, Gift } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -87,28 +87,39 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8 shadow-2xl">
-        <div className="text-center mb-8">
+      <Card className="w-full max-w-md p-6 md:p-8 shadow-2xl">
+        <div className="text-center mb-6 md:mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <Heart className="text-pink-600 fill-pink-600" size={28} />
+            <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
               iWantSexNow.ch
             </span>
           </Link>
-          <h1 className="text-4xl font-black mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Login to your account</p>
+          <h1 className="text-3xl md:text-4xl font-black mb-2">Welcome Back</h1>
+          <p className="text-sm md:text-base text-gray-600">Login to your account</p>
         </div>
+
+        {/* Promo Banner */}
+        <Card className="p-4 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200">
+          <div className="flex items-center gap-3">
+            <Gift className="text-green-600 flex-shrink-0" size={24} />
+            <div>
+              <p className="font-bold text-green-900 text-sm">New members get 7 days free!</p>
+              <p className="text-xs text-green-700">Try premium features risk-free</p>
+            </div>
+          </div>
+        </Card>
 
         {error && (
           <Card className="p-4 mb-6 bg-red-50 border-2 border-red-200">
             <div className="flex items-center gap-2 text-red-800">
               <AlertCircle size={20} />
-              <p className="font-semibold">{error}</p>
+              <p className="font-semibold text-sm">{error}</p>
             </div>
           </Card>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           <div className="space-y-2">
             <Label htmlFor="emailOrUsername">Email or Username</Label>
             <Input
@@ -167,7 +178,7 @@ export default function Login() {
             type="submit"
             size="lg"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg h-14"
+            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-base md:text-lg h-12 md:h-14"
           >
             {loading ? (
               <>
