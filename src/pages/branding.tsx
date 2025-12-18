@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Lock, Infinity, Smile, Sun, Compass, Check } from "lucide-react";
+import { Heart, Lock, Infinity, Smile, Sun, Compass, Check, User } from "lucide-react";
 import Link from "next/link";
 
 export default function Branding() {
@@ -10,6 +10,27 @@ export default function Branding() {
   const [selectedTheme, setSelectedTheme] = useState(0);
 
   const logoOptions = [
+    {
+      name: "Interlocked Symbols",
+      icon: null,
+      description: "Classic male/female symbols intertwined - universal dating icon",
+      tagline: "Where Connections Begin",
+      iconStyle: "",
+      svgPath: (
+        <svg viewBox="0 0 100 100" className="w-full h-full">
+          {/* Female symbol (circle with cross) */}
+          <circle cx="35" cy="35" r="18" fill="none" stroke="currentColor" strokeWidth="4"/>
+          <line x1="35" y1="53" x2="35" y2="70" stroke="currentColor" strokeWidth="4"/>
+          <line x1="28" y1="63" x2="42" y2="63" stroke="currentColor" strokeWidth="4"/>
+          
+          {/* Male symbol (circle with arrow) */}
+          <circle cx="60" cy="50" r="18" fill="none" stroke="currentColor" strokeWidth="4"/>
+          <line x1="73" y1="37" x2="88" y2="22" stroke="currentColor" strokeWidth="4"/>
+          <line x1="88" y1="22" x2="88" y2="35" stroke="currentColor" strokeWidth="4"/>
+          <line x1="75" y1="22" x2="88" y2="22" stroke="currentColor" strokeWidth="4"/>
+        </svg>
+      )
+    },
     {
       name: "Heart Lock",
       icon: Lock,
@@ -137,7 +158,7 @@ export default function Branding() {
             </Badge>
             <h1 className="text-5xl font-black mb-4">Brand Identity Concepts</h1>
             <p className="text-xl text-gray-600">
-              5 completely different design directions - choose your perfect match
+              6 completely different design directions - choose your perfect match
             </p>
           </div>
 
@@ -145,8 +166,14 @@ export default function Branding() {
           <Card className={`p-12 mb-12 bg-gradient-to-br ${theme.background} border-4`}>
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-col items-center gap-6 mb-8">
-                <div className={`w-28 h-28 rounded-full bg-gradient-to-br ${theme.gradient} flex items-center justify-center shadow-2xl transform hover:scale-105 transition-transform`}>
-                  <Logo.icon size={56} className={`text-white ${Logo.iconStyle}`} />
+                <div className={`w-28 h-28 rounded-full bg-gradient-to-br ${theme.gradient} flex items-center justify-center shadow-2xl transform hover:scale-105 transition-transform p-4`}>
+                  {Logo.svgPath ? (
+                    <div className="text-white w-full h-full">
+                      {Logo.svgPath}
+                    </div>
+                  ) : Logo.icon ? (
+                    <Logo.icon size={56} className={`text-white ${Logo.iconStyle}`} />
+                  ) : null}
                 </div>
                 <div className="text-center">
                   <h2 className={`text-6xl font-black bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent mb-3`}>
@@ -183,8 +210,14 @@ export default function Branding() {
                   <div className={`w-full h-10 rounded-full bg-gradient-to-r ${theme.gradient} shadow-inner`}></div>
                 </Card>
                 <Card className="p-4 bg-white/80 backdrop-blur">
-                  <div className="flex items-center justify-center gap-2">
-                    <Logo.icon size={24} className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`} />
+                  <div className="flex items-center justify-center gap-2 h-10">
+                    {Logo.svgPath ? (
+                      <div className={`w-6 h-6 bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`}>
+                        {Logo.svgPath}
+                      </div>
+                    ) : Logo.icon ? (
+                      <Logo.icon size={24} className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`} />
+                    ) : null}
                     <span className="font-bold text-gray-700">Icon</span>
                   </div>
                 </Card>
@@ -196,7 +229,7 @@ export default function Branding() {
           <div className="mb-12">
             <h2 className="text-3xl font-black mb-6 text-center">Choose Your Logo Design</h2>
             <p className="text-center text-gray-600 mb-8">Each logo represents a different brand personality</p>
-            <div className="grid md:grid-cols-5 gap-4">
+            <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
               {logoOptions.map((logo, index) => (
                 <Card
                   key={index}
@@ -206,17 +239,23 @@ export default function Branding() {
                   onClick={() => setSelectedLogo(index)}
                 >
                   <div className="text-center space-y-3">
-                    <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${theme.gradient} flex items-center justify-center shadow-lg`}>
-                      <logo.icon size={40} className={`text-white ${logo.iconStyle}`} />
+                    <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${theme.gradient} flex items-center justify-center shadow-lg p-3`}>
+                      {logo.svgPath ? (
+                        <div className="text-white w-full h-full">
+                          {logo.svgPath}
+                        </div>
+                      ) : logo.icon ? (
+                        <logo.icon size={32} className={`text-white ${logo.iconStyle}`} />
+                      ) : null}
                     </div>
                     <div>
-                      <h3 className="font-bold mb-1">{logo.name}</h3>
+                      <h3 className="font-bold mb-1 text-sm">{logo.name}</h3>
                       <p className="text-xs text-gray-600 leading-tight mb-2">{logo.description}</p>
                       <p className="text-xs font-medium text-pink-600">"{logo.tagline}"</p>
                     </div>
                     {selectedLogo === index && (
-                      <Badge className="bg-pink-600 border-0 w-full justify-center">
-                        <Check size={14} className="mr-1" />
+                      <Badge className="bg-pink-600 border-0 w-full justify-center text-xs">
+                        <Check size={12} className="mr-1" />
                         Selected
                       </Badge>
                     )}
@@ -287,7 +326,20 @@ export default function Branding() {
           {/* Brand Personality Matrix */}
           <Card className="p-8 mt-12 bg-gradient-to-br from-gray-50 to-gray-100">
             <h3 className="text-2xl font-black mb-6 text-center">Design Direction Personalities</h3>
-            <div className="grid md:grid-cols-5 gap-4">
+            <div className="grid md:grid-cols-6 gap-4">
+              <div className="text-center p-4 bg-white rounded-lg shadow">
+                <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full flex items-center justify-center">
+                  <svg viewBox="0 0 100 100" className="w-6 h-6 text-white">
+                    <circle cx="35" cy="35" r="15" fill="none" stroke="currentColor" strokeWidth="6"/>
+                    <line x1="35" y1="50" x2="35" y2="65" stroke="currentColor" strokeWidth="6"/>
+                    <line x1="30" y1="60" x2="40" y2="60" stroke="currentColor" strokeWidth="6"/>
+                    <circle cx="60" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="6"/>
+                    <line x1="70" y1="40" x2="80" y2="30" stroke="currentColor" strokeWidth="6"/>
+                  </svg>
+                </div>
+                <h4 className="font-bold text-sm mb-1">Universal</h4>
+                <p className="text-xs text-gray-600">Recognizable, classic, direct</p>
+              </div>
               <div className="text-center p-4 bg-white rounded-lg shadow">
                 <Lock size={32} className="mx-auto mb-2 text-emerald-600" />
                 <h4 className="font-bold text-sm mb-1">Exclusive</h4>
