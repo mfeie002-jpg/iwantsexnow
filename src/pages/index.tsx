@@ -186,14 +186,20 @@ export default function Home() {
             {/* Animated Stats */}
             <div className="flex flex-wrap justify-center gap-8 pt-8 animate-fade-in animation-delay-400">
               {[
-                { number: "500+", label: "Elite Escorts", icon: Crown },
-                { number: "26", label: "Swiss Cantons", icon: MapPin },
-                { number: "24/7", label: "Always Available", icon: Clock },
-                { number: "100%", label: "Verified & Safe", icon: Shield }
+                { number: "500+", label: "Elite Escorts", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop" },
+                { number: "26", label: "Swiss Cantons", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
+                { number: "24/7", label: "Always Available", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { number: "100%", label: "Verified & Safe", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop" }
               ].map((stat, idx) => (
                 <div key={idx} className="text-center group animate-scale-in" style={{ animationDelay: `${idx * 100}ms` }}>
-                  <div className="relative">
-                    <stat.icon className="mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" size={32} />
+                  <div className="relative mb-3">
+                    <div className="w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-yellow-500 group-hover:border-yellow-400 transition-all">
+                      <img 
+                        src={stat.image} 
+                        alt={stat.label}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                      />
+                    </div>
                     <div className="absolute inset-0 bg-yellow-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                   <div className="text-4xl md:text-5xl font-black text-yellow-500 mb-1">{stat.number}</div>
@@ -378,51 +384,55 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
             {[
               { 
-                icon: Heart, 
+                image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=300&fit=crop",
                 title: "Girlfriend Experience (GFE)", 
                 description: "Intimate, passionate companionship with genuine connection and affection",
                 color: "from-pink-500 to-rose-500"
               },
               { 
-                icon: Calendar, 
+                image: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=400&h=300&fit=crop",
                 title: "Dinner & Social Events", 
                 description: "Sophisticated companion for business dinners, galas, and social occasions",
                 color: "from-purple-500 to-indigo-500"
               },
               { 
-                icon: Clock, 
+                image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop",
                 title: "Overnight & Travel", 
                 description: "Extended bookings for overnight stays and international travel companionship",
                 color: "from-yellow-500 to-orange-500"
               },
               { 
-                icon: Sparkles, 
+                image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&h=300&fit=crop",
                 title: "Pornstar Experience (PSE)", 
                 description: "Adventurous, uninhibited experiences for those seeking excitement",
                 color: "from-red-500 to-pink-500"
               },
               { 
-                icon: Gift, 
+                image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&h=300&fit=crop",
                 title: "Massage & Spa", 
                 description: "Professional relaxation and sensual massage experiences",
                 color: "from-teal-500 to-cyan-500"
               },
               { 
-                icon: Crown, 
+                image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=300&fit=crop",
                 title: "VIP Elite Services", 
                 description: "Exclusive premium experiences with our highest-rated companions",
                 color: "from-yellow-500 to-amber-500"
               }
             ].map((service, idx) => (
-              <Card key={idx} className="p-8 text-center bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all group">
-                <div className="relative mb-6">
-                  <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <service.icon className="text-white" size={40} />
-                  </div>
-                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} blur-2xl opacity-20 group-hover:opacity-40 transition-opacity`} />
+              <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all group cursor-pointer">
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={service.image} 
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-30 group-hover:opacity-20 transition-opacity`} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
-                <p className="text-gray-300">{service.description}</p>
+                <div className="p-6 text-center">
+                  <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
+                  <p className="text-gray-300">{service.description}</p>
+                </div>
               </Card>
             ))}
           </div>
@@ -443,28 +453,38 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {majorCities.map((city, idx) => (
+              {[
+                { name: "Zürich", escorts: 200, href: "/escort-zurich", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop" },
+                { name: "Geneva", escorts: 150, href: "/escort-geneva", image: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=600&h=400&fit=crop" },
+                { name: "Basel", escorts: 120, href: "/escort-basel", image: "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=600&h=400&fit=crop" },
+                { name: "Bern", escorts: 100, href: "/escort-bern", image: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=600&h=400&fit=crop" },
+                { name: "Lausanne", escorts: 90, href: "/escort-lausanne", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop" },
+                { name: "Lucerne", escorts: 75, href: "/escort-lucerne", image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop" }
+              ].map((city, idx) => (
                 <Link key={idx} href={city.href}>
-                  <Card className="p-6 bg-white/5 backdrop-blur-sm border-white/10 hover:border-yellow-500/50 transition-all hover:shadow-xl hover:shadow-yellow-500/20 hover:-translate-y-1 cursor-pointer">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-                          <MapPin className="text-white" size={24} />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold text-white">{city.name}</h3>
-                          <p className="text-gray-400 text-sm">{city.escorts} escorts available</p>
-                        </div>
+                  <Card className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-yellow-500/50 transition-all hover:shadow-xl hover:shadow-yellow-500/20 hover:-translate-y-1 cursor-pointer group">
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={city.image} 
+                        alt={city.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-3xl font-black text-white mb-1">{city.name}</h3>
+                        <p className="text-gray-300 text-sm">{city.escorts} escorts available</p>
                       </div>
-                      <Button size="sm" variant="outline" className="text-white border-white/30">
-                        Browse
-                      </Button>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <CheckCircle size={14} className="text-green-500" />
-                      <span>Verified profiles</span>
-                      <CheckCircle size={14} className="text-green-500" />
-                      <span>24/7 available</span>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                          <CheckCircle size={14} className="text-green-500" />
+                          <span>Verified profiles</span>
+                        </div>
+                        <Button size="sm" variant="outline" className="text-white border-white/30 group-hover:bg-yellow-500 group-hover:text-black group-hover:border-yellow-500 transition-all">
+                          Browse
+                        </Button>
+                      </div>
                     </div>
                   </Card>
                 </Link>
@@ -492,7 +512,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-                Why Choose Elite Escorts Switzerland?
+                Why Choose iWantSexNow.ch?
               </h2>
               <p className="text-xl text-gray-300">
                 The premier luxury escort service in Switzerland
@@ -502,48 +522,55 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: Shield,
+                  image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=300&fit=crop",
                   title: "100% Verified & Safe",
                   description: "Every escort is ID verified and background checked. Your safety is our priority.",
                   color: "bg-blue-500"
                 },
                 {
-                  icon: Crown,
+                  image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=300&fit=crop",
                   title: "Elite Selection Only",
                   description: "Handpicked sophisticated companions. Educated, beautiful, and professional.",
                   color: "bg-purple-500"
                 },
                 {
-                  icon: Lock,
+                  image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=300&fit=crop",
                   title: "Complete Discretion",
                   description: "Anonymous bookings, encrypted communications. Your privacy absolutely guaranteed.",
                   color: "bg-pink-500"
                 },
                 {
-                  icon: Star,
+                  image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=300&fit=crop",
                   title: "Top Rated Service",
                   description: "Highest client satisfaction ratings. Verified reviews from real clients.",
                   color: "bg-yellow-500"
                 },
                 {
-                  icon: Clock,
+                  image: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400&h=300&fit=crop",
                   title: "24/7 Availability",
                   description: "Round-the-clock bookings. Escorts available any time, day or night.",
                   color: "bg-green-500"
                 },
                 {
-                  icon: Award,
+                  image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
                   title: "Professional Service",
                   description: "Licensed, legal, and compliant. Premium experience every time.",
                   color: "bg-orange-500"
                 }
               ].map((feature, idx) => (
-                <Card key={idx} className="p-8 bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all">
-                  <div className={`w-16 h-16 rounded-full ${feature.color} flex items-center justify-center mb-6`}>
-                    <feature.icon className="text-white" size={32} />
+                <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all group cursor-pointer">
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className={`absolute inset-0 ${feature.color} opacity-30 group-hover:opacity-20 transition-opacity`} />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
-                  <p className="text-gray-300">{feature.description}</p>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
+                    <p className="text-gray-300">{feature.description}</p>
+                  </div>
                 </Card>
               ))}
             </div>
