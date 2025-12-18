@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, AlertCircle, CheckCircle2, Loader2, Eye, EyeOff, Shield, Lock, CheckCircle } from "lucide-react";
@@ -170,7 +171,7 @@ export default function Register() {
       <Card className="w-full max-w-3xl p-6 md:p-8 shadow-2xl">
         <div className="text-center mb-6 md:mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Heart className="text-pink-600 fill-pink-600" size={28} md:size={32} />
+            <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
             <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
               iWantSexNow.ch
             </span>
