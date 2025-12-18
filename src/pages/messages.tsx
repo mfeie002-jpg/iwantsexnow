@@ -118,29 +118,28 @@ export default function Messages() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/search">Browse</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/profile">Profile</Link>
-            </Button>
-            <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700" asChild>
-              <Link href="/premium">Go Premium</Link>
-            </Button>
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-2">
+            <Link href="/" className="flex items-center gap-2 min-w-0">
+              <Heart className="text-pink-600 fill-pink-600 flex-shrink-0" size={28} />
+              <span className="text-lg md:text-2xl font-black text-pink-600 truncate">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex text-xs md:text-sm">
+                <Link href="/search">Browse</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="text-xs md:text-sm">
+                <Link href="/profile">Profile</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-black mb-6">Messages</h1>
+      <div className="container mx-auto px-4 py-6 md:py-12">
+        <h1 className="text-3xl md:text-4xl font-black mb-6">Messages</h1>
 
         <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
           {/* Conversations List */}

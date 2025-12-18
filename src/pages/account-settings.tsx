@@ -127,40 +127,81 @@ export default function AccountSettings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black text-pink-600">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/" className="flex items-center gap-2 min-w-0">
+              <Heart className="text-pink-600 fill-pink-600 flex-shrink-0" size={28} />
+              <span className="text-xl md:text-2xl font-black text-pink-600 truncate">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <Button variant="ghost" size="sm" asChild>
               <Link href="/profile">Back to Profile</Link>
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-black mb-2">Account Settings</h1>
-            <p className="text-gray-600">Manage your profile and preferences</p>
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-3xl md:text-4xl font-black mb-2">Account Settings</h1>
+            <p className="text-sm md:text-base text-gray-600">Manage your profile and preferences</p>
           </div>
 
           {saved && (
             <Card className="p-4 mb-6 bg-green-50 border-2 border-green-200 animate-in fade-in slide-in-from-top-2">
               <div className="flex items-center gap-3">
-                <CheckCircle className="text-green-600" size={24} />
-                <p className="text-green-900 font-semibold">Settings saved successfully!</p>
+                <CheckCircle className="text-green-600 flex-shrink-0" size={24} />
+                <p className="text-green-900 font-semibold text-sm md:text-base">Settings saved successfully!</p>
               </div>
             </Card>
           )}
 
+          {/* Mobile Tab Navigation */}
+          <div className="lg:hidden mb-6">
+            <Select value={activeTab} onValueChange={setActiveTab}>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="profile">
+                  <div className="flex items-center gap-2">
+                    <User size={16} />
+                    <span>Profile Info</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="security">
+                  <div className="flex items-center gap-2">
+                    <Lock size={16} />
+                    <span>Security</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="notifications">
+                  <div className="flex items-center gap-2">
+                    <Bell size={16} />
+                    <span>Notifications</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="privacy">
+                  <div className="flex items-center gap-2">
+                    <Shield size={16} />
+                    <span>Privacy</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="billing">
+                  <div className="flex items-center gap-2">
+                    <CreditCard size={16} />
+                    <span>Billing</span>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="grid lg:grid-cols-4 gap-6">
-            {/* Sidebar Navigation */}
-            <Card className="p-6 h-fit sticky top-24">
+            {/* Sidebar Navigation - Hidden on Mobile */}
+            <Card className="p-4 md:p-6 h-fit sticky top-24 hidden lg:block">
               <nav className="space-y-2">
                 <button
                   onClick={() => setActiveTab("profile")}

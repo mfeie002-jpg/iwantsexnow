@@ -107,23 +107,25 @@ export default function ContentFeed() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-xl md:text-2xl font-black text-pink-600">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/subscriptions">My Subscriptions</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/profile">Profile</Link>
-            </Button>
-            <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700" asChild>
-              <Link href="/creator-dashboard">Creator Dashboard</Link>
-            </Button>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
+              <span className="text-xl md:text-2xl font-black text-pink-600">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-2 md:gap-3">
+              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+                <Link href="/subscriptions">Subscriptions</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
+                <Link href="/profile">Profile</Link>
+              </Button>
+              <Button size="sm" className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-xs md:text-sm" asChild>
+                <Link href="/creator-dashboard">Creator</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>

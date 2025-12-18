@@ -67,60 +67,62 @@ export default function Premium() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/search">Browse</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/messages">Messages</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/profile">Profile</Link>
-            </Button>
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/" className="flex items-center gap-2 min-w-0">
+              <Heart className="text-pink-600 fill-pink-600 flex-shrink-0" size={28} />
+              <span className="text-xl md:text-2xl font-black text-pink-600 truncate">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+                <Link href="/search">Browse</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
+                <Link href="/messages">Messages</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/profile">Profile</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-4 bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-lg px-6 py-2">
+      <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
+          <Badge className="mb-4 bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-base md:text-lg px-4 md:px-6 py-2">
             <Zap size={18} className="mr-2" />
             Upgrade Your Experience
           </Badge>
-          <h1 className="text-5xl md:text-6xl font-black mb-6">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 px-4">
             Unlock Premium Features
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-base md:text-xl text-gray-600 px-4">
             Get more matches, unlimited messages, and exclusive features to maximize your dating experience
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto">
           {plans.map((plan, index) => (
             <Card
               key={index}
-              className={`relative p-8 ${
+              className={`relative p-6 md:p-8 ${
                 plan.popular
-                  ? "border-4 border-pink-500 shadow-2xl scale-105"
+                  ? "border-4 border-pink-500 shadow-2xl md:scale-105"
                   : "border-2"
               }`}
             >
               {plan.popular && (
-                <Badge className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-base px-6 py-2">
+                <Badge className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-sm md:text-base px-4 md:px-6 py-2">
                   Most Popular
                 </Badge>
               )}
 
               <div className="text-center mb-6">
                 <div
-                  className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${
+                  className={`w-16 h-16 md:w-20 md:h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${
                     plan.color === "gray"
                       ? "bg-gray-100"
                       : plan.color === "yellow"
@@ -129,18 +131,18 @@ export default function Premium() {
                   }`}
                 >
                   <plan.icon
-                    size={40}
+                    size={32}
                     className={plan.color === "gray" ? "text-gray-600" : "text-white"}
                   />
                 </div>
-                <h3 className="text-3xl font-black mb-2">{plan.name}</h3>
+                <h3 className="text-2xl md:text-3xl font-black mb-2">{plan.name}</h3>
                 <div className="mb-4">
-                  <span className="text-5xl font-black">CHF {plan.price}</span>
+                  <span className="text-3xl md:text-5xl font-black">CHF {plan.price}</span>
                   <span className="text-gray-600">/{plan.period}</span>
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
                 {plan.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <Check
@@ -151,20 +153,20 @@ export default function Premium() {
                           : "text-green-600"
                       }`}
                     />
-                    <span className="text-sm">{feature}</span>
+                    <span className="text-xs md:text-sm">{feature}</span>
                   </li>
                 ))}
                 {plan.limitations?.map((limitation, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-gray-400">
                     <span className="flex-shrink-0 mt-0.5">✗</span>
-                    <span className="text-sm line-through">{limitation}</span>
+                    <span className="text-xs md:text-sm line-through">{limitation}</span>
                   </li>
                 ))}
               </ul>
 
               <Button
                 size="lg"
-                className={`w-full text-lg ${
+                className={`w-full text-base md:text-lg ${
                   plan.color === "gray"
                     ? "bg-gray-600 hover:bg-gray-700"
                     : "bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"

@@ -67,32 +67,31 @@ export default function Favorites() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black text-pink-600">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/members">Browse</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/messages">Messages</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/profile">Profile</Link>
-            </Button>
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
+              <span className="text-xl md:text-2xl font-black text-pink-600">
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-2 md:gap-3">
+              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+                <Link href="/members">Browse</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/profile">Profile</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-black mb-2">Your Favorites</h1>
-            <p className="text-gray-600">
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-3xl md:text-4xl font-black mb-2">Your Favorites</h1>
+            <p className="text-sm md:text-base text-gray-600">
               {displayFavorites.length} {displayFavorites.length === 1 ? "profile" : "profiles"} you've liked
             </p>
           </div>
