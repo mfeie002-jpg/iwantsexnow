@@ -34,12 +34,12 @@ export default function Profile() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-black text-pink-600">
               iWantSexNow.ch
             </span>
           </Link>
@@ -50,8 +50,13 @@ export default function Profile() {
               </Link>
             </Button>
             <Button variant="ghost" size="icon" asChild>
-              <Link href="/search">
+              <Link href="/members">
                 <Eye size={20} />
+              </Link>
+            </Button>
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/favorites">
+                <Heart size={20} />
               </Link>
             </Button>
             <Button variant="ghost" size="icon">
@@ -79,7 +84,7 @@ export default function Profile() {
                       className="w-32 h-32 mx-auto rounded-full object-cover border-4 border-pink-200 mb-4"
                     />
                   ) : (
-                    <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white text-5xl font-bold mb-4">
+                    <div className="w-32 h-32 mx-auto rounded-full bg-pink-600 flex items-center justify-center text-white text-5xl font-bold mb-4">
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -117,7 +122,7 @@ export default function Profile() {
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700">
+                  <Button className="w-full bg-pink-600 hover:bg-pink-700">
                     Edit Profile
                   </Button>
                   <Button variant="outline" className="w-full" asChild>
@@ -138,7 +143,7 @@ export default function Profile() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Likes Received:</span>
-                    <span className="font-bold text-purple-600">43</span>
+                    <span className="font-bold text-pink-600">43</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Messages:</span>
@@ -156,8 +161,8 @@ export default function Profile() {
                   Your profile is now active. Start browsing members and making connections. Complete your profile to increase your visibility and get more matches.
                 </p>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <Button size="lg" className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700" asChild>
-                    <Link href="/search">Browse Members</Link>
+                  <Button size="lg" className="bg-pink-600 hover:bg-pink-700" asChild>
+                    <Link href="/members">Browse Members</Link>
                   </Button>
                   <Button size="lg" variant="outline" asChild>
                     <Link href="/upload-photos">Upload Photos</Link>

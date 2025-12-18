@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Heart, MessageCircle, Star } from "lucide-react";
+import { Search, MapPin, Heart, MessageCircle, Star, Shield, Zap, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -68,21 +68,27 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-black text-pink-600">
               iWantSexNow.ch
             </span>
           </Link>
           <div className="flex items-center gap-3">
             <Button variant="ghost" asChild>
+              <Link href="/members">Browse</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/about">About</Link>
+            </Button>
+            <Button variant="ghost" asChild>
               <Link href="/login">Login</Link>
             </Button>
-            <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700" asChild>
+            <Button className="bg-pink-600 hover:bg-pink-700" asChild>
               <Link href="/register">Register Free</Link>
             </Button>
           </div>
@@ -93,7 +99,7 @@ export default function Home() {
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-black leading-tight">
-            <span className="bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-pink-600">
               Meet Singles
             </span>
             <br />
@@ -116,8 +122,8 @@ export default function Home() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                <Button size="lg" className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 px-8">
-                  Search
+                <Button size="lg" className="bg-pink-600 hover:bg-pink-700 px-8" asChild>
+                  <Link href="/members">Search</Link>
                 </Button>
               </div>
             </Card>
@@ -130,7 +136,7 @@ export default function Home() {
               <div className="text-sm text-gray-600 font-medium">Active Members</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-purple-600">15K+</div>
+              <div className="text-4xl font-black text-pink-600">15K+</div>
               <div className="text-sm text-gray-600 font-medium">Online Now</div>
             </div>
             <div className="text-center">
@@ -176,9 +182,11 @@ export default function Home() {
                 </div>
               </div>
               <div className="p-4 flex gap-2">
-                <Button className="flex-1 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700">
-                  <MessageCircle size={18} className="mr-2" />
-                  Message
+                <Button className="flex-1 bg-pink-600 hover:bg-pink-700" asChild>
+                  <Link href="/register">
+                    <MessageCircle size={18} className="mr-2" />
+                    Message
+                  </Link>
                 </Button>
                 <Button variant="outline" size="icon">
                   <Heart size={18} />
@@ -189,37 +197,85 @@ export default function Home() {
         </div>
 
         <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="text-lg px-8">
-            View All Profiles
+          <Button size="lg" variant="outline" className="text-lg px-8" asChild>
+            <Link href="/members">View All Profiles</Link>
           </Button>
         </div>
       </section>
 
       {/* Features */}
-      <section className="bg-gradient-to-r from-pink-600 to-purple-600 py-16">
+      <section className="bg-pink-600 py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white space-y-6">
             <h2 className="text-4xl font-black">Why Join iWantSexNow.ch?</h2>
             <div className="grid md:grid-cols-3 gap-8 pt-8">
               <div className="space-y-3">
-                <div className="text-5xl">✓</div>
+                <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+                  <Shield size={32} />
+                </div>
                 <h3 className="text-xl font-bold">Verified Profiles</h3>
                 <p className="text-white/90">All members are verified for your safety and peace of mind</p>
               </div>
               <div className="space-y-3">
-                <div className="text-5xl">✓</div>
+                <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+                  <Zap size={32} />
+                </div>
                 <h3 className="text-xl font-bold">100% Discreet</h3>
                 <p className="text-white/90">Your privacy is our priority. Anonymous browsing available</p>
               </div>
               <div className="space-y-3">
-                <div className="text-5xl">✓</div>
+                <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+                  <Users size={32} />
+                </div>
                 <h3 className="text-xl font-bold">Instant Matching</h3>
                 <p className="text-white/90">Advanced algorithm connects you with compatible members</p>
               </div>
             </div>
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 mt-8 text-lg px-12" asChild>
+            <Button size="lg" className="bg-white text-pink-600 hover:bg-gray-100 mt-8 text-lg px-12" asChild>
               <Link href="/register">Join Free Now</Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl font-black text-center mb-12">What Our Members Say</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4">
+                "Amazing platform! Met some incredible people. The verification process makes me feel safe."
+              </p>
+              <p className="font-bold">- Anna, 28, Zürich</p>
+            </Card>
+            <Card className="p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4">
+                "Best dating site in Switzerland. Found exactly what I was looking for. Highly recommend!"
+              </p>
+              <p className="font-bold">- Marco, 32, Geneva</p>
+            </Card>
+            <Card className="p-6">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4">
+                "Love the community here. Everyone is genuine and respectful. Great experience overall!"
+              </p>
+              <p className="font-bold">- Lisa, 25, Basel</p>
+            </Card>
           </div>
         </div>
       </section>
@@ -263,7 +319,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>© {new Date().getFullYear()} iWantSexNow.ch. All rights reserved. | 18+ Only</p>
+            <p>© 2025 iWantSexNow.ch. All rights reserved. | 18+ Only</p>
             <p className="mt-2">This site is intended for adults only and may contain adult content.</p>
           </div>
         </div>
