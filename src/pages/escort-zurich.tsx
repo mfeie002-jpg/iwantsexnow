@@ -154,20 +154,19 @@ export default function EscortZurich() {
       </header>
 
       {/* Animated Hero Section */}
-      <section className="relative py-32 md:py-48 overflow-hidden">
+      <section className="relative py-20 md:py-32 overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-orange-600/20 animate-pulse" />
           <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-float-delayed" />
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-20" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {/* Animated Badge */}
             <div className="animate-fade-in-down">
-              <Badge className="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 border-0 text-white text-lg px-8 py-3 font-bold shadow-2xl shadow-pink-500/50">
+              <Badge className="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 border-0 text-white text-base md:text-lg px-6 md:px-8 py-2 md:py-3 font-bold shadow-2xl shadow-pink-500/50">
                 <Heart size={20} className="mr-2" />
                 Zürich's #1 Premium Escort Service
               </Badge>
@@ -175,21 +174,21 @@ export default function EscortZurich() {
 
             {/* Animated Headline */}
             <div className="space-y-4 animate-fade-in-up">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 animate-gradient">
                   Elite Escorts
                 </span>
                 <br />
                 <span className="text-white drop-shadow-2xl">in Zürich</span>
               </h1>
-              <p className="text-xl md:text-3xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed animate-fade-in">
+              <p className="text-lg md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed animate-fade-in px-4">
                 Experience luxury companionship with Switzerland's most exclusive escorts.
                 <span className="text-yellow-500 font-semibold"> Verified. Discreet. Available 24/7.</span>
               </p>
             </div>
 
             {/* Animated Stats */}
-            <div className="flex flex-wrap justify-center gap-8 pt-8 animate-fade-in-up animation-delay-200">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-8 pt-8 animate-fade-in-up animation-delay-200 px-4">
               {[
                 { number: "200+", label: "Elite Escorts", icon: Crown },
                 { number: "24/7", label: "Always Available", icon: Clock },
@@ -198,20 +197,20 @@ export default function EscortZurich() {
               ].map((stat, idx) => (
                 <div key={idx} className="text-center group animate-scale-in" style={{ animationDelay: `${idx * 100}ms` }}>
                   <div className="relative">
-                    <stat.icon className="mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" size={32} />
+                    <stat.icon className="mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" size={28} />
                     <div className="absolute inset-0 bg-yellow-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <div className="text-4xl md:text-5xl font-black text-yellow-500 mb-1">{stat.number}</div>
-                  <div className="text-sm text-gray-400 font-medium">{stat.label}</div>
+                  <div className="text-3xl md:text-4xl font-black text-yellow-500 mb-1">{stat.number}</div>
+                  <div className="text-xs md:text-sm text-gray-400 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Animated CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 animate-fade-in-up animation-delay-400">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 animate-fade-in-up animation-delay-400 px-4">
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-lg px-10 h-16 shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 transition-all hover:scale-105"
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-base md:text-lg px-8 md:px-10 h-14 md:h-16 shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 transition-all hover:scale-105 w-full sm:w-auto"
                 onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Search size={22} className="mr-2" />
@@ -220,7 +219,7 @@ export default function EscortZurich() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-white border-2 border-white/30 hover:bg-white/10 text-lg px-10 h-16 backdrop-blur-sm"
+                className="text-white border-2 border-white/30 hover:bg-white/10 text-base md:text-lg px-8 md:px-10 h-14 md:h-16 backdrop-blur-sm w-full sm:w-auto"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Phone size={22} className="mr-2" />
@@ -229,7 +228,7 @@ export default function EscortZurich() {
             </div>
 
             {/* Trust Indicators */}
-            <div className="pt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-400 animate-fade-in animation-delay-600">
+            <div className="pt-8 flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm text-gray-400 animate-fade-in animation-delay-600 px-4">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-green-500" />
                 <span>SSL Encrypted</span>
@@ -252,16 +251,16 @@ export default function EscortZurich() {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             {/* Filter Toggle & Results Count */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
               <div>
-                <h2 className="text-3xl font-black text-white mb-2">
+                <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
                   {filteredEscorts.length} Escorts Available
                 </h2>
-                <p className="text-gray-400">Premium companions in Zürich</p>
+                <p className="text-sm md:text-base text-gray-400">Premium companions in Zürich</p>
               </div>
               <Button
                 variant="outline"
-                className="text-white border-white/30"
+                className="text-white border-white/30 w-full sm:w-auto"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <Filter size={18} className="mr-2" />
@@ -271,10 +270,10 @@ export default function EscortZurich() {
 
             {/* Advanced Filters Panel */}
             {showFilters && (
-              <Card className="p-6 mb-8 bg-white/5 backdrop-blur-md border-white/10 animate-slide-down">
+              <Card className="p-4 md:p-6 mb-8 bg-white/5 backdrop-blur-md border-white/10 animate-slide-down">
                 <div className="space-y-6">
                   {/* Search & Quick Filters */}
-                  <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-white text-sm font-semibold mb-2">Search by Name</label>
                       <div className="relative">
@@ -364,28 +363,6 @@ export default function EscortZurich() {
                     />
                   </div>
 
-                  {/* Services Multi-Select */}
-                  <div>
-                    <label className="block text-white text-sm font-semibold mb-3">Services Offered</label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {serviceOptions.slice(0, 8).map((service) => (
-                        <label key={service} className="flex items-center gap-2 cursor-pointer text-white hover:text-yellow-500">
-                          <Checkbox
-                            checked={filters.services.includes(service)}
-                            onCheckedChange={(checked) => {
-                              const newServices = checked
-                                ? [...filters.services, service]
-                                : filters.services.filter(s => s !== service);
-                              setFilters({ ...filters, services: newServices });
-                              setCurrentPage(1);
-                            }}
-                          />
-                          <span className="text-sm">{service}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Languages */}
                   <div>
                     <label className="block text-white text-sm font-semibold mb-3">Languages</label>
@@ -407,32 +384,6 @@ export default function EscortZurich() {
                             : "text-white border-white/30"}
                         >
                           {lang}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Areas */}
-                  <div>
-                    <label className="block text-white text-sm font-semibold mb-3">Zürich Areas</label>
-                    <div className="flex flex-wrap gap-2">
-                      {areas.map((area) => (
-                        <Button
-                          key={area}
-                          variant={filters.areas.includes(area) ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => {
-                            const newAreas = filters.areas.includes(area)
-                              ? filters.areas.filter(a => a !== area)
-                              : [...filters.areas, area];
-                            setFilters({ ...filters, areas: newAreas });
-                            setCurrentPage(1);
-                          }}
-                          className={filters.areas.includes(area) 
-                            ? "bg-yellow-500 text-black hover:bg-yellow-600" 
-                            : "text-white border-white/30"}
-                        >
-                          {area}
                         </Button>
                       ))}
                     </div>
@@ -491,7 +442,7 @@ export default function EscortZurich() {
             )}
 
             {/* Escort Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
               {paginatedEscorts.map((escort) => (
                 <Card 
                   key={escort.id} 
@@ -502,54 +453,54 @@ export default function EscortZurich() {
                     <img
                       src={escort.image}
                       alt={escort.name}
-                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     
                     {/* Status Badges */}
                     <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
                       <div className="flex flex-col gap-2">
                         {escort.verified && (
-                          <Badge className="bg-blue-500 border-0 shadow-lg">
-                            <Shield size={12} className="mr-1" />
+                          <Badge className="bg-blue-500 border-0 shadow-lg text-xs">
+                            <Shield size={10} className="mr-1" />
                             Verified
                           </Badge>
                         )}
                         {escort.premium && (
-                          <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-0 shadow-lg font-bold">
-                            <Crown size={12} className="mr-1" />
+                          <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-0 shadow-lg font-bold text-xs">
+                            <Crown size={10} className="mr-1" />
                             Premium
                           </Badge>
                         )}
                       </div>
                       {escort.available ? (
-                        <Badge className="bg-green-500 border-0 shadow-lg animate-pulse">
-                          <div className="w-2 h-2 bg-white rounded-full mr-2" />
+                        <Badge className="bg-green-500 border-0 shadow-lg animate-pulse text-xs">
+                          <div className="w-2 h-2 bg-white rounded-full mr-1" />
                           Available
                         </Badge>
                       ) : (
-                        <Badge className="bg-red-500/80 border-0 shadow-lg">
+                        <Badge className="bg-red-500/80 border-0 shadow-lg text-xs">
                           Busy
                         </Badge>
                       )}
                     </div>
 
                     {/* Gradient Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-4">
-                      <h3 className="text-white text-2xl font-bold mb-1">{escort.name}, {escort.age}</h3>
-                      <div className="flex items-center gap-2 text-white/90 text-sm mb-2">
-                        <MapPin size={14} />
-                        <span>{escort.location}</span>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-3 md:p-4">
+                      <h3 className="text-white text-lg md:text-2xl font-bold mb-1">{escort.name}, {escort.age}</h3>
+                      <div className="flex items-center gap-2 text-white/90 text-xs md:text-sm mb-2">
+                        <MapPin size={12} />
+                        <span className="truncate">{escort.location}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                        <span className="text-white text-sm font-medium">{escort.rating.toFixed(1)}</span>
-                        <span className="text-white/60 text-xs">({escort.reviews} reviews)</span>
+                        <Star size={12} className="text-yellow-500 fill-yellow-500" />
+                        <span className="text-white text-xs md:text-sm font-medium">{escort.rating.toFixed(1)}</span>
+                        <span className="text-white/60 text-xs">({escort.reviews})</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 space-y-3">
-                    <p className="text-gray-300 text-sm line-clamp-2">{escort.description}</p>
+                  <div className="p-3 md:p-4 space-y-3">
+                    <p className="text-gray-300 text-xs md:text-sm line-clamp-2">{escort.description}</p>
                     
                     <div className="flex flex-wrap gap-1">
                       {escort.languages.slice(0, 3).map((lang, idx) => (
@@ -562,14 +513,14 @@ export default function EscortZurich() {
                     <div className="flex items-center justify-between pt-3 border-t border-white/10">
                       <div>
                         <div className="text-xs text-gray-400">From</div>
-                        <div className="text-xl font-black text-yellow-500">CHF {escort.rate}</div>
+                        <div className="text-lg md:text-xl font-black text-yellow-500">CHF {escort.rate}</div>
                         <div className="text-xs text-gray-400">per hour</div>
                       </div>
                       <Button 
                         size="sm"
-                        className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold"
+                        className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-xs md:text-sm"
                       >
-                        <MessageCircle size={16} className="mr-2" />
+                        <MessageCircle size={14} className="mr-1 md:mr-2" />
                         Contact
                       </Button>
                     </div>
@@ -580,7 +531,7 @@ export default function EscortZurich() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   variant="outline"
                   size="icon"
@@ -591,7 +542,7 @@ export default function EscortZurich() {
                   <ChevronLeft size={20} />
                 </Button>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap justify-center">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     let pageNum;
                     if (totalPages <= 5) {
@@ -630,7 +581,7 @@ export default function EscortZurich() {
                   <ChevronRight size={20} />
                 </Button>
 
-                <span className="text-white ml-4">
+                <span className="text-white text-sm">
                   Page {currentPage} of {totalPages}
                 </span>
               </div>
@@ -638,10 +589,10 @@ export default function EscortZurich() {
 
             {/* No Results */}
             {filteredEscorts.length === 0 && (
-              <Card className="p-12 text-center bg-white/5 backdrop-blur-sm border-white/10">
+              <Card className="p-8 md:p-12 text-center bg-white/5 backdrop-blur-sm border-white/10">
                 <Search size={64} className="mx-auto text-gray-500 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-2">No escorts found</h3>
-                <p className="text-gray-400 mb-6">Try adjusting your filters to see more results</p>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">No escorts found</h3>
+                <p className="text-sm md:text-base text-gray-400 mb-6">Try adjusting your filters to see more results</p>
                 <Button onClick={resetFilters} className="bg-yellow-500 text-black hover:bg-yellow-600">
                   Reset Filters
                 </Button>
@@ -652,18 +603,18 @@ export default function EscortZurich() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gradient-to-b from-transparent to-black/40">
+      <section id="services" className="py-12 md:py-20 bg-gradient-to-b from-transparent to-black/40">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
               Premium Services
             </h2>
-            <p className="text-xl text-gray-300">
+            <p className="text-base md:text-xl text-gray-300">
               Exclusive experiences tailored to your desires
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
             {[
               { 
                 icon: Heart, 
@@ -684,15 +635,15 @@ export default function EscortZurich() {
                 color: "from-yellow-500 to-orange-500"
               }
             ].map((service, idx) => (
-              <Card key={idx} className="p-8 text-center bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all group">
+              <Card key={idx} className="p-6 md:p-8 text-center bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all group">
                 <div className="relative mb-6">
-                  <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <service.icon className="text-white" size={40} />
+                  <div className={`w-16 h-16 md:w-20 md:h-20 mx-auto rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <service.icon className="text-white" size={32} />
                   </div>
                   <div className={`absolute inset-0 bg-gradient-to-br ${service.color} blur-2xl opacity-20 group-hover:opacity-40 transition-opacity`} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
-                <p className="text-gray-300">{service.description}</p>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-3">{service.title}</h3>
+                <p className="text-sm md:text-base text-gray-300">{service.description}</p>
               </Card>
             ))}
           </div>
@@ -700,20 +651,20 @@ export default function EscortZurich() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-purple-900/50 via-pink-900/50 to-orange-900/50">
+      <section id="contact" className="py-12 md:py-20 bg-gradient-to-br from-purple-900/50 via-pink-900/50 to-orange-900/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Book Your Experience
               </h2>
-              <p className="text-xl text-gray-300">
+              <p className="text-base md:text-xl text-gray-300">
                 Discreet, professional, unforgettable
               </p>
             </div>
 
-            <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <Card className="p-6 md:p-8 bg-white/10 backdrop-blur-md border-white/20">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-white text-sm font-semibold mb-2">Your Name *</label>
                   <Input placeholder="John Doe" className="bg-white/10 border-white/20 text-white" />
@@ -724,7 +675,7 @@ export default function EscortZurich() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-white text-sm font-semibold mb-2">Preferred Date</label>
                   <Input type="date" className="bg-white/10 border-white/20 text-white" />
@@ -752,13 +703,13 @@ export default function EscortZurich() {
                 <Textarea 
                   rows={4} 
                   placeholder="Tell us about your preferences..."
-                  className="bg-white/10 border-white/20 text-white"
+                  className="bg-white/10 border-white/20 text-white resize-none"
                 />
               </div>
 
               <Button 
                 size="lg" 
-                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-lg h-14"
+                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-base md:text-lg h-14"
               >
                 <MessageCircle size={20} className="mr-2" />
                 Send Booking Request
@@ -774,13 +725,13 @@ export default function EscortZurich() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-white/10 py-12">
+      <footer className="bg-black border-t border-white/10 py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Heart className="text-pink-600 fill-pink-600" size={24} />
-                <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
+                <span className="text-lg md:text-xl font-bold text-white">iWantSexNow.ch</span>
               </div>
               <p className="text-gray-400 text-sm">
                 Zürich's premier escort service platform
@@ -811,7 +762,7 @@ export default function EscortZurich() {
             </div>
           </div>
           <div className="border-t border-white/10 pt-8 text-center">
-            <p className="text-gray-400 text-sm">© 2025 iWantSexNow.ch Zürich. All rights reserved. | 18+ Only | Licensed & Legal</p>
+            <p className="text-gray-400 text-xs md:text-sm">© 2025 iWantSexNow.ch Zürich. All rights reserved. | 18+ Only | Licensed & Legal</p>
           </div>
         </div>
       </footer>
