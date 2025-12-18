@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Heart, MessageCircle, Star, Shield, Zap, Users, Calendar, Gift, Image } from "lucide-react";
+import { Search, MapPin, Heart, MessageCircle, Star, Shield, Zap, Users, Calendar, Gift, Image, DollarSign, Lock } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -18,7 +18,9 @@ export default function Home() {
       location: "Zürich",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
       online: true,
-      verified: true
+      verified: true,
+      isCreator: true,
+      subscriptionPrice: 19.90
     },
     {
       id: 2,
@@ -27,7 +29,9 @@ export default function Home() {
       location: "Genève",
       image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop",
       online: true,
-      verified: true
+      verified: true,
+      isCreator: true,
+      subscriptionPrice: 24.90
     },
     {
       id: 3,
@@ -36,7 +40,8 @@ export default function Home() {
       location: "Basel",
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
       online: false,
-      verified: true
+      verified: true,
+      isCreator: false
     },
     {
       id: 4,
@@ -45,7 +50,8 @@ export default function Home() {
       location: "Bern",
       image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop",
       online: true,
-      verified: false
+      verified: false,
+      isCreator: false
     },
     {
       id: 5,
@@ -54,7 +60,9 @@ export default function Home() {
       location: "Lausanne",
       image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=400&fit=crop",
       online: true,
-      verified: true
+      verified: true,
+      isCreator: true,
+      subscriptionPrice: 29.90
     },
     {
       id: 6,
@@ -63,7 +71,8 @@ export default function Home() {
       location: "Zürich",
       image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop",
       online: false,
-      verified: true
+      verified: true,
+      isCreator: false
     }
   ];
 
@@ -81,6 +90,12 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <Button variant="ghost" asChild>
               <Link href="/members">Browse</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/content-feed">
+                <Lock size={18} className="mr-2" />
+                Premium Content
+              </Link>
             </Button>
             <Button variant="ghost" asChild>
               <Link href="/stories">
@@ -185,21 +200,44 @@ export default function Home() {
                     <Star size={16} fill="white" />
                   </div>
                 )}
+                {profile.isCreator && (
+                  <Badge className="absolute top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 border-0">
+                    <Lock size={12} className="mr-1" />
+                    Creator
+                  </Badge>
+                )}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <h3 className="text-white text-2xl font-bold">{profile.name}, {profile.age}</h3>
                   <div className="flex items-center gap-1 text-white/90">
                     <MapPin size={16} />
                     <span>{profile.location}</span>
                   </div>
+                  {profile.isCreator && (
+                    <div className="mt-2">
+                      <Badge className="bg-white/20 backdrop-blur-sm border-0 text-white">
+                        <DollarSign size={12} />
+                        CHF {profile.subscriptionPrice}/month
+                      </Badge>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="p-4 flex gap-2">
-                <Button className="flex-1 bg-pink-600 hover:bg-pink-700" asChild>
-                  <Link href="/register">
-                    <MessageCircle size={18} className="mr-2" />
-                    Message
-                  </Link>
-                </Button>
+                {profile.isCreator ? (
+                  <Button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" asChild>
+                    <Link href="/content-feed">
+                      <Lock size={18} className="mr-2" />
+                      Subscribe
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button className="flex-1 bg-pink-600 hover:bg-pink-700" asChild>
+                    <Link href="/register">
+                      <MessageCircle size={18} className="mr-2" />
+                      Message
+                    </Link>
+                  </Button>
+                )}
                 <Button variant="outline" size="icon">
                   <Heart size={18} />
                 </Button>
@@ -215,45 +253,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* New Features Section */}
+      {/* Premium Content Section */}
       <section className="bg-gradient-to-r from-purple-600 to-pink-600 py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-black text-white mb-4">Exciting New Features!</h2>
-            <p className="text-xl text-white/90">More ways to connect and have fun</p>
+          <div className="max-w-4xl mx-auto text-center text-white space-y-6">
+            <Badge className="mb-4 bg-white/20 backdrop-blur-sm border-0 text-lg px-6 py-2">
+              <Lock size={18} className="mr-2" />
+              Premium Content
+            </Badge>
+            <h2 className="text-4xl font-black">Exclusive Content from Creators</h2>
+            <p className="text-xl text-white/95">
+              Subscribe to your favorite creators and unlock exclusive photos, videos, and messages
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 pt-8">
+              <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 text-white">
+                <Lock className="mx-auto mb-4" size={48} />
+                <h3 className="text-xl font-bold mb-2">Exclusive Content</h3>
+                <p className="text-white/90">Access premium photos and videos from verified creators</p>
+              </Card>
+              <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 text-white">
+                <DollarSign className="mx-auto mb-4" size={48} />
+                <h3 className="text-xl font-bold mb-2">Support Creators</h3>
+                <p className="text-white/90">Subscribe monthly or buy individual posts</p>
+              </Card>
+              <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 text-white">
+                <Star className="mx-auto mb-4" size={48} />
+                <h3 className="text-xl font-bold mb-2">Become a Creator</h3>
+                <p className="text-white/90">Earn money by sharing your exclusive content</p>
+              </Card>
+            </div>
+            <div className="flex gap-4 justify-center pt-4">
+              <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-8" asChild>
+                <Link href="/content-feed">Browse Content</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8" asChild>
+                <Link href="/creator-dashboard">Become Creator</Link>
+              </Button>
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
-              <div className="w-16 h-16 mx-auto rounded-full bg-pink-100 flex items-center justify-center mb-4">
-                <Image className="text-pink-600" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Stories</h3>
-              <p className="text-gray-600 mb-4">Share your moments and see what others are up to</p>
-              <Button variant="outline" asChild>
-                <Link href="/stories">View Stories</Link>
-              </Button>
-            </Card>
-            <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
-              <div className="w-16 h-16 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4">
-                <Calendar className="text-purple-600" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Events</h3>
-              <p className="text-gray-600 mb-4">Join local meetups and dating events near you</p>
-              <Button variant="outline" asChild>
-                <Link href="/events">Browse Events</Link>
-              </Button>
-            </Card>
-            <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
-              <div className="w-16 h-16 mx-auto rounded-full bg-yellow-100 flex items-center justify-center mb-4">
-                <Gift className="text-yellow-600" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Virtual Gifts</h3>
-              <p className="text-gray-600 mb-4">Send thoughtful gifts to make someone's day</p>
-              <Button variant="outline" asChild>
-                <Link href="/gifts">Send Gift</Link>
-              </Button>
-            </Card>
-          </div>
+        </div>
+      </section>
+
+      {/* New Features Section */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-black mb-4">Exciting Features!</h2>
+          <p className="text-xl text-gray-600">More ways to connect and have fun</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
+            <div className="w-16 h-16 mx-auto rounded-full bg-pink-100 flex items-center justify-center mb-4">
+              <Image className="text-pink-600" size={32} />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Stories</h3>
+            <p className="text-gray-600 mb-4">Share your moments and see what others are up to</p>
+            <Button variant="outline" asChild>
+              <Link href="/stories">View Stories</Link>
+            </Button>
+          </Card>
+          <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
+            <div className="w-16 h-16 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4">
+              <Calendar className="text-purple-600" size={32} />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Events</h3>
+            <p className="text-gray-600 mb-4">Join local meetups and dating events near you</p>
+            <Button variant="outline" asChild>
+              <Link href="/events">Browse Events</Link>
+            </Button>
+          </Card>
+          <Card className="p-6 text-center hover:shadow-2xl transition-all hover:-translate-y-1">
+            <div className="w-16 h-16 mx-auto rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+              <Gift className="text-yellow-600" size={32} />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Virtual Gifts</h3>
+            <p className="text-gray-600 mb-4">Send thoughtful gifts to make someone's day</p>
+            <Button variant="outline" asChild>
+              <Link href="/gifts">Send Gift</Link>
+            </Button>
+          </Card>
         </div>
       </section>
 
