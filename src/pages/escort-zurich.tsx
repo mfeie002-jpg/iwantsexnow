@@ -4,590 +4,911 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
 import { MobileNav } from "@/components/MobileNav";
-import { Heart, Star, Shield, Clock, MapPin, Phone, Mail, CheckCircle, Award, Lock, Eye, MessageCircle, Calendar, DollarSign, Sparkles, Crown, Verified, Search } from "lucide-react";
+import { Heart, Star, Shield, Clock, MapPin, Phone, Mail, CheckCircle, Award, Lock, Eye, MessageCircle, Calendar, DollarSign, Sparkles, Crown, Search, Filter, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 
 export default function EscortZurich() {
-  const [contactForm, setContactForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    date: "",
-    duration: ""
+  const [selectedEscort, setSelectedEscort] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showFilters, setShowFilters] = useState(false);
+  
+  // Advanced filter state
+  const [filters, setFilters] = useState({
+    search: "",
+    availability: "all",
+    priceMin: 200,
+    priceMax: 1000,
+    ageMin: 18,
+    ageMax: 50,
+    services: [] as string[],
+    languages: [] as string[],
+    areas: [] as string[],
+    bodyType: "all",
+    ethnicity: "all",
+    premium: false,
+    verified: true,
+    available: false
   });
 
-  const escorts = [
-    {
-      id: 1,
-      name: "Sophia",
-      age: 26,
-      location: "Zürich City Center",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-      verified: true,
-      premium: true,
-      available: true,
-      rating: 5.0,
-      reviews: 127,
-      languages: ["German", "English", "French"],
-      services: ["Dinner Dates", "City Tours", "Events", "Travel Companion"],
-      rate: "CHF 500/hour",
-      description: "Sophisticated and elegant companion for discerning gentlemen"
-    },
-    {
-      id: 2,
-      name: "Isabella",
-      age: 24,
-      location: "Zürich Seefeld",
-      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop",
-      verified: true,
-      premium: true,
-      available: false,
-      rating: 4.9,
-      reviews: 98,
-      languages: ["German", "English", "Italian"],
-      services: ["GFE", "Dinner Dates", "Overnight", "Weekend"],
-      rate: "CHF 600/hour",
-      description: "Beautiful Italian model available for exclusive encounters"
-    },
-    {
-      id: 3,
-      name: "Emma",
-      age: 28,
-      location: "Zürich Enge",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
-      verified: true,
-      premium: false,
-      available: true,
-      rating: 4.8,
-      reviews: 156,
-      languages: ["German", "English"],
-      services: ["Massage", "Companionship", "Dinner Dates"],
-      rate: "CHF 400/hour",
-      description: "Warm and friendly companion with a genuine personality"
-    },
-    {
-      id: 4,
-      name: "Mia",
-      age: 25,
-      location: "Zürich Oerlikon",
-      image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop",
-      verified: true,
-      premium: true,
-      available: true,
-      rating: 5.0,
-      reviews: 203,
-      languages: ["German", "English", "Spanish"],
-      services: ["GFE", "PSE", "Couples", "Travel"],
-      rate: "CHF 700/hour",
-      description: "Elite companion for unforgettable experiences"
-    }
+  const serviceOptions = [
+    "GFE (Girlfriend Experience)", "PSE (Pornstar Experience)", "Dinner Dates",
+    "Massage", "City Tours", "Events Companion", "Travel Companion",
+    "Overnight", "Weekend", "Couples", "Roleplay", "BDSM", "Tantric"
   ];
 
-  const features = [
-    {
-      icon: Shield,
-      title: "100% Verified Profiles",
-      description: "All escorts are verified with ID and photo verification"
-    },
-    {
-      icon: Lock,
-      title: "Complete Discretion",
-      description: "Your privacy is our priority. All bookings are confidential"
-    },
-    {
-      icon: Award,
-      title: "Premium Selection",
-      description: "Handpicked elite companions in Zürich"
-    },
-    {
-      icon: CheckCircle,
-      title: "Safe & Secure",
-      description: "Secure payment and booking system"
-    },
-    {
-      icon: Clock,
-      title: "24/7 Availability",
-      description: "Book anytime, escorts available around the clock"
-    },
-    {
-      icon: Star,
-      title: "Top Rated",
-      description: "Only the highest rated escorts in Switzerland"
-    }
+  const languageOptions = [
+    "German", "English", "French", "Italian", "Spanish", "Portuguese", "Russian", "Chinese"
   ];
 
   const areas = [
     "Zürich City Center", "Seefeld", "Wiedikon", "Enge", "Altstetten",
-    "Oerlikon", "Zürich Nord", "Zürich West", "Hottingen", "Wipkingen",
-    "Schwamendingen", "Affoltern", "Höngg", "Albisrieden"
+    "Oerlikon", "Zürich Nord", "Zürich West", "Hottingen", "Wipkingen"
   ];
 
+  // Generate 50 escorts for pagination demo
+  const allEscorts = Array.from({ length: 50 }, (_, i) => ({
+    id: i + 1,
+    name: ["Sophia", "Isabella", "Emma", "Mia", "Nina", "Laura", "Sophie", "Anna", "Olivia", "Julia"][i % 10],
+    age: 22 + (i % 15),
+    location: areas[i % areas.length],
+    image: `https://images.unsplash.com/photo-${1494790108377 + i}?w=400&h=600&fit=crop`,
+    verified: i % 3 !== 0,
+    premium: i % 4 === 0,
+    available: i % 2 === 0,
+    rating: 4.5 + (i % 5) * 0.1,
+    reviews: 50 + i * 10,
+    languages: languageOptions.slice(0, 2 + (i % 3)),
+    services: serviceOptions.slice(0, 3 + (i % 5)),
+    rate: 300 + (i % 8) * 100,
+    bodyType: ["Slim", "Athletic", "Curvy", "Average"][i % 4],
+    ethnicity: ["European", "Asian", "Latina", "Mixed", "African"][i % 5],
+    description: "Professional companion offering unforgettable experiences with sophistication and discretion."
+  }));
+
+  // Apply filters
+  const filteredEscorts = allEscorts.filter(escort => {
+    if (filters.search && !escort.name.toLowerCase().includes(filters.search.toLowerCase())) return false;
+    if (filters.availability === "available" && !escort.available) return false;
+    if (filters.availability === "unavailable" && escort.available) return false;
+    if (escort.rate < filters.priceMin || escort.rate > filters.priceMax) return false;
+    if (escort.age < filters.ageMin || escort.age > filters.ageMax) return false;
+    if (filters.services.length > 0 && !filters.services.some(s => escort.services.includes(s))) return false;
+    if (filters.languages.length > 0 && !filters.languages.some(l => escort.languages.includes(l))) return false;
+    if (filters.areas.length > 0 && !filters.areas.includes(escort.location)) return false;
+    if (filters.bodyType !== "all" && escort.bodyType !== filters.bodyType) return false;
+    if (filters.ethnicity !== "all" && escort.ethnicity !== filters.ethnicity) return false;
+    if (filters.premium && !escort.premium) return false;
+    if (filters.verified && !escort.verified) return false;
+    if (filters.available && !escort.available) return false;
+    return true;
+  });
+
+  // Pagination
+  const itemsPerPage = 12;
+  const totalPages = Math.ceil(filteredEscorts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedEscorts = filteredEscorts.slice(startIndex, startIndex + itemsPerPage);
+
+  const resetFilters = () => {
+    setFilters({
+      search: "",
+      availability: "all",
+      priceMin: 200,
+      priceMax: 1000,
+      ageMin: 18,
+      ageMax: 50,
+      services: [],
+      languages: [],
+      areas: [],
+      bodyType: "all",
+      ethnicity: "all",
+      premium: false,
+      verified: true,
+      available: false
+    });
+    setCurrentPage(1);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-pink-50">
-      {/* Header with Mobile Nav */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Header */}
+      <header className="border-b border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Heart className="text-pink-600 fill-pink-600" size={32} />
-              <span className="text-2xl font-black text-pink-600">
-                iWantSexNow.ch
-              </span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <Crown className="text-yellow-500" size={36} />
+                <div className="absolute inset-0 bg-yellow-500/20 blur-xl group-hover:bg-yellow-500/40 transition-all" />
+              </div>
+              <div>
+                <span className="text-2xl font-black text-white tracking-tight">
+                  Elite Escorts
+                </span>
+                <div className="text-xs text-yellow-500 font-semibold tracking-wider">ZÜRICH PREMIUM</div>
+              </div>
             </Link>
             
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-3">
-              <Button variant="ghost" asChild>
-                <Link href="/members">Browse Members</Link>
+            <nav className="hidden md:flex items-center gap-4">
+              <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
+                <Link href="#escorts">Browse</Link>
               </Button>
-              <Button variant="ghost" asChild>
-                <Link href="/safety">Safety</Link>
+              <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
+                <Link href="#services">Services</Link>
               </Button>
-              <Button variant="ghost" asChild>
-                <Link href="/about">About</Link>
+              <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
+                <Link href="#contact">Contact</Link>
               </Button>
-              <Button className="bg-pink-600 hover:bg-pink-700" asChild>
-                <Link href="/register">Register Free</Link>
+              <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold">
+                <Phone size={18} className="mr-2" />
+                Book Now
               </Button>
             </nav>
 
-            {/* Mobile Navigation */}
             <MobileNav />
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 to-purple-600/10" />
+      {/* Animated Hero Section */}
+      <section className="relative py-32 md:py-48 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-orange-600/20 animate-pulse" />
+          <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-float-delayed" />
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-20" />
+        </div>
+
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <Badge className="bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-lg px-6 py-2">
-              <Crown size={18} className="mr-2" />
-              Premium Escort Services in Zürich
-            </Badge>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight">
-              <span className="text-pink-600">Elite Escorts</span>
-              <br />
-              <span className="text-gray-900">in Zürich</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto font-medium">
-              Meet verified, sophisticated companions for unforgettable experiences. 
-              100% discreet, premium selection, available 24/7.
-            </p>
-
-            {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-8 pt-8">
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-black text-pink-600">150+</div>
-                <div className="text-sm text-gray-600 font-medium">Verified Escorts</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-black text-pink-600">24/7</div>
-                <div className="text-sm text-gray-600 font-medium">Available</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-black text-pink-600">100%</div>
-                <div className="text-sm text-gray-600 font-medium">Discreet</div>
-              </div>
+          <div className="max-w-5xl mx-auto text-center space-y-8">
+            {/* Animated Badge */}
+            <div className="animate-fade-in-down">
+              <Badge className="bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 border-0 text-black text-lg px-8 py-3 font-bold shadow-2xl shadow-yellow-500/50">
+                <Crown size={20} className="mr-2" />
+                Zürich's #1 Premium Escort Service
+              </Badge>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-              <Button size="lg" className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg px-8 h-14">
-                <Search size={20} className="mr-2" />
-                Browse Escorts
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-2">
-                <Phone size={20} className="mr-2" />
-                Contact Us
-              </Button>
+            {/* Animated Headline */}
+            <div className="space-y-4 animate-fade-in-up">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 animate-gradient">
+                  Elite Escorts
+                </span>
+                <br />
+                <span className="text-white drop-shadow-2xl">in Zürich</span>
+              </h1>
+              <p className="text-xl md:text-3xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed animate-fade-in">
+                Experience luxury companionship with Switzerland's most exclusive escorts.
+                <span className="text-yellow-500 font-semibold"> Verified. Discreet. Available 24/7.</span>
+              </p>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Trust Signals */}
-      <section className="py-12 bg-white border-y">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-            {features.map((feature, idx) => {
-              const Icon = feature.icon;
-              return (
-                <div key={idx} className="text-center">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-pink-100 flex items-center justify-center mb-3">
-                    <Icon className="text-pink-600" size={28} />
+            {/* Animated Stats */}
+            <div className="flex flex-wrap justify-center gap-8 pt-8 animate-fade-in-up animation-delay-200">
+              {[
+                { number: "200+", label: "Elite Escorts", icon: Crown },
+                { number: "24/7", label: "Always Available", icon: Clock },
+                { number: "100%", label: "Verified & Safe", icon: Shield },
+                { number: "5★", label: "Average Rating", icon: Star }
+              ].map((stat, idx) => (
+                <div key={idx} className="text-center group animate-scale-in" style={{ animationDelay: `${idx * 100}ms` }}>
+                  <div className="relative">
+                    <stat.icon className="mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" size={32} />
+                    <div className="absolute inset-0 bg-yellow-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <h3 className="font-bold text-sm mb-1">{feature.title}</h3>
-                  <p className="text-xs text-gray-600 hidden md:block">{feature.description}</p>
+                  <div className="text-4xl md:text-5xl font-black text-yellow-500 mb-1">{stat.number}</div>
+                  <div className="text-sm text-gray-400 font-medium">{stat.label}</div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Escorts */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-black mb-4">Premium Escorts in Zürich</h2>
-          <p className="text-xl text-gray-600">Verified, elite companions available now</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {escorts.map((escort) => (
-            <Card key={escort.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-              <div className="relative">
-                <img
-                  src={escort.image}
-                  alt={escort.name}
-                  className="w-full h-80 object-cover"
-                />
-                {escort.available && (
-                  <Badge className="absolute top-3 right-3 bg-green-500 border-0">
-                    Available Now
-                  </Badge>
-                )}
-                {escort.verified && (
-                  <div className="absolute top-3 left-3 bg-blue-500 text-white rounded-full p-1.5">
-                    <Shield size={16} />
-                  </div>
-                )}
-                {escort.premium && (
-                  <Badge className="absolute top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-500 to-orange-600 border-0">
-                    <Crown size={12} className="mr-1" />
-                    Premium
-                  </Badge>
-                )}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4">
-                  <h3 className="text-white text-2xl font-bold">{escort.name}, {escort.age}</h3>
-                  <div className="flex items-center gap-1 text-white/90 text-sm">
-                    <MapPin size={14} />
-                    <span>{escort.location}</span>
-                  </div>
-                  <div className="flex items-center gap-1 mt-1">
-                    <Star size={14} className="text-yellow-400 fill-yellow-400" />
-                    <span className="text-white text-sm font-medium">{escort.rating}</span>
-                    <span className="text-white/70 text-xs">({escort.reviews} reviews)</span>
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 space-y-3">
-                <p className="text-sm text-gray-700">{escort.description}</p>
-                
-                <div>
-                  <p className="text-xs font-semibold text-gray-700 mb-2">Languages:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {escort.languages.map((lang, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {lang}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs font-semibold text-gray-700 mb-2">Services:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {escort.services.slice(0, 2).map((service, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
-                        {service}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs text-gray-600">Starting from</span>
-                    <span className="text-lg font-black text-pink-600">{escort.rate}</span>
-                  </div>
-                  <Button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700">
-                    <MessageCircle size={18} className="mr-2" />
-                    Contact Now
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="text-lg px-8 border-2">
-            View All {escorts.length * 10}+ Escorts in Zürich
-          </Button>
-        </div>
-      </section>
-
-      {/* Service Areas */}
-      <section className="bg-gradient-to-r from-pink-50 to-purple-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-center mb-4">
-              We Cover All Areas in Zürich
-            </h2>
-            <p className="text-center text-gray-600 mb-8">
-              Premium escort services available throughout the entire Zürich canton
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-              {areas.map((area, idx) => (
-                <Link
-                  key={idx}
-                  href={`/escort-zurich/${area.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="text-center p-3 bg-white rounded-lg hover:shadow-lg transition-all hover:scale-105"
-                >
-                  <MapPin size={20} className="mx-auto text-pink-600 mb-2" />
-                  <span className="text-sm font-medium">{area}</span>
-                </Link>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Why Choose Us */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-black text-center mb-12">
-            Why Choose Our Zürich Escort Service?
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center hover:shadow-xl transition-all">
-              <div className="w-20 h-20 mx-auto rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                <Shield className="text-blue-600" size={40} />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Verified & Safe</h3>
-              <p className="text-gray-600">
-                Every escort is thoroughly verified with ID checks and photo verification. 
-                Your safety and security are guaranteed.
-              </p>
-            </Card>
-
-            <Card className="p-8 text-center hover:shadow-xl transition-all">
-              <div className="w-20 h-20 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4">
-                <Crown className="text-purple-600" size={40} />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Elite Selection</h3>
-              <p className="text-gray-600">
-                Only the most sophisticated, educated, and beautiful companions. 
-                Premium quality guaranteed.
-              </p>
-            </Card>
-
-            <Card className="p-8 text-center hover:shadow-xl transition-all">
-              <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center mb-4">
-                <Lock className="text-pink-600" size={40} />
-              </div>
-              <h3 className="text-xl font-bold mb-3">100% Discreet</h3>
-              <p className="text-gray-600">
-                Complete confidentiality guaranteed. Anonymous booking, secure payments, 
-                and absolute discretion.
-              </p>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form */}
-      <section className="bg-gradient-to-r from-pink-600 to-purple-600 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12 text-white">
-              <h2 className="text-3xl md:text-4xl font-black mb-4">Book Your Experience</h2>
-              <p className="text-xl text-white/90">
-                Contact us for exclusive escort services in Zürich
-              </p>
+            {/* Animated CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 animate-fade-in-up animation-delay-400">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-lg px-10 h-16 shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 transition-all hover:scale-105"
+                onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Search size={22} className="mr-2" />
+                Browse 200+ Escorts
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-white border-2 border-white/30 hover:bg-white/10 text-lg px-10 h-16 backdrop-blur-sm"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Phone size={22} className="mr-2" />
+                Call +41 XX XXX XX XX
+              </Button>
             </div>
 
-            <Card className="p-8">
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+            {/* Trust Indicators */}
+            <div className="pt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-400 animate-fade-in animation-delay-600">
+              <div className="flex items-center gap-2">
+                <Shield size={16} className="text-green-500" />
+                <span>SSL Encrypted</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock size={16} className="text-green-500" />
+                <span>100% Discreet</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle size={16} className="text-green-500" />
+                <span>Verified Profiles</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Advanced Filters Section */}
+      <section id="escorts" className="py-12 bg-black/40 backdrop-blur-sm border-y border-white/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto">
+            {/* Filter Toggle & Results Count */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-black text-white mb-2">
+                  {filteredEscorts.length} Escorts Available
+                </h2>
+                <p className="text-gray-400">Premium companions in Zürich</p>
+              </div>
+              <Button
+                variant="outline"
+                className="text-white border-white/30"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <Filter size={18} className="mr-2" />
+                {showFilters ? "Hide" : "Show"} Filters
+              </Button>
+            </div>
+
+            {/* Advanced Filters Panel */}
+            {showFilters && (
+              <Card className="p-6 mb-8 bg-white/5 backdrop-blur-md border-white/10 animate-slide-down">
+                <div className="space-y-6">
+                  {/* Search & Quick Filters */}
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-white text-sm font-semibold mb-2">Search by Name</label>
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <Input
+                          placeholder="Enter name..."
+                          value={filters.search}
+                          onChange={(e) => {
+                            setFilters({ ...filters, search: e.target.value });
+                            setCurrentPage(1);
+                          }}
+                          className="pl-10 bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-white text-sm font-semibold mb-2">Availability</label>
+                      <Select value={filters.availability} onValueChange={(value) => {
+                        setFilters({ ...filters, availability: value });
+                        setCurrentPage(1);
+                      }}>
+                        <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Escorts</SelectItem>
+                          <SelectItem value="available">Available Now</SelectItem>
+                          <SelectItem value="unavailable">Not Available</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <label className="block text-white text-sm font-semibold mb-2">Body Type</label>
+                      <Select value={filters.bodyType} onValueChange={(value) => {
+                        setFilters({ ...filters, bodyType: value });
+                        setCurrentPage(1);
+                      }}>
+                        <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Types</SelectItem>
+                          <SelectItem value="Slim">Slim</SelectItem>
+                          <SelectItem value="Athletic">Athletic</SelectItem>
+                          <SelectItem value="Curvy">Curvy</SelectItem>
+                          <SelectItem value="Average">Average</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* Price Range Slider */}
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Your Name *</label>
-                    <Input
-                      placeholder="John Doe"
-                      value={contactForm.name}
-                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                    <label className="block text-white text-sm font-semibold mb-3">
+                      Price Range: CHF {filters.priceMin} - CHF {filters.priceMax}/hour
+                    </label>
+                    <Slider
+                      min={200}
+                      max={1000}
+                      step={50}
+                      value={[filters.priceMin, filters.priceMax]}
+                      onValueChange={([min, max]) => {
+                        setFilters({ ...filters, priceMin: min, priceMax: max });
+                        setCurrentPage(1);
+                      }}
+                      className="mb-2"
                     />
                   </div>
+
+                  {/* Age Range Slider */}
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Email *</label>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      value={contactForm.email}
-                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                    <label className="block text-white text-sm font-semibold mb-3">
+                      Age Range: {filters.ageMin} - {filters.ageMax} years
+                    </label>
+                    <Slider
+                      min={18}
+                      max={50}
+                      step={1}
+                      value={[filters.ageMin, filters.ageMax]}
+                      onValueChange={([min, max]) => {
+                        setFilters({ ...filters, ageMin: min, ageMax: max });
+                        setCurrentPage(1);
+                      }}
+                      className="mb-2"
                     />
+                  </div>
+
+                  {/* Services Multi-Select */}
+                  <div>
+                    <label className="block text-white text-sm font-semibold mb-3">Services Offered</label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {serviceOptions.slice(0, 8).map((service) => (
+                        <label key={service} className="flex items-center gap-2 cursor-pointer text-white hover:text-yellow-500">
+                          <Checkbox
+                            checked={filters.services.includes(service)}
+                            onCheckedChange={(checked) => {
+                              const newServices = checked
+                                ? [...filters.services, service]
+                                : filters.services.filter(s => s !== service);
+                              setFilters({ ...filters, services: newServices });
+                              setCurrentPage(1);
+                            }}
+                          />
+                          <span className="text-sm">{service}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Languages */}
+                  <div>
+                    <label className="block text-white text-sm font-semibold mb-3">Languages</label>
+                    <div className="flex flex-wrap gap-2">
+                      {languageOptions.map((lang) => (
+                        <Button
+                          key={lang}
+                          variant={filters.languages.includes(lang) ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => {
+                            const newLanguages = filters.languages.includes(lang)
+                              ? filters.languages.filter(l => l !== lang)
+                              : [...filters.languages, lang];
+                            setFilters({ ...filters, languages: newLanguages });
+                            setCurrentPage(1);
+                          }}
+                          className={filters.languages.includes(lang) 
+                            ? "bg-yellow-500 text-black hover:bg-yellow-600" 
+                            : "text-white border-white/30"}
+                        >
+                          {lang}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Areas */}
+                  <div>
+                    <label className="block text-white text-sm font-semibold mb-3">Zürich Areas</label>
+                    <div className="flex flex-wrap gap-2">
+                      {areas.map((area) => (
+                        <Button
+                          key={area}
+                          variant={filters.areas.includes(area) ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => {
+                            const newAreas = filters.areas.includes(area)
+                              ? filters.areas.filter(a => a !== area)
+                              : [...filters.areas, area];
+                            setFilters({ ...filters, areas: newAreas });
+                            setCurrentPage(1);
+                          }}
+                          className={filters.areas.includes(area) 
+                            ? "bg-yellow-500 text-black hover:bg-yellow-600" 
+                            : "text-white border-white/30"}
+                        >
+                          {area}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quick Toggles */}
+                  <div className="flex flex-wrap gap-4 pt-4 border-t border-white/10">
+                    <label className="flex items-center gap-2 cursor-pointer text-white hover:text-yellow-500">
+                      <Checkbox
+                        checked={filters.premium}
+                        onCheckedChange={(checked) => {
+                          setFilters({ ...filters, premium: checked as boolean });
+                          setCurrentPage(1);
+                        }}
+                      />
+                      <Crown size={16} className="text-yellow-500" />
+                      <span className="text-sm">Premium Only</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer text-white hover:text-yellow-500">
+                      <Checkbox
+                        checked={filters.verified}
+                        onCheckedChange={(checked) => {
+                          setFilters({ ...filters, verified: checked as boolean });
+                          setCurrentPage(1);
+                        }}
+                      />
+                      <Shield size={16} className="text-blue-500" />
+                      <span className="text-sm">Verified Only</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer text-white hover:text-yellow-500">
+                      <Checkbox
+                        checked={filters.available}
+                        onCheckedChange={(checked) => {
+                          setFilters({ ...filters, available: checked as boolean });
+                          setCurrentPage(1);
+                        }}
+                      />
+                      <div className="w-2 h-2 bg-green-500 rounded-full" />
+                      <span className="text-sm">Available Now</span>
+                    </label>
+                  </div>
+
+                  {/* Reset Button */}
+                  <div className="flex justify-end pt-4 border-t border-white/10">
+                    <Button
+                      variant="outline"
+                      onClick={resetFilters}
+                      className="text-white border-white/30"
+                    >
+                      <X size={18} className="mr-2" />
+                      Reset All Filters
+                    </Button>
                   </div>
                 </div>
+              </Card>
+            )}
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Phone (Optional)</label>
-                    <Input
-                      type="tel"
-                      placeholder="+41 XX XXX XX XX"
-                      value={contactForm.phone}
-                      onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+            {/* Escort Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+              {paginatedEscorts.map((escort) => (
+                <Card 
+                  key={escort.id} 
+                  className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20 hover:-translate-y-1 cursor-pointer"
+                  onClick={() => setSelectedEscort(escort.id)}
+                >
+                  <div className="relative">
+                    <img
+                      src={escort.image}
+                      alt={escort.name}
+                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Preferred Date</label>
-                    <Input
-                      type="date"
-                      value={contactForm.date}
-                      onChange={(e) => setContactForm({ ...contactForm, date: e.target.value })}
-                    />
-                  </div>
-                </div>
+                    
+                    {/* Status Badges */}
+                    <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
+                      <div className="flex flex-col gap-2">
+                        {escort.verified && (
+                          <Badge className="bg-blue-500 border-0 shadow-lg">
+                            <Shield size={12} className="mr-1" />
+                            Verified
+                          </Badge>
+                        )}
+                        {escort.premium && (
+                          <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-0 shadow-lg font-bold">
+                            <Crown size={12} className="mr-1" />
+                            Premium
+                          </Badge>
+                        )}
+                      </div>
+                      {escort.available ? (
+                        <Badge className="bg-green-500 border-0 shadow-lg animate-pulse">
+                          <div className="w-2 h-2 bg-white rounded-full mr-2" />
+                          Available
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-red-500/80 border-0 shadow-lg">
+                          Busy
+                        </Badge>
+                      )}
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Duration</label>
-                  <select
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    value={contactForm.duration}
-                    onChange={(e) => setContactForm({ ...contactForm, duration: e.target.value })}
-                  >
-                    <option value="">Select duration</option>
-                    <option value="1">1 hour</option>
-                    <option value="2">2 hours</option>
-                    <option value="3">3 hours</option>
-                    <option value="dinner">Dinner date (4+ hours)</option>
-                    <option value="overnight">Overnight</option>
-                    <option value="weekend">Weekend</option>
-                  </select>
-                </div>
+                    {/* Gradient Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-4">
+                      <h3 className="text-white text-2xl font-bold mb-1">{escort.name}, {escort.age}</h3>
+                      <div className="flex items-center gap-2 text-white/90 text-sm mb-2">
+                        <MapPin size={14} />
+                        <span>{escort.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                        <span className="text-white text-sm font-medium">{escort.rating.toFixed(1)}</span>
+                        <span className="text-white/60 text-xs">({escort.reviews} reviews)</span>
+                      </div>
+                    </div>
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Message *</label>
-                  <Textarea
-                    rows={4}
-                    placeholder="Tell us about your preferences, special requests, or any questions..."
-                    value={contactForm.message}
-                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                  />
+                  <div className="p-4 space-y-3">
+                    <p className="text-gray-300 text-sm line-clamp-2">{escort.description}</p>
+                    
+                    <div className="flex flex-wrap gap-1">
+                      {escort.languages.slice(0, 3).map((lang, idx) => (
+                        <Badge key={idx} variant="outline" className="text-xs border-white/20 text-gray-300">
+                          {lang}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 border-t border-white/10">
+                      <div>
+                        <div className="text-xs text-gray-400">From</div>
+                        <div className="text-xl font-black text-yellow-500">CHF {escort.rate}</div>
+                        <div className="text-xs text-gray-400">per hour</div>
+                      </div>
+                      <Button 
+                        size="sm"
+                        className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold"
+                      >
+                        <MessageCircle size={16} className="mr-2" />
+                        Contact
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="text-white border-white/30 disabled:opacity-50"
+                >
+                  <ChevronLeft size={20} />
+                </Button>
+
+                <div className="flex gap-2">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="icon"
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={currentPage === pageNum 
+                          ? "bg-yellow-500 text-black hover:bg-yellow-600" 
+                          : "text-white border-white/30"}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
                 </div>
 
                 <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg h-14"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="text-white border-white/30 disabled:opacity-50"
                 >
-                  <MessageCircle size={20} className="mr-2" />
-                  Send Inquiry
+                  <ChevronRight size={20} />
                 </Button>
 
-                <p className="text-sm text-center text-gray-600">
-                  <Lock size={14} className="inline mr-1" />
-                  All inquiries are 100% confidential and encrypted
-                </p>
-              </form>
-            </Card>
+                <span className="text-white ml-4">
+                  Page {currentPage} of {totalPages}
+                </span>
+              </div>
+            )}
+
+            {/* No Results */}
+            {filteredEscorts.length === 0 && (
+              <Card className="p-12 text-center bg-white/5 backdrop-blur-sm border-white/10">
+                <Search size={64} className="mx-auto text-gray-500 mb-4" />
+                <h3 className="text-2xl font-bold text-white mb-2">No escorts found</h3>
+                <p className="text-gray-400 mb-6">Try adjusting your filters to see more results</p>
+                <Button onClick={resetFilters} className="bg-yellow-500 text-black hover:bg-yellow-600">
+                  Reset Filters
+                </Button>
+              </Card>
+            )}
           </div>
         </div>
       </section>
 
-      {/* SEO Content */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto prose prose-lg">
-          <h2 className="text-3xl font-black mb-6">Premium Escort Services in Zürich</h2>
-          
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Welcome to Zürich's most exclusive escort service. We provide verified, elite companions 
-            for discerning gentlemen seeking sophisticated company in Switzerland's financial capital. 
-            Our premium selection features educated, multilingual escorts who excel in providing 
-            unforgettable experiences.
-          </p>
+      {/* Services Section */}
+      <section id="services" className="py-20 bg-gradient-to-b from-transparent to-black/40">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              Premium Services
+            </h2>
+            <p className="text-xl text-gray-300">
+              Exclusive experiences tailored to your desires
+            </p>
+          </div>
 
-          <h3 className="text-2xl font-bold mb-4">Why Zürich Escort Services?</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Zürich is renowned for its high-quality lifestyle, and our escort services match this standard. 
-            Whether you need a companion for business events, dinner dates, city tours, or private encounters, 
-            our escorts provide professional, discreet services tailored to your needs.
-          </p>
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              { 
+                icon: Heart, 
+                title: "GFE / PSE", 
+                description: "Girlfriend or Pornstar Experience with passionate companionship",
+                color: "from-pink-500 to-rose-500"
+              },
+              { 
+                icon: Calendar, 
+                title: "Dinner & Events", 
+                description: "Sophisticated companion for business dinners and social events",
+                color: "from-purple-500 to-indigo-500"
+              },
+              { 
+                icon: Clock, 
+                title: "Overnight & Travel", 
+                description: "Extended bookings for overnight stays and travel companionship",
+                color: "from-yellow-500 to-orange-500"
+              }
+            ].map((service, idx) => (
+              <Card key={idx} className="p-8 text-center bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all group">
+                <div className="relative mb-6">
+                  <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <service.icon className="text-white" size={40} />
+                  </div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} blur-2xl opacity-20 group-hover:opacity-40 transition-opacity`} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
+                <p className="text-gray-300">{service.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <h3 className="text-2xl font-bold mb-4">What We Offer</h3>
-          <ul className="space-y-2 mb-6">
-            <li>✓ <strong>Verified Profiles:</strong> 100% real photos and verified identities</li>
-            <li>✓ <strong>Elite Selection:</strong> Sophisticated, educated companions</li>
-            <li>✓ <strong>Complete Discretion:</strong> Anonymous booking and confidential service</li>
-            <li>✓ <strong>24/7 Availability:</strong> Escorts available around the clock</li>
-            <li>✓ <strong>All Areas Covered:</strong> Service throughout Zürich canton</li>
-            <li>✓ <strong>Multiple Languages:</strong> German, English, French, Italian and more</li>
-          </ul>
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-gradient-to-br from-purple-900/50 via-pink-900/50 to-orange-900/50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                Book Your Experience
+              </h2>
+              <p className="text-xl text-gray-300">
+                Discreet, professional, unforgettable
+              </p>
+            </div>
 
-          <h3 className="text-2xl font-bold mb-4">Areas We Serve in Zürich</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Our escort services cover all areas of Zürich including City Center, Seefeld, Wiedikon, 
-            Enge, Oerlikon, and surrounding districts. Outcall services available to hotels, private 
-            residences, and business locations throughout the canton.
-          </p>
+            <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-white text-sm font-semibold mb-2">Your Name *</label>
+                  <Input placeholder="John Doe" className="bg-white/10 border-white/20 text-white" />
+                </div>
+                <div>
+                  <label className="block text-white text-sm font-semibold mb-2">Phone *</label>
+                  <Input type="tel" placeholder="+41 XX XXX XX XX" className="bg-white/10 border-white/20 text-white" />
+                </div>
+              </div>
 
-          <h3 className="text-2xl font-bold mb-4">Booking Process</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Booking is simple and discreet. Browse our verified profiles, select your preferred companion, 
-            and contact us via phone, email, or our secure booking form. All communications are encrypted 
-            and confidential. We offer flexible arrangements from one-hour encounters to overnight and 
-            travel companionship.
-          </p>
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-white text-sm font-semibold mb-2">Preferred Date</label>
+                  <Input type="date" className="bg-white/10 border-white/20 text-white" />
+                </div>
+                <div>
+                  <label className="block text-white text-sm font-semibold mb-2">Duration</label>
+                  <Select>
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 hour</SelectItem>
+                      <SelectItem value="2">2 hours</SelectItem>
+                      <SelectItem value="3">3 hours</SelectItem>
+                      <SelectItem value="dinner">Dinner (4+ hours)</SelectItem>
+                      <SelectItem value="overnight">Overnight</SelectItem>
+                      <SelectItem value="weekend">Weekend</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-          <h3 className="text-2xl font-bold mb-4">Safety & Privacy</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Your safety and privacy are our top priorities. All escorts are regularly health-checked, 
-            verified, and screened. We use secure payment methods and never share client information. 
-            Every booking is handled with complete discretion and professionalism.
-          </p>
+              <div className="mb-6">
+                <label className="block text-white text-sm font-semibold mb-2">Special Requests</label>
+                <Textarea 
+                  rows={4} 
+                  placeholder="Tell us about your preferences..."
+                  className="bg-white/10 border-white/20 text-white"
+                />
+              </div>
+
+              <Button 
+                size="lg" 
+                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-lg h-14"
+              >
+                <MessageCircle size={20} className="mr-2" />
+                Send Booking Request
+              </Button>
+
+              <p className="text-center text-sm text-gray-400 mt-4">
+                <Lock size={14} className="inline mr-1" />
+                All communications are encrypted and confidential
+              </p>
+            </Card>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-black border-t border-white/10 py-12">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart className="text-pink-600 fill-pink-600" size={24} />
-                <span className="text-xl font-bold">iWantSexNow.ch</span>
+                <Crown className="text-yellow-500" size={24} />
+                <span className="text-xl font-bold text-white">Elite Escorts</span>
               </div>
               <p className="text-gray-400 text-sm">
-                Switzerland's premier escort service platform
+                Zürich's premier luxury escort service
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Escort Services</h4>
+              <h4 className="font-bold text-white mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/escort-zurich" className="hover:text-white">Zürich Escorts</Link></li>
-                <li><Link href="/escort-geneva" className="hover:text-white">Geneva Escorts</Link></li>
-                <li><Link href="/escort-basel" className="hover:text-white">Basel Escorts</Link></li>
-                <li><Link href="/escort-bern" className="hover:text-white">Bern Escorts</Link></li>
+                <li><Link href="#escorts" className="hover:text-white">Browse Escorts</Link></li>
+                <li><Link href="#services" className="hover:text-white">Services</Link></li>
+                <li><Link href="#contact" className="hover:text-white">Contact</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Information</h4>
+              <h4 className="font-bold text-white mb-4">Information</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/about" className="hover:text-white">About Us</Link></li>
                 <li><Link href="/safety" className="hover:text-white">Safety & Privacy</Link></li>
                 <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Legal</h4>
+              <h4 className="font-bold text-white mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
                 <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-                <li><Link href="/disclaimer" className="hover:text-white">Disclaimer</Link></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>© 2025 iWantSexNow.ch. All rights reserved. | 18+ Only</p>
-            <p className="mt-2">Professional escort services in Switzerland. Licensed and legal.</p>
+          <div className="border-t border-white/10 pt-8 text-center">
+            <p className="text-gray-400 text-sm">© 2025 Elite Escorts Zürich. All rights reserved. | 18+ Only | Licensed & Legal</p>
           </div>
         </div>
       </footer>
+
+      {/* Add custom animations */}
+      <style jsx global>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        @keyframes float-delayed {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-30px); }
+        }
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes fade-in-down {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes scale-in {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        @keyframes slide-down {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+          animation: float-delayed 8s ease-in-out infinite;
+        }
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
+        .animate-fade-in-down {
+          animation: fade-in-down 0.6s ease-out;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out;
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+        .animate-scale-in {
+          animation: scale-in 0.5s ease-out;
+        }
+        .animate-slide-down {
+          animation: slide-down 0.3s ease-out;
+        }
+        .animation-delay-200 {
+          animation-delay: 200ms;
+        }
+        .animation-delay-400 {
+          animation-delay: 400ms;
+        }
+        .animation-delay-600 {
+          animation-delay: 600ms;
+        }
+      `}</style>
     </div>
   );
 }
