@@ -27,31 +27,30 @@ export function Navigation() {
   }, []);
 
   const dropdownSections: Record<string, DropdownSection[]> = {
-    services: [
+    browse: [
       {
-        title: "Browse Services",
-        icon: Star,
+        title: "Browse by Gender",
+        icon: Users,
         items: [
-          { label: "Zürich Escorts", href: "/escort-zurich", description: "Premium companions in Switzerland's largest city" },
-          { label: "Geneva Escorts", href: "/escort-geneva", description: "International city elegance" },
-          { label: "Basel Escorts", href: "/escort-basel", description: "Cultural capital experiences" },
-          { label: "Bern Escorts", href: "/escort-bern", description: "UNESCO heritage companions" },
-          { label: "Lausanne Escorts", href: "/escort-lausanne", description: "Lake Geneva sophistication" },
+          { label: "Female Escorts", href: "/browse/female", description: "Women seeking clients", badge: "Popular" },
+          { label: "Male Escorts", href: "/browse/male", description: "Men seeking clients" },
+          { label: "Trans Escorts", href: "/browse/trans", description: "Transgender companions" },
+          { label: "Non-Binary", href: "/browse/non-binary", description: "Non-binary companions" },
+          { label: "Couples", href: "/browse/couples", description: "Couple services", badge: "New" },
         ]
       },
       {
-        title: "Service Types",
-        icon: Sparkles,
+        title: "Browse by Orientation",
+        icon: Heart,
         items: [
-          { label: "GFE Experience", href: "/services/gfe", badge: "Popular" },
-          { label: "Dinner Dates", href: "/services/dinner" },
-          { label: "Travel Companion", href: "/services/travel" },
-          { label: "Events & Parties", href: "/services/events" },
-          { label: "Overnight Stays", href: "/services/overnight" },
+          { label: "For Men", href: "/for/men", description: "Services for male clients" },
+          { label: "For Women", href: "/for/women", description: "Services for female clients" },
+          { label: "For Couples", href: "/for/couples", description: "Services for couples" },
+          { label: "LGBTQ+ Friendly", href: "/lgbtq", description: "Inclusive services", badge: "🏳️‍🌈" },
         ]
       }
     ],
-    locations: [
+    services: [
       {
         title: "Major Cities",
         icon: MapPin,
@@ -64,13 +63,36 @@ export function Navigation() {
         ]
       },
       {
-        title: "Regions",
+        title: "Service Types",
+        icon: Sparkles,
+        items: [
+          { label: "GFE/BFE Experience", href: "/services/gfe", badge: "Popular" },
+          { label: "Dinner Dates", href: "/services/dinner" },
+          { label: "Travel Companion", href: "/services/travel" },
+          { label: "Events & Parties", href: "/services/events" },
+          { label: "Massage Services", href: "/services/massage" },
+        ]
+      }
+    ],
+    locations: [
+      {
+        title: "Popular Regions",
         icon: MapPin,
         items: [
-          { label: "Canton Zürich", href: "/regions/zurich" },
-          { label: "Lake Geneva", href: "/regions/lake-geneva" },
+          { label: "Canton Zürich", href: "/regions/zurich", description: "Most active area" },
+          { label: "Lake Geneva Region", href: "/regions/lake-geneva", description: "Luxury destinations" },
           { label: "Central Switzerland", href: "/regions/central" },
-          { label: "Ticino", href: "/regions/ticino" },
+          { label: "Ticino", href: "/regions/ticino", description: "Italian-speaking region" },
+          { label: "View All Locations", href: "/locations", badge: "300+" },
+        ]
+      },
+      {
+        title: "Quick Access",
+        icon: Star,
+        items: [
+          { label: "Near Me", href: "/nearby", badge: "GPS" },
+          { label: "Available Now", href: "/available-now", badge: "Live" },
+          { label: "Virtual Services", href: "/virtual", badge: "Online" },
         ]
       }
     ],
@@ -124,7 +146,7 @@ export function Navigation() {
     if (!sections) return null;
 
     return (
-      <div className="absolute top-full left-0 mt-2 w-[600px] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
+      <div className="absolute top-full left-0 mt-2 w-[600px] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50">
         <div className="grid grid-cols-2 gap-0">
           {sections.map((section, idx) => {
             const Icon = section.icon;
@@ -172,6 +194,18 @@ export function Navigation() {
 
   return (
     <nav className="hidden md:flex items-center gap-1" ref={dropdownRef}>
+      {/* Browse Dropdown */}
+      <div className="relative group">
+        <Button
+          variant="ghost"
+          className="text-white hover:text-pink-400 hover:bg-white/10 gap-1 font-semibold"
+        >
+          Browse
+          <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-300" />
+        </Button>
+        {renderDropdown('browse')}
+      </div>
+
       {/* Services Dropdown */}
       <div className="relative group">
         <Button

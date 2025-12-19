@@ -21,18 +21,34 @@ export function MobileNav() {
   const navigationItems: MenuItem[] = [
     { label: "Home", href: "/", icon: Home },
     {
-      label: "Services",
-      icon: Star,
+      label: "Browse",
+      icon: Users,
       featured: true,
       children: [
-        { label: "Zürich Escorts", href: "/escort-zurich", description: "127 companions" },
-        { label: "Geneva Escorts", href: "/escort-geneva", description: "89 companions" },
-        { label: "Basel Escorts", href: "/escort-basel", description: "76 companions" },
-        { label: "Bern Escorts", href: "/escort-bern", description: "54 companions" },
-        { label: "Lausanne Escorts", href: "/escort-lausanne", description: "63 companions" },
-        { label: "GFE Experience", href: "/services/gfe", badge: "Popular" },
+        { label: "Female Escorts", href: "/browse/female", description: "Women seeking clients", badge: "Popular" },
+        { label: "Male Escorts", href: "/browse/male", description: "Men seeking clients" },
+        { label: "Trans Escorts", href: "/browse/trans", description: "Transgender companions" },
+        { label: "Non-Binary", href: "/browse/non-binary", description: "Non-binary companions" },
+        { label: "Couples", href: "/browse/couples", description: "Couple services", badge: "New" },
+        { label: "For Men", href: "/for/men", description: "Services for male clients" },
+        { label: "For Women", href: "/for/women", description: "Services for female clients" },
+        { label: "For Couples", href: "/for/couples", description: "Services for couples" },
+        { label: "LGBTQ+ Friendly", href: "/lgbtq", description: "Inclusive services", badge: "🏳️‍🌈" },
+      ]
+    },
+    {
+      label: "Services",
+      icon: Star,
+      children: [
+        { label: "Zürich", href: "/escort-zurich", description: "127 companions" },
+        { label: "Geneva", href: "/escort-geneva", description: "89 companions" },
+        { label: "Basel", href: "/escort-basel", description: "76 companions" },
+        { label: "Bern", href: "/escort-bern", description: "54 companions" },
+        { label: "Lausanne", href: "/escort-lausanne", description: "63 companions" },
+        { label: "GFE/BFE Experience", href: "/services/gfe", badge: "Popular" },
         { label: "Dinner Dates", href: "/services/dinner" },
         { label: "Travel Companion", href: "/services/travel" },
+        { label: "Massage Services", href: "/services/massage" },
       ]
     },
     {
@@ -44,6 +60,8 @@ export function MobileNav() {
         { label: "Lake Geneva Region", href: "/regions/lake-geneva" },
         { label: "Central Switzerland", href: "/regions/central" },
         { label: "Ticino", href: "/regions/ticino" },
+        { label: "Near Me", href: "/nearby", badge: "GPS" },
+        { label: "Available Now", href: "/available-now", badge: "Live" },
       ]
     },
     {
@@ -154,11 +172,11 @@ export function MobileNav() {
                         onClick={() => toggleSection(item.label)}
                         className={`flex items-center justify-between w-full px-5 py-3 hover:bg-white/10 transition-all ${
                           isExpanded ? "bg-white/10" : ""
-                        } ${item.featured ? "bg-gradient-to-r from-yellow-900/30 to-orange-900/30 border-l-4 border-yellow-500" : ""}`}
+                        } ${item.featured ? "bg-gradient-to-r from-pink-900/30 to-purple-900/30 border-l-4 border-pink-500" : ""}`}
                       >
                         <div className="flex items-center gap-3">
-                          <Icon size={20} className={item.featured ? "text-yellow-500" : "text-pink-400"} />
-                          <span className={`font-semibold ${item.featured ? "text-yellow-500" : "text-white"}`}>
+                          <Icon size={20} className={item.featured ? "text-pink-400" : "text-pink-400"} />
+                          <span className={`font-semibold ${item.featured ? "text-pink-400" : "text-white"}`}>
                             {item.label}
                           </span>
                           {item.badge && (
@@ -178,7 +196,7 @@ export function MobileNav() {
                       {/* Expandable Children */}
                       <div
                         className={`overflow-hidden transition-all duration-300 ${
-                          isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                          isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
                         }`}
                       >
                         <div className="bg-black/30 border-l-2 border-pink-500/30">
