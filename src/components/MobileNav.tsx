@@ -132,26 +132,26 @@ export function MobileNav() {
 
       {/* Mobile Menu Sidebar */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-white/20 bg-black/30 backdrop-blur-sm">
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3">
               <div className="relative">
                 <img 
                   src="/logo_128x128.png" 
                   alt="iWantSexNow.ch Logo" 
-                  className="w-12 h-12"
+                  className="w-10 h-10"
                 />
               </div>
               <div>
-                <span className="text-2xl font-black text-white tracking-tight">
+                <span className="text-lg font-black text-white tracking-tight">
                   iWantSexNow.ch
                 </span>
-                <div className="text-xs text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
+                <div className="text-[10px] text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
               </div>
             </div>
             <Button
@@ -264,7 +264,7 @@ export function MobileNav() {
 
           {/* Footer Actions */}
           <div className="border-t border-white/20 p-4 space-y-2 bg-black/30">
-            <Button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold shadow-lg" asChild>
+            <Button className="w-full bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold shadow-lg" asChild>
               <Link href="/premium" onClick={closeMenu}>
                 <Sparkles size={18} className="mr-2" />
                 Upgrade to Premium

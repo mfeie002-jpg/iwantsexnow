@@ -198,7 +198,7 @@ export function Navigation() {
       <div className="relative group">
         <Button
           variant="ghost"
-          className="text-white hover:text-pink-400 hover:bg-white/10 gap-1 font-semibold"
+          className="text-white hover:text-gray-400 hover:bg-white/10 gap-1 font-semibold"
         >
           Browse
           <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-300" />
@@ -210,7 +210,7 @@ export function Navigation() {
       <div className="relative group">
         <Button
           variant="ghost"
-          className="text-white hover:text-pink-400 hover:bg-white/10 gap-1 font-semibold"
+          className="text-white hover:text-gray-400 hover:bg-white/10 gap-1 font-semibold"
         >
           Services
           <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-300" />
@@ -222,7 +222,7 @@ export function Navigation() {
       <div className="relative group">
         <Button
           variant="ghost"
-          className="text-white hover:text-pink-400 hover:bg-white/10 gap-1 font-semibold"
+          className="text-white hover:text-gray-400 hover:bg-white/10 gap-1 font-semibold"
         >
           Locations
           <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-300" />
@@ -234,7 +234,7 @@ export function Navigation() {
       <div className="relative group">
         <Button
           variant="ghost"
-          className="text-white hover:text-pink-400 hover:bg-white/10 gap-1 font-semibold"
+          className="text-white hover:text-gray-400 hover:bg-white/10 gap-1 font-semibold"
         >
           Community
           <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-300" />
@@ -246,7 +246,7 @@ export function Navigation() {
       <div className="relative group">
         <Button
           variant="ghost"
-          className="text-white hover:text-pink-400 hover:bg-white/10 gap-1 font-semibold"
+          className="text-white hover:text-gray-400 hover:bg-white/10 gap-1 font-semibold"
         >
           Account
           <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-300" />
@@ -255,30 +255,12 @@ export function Navigation() {
       </div>
 
       {/* CTA Button */}
-      <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold shadow-lg shadow-pink-500/30 ml-2" asChild>
+      <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold shadow-lg ml-2" asChild>
         <Link href="/register">
           <Phone size={18} className="mr-2" />
           Join Free
         </Link>
       </Button>
-
-      {/* New Elegant Logo */}
-      <Link href="/" className="flex items-center gap-3 group">
-        <div className="relative">
-          <img 
-            src="/logo_128x128.png" 
-            alt="iWantSexNow.ch Logo" 
-            className="w-10 h-10 transition-all group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
-        </div>
-        <div>
-          <span className="text-xl font-black text-white tracking-tight">
-            iWantSexNow.ch
-          </span>
-          <div className="text-[10px] text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
-        </div>
-      </Link>
     </nav>
   );
 }
