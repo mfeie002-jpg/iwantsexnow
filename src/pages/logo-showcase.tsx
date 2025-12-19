@@ -333,45 +333,271 @@ export default function LogoShowcase() {
           </div>
         </section>
 
-        {/* Live Example */}
+        {/* Live Example - EXPANDED */}
         <section className="mb-20">
-          <h2 className="text-3xl font-light text-gray-900 dark:text-white mb-8">Implementation Example</h2>
+          <h2 className="text-3xl font-light text-gray-900 dark:text-white mb-8">Logo in Context</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-3xl">
+            See how the logo adapts across different platforms and use cases, maintaining consistency while fitting seamlessly into various design contexts.
+          </p>
           
-          <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
-            <div className="bg-black p-4 border-b border-gray-800">
-              <div className="flex items-center justify-between max-w-6xl mx-auto">
-                <Link href="/" className="flex items-center gap-3 group">
-                  <div className="relative">
-                    <img 
-                      src="/logo_64x64.png" 
-                      alt="iWantSexNow.ch" 
-                      className="w-12 h-12 transition-transform group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
+          <div className="space-y-8">
+            
+            {/* Website Header */}
+            <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+              <div className="bg-gradient-to-b from-gray-900 to-black p-6 border-b border-gray-800">
+                <div className="flex items-center justify-between max-w-6xl mx-auto">
+                  <Link href="/" className="flex items-center gap-3 group">
+                    <div className="relative">
+                      <img 
+                        src="/logo_128x128.png" 
+                        alt="iWantSexNow.ch" 
+                        className="w-12 h-12 transition-transform group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
+                    </div>
+                    <div>
+                      <span className="text-2xl font-black text-white tracking-tight">
+                        iWantSexNow.ch
+                      </span>
+                      <div className="text-xs text-gray-400 font-semibold tracking-wider">
+                        WHERE DESIRE MEETS DISCRETION
+                      </div>
+                    </div>
+                  </Link>
+                  <div className="flex items-center gap-3">
+                    <Button variant="ghost" className="text-white hover:text-rose-400">
+                      Browse
+                    </Button>
+                    <Button className="bg-gradient-to-r from-rose-600 to-pink-600 text-white font-bold hover:shadow-lg hover:shadow-rose-500/50">
+                      Join Free
+                    </Button>
                   </div>
-                  <div>
-                    <span className="text-2xl font-black text-white tracking-tight">
-                      iWantSexNow.ch
-                    </span>
-                    <div className="text-xs text-gray-400 font-semibold tracking-wider">
-                      WHERE DESIRE MEETS DISCRETION
+                </div>
+              </div>
+              <div className="p-6 bg-gray-50 dark:bg-gray-800/50">
+                <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  <strong className="text-gray-900 dark:text-white">Desktop Navigation</strong> — Logo at 128×128px with glow effect on hover
+                </p>
+              </div>
+            </Card>
+
+            {/* Mobile App Interface */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-black p-4">
+                  <div className="max-w-[375px] mx-auto">
+                    <div className="flex items-center justify-between mb-6">
+                      <img 
+                        src="/logo_64x64.png" 
+                        alt="App Icon" 
+                        className="w-10 h-10"
+                      />
+                      <div className="flex gap-2">
+                        <div className="w-8 h-8 bg-gray-800 rounded-full" />
+                        <div className="w-8 h-8 bg-gray-800 rounded-full" />
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="bg-gray-900 rounded-lg p-4 h-20" />
+                      ))}
                     </div>
                   </div>
-                </Link>
-                <Button className="bg-gradient-to-r from-rose-600 to-pink-600 text-white font-bold">
-                  Join Free
-                </Button>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">Mobile App</strong> — 64×64px in navigation bar
+                  </p>
+                </div>
+              </Card>
+
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-gradient-to-br from-gray-900 to-black p-8">
+                  <div className="text-center">
+                    <img 
+                      src="/logo_256x256.png" 
+                      alt="Splash Screen" 
+                      className="w-32 h-32 mx-auto mb-4"
+                    />
+                    <div className="text-white text-2xl font-bold tracking-tight">
+                      iWantSexNow.ch
+                    </div>
+                    <div className="text-gray-400 text-xs mt-2 tracking-widest">
+                      LOADING YOUR EXPERIENCE
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">App Splash Screen</strong> — 256×256px centered
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Social Media Grid */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Profile Picture */}
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 p-8">
+                  <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-xl">
+                    <img 
+                      src="/logo_256x256.png" 
+                      alt="Profile Picture" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">Social Profile</strong> — 256×256px circular crop
+                  </p>
+                </div>
+              </Card>
+
+              {/* Instagram Story */}
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-gradient-to-b from-rose-600 to-pink-600 p-8 aspect-[9/16] flex items-center justify-center">
+                  <div className="text-center">
+                    <img 
+                      src="/logo_monochrome_white.png" 
+                      alt="Story Logo" 
+                      className="w-20 h-20 mx-auto mb-4 opacity-90"
+                    />
+                    <div className="text-white text-sm font-bold tracking-wider">
+                      SWIPE UP
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">Instagram Story</strong> — White monochrome
+                  </p>
+                </div>
+              </Card>
+
+              {/* Video Watermark */}
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-gray-900 p-8 aspect-video relative">
+                  <div className="absolute top-4 right-4">
+                    <img 
+                      src="/logo_monochrome_white.png" 
+                      alt="Watermark" 
+                      className="w-12 h-12 opacity-70"
+                    />
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                      <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">Video Watermark</strong> — 64×64px, 70% opacity
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Print Materials */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Business Card */}
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-white dark:bg-gray-900 p-8 border border-gray-200 dark:border-gray-800 m-4">
+                  <div className="aspect-[3.5/2] bg-gradient-to-br from-gray-900 to-black rounded-lg p-6 flex flex-col justify-between">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src="/logo_128x128.png" 
+                        alt="Business Card Logo" 
+                        className="w-12 h-12"
+                      />
+                      <div>
+                        <div className="text-white font-bold text-lg">iWantSexNow.ch</div>
+                        <div className="text-gray-400 text-xs tracking-wider">Premium Companions</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-white text-sm">+41 XX XXX XX XX</div>
+                      <div className="text-gray-400 text-xs">contact@iwantsexnow.ch</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">Business Card</strong> — 128×128px full color
+                  </p>
+                </div>
+              </Card>
+
+              {/* Email Signature */}
+              <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                <div className="bg-gray-50 dark:bg-gray-800 p-8 m-4 rounded border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-start gap-4">
+                    <img 
+                      src="/logo_64x64.png" 
+                      alt="Email Signature" 
+                      className="w-16 h-16 flex-shrink-0"
+                    />
+                    <div className="border-l-2 border-rose-500 pl-4">
+                      <div className="font-bold text-gray-900 dark:text-white">Emma Laurent</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Customer Relations</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                        iWantSexNow.ch
+                      </div>
+                      <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                        contact@iwantsexnow.ch | +41 XX XXX XX XX
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    <strong className="text-gray-900 dark:text-white">Email Signature</strong> — 64×64px with border accent
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Browser & System */}
+            <Card className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+              <div className="bg-gray-100 dark:bg-gray-800 p-6">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+                  {/* Browser Chrome */}
+                  <div className="bg-gray-200 dark:bg-gray-800 px-4 py-2 flex items-center gap-2 border-b border-gray-300 dark:border-gray-700">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                    </div>
+                    <div className="flex-1 bg-white dark:bg-gray-900 rounded px-3 py-1 text-xs text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                      <img 
+                        src="/logo_32x32.png" 
+                        alt="Favicon" 
+                        className="w-4 h-4"
+                      />
+                      <span>iWantSexNow.ch — Premium Escort Services</span>
+                    </div>
+                  </div>
+                  {/* Browser Content */}
+                  <div className="bg-white dark:bg-gray-900 p-8 text-center">
+                    <img 
+                      src="/logo_128x128.png" 
+                      alt="Page Logo" 
+                      className="w-20 h-20 mx-auto mb-4"
+                    />
+                    <div className="text-gray-400 text-sm">Browser preview with 32×32px favicon</div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-              <p className="text-sm">Hover over the logo to see the interactive glow effect in action</p>
-              <Button asChild variant="link" className="mt-2">
-                <Link href="/">
-                  View Live Website <ExternalLink size={14} className="ml-1" />
-                </Link>
-              </Button>
-            </div>
-          </Card>
+              <div className="p-4 bg-gray-50 dark:bg-gray-800/50">
+                <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                  <strong className="text-gray-900 dark:text-white">Browser Tab</strong> — 16×16px and 32×32px favicons for crisp display
+                </p>
+              </div>
+            </Card>
+
+          </div>
         </section>
 
         {/* Download CTA */}
