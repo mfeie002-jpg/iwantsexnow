@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, X, Sparkles, Heart } from "lucide-react";
+import { Search, X, Sparkles, Heart, Users, UserPlus, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 
@@ -303,6 +303,81 @@ export function HeroSection({
                   </motion.div>
                 </div>
               </Card>
+            </motion.div>
+
+            {/* Call-to-Action Buttons */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black text-lg px-8 py-6 shadow-2xl shadow-yellow-500/30 w-full sm:w-auto"
+                  onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  <Users size={24} className="mr-2" />
+                  Browse Escorts Now
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto"
+                  asChild
+                >
+                  <Link href="/register">
+                    <UserPlus size={24} className="mr-2" />
+                    Join Free Today
+                  </Link>
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-2 border-pink-500/60 bg-pink-500/10 hover:bg-pink-500/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto"
+                  asChild
+                >
+                  <Link href="/create-post">
+                    <PlusCircle size={24} className="mr-2" />
+                    Post Your Ad
+                  </Link>
+                </Button>
+              </motion.div>
+            </motion.div>
+
+            {/* Trust Indicators */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-wrap items-center justify-center gap-6 mt-6 text-white/80 text-sm"
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                <span><strong className="text-white">127</strong> escorts online now</span>
+              </div>
+              <div className="hidden sm:block w-px h-4 bg-white/30" />
+              <div className="flex items-center gap-2">
+                <Heart size={16} className="text-pink-500 fill-pink-500" />
+                <span><strong className="text-white">50,000+</strong> verified profiles</span>
+              </div>
+              <div className="hidden sm:block w-px h-4 bg-white/30" />
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-yellow-500" />
+                <span><strong className="text-white">100%</strong> discreet & secure</span>
+              </div>
             </motion.div>
           </motion.div>
         </div>
