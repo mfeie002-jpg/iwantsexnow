@@ -13,6 +13,7 @@ import { Heart, CheckCircle, Clock, Phone, Mail, MessageCircle, Calendar, Shield
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
+import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
 
 export default function BookingConfirmation() {
   const router = useRouter();
@@ -194,6 +195,13 @@ export default function BookingConfirmation() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
               >
+                {/* Optional: Show calendar before starting booking */}
+                {currentStep === 1 && escortName && (
+                  <div className="mb-8">
+                    <AvailabilityCalendar escortName={escortName} />
+                  </div>
+                )}
+
                 <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
                   {/* Step 1: Contact Information */}
                   {currentStep === 1 && (

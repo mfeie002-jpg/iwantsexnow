@@ -12,6 +12,8 @@ import { MobileNav } from "@/components/MobileNav";
 import { Heart, MapPin, Star, Shield, CheckCircle, Phone, MessageCircle, Search, X, Clock, Award, Sparkles, TrendingUp, Users, Play, Video, Eye, Calendar, Zap, Crown, Gift, ThumbsUp, Camera } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { LiveChatWidget } from "@/components/LiveChatWidget";
+import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
 
 interface Escort {
   id: number;
@@ -964,6 +966,9 @@ export default function EscortZurich() {
           </div>
         </div>
       </section>
+
+      {/* Live Chat Widget */}
+      <LiveChatWidget />
 
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-amber-500/20 py-12">

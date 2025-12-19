@@ -7,6 +7,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { Navigation } from "@/components/Navigation";
 import { Heart, CheckCircle, Eye, Phone } from "lucide-react";
 import Link from "next/link";
+import { LiveChatWidget } from "@/components/LiveChatWidget";
 
 // Components
 import { HeroSection } from "@/components/home/HeroSection";
@@ -483,6 +484,9 @@ export default function Home() {
       <AboutSection />
       
       <ContactSection />
+
+      {/* Live Chat Widget */}
+      <LiveChatWidget />
 
       {/* Footer */}
       <footer className="bg-black border-t border-white/10 py-12">
