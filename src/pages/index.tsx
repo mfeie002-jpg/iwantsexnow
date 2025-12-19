@@ -31,6 +31,50 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
+  // City pages data
+  const cityPages = [
+    {
+      name: "Zürich",
+      slug: "zurich",
+      image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&h=600&fit=crop",
+      escorts: 6,
+      description: "Switzerland's financial capital",
+      featured: true
+    },
+    {
+      name: "Geneva",
+      slug: "geneva",
+      image: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800&h=600&fit=crop",
+      escorts: 6,
+      description: "International city of diplomacy",
+      featured: true
+    },
+    {
+      name: "Basel",
+      slug: "basel",
+      image: "https://images.unsplash.com/photo-1549877452-9c387954fbc2?w=800&h=600&fit=crop",
+      escorts: 4,
+      description: "Cultural capital on the Rhine",
+      featured: true
+    },
+    {
+      name: "Bern",
+      slug: "bern",
+      image: "https://images.unsplash.com/photo-1559564484-e48d68d8ffad?w=800&h=600&fit=crop",
+      escorts: 4,
+      description: "UNESCO heritage capital",
+      featured: true
+    },
+    {
+      name: "Lausanne",
+      slug: "lausanne",
+      image: "https://images.unsplash.com/photo-1583212692277-a2b6b5c8c2e1?w=800&h=600&fit=crop",
+      escorts: 5,
+      description: "Olympic city on Lake Geneva",
+      featured: true
+    }
+  ];
+
   // Recent Bookings Ticker
   const [recentBookings] = useState([
     { name: "Michael from Zürich", time: "2 min ago", service: "GFE" },
@@ -388,6 +432,55 @@ export default function Home() {
         onPageChange={handlePageChange}
       />
 
+      {/* Featured Cities Section */}
+      <section className="py-20 bg-gradient-to-r from-purple-900/50 via-pink-900/50 to-orange-900/50 border-y border-white/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                Explore Escorts by City
+              </h2>
+              <p className="text-xl text-gray-300">
+                Premium companions in Switzerland's major cities
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {cityPages.map((city) => (
+                <Link key={city.slug} href={`/escort-${city.slug}`}>
+                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-pink-500 transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/20">
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={city.image}
+                        alt={city.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-3xl font-black text-white mb-2">
+                          {city.name}
+                        </h3>
+                        <p className="text-gray-300 text-sm mb-3">
+                          {city.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <Badge className="bg-pink-600 border-0">
+                            {city.escorts}+ Escorts
+                          </Badge>
+                          <span className="text-yellow-500 font-bold group-hover:translate-x-2 transition-transform">
+                            View All →
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <ServiceCategories />
       
       <CityLinks />
