@@ -340,6 +340,9 @@ export default function Home() {
               }}>
                 Contact
               </Button>
+              <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
+                <Link href="/account-settings">Account</Link>
+              </Button>
               <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold" asChild>
                 <Link href="/register">
                   <Phone size={18} className="mr-2" />

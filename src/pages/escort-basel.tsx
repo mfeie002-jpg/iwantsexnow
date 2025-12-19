@@ -256,6 +256,9 @@ export default function EscortBasel() {
               <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
                 <Link href="/">Home</Link>
               </Button>
+              <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
+                <Link href="/account-settings">Account</Link>
+              </Button>
               {comparison.length > 0 && (
                 <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500/10" asChild>
                   <Link href={`/compare-escorts?ids=${comparison.join(',')}`}>
