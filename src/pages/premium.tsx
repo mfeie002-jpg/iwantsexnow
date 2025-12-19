@@ -70,9 +70,11 @@ export default function Premium() {
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-2 min-w-0">
-              <Heart className="text-pink-600 fill-pink-600 flex-shrink-0" size={28} />
-              <span className="text-xl md:text-2xl font-black text-pink-600 truncate">
-                iWantSexNow.ch
+              <span className="text-xl md:text-2xl font-bold tracking-tight">
+                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
               </span>
             </Link>
             <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
@@ -234,8 +236,12 @@ export default function Premium() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart className="text-pink-600 fill-pink-600" size={24} />
-                <span className="text-xl font-bold">iWantSexNow.ch</span>
+                <span className="text-xl font-bold tracking-tight">
+                  <span className="text-white">iWant</span>
+                  <span className="text-[#D5A021]">Sex</span>
+                  <span className="text-white">Now</span>
+                  <span className="text-gray-400 text-base">.ch</span>
+                </span>
               </div>
               <p className="text-gray-400 text-sm">
                 Switzerland's leading adult dating platform

@@ -298,9 +298,11 @@ export default function Branding() {
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              iWantSexNow.ch
+            <span className="text-2xl font-bold tracking-tight">
+              <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+              <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+              <span className="text-[#0D1B2A] dark:text-white">Now</span>
+              <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
             </span>
           </Link>
           <Button variant="ghost" asChild>

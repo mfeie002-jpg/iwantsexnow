@@ -231,17 +231,11 @@ export default function EscortBern() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                <img 
-                  src="/logo_monochrome_white.png" 
-                  alt="iWantSexNow.ch Logo" 
-                  className="h-9 w-auto transition-all group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-pink-600/20 blur-xl group-hover:bg-pink-600/40 transition-all" />
-              </div>
-              <div>
-                <span className="text-2xl font-black text-white tracking-tight">iWantSexNow.ch</span>
-                <div className="text-xs text-pink-500 font-semibold tracking-wider">ESCORT BERN</div>
+              <div className="text-2xl font-bold tracking-tight transition-all group-hover:scale-105">
+                <span className="text-white">iWant</span>
+                <span className="text-[#D5A021]">Sex</span>
+                <span className="text-white">Now</span>
+                <span className="text-gray-400 text-lg">.ch</span>
               </div>
             </Link>
             

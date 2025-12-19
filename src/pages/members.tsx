@@ -241,12 +241,12 @@ export default function Members() {
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-2">
-              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
-                scrolled ? 'w-6 h-6 md:w-7 md:h-7' : 'w-7 h-7 md:w-8 md:h-8'
-              }`} />
-              <span className="text-xl md:text-2xl font-black text-pink-600">
-                iWantSexNow.ch
-              </span>
+              <div className={`text-xl md:text-2xl font-bold tracking-tight transition-all duration-300`}>
+                <span className="text-[#0D1B2A]">iWant</span>
+                <span className="text-[#C69C6D]">Sex</span>
+                <span className="text-[#0D1B2A]">Now</span>
+                <span className="text-gray-500 text-base md:text-lg">.ch</span>
+              </div>
             </Link>
             <div className="flex items-center gap-2 md:gap-3">
               <Button variant="ghost" size="sm" asChild className="hidden sm:flex">

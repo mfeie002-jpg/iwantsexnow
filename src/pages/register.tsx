@@ -204,13 +204,13 @@ export default function Register() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 group">
-              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
-                scrolled ? 'w-6 h-6' : 'w-7 h-7'
-              }`} />
-              <span className={`font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent transition-all duration-300 ${
+              <span className={`font-bold tracking-tight transition-all duration-300 ${
                 scrolled ? 'text-lg' : 'text-xl'
               }`}>
-                iWantSexNow.ch
+                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                <span className="text-gray-500 dark:text-gray-400 text-base">.ch</span>
               </span>
             </Link>
             <div className="flex items-center gap-3">
@@ -229,9 +229,11 @@ export default function Register() {
           <Card className="w-full max-w-3xl p-6 md:p-8 shadow-2xl">
             <div className="text-center mb-6 md:mb-8">
               <Link href="/" className="inline-flex items-center gap-2 mb-4">
-                <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
-                <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  iWantSexNow.ch
+                <span className="text-2xl font-bold tracking-tight">
+                  <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                  <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                  <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                  <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
                 </span>
               </Link>
               <h1 className="text-3xl md:text-4xl font-black mb-2">Create Your Account</h1>

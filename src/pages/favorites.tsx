@@ -96,11 +96,13 @@ export default function Favorites() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
-                scrolled ? 'w-6 h-6 md:w-7 md:h-7' : 'w-7 h-7 md:w-8 md:h-8'
-              }`} />
-              <span className="text-xl md:text-2xl font-black text-pink-600">
-                iWantSexNow.ch
+              <span className={`font-bold tracking-tight transition-all duration-300 ${
+                scrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'
+              }`}>
+                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
               </span>
             </Link>
             <div className="flex items-center gap-2 md:gap-3">
