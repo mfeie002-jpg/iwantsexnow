@@ -232,21 +232,23 @@ export default function Members() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <header className={`border-b bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-[#0D1B2A] dark:via-[#1a2a3a] dark:to-[#0D1B2A]">
+      <header className={`border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#0D1B2A]/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? 'py-2 md:py-3' : 'py-3 md:py-4'
       } ${
         headerVisible ? 'translate-y-0' : '-translate-y-full'
       }`}>
-        <div className="container mx-auto px-4 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-4">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <div className={`text-xl md:text-2xl font-bold tracking-tight transition-all duration-300`}>
-                <span className="text-[#0D1B2A]">iWant</span>
-                <span className="text-[#C69C6D]">Sex</span>
-                <span className="text-[#0D1B2A]">Now</span>
-                <span className="text-gray-500 text-base md:text-lg">.ch</span>
-              </div>
+              <span className={`font-bold tracking-tight transition-all duration-300 ${
+                scrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'
+              }`}>
+                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
+              </span>
             </Link>
             <div className="flex items-center gap-2 md:gap-3">
               <Button variant="ghost" size="sm" asChild className="hidden sm:flex">

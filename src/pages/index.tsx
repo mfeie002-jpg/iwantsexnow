@@ -313,70 +313,29 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
+    <div className="min-h-screen bg-white dark:bg-[#0D1B2A]">
       <SEO 
         title="iWantSexNow.ch - Premium Escort Services in Switzerland"
-        description="Discover exclusive escort services across Switzerland. Browse verified profiles in Zürich, Geneva, Basel and more."
+        description="Discover exclusive escort services across Switzerland. Zürich, Geneva, Basel & more. Verified profiles, discreet bookings."
       />
 
-      {/* Header with New Typographic Logo */}
-      <header className={`border-b border-white/10 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-black/95 shadow-2xl py-2' : 'bg-black/60 py-4'
-      } ${
-        headerVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}>
+      {/* Header */}
+      <header className={`border-b border-gray-200 dark:border-gray-800 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white/95 dark:bg-[#0D1B2A]/95 backdrop-blur-sm py-3' : 'bg-white dark:bg-[#0D1B2A] py-4'
+      } ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="container mx-auto px-4">
-          <div className={`flex items-center justify-between transition-all duration-300 ${
-            scrolled ? 'py-1' : 'py-0'
-          }`}>
-            <Link href="/" className="flex items-center gap-3 group">
-              {/* New Typographic Logo */}
-              <div className={`transition-all duration-300 ${scrolled ? 'scale-90' : 'scale-100'}`}>
-                <div className={`font-bold tracking-tight transition-all duration-300 ${
-                  scrolled ? 'text-xl' : 'text-2xl'
-                }`}>
-                  <span className="text-white">iWant</span>
-                  <span className="text-[#C69C6D]">Sex</span>
-                  <span className="text-white">Now</span>
-                  <span className="text-gray-400 text-lg">.ch</span>
-                </div>
-                <div className={`text-[10px] text-gray-400 font-semibold tracking-wider transition-all duration-300 ${
-                  scrolled ? 'opacity-0 h-0' : 'opacity-100'
-                }`}>WHERE DESIRE MEETS DISCRETION</div>
-              </div>
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <span className={`font-bold tracking-tight transition-all duration-300 ${
+                scrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'
+              }`}>
+                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
+              </span>
             </Link>
-            
-            {/* Live Stats */}
-            <div className="hidden md:flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2 text-white">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="font-semibold">{onlineCount} online now</span>
-              </div>
-              <div className="flex items-center gap-2 text-white">
-                <Eye size={16} className="text-gray-400" />
-                <span className="font-semibold">{activeViewers} viewing</span>
-              </div>
-            </div>
-            
-            <Navigation />
-
             <MobileNav />
-          </div>
-        </div>
-
-        {/* Live Booking Ticker */}
-        <div className="border-t border-white/10 bg-black/80 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-2">
-            <div className="flex items-center gap-2 text-xs text-white/80 overflow-hidden">
-              <CheckCircle size={14} className="text-emerald-500 flex-shrink-0" />
-              <div className="animate-marquee whitespace-nowrap">
-                {recentBookings.map((booking, idx) => (
-                  <span key={idx} className="inline-block mx-8">
-                    <strong className="text-white">{booking.name}</strong> booked {booking.service} {booking.time}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </header>
@@ -508,24 +467,21 @@ export default function Home() {
       {/* Live Chat Widget */}
       <LiveChatWidget />
 
-      {/* Footer with New Typographic Logo */}
-      <footer className="bg-black border-t border-white/10 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
+      {/* Footer */}
+      <footer className="bg-[#0D1B2A] text-white py-16 border-t border-gray-800">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="text-xl font-bold tracking-tight">
+              <div className="mb-6">
+                <span className="text-2xl font-bold tracking-tight">
                   <span className="text-white">iWant</span>
-                  <span className="text-[#C69C6D]">Sex</span>
+                  <span className="text-[#D5A021]">Sex</span>
                   <span className="text-white">Now</span>
-                  <span className="text-gray-400 text-base">.ch</span>
-                </div>
+                  <span className="text-gray-400 text-xl">.ch</span>
+                </span>
               </div>
-              <p className="text-gray-400 text-sm mb-4">
-                Where Desire Meets Discretion
-              </p>
-              <p className="text-gray-500 text-xs">
-                Switzerland's premier adult dating platform
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Switzerland's premier platform for exclusive companionship. Discreet, verified, and sophisticated.
               </p>
             </div>
             <div>

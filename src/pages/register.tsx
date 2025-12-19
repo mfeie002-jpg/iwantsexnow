@@ -195,31 +195,17 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      {/* Header with scroll behavior */}
-      <header className={`border-b border-gray-200 bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'py-3 shadow-lg' : 'py-4'
-      } ${
-        headerVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}>
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className={`font-bold tracking-tight transition-all duration-300 ${
-                scrolled ? 'text-lg' : 'text-xl'
-              }`}>
-                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
-                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
-                <span className="text-[#0D1B2A] dark:text-white">Now</span>
-                <span className="text-gray-500 dark:text-gray-400 text-base">.ch</span>
-              </span>
-            </Link>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-600 hidden sm:inline">Already a member?</span>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/login">Login</Link>
-              </Button>
-            </div>
-          </div>
+      {/* Header */}
+      <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0D1B2A] sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">
+        <div className="container mx-auto px-6 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-2xl font-bold tracking-tight">
+              <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+              <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+              <span className="text-[#0D1B2A] dark:text-white">Now</span>
+              <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
+            </span>
+          </Link>
         </div>
       </header>
 
