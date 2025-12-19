@@ -508,7 +508,7 @@ export default function EscortBasel() {
       </section>
 
       {/* Escort Listings */}
-      <section className="py-12 bg-gradient-to-b from-slate-900 to-slate-800">
+      <section className="py-12 bg-gradient-to-b from-gray-900 to-black">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-6">
             {filteredEscorts.length > 0 ? (
@@ -519,199 +519,201 @@ export default function EscortBasel() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="overflow-hidden bg-slate-800/50 backdrop-blur-sm border-amber-500/20 hover:border-amber-500/60 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/10">
-                    <div className="flex flex-col md:flex-row gap-6 p-6">
-                      {/* Image */}
-                      <div className="relative w-full md:w-72 flex-shrink-0 group">
-                        <img
-                          src={escort.image}
-                          alt={escort.name}
-                          className="w-full h-80 object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
-                        />
-                        
-                        {escort.hasVideo && (
-                          <button
-                            onClick={() => openVideoModal(escort)}
-                            className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                          >
-                            <div className="bg-amber-500 rounded-full p-4 transform group-hover:scale-110 transition-transform">
-                              <Play size={32} className="text-slate-900" fill="currentColor" />
-                            </div>
-                          </button>
-                        )}
-
-                        {escort.premium && (
-                          <Badge className="absolute top-3 left-3 bg-gradient-to-r from-amber-400 to-orange-400 text-slate-900 border-0 font-bold shadow-xl">
-                            PREMIUM
-                          </Badge>
-                        )}
-
-                        {escort.available && (
-                          <Badge className="absolute top-3 right-3 bg-emerald-500 border-0 text-xs animate-pulse">
-                            <div className="w-2 h-2 bg-white rounded-full mr-1" />
-                            Available
-                          </Badge>
-                        )}
-
-                        <div className="absolute bottom-3 left-3 flex gap-2 flex-wrap">
-                          {escort.verified && (
-                            <Badge className="bg-blue-500 border-0 text-xs">
-                              <Shield size={10} className="mr-1" />
-                              Verified
-                            </Badge>
-                          )}
-                          {escort.hasVideo && (
-                            <Badge className="bg-rose-500 border-0 text-xs">
-                              <Video size={10} className="mr-1" />
-                              Video
-                            </Badge>
-                          )}
-                          {escort.hasVirtualTour && (
-                            <Badge className="bg-pink-500 border-0 text-xs">
-                              <Eye size={10} className="mr-1" />
-                              Tour
-                            </Badge>
-                          )}
-                        </div>
-
-                        {escort.bookingsToday > 0 && (
-                          <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                            🔥 {escort.bookingsToday} bookings today
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 space-y-4">
-                        <div>
-                          <h3 className="text-3xl font-black text-white mb-2 hover:text-amber-400 transition-colors cursor-pointer">
-                            {escort.name}, {escort.age}
-                          </h3>
+                  <Link href={`/profile/${escort.id}`}>
+                    <Card className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:shadow-black/40 cursor-pointer">
+                      <div className="flex flex-col md:flex-row gap-6 p-6">
+                        {/* Image */}
+                        <div className="relative w-full md:w-72 flex-shrink-0 group">
+                          <img
+                            src={escort.image}
+                            alt={escort.name}
+                            className="w-full h-80 object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
+                          />
                           
-                          <div className="flex items-center gap-2 text-amber-400 text-sm mb-3">
-                            <MapPin size={14} />
-                            <span className="font-medium">{escort.location}</span>
-                          </div>
+                          {escort.hasVideo && (
+                            <button
+                              onClick={() => openVideoModal(escort)}
+                              className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                            >
+                              <div className="bg-amber-500 rounded-full p-4 transform group-hover:scale-110 transition-transform">
+                                <Play size={32} className="text-slate-900" fill="currentColor" />
+                              </div>
+                            </button>
+                          )}
 
-                          <div className="flex items-center gap-4 text-slate-400 text-xs mb-3">
-                            <div className="flex items-center gap-1">
-                              <Clock size={12} />
-                              <span>{escort.postedTime}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Zap size={12} className="text-emerald-400" />
-                              <span>Responds in {escort.responseTime}</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <p className="text-slate-300 leading-relaxed">
-                          {escort.description}
-                        </p>
-
-                        <div className="flex flex-wrap gap-2">
-                          {escort.services.map((service, idx) => (
-                            <Badge key={idx} variant="outline" className="border-amber-500/30 text-slate-300 hover:bg-amber-500/10 hover:text-amber-200 transition-colors">
-                              {service}
+                          {escort.premium && (
+                            <Badge className="absolute top-3 left-3 bg-gradient-to-r from-amber-400 to-orange-400 text-slate-900 border-0 font-bold shadow-xl">
+                              PREMIUM
                             </Badge>
-                          ))}
+                          )}
+
+                          {escort.available && (
+                            <Badge className="absolute top-3 right-3 bg-emerald-500 border-0 text-xs animate-pulse">
+                              <div className="w-2 h-2 bg-white rounded-full mr-1" />
+                              Available
+                            </Badge>
+                          )}
+
+                          <div className="absolute bottom-3 left-3 flex gap-2 flex-wrap">
+                            {escort.verified && (
+                              <Badge className="bg-blue-500 border-0 text-xs">
+                                <Shield size={10} className="mr-1" />
+                                Verified
+                              </Badge>
+                            )}
+                            {escort.hasVideo && (
+                              <Badge className="bg-rose-500 border-0 text-xs">
+                                <Video size={10} className="mr-1" />
+                                Video
+                              </Badge>
+                            )}
+                            {escort.hasVirtualTour && (
+                              <Badge className="bg-pink-500 border-0 text-xs">
+                                <Eye size={10} className="mr-1" />
+                                Tour
+                              </Badge>
+                            )}
+                          </div>
+
+                          {escort.bookingsToday > 0 && (
+                            <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                              🔥 {escort.bookingsToday} bookings today
+                            </div>
+                          )}
                         </div>
 
-                        <div className="flex flex-wrap gap-2 text-sm text-slate-400">
-                          <span className="flex items-center gap-1">
-                            <Camera size={14} /> {escort.bodyType}
-                          </span>
-                          <span>•</span>
-                          <span>{escort.height}</span>
-                          <span>•</span>
-                          <span>{escort.languages.join(", ")}</span>
-                        </div>
+                        {/* Content */}
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <h3 className="text-3xl font-black text-white mb-2 hover:text-amber-400 transition-colors cursor-pointer">
+                              {escort.name}, {escort.age}
+                            </h3>
+                            
+                            <div className="flex items-center gap-2 text-amber-400 text-sm mb-3">
+                              <MapPin size={14} />
+                              <span className="font-medium">{escort.location}</span>
+                            </div>
 
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                size={16} 
-                                className={i < Math.floor(escort.rating) ? "text-amber-400 fill-amber-400" : "text-slate-600"}
-                              />
+                            <div className="flex items-center gap-4 text-slate-400 text-xs mb-3">
+                              <div className="flex items-center gap-1">
+                                <Clock size={12} />
+                                <span>{escort.postedTime}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Zap size={12} className="text-emerald-400" />
+                                <span>Responds in {escort.responseTime}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <p className="text-slate-300 leading-relaxed">
+                            {escort.description}
+                          </p>
+
+                          <div className="flex flex-wrap gap-2">
+                            {escort.services.map((service, idx) => (
+                              <Badge key={idx} variant="outline" className="border-amber-500/30 text-slate-300 hover:bg-amber-500/10 hover:text-amber-200 transition-colors">
+                                {service}
+                              </Badge>
                             ))}
                           </div>
-                          <span className="text-white text-sm font-medium">{escort.rating}</span>
-                          <span className="text-slate-400 text-xs">({escort.reviews} reviews)</span>
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4 p-4 bg-slate-900/60 rounded-lg border border-amber-500/20">
-                          {escort.verifiedPhotos && (
-                            <div className="flex items-center gap-2 text-emerald-400 text-xs">
-                              <CheckCircle size={14} /> Real Photos
-                            </div>
-                          )}
-                          {escort.idVerified && (
-                            <div className="flex items-center gap-2 text-blue-400 text-xs">
-                              <CheckCircle size={14} /> ID Verified
-                            </div>
-                          )}
-                          {escort.safeDate && (
-                            <div className="flex items-center gap-2 text-amber-400 text-xs">
-                              <CheckCircle size={14} /> SafeDate
-                            </div>
-                          )}
-                          {escort.hasVirtualTour && (
-                            <div className="flex items-center gap-2 text-rose-400 text-xs">
-                              <CheckCircle size={14} /> Virtual Tour
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                          <div>
-                            <div className="text-xs text-slate-400">Starting from</div>
-                            <div className="text-2xl font-black text-amber-400">CHF {escort.rate}</div>
-                            <div className="text-xs text-slate-400">per hour</div>
+                          <div className="flex flex-wrap gap-2 text-sm text-slate-400">
+                            <span className="flex items-center gap-1">
+                              <Camera size={14} /> {escort.bodyType}
+                            </span>
+                            <span>•</span>
+                            <span>{escort.height}</span>
+                            <span>•</span>
+                            <span>{escort.languages.join(", ")}</span>
                           </div>
-                          <div className="flex gap-2">
-                            <Button 
-                              size="sm"
-                              variant="outline"
-                              className={`text-white border-slate-600 hover:bg-slate-700 ${
-                                comparison.includes(escort.id) ? "border-amber-500 bg-amber-500/10" : ""
-                              }`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleComparison(escort.id);
-                              }}
-                              disabled={comparison.length >= 3 && !comparison.includes(escort.id)}
-                            >
-                              <ThumbsUp size={16} />
-                            </Button>
-                            <Button 
-                              size="sm"
-                              variant="outline"
-                              className="text-white border-slate-600 hover:bg-slate-700 hover:border-rose-500"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleFavorite(escort.id);
-                              }}
-                            >
-                              <Heart size={16} className={favorites.includes(escort.id) ? "fill-rose-500 text-rose-500" : ""} />
-                            </Button>
-                            <Button 
-                              size="sm"
-                              className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold shadow-lg shadow-amber-500/20"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openBookingModal(escort);
-                              }}
-                            >
-                              <MessageCircle size={16} className="mr-2" />
-                              Book Now
-                            </Button>
+
+                          <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star 
+                                  key={i} 
+                                  size={16} 
+                                  className={i < Math.floor(escort.rating) ? "text-amber-400 fill-amber-400" : "text-slate-600"}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-white text-sm font-medium">{escort.rating}</span>
+                            <span className="text-slate-400 text-xs">({escort.reviews} reviews)</span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-900/60 rounded-lg border border-amber-500/20">
+                            {escort.verifiedPhotos && (
+                              <div className="flex items-center gap-2 text-emerald-400 text-xs">
+                                <CheckCircle size={14} /> Real Photos
+                              </div>
+                            )}
+                            {escort.idVerified && (
+                              <div className="flex items-center gap-2 text-blue-400 text-xs">
+                                <CheckCircle size={14} /> ID Verified
+                              </div>
+                            )}
+                            {escort.safeDate && (
+                              <div className="flex items-center gap-2 text-amber-400 text-xs">
+                                <CheckCircle size={14} /> SafeDate
+                              </div>
+                            )}
+                            {escort.hasVirtualTour && (
+                              <div className="flex items-center gap-2 text-rose-400 text-xs">
+                                <CheckCircle size={14} /> Virtual Tour
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex items-center justify-between pt-4 border-t border-slate-700">
+                            <div>
+                              <div className="text-xs text-slate-400">Starting from</div>
+                              <div className="text-2xl font-black text-amber-400">CHF {escort.rate}</div>
+                              <div className="text-xs text-slate-400">per hour</div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button 
+                                size="sm"
+                                variant="outline"
+                                className={`text-white border-slate-600 hover:bg-slate-700 ${
+                                  comparison.includes(escort.id) ? "border-amber-500 bg-amber-500/10" : ""
+                                }`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleComparison(escort.id);
+                                }}
+                                disabled={comparison.length >= 3 && !comparison.includes(escort.id)}
+                              >
+                                <ThumbsUp size={16} />
+                              </Button>
+                              <Button 
+                                size="sm"
+                                variant="outline"
+                                className="text-white border-slate-600 hover:bg-slate-700 hover:border-rose-500"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleFavorite(escort.id);
+                                }}
+                              >
+                                <Heart size={16} className={favorites.includes(escort.id) ? "fill-rose-500 text-rose-500" : ""} />
+                              </Button>
+                              <Button 
+                                size="sm"
+                                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold shadow-lg shadow-amber-500/20"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openBookingModal(escort);
+                                }}
+                              >
+                                <MessageCircle size={16} className="mr-2" />
+                                Book Now
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))
             ) : (
