@@ -295,7 +295,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
       <SEO 
         title="iWantSexNow.ch - Premium Escort Services in Switzerland"
         description="Discover exclusive escort services across Switzerland. Browse verified profiles in Zürich, Geneva, Basel and more."
@@ -303,31 +303,31 @@ export default function Home() {
 
       {/* Header */}
       <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/80 shadow-2xl' : 'bg-black/40'
+        scrolled ? 'bg-black/90 shadow-2xl' : 'bg-black/60'
       }`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
-                <Heart className="text-pink-600 fill-pink-600" size={36} />
-                <div className="absolute inset-0 bg-pink-600/20 blur-xl group-hover:bg-pink-600/40 transition-all" />
+                <Heart className="text-rose-600 fill-rose-600" size={36} />
+                <div className="absolute inset-0 bg-rose-600/10 blur-xl group-hover:bg-rose-600/20 transition-all" />
               </div>
               <div>
                 <span className="text-2xl font-black text-white tracking-tight">
                   iWantSexNow.ch
                 </span>
-                <div className="text-xs text-pink-500 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
+                <div className="text-xs text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
               </div>
             </Link>
             
             {/* Live Stats */}
             <div className="hidden md:flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-white">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                 <span className="font-semibold">{onlineCount} online now</span>
               </div>
               <div className="flex items-center gap-2 text-white">
-                <Eye size={16} className="text-yellow-500" />
+                <Eye size={16} className="text-gray-400" />
                 <span className="font-semibold">{activeViewers} viewing</span>
               </div>
             </div>
@@ -339,10 +339,10 @@ export default function Home() {
         </div>
 
         {/* Live Booking Ticker */}
-        <div className="border-t border-white/10 bg-black/60 backdrop-blur-sm">
+        <div className="border-t border-white/10 bg-black/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-2">
             <div className="flex items-center gap-2 text-xs text-white/80 overflow-hidden">
-              <CheckCircle size={14} className="text-green-500 flex-shrink-0" />
+              <CheckCircle size={14} className="text-emerald-500 flex-shrink-0" />
               <div className="animate-marquee whitespace-nowrap">
                 {recentBookings.map((booking, idx) => (
                   <span key={idx} className="inline-block mx-8">
@@ -374,16 +374,16 @@ export default function Home() {
       />
 
       {/* Story Row */}
-      <section className="py-6 bg-black/20 border-b border-white/10">
+      <section className="py-6 bg-black/30 border-b border-white/10">
         <div className="container mx-auto px-4">
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
             {storyProfiles.map((profile) => (
               <div key={profile.id} className="flex-shrink-0 cursor-pointer group">
                 <div className="relative">
-                  <div className={`w-20 h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-110 ring-2 ring-transparent group-hover:ring-pink-500 group-hover:ring-offset-2 ring-offset-black ${
+                  <div className={`w-20 h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-110 ring-2 ring-transparent group-hover:ring-white/30 group-hover:ring-offset-2 ring-offset-black ${
                     profile.online 
-                      ? 'bg-gradient-to-tr from-pink-600 via-purple-600 to-yellow-500' 
-                      : 'bg-gray-600'
+                      ? 'bg-gradient-to-tr from-gray-600 via-gray-500 to-gray-400' 
+                      : 'bg-gray-700'
                   }`}>
                     <div className="w-full h-full rounded-full overflow-hidden border-2 border-black">
                       <img
@@ -394,12 +394,12 @@ export default function Home() {
                     </div>
                   </div>
                   {profile.verified && (
-                    <div className="absolute bottom-0 right-0 bg-green-500 rounded-full p-0.5">
+                    <div className="absolute bottom-0 right-0 bg-emerald-500 rounded-full p-0.5">
                       <CheckCircle size={14} className="text-white" fill="white" />
                     </div>
                   )}
                 </div>
-                <p className="text-white text-xs text-center mt-2 font-medium truncate w-20 group-hover:text-pink-500 transition-colors">
+                <p className="text-white text-xs text-center mt-2 font-medium truncate w-20 group-hover:text-gray-300 transition-colors">
                   {profile.name}
                 </p>
               </div>
@@ -413,7 +413,7 @@ export default function Home() {
         isLoadingMore={isLoadingMore}
         hasMore={currentPage < totalPages}
         handleLoadMore={handleLoadMore}
-        openLightbox={() => {}} // Placeholder for now
+        openLightbox={() => {}}
         favorites={favorites}
         toggleFavorite={toggleFavorite}
         resetFilters={resetFilters}
@@ -423,14 +423,14 @@ export default function Home() {
       />
 
       {/* Featured Cities Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-900/50 via-pink-900/50 to-orange-900/50 border-y border-white/10">
+      <section className="py-20 bg-gradient-to-b from-gray-900 to-gray-950 border-y border-white/10">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
                 Explore Escorts by City
               </h2>
-              <p className="text-xl text-gray-300">
+              <p className="text-xl text-gray-400">
                 Premium companions in Switzerland's major cities
               </p>
             </div>
@@ -438,14 +438,14 @@ export default function Home() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cityPages.map((city) => (
                 <Link key={city.slug} href={`/escort-${city.slug}`}>
-                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-pink-500 transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/20">
+                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-black/40">
                     <div className="relative h-64 overflow-hidden">
                       <img
                         src={city.image}
                         alt={city.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <h3 className="text-3xl font-black text-white mb-2">
                           {city.name}
@@ -454,10 +454,10 @@ export default function Home() {
                           {city.description}
                         </p>
                         <div className="flex items-center justify-between">
-                          <Badge className="bg-pink-600 border-0">
+                          <Badge className="bg-gray-700 border-0 text-white">
                             {city.escorts}+ Escorts
                           </Badge>
-                          <span className="text-yellow-500 font-bold group-hover:translate-x-2 transition-transform">
+                          <span className="text-gray-300 font-bold group-hover:translate-x-2 transition-transform">
                             View All →
                           </span>
                         </div>
@@ -485,7 +485,7 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart className="text-pink-600 fill-pink-600" size={24} />
+                <Heart className="text-rose-600 fill-rose-600" size={24} />
                 <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
               </div>
               <p className="text-gray-400 text-sm mb-4">
@@ -501,7 +501,7 @@ export default function Home() {
                 <li><Link href="/members" className="hover:text-white">Browse Members</Link></li>
                 <li><Link href="/register" className="hover:text-white">Sign Up</Link></li>
                 <li><Link href="/login" className="hover:text-white">Login</Link></li>
-                <li><Link href="/demo-accounts" className="hover:text-pink-400">Demo Accounts</Link></li>
+                <li><Link href="/demo-accounts" className="hover:text-gray-300">Demo Accounts</Link></li>
               </ul>
             </div>
             <div>
