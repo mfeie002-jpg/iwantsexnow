@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, Send, AlertCircle, Lock, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function ContactSection() {
   const [contactForm, setContactForm] = useState({
@@ -123,21 +124,109 @@ export function ContactSection() {
 
           <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
             {formSuccess ? (
-              <div className="text-center py-12 animate-fade-in">
-                <div className="w-20 h-20 mx-auto rounded-full bg-green-500 flex items-center justify-center mb-6 shadow-lg shadow-green-500/30">
-                  <Check size={40} className="text-white" />
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-4">Message Sent Successfully!</h3>
-                <p className="text-gray-300 mb-8">
-                  We've received your inquiry and will respond within 24 hours.
-                </p>
-                <Button
-                  onClick={() => setFormSuccess(false)}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold transform hover:scale-105 transition-all"
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 20
+                }}
+                className="text-center py-12 relative overflow-hidden"
+              >
+                {/* Animated Background Particles */}
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ 
+                      opacity: 0,
+                      scale: 0,
+                      x: 0,
+                      y: 0
+                    }}
+                    animate={{ 
+                      opacity: [0, 1, 0],
+                      scale: [0, 1.5, 2],
+                      x: Math.cos(i * 45 * Math.PI / 180) * 150,
+                      y: Math.sin(i * 45 * Math.PI / 180) * 150
+                    }}
+                    transition={{ 
+                      duration: 1.5,
+                      delay: 0.2 + i * 0.1,
+                      ease: "easeOut"
+                    }}
+                    className="absolute top-1/2 left-1/2 w-3 h-3 bg-gradient-to-r from-yellow-400 to-pink-500 rounded-full blur-sm"
+                    style={{ transform: 'translate(-50%, -50%)' }}
+                  />
+                ))}
+
+                {/* Checkmark with Bounce Animation */}
+                <motion.div 
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 15,
+                    delay: 0.3
+                  }}
+                  className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6 shadow-lg shadow-green-500/50 relative z-10"
                 >
-                  Send Another Message
-                </Button>
-              </div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+                  >
+                    <Check size={40} className="text-white" strokeWidth={3} />
+                  </motion.div>
+                  
+                  {/* Pulse Ring */}
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.5, 2],
+                      opacity: [0.5, 0.2, 0]
+                    }}
+                    transition={{ 
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeOut"
+                    }}
+                    className="absolute inset-0 rounded-full bg-green-500"
+                  />
+                </motion.div>
+
+                {/* Success Text */}
+                <motion.h3 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                  className="text-3xl font-bold text-white mb-4"
+                >
+                  Message Sent Successfully!
+                </motion.h3>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                  className="text-gray-300 mb-8"
+                >
+                  We've received your inquiry and will respond within 24 hours.
+                </motion.p>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1, duration: 0.5 }}
+                >
+                  <Button
+                    onClick={() => setFormSuccess(false)}
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold transform hover:scale-105 transition-all"
+                  >
+                    Send Another Message
+                  </Button>
+                </motion.div>
+              </motion.div>
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -155,10 +244,14 @@ export function ContactSection() {
                       }`}
                     />
                     {formErrors.name && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1 animate-shake">
+                      <motion.p 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-red-400 text-sm mt-1 flex items-center gap-1"
+                      >
                         <AlertCircle size={14} />
                         {formErrors.name}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
 
@@ -177,10 +270,14 @@ export function ContactSection() {
                       }`}
                     />
                     {formErrors.email && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1 animate-shake">
+                      <motion.p 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-red-400 text-sm mt-1 flex items-center gap-1"
+                      >
                         <AlertCircle size={14} />
                         {formErrors.email}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
                 </div>
@@ -201,10 +298,14 @@ export function ContactSection() {
                       }`}
                     />
                     {formErrors.phone && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1 animate-shake">
+                      <motion.p 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-red-400 text-sm mt-1 flex items-center gap-1"
+                      >
                         <AlertCircle size={14} />
                         {formErrors.phone}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
 
@@ -223,10 +324,14 @@ export function ContactSection() {
                       }`}
                     />
                     {formErrors.date && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1 animate-shake">
+                      <motion.p 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-red-400 text-sm mt-1 flex items-center gap-1"
+                      >
                         <AlertCircle size={14} />
                         {formErrors.date}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
                 </div>
@@ -265,10 +370,14 @@ export function ContactSection() {
                   />
                   <div className="flex justify-between items-center mt-1">
                     {formErrors.message ? (
-                      <p className="text-red-400 text-sm flex items-center gap-1 animate-shake">
+                      <motion.p 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-red-400 text-sm flex items-center gap-1"
+                      >
                         <AlertCircle size={14} />
                         {formErrors.message}
-                      </p>
+                      </motion.p>
                     ) : (
                       <span className="text-gray-400 text-xs">Minimum 10 characters</span>
                     )}
@@ -317,10 +426,14 @@ export function ContactSection() {
             </div>
 
             {newsletterSuccess ? (
-              <div className="flex items-center justify-center gap-2 text-green-400 py-3 animate-fade-in">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center justify-center gap-2 text-green-400 py-3"
+              >
                 <CheckCircle size={20} />
                 <span className="font-semibold">Successfully subscribed!</span>
-              </div>
+              </motion.div>
             ) : (
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <div className="flex-1">
@@ -337,7 +450,13 @@ export function ContactSection() {
                     }`}
                   />
                   {newsletterError && (
-                    <p className="text-red-400 text-sm mt-1 animate-shake">{newsletterError}</p>
+                    <motion.p 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="text-red-400 text-sm mt-1"
+                    >
+                      {newsletterError}
+                    </motion.p>
                   )}
                 </div>
                 <Button

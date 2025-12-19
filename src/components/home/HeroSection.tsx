@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, X, Sparkles, Heart } from "lucide-react";
 import Link from "next/link";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, useScroll, useTransform } from "framer-motion";
 
 interface HeroSectionProps {
   searchQuery: string;
@@ -32,6 +32,12 @@ export function HeroSection({
   videoAds, setVideoAds,
   filteredCount
 }: HeroSectionProps) {
+  // Parallax scrolling effect
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
+  const backgroundScale = useTransform(scrollY, [0, 500], [1, 1.1]);
+  const backgroundOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -95,15 +101,20 @@ export function HeroSection({
         </div>
       </motion.section>
 
-      {/* Animated Hero Section with Background Image */}
+      {/* Animated Hero Section with Parallax Background */}
       <section className="relative py-20 md:py-32 overflow-hidden">
-        {/* Background Image with Overlays */}
-        <div className="absolute inset-0">
-          {/* Romantic/Sensual Background Image */}
-          <div 
+        {/* Parallax Background Image with Overlays */}
+        <motion.div 
+          className="absolute inset-0"
+          style={{ y: backgroundY }}
+        >
+          {/* Romantic/Sensual Background Image with Parallax */}
+          <motion.div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: "url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80')",
+              scale: backgroundScale,
+              opacity: backgroundOpacity
             }}
           />
           
@@ -151,7 +162,7 @@ export function HeroSection({
             }}
             className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"
           />
-        </div>
+        </motion.div>
 
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
