@@ -16,6 +16,8 @@ interface HeroSectionProps {
   setSelectedService: (val: string) => void;
   selectedOffer: string;
   setSelectedOffer: (val: string) => void;
+  selectedGender: string;
+  setSelectedGender: (val: string) => void;
   verifiedPhotos: boolean;
   setVerifiedPhotos: (val: boolean) => void;
   videoAds: boolean;
@@ -28,6 +30,7 @@ export function HeroSection({
   selectedCity, setSelectedCity,
   selectedService, setSelectedService,
   selectedOffer, setSelectedOffer,
+  selectedGender, setSelectedGender,
   verifiedPhotos, setVerifiedPhotos,
   videoAds, setVideoAds,
   filteredCount
@@ -72,6 +75,27 @@ export function HeroSection({
         stiffness: 150,
         damping: 15,
         delay: 0.2
+      }
+    }
+  };
+
+  const filterCardVariants: Variants = {
+    hidden: { scale: 0.95, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    },
+    hover: {
+      scale: 1.02,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
       }
     }
   };
@@ -201,106 +225,198 @@ export function HeroSection({
               </motion.h1>
             </motion.div>
 
-            {/* Filters */}
-            <motion.div variants={itemVariants}>
-              <Card className="p-4 shadow-2xl bg-white/10 backdrop-blur-md border-white/20">
-                <div className="grid md:grid-cols-4 gap-3 mb-3">
-                  <Select value={selectedCity} onValueChange={setSelectedCity}>
-                    <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-colors">
-                      <SelectValue placeholder="Region" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alle Regionen</SelectItem>
-                      <SelectItem value="zürich">Zürich</SelectItem>
-                      <SelectItem value="geneva">Genf/Genève</SelectItem>
-                      <SelectItem value="basel">Basel</SelectItem>
-                      <SelectItem value="bern">Bern</SelectItem>
-                      <SelectItem value="lausanne">Lausanne</SelectItem>
-                      <SelectItem value="winterthur">Winterthur</SelectItem>
-                      <SelectItem value="luzern">Luzern</SelectItem>
-                      <SelectItem value="st-gallen">St. Gallen</SelectItem>
-                    </SelectContent>
-                  </Select>
+            {/* Filters with Animations */}
+            <motion.div 
+              variants={filterCardVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+            >
+              <Card className="p-4 md:p-6 shadow-2xl bg-white/10 backdrop-blur-md border-white/20 overflow-hidden relative">
+                {/* Animated Background Gradient */}
+                <motion.div 
+                  animate={{ 
+                    backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
+                  }}
+                  transition={{ 
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                  className="absolute inset-0 bg-gradient-to-br from-pink-500/5 via-purple-500/5 to-orange-500/5 bg-[length:200%_200%]"
+                />
+                
+                <div className="relative z-10 space-y-4">
+                  {/* Main Filters */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Select value={selectedGender} onValueChange={setSelectedGender}>
+                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20">
+                          <SelectValue placeholder="Geschlecht" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Alle</SelectItem>
+                          <SelectItem value="female">Frauen</SelectItem>
+                          <SelectItem value="male">Männer</SelectItem>
+                          <SelectItem value="trans">Trans</SelectItem>
+                          <SelectItem value="couples">Paare</SelectItem>
+                          <SelectItem value="non-binary">Nicht-binär</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
 
-                  <Select value={selectedService} onValueChange={setSelectedService}>
-                    <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-colors">
-                      <SelectValue placeholder="Rubrik" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alle Kategorien</SelectItem>
-                      <SelectItem value="gfe">GFE</SelectItem>
-                      <SelectItem value="pse">PSE</SelectItem>
-                      <SelectItem value="massage">Massage</SelectItem>
-                      <SelectItem value="dinner">Dinner Dates</SelectItem>
-                      <SelectItem value="travel">Travel</SelectItem>
-                      <SelectItem value="events">Events</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Select value={selectedCity} onValueChange={setSelectedCity}>
+                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20">
+                          <SelectValue placeholder="Region" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Alle Regionen</SelectItem>
+                          <SelectItem value="zürich">Zürich</SelectItem>
+                          <SelectItem value="geneva">Genf/Genève</SelectItem>
+                          <SelectItem value="basel">Basel</SelectItem>
+                          <SelectItem value="bern">Bern</SelectItem>
+                          <SelectItem value="lausanne">Lausanne</SelectItem>
+                          <SelectItem value="winterthur">Winterthur</SelectItem>
+                          <SelectItem value="luzern">Luzern</SelectItem>
+                          <SelectItem value="st-gallen">St. Gallen</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
 
-                  <Select value={selectedOffer} onValueChange={setSelectedOffer}>
-                    <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-colors">
-                      <SelectValue placeholder="Angebot" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alle Angebote</SelectItem>
-                      <SelectItem value="sie-sucht-ihn">Sie sucht ihn</SelectItem>
-                      <SelectItem value="er-sucht-sie">Er sucht sie</SelectItem>
-                      <SelectItem value="escort-service">Escort Service</SelectItem>
-                      <SelectItem value="erotik-massage">Erotik Massage</SelectItem>
-                      <SelectItem value="trans">Trans</SelectItem>
-                      <SelectItem value="gay">Gay</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Select value={selectedService} onValueChange={setSelectedService}>
+                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20">
+                          <SelectValue placeholder="Service" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Alle Services</SelectItem>
+                          <SelectItem value="gfe">GFE/BFE</SelectItem>
+                          <SelectItem value="pse">PSE</SelectItem>
+                          <SelectItem value="massage">Massage</SelectItem>
+                          <SelectItem value="dinner">Dinner Dates</SelectItem>
+                          <SelectItem value="travel">Travel Companion</SelectItem>
+                          <SelectItem value="events">Events</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
 
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Select value={selectedOffer} onValueChange={setSelectedOffer}>
+                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-pink-500 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20">
+                          <SelectValue placeholder="Angebot" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Alle Angebote</SelectItem>
+                          <SelectItem value="sie-sucht-ihn">Sie sucht ihn</SelectItem>
+                          <SelectItem value="er-sucht-sie">Er sucht sie</SelectItem>
+                          <SelectItem value="escort-service">Escort Service</SelectItem>
+                          <SelectItem value="erotik-massage">Erotik Massage</SelectItem>
+                          <SelectItem value="trans">Trans</SelectItem>
+                          <SelectItem value="gay">Gay</SelectItem>
+                          <SelectItem value="lesbian">Lesbian</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  </div>
+
+                  {/* Search Bar */}
+                  <motion.div 
+                    className="relative"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                  >
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                     <Input
-                      placeholder="Suchen..."
-                      className="pl-10 bg-gray-800/80 border-gray-700 text-white placeholder:text-gray-400 hover:border-pink-500 transition-colors"
+                      placeholder="Name, Ort, Stichwort suchen..."
+                      className="pl-12 pr-12 py-6 bg-gray-800/80 border-gray-700 text-white placeholder:text-gray-400 hover:border-pink-500 focus:border-pink-500 transition-all duration-300 text-lg hover:shadow-lg hover:shadow-pink-500/20"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     {searchQuery && (
-                      <button 
+                      <motion.button 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        whileHover={{ scale: 1.1, rotate: 90 }}
+                        whileTap={{ scale: 0.9 }}
                         onClick={() => setSearchQuery("")} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
                       >
-                        <X size={16} />
-                      </button>
+                        <X size={20} />
+                      </motion.button>
                     )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-6 text-white">
-                  <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors group">
-                    <input
-                      type="checkbox"
-                      checked={verifiedPhotos}
-                      onChange={(e) => setVerifiedPhotos(e.target.checked)}
-                      className="w-4 h-4 rounded accent-pink-600 group-hover:ring-2 ring-pink-500"
-                    />
-                    <span className="text-sm font-medium">Verifizierte Bilder</span>
-                  </label>
-                  
-                  <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors group">
-                    <input
-                      type="checkbox"
-                      checked={videoAds}
-                      onChange={(e) => setVideoAds(e.target.checked)}
-                      className="w-4 h-4 rounded accent-pink-600 group-hover:ring-2 ring-pink-500"
-                    />
-                    <span className="text-sm font-medium">Video Inserate</span>
-                  </label>
-
-                  <motion.div 
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="ml-auto"
-                  >
-                    <span className="text-yellow-500 font-bold text-lg">
-                      {filteredCount} Treffer
-                    </span>
                   </motion.div>
+
+                  {/* Filter Options */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
+                    <div className="flex items-center gap-4 sm:gap-6">
+                      <motion.label 
+                        className="flex items-center gap-2 cursor-pointer hover:text-yellow-400 transition-colors group"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <motion.input
+                          type="checkbox"
+                          checked={verifiedPhotos}
+                          onChange={(e) => setVerifiedPhotos(e.target.checked)}
+                          className="w-4 h-4 rounded accent-pink-600 cursor-pointer"
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.9 }}
+                        />
+                        <span className="text-sm font-medium">Verifizierte Bilder</span>
+                      </motion.label>
+                      
+                      <motion.label 
+                        className="flex items-center gap-2 cursor-pointer hover:text-yellow-400 transition-colors group"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <motion.input
+                          type="checkbox"
+                          checked={videoAds}
+                          onChange={(e) => setVideoAds(e.target.checked)}
+                          className="w-4 h-4 rounded accent-pink-600 cursor-pointer"
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.9 }}
+                        />
+                        <span className="text-sm font-medium">Video Inserate</span>
+                      </motion.label>
+                    </div>
+
+                    <motion.div 
+                      animate={{ 
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="flex items-center gap-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-4 py-2 rounded-full border border-yellow-500/30"
+                    >
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Sparkles size={18} className="text-yellow-400" />
+                      </motion.div>
+                      <span className="text-yellow-400 font-bold text-lg">
+                        {filteredCount} Treffer
+                      </span>
+                    </motion.div>
+                  </div>
                 </div>
               </Card>
             </motion.div>
@@ -311,49 +427,76 @@ export function HeroSection({
               className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
             >
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black text-lg px-8 py-6 shadow-2xl shadow-yellow-500/30 w-full sm:w-auto"
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black text-lg px-8 py-6 shadow-2xl shadow-yellow-500/30 w-full sm:w-auto relative overflow-hidden group"
                   onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  <Users size={24} className="mr-2" />
-                  Browse Escorts Now
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <span className="relative z-10 flex items-center">
+                    <Users size={24} className="mr-2" />
+                    Jetzt Durchsuchen
+                  </span>
                 </Button>
               </motion.div>
 
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto"
+                  className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto relative overflow-hidden group"
                   asChild
                 >
                   <Link href="/register">
-                    <UserPlus size={24} className="mr-2" />
-                    Join Free Today
+                    <motion.div
+                      className="absolute inset-0 bg-white/10"
+                      initial={{ scale: 0, opacity: 0 }}
+                      whileHover={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative z-10 flex items-center">
+                      <UserPlus size={24} className="mr-2" />
+                      Kostenlos Registrieren
+                    </span>
                   </Link>
                 </Button>
               </motion.div>
 
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="border-2 border-pink-500/60 bg-pink-500/10 hover:bg-pink-500/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto"
+                  className="border-2 border-pink-500/60 bg-pink-500/10 hover:bg-pink-500/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto relative overflow-hidden group"
                   asChild
                 >
                   <Link href="/create-post">
-                    <PlusCircle size={24} className="mr-2" />
-                    Post Your Ad
+                    <motion.div
+                      className="absolute inset-0 bg-pink-500/10"
+                      initial={{ scale: 0, opacity: 0 }}
+                      whileHover={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative z-10 flex items-center">
+                      <PlusCircle size={24} className="mr-2" />
+                      Inserat Aufgeben
+                    </span>
                   </Link>
                 </Button>
               </motion.div>
@@ -364,20 +507,33 @@ export function HeroSection({
               variants={itemVariants}
               className="flex flex-wrap items-center justify-center gap-6 mt-6 text-white/80 text-sm"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                <span><strong className="text-white">127</strong> escorts online now</span>
-              </div>
+              <motion.div 
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.1 }}
+              >
+                <motion.div 
+                  className="w-3 h-3 bg-green-500 rounded-full"
+                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <span><strong className="text-white">127</strong> online jetzt</span>
+              </motion.div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
-              <div className="flex items-center gap-2">
+              <motion.div 
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.1 }}
+              >
                 <Heart size={16} className="text-pink-500 fill-pink-500" />
-                <span><strong className="text-white">50,000+</strong> verified profiles</span>
-              </div>
+                <span><strong className="text-white">50,000+</strong> verifizierte Profile</span>
+              </motion.div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
-              <div className="flex items-center gap-2">
+              <motion.div 
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.1 }}
+              >
                 <Sparkles size={16} className="text-yellow-500" />
-                <span><strong className="text-white">100%</strong> discreet & secure</span>
-              </div>
+                <span><strong className="text-white">100%</strong> diskret & sicher</span>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>

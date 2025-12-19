@@ -22,6 +22,7 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState("all");
   const [selectedService, setSelectedService] = useState("all");
   const [selectedOffer, setSelectedOffer] = useState("all");
+  const [selectedGender, setSelectedGender] = useState("all");
   const [verifiedPhotos, setVerifiedPhotos] = useState(false);
   const [videoAds, setVideoAds] = useState(false);
   
@@ -106,6 +107,7 @@ export default function Home() {
       age: 26,
       location: "Zürich City Center",
       locations: ["Zürich", "Winterthur", "Zug"],
+      gender: "female",
       images: [
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1200&fit=crop",
       ],
@@ -135,6 +137,7 @@ export default function Home() {
       age: 24,
       location: "Geneva",
       locations: ["Geneva", "Lausanne", "Montreux"],
+      gender: "female",
       images: [
         "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&h=1200&fit=crop",
       ],
@@ -164,6 +167,7 @@ export default function Home() {
       age: 28,
       location: "Basel",
       locations: ["Basel", "Liestal"],
+      gender: "female",
       images: [
         "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1200&fit=crop",
       ],
@@ -193,6 +197,7 @@ export default function Home() {
       age: 25,
       location: "Bern",
       locations: ["Bern", "Thun", "Biel"],
+      gender: "female",
       images: [
         "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=1200&fit=crop",
       ],
@@ -225,6 +230,7 @@ export default function Home() {
     if (selectedCity !== "all" && !escort.locations.some(loc => loc.toLowerCase().includes(selectedCity.toLowerCase()))) return false;
     if (selectedService !== "all" && !escort.services.some(s => s.toLowerCase().includes(selectedService.toLowerCase()))) return false;
     if (selectedOffer !== "all" && escort.serviceType !== selectedOffer) return false;
+    if (selectedGender !== "all" && escort.gender !== selectedGender) return false;
     if (verifiedPhotos && !escort.verifiedPhotos) return false;
     if (videoAds && !escort.hasVideo) return false;
     return true;
@@ -260,6 +266,7 @@ export default function Home() {
     setSelectedCity("all");
     setSelectedService("all");
     setSelectedOffer("all");
+    setSelectedGender("all");
     setVerifiedPhotos(false);
     setVideoAds(false);
     setCurrentPage(1);
@@ -268,7 +275,7 @@ export default function Home() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedCity, selectedService, selectedOffer, verifiedPhotos, videoAds]);
+  }, [searchQuery, selectedCity, selectedService, selectedOffer, selectedGender, verifiedPhotos, videoAds]);
 
   // Effects
   useEffect(() => {
@@ -357,6 +364,8 @@ export default function Home() {
         setSelectedService={setSelectedService}
         selectedOffer={selectedOffer}
         setSelectedOffer={setSelectedOffer}
+        selectedGender={selectedGender}
+        setSelectedGender={setSelectedGender}
         verifiedPhotos={verifiedPhotos}
         setVerifiedPhotos={setVerifiedPhotos}
         videoAds={videoAds}
