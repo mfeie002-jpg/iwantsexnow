@@ -309,8 +309,19 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
-                <Heart className="text-rose-600 fill-rose-600" size={36} />
-                <div className="absolute inset-0 bg-rose-600/10 blur-xl group-hover:bg-rose-600/20 transition-all" />
+                {/* Custom Logo Mark */}
+                <div className="w-12 h-12 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center border border-gray-700 shadow-lg group-hover:border-gray-600 transition-all">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGradient)"/>
+                    <defs>
+                      <linearGradient id="heartGradient" x1="2" y1="3" x2="22" y2="21.35" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#9ca3af"/>
+                        <stop offset="1" stopColor="#6b7280"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <div className="absolute inset-0 bg-gray-600/10 blur-xl group-hover:bg-gray-600/20 transition-all rounded-lg" />
               </div>
               <div>
                 <span className="text-2xl font-black text-white tracking-tight">
