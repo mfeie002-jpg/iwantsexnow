@@ -42,6 +42,8 @@ export default function Search() {
     verifiedOnly: false
   });
 
+  const [sortBy, setSortBy] = useState<"newest" | "distance" | "popular" | "age">("newest");
+
   // Extended mock profiles data
   const allProfiles = [
     {
@@ -152,6 +154,19 @@ export default function Search() {
     if (filters.onlineOnly && !profile.online) return false;
     if (filters.verifiedOnly && !profile.verified) return false;
     return true;
+  });
+
+  // Sorting
+  const sortedProfiles = [...filteredProfiles].sort((a, b) => {
+    switch (sortBy) {
+      case "age":
+        return a.age - b.age;
+      case "popular":
+        return b.id - a.id; // Simulate popularity
+      case "newest":
+      default:
+        return b.id - a.id;
+    }
   });
 
   return (
@@ -273,12 +288,26 @@ export default function Search() {
           {/* Results */}
           <div className="flex-1">
             <div className="mb-6">
-              <h1 className="text-4xl font-black mb-2">Browse Members</h1>
-              <p className="text-gray-600">Found {filteredProfiles.length} profiles matching your criteria</p>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h1 className="text-4xl font-black mb-2">Browse Members</h1>
+                  <p className="text-gray-600">Found {sortedProfiles.length} profiles matching your criteria</p>
+                </div>
+                <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Sort by..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="popular">Most Popular</SelectItem>
+                    <SelectItem value="age">Age</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProfiles.map((profile) => (
+              {sortedProfiles.map((profile) => (
                 <Card key={profile.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                   <div className="relative">
                     <img
@@ -323,7 +352,7 @@ export default function Search() {
               ))}
             </div>
 
-            {filteredProfiles.length === 0 && (
+            {sortedProfiles.length === 0 && (
               <Card className="p-12 text-center">
                 <SearchIcon size={48} className="mx-auto text-gray-400 mb-4" />
                 <h3 className="text-2xl font-bold mb-2">No profiles found</h3>

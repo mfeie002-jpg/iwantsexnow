@@ -53,6 +53,7 @@ export default function Members() {
 
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [sortBy, setSortBy] = useState<"newest" | "distance" | "popular" | "age">("newest");
 
   // Extended mock profiles with detailed info
   const allProfiles = [
@@ -229,6 +230,21 @@ export default function Members() {
     if (filters.verifiedOnly && !profile.verified) return false;
     if (filters.withPhotos && profile.images < 3) return false;
     return true;
+  });
+
+  // Sorting
+  const sortedProfiles = [...filteredProfiles].sort((a, b) => {
+    switch (sortBy) {
+      case "distance":
+        return a.distance - b.distance;
+      case "age":
+        return a.age - b.age;
+      case "popular":
+        return b.images - a.images; // More photos = more popular
+      case "newest":
+      default:
+        return b.id - a.id;
+    }
   });
 
   return (
@@ -446,14 +462,25 @@ export default function Members() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl font-black mb-2">Browse Members</h1>
-                <p className="text-sm md:text-base text-gray-600">{filteredProfiles.length} profiles match your criteria</p>
+                <p className="text-sm md:text-base text-gray-600">{sortedProfiles.length} profiles match your criteria</p>
               </div>
-              <div className="flex gap-2 w-full sm:w-auto">
+              <div className="flex gap-2 w-full sm:w-auto items-center">
+                <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Sort by..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="distance">Nearest First</SelectItem>
+                    <SelectItem value="popular">Most Popular</SelectItem>
+                    <SelectItem value="age">Age</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="icon"
                   onClick={() => setViewMode("grid")}
-                  className={`${viewMode === "grid" ? "bg-pink-600 hover:bg-pink-700" : ""} flex-1 sm:flex-none`}
+                  className={`${viewMode === "grid" ? "bg-pink-600 hover:bg-pink-700" : ""} flex-shrink-0`}
                 >
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                     <rect x="2" y="2" width="7" height="7" />
@@ -466,7 +493,7 @@ export default function Members() {
                   variant={viewMode === "list" ? "default" : "outline"}
                   size="icon"
                   onClick={() => setViewMode("list")}
-                  className={`${viewMode === "list" ? "bg-pink-600 hover:bg-pink-700" : ""} flex-1 sm:flex-none`}
+                  className={`${viewMode === "list" ? "bg-pink-600 hover:bg-pink-700" : ""} flex-shrink-0`}
                 >
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                     <rect x="2" y="3" width="16" height="3" />
@@ -479,7 +506,7 @@ export default function Members() {
 
             {viewMode === "grid" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProfiles.map((profile) => (
+                {sortedProfiles.map((profile) => (
                   <Card key={profile.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
                     <div className="relative">
                       <img
@@ -537,7 +564,7 @@ export default function Members() {
               </div>
             ) : (
               <div className="space-y-4">
-                {filteredProfiles.map((profile) => (
+                {sortedProfiles.map((profile) => (
                   <Card key={profile.id} className="overflow-hidden hover:shadow-xl transition-all cursor-pointer">
                     <div className="flex gap-4 p-4">
                       <div className="relative w-32 h-32 flex-shrink-0">
@@ -605,7 +632,7 @@ export default function Members() {
               </div>
             )}
 
-            {filteredProfiles.length === 0 && (
+            {sortedProfiles.length === 0 && (
               <Card className="p-12 text-center">
                 <SearchIcon size={48} className="mx-auto text-gray-400 mb-4" />
                 <h3 className="text-2xl font-bold mb-2">No profiles found</h3>

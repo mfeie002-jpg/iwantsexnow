@@ -32,11 +32,11 @@ interface Escort {
 }
 
 interface EscortGridProps {
-  escorts: Escort[];
+  escorts: any[];
   isLoadingMore: boolean;
   hasMore: boolean;
   handleLoadMore: () => void;
-  openLightbox: (escort: Escort, index: number) => void;
+  openLightbox: (index: number) => void;
   favorites: number[];
   toggleFavorite: (id: number) => void;
   resetFilters: () => void;
@@ -294,65 +294,53 @@ export function EscortGrid({
           </div>
 
           {/* Pagination Controls */}
-          {escorts.length > 0 && totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
-              <div className="text-white/60 text-sm">
-                Seite {currentPage} von {totalPages}
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => onPageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  variant="outline"
-                  size="sm"
-                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <ChevronLeft size={16} className="mr-1" />
-                  Zurück
-                </Button>
-
-                <div className="flex items-center gap-1">
-                  {renderPageNumbers()}
-                </div>
-
-                <Button
-                  onClick={() => onPageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  variant="outline"
-                  size="sm"
-                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Weiter
-                  <ChevronRight size={16} className="ml-1" />
-                </Button>
-              </div>
-
-              <div className="text-white/60 text-sm">
-                {escorts.length} Inserate
-              </div>
-            </div>
-          )}
-
-          {/* Load More Button (alternative to pagination) */}
-          {hasMore && totalPages <= 1 && (
-            <div className="text-center mt-8">
+          {totalPages > 1 && (
+            <div className="mt-12 flex justify-center items-center gap-2 flex-wrap">
               <Button
-                size="lg"
-                onClick={handleLoadMore}
-                disabled={isLoadingMore}
-                className="bg-white hover:bg-gray-200 text-black font-bold text-lg px-12 hover:scale-105 transition-transform"
+                variant="outline"
+                onClick={() => onPageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="border-white/30 text-white hover:bg-white/10 disabled:opacity-50"
               >
-                {isLoadingMore ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-2" />
-                    Loading...
-                  </>
-                ) : (
-                  <>
-                    Load More
-                  </>
-                )}
+                Previous
+              </Button>
+              
+              <div className="flex gap-2">
+                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+                  
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      onClick={() => onPageChange(pageNum)}
+                      className={currentPage === pageNum 
+                        ? "bg-pink-600 hover:bg-pink-700" 
+                        : "border-white/30 text-white hover:bg-white/10"
+                      }
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                })}
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={() => onPageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="border-white/30 text-white hover:bg-white/10 disabled:opacity-50"
+              >
+                Next
               </Button>
             </div>
           )}
