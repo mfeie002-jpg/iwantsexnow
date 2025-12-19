@@ -7,9 +7,11 @@ export default function Document() {
       <Head>
         <SEOElements />
         
-        {/* Favicon and App Icons - New Logo */}
+        {/* Favicon and App Icons - New Logo Pack */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/logo_16x16.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/logo_32x32.png" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/logo_64x64.png" />
         <link rel="icon" type="image/png" sizes="128x128" href="/logo_128x128.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/logo_256x256.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/logo_256x256.png" />

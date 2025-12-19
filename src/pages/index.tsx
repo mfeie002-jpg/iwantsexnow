@@ -312,7 +312,7 @@ export default function Home() {
               <div className="relative">
                 {/* New Elegant Logo */}
                 <img 
-                  src="/logo_128x128.png" 
+                  src="/logo_white.png" 
                   alt="iWantSexNow.ch Logo" 
                   className="w-12 h-12 transition-all group-hover:scale-110"
                 />

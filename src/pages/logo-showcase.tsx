@@ -44,37 +44,33 @@ export default function LogoShowcase() {
                 <div className="inline-block px-4 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
                   PRIMARY LOGO
                 </div>
-                <h3 className="text-3xl font-bold text-white">Rose Gold Gradient</h3>
+                <h3 className="text-3xl font-bold text-white">Full Color Logo</h3>
                 <p className="text-gray-400">
-                  The primary logo for dark backgrounds. Features an elegant rose gold gradient 
-                  that adds sophistication without being too colorful.
+                  The primary logo with full color for dark backgrounds. Use this as the main logo across the site.
                 </p>
                 <div className="space-y-2 text-sm text-gray-400">
                   <p><strong className="text-white">Use for:</strong> Main website header, navigation, dark-themed pages</p>
-                  <p><strong className="text-white">File:</strong> logo_128x128.png</p>
-                  <p><strong className="text-white">Colors:</strong> Champagne gold to muted rose gradient</p>
+                  <p><strong className="text-white">File:</strong> logo_white.png</p>
+                  <p><strong className="text-white">Background:</strong> Dark backgrounds only</p>
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-6">
                 <div className="bg-gray-950 p-8 rounded-lg border border-white/10 flex items-center justify-center">
                   <img 
-                    src="/logo_512x512.png" 
-                    alt="Rose Gold Logo" 
-                    className="w-48 h-48"
+                    src="/logo_white.png" 
+                    alt="White Logo" 
+                    className="h-48 w-auto"
                   />
                 </div>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div className="bg-gray-950 p-4 rounded border border-white/10 flex items-center justify-center">
-                    <img src="/logo_128x128.png" alt="128px" className="w-16 h-16" />
+                    <img src="/logo_512x512.png" alt="512px" className="w-16 h-16" />
                   </div>
                   <div className="bg-gray-950 p-4 rounded border border-white/10 flex items-center justify-center">
-                    <img src="/logo_64x64.png" alt="64px" className="w-8 h-8" />
+                    <img src="/logo_256x256.png" alt="256px" className="w-12 h-12" />
                   </div>
                   <div className="bg-gray-950 p-4 rounded border border-white/10 flex items-center justify-center">
-                    <img src="/logo_32x32.png" alt="32px" className="w-4 h-4" />
-                  </div>
-                  <div className="bg-gray-950 p-4 rounded border border-white/10 flex items-center justify-center">
-                    <img src="/logo_16x16.png" alt="16px" className="w-2 h-2" />
+                    <img src="/logo_128x128.png" alt="128px" className="w-8 h-8" />
                   </div>
                 </div>
               </div>
@@ -86,25 +82,23 @@ export default function LogoShowcase() {
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="flex-1 space-y-4">
                 <div className="inline-block px-4 py-1 bg-gray-500 text-white text-xs font-bold rounded-full">
-                  ALTERNATIVE
+                  DARK BACKGROUNDS
                 </div>
-                <h3 className="text-3xl font-bold text-white">Monochrome White</h3>
+                <h3 className="text-3xl font-bold text-white">White Logo Version</h3>
                 <p className="text-gray-400">
-                  Pure grayscale version for dark backgrounds when you want a more neutral look 
-                  without the rose gold gradient.
+                  Pure white version for dark backgrounds. Clean and minimal design.
                 </p>
                 <div className="space-y-2 text-sm text-gray-400">
-                  <p><strong className="text-white">Use for:</strong> When pure grayscale is preferred, print materials</p>
-                  <p><strong className="text-white">File:</strong> logo_monochrome_white.png</p>
-                  <p><strong className="text-white">Colors:</strong> White to light gray</p>
+                  <p><strong className="text-white">Use for:</strong> Dark backgrounds, minimal designs</p>
+                  <p><strong className="text-white">File:</strong> logo_white.png</p>
                 </div>
               </div>
               <div className="flex-1">
                 <div className="bg-gray-950 p-8 rounded-lg border border-white/10 flex items-center justify-center">
                   <img 
-                    src="/logo_monochrome_white.png" 
-                    alt="Monochrome White Logo" 
-                    className="w-48 h-48"
+                    src="/logo_white.png" 
+                    alt="White Logo" 
+                    className="h-48 w-auto"
                   />
                 </div>
               </div>
@@ -118,23 +112,21 @@ export default function LogoShowcase() {
                 <div className="inline-block px-4 py-1 bg-gray-700 text-white text-xs font-bold rounded-full">
                   LIGHT BACKGROUNDS
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900">Monochrome Black</h3>
+                <h3 className="text-3xl font-bold text-gray-900">Black Logo Version</h3>
                 <p className="text-gray-600">
-                  For light backgrounds and documents. Features dark gray tones that work well 
-                  on white or light-colored surfaces.
+                  For light backgrounds and documents. Features dark tones that work well on white or light-colored surfaces.
                 </p>
                 <div className="space-y-2 text-sm text-gray-600">
                   <p><strong className="text-gray-900">Use for:</strong> Documents, invoices, light-themed pages</p>
-                  <p><strong className="text-gray-900">File:</strong> logo_monochrome_black.png</p>
-                  <p><strong className="text-gray-900">Colors:</strong> Black to dark gray</p>
+                  <p><strong className="text-gray-900">File:</strong> logo_black.png</p>
                 </div>
               </div>
               <div className="flex-1">
                 <div className="bg-gray-100 p-8 rounded-lg border border-gray-300 flex items-center justify-center">
                   <img 
-                    src="/logo_monochrome_black.png" 
-                    alt="Monochrome Black Logo" 
-                    className="w-48 h-48"
+                    src="/logo_black.png" 
+                    alt="Black Logo" 
+                    className="h-48 w-auto"
                   />
                 </div>
               </div>

@@ -259,7 +259,11 @@ export default function EscortLausanne() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
-                <Heart className="text-pink-600 fill-pink-600" size={36} />
+                <img 
+                  src="/logo_white.png" 
+                  alt="iWantSexNow.ch Logo" 
+                  className="h-9 w-auto transition-all group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-pink-600/20 blur-xl group-hover:bg-pink-600/40 transition-all" />
               </div>
               <div>
