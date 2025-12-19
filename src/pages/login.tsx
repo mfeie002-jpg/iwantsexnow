@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -10,6 +10,9 @@ import { useRouter } from "next/router";
 
 export default function Login() {
   const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,6 +22,30 @@ export default function Login() {
     password: "",
     rememberMe: false
   });
+
+  // Scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,118 +113,149 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-6 md:p-8 shadow-2xl">
-        <div className="text-center mb-6 md:mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Heart className="text-pink-600 fill-pink-600" size={28} />
-            <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <h1 className="text-3xl md:text-4xl font-black mb-2">Welcome Back</h1>
-          <p className="text-sm md:text-base text-gray-600">Login to your account</p>
-        </div>
-
-        {/* Promo Banner */}
-        <Card className="p-4 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200">
-          <div className="flex items-center gap-3">
-            <Gift className="text-green-600 flex-shrink-0" size={24} />
-            <div>
-              <p className="font-bold text-green-900 text-sm">New members get 7 days free!</p>
-              <p className="text-xs text-green-700">Try premium features risk-free</p>
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      {/* Header with scroll behavior */}
+      <header className={`border-b border-gray-200 bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-3 shadow-lg' : 'py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2 group">
+              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
+                scrolled ? 'w-6 h-6' : 'w-7 h-7'
+              }`} />
+              <span className={`font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent transition-all duration-300 ${
+                scrolled ? 'text-lg' : 'text-xl'
+              }`}>
+                iWantSexNow.ch
+              </span>
+            </Link>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-600 hidden sm:inline">New here?</span>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/register">Register Free</Link>
+              </Button>
             </div>
           </div>
-        </Card>
+        </div>
+      </header>
 
-        {error && (
-          <Card className="p-4 mb-6 bg-red-50 border-2 border-red-200">
-            <div className="flex items-center gap-2 text-red-800">
-              <AlertCircle size={20} />
-              <p className="font-semibold text-sm">{error}</p>
+      {/* Add padding to account for fixed header */}
+      <div className="pt-20 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md p-6 md:p-8 shadow-2xl">
+          <div className="text-center mb-6 md:mb-8">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <Heart className="text-pink-600 fill-pink-600" size={28} />
+              <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                iWantSexNow.ch
+              </span>
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black mb-2">Welcome Back</h1>
+            <p className="text-sm md:text-base text-gray-600">Login to your account</p>
+          </div>
+
+          {/* Promo Banner */}
+          <Card className="p-4 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200">
+            <div className="flex items-center gap-3">
+              <Gift className="text-green-600 flex-shrink-0" size={24} />
+              <div>
+                <p className="font-bold text-green-900 text-sm">New members get 7 days free!</p>
+                <p className="text-xs text-green-700">Try premium features risk-free</p>
+              </div>
             </div>
           </Card>
-        )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="emailOrUsername">Email or Username</Label>
-            <Input
-              id="emailOrUsername"
-              placeholder="your@email.com or username"
-              value={formData.emailOrUsername}
-              onChange={(e) => {
-                setFormData({ ...formData, emailOrUsername: e.target.value });
-                setError("");
-              }}
-              autoComplete="username"
-            />
-          </div>
+          {error && (
+            <Card className="p-4 mb-6 bg-red-50 border-2 border-red-200">
+              <div className="flex items-center gap-2 text-red-800">
+                <AlertCircle size={20} />
+                <p className="font-semibold text-sm">{error}</p>
+              </div>
+            </Card>
+          )}
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link href="/forgot-password" className="text-sm text-pink-600 hover:underline font-semibold">
-                Forgot password?
-              </Link>
-            </div>
-            <div className="relative">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="emailOrUsername">Email or Username</Label>
               <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={formData.password}
+                id="emailOrUsername"
+                placeholder="your@email.com or username"
+                value={formData.emailOrUsername}
                 onChange={(e) => {
-                  setFormData({ ...formData, password: e.target.value });
+                  setFormData({ ...formData, emailOrUsername: e.target.value });
                   setError("");
                 }}
-                autoComplete="current-password"
+                autoComplete="username"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="rememberMe"
-              checked={formData.rememberMe}
-              onCheckedChange={(checked) => setFormData({ ...formData, rememberMe: checked as boolean })}
-            />
-            <Label htmlFor="rememberMe" className="text-sm cursor-pointer">
-              Remember me for 30 days
-            </Label>
-          </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link href="/forgot-password" className="text-sm text-pink-600 hover:underline font-semibold">
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value });
+                    setError("");
+                  }}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
 
-          <Button
-            type="submit"
-            size="lg"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-base md:text-lg h-12 md:h-14"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="animate-spin mr-2" size={20} />
-                Logging in...
-              </>
-            ) : (
-              "Login"
-            )}
-          </Button>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="rememberMe"
+                checked={formData.rememberMe}
+                onCheckedChange={(checked) => setFormData({ ...formData, rememberMe: checked as boolean })}
+              />
+              <Label htmlFor="rememberMe" className="text-sm cursor-pointer">
+                Remember me for 30 days
+              </Label>
+            </div>
 
-          <p className="text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link href="/register" className="text-pink-600 hover:underline font-semibold">
-              Register free
-            </Link>
-          </p>
-        </form>
-      </Card>
+            <Button
+              type="submit"
+              size="lg"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-base md:text-lg h-12 md:h-14"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin mr-2" size={20} />
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
+            </Button>
+
+            <p className="text-center text-sm text-gray-600">
+              Don't have an account?{" "}
+              <Link href="/register" className="text-pink-600 hover:underline font-semibold">
+                Register free
+              </Link>
+            </p>
+          </form>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -54,6 +54,8 @@ export default function EscortZurich() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [comparison, setComparison] = useState<number[]>([]);
   const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [selectedEscort, setSelectedEscort] = useState<Escort | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
@@ -266,10 +268,21 @@ export default function EscortZurich() {
   };
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 50);
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -286,9 +299,11 @@ export default function EscortZurich() {
       />
 
       <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/90 shadow-2xl' : 'bg-black/60'
+        scrolled ? 'bg-black/90 shadow-2xl py-2' : 'bg-black/60 py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
       }`}>
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">

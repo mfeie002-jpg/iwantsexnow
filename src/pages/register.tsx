@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -12,6 +12,9 @@ import { useRouter } from "next/router";
 
 export default function Register() {
   const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,7 +25,7 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "client", // "client" or "escort"
+    accountType: "client",
     gender: "",
     age: "",
     city: "",
@@ -31,6 +34,30 @@ export default function Register() {
     agreeToPrivacy: false,
     newsletter: true
   });
+
+  // Scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -167,360 +194,393 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl p-6 md:p-8 shadow-2xl">
-        <div className="text-center mb-6 md:mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
-            <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              iWantSexNow.ch
-            </span>
-          </Link>
-          <h1 className="text-3xl md:text-4xl font-black mb-2">Create Your Account</h1>
-          <p className="text-base md:text-xl text-gray-600">Join thousands of singles in Switzerland</p>
-        </div>
-
-        {/* Trust Badges - Mobile Optimized */}
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-8 pb-6 md:pb-8 border-b">
-          <Badge variant="outline" className="text-xs md:text-sm">
-            <Shield size={14} className="mr-1" />
-            100% Secure
-          </Badge>
-          <Badge variant="outline" className="text-xs md:text-sm">
-            <Lock size={14} className="mr-1" />
-            Private & Discreet
-          </Badge>
-          <Badge variant="outline" className="text-xs md:text-sm">
-            <CheckCircle size={14} className="mr-1" />
-            Verified Profiles
-          </Badge>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-          {/* Account Type Selection */}
-          <div className="space-y-2">
-            <Label>I want to *</Label>
-            <div className="grid grid-cols-2 gap-4">
-              <label className={`flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                formData.accountType === "client" ? "border-pink-600 bg-pink-50" : "border-gray-300 hover:border-pink-300"
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      {/* Header with scroll behavior */}
+      <header className={`border-b border-gray-200 bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-3 shadow-lg' : 'py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2 group">
+              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
+                scrolled ? 'w-6 h-6' : 'w-7 h-7'
+              }`} />
+              <span className={`font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent transition-all duration-300 ${
+                scrolled ? 'text-lg' : 'text-xl'
               }`}>
-                <input
-                  type="radio"
-                  name="accountType"
-                  value="client"
-                  checked={formData.accountType === "client"}
-                  onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
-                  className="mr-3 w-5 h-5 accent-pink-600"
-                />
-                <div className="text-center">
-                  <div className="font-bold">Browse & Meet</div>
-                  <div className="text-sm text-gray-600">Find companions</div>
-                </div>
-              </label>
-              <label className={`flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                formData.accountType === "escort" ? "border-pink-600 bg-pink-50" : "border-gray-300 hover:border-pink-300"
-              }`}>
-                <input
-                  type="radio"
-                  name="accountType"
-                  value="escort"
-                  checked={formData.accountType === "escort"}
-                  onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
-                  className="mr-3 w-5 h-5 accent-pink-600"
-                />
-                <div className="text-center">
-                  <div className="font-bold">Offer Services</div>
-                  <div className="text-sm text-gray-600">Become an escort</div>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Username */}
-            <div className="space-y-2">
-              <Label htmlFor="username">Username *</Label>
-              <Input
-                id="username"
-                placeholder="Choose a unique username"
-                value={formData.username}
-                onChange={(e) => {
-                  setFormData({ ...formData, username: e.target.value });
-                  setErrors({ ...errors, username: "" });
-                }}
-                className={errors.username ? "border-red-500" : ""}
-              />
-              {errors.username && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.username}
-                </p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange={(e) => {
-                  setFormData({ ...formData, email: e.target.value });
-                  setErrors({ ...errors, email: "" });
-                }}
-                className={errors.email ? "border-red-500" : ""}
-              />
-              {errors.email && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.email}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Password */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Password *</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Min. 8 characters"
-                  value={formData.password}
-                  onChange={(e) => {
-                    setFormData({ ...formData, password: e.target.value });
-                    setErrors({ ...errors, password: "" });
-                  }}
-                  className={errors.password ? "border-red-500" : ""}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.password}
-                </p>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password *</Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Re-enter password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => {
-                    setFormData({ ...formData, confirmPassword: e.target.value });
-                    setErrors({ ...errors, confirmPassword: "" });
-                  }}
-                  className={errors.confirmPassword ? "border-red-500" : ""}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {/* Gender */}
-            <div className="space-y-2">
-              <Label htmlFor="gender">Gender *</Label>
-              <Select 
-                value={formData.gender} 
-                onValueChange={(value) => {
-                  setFormData({ ...formData, gender: value });
-                  setErrors({ ...errors, gender: "" });
-                }}
-              >
-                <SelectTrigger className={errors.gender ? "border-red-500" : ""}>
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="trans">Trans</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.gender && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.gender}
-                </p>
-              )}
-            </div>
-
-            {/* Age */}
-            <div className="space-y-2">
-              <Label htmlFor="age">Age *</Label>
-              <Input
-                id="age"
-                type="number"
-                placeholder="18+"
-                min="18"
-                max="99"
-                value={formData.age}
-                onChange={(e) => {
-                  setFormData({ ...formData, age: e.target.value });
-                  setErrors({ ...errors, age: "" });
-                }}
-                className={errors.age ? "border-red-500" : ""}
-              />
-              {errors.age && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.age}
-                </p>
-              )}
-            </div>
-
-            {/* City */}
-            <div className="space-y-2">
-              <Label htmlFor="city">City *</Label>
-              <Input
-                id="city"
-                placeholder="Your city"
-                value={formData.city}
-                onChange={(e) => {
-                  setFormData({ ...formData, city: e.target.value });
-                  setErrors({ ...errors, city: "" });
-                }}
-                className={errors.city ? "border-red-500" : ""}
-              />
-              {errors.city && (
-                <p className="text-red-600 text-sm flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {errors.city}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Phone (Optional) */}
-          <div className="space-y-2">
-            <Label htmlFor="phone">Phone (Optional)</Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="+41 XX XXX XX XX"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            />
-          </div>
-
-          {/* Terms & Conditions */}
-          <div className="space-y-3">
-            <div className="flex items-start gap-2">
-              <Checkbox
-                id="terms"
-                checked={formData.agreeToTerms}
-                onCheckedChange={(checked) => {
-                  setFormData({ ...formData, agreeToTerms: checked as boolean });
-                  setErrors({ ...errors, terms: "" });
-                }}
-                className={errors.terms ? "border-red-500" : ""}
-              />
-              <Label htmlFor="terms" className="text-sm leading-relaxed cursor-pointer">
-                I am at least 18 years old and agree to the{" "}
-                <Link href="/terms" className="text-pink-600 hover:underline font-semibold">
-                  Terms of Service
-                </Link>
-              </Label>
-            </div>
-            {errors.terms && (
-              <p className="text-red-600 text-sm flex items-center gap-1 ml-6">
-                <AlertCircle size={14} />
-                {errors.terms}
-              </p>
-            )}
-
-            <div className="flex items-start gap-2">
-              <Checkbox
-                id="privacy"
-                checked={formData.agreeToPrivacy}
-                onCheckedChange={(checked) => {
-                  setFormData({ ...formData, agreeToPrivacy: checked as boolean });
-                  setErrors({ ...errors, privacy: "" });
-                }}
-                className={errors.privacy ? "border-red-500" : ""}
-              />
-              <Label htmlFor="privacy" className="text-sm leading-relaxed cursor-pointer">
-                I agree to the{" "}
-                <Link href="/privacy" className="text-pink-600 hover:underline font-semibold">
-                  Privacy Policy
-                </Link>
-              </Label>
-            </div>
-            {errors.privacy && (
-              <p className="text-red-600 text-sm flex items-center gap-1 ml-6">
-                <AlertCircle size={14} />
-                {errors.privacy}
-              </p>
-            )}
-
-            <div className="flex items-start gap-2">
-              <Checkbox
-                id="newsletter"
-                checked={formData.newsletter}
-                onCheckedChange={(checked) => setFormData({ ...formData, newsletter: checked as boolean })}
-              />
-              <Label htmlFor="newsletter" className="text-sm leading-relaxed cursor-pointer">
-                Send me exclusive offers and updates (optional)
-              </Label>
-            </div>
-          </div>
-
-          <Button
-            type="submit"
-            size="lg"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-base md:text-lg h-12 md:h-14"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="animate-spin mr-2" size={20} />
-                Creating Account...
-              </>
-            ) : (
-              <>
-                <CheckCircle2 size={20} className="mr-2" />
-                Create Account
-              </>
-            )}
-          </Button>
-
-          <p className="text-center text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link href="/login" className="text-pink-600 hover:underline font-semibold">
-              Login here
+                iWantSexNow.ch
+              </span>
             </Link>
-          </p>
-        </form>
-      </Card>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-600 hidden sm:inline">Already a member?</span>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/login">Login</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Add padding to account for fixed header */}
+      <div className="pt-20">
+        <div className="flex items-center justify-center p-4">
+          <Card className="w-full max-w-3xl p-6 md:p-8 shadow-2xl">
+            <div className="text-center mb-6 md:mb-8">
+              <Link href="/" className="inline-flex items-center gap-2 mb-4">
+                <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
+                <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  iWantSexNow.ch
+                </span>
+              </Link>
+              <h1 className="text-3xl md:text-4xl font-black mb-2">Create Your Account</h1>
+              <p className="text-base md:text-xl text-gray-600">Join thousands of singles in Switzerland</p>
+            </div>
+
+            {/* Trust Badges - Mobile Optimized */}
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-8 pb-6 md:pb-8 border-b">
+              <Badge variant="outline" className="text-xs md:text-sm">
+                <Shield size={14} className="mr-1" />
+                100% Secure
+              </Badge>
+              <Badge variant="outline" className="text-xs md:text-sm">
+                <Lock size={14} className="mr-1" />
+                Private & Discreet
+              </Badge>
+              <Badge variant="outline" className="text-xs md:text-sm">
+                <CheckCircle size={14} className="mr-1" />
+                Verified Profiles
+              </Badge>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+              {/* Account Type Selection */}
+              <div className="space-y-2">
+                <Label>I want to *</Label>
+                <div className="grid grid-cols-2 gap-4">
+                  <label className={`flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    formData.accountType === "client" ? "border-pink-600 bg-pink-50" : "border-gray-300 hover:border-pink-300"
+                  }`}>
+                    <input
+                      type="radio"
+                      name="accountType"
+                      value="client"
+                      checked={formData.accountType === "client"}
+                      onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
+                      className="mr-3 w-5 h-5 accent-pink-600"
+                    />
+                    <div className="text-center">
+                      <div className="font-bold">Browse & Meet</div>
+                      <div className="text-sm text-gray-600">Find companions</div>
+                    </div>
+                  </label>
+                  <label className={`flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    formData.accountType === "escort" ? "border-pink-600 bg-pink-50" : "border-gray-300 hover:border-pink-300"
+                  }`}>
+                    <input
+                      type="radio"
+                      name="accountType"
+                      value="escort"
+                      checked={formData.accountType === "escort"}
+                      onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
+                      className="mr-3 w-5 h-5 accent-pink-600"
+                    />
+                    <div className="text-center">
+                      <div className="font-bold">Offer Services</div>
+                      <div className="text-sm text-gray-600">Become an escort</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Username */}
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username *</Label>
+                  <Input
+                    id="username"
+                    placeholder="Choose a unique username"
+                    value={formData.username}
+                    onChange={(e) => {
+                      setFormData({ ...formData, username: e.target.value });
+                      setErrors({ ...errors, username: "" });
+                    }}
+                    className={errors.username ? "border-red-500" : ""}
+                  />
+                  {errors.username && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.username}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      setErrors({ ...errors, email: "" });
+                    }}
+                    className={errors.email ? "border-red-500" : ""}
+                  />
+                  {errors.email && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Password */}
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password *</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Min. 8 characters"
+                      value={formData.password}
+                      onChange={(e) => {
+                        setFormData({ ...formData, password: e.target.value });
+                        setErrors({ ...errors, password: "" });
+                      }}
+                      className={errors.password ? "border-red-500" : ""}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+
+                {/* Confirm Password */}
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password *</Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Re-enter password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => {
+                        setFormData({ ...formData, confirmPassword: e.target.value });
+                        setErrors({ ...errors, confirmPassword: "" });
+                      }}
+                      className={errors.confirmPassword ? "border-red-500" : ""}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.confirmPassword}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                {/* Gender */}
+                <div className="space-y-2">
+                  <Label htmlFor="gender">Gender *</Label>
+                  <Select 
+                    value={formData.gender} 
+                    onValueChange={(value) => {
+                      setFormData({ ...formData, gender: value });
+                      setErrors({ ...errors, gender: "" });
+                    }}
+                  >
+                    <SelectTrigger className={errors.gender ? "border-red-500" : ""}>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                      <SelectItem value="trans">Trans</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.gender && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.gender}
+                    </p>
+                  )}
+                </div>
+
+                {/* Age */}
+                <div className="space-y-2">
+                  <Label htmlFor="age">Age *</Label>
+                  <Input
+                    id="age"
+                    type="number"
+                    placeholder="18+"
+                    min="18"
+                    max="99"
+                    value={formData.age}
+                    onChange={(e) => {
+                      setFormData({ ...formData, age: e.target.value });
+                      setErrors({ ...errors, age: "" });
+                    }}
+                    className={errors.age ? "border-red-500" : ""}
+                  />
+                  {errors.age && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.age}
+                    </p>
+                  )}
+                </div>
+
+                {/* City */}
+                <div className="space-y-2">
+                  <Label htmlFor="city">City *</Label>
+                  <Input
+                    id="city"
+                    placeholder="Your city"
+                    value={formData.city}
+                    onChange={(e) => {
+                      setFormData({ ...formData, city: e.target.value });
+                      setErrors({ ...errors, city: "" });
+                    }}
+                    className={errors.city ? "border-red-500" : ""}
+                  />
+                  {errors.city && (
+                    <p className="text-red-600 text-sm flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {errors.city}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Phone (Optional) */}
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone (Optional)</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+41 XX XXX XX XX"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+
+              {/* Terms & Conditions */}
+              <div className="space-y-3">
+                <div className="flex items-start gap-2">
+                  <Checkbox
+                    id="terms"
+                    checked={formData.agreeToTerms}
+                    onCheckedChange={(checked) => {
+                      setFormData({ ...formData, agreeToTerms: checked as boolean });
+                      setErrors({ ...errors, terms: "" });
+                    }}
+                    className={errors.terms ? "border-red-500" : ""}
+                  />
+                  <Label htmlFor="terms" className="text-sm leading-relaxed cursor-pointer">
+                    I am at least 18 years old and agree to the{" "}
+                    <Link href="/terms" className="text-pink-600 hover:underline font-semibold">
+                      Terms of Service
+                    </Link>
+                  </Label>
+                </div>
+                {errors.terms && (
+                  <p className="text-red-600 text-sm flex items-center gap-1 ml-6">
+                    <AlertCircle size={14} />
+                    {errors.terms}
+                  </p>
+                )}
+
+                <div className="flex items-start gap-2">
+                  <Checkbox
+                    id="privacy"
+                    checked={formData.agreeToPrivacy}
+                    onCheckedChange={(checked) => {
+                      setFormData({ ...formData, agreeToPrivacy: checked as boolean });
+                      setErrors({ ...errors, privacy: "" });
+                    }}
+                    className={errors.privacy ? "border-red-500" : ""}
+                  />
+                  <Label htmlFor="privacy" className="text-sm leading-relaxed cursor-pointer">
+                    I agree to the{" "}
+                    <Link href="/privacy" className="text-pink-600 hover:underline font-semibold">
+                      Privacy Policy
+                    </Link>
+                  </Label>
+                </div>
+                {errors.privacy && (
+                  <p className="text-red-600 text-sm flex items-center gap-1 ml-6">
+                    <AlertCircle size={14} />
+                    {errors.privacy}
+                  </p>
+                )}
+
+                <div className="flex items-start gap-2">
+                  <Checkbox
+                    id="newsletter"
+                    checked={formData.newsletter}
+                    onCheckedChange={(checked) => setFormData({ ...formData, newsletter: checked as boolean })}
+                  />
+                  <Label htmlFor="newsletter" className="text-sm leading-relaxed cursor-pointer">
+                    Send me exclusive offers and updates (optional)
+                  </Label>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-base md:text-lg h-12 md:h-14"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2" size={20} />
+                    Creating Account...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 size={20} className="mr-2" />
+                    Create Account
+                  </>
+                )}
+              </Button>
+
+              <p className="text-center text-sm text-gray-600">
+                Already have an account?{" "}
+                <Link href="/login" className="text-pink-600 hover:underline font-semibold">
+                  Login here
+                </Link>
+              </p>
+            </form>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

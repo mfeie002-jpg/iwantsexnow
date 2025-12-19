@@ -15,6 +15,33 @@ export default function Profile() {
   const [user, setUser] = useState<any>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"overview" | "stats" | "visitors" | "matches" | "activity" | "payments">("overview");
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -237,12 +264,20 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 md:py-4">
+      <header className={`border-b bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-3 shadow-lg' : 'py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-2">
-              <Heart className="text-pink-600 fill-pink-600" size={28} />
-              <span className="text-xl md:text-2xl font-black text-pink-600">
+              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
+                scrolled ? 'w-6 h-6' : 'w-7 h-7'
+              }`} />
+              <span className={`font-black text-pink-600 transition-all duration-300 ${
+                scrolled ? 'text-lg' : 'text-xl md:text-2xl'
+              }`}>
                 iWantSexNow.ch
               </span>
             </Link>
@@ -276,7 +311,7 @@ export default function Profile() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 md:py-8">
+      <div className="container mx-auto px-4 py-6 md:py-8 pt-24">
         <div className="max-w-7xl mx-auto">
           {/* Premium Upgrade Banner - Mobile Optimized */}
           <Card className="p-4 md:p-6 mb-6 md:mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">

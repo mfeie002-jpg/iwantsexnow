@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -27,6 +27,8 @@ export default function Messages() {
   const [selectedChat, setSelectedChat] = useState<number>(1);
   const [messageText, setMessageText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
   const conversations: Conversation[] = [
     {
@@ -117,11 +119,17 @@ export default function Messages() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className={`border-b bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-2 md:py-3' : 'py-3 md:py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between gap-2">
             <Link href="/" className="flex items-center gap-2 min-w-0">
-              <Heart className="text-pink-600 fill-pink-600 flex-shrink-0" size={28} />
+              <Heart className={`text-pink-600 fill-pink-600 flex-shrink-0 transition-all duration-300 ${
+                scrolled ? 'w-6 h-6 md:w-7 md:h-7' : 'w-7 h-7 md:w-8 md:h-8'
+              }`} />
               <span className="text-lg md:text-2xl font-black text-pink-600 truncate">
                 iWantSexNow.ch
               </span>
@@ -138,7 +146,7 @@ export default function Messages() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 md:py-12">
+      <div className="container mx-auto px-4 py-6 md:py-12 pt-24 md:pt-28">
         <h1 className="text-3xl md:text-4xl font-black mb-6">Messages</h1>
 
         <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-250px)]">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -13,6 +13,27 @@ import { useRouter } from "next/router";
 
 export default function Members() {
   const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 50);
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   const [filters, setFilters] = useState({
     gender: "all",
     ageMin: 18,
@@ -212,11 +233,17 @@ export default function Members() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className={`border-b bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-2 md:py-3' : 'py-3 md:py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-2">
-              <Heart className="text-pink-600 fill-pink-600" size={28} />
+              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
+                scrolled ? 'w-6 h-6 md:w-7 md:h-7' : 'w-7 h-7 md:w-8 md:h-8'
+              }`} />
               <span className="text-xl md:text-2xl font-black text-pink-600">
                 iWantSexNow.ch
               </span>
@@ -239,7 +266,7 @@ export default function Members() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 md:py-8">
+      <div className="container mx-auto px-4 py-6 pt-24 md:pt-28">
         {/* Premium Upgrade Banner - Mobile Optimized */}
         <Card className="p-4 md:p-6 mb-6 md:mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

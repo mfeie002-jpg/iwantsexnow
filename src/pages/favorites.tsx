@@ -9,6 +9,28 @@ import { useRouter } from "next/router";
 export default function Favorites() {
   const router = useRouter();
   const [favorites, setFavorites] = useState<any[]>([]);
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      setScrolled(currentScrollY > 50);
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   useEffect(() => {
     // Load favorites from localStorage
@@ -66,11 +88,17 @@ export default function Favorites() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 md:py-4">
+      <header className={`border-b bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-2 md:py-3' : 'py-3 md:py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}>
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <Heart className="text-pink-600 fill-pink-600 w-7 h-7 md:w-8 md:h-8" />
+              <Heart className={`text-pink-600 fill-pink-600 transition-all duration-300 ${
+                scrolled ? 'w-6 h-6 md:w-7 md:h-7' : 'w-7 h-7 md:w-8 md:h-8'
+              }`} />
               <span className="text-xl md:text-2xl font-black text-pink-600">
                 iWantSexNow.ch
               </span>
@@ -87,7 +115,7 @@ export default function Favorites() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12 pt-24 md:pt-28">
         <div className="max-w-6xl mx-auto">
           <div className="mb-6 md:mb-8">
             <h1 className="text-3xl md:text-4xl font-black mb-2">Your Favorites</h1>
