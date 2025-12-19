@@ -36,7 +36,7 @@ interface EscortGridProps {
   isLoadingMore: boolean;
   hasMore: boolean;
   handleLoadMore: () => void;
-  openLightbox: (index: number) => void;
+  openLightbox: (escort: any, index: number) => void;
   favorites: number[];
   toggleFavorite: (id: number) => void;
   resetFilters: () => void;
