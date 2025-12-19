@@ -95,10 +95,25 @@ export function HeroSection({
         </div>
       </motion.section>
 
-      {/* Animated Hero Section */}
+      {/* Animated Hero Section with Background Image */}
       <section className="relative py-20 md:py-32 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 pointer-events-none">
+        {/* Background Image with Overlays */}
+        <div className="absolute inset-0">
+          {/* Romantic/Sensual Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80')",
+            }}
+          />
+          
+          {/* Dark Gradient Overlay for Readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80" />
+          
+          {/* Colored Gradient Overlay for Brand Colors */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/60 via-pink-900/50 to-orange-900/60" />
+          
+          {/* Animated Vignette Effect */}
           <motion.div 
             animate={{ 
               opacity: [0.3, 0.5, 0.3],
@@ -110,6 +125,8 @@ export function HeroSection({
             }}
             className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-orange-600/20"
           />
+          
+          {/* Floating Orbs for Depth */}
           <motion.div 
             animate={{ 
               x: [0, 100, 0],
