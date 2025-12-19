@@ -37,16 +37,49 @@ export function ContactSection() {
     e.preventDefault();
     const errors: {[key: string]: string} = {};
 
-    if (!contactForm.name.trim()) errors.name = "Name is required";
-    if (!contactForm.email.trim()) errors.email = "Email is required";
-    else if (!validateEmail(contactForm.email)) errors.email = "Invalid email format";
-    if (contactForm.phone && !validatePhone(contactForm.phone)) errors.phone = "Invalid phone format";
-    if (!contactForm.message.trim()) errors.message = "Message is required";
+    // Validate name
+    if (!contactForm.name.trim()) {
+      errors.name = "Name is required";
+    } else if (contactForm.name.trim().length < 2) {
+      errors.name = "Name must be at least 2 characters";
+    }
+
+    // Validate email
+    if (!contactForm.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!validateEmail(contactForm.email)) {
+      errors.email = "Invalid email format (example: name@domain.com)";
+    }
+
+    // Validate phone (optional but must be valid if provided)
+    if (contactForm.phone && !validatePhone(contactForm.phone)) {
+      errors.phone = "Invalid phone format (example: +41 XX XXX XX XX)";
+    }
+
+    // Validate message
+    if (!contactForm.message.trim()) {
+      errors.message = "Message is required";
+    } else if (contactForm.message.trim().length < 10) {
+      errors.message = "Message must be at least 10 characters";
+    } else if (contactForm.message.trim().length > 1000) {
+      errors.message = "Message must not exceed 1000 characters";
+    }
+
+    // Validate date (optional but must be in future if provided)
+    if (contactForm.date) {
+      const selectedDate = new Date(contactForm.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (selectedDate < today) {
+        errors.date = "Date must be in the future";
+      }
+    }
 
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
       setFormSubmitting(true);
+      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       setFormSubmitting(false);
       setFormSuccess(true);
@@ -68,6 +101,7 @@ export function ContactSection() {
       return;
     }
 
+    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     setNewsletterSuccess(true);
     setNewsletterEmail("");
@@ -153,7 +187,7 @@ export function ContactSection() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Label className="text-white mb-2 block">Phone</Label>
+                    <Label className="text-white mb-2 block">Phone (optional)</Label>
                     <Input
                       type="tel"
                       value={contactForm.phone}
@@ -175,18 +209,30 @@ export function ContactSection() {
                   </div>
 
                   <div>
-                    <Label className="text-white mb-2 block">Preferred Date</Label>
+                    <Label className="text-white mb-2 block">Preferred Date (optional)</Label>
                     <Input
                       type="date"
                       value={contactForm.date}
-                      onChange={(e) => setContactForm({...contactForm, date: e.target.value})}
-                      className="bg-white/10 border-white/20 text-white focus:border-pink-500 focus:ring-pink-500 transition-all"
+                      onChange={(e) => {
+                        setContactForm({...contactForm, date: e.target.value});
+                        setFormErrors({...formErrors, date: ""});
+                      }}
+                      min={new Date().toISOString().split('T')[0]}
+                      className={`bg-white/10 border-white/20 text-white focus:border-pink-500 focus:ring-pink-500 transition-all ${
+                        formErrors.date ? "border-red-500" : ""
+                      }`}
                     />
+                    {formErrors.date && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1 animate-shake">
+                        <AlertCircle size={14} />
+                        {formErrors.date}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div>
-                  <Label className="text-white mb-2 block">Duration</Label>
+                  <Label className="text-white mb-2 block">Duration (optional)</Label>
                   <Select value={contactForm.duration} onValueChange={(value) => setContactForm({...contactForm, duration: value})}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white focus:border-pink-500 focus:ring-pink-500 transition-all">
                       <SelectValue placeholder="Select duration" />
@@ -212,16 +258,24 @@ export function ContactSection() {
                     }}
                     rows={4}
                     placeholder="Tell us about your preferences..."
+                    maxLength={1000}
                     className={`bg-white/10 border-white/20 text-white placeholder:text-gray-400 resize-none focus:border-pink-500 focus:ring-pink-500 transition-all ${
                       formErrors.message ? "border-red-500" : ""
                     }`}
                   />
-                  {formErrors.message && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1 animate-shake">
-                      <AlertCircle size={14} />
-                      {formErrors.message}
-                    </p>
-                  )}
+                  <div className="flex justify-between items-center mt-1">
+                    {formErrors.message ? (
+                      <p className="text-red-400 text-sm flex items-center gap-1 animate-shake">
+                        <AlertCircle size={14} />
+                        {formErrors.message}
+                      </p>
+                    ) : (
+                      <span className="text-gray-400 text-xs">Minimum 10 characters</span>
+                    )}
+                    <span className="text-gray-400 text-xs">
+                      {contactForm.message.length}/1000
+                    </span>
+                  </div>
                 </div>
 
                 <Button

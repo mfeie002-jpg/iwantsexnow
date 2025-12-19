@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MapPin, MessageCircle, Star, Shield, CheckCircle, Play, Search } from "lucide-react";
+import { Heart, MapPin, MessageCircle, Star, Shield, CheckCircle, Play, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Escort {
   id: number;
@@ -40,6 +40,9 @@ interface EscortGridProps {
   favorites: number[];
   toggleFavorite: (id: number) => void;
   resetFilters: () => void;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 export function EscortGrid({
@@ -50,8 +53,75 @@ export function EscortGrid({
   openLightbox,
   favorites,
   toggleFavorite,
-  resetFilters
+  resetFilters,
+  currentPage,
+  totalPages,
+  onPageChange
 }: EscortGridProps) {
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisible - 1);
+    
+    if (endPage - startPage < maxVisible - 1) {
+      startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+
+    if (startPage > 1) {
+      pages.push(
+        <Button
+          key={1}
+          onClick={() => onPageChange(1)}
+          variant="outline"
+          size="sm"
+          className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500"
+        >
+          1
+        </Button>
+      );
+      if (startPage > 2) {
+        pages.push(<span key="start-ellipsis" className="text-white/60 px-2">...</span>);
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <Button
+          key={i}
+          onClick={() => onPageChange(i)}
+          variant={currentPage === i ? "default" : "outline"}
+          size="sm"
+          className={currentPage === i 
+            ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold" 
+            : "bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500"}
+        >
+          {i}
+        </Button>
+      );
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pages.push(<span key="end-ellipsis" className="text-white/60 px-2">...</span>);
+      }
+      pages.push(
+        <Button
+          key={totalPages}
+          onClick={() => onPageChange(totalPages)}
+          variant="outline"
+          size="sm"
+          className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500"
+        >
+          {totalPages}
+        </Button>
+      );
+    }
+
+    return pages;
+  };
+
   return (
     <section id="escorts" className="py-20 bg-black/40 backdrop-blur-sm border-y border-white/10">
       <div className="container mx-auto px-4">
@@ -223,8 +293,50 @@ export function EscortGrid({
             ))}
           </div>
 
-          {hasMore && (
-            <div className="text-center">
+          {/* Pagination Controls */}
+          {escorts.length > 0 && totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
+              <div className="text-white/60 text-sm">
+                Seite {currentPage} von {totalPages}
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => onPageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft size={16} className="mr-1" />
+                  Zurück
+                </Button>
+
+                <div className="flex items-center gap-1">
+                  {renderPageNumbers()}
+                </div>
+
+                <Button
+                  onClick={() => onPageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Weiter
+                  <ChevronRight size={16} className="ml-1" />
+                </Button>
+              </div>
+
+              <div className="text-white/60 text-sm">
+                {escorts.length} Inserate
+              </div>
+            </div>
+          )}
+
+          {/* Load More Button (alternative to pagination) */}
+          {hasMore && totalPages <= 1 && (
+            <div className="text-center mt-8">
               <Button
                 size="lg"
                 onClick={handleLoadMore}
@@ -245,6 +357,7 @@ export function EscortGrid({
             </div>
           )}
 
+          {/* Empty State */}
           {escorts.length === 0 && (
             <Card className="p-12 text-center bg-white/5 backdrop-blur-sm border-white/10">
               <Search size={64} className="mx-auto text-gray-500 mb-4" />

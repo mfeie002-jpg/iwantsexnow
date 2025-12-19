@@ -26,8 +26,9 @@ export default function Home() {
   const [onlineCount, setOnlineCount] = useState(127);
   const [activeViewers, setActiveViewers] = useState(342);
   const [favorites, setFavorites] = useState<number[]>([]);
-  const [displayCount, setDisplayCount] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
 
   // Recent Bookings Ticker
   const [recentBookings] = useState([
@@ -181,13 +182,21 @@ export default function Home() {
     return true;
   });
 
-  const displayedEscorts = filteredEscorts.slice(0, displayCount);
-  const hasMore = displayCount < filteredEscorts.length;
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredEscorts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedEscorts = filteredEscorts.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleLoadMore = () => {
     setIsLoadingMore(true);
     setTimeout(() => {
-      setDisplayCount(prev => prev + 12);
+      setCurrentPage(prev => prev + 1);
       setIsLoadingMore(false);
     }, 1000);
   };
@@ -205,7 +214,13 @@ export default function Home() {
     setSelectedOffer("all");
     setVerifiedPhotos(false);
     setVideoAds(false);
+    setCurrentPage(1);
   };
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCity, selectedService, selectedOffer, verifiedPhotos, videoAds]);
 
   // Effects
   useEffect(() => {
@@ -225,7 +240,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <SEO 
+        title="iWantSexNow.ch - Premium Escort Services in Switzerland"
+        description="Discover exclusive escort services across Switzerland. Browse verified profiles in Zürich, Geneva, Basel and more."
+      />
+
       {/* Header */}
       <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
         scrolled ? 'bg-black/80 shadow-2xl' : 'bg-black/40'
@@ -354,14 +374,17 @@ export default function Home() {
       </section>
 
       <EscortGrid 
-        escorts={displayedEscorts}
+        escorts={paginatedEscorts}
         isLoadingMore={isLoadingMore}
-        hasMore={hasMore}
+        hasMore={currentPage < totalPages}
         handleLoadMore={handleLoadMore}
         openLightbox={() => {}} // Placeholder for now
         favorites={favorites}
         toggleFavorite={toggleFavorite}
         resetFilters={resetFilters}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
 
       <ServiceCategories />
