@@ -137,23 +137,16 @@ export function MobileNav() {
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
+          {/* Header with New Typographic Logo */}
           <div className="flex items-center justify-between p-4 border-b border-white/20 bg-black/30 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <img 
-                  src="/logo_monochrome_white.png" 
-                  alt="iWantSexNow.ch Logo" 
-                  className="w-10 h-10"
-                />
+            <Link href="/" onClick={closeMenu} className="flex items-center gap-3 group">
+              <div className="text-xl font-bold tracking-tight">
+                <span className="text-white">iWant</span>
+                <span className="text-[#D5A021]">Sex</span>
+                <span className="text-white">Now</span>
+                <span className="text-gray-400 text-base">.ch</span>
               </div>
-              <div>
-                <span className="text-lg font-black text-white tracking-tight">
-                  iWantSexNow.ch
-                </span>
-                <div className="text-[10px] text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
-              </div>
-            </div>
+            </Link>
             <Button
               variant="ghost"
               size="icon"
@@ -264,7 +257,7 @@ export function MobileNav() {
 
           {/* Footer Actions */}
           <div className="border-t border-white/20 p-4 space-y-2 bg-black/30">
-            <Button className="w-full bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold shadow-lg" asChild>
+            <Button className="w-full bg-[#C69C6D] hover:bg-[#B88C5D] text-white font-bold shadow-lg" asChild>
               <Link href="/premium" onClick={closeMenu}>
                 <Sparkles size={18} className="mr-2" />
                 Upgrade to Premium

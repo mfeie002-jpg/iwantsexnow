@@ -319,7 +319,7 @@ export default function Home() {
         description="Discover exclusive escort services across Switzerland. Browse verified profiles in Zürich, Geneva, Basel and more."
       />
 
-      {/* Header */}
+      {/* Header with New Typographic Logo */}
       <header className={`border-b border-white/10 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled ? 'bg-black/95 shadow-2xl py-2' : 'bg-black/60 py-4'
       } ${
@@ -330,24 +330,17 @@ export default function Home() {
             scrolled ? 'py-1' : 'py-0'
           }`}>
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                {/* New Elegant Logo */}
-                <img 
-                  src="/logo_monochrome_white.png" 
-                  alt="iWantSexNow.ch Logo" 
-                  className={`transition-all duration-300 group-hover:scale-110 ${
-                    scrolled ? 'w-8 h-8' : 'w-12 h-12'
-                  }`}
-                />
-                <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
-              </div>
+              {/* New Typographic Logo */}
               <div className={`transition-all duration-300 ${scrolled ? 'scale-90' : 'scale-100'}`}>
-                <span className={`font-black text-white tracking-tight transition-all duration-300 ${
+                <div className={`font-bold tracking-tight transition-all duration-300 ${
                   scrolled ? 'text-xl' : 'text-2xl'
                 }`}>
-                  iWantSexNow.ch
-                </span>
-                <div className={`text-xs text-gray-400 font-semibold tracking-wider transition-all duration-300 ${
+                  <span className="text-white">iWant</span>
+                  <span className="text-[#C69C6D]">Sex</span>
+                  <span className="text-white">Now</span>
+                  <span className="text-gray-400 text-lg">.ch</span>
+                </div>
+                <div className={`text-[10px] text-gray-400 font-semibold tracking-wider transition-all duration-300 ${
                   scrolled ? 'opacity-0 h-0' : 'opacity-100'
                 }`}>WHERE DESIRE MEETS DISCRETION</div>
               </div>
@@ -515,14 +508,18 @@ export default function Home() {
       {/* Live Chat Widget */}
       <LiveChatWidget />
 
-      {/* Footer */}
+      {/* Footer with New Typographic Logo */}
       <footer className="bg-black border-t border-white/10 py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart className="text-rose-600 fill-rose-600" size={24} />
-                <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
+                <div className="text-xl font-bold tracking-tight">
+                  <span className="text-white">iWant</span>
+                  <span className="text-[#C69C6D]">Sex</span>
+                  <span className="text-white">Now</span>
+                  <span className="text-gray-400 text-base">.ch</span>
+                </div>
               </div>
               <p className="text-gray-400 text-sm mb-4">
                 Where Desire Meets Discretion

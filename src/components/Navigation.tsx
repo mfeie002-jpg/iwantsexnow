@@ -255,7 +255,7 @@ export function Navigation() {
       </div>
 
       {/* CTA Button */}
-      <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold shadow-lg ml-2" asChild>
+      <Button className="bg-[#C69C6D] hover:bg-[#B88C5D] text-white font-bold shadow-lg ml-2" asChild>
         <Link href="/register">
           <Phone size={18} className="mr-2" />
           Join Free
