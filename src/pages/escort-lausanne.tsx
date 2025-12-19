@@ -260,7 +260,7 @@ export default function EscortLausanne() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <img 
-                  src="/logo_white.png" 
+                  src="/logo_monochrome_white.png" 
                   alt="iWantSexNow.ch Logo" 
                   className="h-9 w-auto transition-all group-hover:scale-110"
                 />

@@ -137,7 +137,7 @@ export default function BookingConfirmation() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3">
               <img 
-                src="/logo_white.png" 
+                src="/logo_monochrome_white.png" 
                 alt="iWantSexNow.ch Logo" 
                 className="h-9 w-auto"
               />
