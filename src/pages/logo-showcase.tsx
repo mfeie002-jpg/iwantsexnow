@@ -79,9 +79,26 @@ export default function LogoShowcase() {
           <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto mb-4">
             Exklusive Begleitung für anspruchsvolle Momente. Vertraulich & stilvoll.
           </p>
-          <p className="text-lg text-gray-500 dark:text-gray-500 font-light max-w-2xl mx-auto">
+          <p className="text-lg text-gray-500 dark:text-gray-500 font-light max-w-2xl mx-auto mb-8">
             Exclusive companionship for discerning moments. Confidential & refined.
           </p>
+          
+          {/* Prominent CTA Button */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+            <Button 
+              size="lg"
+              className="bg-[#C69C6D] dark:bg-[#D5A021] hover:bg-[#B88C5D] dark:hover:bg-[#C08A1E] text-white font-bold text-lg px-8 py-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              Jetzt Begleitung finden
+            </Button>
+            <Button 
+              size="lg"
+              variant="outline"
+              className="border-2 border-[#C69C6D] dark:border-[#D5A021] text-[#0D1B2A] dark:text-white hover:bg-[#C69C6D] dark:hover:bg-[#D5A021] hover:text-white font-semibold text-lg px-8 py-6 rounded-lg transition-all duration-300"
+            >
+              Premium Angebote ansehen
+            </Button>
+          </div>
         </div>
 
         {/* Design Philosophy */}
