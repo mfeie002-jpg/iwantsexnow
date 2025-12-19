@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
@@ -479,12 +480,18 @@ export default function EscortGeneva() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-6 text-white">
                     <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
-                      <Checkbox checked={verifiedOnly} onCheckedChange={setVerifiedOnly} />
+                      <Checkbox 
+                        checked={verifiedOnly} 
+                        onCheckedChange={(checked) => setVerifiedOnly(checked === true)} 
+                      />
                       <span className="text-sm font-medium">Verified Only</span>
                     </label>
                     
                     <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
-                      <Checkbox checked={availableNow} onCheckedChange={setAvailableNow} />
+                      <Checkbox 
+                        checked={availableNow} 
+                        onCheckedChange={(checked) => setAvailableNow(checked === true)} 
+                      />
                       <span className="text-sm font-medium">Available Now</span>
                     </label>
 
