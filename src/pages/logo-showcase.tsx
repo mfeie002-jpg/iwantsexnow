@@ -622,10 +622,17 @@ export default function LogoShowcase() {
 
       {/* Minimal Footer */}
       <footer className="border-t border-gray-200 dark:border-gray-800 py-8 mt-20">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400 font-light">
-            © 2025 iWantSexNow.ch — All brand assets are proprietary and protected.
-          </p>
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-light">
+              © 2025 iWantSexNow.ch — All brand assets are proprietary and protected.
+            </p>
+            <Link href="/logo-concepts">
+              <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                View Alternative Logo Concepts →
+              </Button>
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
