@@ -316,7 +316,7 @@ export default function Home() {
                 <span className="text-2xl font-black text-white tracking-tight">
                   iWantSexNow.ch
                 </span>
-                <div className="text-xs text-pink-500 font-semibold tracking-wider">SWITZERLAND'S #1</div>
+                <div className="text-xs text-pink-500 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
               </div>
             </Link>
             
@@ -489,6 +489,9 @@ export default function Home() {
                 <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
               </div>
               <p className="text-gray-400 text-sm mb-4">
+                Where Desire Meets Discretion
+              </p>
+              <p className="text-gray-500 text-xs">
                 Switzerland's premier adult dating platform
               </p>
             </div>
@@ -498,6 +501,7 @@ export default function Home() {
                 <li><Link href="/members" className="hover:text-white">Browse Members</Link></li>
                 <li><Link href="/register" className="hover:text-white">Sign Up</Link></li>
                 <li><Link href="/login" className="hover:text-white">Login</Link></li>
+                <li><Link href="/demo-accounts" className="hover:text-pink-400">Demo Accounts</Link></li>
               </ul>
             </div>
             <div>
