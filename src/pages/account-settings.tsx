@@ -4,701 +4,480 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, User, MapPin, Phone, Mail, Lock, CreditCard, Bell, Eye, Shield, Camera, Save, X, CheckCircle, AlertCircle, Edit, Trash2 } from "lucide-react";
+import SEO from "@/components/SEO";
+import { MobileNav } from "@/components/MobileNav";
+import { Heart, User, Bell, Shield, CreditCard, History, Settings, Eye, MapPin, Calendar, Star, Trash2, Edit, Save, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { motion } from "framer-motion";
+
+interface Favorite {
+  id: number;
+  name: string;
+  age: number;
+  location: string;
+  image: string;
+  rating: number;
+  rate: number;
+  available: boolean;
+}
+
+interface Booking {
+  confirmationCode: string;
+  escortName: string;
+  date: string;
+  time: string;
+  duration: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled";
+  createdAt: string;
+}
 
 export default function AccountSettings() {
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState("profile");
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
-
-  const [profileData, setProfileData] = useState({
-    username: "SophiaZH",
-    email: "sophia@example.com",
-    phone: "+41 76 123 45 67",
-    displayName: "Sophia",
-    age: 26,
-    location: "Zürich",
-    bio: "Professional companion offering unforgettable experiences",
-    services: ["GFE", "Dinner Dates", "Events"],
-    languages: ["German", "English", "French"],
-    rate: 500,
-    bodyType: "Athletic",
-    height: "168 cm",
-    ethnicity: "European",
-    availability: "Available today 6PM-11PM"
+  const [user, setUser] = useState({
+    name: "John Doe",
+    email: "john@example.com",
+    phone: "+41 79 123 45 67",
+    city: "Zürich",
+    bio: ""
   });
 
-  const [securityData, setSecurityData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: ""
+  const [notifications, setNotifications] = useState({
+    emailUpdates: true,
+    smsNotifications: false,
+    newMatches: true,
+    promotions: false
   });
 
-  const [notificationSettings, setNotificationSettings] = useState({
-    emailMessages: true,
-    emailBookings: true,
-    emailPromotions: false,
-    pushMessages: true,
-    pushBookings: true,
-    smsBookings: false
-  });
-
-  const [privacySettings, setPrivacySettings] = useState({
-    profileVisibility: "public",
-    showLastActive: true,
-    showOnlineStatus: true,
-    allowMessages: true,
-    requireVerification: false
-  });
-
-  const handleSaveProfile = async () => {
-    const newErrors: typeof errors = {};
-    
-    if (!profileData.displayName) newErrors.displayName = "Display name is required";
-    if (!profileData.email) newErrors.email = "Email is required";
-    if (profileData.age < 18 || profileData.age > 99) newErrors.age = "Age must be between 18-99";
-    if (profileData.rate < 100) newErrors.rate = "Rate must be at least CHF 100";
-    
-    setErrors(newErrors);
-    
-    if (Object.keys(newErrors).length === 0) {
-      setSaving(true);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      localStorage.setItem("userProfile", JSON.stringify(profileData));
-      
-      setSaving(false);
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+  const [editMode, setEditMode] = useState(false);
+  const [favorites, setFavorites] = useState<Favorite[]>([
+    {
+      id: 1,
+      name: "Sophia",
+      age: 26,
+      location: "Zürich City Center",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+      rating: 5.0,
+      rate: 500,
+      available: true
+    },
+    {
+      id: 4,
+      name: "Mia",
+      age: 25,
+      location: "Oerlikon, Zürich",
+      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop",
+      rating: 5.0,
+      rate: 550,
+      available: true
     }
-  };
+  ]);
 
-  const handleChangePassword = async () => {
-    const newErrors: typeof errors = {};
-    
-    if (!securityData.currentPassword) newErrors.currentPassword = "Current password required";
-    if (!securityData.newPassword) newErrors.newPassword = "New password required";
-    if (securityData.newPassword.length < 8) newErrors.newPassword = "Password must be at least 8 characters";
-    if (securityData.newPassword !== securityData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords don't match";
-    }
-    
-    setErrors(newErrors);
-    
-    if (Object.keys(newErrors).length === 0) {
-      setSaving(true);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSaving(false);
-      setSaved(true);
-      setSecurityData({ currentPassword: "", newPassword: "", confirmPassword: "" });
-      setTimeout(() => setSaved(false), 3000);
-    }
-  };
-
-  const handleSaveSettings = async (type: string) => {
-    setSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    if (type === "notifications") {
-      localStorage.setItem("notificationSettings", JSON.stringify(notificationSettings));
-    } else if (type === "privacy") {
-      localStorage.setItem("privacySettings", JSON.stringify(privacySettings));
-    }
-    
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
-  };
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("userProfile");
-    if (stored) {
-      setProfileData(JSON.parse(stored));
+    // Load user data from localStorage
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+
+    // Load bookings from localStorage
+    const savedBookings = localStorage.getItem('bookings');
+    if (savedBookings) {
+      setBookings(JSON.parse(savedBookings));
     }
   }, []);
 
+  const handleSaveProfile = () => {
+    localStorage.setItem('user', JSON.stringify(user));
+    setEditMode(false);
+  };
+
+  const removeFavorite = (id: number) => {
+    setFavorites(prev => prev.filter(fav => fav.id !== id));
+  };
+
+  const cancelBooking = (code: string) => {
+    const updatedBookings = bookings.map(booking => 
+      booking.confirmationCode === code 
+        ? { ...booking, status: "cancelled" as const }
+        : booking
+    );
+    setBookings(updatedBookings);
+    localStorage.setItem('bookings', JSON.stringify(updatedBookings));
+  };
+
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case "confirmed": return "bg-green-500";
+      case "pending": return "bg-yellow-500";
+      case "completed": return "bg-blue-500";
+      case "cancelled": return "bg-red-500";
+      default: return "bg-gray-500";
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-2 min-w-0">
-              <Heart className="text-pink-600 fill-pink-600 flex-shrink-0" size={28} />
-              <span className="text-xl md:text-2xl font-black text-pink-600 truncate">
-                iWantSexNow.ch
-              </span>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <SEO 
+        title="Account Settings - Manage Your Profile | iWantSexNow.ch"
+        description="Manage your account settings, favorites, and booking history."
+      />
+
+      {/* Header */}
+      <header className="border-b border-white/10 backdrop-blur-md bg-black/60 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <Heart className="text-pink-600 fill-pink-600" size={36} />
+                <div className="absolute inset-0 bg-pink-600/20 blur-xl group-hover:bg-pink-600/40 transition-all" />
+              </div>
+              <div>
+                <span className="text-2xl font-black text-white tracking-tight">iWantSexNow.ch</span>
+                <div className="text-xs text-pink-500 font-semibold tracking-wider">ACCOUNT SETTINGS</div>
+              </div>
             </Link>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/profile">Back to Profile</Link>
-            </Button>
+            <MobileNav />
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-6 md:mb-8">
-            <h1 className="text-3xl md:text-4xl font-black mb-2">Account Settings</h1>
-            <p className="text-sm md:text-base text-gray-600">Manage your profile and preferences</p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <h1 className="text-4xl font-black text-white mb-2">Account Settings</h1>
+            <p className="text-gray-300">Manage your profile, preferences, and bookings</p>
+          </motion.div>
 
-          {saved && (
-            <Card className="p-4 mb-6 bg-green-50 border-2 border-green-200 animate-in fade-in slide-in-from-top-2">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="text-green-600 flex-shrink-0" size={24} />
-                <p className="text-green-900 font-semibold text-sm md:text-base">Settings saved successfully!</p>
-              </div>
-            </Card>
-          )}
+          <Tabs defaultValue="profile" className="space-y-6">
+            <TabsList className="bg-white/10 border border-white/20 p-1">
+              <TabsTrigger value="profile" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+                <User size={18} className="mr-2" />
+                Profile
+              </TabsTrigger>
+              <TabsTrigger value="favorites" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+                <Heart size={18} className="mr-2" />
+                Favorites
+              </TabsTrigger>
+              <TabsTrigger value="bookings" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+                <History size={18} className="mr-2" />
+                Bookings
+              </TabsTrigger>
+              <TabsTrigger value="notifications" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+                <Bell size={18} className="mr-2" />
+                Notifications
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Mobile Tab Navigation */}
-          <div className="lg:hidden mb-6">
-            <Select value={activeTab} onValueChange={setActiveTab}>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="profile">
-                  <div className="flex items-center gap-2">
-                    <User size={16} />
-                    <span>Profile Info</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="security">
-                  <div className="flex items-center gap-2">
-                    <Lock size={16} />
-                    <span>Security</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="notifications">
-                  <div className="flex items-center gap-2">
-                    <Bell size={16} />
-                    <span>Notifications</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="privacy">
-                  <div className="flex items-center gap-2">
-                    <Shield size={16} />
-                    <span>Privacy</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="billing">
-                  <div className="flex items-center gap-2">
-                    <CreditCard size={16} />
-                    <span>Billing</span>
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="grid lg:grid-cols-4 gap-6">
-            {/* Sidebar Navigation - Hidden on Mobile */}
-            <Card className="p-4 md:p-6 h-fit sticky top-24 hidden lg:block">
-              <nav className="space-y-2">
-                <button
-                  onClick={() => setActiveTab("profile")}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    activeTab === "profile" ? "bg-pink-600 text-white" : "hover:bg-gray-100"
-                  }`}
-                >
-                  <User size={20} />
-                  <span className="font-medium">Profile Info</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("security")}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    activeTab === "security" ? "bg-pink-600 text-white" : "hover:bg-gray-100"
-                  }`}
-                >
-                  <Lock size={20} />
-                  <span className="font-medium">Security</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("notifications")}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    activeTab === "notifications" ? "bg-pink-600 text-white" : "hover:bg-gray-100"
-                  }`}
-                >
-                  <Bell size={20} />
-                  <span className="font-medium">Notifications</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("privacy")}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    activeTab === "privacy" ? "bg-pink-600 text-white" : "hover:bg-gray-100"
-                  }`}
-                >
-                  <Shield size={20} />
-                  <span className="font-medium">Privacy</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("billing")}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    activeTab === "billing" ? "bg-pink-600 text-white" : "hover:bg-gray-100"
-                  }`}
-                >
-                  <CreditCard size={20} />
-                  <span className="font-medium">Billing</span>
-                </button>
-              </nav>
-            </Card>
-
-            {/* Content Area */}
-            <div className="lg:col-span-3 space-y-6">
-              {/* Profile Info Tab */}
-              {activeTab === "profile" && (
-                <>
-                  <Card className="p-6">
-                    <h2 className="text-2xl font-bold mb-6">Profile Information</h2>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <Label>Username *</Label>
-                        <Input
-                          value={profileData.username}
-                          onChange={(e) => setProfileData({...profileData, username: e.target.value})}
-                          className="mt-2"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Display Name *</Label>
-                        <Input
-                          value={profileData.displayName}
-                          onChange={(e) => {
-                            setProfileData({...profileData, displayName: e.target.value});
-                            setErrors({...errors, displayName: ""});
-                          }}
-                          className={`mt-2 ${errors.displayName ? "border-red-500" : ""}`}
-                        />
-                        {errors.displayName && (
-                          <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                            <AlertCircle size={14} />
-                            {errors.displayName}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <Label>Email *</Label>
-                        <Input
-                          type="email"
-                          value={profileData.email}
-                          onChange={(e) => {
-                            setProfileData({...profileData, email: e.target.value});
-                            setErrors({...errors, email: ""});
-                          }}
-                          className={`mt-2 ${errors.email ? "border-red-500" : ""}`}
-                        />
-                        {errors.email && (
-                          <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                            <AlertCircle size={14} />
-                            {errors.email}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <Label>Phone</Label>
-                        <Input
-                          type="tel"
-                          value={profileData.phone}
-                          onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
-                          className="mt-2"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Age *</Label>
-                        <Input
-                          type="number"
-                          value={profileData.age}
-                          onChange={(e) => {
-                            setProfileData({...profileData, age: parseInt(e.target.value) || 0});
-                            setErrors({...errors, age: ""});
-                          }}
-                          min="18"
-                          max="99"
-                          className={`mt-2 ${errors.age ? "border-red-500" : ""}`}
-                        />
-                        {errors.age && (
-                          <p className="text-red-600 text-sm mt-1">{errors.age}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <Label>Location *</Label>
-                        <Input
-                          value={profileData.location}
-                          onChange={(e) => setProfileData({...profileData, location: e.target.value})}
-                          className="mt-2"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Hourly Rate (CHF) *</Label>
-                        <Input
-                          type="number"
-                          value={profileData.rate}
-                          onChange={(e) => {
-                            setProfileData({...profileData, rate: parseInt(e.target.value) || 0});
-                            setErrors({...errors, rate: ""});
-                          }}
-                          min="100"
-                          className={`mt-2 ${errors.rate ? "border-red-500" : ""}`}
-                        />
-                        {errors.rate && (
-                          <p className="text-red-600 text-sm mt-1">{errors.rate}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <Label>Body Type</Label>
-                        <Select value={profileData.bodyType} onValueChange={(value) => setProfileData({...profileData, bodyType: value})}>
-                          <SelectTrigger className="mt-2">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Slim">Slim</SelectItem>
-                            <SelectItem value="Athletic">Athletic</SelectItem>
-                            <SelectItem value="Average">Average</SelectItem>
-                            <SelectItem value="Curvy">Curvy</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label>Height</Label>
-                        <Input
-                          value={profileData.height}
-                          onChange={(e) => setProfileData({...profileData, height: e.target.value})}
-                          placeholder="e.g. 168 cm"
-                          className="mt-2"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Ethnicity</Label>
-                        <Input
-                          value={profileData.ethnicity}
-                          onChange={(e) => setProfileData({...profileData, ethnicity: e.target.value})}
-                          className="mt-2"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
-                      <Label>Bio / About Me</Label>
-                      <Textarea
-                        value={profileData.bio}
-                        onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
-                        rows={4}
-                        className="mt-2 resize-none"
-                        maxLength={500}
-                      />
-                      <p className="text-sm text-gray-600 mt-1">{profileData.bio.length}/500 characters</p>
-                    </div>
-
-                    <div className="mt-6">
-                      <Label>Availability Status</Label>
-                      <Input
-                        value={profileData.availability}
-                        onChange={(e) => setProfileData({...profileData, availability: e.target.value})}
-                        placeholder="e.g. Available today 6PM-11PM"
-                        className="mt-2"
-                      />
-                    </div>
-
-                    <div className="flex gap-4 mt-8 pt-6 border-t">
+            {/* Profile Tab */}
+            <TabsContent value="profile">
+              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-white">Profile Information</h2>
+                  {!editMode ? (
+                    <Button
+                      onClick={() => setEditMode(true)}
+                      className="bg-pink-600 hover:bg-pink-700"
+                    >
+                      <Edit size={18} className="mr-2" />
+                      Edit Profile
+                    </Button>
+                  ) : (
+                    <div className="flex gap-2">
                       <Button
-                        size="lg"
                         onClick={handleSaveProfile}
-                        disabled={saving}
-                        className="bg-pink-600 hover:bg-pink-700"
+                        className="bg-green-600 hover:bg-green-700"
                       >
-                        {saving ? (
-                          <>
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                            Saving...
-                          </>
-                        ) : (
-                          <>
-                            <Save size={20} className="mr-2" />
-                            Save Changes
-                          </>
-                        )}
+                        <Save size={18} className="mr-2" />
+                        Save
                       </Button>
-                      <Button variant="outline" size="lg" onClick={() => router.push("/profile")}>
+                      <Button
+                        onClick={() => setEditMode(false)}
+                        variant="outline"
+                        className="border-white/30 text-white hover:bg-white/10"
+                      >
+                        <X size={18} className="mr-2" />
                         Cancel
                       </Button>
                     </div>
-                  </Card>
-                </>
-              )}
+                  )}
+                </div>
 
-              {/* Security Tab */}
-              {activeTab === "security" && (
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6">Security Settings</h2>
-                  
-                  <div className="space-y-6 max-w-md">
+                <div className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <Label>Current Password *</Label>
+                      <Label className="text-white mb-2 block">Full Name</Label>
                       <Input
-                        type="password"
-                        value={securityData.currentPassword}
-                        onChange={(e) => {
-                          setSecurityData({...securityData, currentPassword: e.target.value});
-                          setErrors({...errors, currentPassword: ""});
-                        }}
-                        className={`mt-2 ${errors.currentPassword ? "border-red-500" : ""}`}
+                        value={user.name}
+                        onChange={(e) => setUser({...user, name: e.target.value})}
+                        disabled={!editMode}
+                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
                       />
-                      {errors.currentPassword && (
-                        <p className="text-red-600 text-sm mt-1">{errors.currentPassword}</p>
-                      )}
                     </div>
 
                     <div>
-                      <Label>New Password *</Label>
+                      <Label className="text-white mb-2 block">Email</Label>
                       <Input
-                        type="password"
-                        value={securityData.newPassword}
-                        onChange={(e) => {
-                          setSecurityData({...securityData, newPassword: e.target.value});
-                          setErrors({...errors, newPassword: ""});
-                        }}
-                        className={`mt-2 ${errors.newPassword ? "border-red-500" : ""}`}
+                        type="email"
+                        value={user.email}
+                        onChange={(e) => setUser({...user, email: e.target.value})}
+                        disabled={!editMode}
+                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
                       />
-                      {errors.newPassword && (
-                        <p className="text-red-600 text-sm mt-1">{errors.newPassword}</p>
-                      )}
                     </div>
+                  </div>
 
+                  <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <Label>Confirm New Password *</Label>
+                      <Label className="text-white mb-2 block">Phone</Label>
                       <Input
-                        type="password"
-                        value={securityData.confirmPassword}
-                        onChange={(e) => {
-                          setSecurityData({...securityData, confirmPassword: e.target.value});
-                          setErrors({...errors, confirmPassword: ""});
-                        }}
-                        className={`mt-2 ${errors.confirmPassword ? "border-red-500" : ""}`}
+                        type="tel"
+                        value={user.phone}
+                        onChange={(e) => setUser({...user, phone: e.target.value})}
+                        disabled={!editMode}
+                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
                       />
-                      {errors.confirmPassword && (
-                        <p className="text-red-600 text-sm mt-1">{errors.confirmPassword}</p>
-                      )}
                     </div>
 
-                    <Button
-                      size="lg"
-                      onClick={handleChangePassword}
-                      disabled={saving}
-                      className="w-full bg-pink-600 hover:bg-pink-700"
-                    >
-                      {saving ? "Changing Password..." : "Change Password"}
-                    </Button>
-                  </div>
-                </Card>
-              )}
-
-              {/* Notifications Tab */}
-              {activeTab === "notifications" && (
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6">Notification Preferences</h2>
-                  
-                  <div className="space-y-6">
                     <div>
-                      <h3 className="font-bold text-lg mb-4">Email Notifications</h3>
-                      <div className="space-y-3">
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={notificationSettings.emailMessages}
-                            onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, emailMessages: checked as boolean})}
-                          />
-                          <div>
-                            <p className="font-medium">New Messages</p>
-                            <p className="text-sm text-gray-600">Get notified when someone sends you a message</p>
-                          </div>
-                        </label>
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={notificationSettings.emailBookings}
-                            onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, emailBookings: checked as boolean})}
-                          />
-                          <div>
-                            <p className="font-medium">Booking Requests</p>
-                            <p className="text-sm text-gray-600">Get notified about new booking inquiries</p>
-                          </div>
-                        </label>
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={notificationSettings.emailPromotions}
-                            onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, emailPromotions: checked as boolean})}
-                          />
-                          <div>
-                            <p className="font-medium">Promotions & Updates</p>
-                            <p className="text-sm text-gray-600">Receive newsletters and promotional offers</p>
-                          </div>
-                        </label>
-                      </div>
+                      <Label className="text-white mb-2 block">City</Label>
+                      <Input
+                        value={user.city}
+                        onChange={(e) => setUser({...user, city: e.target.value})}
+                        disabled={!editMode}
+                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
+                      />
                     </div>
-
-                    <div className="pt-6 border-t">
-                      <h3 className="font-bold text-lg mb-4">Push Notifications</h3>
-                      <div className="space-y-3">
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={notificationSettings.pushMessages}
-                            onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, pushMessages: checked as boolean})}
-                          />
-                          <div>
-                            <p className="font-medium">New Messages</p>
-                            <p className="text-sm text-gray-600">Browser push notifications for messages</p>
-                          </div>
-                        </label>
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={notificationSettings.pushBookings}
-                            onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, pushBookings: checked as boolean})}
-                          />
-                          <div>
-                            <p className="font-medium">Booking Requests</p>
-                            <p className="text-sm text-gray-600">Browser push notifications for bookings</p>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="pt-6 border-t">
-                      <h3 className="font-bold text-lg mb-4">SMS Notifications</h3>
-                      <div className="space-y-3">
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={notificationSettings.smsBookings}
-                            onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, smsBookings: checked as boolean})}
-                          />
-                          <div>
-                            <p className="font-medium">Urgent Bookings</p>
-                            <p className="text-sm text-gray-600">SMS alerts for high-priority booking requests</p>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-
-                    <Button
-                      size="lg"
-                      onClick={() => handleSaveSettings("notifications")}
-                      disabled={saving}
-                      className="bg-pink-600 hover:bg-pink-700"
-                    >
-                      {saving ? "Saving..." : "Save Notification Settings"}
-                    </Button>
                   </div>
-                </Card>
-              )}
 
-              {/* Privacy Tab */}
-              {activeTab === "privacy" && (
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6">Privacy Settings</h2>
-                  
-                  <div className="space-y-6">
-                    <div>
-                      <Label>Profile Visibility</Label>
-                      <Select value={privacySettings.profileVisibility} onValueChange={(value) => setPrivacySettings({...privacySettings, profileVisibility: value})}>
-                        <SelectTrigger className="mt-2">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="public">Public - Anyone can see my profile</SelectItem>
-                          <SelectItem value="members">Members Only - Only registered users</SelectItem>
-                          <SelectItem value="private">Private - Hidden from search</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="pt-6 border-t space-y-4">
-                      <label className="flex items-center justify-between cursor-pointer">
-                        <div>
-                          <p className="font-medium">Show Last Active</p>
-                          <p className="text-sm text-gray-600">Display when you were last online</p>
-                        </div>
-                        <Checkbox
-                          checked={privacySettings.showLastActive}
-                          onCheckedChange={(checked) => setPrivacySettings({...privacySettings, showLastActive: checked as boolean})}
-                        />
-                      </label>
-                      <label className="flex items-center justify-between cursor-pointer">
-                        <div>
-                          <p className="font-medium">Show Online Status</p>
-                          <p className="text-sm text-gray-600">Let others see when you're online</p>
-                        </div>
-                        <Checkbox
-                          checked={privacySettings.showOnlineStatus}
-                          onCheckedChange={(checked) => setPrivacySettings({...privacySettings, showOnlineStatus: checked as boolean})}
-                        />
-                      </label>
-                      <label className="flex items-center justify-between cursor-pointer">
-                        <div>
-                          <p className="font-medium">Allow Messages</p>
-                          <p className="text-sm text-gray-600">Users can send you direct messages</p>
-                        </div>
-                        <Checkbox
-                          checked={privacySettings.allowMessages}
-                          onCheckedChange={(checked) => setPrivacySettings({...privacySettings, allowMessages: checked as boolean})}
-                        />
-                      </label>
-                      <label className="flex items-center justify-between cursor-pointer">
-                        <div>
-                          <p className="font-medium">Require Verification</p>
-                          <p className="text-sm text-gray-600">Only verified users can contact you</p>
-                        </div>
-                        <Checkbox
-                          checked={privacySettings.requireVerification}
-                          onCheckedChange={(checked) => setPrivacySettings({...privacySettings, requireVerification: checked as boolean})}
-                        />
-                      </label>
-                    </div>
-
-                    <Button
-                      size="lg"
-                      onClick={() => handleSaveSettings("privacy")}
-                      disabled={saving}
-                      className="bg-pink-600 hover:bg-pink-700"
-                    >
-                      {saving ? "Saving..." : "Save Privacy Settings"}
-                    </Button>
+                  <div>
+                    <Label className="text-white mb-2 block">Bio</Label>
+                    <Textarea
+                      value={user.bio}
+                      onChange={(e) => setUser({...user, bio: e.target.value})}
+                      disabled={!editMode}
+                      rows={4}
+                      placeholder="Tell us about yourself..."
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 disabled:opacity-50"
+                    />
                   </div>
-                </Card>
-              )}
+                </div>
+              </Card>
+            </TabsContent>
 
-              {/* Billing Tab */}
-              {activeTab === "billing" && (
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6">Billing & Subscription</h2>
+            {/* Favorites Tab */}
+            <TabsContent value="favorites">
+              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
+                <h2 className="text-2xl font-bold text-white mb-6">Your Favorites ({favorites.length})</h2>
+
+                {favorites.length > 0 ? (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {favorites.map((favorite) => (
+                      <motion.div
+                        key={favorite.id}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                      >
+                        <Card className="overflow-hidden bg-white/5 border-white/10 hover:border-pink-500 transition-all">
+                          <div className="flex gap-4 p-4">
+                            <img
+                              src={favorite.image}
+                              alt={favorite.name}
+                              className="w-24 h-24 rounded-lg object-cover"
+                            />
+                            <div className="flex-1">
+                              <h3 className="text-xl font-bold text-white mb-1">
+                                {favorite.name}, {favorite.age}
+                              </h3>
+                              <div className="flex items-center gap-2 text-blue-400 text-sm mb-2">
+                                <MapPin size={14} />
+                                <span>{favorite.location}</span>
+                              </div>
+                              <div className="flex items-center gap-2 mb-2">
+                                <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                                <span className="text-white text-sm">{favorite.rating}</span>
+                                {favorite.available && (
+                                  <Badge className="bg-green-500 text-xs">Available</Badge>
+                                )}
+                              </div>
+                              <div className="text-yellow-500 font-bold">CHF {favorite.rate}/hr</div>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-red-500 text-red-500 hover:bg-red-500/10"
+                                onClick={() => removeFavorite(favorite.id)}
+                              >
+                                <Trash2 size={16} />
+                              </Button>
+                              <Button
+                                size="sm"
+                                className="bg-pink-600 hover:bg-pink-700"
+                                asChild
+                              >
+                                <Link href={`/booking-confirmation?escortId=${favorite.id}&escortName=${favorite.name}`}>
+                                  <Eye size={16} />
+                                </Link>
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
                   <div className="text-center py-12">
-                    <CreditCard size={64} className="mx-auto text-gray-300 mb-4" />
-                    <h3 className="text-xl font-bold mb-2">Billing Management Coming Soon</h3>
-                    <p className="text-gray-600 mb-6">
-                      Manage your subscription, payment methods, and promotion credits
-                    </p>
+                    <Heart size={64} className="mx-auto text-gray-500 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">No favorites yet</h3>
+                    <p className="text-gray-400 mb-6">Start adding escorts to your favorites</p>
                     <Button className="bg-pink-600 hover:bg-pink-700" asChild>
-                      <Link href="/pricing">View Pricing Plans</Link>
+                      <Link href="/escort-zurich">Browse Escorts</Link>
                     </Button>
                   </div>
-                </Card>
-              )}
-            </div>
-          </div>
+                )}
+              </Card>
+            </TabsContent>
+
+            {/* Bookings Tab */}
+            <TabsContent value="bookings">
+              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
+                <h2 className="text-2xl font-bold text-white mb-6">Booking History ({bookings.length})</h2>
+
+                {bookings.length > 0 ? (
+                  <div className="space-y-4">
+                    {bookings.map((booking) => (
+                      <Card key={booking.confirmationCode} className="p-6 bg-white/5 border-white/10">
+                        <div className="flex items-start justify-between mb-4">
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-xl font-bold text-white">{booking.escortName}</h3>
+                              <Badge className={`${getStatusColor(booking.status)} border-0`}>
+                                {booking.status.toUpperCase()}
+                              </Badge>
+                            </div>
+                            <div className="text-gray-400 text-sm">
+                              Confirmation: <span className="text-yellow-500 font-mono">{booking.confirmationCode}</span>
+                            </div>
+                          </div>
+                          {booking.status === "pending" && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-red-500 text-red-500 hover:bg-red-500/10"
+                              onClick={() => cancelBooking(booking.confirmationCode)}
+                            >
+                              Cancel
+                            </Button>
+                          )}
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-4 text-sm">
+                          <div className="flex items-center gap-2 text-gray-300">
+                            <Calendar size={16} className="text-pink-500" />
+                            <span>{booking.date}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-gray-300">
+                            <History size={16} className="text-pink-500" />
+                            <span>{booking.time}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-gray-300">
+                            <Shield size={16} className="text-pink-500" />
+                            <span>{booking.duration}</span>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 text-xs text-gray-500">
+                          Booked on: {new Date(booking.createdAt).toLocaleString()}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <History size={64} className="mx-auto text-gray-500 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">No bookings yet</h3>
+                    <p className="text-gray-400 mb-6">Your booking history will appear here</p>
+                    <Button className="bg-pink-600 hover:bg-pink-700" asChild>
+                      <Link href="/escort-zurich">Book an Escort</Link>
+                    </Button>
+                  </div>
+                )}
+              </Card>
+            </TabsContent>
+
+            {/* Notifications Tab */}
+            <TabsContent value="notifications">
+              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
+                <h2 className="text-2xl font-bold text-white mb-6">Notification Preferences</h2>
+
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                      <h3 className="text-white font-bold mb-1">Email Updates</h3>
+                      <p className="text-gray-400 text-sm">Receive booking confirmations via email</p>
+                    </div>
+                    <Switch
+                      checked={notifications.emailUpdates}
+                      onCheckedChange={(checked) => setNotifications({...notifications, emailUpdates: checked})}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                      <h3 className="text-white font-bold mb-1">SMS Notifications</h3>
+                      <p className="text-gray-400 text-sm">Get booking updates via text message</p>
+                    </div>
+                    <Switch
+                      checked={notifications.smsNotifications}
+                      onCheckedChange={(checked) => setNotifications({...notifications, smsNotifications: checked})}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                      <h3 className="text-white font-bold mb-1">New Matches</h3>
+                      <p className="text-gray-400 text-sm">Notify when new escorts match your preferences</p>
+                    </div>
+                    <Switch
+                      checked={notifications.newMatches}
+                      onCheckedChange={(checked) => setNotifications({...notifications, newMatches: checked})}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                    <div>
+                      <h3 className="text-white font-bold mb-1">Promotions</h3>
+                      <p className="text-gray-400 text-sm">Receive special offers and promotions</p>
+                    </div>
+                    <Switch
+                      checked={notifications.promotions}
+                      onCheckedChange={(checked) => setNotifications({...notifications, promotions: checked})}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                  <div className="flex items-start gap-3 text-blue-400">
+                    <Shield size={20} className="flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-semibold mb-1">Privacy Notice</p>
+                      <p className="text-blue-300/80">
+                        Your notification preferences are private and secure. You can change these settings at any time.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
