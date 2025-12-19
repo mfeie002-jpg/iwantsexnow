@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
-import { Heart, MapPin, Star, Shield, CheckCircle, Phone, MessageCircle, Search, X, Clock, Award, Sparkles, TrendingUp, Users } from "lucide-react";
+import { Heart, MapPin, Star, Shield, CheckCircle, Phone, MessageCircle, Search, X, Clock, Award, Sparkles, TrendingUp, Users, ThumbsUp, Calendar } from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function EscortZurich() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -189,6 +189,13 @@ export default function EscortZurich() {
               <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
                 <Link href="/members">All Escorts</Link>
               </Button>
+              {comparison.length > 0 && (
+                <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500/10" asChild>
+                  <Link href={`/compare-escorts?ids=${comparison.join(',')}`}>
+                    Compare ({comparison.length})
+                  </Link>
+                </Button>
+              )}
               <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold" asChild>
                 <Link href="/register">
                   <Phone size={18} className="mr-2" />
@@ -463,24 +470,42 @@ export default function EscortZurich() {
                             <div className="text-2xl font-black text-yellow-500">CHF {escort.rate}</div>
                             <div className="text-xs text-gray-400">per hour</div>
                           </div>
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm"
+                              variant="outline"
+                              className={`text-white border-white/30 hover:bg-white/10 ${
+                                comparison.includes(escort.id) ? "border-yellow-500 bg-yellow-500/10" : ""
+                              }`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleComparison(escort.id);
+                              }}
+                              disabled={comparison.length >= 3 && !comparison.includes(escort.id)}
+                            >
+                              <ThumbsUp size={16} />
+                            </Button>
                             <Button 
                               size="sm"
                               variant="outline"
                               className="text-white border-white/30 hover:bg-white/10 hover:border-pink-500"
-                              onClick={() => toggleFavorite(escort.id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleFavorite(escort.id);
+                              }}
                             >
                               <Heart size={16} className={favorites.includes(escort.id) ? "fill-pink-600 text-pink-600" : ""} />
                             </Button>
                             <Button 
                               size="sm"
                               className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold"
-                              asChild
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openBookingModal(escort);
+                              }}
                             >
-                              <Link href="/register">
-                                <MessageCircle size={16} className="mr-2" />
-                                Contact
-                              </Link>
+                              <MessageCircle size={16} className="mr-2" />
+                              Book Now
                             </Button>
                           </div>
                         </div>
