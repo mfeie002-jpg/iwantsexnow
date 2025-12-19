@@ -4,11 +4,42 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
-import { Heart, MapPin, Star, Shield, CheckCircle, Phone, MessageCircle, Search, X, Clock, Award, Sparkles, TrendingUp, Users, ThumbsUp, Calendar } from "lucide-react";
+import { Heart, MapPin, Star, Shield, CheckCircle, Phone, MessageCircle, Search, X, Clock, Award, Sparkles, TrendingUp, Users, Play, Video, Eye, Calendar, Zap, Crown, Gift, ThumbsUp, Camera } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface Escort {
+  id: number;
+  name: string;
+  age: number;
+  district: string;
+  location: string;
+  image: string;
+  verified: boolean;
+  premium: boolean;
+  available: boolean;
+  rating: number;
+  reviews: number;
+  rate: number;
+  services: string[];
+  languages: string[];
+  description: string;
+  postedTime: string;
+  hasVideo: boolean;
+  hasVirtualTour: boolean;
+  verifiedPhotos: boolean;
+  idVerified: boolean;
+  safeDate: boolean;
+  bodyType: string;
+  height: string;
+  responseTime: string;
+  bookingsToday: number;
+}
 
 export default function EscortZurich() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,11 +47,22 @@ export default function EscortZurich() {
   const [selectedService, setSelectedService] = useState("all");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [availableNow, setAvailableNow] = useState(false);
+  const [priceRange, setPriceRange] = useState([300, 800]);
+  const [minRating, setMinRating] = useState(0);
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [comparison, setComparison] = useState<number[]>([]);
   const [scrolled, setScrolled] = useState(false);
+  const [selectedEscort, setSelectedEscort] = useState<Escort | null>(null);
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [liveViewers, setLiveViewers] = useState(247);
+  const [recentBookings, setRecentBookings] = useState([
+    { name: "Marcus from Zürich", time: "2 min ago", escort: "Sophia" },
+    { name: "Stefan from Winterthur", time: "5 min ago", escort: "Mia" },
+    { name: "Andreas from Zug", time: "8 min ago", escort: "Lara" }
+  ]);
 
-  // Zürich-specific escort data
-  const zurichEscorts = [
+  const zurichEscorts: Escort[] = [
     {
       id: 1,
       name: "Sophia",
@@ -37,7 +79,16 @@ export default function EscortZurich() {
       services: ["GFE", "Dinner Dates", "Overnight"],
       languages: ["German", "English", "French"],
       description: "Sophisticated companion in Zürich's financial district. Perfect for business dinners and exclusive events.",
-      postedTime: "Online now"
+      postedTime: "Online now",
+      hasVideo: true,
+      hasVirtualTour: true,
+      verifiedPhotos: true,
+      idVerified: true,
+      safeDate: true,
+      bodyType: "Athletic",
+      height: "168 cm",
+      responseTime: "< 5 min",
+      bookingsToday: 3
     },
     {
       id: 2,
@@ -55,7 +106,16 @@ export default function EscortZurich() {
       services: ["PSE", "Tantra", "Couples"],
       languages: ["Italian", "English", "German"],
       description: "Adventurous escort in trendy Zürich West. Specializing in tantric experiences and couples sessions.",
-      postedTime: "Active 5min ago"
+      postedTime: "Active 5min ago",
+      hasVideo: true,
+      hasVirtualTour: false,
+      verifiedPhotos: true,
+      idVerified: true,
+      safeDate: true,
+      bodyType: "Slim",
+      height: "165 cm",
+      responseTime: "< 10 min",
+      bookingsToday: 5
     },
     {
       id: 3,
@@ -73,7 +133,16 @@ export default function EscortZurich() {
       services: ["GFE", "Massage", "Relaxation"],
       languages: ["German", "English"],
       description: "Caring companion near Lake Zürich. Offering relaxing encounters in the beautiful Seefeld district.",
-      postedTime: "Available tomorrow"
+      postedTime: "Available tomorrow",
+      hasVideo: false,
+      hasVirtualTour: false,
+      verifiedPhotos: false,
+      idVerified: true,
+      safeDate: false,
+      bodyType: "Average",
+      height: "170 cm",
+      responseTime: "< 30 min",
+      bookingsToday: 0
     },
     {
       id: 4,
@@ -91,7 +160,16 @@ export default function EscortZurich() {
       services: ["PSE", "Travel", "Events"],
       languages: ["German", "French", "English"],
       description: "Elite escort in North Zürich. Available for travel and exclusive events throughout Switzerland.",
-      postedTime: "Online now"
+      postedTime: "Online now",
+      hasVideo: true,
+      hasVirtualTour: true,
+      verifiedPhotos: true,
+      idVerified: true,
+      safeDate: true,
+      bodyType: "Athletic",
+      height: "172 cm",
+      responseTime: "< 5 min",
+      bookingsToday: 4
     },
     {
       id: 5,
@@ -109,7 +187,16 @@ export default function EscortZurich() {
       services: ["GFE", "Dinner Dates", "Shopping"],
       languages: ["German", "English"],
       description: "Elegant companion on famous Bahnhofstrasse. Perfect for upscale shopping dates and fine dining.",
-      postedTime: "Online now"
+      postedTime: "Online now",
+      hasVideo: true,
+      hasVirtualTour: true,
+      verifiedPhotos: true,
+      idVerified: true,
+      safeDate: true,
+      bodyType: "Slim",
+      height: "175 cm",
+      responseTime: "< 5 min",
+      bookingsToday: 2
     },
     {
       id: 6,
@@ -127,11 +214,19 @@ export default function EscortZurich() {
       services: ["Massage", "GFE"],
       languages: ["German"],
       description: "Friendly escort in residential Wiedikon. Offering genuine girlfriend experience in quiet surroundings.",
-      postedTime: "Active 15min ago"
+      postedTime: "Active 15min ago",
+      hasVideo: false,
+      hasVirtualTour: false,
+      verifiedPhotos: false,
+      idVerified: false,
+      safeDate: false,
+      bodyType: "Curvy",
+      height: "162 cm",
+      responseTime: "< 1 hour",
+      bookingsToday: 1
     }
   ];
 
-  // Filter escorts
   const filteredEscorts = zurichEscorts.filter(escort => {
     if (searchQuery && !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
         !escort.location.toLowerCase().includes(searchQuery.toLowerCase())) return false;
@@ -139,6 +234,8 @@ export default function EscortZurich() {
     if (selectedService !== "all" && !escort.services.some(s => s.toLowerCase().includes(selectedService.toLowerCase()))) return false;
     if (verifiedOnly && !escort.verified) return false;
     if (availableNow && !escort.available) return false;
+    if (escort.rate < priceRange[0] || escort.rate > priceRange[1]) return false;
+    if (escort.rating < minRating) return false;
     return true;
   });
 
@@ -148,12 +245,35 @@ export default function EscortZurich() {
     );
   };
 
+  const toggleComparison = (id: number) => {
+    if (comparison.includes(id)) {
+      setComparison(prev => prev.filter(c => c !== id));
+    } else if (comparison.length < 3) {
+      setComparison(prev => [...prev, id]);
+    }
+  };
+
+  const openBookingModal = (escort: Escort) => {
+    setSelectedEscort(escort);
+    setBookingModalOpen(true);
+  };
+
+  const openVideoModal = (escort: Escort) => {
+    setSelectedEscort(escort);
+    setVideoModalOpen(true);
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveViewers(prev => Math.max(200, prev + Math.floor(Math.random() * 10) - 5));
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -163,7 +283,6 @@ export default function EscortZurich() {
         description="Find exclusive escort services in Zürich. Browse verified profiles, book premium companions in Zürich City Center, Oerlikon, Seefeld & more. Discreet & professional."
       />
 
-      {/* Header */}
       <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
         scrolled ? 'bg-black/90 shadow-2xl' : 'bg-black/60'
       }`}>
@@ -181,6 +300,17 @@ export default function EscortZurich() {
                 <div className="text-xs text-pink-500 font-semibold tracking-wider">ESCORT ZÜRICH</div>
               </div>
             </Link>
+            
+            <div className="hidden md:flex items-center gap-6 text-sm">
+              <div className="flex items-center gap-2 text-white">
+                <Eye size={16} className="text-blue-400" />
+                <span className="font-semibold">{liveViewers} viewing</span>
+              </div>
+              <div className="flex items-center gap-2 text-white">
+                <Zap size={16} className="text-green-500 animate-pulse" />
+                <span className="font-semibold">{zurichEscorts.filter(e => e.available).length} available now</span>
+              </div>
+            </div>
             
             <nav className="hidden md:flex items-center gap-4">
               <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
@@ -205,6 +335,22 @@ export default function EscortZurich() {
             </nav>
 
             <MobileNav />
+          </div>
+        </div>
+
+        {/* Live Booking Ticker */}
+        <div className="border-t border-white/10 bg-black/60 backdrop-blur-sm">
+          <div className="container mx-auto px-4 py-2">
+            <div className="flex items-center gap-2 text-xs text-white/80 overflow-hidden">
+              <CheckCircle size={14} className="text-green-500 flex-shrink-0" />
+              <div className="animate-marquee whitespace-nowrap">
+                {recentBookings.map((booking, idx) => (
+                  <span key={idx} className="inline-block mx-8">
+                    <strong className="text-white">{booking.name}</strong> booked {booking.escort} {booking.time}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -260,29 +406,28 @@ export default function EscortZurich() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center gap-8 text-white"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white"
             >
-              <div className="flex items-center gap-2">
-                <Users className="text-pink-500" size={24} />
-                <div className="text-left">
-                  <div className="text-2xl font-black">{zurichEscorts.length}+</div>
-                  <div className="text-xs text-gray-400">Active Escorts</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="text-green-500" size={24} />
-                <div className="text-left">
-                  <div className="text-2xl font-black">100%</div>
-                  <div className="text-xs text-gray-400">Verified Profiles</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="text-yellow-500" size={24} />
-                <div className="text-left">
-                  <div className="text-2xl font-black">4.9★</div>
-                  <div className="text-xs text-gray-400">Average Rating</div>
-                </div>
-              </div>
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+                <Users className="mx-auto text-pink-500 mb-2" size={32} />
+                <div className="text-2xl font-black">{zurichEscorts.length}+</div>
+                <div className="text-xs text-gray-400">Active Escorts</div>
+              </Card>
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+                <Shield className="mx-auto text-green-500 mb-2" size={32} />
+                <div className="text-2xl font-black">100%</div>
+                <div className="text-xs text-gray-400">Verified</div>
+              </Card>
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+                <Award className="mx-auto text-yellow-500 mb-2" size={32} />
+                <div className="text-2xl font-black">4.9★</div>
+                <div className="text-xs text-gray-400">Avg Rating</div>
+              </Card>
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+                <Video className="mx-auto text-purple-500 mb-2" size={32} />
+                <div className="text-2xl font-black">{zurichEscorts.filter(e => e.hasVideo).length}</div>
+                <div className="text-xs text-gray-400">Video Profiles</div>
+              </Card>
             </motion.div>
 
             {/* Search & Filters */}
@@ -342,35 +487,87 @@ export default function EscortZurich() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-6 text-white">
-                  <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={verifiedOnly}
-                      onChange={(e) => setVerifiedOnly(e.target.checked)}
-                      className="w-4 h-4 rounded accent-pink-600"
-                    />
-                    <span className="text-sm font-medium">Verified Only</span>
-                  </label>
-                  
-                  <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={availableNow}
-                      onChange={(e) => setAvailableNow(e.target.checked)}
-                      className="w-4 h-4 rounded accent-pink-600"
-                    />
-                    <span className="text-sm font-medium">Available Now</span>
-                  </label>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-6 text-white">
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
+                      <Checkbox checked={verifiedOnly} onCheckedChange={(checked) => setVerifiedOnly(checked === true)} />
+                      <span className="text-sm font-medium">Verified Only</span>
+                    </label>
+                    
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
+                      <Checkbox checked={availableNow} onCheckedChange={(checked) => setAvailableNow(checked === true)} />
+                      <span className="text-sm font-medium">Available Now</span>
+                    </label>
 
-                  <div className="ml-auto">
-                    <span className="text-yellow-500 font-bold text-lg">
-                      {filteredEscorts.length} Results
-                    </span>
+                    <div className="ml-auto">
+                      <span className="text-yellow-500 font-bold text-lg">{filteredEscorts.length} Results</span>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <div className="flex justify-between text-sm text-white mb-2">
+                        <span>Price Range</span>
+                        <span>CHF {priceRange[0]} - {priceRange[1]}</span>
+                      </div>
+                      <Slider
+                        value={priceRange}
+                        onValueChange={setPriceRange}
+                        min={300}
+                        max={1000}
+                        step={50}
+                        className="mt-2"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="text-sm text-white mb-2">Minimum Rating</div>
+                      <div className="flex items-center gap-1 mt-2">
+                        {[1, 2, 3, 4, 5].map((rating) => (
+                          <button
+                            key={rating}
+                            onClick={() => setMinRating(rating === minRating ? 0 : rating)}
+                            className="transition-transform hover:scale-110"
+                          >
+                            <Star
+                              size={24}
+                              className={rating <= minRating ? "text-yellow-500 fill-yellow-500" : "text-gray-600"}
+                            />
+                          </button>
+                        ))}
+                        {minRating > 0 && (
+                          <button
+                            onClick={() => setMinRating(0)}
+                            className="ml-2 text-xs text-gray-400 hover:text-white"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Card>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* VIP Concierge Banner */}
+      <section className="py-8 bg-gradient-to-r from-yellow-600/20 via-orange-600/20 to-pink-600/20 border-y border-yellow-500/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Crown className="text-yellow-500" size={48} />
+              <div>
+                <h3 className="text-2xl font-black text-white mb-1">VIP Concierge Service</h3>
+                <p className="text-gray-300">White-glove booking assistance for discerning clients in Zürich</p>
+              </div>
+            </div>
+            <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black">
+              <Phone size={20} className="mr-2" />
+              Contact Concierge
+            </Button>
           </div>
         </div>
       </section>
@@ -397,6 +594,17 @@ export default function EscortZurich() {
                           className="w-full h-80 object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
                         />
                         
+                        {escort.hasVideo && (
+                          <button
+                            onClick={() => openVideoModal(escort)}
+                            className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            <div className="bg-pink-600 rounded-full p-4 transform group-hover:scale-110 transition-transform">
+                              <Play size={32} className="text-white" fill="white" />
+                            </div>
+                          </button>
+                        )}
+
                         {escort.premium && (
                           <Badge className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-0 font-bold shadow-xl">
                             PREMIUM
@@ -410,14 +618,32 @@ export default function EscortZurich() {
                           </Badge>
                         )}
 
-                        <div className="absolute bottom-3 left-3 flex gap-2">
+                        <div className="absolute bottom-3 left-3 flex gap-2 flex-wrap">
                           {escort.verified && (
                             <Badge className="bg-blue-500 border-0 text-xs">
                               <Shield size={10} className="mr-1" />
                               Verified
                             </Badge>
                           )}
+                          {escort.hasVideo && (
+                            <Badge className="bg-purple-500 border-0 text-xs">
+                              <Video size={10} className="mr-1" />
+                              Video
+                            </Badge>
+                          )}
+                          {escort.hasVirtualTour && (
+                            <Badge className="bg-pink-500 border-0 text-xs">
+                              <Eye size={10} className="mr-1" />
+                              Tour
+                            </Badge>
+                          )}
                         </div>
+
+                        {escort.bookingsToday > 0 && (
+                          <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                            🔥 {escort.bookingsToday} bookings today
+                          </div>
+                        )}
                       </div>
 
                       {/* Content */}
@@ -432,9 +658,15 @@ export default function EscortZurich() {
                             <span className="font-medium">{escort.location}</span>
                           </div>
 
-                          <div className="flex items-center gap-2 text-gray-400 text-xs mb-3">
-                            <Clock size={12} />
-                            <span>{escort.postedTime}</span>
+                          <div className="flex items-center gap-4 text-gray-400 text-xs mb-3">
+                            <div className="flex items-center gap-1">
+                              <Clock size={12} />
+                              <span>{escort.postedTime}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Zap size={12} className="text-green-500" />
+                              <span>Responds in {escort.responseTime}</span>
+                            </div>
                           </div>
                         </div>
 
@@ -450,6 +682,16 @@ export default function EscortZurich() {
                           ))}
                         </div>
 
+                        <div className="flex flex-wrap gap-2 text-sm text-gray-400">
+                          <span className="flex items-center gap-1">
+                            <Camera size={14} /> {escort.bodyType}
+                          </span>
+                          <span>•</span>
+                          <span>{escort.height}</span>
+                          <span>•</span>
+                          <span>{escort.languages.join(", ")}</span>
+                        </div>
+
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
@@ -462,6 +704,29 @@ export default function EscortZurich() {
                           </div>
                           <span className="text-white text-sm font-medium">{escort.rating}</span>
                           <span className="text-white/60 text-xs">({escort.reviews} reviews)</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 p-4 bg-black/40 rounded-lg">
+                          {escort.verifiedPhotos && (
+                            <div className="flex items-center gap-2 text-green-400 text-xs">
+                              <CheckCircle size={14} /> Real Photos
+                            </div>
+                          )}
+                          {escort.idVerified && (
+                            <div className="flex items-center gap-2 text-blue-400 text-xs">
+                              <CheckCircle size={14} /> ID Verified
+                            </div>
+                          )}
+                          {escort.safeDate && (
+                            <div className="flex items-center gap-2 text-yellow-400 text-xs">
+                              <CheckCircle size={14} /> SafeDate
+                            </div>
+                          )}
+                          {escort.hasVirtualTour && (
+                            <div className="flex items-center gap-2 text-pink-400 text-xs">
+                              <CheckCircle size={14} /> Virtual Tour
+                            </div>
+                          )}
                         </div>
 
                         <div className="flex items-center justify-between pt-4 border-t border-white/10">
@@ -526,6 +791,8 @@ export default function EscortZurich() {
                     setSelectedService("all");
                     setVerifiedOnly(false);
                     setAvailableNow(false);
+                    setPriceRange([300, 800]);
+                    setMinRating(0);
                   }}
                   className="bg-yellow-500 text-black hover:bg-yellow-600"
                 >
@@ -536,6 +803,68 @@ export default function EscortZurich() {
           </div>
         </div>
       </section>
+
+      {/* Quick Booking Modal */}
+      <Dialog open={bookingModalOpen} onOpenChange={setBookingModalOpen}>
+        <DialogContent className="bg-gray-900 border-white/20 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">Quick Booking Request</DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Send a booking request to {selectedEscort?.name}
+            </DialogDescription>
+          </DialogHeader>
+          {selectedEscort && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg">
+                <img src={selectedEscort.image} alt={selectedEscort.name} className="w-20 h-20 rounded-lg object-cover" />
+                <div>
+                  <h4 className="font-bold text-lg">{selectedEscort.name}, {selectedEscort.age}</h4>
+                  <p className="text-sm text-gray-400">{selectedEscort.location}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                    <span className="text-sm">{selectedEscort.rating} ({selectedEscort.reviews} reviews)</span>
+                  </div>
+                </div>
+                <div className="ml-auto text-right">
+                  <div className="text-2xl font-black text-yellow-500">CHF {selectedEscort.rate}</div>
+                  <div className="text-xs text-gray-400">per hour</div>
+                </div>
+              </div>
+              <div className="text-center">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold w-full"
+                  asChild
+                >
+                  <Link href={`/booking-confirmation?escortId=${selectedEscort.id}&escortName=${selectedEscort.name}`}>
+                    <Calendar size={20} className="mr-2" />
+                    Continue to Full Booking Form
+                  </Link>
+                </Button>
+                <p className="text-xs text-gray-400 mt-2">
+                  Response time: {selectedEscort.responseTime}
+                </p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Video Modal */}
+      <Dialog open={videoModalOpen} onOpenChange={setVideoModalOpen}>
+        <DialogContent className="bg-gray-900 border-white/20 text-white max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">{selectedEscort?.name}'s Video Profile</DialogTitle>
+          </DialogHeader>
+          <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
+            <div className="text-center">
+              <Play size={64} className="text-pink-500 mx-auto mb-4" />
+              <p className="text-gray-400">Video preview would load here</p>
+              <p className="text-sm text-gray-500 mt-2">Demo mode - video integration ready</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* SEO Content Section */}
       <section className="py-16 bg-black/60 border-y border-white/10">
