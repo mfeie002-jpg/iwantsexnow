@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, MapPin, MessageCircle, Star, Shield, Calendar, Briefcase, GraduationCap, ArrowLeft, Phone, Video, Clock, DollarSign, CheckCircle, XCircle, Image as ImageIcon, ThumbsUp, Share2, Flag } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Heart, MapPin, MessageCircle, Star, Shield, Calendar, Briefcase, GraduationCap, ArrowLeft, Phone, Video, Clock, DollarSign, CheckCircle, XCircle, Image as ImageIcon, ThumbsUp, Share2, Flag, ChevronLeft, ChevronRight, Filter, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -12,6 +13,13 @@ export default function ProfileDetails() {
   const { id } = router.query;
   const [liked, setLiked] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  
+  // Review Pagination & Filtering State
+  const [reviewPage, setReviewPage] = useState(1);
+  const [reviewsPerPage] = useState(5);
+  const [sortBy, setSortBy] = useState<"recent" | "highest" | "lowest">("recent");
+  const [filterRating, setFilterRating] = useState<number | "all">("all");
+  const [showVerifiedOnly, setShowVerifiedOnly] = useState(false);
 
   // Mock detailed profile data
   const profile = {
@@ -86,31 +94,127 @@ export default function ProfileDetails() {
       sunday: { available: false, times: "By appointment only" }
     },
     
-    // Reviews
+    // Expanded Reviews
     reviews: [
       {
         id: 1,
         author: "Michael Z.",
         rating: 5,
         date: "2 days ago",
+        timestamp: Date.now() - 2 * 24 * 60 * 60 * 1000,
         verified: true,
-        comment: "Absolutely amazing experience! Sarah is everything described and more. Professional, elegant, and incredibly charming. The dinner date was perfect, and she made me feel completely at ease. Highly recommended!"
+        comment: "Absolutely amazing experience! Sarah is everything described and more. Professional, elegant, and incredibly charming. The dinner date was perfect, and she made me feel completely at ease. Highly recommended!",
+        helpful: 12
       },
       {
         id: 2,
         author: "David L.",
         rating: 5,
         date: "1 week ago",
+        timestamp: Date.now() - 7 * 24 * 60 * 60 * 1000,
         verified: true,
-        comment: "Best companion I've ever met. Sarah is genuine, warm, and knows exactly how to create a memorable evening. Her English is perfect, and conversation flows naturally. Will definitely meet again!"
+        comment: "Best companion I've ever met. Sarah is genuine, warm, and knows exactly how to create a memorable evening. Her English is perfect, and conversation flows naturally. Will definitely meet again!",
+        helpful: 8
       },
       {
         id: 3,
         author: "Thomas B.",
         rating: 5,
         date: "2 weeks ago",
+        timestamp: Date.now() - 14 * 24 * 60 * 60 * 1000,
         verified: true,
-        comment: "A true lady! Met Sarah for a business dinner and she was the perfect plus one. Intelligent conversation, stunning appearance, and very discreet. Worth every franc!"
+        comment: "A true lady! Met Sarah for a business dinner and she was the perfect plus one. Intelligent conversation, stunning appearance, and very discreet. Worth every franc!",
+        helpful: 15
+      },
+      {
+        id: 4,
+        author: "Andreas K.",
+        rating: 4,
+        date: "3 weeks ago",
+        timestamp: Date.now() - 21 * 24 * 60 * 60 * 1000,
+        verified: false,
+        comment: "Great experience overall. Sarah is very professional and makes you feel comfortable. Only minor thing was that she was 15 minutes late, but she made up for it with extra time. Would book again.",
+        helpful: 5
+      },
+      {
+        id: 5,
+        author: "Marco P.",
+        rating: 5,
+        date: "1 month ago",
+        timestamp: Date.now() - 30 * 24 * 60 * 60 * 1000,
+        verified: true,
+        comment: "Exceptional service! Sarah exceeded all expectations. Her attention to detail and genuine personality made the entire experience unforgettable. 10/10 would recommend.",
+        helpful: 20
+      },
+      {
+        id: 6,
+        author: "Stefan H.",
+        rating: 5,
+        date: "1 month ago",
+        timestamp: Date.now() - 32 * 24 * 60 * 60 * 1000,
+        verified: true,
+        comment: "Perfect companion for my business trip. Sarah's multilingual skills and social grace made networking events so much easier. Highly professional.",
+        helpful: 7
+      },
+      {
+        id: 7,
+        author: "Robert M.",
+        rating: 4,
+        date: "6 weeks ago",
+        timestamp: Date.now() - 42 * 24 * 60 * 60 * 1000,
+        verified: true,
+        comment: "Very good experience. Sarah is beautiful and engaging. Communication before meeting was excellent. Would have given 5 stars but the location was a bit difficult to find.",
+        helpful: 4
+      },
+      {
+        id: 8,
+        author: "Felix S.",
+        rating: 5,
+        date: "2 months ago",
+        timestamp: Date.now() - 60 * 24 * 60 * 60 * 1000,
+        verified: false,
+        comment: "Outstanding! Sarah made my birthday celebration truly special. She's charming, intelligent, and knows how to make every moment count. Can't wait to see her again.",
+        helpful: 11
+      },
+      {
+        id: 9,
+        author: "Daniel W.",
+        rating: 5,
+        date: "2 months ago",
+        timestamp: Date.now() - 65 * 24 * 60 * 60 * 1000,
+        verified: true,
+        comment: "Incredible experience from start to finish. Sarah's professionalism and warmth are unmatched. She went above and beyond to ensure I had an amazing time. Definitely booking again!",
+        helpful: 18
+      },
+      {
+        id: 10,
+        author: "Christian B.",
+        rating: 3,
+        date: "3 months ago",
+        timestamp: Date.now() - 90 * 24 * 60 * 60 * 1000,
+        verified: false,
+        comment: "Decent experience but felt a bit rushed. Sarah is nice but I expected more for the price. Service was professional though.",
+        helpful: 2
+      },
+      {
+        id: 11,
+        author: "Alexander L.",
+        rating: 5,
+        date: "3 months ago",
+        timestamp: Date.now() - 95 * 24 * 60 * 60 * 1000,
+        verified: true,
+        comment: "Best decision I made! Sarah is absolutely wonderful. Her genuine personality and stunning looks make her stand out. Communication was excellent throughout.",
+        helpful: 14
+      },
+      {
+        id: 12,
+        author: "Patrick K.",
+        rating: 4,
+        date: "4 months ago",
+        timestamp: Date.now() - 120 * 24 * 60 * 60 * 1000,
+        verified: true,
+        comment: "Great companion for travel. Sarah adapted perfectly to different social situations. Very intelligent and well-spoken. Minor issue with scheduling but overall fantastic.",
+        helpful: 6
       }
     ],
     
@@ -120,6 +224,50 @@ export default function ProfileDetails() {
       responseRate: 98,
       repeatClients: 73
     }
+  };
+
+  // Review Filtering Logic
+  const getFilteredReviews = () => {
+    let filtered = [...profile.reviews];
+
+    // Filter by rating
+    if (filterRating !== "all") {
+      filtered = filtered.filter(review => review.rating === filterRating);
+    }
+
+    // Filter by verified status
+    if (showVerifiedOnly) {
+      filtered = filtered.filter(review => review.verified);
+    }
+
+    // Sort reviews
+    switch (sortBy) {
+      case "highest":
+        filtered.sort((a, b) => b.rating - a.rating);
+        break;
+      case "lowest":
+        filtered.sort((a, b) => a.rating - b.rating);
+        break;
+      case "recent":
+      default:
+        filtered.sort((a, b) => b.timestamp - a.timestamp);
+        break;
+    }
+
+    return filtered;
+  };
+
+  const filteredReviews = getFilteredReviews();
+  
+  // Pagination Logic
+  const totalReviewPages = Math.ceil(filteredReviews.length / reviewsPerPage);
+  const startReviewIndex = (reviewPage - 1) * reviewsPerPage;
+  const endReviewIndex = startReviewIndex + reviewsPerPage;
+  const paginatedReviews = filteredReviews.slice(startReviewIndex, endReviewIndex);
+
+  const handleReviewPageChange = (page: number) => {
+    setReviewPage(page);
+    document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleWhatsAppContact = () => {
@@ -136,6 +284,16 @@ export default function ProfileDetails() {
       <Star key={i} size={16} className={i < rating ? "fill-yellow-500 text-yellow-500" : "text-gray-300"} />
     ));
   };
+
+  const getRatingDistribution = () => {
+    const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    profile.reviews.forEach(review => {
+      distribution[review.rating as keyof typeof distribution]++;
+    });
+    return distribution;
+  };
+
+  const ratingDistribution = getRatingDistribution();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
@@ -348,7 +506,7 @@ export default function ProfileDetails() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="reviews" className="space-y-6">
+              <TabsContent value="reviews" className="space-y-6" id="reviews-section">
                 {/* Stats Overview */}
                 <Card className="p-6 bg-white/5 backdrop-blur-sm border-white/10">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -374,9 +532,128 @@ export default function ProfileDetails() {
                   </div>
                 </Card>
 
+                {/* Rating Distribution */}
+                <Card className="p-6 bg-white/5 backdrop-blur-sm border-white/10">
+                  <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+                    <TrendingUp size={20} className="text-pink-400" />
+                    Rating Distribution
+                  </h3>
+                  <div className="space-y-3">
+                    {[5, 4, 3, 2, 1].map((rating) => {
+                      const count = ratingDistribution[rating as keyof typeof ratingDistribution];
+                      const percentage = profile.reviews.length > 0 ? (count / profile.reviews.length) * 100 : 0;
+                      return (
+                        <div key={rating} className="flex items-center gap-3">
+                          <div className="flex items-center gap-1 w-20">
+                            <span className="text-white font-medium">{rating}</span>
+                            <Star size={14} className="fill-yellow-500 text-yellow-500" />
+                          </div>
+                          <div className="flex-1 h-3 bg-gray-700 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gradient-to-r from-yellow-500 to-orange-500 transition-all duration-500"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <span className="text-gray-400 text-sm w-16 text-right">
+                            {count} ({percentage.toFixed(0)}%)
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+
+                {/* Filter & Sort Controls */}
+                <Card className="p-6 bg-white/5 backdrop-blur-sm border-white/10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-bold text-white flex items-center gap-2">
+                      <Filter size={20} className="text-pink-400" />
+                      Filter Reviews
+                    </h3>
+                    <Badge className="bg-pink-600 border-0">
+                      {filteredReviews.length} {filteredReviews.length === 1 ? 'Review' : 'Reviews'}
+                    </Badge>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Sort By */}
+                    <div>
+                      <label className="text-sm text-gray-400 mb-2 block">Sort By</label>
+                      <Select value={sortBy} onValueChange={(value: any) => { setSortBy(value); setReviewPage(1); }}>
+                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="recent">Most Recent</SelectItem>
+                          <SelectItem value="highest">Highest Rating</SelectItem>
+                          <SelectItem value="lowest">Lowest Rating</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Filter by Rating */}
+                    <div>
+                      <label className="text-sm text-gray-400 mb-2 block">Filter by Rating</label>
+                      <Select value={filterRating.toString()} onValueChange={(value) => { setFilterRating(value === "all" ? "all" : Number(value)); setReviewPage(1); }}>
+                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Ratings</SelectItem>
+                          <SelectItem value="5">5 Stars</SelectItem>
+                          <SelectItem value="4">4 Stars</SelectItem>
+                          <SelectItem value="3">3 Stars</SelectItem>
+                          <SelectItem value="2">2 Stars</SelectItem>
+                          <SelectItem value="1">1 Star</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Verified Only */}
+                    <div>
+                      <label className="text-sm text-gray-400 mb-2 block">Show Only</label>
+                      <label className="flex items-center gap-3 bg-gray-800/80 border border-gray-700 rounded-lg px-4 py-2.5 cursor-pointer hover:border-pink-500 transition-all">
+                        <input
+                          type="checkbox"
+                          checked={showVerifiedOnly}
+                          onChange={(e) => { setShowVerifiedOnly(e.target.checked); setReviewPage(1); }}
+                          className="w-4 h-4 rounded accent-pink-600"
+                        />
+                        <span className="text-white font-medium">Verified Reviews</span>
+                        <CheckCircle size={16} className="text-blue-500 ml-auto" />
+                      </label>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* No Results Message */}
+                {filteredReviews.length === 0 && (
+                  <Card className="p-12 bg-white/5 backdrop-blur-sm border-white/10 text-center">
+                    <div className="max-w-md mx-auto">
+                      <MessageCircle size={48} className="text-gray-500 mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">No Reviews Found</h3>
+                      <p className="text-gray-400 mb-4">
+                        Try adjusting your filters to see more reviews.
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        className="border-white/30 text-white hover:bg-white/10"
+                        onClick={() => {
+                          setFilterRating("all");
+                          setShowVerifiedOnly(false);
+                          setSortBy("recent");
+                          setReviewPage(1);
+                        }}
+                      >
+                        Reset Filters
+                      </Button>
+                    </div>
+                  </Card>
+                )}
+
                 {/* Individual Reviews */}
-                {profile.reviews.map((review) => (
-                  <Card key={review.id} className="p-6 bg-white/5 backdrop-blur-sm border-white/10">
+                {paginatedReviews.map((review) => (
+                  <Card key={review.id} className="p-6 bg-white/5 backdrop-blur-sm border-white/10 hover:border-pink-500/30 transition-all">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
@@ -398,7 +675,7 @@ export default function ProfileDetails() {
                     <div className="flex items-center gap-4 mt-4 pt-4 border-t border-white/10">
                       <button className="flex items-center gap-2 text-gray-400 hover:text-pink-400 transition-colors">
                         <ThumbsUp size={16} />
-                        <span className="text-sm">Helpful</span>
+                        <span className="text-sm">Helpful ({review.helpful})</span>
                       </button>
                       <button className="flex items-center gap-2 text-gray-400 hover:text-pink-400 transition-colors">
                         <Flag size={16} />
@@ -407,6 +684,73 @@ export default function ProfileDetails() {
                     </div>
                   </Card>
                 ))}
+
+                {/* Pagination Controls */}
+                {filteredReviews.length > reviewsPerPage && (
+                  <Card className="p-6 bg-white/5 backdrop-blur-sm border-white/10">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                      <p className="text-sm text-gray-400">
+                        Showing {startReviewIndex + 1} - {Math.min(endReviewIndex, filteredReviews.length)} of {filteredReviews.length} reviews
+                      </p>
+                      
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleReviewPageChange(reviewPage - 1)}
+                          disabled={reviewPage === 1}
+                          className="border-white/30 text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <ChevronLeft size={16} className="mr-1" />
+                          Previous
+                        </Button>
+
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: totalReviewPages }, (_, i) => i + 1).map((page) => {
+                            // Show first, last, current, and adjacent pages
+                            if (
+                              page === 1 ||
+                              page === totalReviewPages ||
+                              (page >= reviewPage - 1 && page <= reviewPage + 1)
+                            ) {
+                              return (
+                                <Button
+                                  key={page}
+                                  variant={page === reviewPage ? "default" : "outline"}
+                                  size="sm"
+                                  onClick={() => handleReviewPageChange(page)}
+                                  className={page === reviewPage 
+                                    ? "bg-gradient-to-r from-pink-600 to-purple-600 text-white" 
+                                    : "border-white/30 text-white hover:bg-white/10"
+                                  }
+                                >
+                                  {page}
+                                </Button>
+                              );
+                            } else if (
+                              page === reviewPage - 2 ||
+                              page === reviewPage + 2
+                            ) {
+                              return <span key={page} className="text-gray-500 px-2">...</span>;
+                            }
+                            return null;
+                          })}
+                        </div>
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleReviewPageChange(reviewPage + 1)}
+                          disabled={reviewPage === totalReviewPages}
+                          className="border-white/30 text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Next
+                          <ChevronRight size={16} className="ml-1" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                )}
               </TabsContent>
             </Tabs>
           </div>
