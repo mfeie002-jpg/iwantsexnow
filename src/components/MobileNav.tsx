@@ -139,12 +139,21 @@ export function MobileNav() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-white/20 bg-black/30 backdrop-blur-sm">
-            <Link href="/" className="flex items-center gap-2" onClick={closeMenu}>
-              <Heart className="text-pink-500 fill-pink-500" size={28} />
-              <span className="text-xl font-black text-white">
-                iWantSexNow.ch
-              </span>
-            </Link>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="relative">
+                <img 
+                  src="/logo_128x128.png" 
+                  alt="iWantSexNow.ch Logo" 
+                  className="w-12 h-12"
+                />
+              </div>
+              <div>
+                <span className="text-2xl font-black text-white tracking-tight">
+                  iWantSexNow.ch
+                </span>
+                <div className="text-xs text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
+              </div>
+            </div>
             <Button
               variant="ghost"
               size="icon"

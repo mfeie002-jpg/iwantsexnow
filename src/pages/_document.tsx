@@ -7,19 +7,21 @@ export default function Document() {
       <Head>
         <SEOElements />
         
-        {/* Favicon and App Icons */}
+        {/* Favicon and App Icons - New Logo */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo_32x32.png" />
+        <link rel="icon" type="image/png" sizes="128x128" href="/logo_128x128.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/logo_256x256.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo_256x256.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/logo_512x512.png" />
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/site.webmanifest" />
         
         {/* Theme Color */}
-        <meta name="theme-color" content="#1f2937" />
+        <meta name="theme-color" content="#1a1a1a" />
         <meta name="msapplication-TileColor" content="#0a0a0a" />
+        <meta name="msapplication-TileImage" content="/logo_256x256.png" />
       </Head>
       <body>
         <Main />

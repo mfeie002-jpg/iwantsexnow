@@ -261,6 +261,24 @@ export function Navigation() {
           Join Free
         </Link>
       </Button>
+
+      {/* New Elegant Logo */}
+      <Link href="/" className="flex items-center gap-3 group">
+        <div className="relative">
+          <img 
+            src="/logo_128x128.png" 
+            alt="iWantSexNow.ch Logo" 
+            className="w-10 h-10 transition-all group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
+        </div>
+        <div>
+          <span className="text-xl font-black text-white tracking-tight">
+            iWantSexNow.ch
+          </span>
+          <div className="text-[10px] text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
+        </div>
+      </Link>
     </nav>
   );
 }

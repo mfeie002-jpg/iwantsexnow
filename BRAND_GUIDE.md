@@ -13,96 +13,170 @@
 ## Logo System
 
 ### Primary Logo
-The iWantSexNow.ch logo consists of two main components:
-1. **Logo Mark:** Custom heart-shaped geometric icon
-2. **Wordmark:** "iWantSexNow.ch" typography with tagline
+The iWantSexNow.ch logo features an elegant geometric heart design with interlocking elements that suggest connection and sophistication. The logo comes in multiple variations for different use cases.
+
+### Logo Files Available
+
+**Full Color (Rose Gold Gradient):**
+- `logo_512x512.png` - High resolution, full detail
+- `logo_256x256.png` - Medium resolution
+- `logo_128x128.png` - Standard web use (PRIMARY)
+- `logo_64x64.png` - Small contexts
+- `logo_32x32.png` - Favicon, minimal use
+- `logo_16x16.png` - Smallest favicon size
+
+**Monochrome Versions:**
+- `logo_monochrome_white.png` - For dark backgrounds (alternative)
+- `logo_monochrome_black.png` - For light backgrounds only
+
+**Full Lockup:**
+- `9d4e92fe-6caa-40e2-a75b-d159fbcf8c21.png` - Complete logo with wordmark
 
 ### Logo Specifications
 
-**Logo Mark Dimensions:**
-- Width: 48px (3rem)
-- Height: 48px (3rem)
-- Shape: Rounded square (border-radius: 0.5rem)
+**Geometric Heart Icon:**
+- Design: Interlocking diamond/heart shape with subtle depth
+- Style: Line-based geometric abstraction
+- Symbolism: Connection, desire, sophistication
+- Treatment: Smooth gradients with elegant curves
 
-**Logo Mark Colors:**
-- Background: Linear gradient from `#1f2937` (gray-800) to `#111827` (gray-900)
-- Border: `#374151` (gray-700)
-- Icon: SVG heart path with gradient fill
-- Hover State: Border changes to `#4b5563` (gray-600)
-
-**Wordmark Typography:**
-- Font Family: System font stack (platform native)
-- Font Weight: 800 (Black/Extra Bold)
-- Font Size: 1.5rem (24px)
-- Letter Spacing: Tight (-0.025em)
-- Color: White (#FFFFFF)
-
-**Tagline Typography:**
-- Font Family: System font stack (platform native)
-- Font Weight: 600 (Semi-bold)
-- Font Size: 0.75rem (12px)
-- Letter Spacing: Widest (0.1em)
-- Text Transform: Uppercase
-- Color: `#9ca3af` (gray-400)
-
-### Logo Variations
-
-**Full Logo (Horizontal)**
-```
-[ICON] iWantSexNow.ch
-       WHERE DESIRE MEETS DISCRETION
-```
-Use: Primary header, marketing materials, full-width applications
-
-**Icon Only**
-```
-[ICON]
-```
-Use: Favicon, app icons, social media profile pictures, compact spaces
-
-**Wordmark Only**
-```
-iWantSexNow.ch
-```
-Use: When icon is not suitable, text-only contexts
-
-### Clear Space
-Maintain minimum clear space around logo equal to the height of the icon (48px) on all sides.
-
-### Minimum Size
-- Full logo: Minimum width 200px
-- Icon only: Minimum 32px × 32px
-- Never scale below these dimensions for legibility
+**Color Treatment:**
+- Primary: Rose gold to champagne gradient
+- Gradient Direction: Top-left to bottom-right
+- Color Values: #D4AF37 (champagne) to #8B5F6F (muted rose)
+- Monochrome: Pure white (#FFFFFF) or pure black (#000000)
 
 ### Logo Usage Guidelines
 
-**DO:**
-- ✅ Use approved logo variations only
-- ✅ Maintain proper clear space
-- ✅ Use on approved background colors
-- ✅ Scale proportionally
-- ✅ Use high-resolution files for print
-
-**DON'T:**
-- ❌ Distort, stretch, or skew the logo
-- ❌ Change logo colors outside approved palette
-- ❌ Add effects (shadows, outlines, glows) except approved hover states
-- ❌ Rotate the logo
-- ❌ Place on busy backgrounds that reduce legibility
-- ❌ Recreate or modify logo elements
-
-### Background Usage
-
-**Approved Backgrounds:**
-- Black (#000000)
-- Dark gray (#1a1a1a, #2C2C2C)
+**PRIMARY USAGE - Dark Backgrounds:**
+Use `logo_128x128.png` (rose gold gradient) for:
+- Website header and navigation
+- Mobile menu
 - Dark themed interfaces
-- Photography with dark overlays ensuring contrast
+- Social media profiles (dark mode)
+- App icons
 
-**Not Recommended:**
-- Light backgrounds (insufficient contrast)
-- Busy patterns or images
-- Colors that clash with brand palette
+**ALTERNATIVE - Dark Backgrounds:**
+Use `logo_monochrome_white.png` if pure grayscale is needed:
+- Print materials (black & white)
+- Simplified branding contexts
+- When color adds unwanted emphasis
+
+**LIGHT BACKGROUNDS:**
+Use `logo_monochrome_black.png` for:
+- Documents and reports
+- Light themed interfaces (if ever used)
+- Invoices and official paperwork
+
+**MARKETING MATERIALS:**
+Use full lockup with wordmark:
+- Business cards
+- Advertisements
+- Promotional materials
+- Social media covers
+
+### Implementation Details
+
+**Website Header:**
+```jsx
+<img 
+  src="/logo_128x128.png" 
+  alt="iWantSexNow.ch Logo" 
+  className="w-12 h-12 transition-all group-hover:scale-110"
+/>
+```
+
+**With Glow Effect:**
+```jsx
+<div className="relative">
+  <img 
+    src="/logo_128x128.png" 
+    alt="iWantSexNow.ch Logo" 
+    className="w-12 h-12 transition-all group-hover:scale-110"
+  />
+  <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
+</div>
+```
+
+### Clear Space
+Maintain minimum clear space around logo equal to 25% of the logo width on all sides.
+
+### Minimum Size
+- Desktop header: 48px × 48px (3rem)
+- Mobile menu: 48px × 48px (3rem)
+- Favicon: 32px × 32px minimum
+- Never scale below 16px × 16px
+
+### Logo Animation
+Subtle hover effect:
+- Scale: 1.0 to 1.1 (10% increase)
+- Transition: 300ms ease-in-out
+- Glow: Increase blur and opacity on hover
+
+### Logo Usage DO's
+
+✅ Use the rose gold gradient version on dark backgrounds (primary)  
+✅ Maintain aspect ratio (always square)  
+✅ Use proper clear space  
+✅ Apply subtle hover effects for interactivity  
+✅ Use appropriate size for context  
+✅ Ensure logo is clearly visible against background  
+
+### Logo Usage DON'Ts
+
+❌ Don't distort or stretch the logo  
+❌ Don't use rose gold version on light backgrounds  
+❌ Don't add unauthorized effects (drop shadows, strokes, etc.)  
+❌ Don't rotate the logo  
+❌ Don't change the gradient colors  
+❌ Don't use low-resolution files at large sizes  
+❌ Don't place on busy backgrounds without contrast  
+
+### Favicon Implementation
+
+The favicon uses multiple sizes for optimal display across devices:
+
+```html
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="/logo_32x32.png" />
+<link rel="icon" type="image/png" sizes="128x128" href="/logo_128x128.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/logo_256x256.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/logo_256x256.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/logo_512x512.png" />
+```
+
+### Brand Lockup with Text
+
+When using the logo with the wordmark "iWantSexNow.ch":
+
+**Horizontal Layout:**
+```
+[LOGO] iWantSexNow.ch
+       WHERE DESIRE MEETS DISCRETION
+```
+
+**Typography:**
+- Site Name: 1.5rem (24px), Font Weight 800, Color: White
+- Tagline: 0.75rem (12px), Font Weight 600, Color: Gray-400, Uppercase, Letter-spacing: 0.1em
+
+**Spacing:**
+- Gap between logo and text: 0.75rem (12px)
+- Vertical spacing between name and tagline: 0.125rem (2px)
+
+### Background Compatibility
+
+**Excellent Compatibility:**
+- Pure black (#000000)
+- Charcoal (#1a1a1a, #2C2C2C)
+- Dark gray (#374151)
+- Navy/dark blue
+- Dark themed UI elements
+
+**Poor Compatibility (DO NOT USE):**
+- White or light backgrounds (use black version instead)
+- Bright colors
+- Photography without dark overlay
+- Low contrast surfaces
 
 ---
 
