@@ -2,8 +2,18 @@ import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 export default function LogoShowcase() {
+  const handleDownload = (filename: string, displayName: string) => {
+    const link = document.createElement('a');
+    link.href = `/${filename}`;
+    link.download = displayName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <SEO 
@@ -53,6 +63,13 @@ export default function LogoShowcase() {
                   <p><strong className="text-white">File:</strong> logo_white.png</p>
                   <p><strong className="text-white">Background:</strong> Dark backgrounds only</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_monochrome_white.png', 'iWantSexNow-logo-white.png')}
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold"
+                >
+                  <Download size={18} className="mr-2" />
+                  Download White Logo
+                </Button>
               </div>
               <div className="flex-1 flex flex-col gap-6">
                 <div className="bg-gray-950 p-8 rounded-lg border border-white/10 flex items-center justify-center">
@@ -92,6 +109,13 @@ export default function LogoShowcase() {
                   <p><strong className="text-white">Use for:</strong> Dark backgrounds, minimal designs</p>
                   <p><strong className="text-white">File:</strong> logo_white.png</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_monochrome_white.png', 'iWantSexNow-logo-white.png')}
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold"
+                >
+                  <Download size={18} className="mr-2" />
+                  Download White Logo
+                </Button>
               </div>
               <div className="flex-1">
                 <div className="bg-gray-950 p-8 rounded-lg border border-white/10 flex items-center justify-center">
@@ -120,6 +144,13 @@ export default function LogoShowcase() {
                   <p><strong className="text-gray-900">Use for:</strong> Documents, invoices, light-themed pages</p>
                   <p><strong className="text-gray-900">File:</strong> logo_black.png</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_monochrome_black.png', 'iWantSexNow-logo-black.png')}
+                  className="bg-gray-900 hover:bg-gray-800 text-white font-bold"
+                >
+                  <Download size={18} className="mr-2" />
+                  Download Black Logo
+                </Button>
               </div>
               <div className="flex-1">
                 <div className="bg-gray-100 p-8 rounded-lg border border-gray-300 flex items-center justify-center">
@@ -150,6 +181,13 @@ export default function LogoShowcase() {
                   <p><strong className="text-white">File:</strong> 9d4e92fe-6caa-40e2-a75b-d159fbcf8c21.png</p>
                   <p><strong className="text-white">Note:</strong> Includes rose gold logo with elegant serif typography</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('9d4e92fe-6caa-40e2-a75b-d159fbcf8c21.png', 'iWantSexNow-full-lockup.png')}
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-bold"
+                >
+                  <Download size={18} className="mr-2" />
+                  Download Full Lockup
+                </Button>
               </div>
               <div className="bg-gray-950 p-12 rounded-lg border border-white/10 flex items-center justify-center">
                 <img 
@@ -237,55 +275,126 @@ export default function LogoShowcase() {
 
           {/* Size Reference */}
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-950 border-white/20">
-            <h3 className="text-3xl font-bold text-white mb-6">Size Reference</h3>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-3xl font-bold text-white">Size Reference</h3>
+              <Button 
+                onClick={() => {
+                  // Download all sizes
+                  const sizes = ['512x512', '256x256', '128x128', '64x64', '32x32', '16x16'];
+                  sizes.forEach((size, index) => {
+                    setTimeout(() => {
+                      handleDownload(`logo_${size}.png`, `iWantSexNow-logo-${size}.png`);
+                    }, index * 500);
+                  });
+                }}
+                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold"
+              >
+                <Download size={18} className="mr-2" />
+                Download All Sizes
+              </Button>
+            </div>
             
             <div className="space-y-6">
               <div className="flex items-center gap-6 p-4 bg-black/40 rounded-lg">
                 <img src="/logo_512x512.png" alt="512px" className="w-64 h-64" />
-                <div className="text-gray-300">
+                <div className="flex-1 text-gray-300">
                   <p className="text-xl font-bold text-white">512×512px</p>
                   <p className="text-sm">High resolution, Android Chrome PWA</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_512x512.png', 'iWantSexNow-logo-512x512.png')}
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
               </div>
               
               <div className="flex items-center gap-6 p-4 bg-black/40 rounded-lg">
                 <img src="/logo_256x256.png" alt="256px" className="w-32 h-32" />
-                <div className="text-gray-300">
+                <div className="flex-1 text-gray-300">
                   <p className="text-xl font-bold text-white">256×256px</p>
                   <p className="text-sm">Android Chrome, PWA icons</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_256x256.png', 'iWantSexNow-logo-256x256.png')}
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
               </div>
               
               <div className="flex items-center gap-6 p-4 bg-black/40 rounded-lg">
                 <img src="/logo_128x128.png" alt="128px" className="w-16 h-16" />
-                <div className="text-gray-300">
+                <div className="flex-1 text-gray-300">
                   <p className="text-xl font-bold text-white">128×128px</p>
                   <p className="text-sm">Standard web use (PRIMARY)</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_128x128.png', 'iWantSexNow-logo-128x128.png')}
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
               </div>
               
               <div className="flex items-center gap-6 p-4 bg-black/40 rounded-lg">
                 <img src="/logo_64x64.png" alt="64px" className="w-8 h-8" />
-                <div className="text-gray-300">
+                <div className="flex-1 text-gray-300">
                   <p className="text-xl font-bold text-white">64×64px</p>
                   <p className="text-sm">Small contexts, buttons</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_64x64.png', 'iWantSexNow-logo-64x64.png')}
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
               </div>
               
               <div className="flex items-center gap-6 p-4 bg-black/40 rounded-lg">
                 <img src="/logo_32x32.png" alt="32px" className="w-4 h-4" />
-                <div className="text-gray-300">
+                <div className="flex-1 text-gray-300">
                   <p className="text-xl font-bold text-white">32×32px</p>
                   <p className="text-sm">Favicon, browser tabs (retina)</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_32x32.png', 'iWantSexNow-logo-32x32.png')}
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
               </div>
               
               <div className="flex items-center gap-6 p-4 bg-black/40 rounded-lg">
                 <img src="/logo_16x16.png" alt="16px" className="w-2 h-2" />
-                <div className="text-gray-300">
+                <div className="flex-1 text-gray-300">
                   <p className="text-xl font-bold text-white">16×16px</p>
                   <p className="text-sm">Smallest favicon size</p>
                 </div>
+                <Button 
+                  onClick={() => handleDownload('logo_16x16.png', 'iWantSexNow-logo-16x16.png')}
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
               </div>
             </div>
           </Card>

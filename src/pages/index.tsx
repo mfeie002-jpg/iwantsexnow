@@ -29,6 +29,8 @@ export default function Home() {
   
   // App State
   const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [onlineCount, setOnlineCount] = useState(127);
   const [activeViewers, setActiveViewers] = useState(342);
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -281,11 +283,26 @@ export default function Home() {
   // Effects
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
+      const currentScrollY = window.scrollY;
+      
+      // Determine if scrolled past threshold
+      setScrolled(currentScrollY > 100);
+      
+      // Hide header when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 150) {
+        // Scrolling down & past threshold
+        setHeaderVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
-    window.addEventListener('scroll', handleScroll);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -303,26 +320,36 @@ export default function Home() {
       />
 
       {/* Header */}
-      <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/90 shadow-2xl' : 'bg-black/60'
+      <header className={`border-b border-white/10 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? 'bg-black/95 shadow-2xl py-2' : 'bg-black/60 py-4'
+      } ${
+        headerVisible ? 'translate-y-0' : '-translate-y-full'
       }`}>
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+        <div className="container mx-auto px-4">
+          <div className={`flex items-center justify-between transition-all duration-300 ${
+            scrolled ? 'py-1' : 'py-0'
+          }`}>
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 {/* New Elegant Logo */}
                 <img 
                   src="/logo_monochrome_white.png" 
                   alt="iWantSexNow.ch Logo" 
-                  className="w-12 h-12 transition-all group-hover:scale-110"
+                  className={`transition-all duration-300 group-hover:scale-110 ${
+                    scrolled ? 'w-8 h-8' : 'w-12 h-12'
+                  }`}
                 />
                 <div className="absolute inset-0 bg-rose-400/10 blur-xl group-hover:bg-rose-400/20 transition-all rounded-lg" />
               </div>
-              <div>
-                <span className="text-2xl font-black text-white tracking-tight">
+              <div className={`transition-all duration-300 ${scrolled ? 'scale-90' : 'scale-100'}`}>
+                <span className={`font-black text-white tracking-tight transition-all duration-300 ${
+                  scrolled ? 'text-xl' : 'text-2xl'
+                }`}>
                   iWantSexNow.ch
                 </span>
-                <div className="text-xs text-gray-400 font-semibold tracking-wider">WHERE DESIRE MEETS DISCRETION</div>
+                <div className={`text-xs text-gray-400 font-semibold tracking-wider transition-all duration-300 ${
+                  scrolled ? 'opacity-0 h-0' : 'opacity-100'
+                }`}>WHERE DESIRE MEETS DISCRETION</div>
               </div>
             </Link>
             
