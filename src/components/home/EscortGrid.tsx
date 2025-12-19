@@ -76,7 +76,7 @@ export function EscortGrid({
           onClick={() => onPageChange(1)}
           variant="outline"
           size="sm"
-          className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500"
+          className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40"
         >
           1
         </Button>
@@ -94,8 +94,8 @@ export function EscortGrid({
           variant={currentPage === i ? "default" : "outline"}
           size="sm"
           className={currentPage === i 
-            ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold" 
-            : "bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500"}
+            ? "bg-white text-black font-bold" 
+            : "bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40"}
         >
           {i}
         </Button>
@@ -112,7 +112,7 @@ export function EscortGrid({
           onClick={() => onPageChange(totalPages)}
           variant="outline"
           size="sm"
-          className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500"
+          className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40"
         >
           {totalPages}
         </Button>
@@ -131,8 +131,8 @@ export function EscortGrid({
               <Card 
                 key={escort.id} 
                 className={`overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300 cursor-pointer transform
-                  hover:-translate-y-1 hover:shadow-2xl hover:border-yellow-500 hover:shadow-yellow-500/20
-                  ${escort.topAd ? 'border-2 border-yellow-500 shadow-2xl shadow-yellow-500/20' : ''}`}
+                  hover:-translate-y-1 hover:shadow-2xl hover:border-white/30
+                  ${escort.topAd ? 'border-2 border-white/40 shadow-2xl shadow-black/40' : ''}`}
                 onClick={() => openLightbox(escort, 0)}
               >
                 <div className="flex flex-col md:flex-row gap-6 p-6">
@@ -146,7 +146,7 @@ export function EscortGrid({
                     
                     {escort.topAd && (
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-0 font-black text-base px-4 py-2 shadow-2xl">
+                        <Badge className="bg-white text-black border-0 font-black text-base px-4 py-2 shadow-2xl">
                           TOP AD
                         </Badge>
                       </div>
@@ -154,7 +154,7 @@ export function EscortGrid({
 
                     {escort.premium && !escort.topAd && (
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 font-bold text-sm px-3 py-1.5 shadow-xl">
+                        <Badge className="bg-gray-700 text-white border-0 font-bold text-sm px-3 py-1.5 shadow-xl">
                           PREMIUM
                         </Badge>
                       </div>
@@ -180,7 +180,7 @@ export function EscortGrid({
                         </Badge>
                       )}
                       {escort.hasVideo && (
-                        <Badge className="bg-purple-500 border-0 text-xs">
+                        <Badge className="bg-gray-600 border-0 text-xs">
                           <Play size={10} className="mr-1" />
                           Video
                         </Badge>
@@ -198,25 +198,25 @@ export function EscortGrid({
                   <div className="flex-1 space-y-4">
                     <div>
                       <div className="flex items-start gap-3 mb-2">
-                        <h3 className="text-3xl font-black text-white hover:text-pink-500 transition-colors">
+                        <h3 className="text-3xl font-black text-white hover:text-gray-300 transition-colors">
                           {escort.name}, {escort.age}
                         </h3>
                         {escort.serviceType === "sie-sucht-ihn" && (
-                          <Badge className="bg-pink-600 border-0 text-xs flex items-center gap-1">
+                          <Badge className="bg-rose-600 border-0 text-xs flex items-center gap-1">
                             <Heart size={10} fill="white" />
                             Sie sucht ihn
                           </Badge>
                         )}
                         {escort.serviceType === "escort-service" && (
-                          <Badge className="bg-purple-600 border-0 text-xs">
+                          <Badge className="bg-gray-600 border-0 text-xs">
                             Escort Service
                           </Badge>
                         )}
                       </div>
                       
-                      <div className="flex items-center gap-2 text-blue-400 text-sm mb-3">
+                      <div className="flex items-center gap-2 text-gray-400 text-sm mb-3">
                         <MapPin size={14} />
-                        <span className="font-medium hover:text-blue-300 transition-colors cursor-pointer">
+                        <span className="font-medium hover:text-gray-300 transition-colors cursor-pointer">
                           {escort.locations.join(", ")}
                         </span>
                       </div>
@@ -259,24 +259,24 @@ export function EscortGrid({
                     <div className="flex items-center justify-between pt-4 border-t border-white/10">
                       <div>
                         <div className="text-xs text-gray-400">Ab</div>
-                        <div className="text-2xl font-black text-yellow-500">CHF {escort.rate}</div>
+                        <div className="text-2xl font-black text-white">CHF {escort.rate}</div>
                         <div className="text-xs text-gray-400">pro Stunde</div>
                       </div>
                       <div className="flex gap-3">
                         <Button 
                           size="sm"
                           variant="outline"
-                          className="text-white border-white/30 hover:bg-white/10 hover:border-pink-500 transition-all"
+                          className="text-white border-white/30 hover:bg-white/10 hover:border-white/50 transition-all"
                           onClick={(e) => {
                             e.stopPropagation();
                             toggleFavorite(escort.id);
                           }}
                         >
-                          <Heart size={16} className={favorites.includes(escort.id) ? "fill-pink-600 text-pink-600" : ""} />
+                          <Heart size={16} className={favorites.includes(escort.id) ? "fill-rose-600 text-rose-600" : ""} />
                         </Button>
                         <Button 
                           size="sm"
-                          className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold hover:scale-105 transition-transform"
+                          className="bg-white hover:bg-gray-200 text-black font-bold hover:scale-105 transition-transform"
                           onClick={(e) => {
                             e.stopPropagation();
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -306,7 +306,7 @@ export function EscortGrid({
                   disabled={currentPage === 1}
                   variant="outline"
                   size="sm"
-                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft size={16} className="mr-1" />
                   Zurück
@@ -321,7 +321,7 @@ export function EscortGrid({
                   disabled={currentPage === totalPages}
                   variant="outline"
                   size="sm"
-                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Weiter
                   <ChevronRight size={16} className="ml-1" />
@@ -341,7 +341,7 @@ export function EscortGrid({
                 size="lg"
                 onClick={handleLoadMore}
                 disabled={isLoadingMore}
-                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-lg px-12 hover:scale-105 transition-transform"
+                className="bg-white hover:bg-gray-200 text-black font-bold text-lg px-12 hover:scale-105 transition-transform"
               >
                 {isLoadingMore ? (
                   <>
@@ -365,7 +365,7 @@ export function EscortGrid({
               <p className="text-gray-400 mb-6">Versuche deine Suchkriterien anzupassen</p>
               <Button 
                 onClick={resetFilters}
-                className="bg-yellow-500 text-black hover:bg-yellow-600"
+                className="bg-white text-black hover:bg-gray-200"
               >
                 Filter zurücksetzen
               </Button>

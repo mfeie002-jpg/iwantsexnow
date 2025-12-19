@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SEO from "@/components/SEO";
-import { Heart, User, Crown, Shield, Star, MessageCircle, Camera, Clock, MapPin, Calendar, Award, Zap, Phone, Mail, Globe, Lock, CheckCircle } from "lucide-react";
+import { Heart, User, Crown, Shield, Star, MessageCircle, Camera, Clock, MapPin, Calendar, Award, Zap, Phone, Mail, Globe, Lock, CheckCircle, Eye } from "lucide-react";
 import Link from "next/link";
 
 interface DemoAccount {
