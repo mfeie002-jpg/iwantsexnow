@@ -1,29 +1,95 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X, Home, Users, MessageCircle, Star, Settings, LogOut, Search, Calendar, Gift, Lock, Image as ImageIcon, Bell, Shield } from "lucide-react";
+import { Heart, Menu, X, Home, Users, MessageCircle, Star, Settings, Search, Calendar, Gift, Lock, Image as ImageIcon, Bell, Shield, MapPin, Sparkles, ChevronDown, ChevronRight, Phone, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+interface MenuItem {
+  label: string;
+  href?: string;
+  icon: any;
+  badge?: string;
+  featured?: boolean;
+  children?: { label: string; href: string; badge?: string; description?: string }[];
+}
+
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const router = useRouter();
 
-  const navigationItems = [
+  const navigationItems: MenuItem[] = [
     { label: "Home", href: "/", icon: Home },
-    { label: "Browse Members", href: "/members", icon: Users },
-    { label: "Messages", href: "/messages", icon: MessageCircle },
-    { label: "Matches", href: "/matches", icon: Heart },
-    { label: "Escort Services", href: "/escort-zurich", icon: Star, featured: true },
-    { label: "Stories", href: "/stories", icon: ImageIcon },
-    { label: "Events", href: "/events", icon: Calendar },
-    { label: "Virtual Gifts", href: "/gifts", icon: Gift },
-    { label: "Premium Content", href: "/content-feed", icon: Lock },
+    {
+      label: "Services",
+      icon: Star,
+      featured: true,
+      children: [
+        { label: "Zürich Escorts", href: "/escort-zurich", description: "127 companions" },
+        { label: "Geneva Escorts", href: "/escort-geneva", description: "89 companions" },
+        { label: "Basel Escorts", href: "/escort-basel", description: "76 companions" },
+        { label: "Bern Escorts", href: "/escort-bern", description: "54 companions" },
+        { label: "Lausanne Escorts", href: "/escort-lausanne", description: "63 companions" },
+        { label: "GFE Experience", href: "/services/gfe", badge: "Popular" },
+        { label: "Dinner Dates", href: "/services/dinner" },
+        { label: "Travel Companion", href: "/services/travel" },
+      ]
+    },
+    {
+      label: "Locations",
+      icon: MapPin,
+      children: [
+        { label: "All Swiss Cities", href: "/locations", badge: "300+" },
+        { label: "Canton Zürich", href: "/regions/zurich" },
+        { label: "Lake Geneva Region", href: "/regions/lake-geneva" },
+        { label: "Central Switzerland", href: "/regions/central" },
+        { label: "Ticino", href: "/regions/ticino" },
+      ]
+    },
+    {
+      label: "Community",
+      icon: Users,
+      children: [
+        { label: "Browse Members", href: "/members" },
+        { label: "Messages", href: "/messages", badge: "3" },
+        { label: "Matches", href: "/matches" },
+        { label: "Stories", href: "/stories", badge: "12" },
+        { label: "Events", href: "/events" },
+        { label: "Virtual Gifts", href: "/gifts" },
+      ]
+    },
+    { label: "Premium Content", href: "/content-feed", icon: Lock, badge: "VIP" },
     { label: "Notifications", href: "/notifications", icon: Bell },
-    { label: "Safety Center", href: "/safety", icon: Shield },
-    { label: "Profile", href: "/profile", icon: Settings },
+    {
+      label: "Account",
+      icon: Settings,
+      children: [
+        { label: "My Profile", href: "/profile" },
+        { label: "Account Settings", href: "/account-settings" },
+        { label: "Favorites", href: "/favorites" },
+        { label: "Boost Profile", href: "/boost", badge: "Hot" },
+        { label: "Verify Account", href: "/verify", badge: "Recommended" },
+      ]
+    },
+    {
+      label: "Help & Safety",
+      icon: Shield,
+      children: [
+        { label: "Safety Center", href: "/safety" },
+        { label: "Help Center", href: "/faq" },
+        { label: "Contact Support", href: "/contact" },
+      ]
+    },
   ];
 
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => {
+    setIsOpen(false);
+    setExpandedSection(null);
+  };
+
+  const toggleSection = (label: string) => {
+    setExpandedSection(expandedSection === label ? null : label);
+  };
 
   return (
     <>
@@ -31,7 +97,7 @@ export function MobileNav() {
       <Button
         variant="ghost"
         size="icon"
-        className="md:hidden"
+        className="md:hidden text-white hover:bg-white/10"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
       >
@@ -41,23 +107,23 @@ export function MobileNav() {
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"
           onClick={closeMenu}
         />
       )}
 
       {/* Mobile Menu Sidebar */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="flex items-center justify-between p-4 border-b border-white/20 bg-black/30 backdrop-blur-sm">
             <Link href="/" className="flex items-center gap-2" onClick={closeMenu}>
-              <Heart className="text-pink-600 fill-pink-600" size={28} />
-              <span className="text-xl font-black text-pink-600">
+              <Heart className="text-pink-500 fill-pink-500" size={28} />
+              <span className="text-xl font-black text-white">
                 iWantSexNow.ch
               </span>
             </Link>
@@ -66,49 +132,120 @@ export function MobileNav() {
               size="icon"
               onClick={closeMenu}
               aria-label="Close menu"
+              className="text-white hover:bg-white/10"
             >
               <X size={24} />
             </Button>
           </div>
 
           {/* Navigation Items */}
-          <nav className="flex-1 overflow-y-auto py-4">
+          <nav className="flex-1 overflow-y-auto py-2">
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const isActive = router.pathname === item.href;
-              
+              const isExpanded = expandedSection === item.label;
+              const hasChildren = item.children && item.children.length > 0;
+
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeMenu}
-                  className={`flex items-center gap-3 px-6 py-3 hover:bg-pink-50 transition-colors ${
-                    isActive ? "bg-pink-50 border-r-4 border-pink-600" : ""
-                  } ${item.featured ? "bg-gradient-to-r from-yellow-50 to-orange-50" : ""}`}
-                >
-                  <Icon size={20} className={isActive ? "text-pink-600" : item.featured ? "text-orange-600" : "text-gray-600"} />
-                  <span className={`font-medium ${isActive ? "text-pink-600" : item.featured ? "text-orange-600 font-bold" : "text-gray-900"}`}>
-                    {item.label}
-                  </span>
-                  {item.featured && (
-                    <span className="ml-auto bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                      NEW
-                    </span>
+                <div key={item.label}>
+                  {hasChildren ? (
+                    <>
+                      <button
+                        onClick={() => toggleSection(item.label)}
+                        className={`flex items-center justify-between w-full px-5 py-3 hover:bg-white/10 transition-all ${
+                          isExpanded ? "bg-white/10" : ""
+                        } ${item.featured ? "bg-gradient-to-r from-yellow-900/30 to-orange-900/30 border-l-4 border-yellow-500" : ""}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon size={20} className={item.featured ? "text-yellow-500" : "text-pink-400"} />
+                          <span className={`font-semibold ${item.featured ? "text-yellow-500" : "text-white"}`}>
+                            {item.label}
+                          </span>
+                          {item.badge && (
+                            <span className="bg-pink-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
+                        <ChevronDown
+                          size={18}
+                          className={`text-white transition-transform duration-300 ${
+                            isExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {/* Expandable Children */}
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ${
+                          isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                        }`}
+                      >
+                        <div className="bg-black/30 border-l-2 border-pink-500/30">
+                          {item.children?.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={closeMenu}
+                              className="flex items-center justify-between px-5 pl-14 py-2.5 hover:bg-white/10 transition-colors group"
+                            >
+                              <div className="flex-1">
+                                <div className="text-sm font-medium text-gray-200 group-hover:text-pink-400 transition-colors">
+                                  {child.label}
+                                </div>
+                                {child.description && (
+                                  <div className="text-xs text-gray-400 mt-0.5">
+                                    {child.description}
+                                  </div>
+                                )}
+                              </div>
+                              {child.badge && (
+                                <span className="bg-pink-600 text-white text-xs px-2 py-0.5 rounded-full font-bold ml-2">
+                                  {child.badge}
+                                </span>
+                              )}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href!}
+                      onClick={closeMenu}
+                      className={`flex items-center justify-between px-5 py-3 hover:bg-white/10 transition-all ${
+                        isActive ? "bg-white/10 border-l-4 border-pink-500" : ""
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon size={20} className={isActive ? "text-pink-400" : "text-gray-300"} />
+                        <span className={`font-semibold ${isActive ? "text-pink-400" : "text-white"}`}>
+                          {item.label}
+                        </span>
+                      </div>
+                      {item.badge && (
+                        <span className="bg-pink-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
                   )}
-                </Link>
+                </div>
               );
             })}
           </nav>
 
           {/* Footer Actions */}
-          <div className="border-t p-4 space-y-2">
-            <Button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700" asChild>
+          <div className="border-t border-white/20 p-4 space-y-2 bg-black/30">
+            <Button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold shadow-lg" asChild>
               <Link href="/premium" onClick={closeMenu}>
+                <Sparkles size={18} className="mr-2" />
                 Upgrade to Premium
               </Link>
             </Button>
-            <Button variant="outline" className="w-full" asChild>
+            <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10" asChild>
               <Link href="/register" onClick={closeMenu}>
+                <Phone size={18} className="mr-2" />
                 Register Free
               </Link>
             </Button>

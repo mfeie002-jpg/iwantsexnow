@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
+import { Navigation } from "@/components/Navigation";
 import { Heart, CheckCircle, Eye, Phone } from "lucide-react";
 import Link from "next/link";
 
@@ -324,32 +325,7 @@ export default function Home() {
               </div>
             </div>
             
-            <nav className="hidden md:flex items-center gap-4">
-              <Button variant="ghost" className="text-white hover:text-yellow-500" onClick={() => {
-                document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-              }}>
-                Services
-              </Button>
-              <Button variant="ghost" className="text-white hover:text-yellow-500" onClick={() => {
-                document.getElementById('cities')?.scrollIntoView({ behavior: 'smooth' });
-              }}>
-                Locations
-              </Button>
-              <Button variant="ghost" className="text-white hover:text-yellow-500" onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}>
-                Contact
-              </Button>
-              <Button variant="ghost" className="text-white hover:text-yellow-500" asChild>
-                <Link href="/account-settings">Account</Link>
-              </Button>
-              <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold" asChild>
-                <Link href="/register">
-                  <Phone size={18} className="mr-2" />
-                  Join Free
-                </Link>
-              </Button>
-            </nav>
+            <Navigation />
 
             <MobileNav />
           </div>
