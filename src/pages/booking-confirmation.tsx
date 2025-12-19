@@ -198,7 +198,7 @@ export default function BookingConfirmation() {
                 {/* Optional: Show calendar before starting booking */}
                 {currentStep === 1 && escortName && (
                   <div className="mb-8">
-                    <AvailabilityCalendar escortName={escortName} />
+                    <AvailabilityCalendar escortName={Array.isArray(escortName) ? escortName[0] : escortName} />
                   </div>
                 )}
 
