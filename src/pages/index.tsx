@@ -521,6 +521,60 @@ export default function Home() {
               </ul>
             </div>
           </div>
+          
+          {/* Design Concepts Preview */}
+          <div className="border-t border-white/10 pt-8 mb-8">
+            <div className="max-w-6xl mx-auto">
+              <h4 className="text-white font-bold mb-4 text-center">🎨 Alternative Design Concepts</h4>
+              <div className="grid md:grid-cols-3 gap-4">
+                <Link href="/design-concept-1" className="group">
+                  <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-4 rounded-lg border border-white/10 hover:border-[#D4AF37] transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#6B1B3D] to-[#4A1428] rounded-full flex items-center justify-center border border-[#D4AF37]">
+                        <span className="text-[#D4AF37] font-bold text-sm">EN</span>
+                      </div>
+                      <div>
+                        <div className="text-white font-bold text-sm">Elegant & Sophisticated</div>
+                        <div className="text-[#D4AF37] text-xs">Where Elegance Meets Desire</div>
+                      </div>
+                    </div>
+                    <p className="text-gray-400 text-xs">Luxury boutique aesthetic with art deco influences</p>
+                  </div>
+                </Link>
+                
+                <Link href="/design-concept-2" className="group">
+                  <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-4 rounded-lg border border-white/10 hover:border-white transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-white flex items-center justify-center">
+                        <span className="text-black font-black text-sm">R</span>
+                      </div>
+                      <div>
+                        <div className="text-white font-bold text-sm">Modern & Minimal</div>
+                        <div className="text-gray-400 text-xs">Refined. Direct. Discreet.</div>
+                      </div>
+                    </div>
+                    <p className="text-gray-400 text-xs">Swiss minimalism meets modern tech luxury</p>
+                  </div>
+                </Link>
+                
+                <Link href="/design-concept-3" className="group">
+                  <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-4 rounded-lg border border-white/10 hover:border-[#B91C1C] transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#B91C1C] to-[#F97316] rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">🔥</span>
+                      </div>
+                      <div>
+                        <div className="text-white font-bold text-sm">Bold & Confident</div>
+                        <div className="text-[#F97316] text-xs">Unapologetically Premium</div>
+                      </div>
+                    </div>
+                    <p className="text-gray-400 text-xs">High-energy luxury with modern edge</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+          
           <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
             <p>&copy; {new Date().getFullYear()} iWantSexNow.ch. All rights reserved. 18+</p>
           </div>
