@@ -360,15 +360,27 @@ export default function EscortZurich() {
 
       {/* Hero Section - Zürich Specific */}
       <section className="relative py-20 overflow-hidden">
-        {/* Background with Zürich cityscape overlay */}
+        {/* Background with romantic couple imagery and warm tones */}
         <div className="absolute inset-0">
+          {/* Romantic couple background - sophisticated and emotional */}
           <div 
-            className="absolute inset-0 bg-cover bg-center opacity-30"
+            className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1920&h=1080&fit=crop&q=80')"
+              backgroundImage: "url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80')",
+              filter: "brightness(0.4)"
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-purple-900/60 to-black/80" />
+          
+          {/* Warm gradient overlay - gold, amber, rose tones */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/80 via-rose-900/70 to-slate-900/90" />
+          
+          {/* Soft vignette for depth */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
+          
+          {/* Subtle animated glow */}
+          <div className="absolute inset-0 bg-gradient-to-t from-amber-600/10 via-transparent to-rose-600/10 animate-pulse" 
+               style={{ animationDuration: "4s" }} 
+          />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -377,7 +389,7 @@ export default function EscortZurich() {
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center justify-center gap-2 text-sm text-gray-400"
+              className="flex items-center justify-center gap-2 text-sm text-amber-200/80"
             >
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
               <span>/</span>
@@ -392,14 +404,14 @@ export default function EscortZurich() {
               transition={{ delay: 0.2 }}
             >
               <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-rose-300 to-orange-200">
                   Escort Zürich
                 </span>
               </h1>
-              <p className="text-2xl md:text-3xl text-white font-bold mb-4">
+              <p className="text-2xl md:text-3xl text-white font-bold mb-4 drop-shadow-lg">
                 Premium Escort Services in Zurich
               </p>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              <p className="text-lg text-amber-100 max-w-3xl mx-auto drop-shadow-md">
                 Discover exclusive companionship in Switzerland's financial capital. From Paradeplatz to Lake Zürich, find verified escorts for every occasion.
               </p>
             </motion.div>
@@ -411,25 +423,25 @@ export default function EscortZurich() {
               transition={{ delay: 0.4 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white"
             >
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
-                <Users className="mx-auto text-pink-500 mb-2" size={32} />
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-amber-500/30 hover:border-amber-500/60 transition-all">
+                <Users className="mx-auto text-amber-400 mb-2" size={32} />
                 <div className="text-2xl font-black">{zurichEscorts.length}+</div>
-                <div className="text-xs text-gray-400">Active Escorts</div>
+                <div className="text-xs text-amber-200">Active Escorts</div>
               </Card>
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
-                <Shield className="mx-auto text-green-500 mb-2" size={32} />
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-emerald-500/30 hover:border-emerald-500/60 transition-all">
+                <Shield className="mx-auto text-emerald-400 mb-2" size={32} />
                 <div className="text-2xl font-black">100%</div>
-                <div className="text-xs text-gray-400">Verified</div>
+                <div className="text-xs text-emerald-200">Verified</div>
               </Card>
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
-                <Award className="mx-auto text-yellow-500 mb-2" size={32} />
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-yellow-500/30 hover:border-yellow-500/60 transition-all">
+                <Award className="mx-auto text-yellow-400 mb-2" size={32} />
                 <div className="text-2xl font-black">4.9★</div>
-                <div className="text-xs text-gray-400">Avg Rating</div>
+                <div className="text-xs text-yellow-200">Avg Rating</div>
               </Card>
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
-                <Video className="mx-auto text-purple-500 mb-2" size={32} />
+              <Card className="p-4 bg-white/10 backdrop-blur-sm border-rose-500/30 hover:border-rose-500/60 transition-all">
+                <Video className="mx-auto text-rose-400 mb-2" size={32} />
                 <div className="text-2xl font-black">{zurichEscorts.filter(e => e.hasVideo).length}</div>
-                <div className="text-xs text-gray-400">Video Profiles</div>
+                <div className="text-xs text-rose-200">Video Profiles</div>
               </Card>
             </motion.div>
 
@@ -439,10 +451,10 @@ export default function EscortZurich() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <Card className="p-6 bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
+              <Card className="p-6 bg-slate-900/80 backdrop-blur-md border-amber-500/20 shadow-2xl">
                 <div className="grid md:grid-cols-3 gap-4 mb-4">
                   <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
-                    <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white">
+                    <SelectTrigger className="bg-slate-800/80 border-slate-700 text-white hover:border-amber-500/50 transition-all">
                       <SelectValue placeholder="District" />
                     </SelectTrigger>
                     <SelectContent>
@@ -457,7 +469,7 @@ export default function EscortZurich() {
                   </Select>
 
                   <Select value={selectedService} onValueChange={setSelectedService}>
-                    <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white">
+                    <SelectTrigger className="bg-slate-800/80 border-slate-700 text-white hover:border-amber-500/50 transition-all">
                       <SelectValue placeholder="Service Type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -472,17 +484,17 @@ export default function EscortZurich() {
                   </Select>
 
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400" size={20} />
                     <Input
                       placeholder="Search by name or location..."
-                      className="pl-10 bg-gray-800/80 border-gray-700 text-white placeholder:text-gray-400"
+                      className="pl-10 bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-400 hover:border-amber-500/50 focus:border-amber-500 transition-all"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     {searchQuery && (
                       <button 
                         onClick={() => setSearchQuery("")} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
                       >
                         <X size={16} />
                       </button>
@@ -492,18 +504,18 @@ export default function EscortZurich() {
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-6 text-white">
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
                       <Checkbox checked={verifiedOnly} onCheckedChange={(checked) => setVerifiedOnly(checked === true)} />
                       <span className="text-sm font-medium">Verified Only</span>
                     </label>
                     
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-yellow-500 transition-colors">
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
                       <Checkbox checked={availableNow} onCheckedChange={(checked) => setAvailableNow(checked === true)} />
                       <span className="text-sm font-medium">Available Now</span>
                     </label>
 
                     <div className="ml-auto">
-                      <span className="text-yellow-500 font-bold text-lg">{filteredEscorts.length} Results</span>
+                      <span className="text-amber-400 font-bold text-lg">{filteredEscorts.length} Results</span>
                     </div>
                   </div>
 
@@ -534,14 +546,14 @@ export default function EscortZurich() {
                           >
                             <Star
                               size={24}
-                              className={rating <= minRating ? "text-yellow-500 fill-yellow-500" : "text-gray-600"}
+                              className={rating <= minRating ? "text-amber-400 fill-amber-400" : "text-slate-600"}
                             />
                           </button>
                         ))}
                         {minRating > 0 && (
                           <button
                             onClick={() => setMinRating(0)}
-                            className="ml-2 text-xs text-gray-400 hover:text-white"
+                            className="ml-2 text-xs text-slate-400 hover:text-white transition-colors"
                           >
                             Clear
                           </button>
@@ -557,17 +569,17 @@ export default function EscortZurich() {
       </section>
 
       {/* VIP Concierge Banner */}
-      <section className="py-8 bg-gradient-to-r from-yellow-600/20 via-orange-600/20 to-pink-600/20 border-y border-yellow-500/30">
+      <section className="py-8 bg-gradient-to-r from-amber-900/30 via-rose-900/30 to-orange-900/30 border-y border-amber-500/30">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <Crown className="text-yellow-500" size={48} />
+              <Crown className="text-amber-400" size={48} />
               <div>
                 <h3 className="text-2xl font-black text-white mb-1">VIP Concierge Service</h3>
-                <p className="text-gray-300">White-glove booking assistance for discerning clients in Zürich</p>
+                <p className="text-amber-100">White-glove booking assistance for discerning clients in Zürich</p>
               </div>
             </div>
-            <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black">
+            <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-black shadow-lg shadow-amber-500/30">
               <Phone size={20} className="mr-2" />
               Contact Concierge
             </Button>
@@ -576,7 +588,7 @@ export default function EscortZurich() {
       </section>
 
       {/* Escort Listings */}
-      <section className="py-12 bg-black/40">
+      <section className="py-12 bg-gradient-to-b from-slate-900 to-slate-800">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-6">
             {filteredEscorts.length > 0 ? (
@@ -587,7 +599,7 @@ export default function EscortZurich() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-pink-500 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/10">
+                  <Card className="overflow-hidden bg-slate-800/50 backdrop-blur-sm border-amber-500/20 hover:border-amber-500/60 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/10">
                     <div className="flex flex-col md:flex-row gap-6 p-6">
                       {/* Image */}
                       <div className="relative w-full md:w-72 flex-shrink-0 group">
@@ -602,20 +614,20 @@ export default function EscortZurich() {
                             onClick={() => openVideoModal(escort)}
                             className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                           >
-                            <div className="bg-pink-600 rounded-full p-4 transform group-hover:scale-110 transition-transform">
-                              <Play size={32} className="text-white" fill="white" />
+                            <div className="bg-amber-500 rounded-full p-4 transform group-hover:scale-110 transition-transform">
+                              <Play size={32} className="text-slate-900" fill="currentColor" />
                             </div>
                           </button>
                         )}
 
                         {escort.premium && (
-                          <Badge className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-0 font-bold shadow-xl">
+                          <Badge className="absolute top-3 left-3 bg-gradient-to-r from-amber-400 to-orange-400 text-slate-900 border-0 font-bold shadow-xl">
                             PREMIUM
                           </Badge>
                         )}
 
                         {escort.available && (
-                          <Badge className="absolute top-3 right-3 bg-green-500 border-0 text-xs animate-pulse">
+                          <Badge className="absolute top-3 right-3 bg-emerald-500 border-0 text-xs animate-pulse">
                             <div className="w-2 h-2 bg-white rounded-full mr-1" />
                             Available
                           </Badge>
@@ -629,7 +641,7 @@ export default function EscortZurich() {
                             </Badge>
                           )}
                           {escort.hasVideo && (
-                            <Badge className="bg-purple-500 border-0 text-xs">
+                            <Badge className="bg-rose-500 border-0 text-xs">
                               <Video size={10} className="mr-1" />
                               Video
                             </Badge>
@@ -652,40 +664,40 @@ export default function EscortZurich() {
                       {/* Content */}
                       <div className="flex-1 space-y-4">
                         <div>
-                          <h3 className="text-3xl font-black text-white mb-2 hover:text-pink-500 transition-colors cursor-pointer">
+                          <h3 className="text-3xl font-black text-white mb-2 hover:text-amber-400 transition-colors cursor-pointer">
                             {escort.name}, {escort.age}
                           </h3>
                           
-                          <div className="flex items-center gap-2 text-blue-400 text-sm mb-3">
+                          <div className="flex items-center gap-2 text-amber-400 text-sm mb-3">
                             <MapPin size={14} />
                             <span className="font-medium">{escort.location}</span>
                           </div>
 
-                          <div className="flex items-center gap-4 text-gray-400 text-xs mb-3">
+                          <div className="flex items-center gap-4 text-slate-400 text-xs mb-3">
                             <div className="flex items-center gap-1">
                               <Clock size={12} />
                               <span>{escort.postedTime}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Zap size={12} className="text-green-500" />
+                              <Zap size={12} className="text-emerald-400" />
                               <span>Responds in {escort.responseTime}</span>
                             </div>
                           </div>
                         </div>
 
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-slate-300 leading-relaxed">
                           {escort.description}
                         </p>
 
                         <div className="flex flex-wrap gap-2">
                           {escort.services.map((service, idx) => (
-                            <Badge key={idx} variant="outline" className="border-white/20 text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
+                            <Badge key={idx} variant="outline" className="border-amber-500/30 text-slate-300 hover:bg-amber-500/10 hover:text-amber-200 transition-colors">
                               {service}
                             </Badge>
                           ))}
                         </div>
 
-                        <div className="flex flex-wrap gap-2 text-sm text-gray-400">
+                        <div className="flex flex-wrap gap-2 text-sm text-slate-400">
                           <span className="flex items-center gap-1">
                             <Camera size={14} /> {escort.bodyType}
                           </span>
@@ -701,17 +713,17 @@ export default function EscortZurich() {
                               <Star 
                                 key={i} 
                                 size={16} 
-                                className={i < Math.floor(escort.rating) ? "text-yellow-500 fill-yellow-500" : "text-gray-500"}
+                                className={i < Math.floor(escort.rating) ? "text-amber-400 fill-amber-400" : "text-slate-600"}
                               />
                             ))}
                           </div>
                           <span className="text-white text-sm font-medium">{escort.rating}</span>
-                          <span className="text-white/60 text-xs">({escort.reviews} reviews)</span>
+                          <span className="text-slate-400 text-xs">({escort.reviews} reviews)</span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4 p-4 bg-black/40 rounded-lg">
+                        <div className="grid grid-cols-2 gap-4 p-4 bg-slate-900/60 rounded-lg border border-amber-500/20">
                           {escort.verifiedPhotos && (
-                            <div className="flex items-center gap-2 text-green-400 text-xs">
+                            <div className="flex items-center gap-2 text-emerald-400 text-xs">
                               <CheckCircle size={14} /> Real Photos
                             </div>
                           )}
@@ -721,29 +733,29 @@ export default function EscortZurich() {
                             </div>
                           )}
                           {escort.safeDate && (
-                            <div className="flex items-center gap-2 text-yellow-400 text-xs">
+                            <div className="flex items-center gap-2 text-amber-400 text-xs">
                               <CheckCircle size={14} /> SafeDate
                             </div>
                           )}
                           {escort.hasVirtualTour && (
-                            <div className="flex items-center gap-2 text-pink-400 text-xs">
+                            <div className="flex items-center gap-2 text-rose-400 text-xs">
                               <CheckCircle size={14} /> Virtual Tour
                             </div>
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                        <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                           <div>
-                            <div className="text-xs text-gray-400">Starting from</div>
-                            <div className="text-2xl font-black text-yellow-500">CHF {escort.rate}</div>
-                            <div className="text-xs text-gray-400">per hour</div>
+                            <div className="text-xs text-slate-400">Starting from</div>
+                            <div className="text-2xl font-black text-amber-400">CHF {escort.rate}</div>
+                            <div className="text-xs text-slate-400">per hour</div>
                           </div>
                           <div className="flex gap-2">
                             <Button 
                               size="sm"
                               variant="outline"
-                              className={`text-white border-white/30 hover:bg-white/10 ${
-                                comparison.includes(escort.id) ? "border-yellow-500 bg-yellow-500/10" : ""
+                              className={`text-white border-slate-600 hover:bg-slate-700 ${
+                                comparison.includes(escort.id) ? "border-amber-500 bg-amber-500/10" : ""
                               }`}
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -756,17 +768,17 @@ export default function EscortZurich() {
                             <Button 
                               size="sm"
                               variant="outline"
-                              className="text-white border-white/30 hover:bg-white/10 hover:border-pink-500"
+                              className="text-white border-slate-600 hover:bg-slate-700 hover:border-rose-500"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toggleFavorite(escort.id);
                               }}
                             >
-                              <Heart size={16} className={favorites.includes(escort.id) ? "fill-pink-600 text-pink-600" : ""} />
+                              <Heart size={16} className={favorites.includes(escort.id) ? "fill-rose-500 text-rose-500" : ""} />
                             </Button>
                             <Button 
                               size="sm"
-                              className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold"
+                              className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold shadow-lg shadow-amber-500/20"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 openBookingModal(escort);
@@ -783,10 +795,10 @@ export default function EscortZurich() {
                 </motion.div>
               ))
             ) : (
-              <Card className="p-12 text-center bg-white/5 backdrop-blur-sm border-white/10">
-                <Search size={64} className="mx-auto text-gray-500 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-2">No escorts found</h3>
-                <p className="text-gray-400 mb-6">Try adjusting your filters</p>
+              <Card className="p-12 text-center bg-slate-800/50 backdrop-blur-sm border-amber-500/20">
+                <Search size={64} className="mx-auto text-slate-500 mb-4" />
+                <h3 className="text-2xl font-bold text-white mb-2">No Escorts found</h3>
+                <p className="text-slate-400 mb-6">Try adjusting your filters</p>
                 <Button 
                   onClick={() => {
                     setSearchQuery("");
@@ -797,7 +809,7 @@ export default function EscortZurich() {
                     setPriceRange([300, 800]);
                     setMinRating(0);
                   }}
-                  className="bg-yellow-500 text-black hover:bg-yellow-600"
+                  className="bg-amber-500 text-slate-900 hover:bg-amber-600 font-bold"
                 >
                   Reset Filters
                 </Button>
@@ -870,12 +882,12 @@ export default function EscortZurich() {
       </Dialog>
 
       {/* SEO Content Section */}
-      <section className="py-16 bg-black/60 border-y border-white/10">
+      <section className="py-16 bg-slate-900 border-y border-amber-500/20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto prose prose-invert">
             <h2 className="text-3xl font-black text-white mb-6">Book Premium Escort Services in Zürich</h2>
             
-            <div className="text-gray-300 space-y-4 leading-relaxed">
+            <div className="text-slate-300 space-y-4 leading-relaxed">
               <p>
                 Looking to <strong className="text-white">book an escort in Zürich</strong>? Discover Switzerland's most exclusive escort directory featuring verified companions throughout Zürich's premium districts. From the financial heart at Paradeplatz to the trendy nightlife of Zürich West, find your perfect match.
               </p>
@@ -886,7 +898,7 @@ export default function EscortZurich() {
               </p>
 
               <h3 className="text-2xl font-bold text-white mt-8 mb-4">Popular Zürich Districts for Escorts</h3>
-              <ul className="space-y-2 text-gray-300">
+              <ul className="space-y-2 text-slate-300">
                 <li><strong className="text-white">Zürich City Center</strong> - Premium escorts near Bahnhofstrasse and Paradeplatz, perfect for business meetings and upscale dining</li>
                 <li><strong className="text-white">Zürich West</strong> - Trendy companions in the city's hippest district, ideal for nightlife and cultural experiences</li>
                 <li><strong className="text-white">Seefeld</strong> - Elegant escorts by Lake Zürich, offering romantic lakeside encounters</li>
@@ -898,7 +910,7 @@ export default function EscortZurich() {
               <p>
                 Our <strong className="text-white">escorts in Zürich</strong> offer a wide range of premium services:
               </p>
-              <ul className="space-y-2 text-gray-300">
+              <ul className="space-y-2 text-slate-300">
                 <li><strong className="text-white">GFE (Girlfriend Experience)</strong> - Genuine companionship and emotional connection</li>
                 <li><strong className="text-white">Dinner Dates</strong> - Accompany you to Zürich's finest restaurants</li>
                 <li><strong className="text-white">Business Events</strong> - Professional companions for corporate functions</li>
@@ -911,7 +923,7 @@ export default function EscortZurich() {
               <p>
                 Booking a <strong className="text-white">Zürich escort</strong> is simple and discreet:
               </p>
-              <ol className="space-y-2 text-gray-300">
+              <ol className="space-y-2 text-slate-300">
                 <li>Browse verified profiles with photos, reviews, and detailed descriptions</li>
                 <li>Use filters to find escorts by district, service type, and availability</li>
                 <li>Check real client reviews and ratings for peace of mind</li>
@@ -924,22 +936,22 @@ export default function EscortZurich() {
                 All <strong className="text-white">escort services in Zürich</strong> listed on our platform prioritize your safety and privacy. We verify all profiles, ensuring you connect with legitimate, professional companions. Your personal information is protected, and all communications are encrypted.
               </p>
 
-              <div className="bg-gradient-to-r from-pink-600/20 to-purple-600/20 border border-pink-500/30 rounded-lg p-6 mt-8">
+              <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-500/30 rounded-lg p-6 mt-8">
                 <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <Sparkles className="text-yellow-500" />
+                  <Sparkles className="text-amber-400" />
                   Start Your Zürich Escort Experience Today
                 </h3>
-                <p className="text-gray-300 mb-4">
+                <p className="text-slate-300 mb-4">
                   Join thousands of satisfied clients who have discovered exceptional companionship in Zürich. Browse our verified escorts now and book your perfect match today.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold" asChild>
+                  <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold" asChild>
                     <Link href="#top">
                       <TrendingUp className="mr-2" size={18} />
                       Browse Escorts Now
                     </Link>
                   </Button>
-                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
+                  <Button variant="outline" className="border-amber-500/50 text-white hover:bg-amber-500/10" asChild>
                     <Link href="/register">
                       Register Free Account
                     </Link>
@@ -952,45 +964,45 @@ export default function EscortZurich() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-white/10 py-12">
+      <footer className="bg-slate-950 border-t border-amber-500/20 py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart className="text-pink-600 fill-pink-600" size={24} />
+                <Heart className="text-amber-500 fill-amber-500" size={24} />
                 <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
               </div>
-              <p className="text-gray-400 text-sm">
+              <p className="text-slate-400 text-sm">
                 Switzerland's premier escort directory
               </p>
             </div>
             <div>
               <h4 className="font-bold text-white mb-4">Other Cities</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/escort-geneva" className="hover:text-white">Escort Geneva</Link></li>
-                <li><Link href="/escort-basel" className="hover:text-white">Escort Basel</Link></li>
-                <li><Link href="/escort-bern" className="hover:text-white">Escort Bern</Link></li>
-                <li><Link href="/escort-lausanne" className="hover:text-white">Escort Lausanne</Link></li>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><Link href="/escort-geneva" className="hover:text-amber-400 transition-colors">Escort Geneva</Link></li>
+                <li><Link href="/escort-basel" className="hover:text-amber-400 transition-colors">Escort Basel</Link></li>
+                <li><Link href="/escort-bern" className="hover:text-amber-400 transition-colors">Escort Bern</Link></li>
+                <li><Link href="/escort-lausanne" className="hover:text-amber-400 transition-colors">Escort Lausanne</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/" className="hover:text-white">Home</Link></li>
-                <li><Link href="/members" className="hover:text-white">All Escorts</Link></li>
-                <li><Link href="/register" className="hover:text-white">Register</Link></li>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><Link href="/" className="hover:text-amber-400 transition-colors">Home</Link></li>
+                <li><Link href="/members" className="hover:text-amber-400 transition-colors">All Escorts</Link></li>
+                <li><Link href="/register" className="hover:text-amber-400 transition-colors">Register</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-white mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/safety" className="hover:text-white">Safety Tips</Link></li>
-                <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><Link href="/safety" className="hover:text-amber-400 transition-colors">Safety Tips</Link></li>
+                <li><Link href="/faq" className="hover:text-amber-400 transition-colors">FAQ</Link></li>
+                <li><Link href="/contact" className="hover:text-amber-400 transition-colors">Contact</Link></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
+          <div className="border-t border-amber-500/20 pt-8 text-center text-slate-500 text-sm">
             <p>&copy; {new Date().getFullYear()} iWantSexNow.ch - Escort Zürich. All rights reserved. 18+</p>
           </div>
         </div>
