@@ -273,6 +273,375 @@ export default function LogoShowcase() {
           </div>
         </section>
 
+        {/* Extended Color Palette */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-light text-[#0D1B2A] dark:text-white mb-8">Extended Color Palette</h2>
+          
+          {/* Navy Scale */}
+          <div className="mb-8">
+            <h3 className="text-xl font-medium text-[#0D1B2A] dark:text-white mb-4">Navy Scale</h3>
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#1a2a3a] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Navy 100</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#1a2a3a</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Hover states</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#1a2a3a", "navy-100")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "navy-100" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#0D1B2A] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Navy 200</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#0D1B2A</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Primary</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#0D1B2A", "navy-200")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "navy-200" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#091421] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Navy 300</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#091421</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Pressed states</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#091421", "navy-300")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "navy-300" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#334455] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Navy 400</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#334455</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Disabled</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#334455", "navy-400")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "navy-400" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#0D1B2A]/10 mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Navy 500</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">rgba(13,27,42,0.1)</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Subtle bg</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("rgba(13,27,42,0.1)", "navy-500")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "navy-500" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Gold Scale */}
+          <div className="mb-8">
+            <h3 className="text-xl font-medium text-[#0D1B2A] dark:text-white mb-4">Gold Scale</h3>
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#E8D5B7] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Gold 100</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#E8D5B7</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Light tint</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#E8D5B7", "gold-100")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "gold-100" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#C69C6D] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Gold 200</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#C69C6D</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Primary light</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#C69C6D", "gold-200")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "gold-200" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#D5A021] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Gold 300</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#D5A021</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Primary dark</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#D5A021", "gold-300")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "gold-300" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#B8851D] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Gold 400</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#B8851D</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Hover/Active</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#B8851D", "gold-400")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "gold-400" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#C69C6D]/20 mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Gold 500</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">rgba(198,156,109,0.2)</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Subtle accent</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("rgba(198,156,109,0.2)", "gold-500")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "gold-500" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Semantic Colors */}
+          <div className="mb-8">
+            <h3 className="text-xl font-medium text-[#0D1B2A] dark:text-white mb-4">Semantic Colors</h3>
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#10B981] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Success</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#10B981</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Confirmations</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#10B981", "success")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "success" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#F59E0B] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Warning</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#F59E0B</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Alerts</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#F59E0B", "warning")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "warning" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#EF4444] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Error</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#EF4444</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Errors</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#EF4444", "error")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "error" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-24 rounded-lg bg-[#3B82F6] mb-2 border border-gray-200 dark:border-gray-700" />
+                  <div className="text-sm font-semibold text-[#0D1B2A] dark:text-white">Info</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#3B82F6</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Information</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#3B82F6", "info")}
+                    className="mt-1 text-xs h-7"
+                  >
+                    {copiedColor === "info" ? <Check size={12} /> : <Copy size={12} />}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Neutral Colors */}
+          <div>
+            <h3 className="text-xl font-medium text-[#0D1B2A] dark:text-white mb-4">Neutral Colors</h3>
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                <div>
+                  <div className="w-full h-20 rounded-lg bg-white mb-2 border-2 border-gray-300" />
+                  <div className="text-xs font-semibold text-[#0D1B2A] dark:text-white">White</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#FFFFFF</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#FFFFFF", "white")}
+                    className="mt-1 text-xs h-6 p-1"
+                  >
+                    {copiedColor === "white" ? <Check size={10} /> : <Copy size={10} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-20 rounded-lg bg-gray-100 mb-2 border border-gray-300 dark:border-gray-700" />
+                  <div className="text-xs font-semibold text-[#0D1B2A] dark:text-white">Gray 100</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#F3F4F6</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#F3F4F6", "gray-100")}
+                    className="mt-1 text-xs h-6 p-1"
+                  >
+                    {copiedColor === "gray-100" ? <Check size={10} /> : <Copy size={10} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-20 rounded-lg bg-gray-300 mb-2 border border-gray-300 dark:border-gray-700" />
+                  <div className="text-xs font-semibold text-[#0D1B2A] dark:text-white">Gray 300</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#D1D5DB</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#D1D5DB", "gray-300")}
+                    className="mt-1 text-xs h-6 p-1"
+                  >
+                    {copiedColor === "gray-300" ? <Check size={10} /> : <Copy size={10} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-20 rounded-lg bg-gray-500 mb-2 border border-gray-300 dark:border-gray-700" />
+                  <div className="text-xs font-semibold text-[#0D1B2A] dark:text-white">Gray 500</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#6B7280</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#6B7280", "gray-500")}
+                    className="mt-1 text-xs h-6 p-1"
+                  >
+                    {copiedColor === "gray-500" ? <Check size={10} /> : <Copy size={10} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-20 rounded-lg bg-gray-700 mb-2 border border-gray-300 dark:border-gray-700" />
+                  <div className="text-xs font-semibold text-[#0D1B2A] dark:text-white">Gray 700</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#374151</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#374151", "gray-700")}
+                    className="mt-1 text-xs h-6 p-1"
+                  >
+                    {copiedColor === "gray-700" ? <Check size={10} /> : <Copy size={10} />}
+                  </Button>
+                </div>
+                <div>
+                  <div className="w-full h-20 rounded-lg bg-gray-900 mb-2 border border-gray-300 dark:border-gray-700" />
+                  <div className="text-xs font-semibold text-[#0D1B2A] dark:text-white">Gray 900</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">#111827</div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard("#111827", "gray-900")}
+                    className="mt-1 text-xs h-6 p-1"
+                  >
+                    {copiedColor === "gray-900" ? <Check size={10} /> : <Copy size={10} />}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </section>
+
+        {/* Color Usage Guide */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-light text-[#0D1B2A] dark:text-white mb-8">Color Usage Guide</h2>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <h3 className="text-lg font-semibold text-[#0D1B2A] dark:text-white mb-4">Primary Actions</h3>
+              <div className="space-y-3">
+                <Button className="w-full bg-[#C69C6D] hover:bg-[#B8851D] text-white">
+                  Gold CTA Button
+                </Button>
+                <Button className="w-full bg-[#0D1B2A] hover:bg-[#1a2a3a] text-white">
+                  Navy Button
+                </Button>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Use gold for premium actions and navy for standard actions.
+                </p>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <h3 className="text-lg font-semibold text-[#0D1B2A] dark:text-white mb-4">Status Indicators</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#10B981]" />
+                  <span className="text-sm text-[#0D1B2A] dark:text-white">Available / Success</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
+                  <span className="text-sm text-[#0D1B2A] dark:text-white">Pending / Warning</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#EF4444]" />
+                  <span className="text-sm text-[#0D1B2A] dark:text-white">Error / Offline</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#3B82F6]" />
+                  <span className="text-sm text-[#0D1B2A] dark:text-white">Information</span>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-white dark:bg-[#0D1B2A] border-gray-200 dark:border-gray-800">
+              <h3 className="text-lg font-semibold text-[#0D1B2A] dark:text-white mb-4">Text Hierarchy</h3>
+              <div className="space-y-2">
+                <p className="text-base text-[#0D1B2A] dark:text-white font-bold">Primary Text - Navy/White</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Secondary Text - Gray 600/400</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">Tertiary Text - Gray 500</p>
+                <p className="text-sm text-[#C69C6D] dark:text-[#D5A021] font-semibold">Gold Accent Text</p>
+              </div>
+            </Card>
+          </div>
+        </section>
+
         {/* Typography */}
         <section className="mb-20">
           <h2 className="text-3xl font-light text-[#0D1B2A] dark:text-white mb-8">Typography</h2>
