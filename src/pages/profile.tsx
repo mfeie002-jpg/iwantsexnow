@@ -46,6 +46,7 @@ export default function Profile() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Load user data and photos
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
     if (!currentUser) {
@@ -137,13 +138,24 @@ export default function Profile() {
     setPhotos(userPhotos);
   }, [router]);
 
+  // Add auto-save functionality
+  useEffect(() => {
+    if (user) {
+      const autoSaveTimer = setTimeout(() => {
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        const updatedUsers = users.map((u: any) => u.id === user.id ? user : u);
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+      }, 1000);
+      
+      return () => clearTimeout(autoSaveTimer);
+    }
+  }, [user]);
+
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("userSession");
     router.push("/");
   };
-
-  if (!user) return null;
 
   const completionPercentage = 60;
 
@@ -152,7 +164,7 @@ export default function Profile() {
     <Card className="p-6">
       <h3 className="text-2xl font-bold mb-6">Recent Activity</h3>
       <div className="space-y-4">
-        {user.activityLog.slice(0, 10).map((activity: any) => {
+        {user && user.activityLog.slice(0, 10).map((activity: any) => {
           const getIcon = () => {
             switch(activity.type) {
               case "profile_view": return <Eye size={20} className="text-blue-600" />;
@@ -191,6 +203,8 @@ export default function Profile() {
 
   // Payment history tab content
   const PaymentHistory = () => {
+    if (!user) return null;
+    
     const totalSpent = user.paymentHistory.reduce((sum: number, payment: any) => sum + payment.amount, 0);
     
     return (
@@ -265,16 +279,7 @@ export default function Profile() {
     );
   };
 
-  // Add auto-save functionality
-  useEffect(() => {
-    if (user) {
-      const autoSaveTimer = setTimeout(() => {
-        localStorage.setItem("users", JSON.stringify([user]));
-      }, 1000);
-      
-      return () => clearTimeout(autoSaveTimer);
-    }
-  }, [user]);
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">
@@ -320,6 +325,9 @@ export default function Profile() {
                 <LogOut size={18} className="mr-2" />
                 Logout
               </Button>
+              <div className="sm:hidden">
+                <MobileNav />
+              </div>
             </div>
           </div>
         </div>
