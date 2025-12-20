@@ -43,11 +43,12 @@ export default function Members() {
     gender: "all",
     ageMin: 18,
     ageMax: 65,
+    heightMin: 150,
+    heightMax: 200,
     location: "",
     distance: 50,
     lookingFor: "all",
     bodyType: "all",
-    height: "all",
     relationship: "all",
     smoking: "all",
     drinking: "all",
@@ -60,7 +61,7 @@ export default function Members() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [sortBy, setSortBy] = useState<"newest" | "distance" | "popular" | "age">("newest");
 
-  // Extended mock profiles with detailed info
+  // Extended mock profiles with MORE detailed info
   const allProfiles = [
     {
       id: 1,
@@ -77,10 +78,12 @@ export default function Members() {
       bio: "Love traveling and meeting new people. Looking for fun and adventure!",
       lookingFor: "Casual dating",
       bodyType: "Athletic",
-      height: "168 cm",
+      height: 168,
       relationship: "Single",
       smoking: "No",
-      drinking: "Socially"
+      drinking: "Socially",
+      views: 342,
+      likes: 89
     },
     {
       id: 2,
@@ -97,10 +100,12 @@ export default function Members() {
       bio: "Professional woman seeking genuine connections and good times",
       lookingFor: "Friends with benefits",
       bodyType: "Slim",
-      height: "165 cm",
+      height: 165,
       relationship: "Single",
       smoking: "No",
-      drinking: "Occasionally"
+      drinking: "Occasionally",
+      views: 567,
+      likes: 123
     },
     {
       id: 3,
@@ -117,10 +122,12 @@ export default function Members() {
       bio: "Adventure seeker and foodie. Life is too short for boring conversations!",
       lookingFor: "Open relationship",
       bodyType: "Average",
-      height: "170 cm",
+      height: 170,
       relationship: "It's complicated",
       smoking: "No",
-      drinking: "Yes"
+      drinking: "Yes",
+      views: 234,
+      likes: 67
     },
     {
       id: 4,
@@ -137,10 +144,12 @@ export default function Members() {
       bio: "Tech entrepreneur and fitness enthusiast. Let's make memories!",
       lookingFor: "Casual dating",
       bodyType: "Athletic",
-      height: "182 cm",
+      height: 182,
       relationship: "Single",
       smoking: "No",
-      drinking: "Socially"
+      drinking: "Socially",
+      views: 445,
+      likes: 98
     },
     {
       id: 5,
@@ -157,10 +166,12 @@ export default function Members() {
       bio: "Coffee lover and book enthusiast. Looking for spontaneous adventures",
       lookingFor: "Casual encounters",
       bodyType: "Curvy",
-      height: "163 cm",
+      height: 163,
       relationship: "Single",
       smoking: "Sometimes",
-      drinking: "Yes"
+      drinking: "Yes",
+      views: 289,
+      likes: 71
     },
     {
       id: 6,
@@ -177,10 +188,12 @@ export default function Members() {
       bio: "Fitness instructor who loves life. No drama, just good vibes!",
       lookingFor: "Friends with benefits",
       bodyType: "Athletic",
-      height: "172 cm",
+      height: 172,
       relationship: "Single",
       smoking: "No",
-      drinking: "Socially"
+      drinking: "Socially",
+      views: 678,
+      likes: 156
     },
     {
       id: 7,
@@ -197,10 +210,12 @@ export default function Members() {
       bio: "Art lover and wine connoisseur. Let's explore the city together!",
       lookingFor: "Casual dating",
       bodyType: "Slim",
-      height: "166 cm",
+      height: 166,
       relationship: "Single",
       smoking: "No",
-      drinking: "Yes"
+      drinking: "Yes",
+      views: 334,
+      likes: 82
     },
     {
       id: 8,
@@ -217,20 +232,26 @@ export default function Members() {
       bio: "Musician and coffee addict. Always up for new experiences",
       lookingFor: "Casual encounters",
       bodyType: "Average",
-      height: "178 cm",
+      height: 178,
       relationship: "Single",
       smoking: "No",
-      drinking: "Socially"
+      drinking: "Socially",
+      views: 198,
+      likes: 45
     }
   ];
 
   const filteredProfiles = allProfiles.filter(profile => {
     if (filters.gender !== "all" && profile.gender !== filters.gender) return false;
     if (profile.age < filters.ageMin || profile.age > filters.ageMax) return false;
+    if (profile.height < filters.heightMin || profile.height > filters.heightMax) return false;
     if (filters.location && !profile.location.toLowerCase().includes(filters.location.toLowerCase())) return false;
     if (profile.distance > filters.distance) return false;
     if (filters.lookingFor !== "all" && profile.lookingFor !== filters.lookingFor) return false;
     if (filters.bodyType !== "all" && profile.bodyType !== filters.bodyType) return false;
+    if (filters.relationship !== "all" && profile.relationship !== filters.relationship) return false;
+    if (filters.smoking !== "all" && profile.smoking !== filters.smoking) return false;
+    if (filters.drinking !== "all" && profile.drinking !== filters.drinking) return false;
     if (filters.onlineOnly && !profile.online) return false;
     if (filters.verifiedOnly && !profile.verified) return false;
     if (filters.withPhotos && profile.images < 3) return false;
@@ -245,7 +266,7 @@ export default function Members() {
       case "age":
         return a.age - b.age;
       case "popular":
-        return b.images - a.images; // More photos = more popular
+        return b.views - a.views;
       case "newest":
       default:
         return b.id - a.id;
@@ -255,7 +276,7 @@ export default function Members() {
   // Simulate loading
   useEffect(() => {
     setIsLoading(true);
-    const timer = setTimeout(() => setIsLoading(false), 500);
+    const timer = setTimeout(() => setIsLoading(false), 800);
     return () => clearTimeout(timer);
   }, [filters]);
 
@@ -271,6 +292,21 @@ export default function Members() {
       setFilters(JSON.parse(savedFilters));
     }
   }, []);
+
+  const ProfileSkeleton = () => (
+    <Card className="overflow-hidden">
+      <Skeleton className="w-full h-80" />
+      <div className="p-4 space-y-3">
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-4 w-1/2" />
+        <Skeleton className="h-16 w-full" />
+        <div className="flex gap-2">
+          <Skeleton className="h-10 flex-1" />
+          <Skeleton className="h-10 w-10" />
+        </div>
+      </div>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-[#0D1B2A] dark:via-[#1a2a3a] dark:to-[#0D1B2A]">
@@ -362,11 +398,11 @@ export default function Members() {
               className="w-full"
             >
               <Filter size={18} className="mr-2" />
-              {showMobileFilters ? "Hide Filters" : "Show Filters"}
+              {showMobileFilters ? "Hide Filters" : `Show Filters (${sortedProfiles.length} results)`}
             </Button>
           </div>
 
-          {/* Filters Sidebar - Responsive */}
+          {/* Filters Sidebar - Enhanced */}
           <Card className={`${showMobileFilters ? 'block' : 'hidden'} lg:block w-full lg:w-80 p-4 md:p-6 h-fit lg:sticky lg:top-24`}>
             <div className="flex items-center gap-2 mb-6">
               <Filter size={24} className="text-pink-600" />
@@ -397,6 +433,18 @@ export default function Members() {
                   step={1}
                   value={[filters.ageMin, filters.ageMax]}
                   onValueChange={([min, max]) => setFilters({ ...filters, ageMin: min, ageMax: max })}
+                  className="mt-2"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Height: {filters.heightMin} - {filters.heightMax} cm</Label>
+                <Slider
+                  min={150}
+                  max={200}
+                  step={1}
+                  value={[filters.heightMin, filters.heightMax]}
+                  onValueChange={([min, max]) => setFilters({ ...filters, heightMin: min, heightMax: max })}
                   className="mt-2"
                 />
               </div>
@@ -455,6 +503,53 @@ export default function Members() {
                 </Select>
               </div>
 
+              <div className="space-y-2">
+                <Label>Relationship status</Label>
+                <Select value={filters.relationship} onValueChange={(value) => setFilters({ ...filters, relationship: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Any</SelectItem>
+                    <SelectItem value="Single">Single</SelectItem>
+                    <SelectItem value="In a relationship">In a relationship</SelectItem>
+                    <SelectItem value="Married">Married</SelectItem>
+                    <SelectItem value="It's complicated">It's complicated</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Smoking</Label>
+                <Select value={filters.smoking} onValueChange={(value) => setFilters({ ...filters, smoking: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Any</SelectItem>
+                    <SelectItem value="No">No</SelectItem>
+                    <SelectItem value="Sometimes">Sometimes</SelectItem>
+                    <SelectItem value="Yes">Yes</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Drinking</Label>
+                <Select value={filters.drinking} onValueChange={(value) => setFilters({ ...filters, drinking: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Any</SelectItem>
+                    <SelectItem value="No">No</SelectItem>
+                    <SelectItem value="Socially">Socially</SelectItem>
+                    <SelectItem value="Occasionally">Occasionally</SelectItem>
+                    <SelectItem value="Yes">Yes</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               <div className="space-y-3">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Checkbox
@@ -486,11 +581,12 @@ export default function Members() {
                   gender: "all",
                   ageMin: 18,
                   ageMax: 65,
+                  heightMin: 150,
+                  heightMax: 200,
                   location: "",
                   distance: 50,
                   lookingFor: "all",
                   bodyType: "all",
-                  height: "all",
                   relationship: "all",
                   smoking: "all",
                   drinking: "all",
@@ -504,12 +600,14 @@ export default function Members() {
             </div>
           </Card>
 
-          {/* Results - Mobile Optimized */}
+          {/* Results */}
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl font-black mb-2">Browse Members</h1>
-                <p className="text-sm md:text-base text-gray-600">{sortedProfiles.length} profiles match your criteria</p>
+                <p className="text-sm md:text-base text-gray-600">
+                  {isLoading ? "Loading..." : `${sortedProfiles.length} profiles match your criteria`}
+                </p>
               </div>
               <div className="flex gap-2 w-full sm:w-auto items-center">
                 <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
@@ -551,7 +649,13 @@ export default function Members() {
               </div>
             </div>
 
-            {viewMode === "grid" ? (
+            {isLoading ? (
+              <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
+                {[...Array(6)].map((_, i) => (
+                  <ProfileSkeleton key={i} />
+                ))}
+              </div>
+            ) : viewMode === "grid" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sortedProfiles.map((profile) => (
                   <Card key={profile.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
@@ -572,12 +676,6 @@ export default function Members() {
                           <Star size={16} fill="white" />
                         </div>
                       )}
-                      <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-2">
-                        <Badge variant="secondary" className="bg-black/70 text-white border-0">
-                          <Camera size={12} className="mr-1" />
-                          {profile.images}
-                        </Badge>
-                      </div>
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                         <h3 className="text-white text-2xl font-bold">{profile.name}, {profile.age}</h3>
                         <div className="flex items-center gap-1 text-white/90 text-sm">
@@ -592,7 +690,17 @@ export default function Members() {
                       <div className="flex flex-wrap gap-1 mb-3">
                         <Badge variant="outline" className="text-xs">{profile.lookingFor}</Badge>
                         <Badge variant="outline" className="text-xs">{profile.bodyType}</Badge>
-                        <Badge variant="outline" className="text-xs">{profile.height}</Badge>
+                        <Badge variant="outline" className="text-xs">{profile.height} cm</Badge>
+                      </div>
+                      <div className="flex items-center gap-2 mb-3 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <Eye size={12} />
+                          <span>{profile.views}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Heart size={12} />
+                          <span>{profile.likes}</span>
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         <Button className="flex-1 bg-pink-600 hover:bg-pink-700" asChild>
@@ -651,8 +759,18 @@ export default function Members() {
                         <div className="flex flex-wrap gap-2 mb-3">
                           <Badge variant="outline" className="text-xs">{profile.lookingFor}</Badge>
                           <Badge variant="outline" className="text-xs">{profile.bodyType}</Badge>
-                          <Badge variant="outline" className="text-xs">{profile.height}</Badge>
+                          <Badge variant="outline" className="text-xs">{profile.height} cm</Badge>
                           <Badge variant="outline" className="text-xs">{profile.relationship}</Badge>
+                        </div>
+                        <div className="flex items-center gap-4 mb-3 text-xs text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Eye size={12} />
+                            <span>{profile.views} views</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Heart size={12} />
+                            <span>{profile.likes} likes</span>
+                          </div>
                         </div>
                         <div className="flex gap-2">
                           <Button size="sm" className="bg-pink-600 hover:bg-pink-700" asChild>
@@ -679,7 +797,7 @@ export default function Members() {
               </div>
             )}
 
-            {sortedProfiles.length === 0 && (
+            {sortedProfiles.length === 0 && !isLoading && (
               <Card className="p-12 text-center">
                 <SearchIcon size={48} className="mx-auto text-gray-400 mb-4" />
                 <h3 className="text-2xl font-bold mb-2">No profiles found</h3>
@@ -688,11 +806,12 @@ export default function Members() {
                   gender: "all",
                   ageMin: 18,
                   ageMax: 65,
+                  heightMin: 150,
+                  heightMax: 200,
                   location: "",
                   distance: 50,
                   lookingFor: "all",
                   bodyType: "all",
-                  height: "all",
                   relationship: "all",
                   smoking: "all",
                   drinking: "all",
