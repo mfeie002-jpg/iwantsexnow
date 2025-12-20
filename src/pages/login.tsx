@@ -8,9 +8,11 @@ import { Heart, AlertCircle, Loader2, Eye, EyeOff, Gift } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { MobileNav } from "@/components/MobileNav";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Login() {
   const router = useRouter();
+  const { toast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -48,12 +50,42 @@ export default function Login() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Check for existing session
+  useEffect(() => {
+    const session = localStorage.getItem("userSession");
+    if (session) {
+      const sessionData = JSON.parse(session);
+      const now = new Date().getTime();
+      const expiresAt = new Date(sessionData.expiresAt).getTime();
+      
+      if (now < expiresAt) {
+        // Session still valid, redirect to profile
+        toast({
+          title: "Bereits eingeloggt",
+          description: "Du wirst weitergeleitet...",
+          duration: 2000,
+        });
+        router.push("/profile");
+      } else {
+        // Session expired, clear it
+        localStorage.removeItem("userSession");
+        localStorage.removeItem("currentUser");
+      }
+    }
+  }, [router, toast]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     
     if (!formData.emailOrUsername || !formData.password) {
       setError("Please fill in all fields");
+      toast({
+        title: "Fehler",
+        description: "Bitte fülle alle Felder aus",
+        variant: "destructive",
+        duration: 3000,
+      });
       return;
     }
 
@@ -105,11 +137,23 @@ export default function Login() {
       });
       localStorage.setItem(activityKey, JSON.stringify(activities));
 
+      toast({
+        title: "Login erfolgreich!",
+        description: `Willkommen zurück, ${user.username}!`,
+        duration: 3000,
+      });
+
       setLoading(false);
       router.push("/profile");
     } else {
       setLoading(false);
       setError("Invalid email/username or password");
+      toast({
+        title: "Login fehlgeschlagen",
+        description: "Ungültige Anmeldedaten",
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 

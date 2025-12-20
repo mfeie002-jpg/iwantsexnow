@@ -6,13 +6,16 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
 import { Heart, AlertCircle, CheckCircle2, Loader2, Eye, EyeOff, Shield, Lock, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { MobileNav } from "@/components/MobileNav";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Register() {
   const router = useRouter();
+  const { toast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -20,6 +23,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [passwordStrength, setPasswordStrength] = useState(0);
   
   const [formData, setFormData] = useState({
     username: "",
@@ -59,6 +63,35 @@ export default function Register() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  // Password strength calculator
+  useEffect(() => {
+    const password = formData.password;
+    let strength = 0;
+    
+    if (password.length >= 8) strength += 25;
+    if (password.length >= 12) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 15;
+    if (/[a-z]/.test(password)) strength += 15;
+    if (/[0-9]/.test(password)) strength += 10;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+    
+    setPasswordStrength(strength);
+  }, [formData.password]);
+
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength < 30) return "bg-red-500";
+    if (passwordStrength < 60) return "bg-orange-500";
+    if (passwordStrength < 80) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+
+  const getPasswordStrengthText = () => {
+    if (passwordStrength < 30) return "Sehr schwach";
+    if (passwordStrength < 60) return "Schwach";
+    if (passwordStrength < 80) return "Mittel";
+    return "Stark";
+  };
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -145,7 +178,7 @@ export default function Register() {
         id: Date.now(),
         username: formData.username,
         email: formData.email,
-        password: formData.password, // In production: hash this!
+        password: formData.password,
         accountType: formData.accountType,
         gender: formData.gender,
         age: parseInt(formData.age),
@@ -155,8 +188,8 @@ export default function Register() {
         emailVerified: false,
         online: true,
         premium: false,
-        membershipStatus: "trial", // "trial", "active", "expired"
-        trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
+        membershipStatus: "trial",
+        trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         createdAt: new Date().toISOString(),
         lastActive: new Date().toISOString(),
         newsletter: formData.newsletter,
@@ -173,10 +206,9 @@ export default function Register() {
       localStorage.setItem("userSession", JSON.stringify({
         username: formData.username,
         loginTime: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
       }));
 
-      // Log registration activity
       const activity = {
         id: Date.now(),
         type: "registration",
@@ -189,8 +221,21 @@ export default function Register() {
       };
       localStorage.setItem(`activity_${formData.username}`, JSON.stringify([activity]));
 
+      toast({
+        title: "Registrierung erfolgreich!",
+        description: "Willkommen bei iWantSexNow.ch",
+        duration: 3000,
+      });
+
       setLoading(false);
       router.push("/profile");
+    } else {
+      toast({
+        title: "Registrierung fehlgeschlagen",
+        description: "Bitte überprüfe deine Eingaben",
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 
@@ -369,6 +414,22 @@ export default function Register() {
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                   </div>
+                  {formData.password && (
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600">Passwort-Stärke:</span>
+                        <span className={`font-medium ${
+                          passwordStrength < 30 ? "text-red-600" :
+                          passwordStrength < 60 ? "text-orange-600" :
+                          passwordStrength < 80 ? "text-yellow-600" :
+                          "text-green-600"
+                        }`}>
+                          {getPasswordStrengthText()}
+                        </span>
+                      </div>
+                      <Progress value={passwordStrength} className="h-2" />
+                    </div>
+                  )}
                   {errors.password && (
                     <p className="text-red-600 text-sm flex items-center gap-1">
                       <AlertCircle size={14} />

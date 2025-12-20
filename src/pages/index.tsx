@@ -5,9 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
 import { Navigation } from "@/components/Navigation";
-import { Heart, CheckCircle, Eye, Phone } from "lucide-react";
+import { Heart, CheckCircle, Eye, Phone, ArrowUp } from "lucide-react";
 import Link from "next/link";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
+import { useToast } from "@/hooks/use-toast";
 
 // Components
 import { HeroSection } from "@/components/home/HeroSection";
@@ -18,6 +19,8 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { ContactSection } from "@/components/home/ContactSection";
 
 export default function Home() {
+  const { toast } = useToast();
+  
   // Filter State
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("all");
@@ -31,6 +34,7 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [onlineCount, setOnlineCount] = useState(127);
   const [activeViewers, setActiveViewers] = useState(342);
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -226,6 +230,39 @@ export default function Home() {
     }
   ];
 
+  // Load saved filters from localStorage
+  useEffect(() => {
+    const savedFilters = localStorage.getItem('searchFilters');
+    if (savedFilters) {
+      const filters = JSON.parse(savedFilters);
+      setSelectedCity(filters.city || "all");
+      setSelectedService(filters.service || "all");
+      setSelectedOffer(filters.offer || "all");
+      setSelectedGender(filters.gender || "all");
+      setVerifiedPhotos(filters.verifiedPhotos || false);
+      setVideoAds(filters.videoAds || false);
+    }
+
+    // Load favorites
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+  }, []);
+
+  // Save filters to localStorage
+  useEffect(() => {
+    const filters = {
+      city: selectedCity,
+      service: selectedService,
+      offer: selectedOffer,
+      gender: selectedGender,
+      verifiedPhotos,
+      videoAds
+    };
+    localStorage.setItem('searchFilters', JSON.stringify(filters));
+  }, [selectedCity, selectedService, selectedOffer, selectedGender, verifiedPhotos, videoAds]);
+
   // Filtering Logic
   const filteredEscorts = allEscorts.filter(escort => {
     if (searchQuery && !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
@@ -259,9 +296,23 @@ export default function Home() {
   };
 
   const toggleFavorite = (id: number) => {
-    setFavorites(prev => 
-      prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id]
-    );
+    setFavorites(prev => {
+      const newFavorites = prev.includes(id) 
+        ? prev.filter(fav => fav !== id) 
+        : [...prev, id];
+      
+      localStorage.setItem('favorites', JSON.stringify(newFavorites));
+      
+      toast({
+        title: prev.includes(id) ? "Von Favoriten entfernt" : "Zu Favoriten hinzugefügt",
+        description: prev.includes(id) 
+          ? "Profil wurde aus deinen Favoriten entfernt" 
+          : "Profil wurde zu deinen Favoriten hinzugefügt",
+        duration: 2000,
+      });
+      
+      return newFavorites;
+    });
   };
 
   const resetFilters = () => {
@@ -284,6 +335,9 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      
+      // Show/hide scroll to top button
+      setShowScrollTop(currentScrollY > 500);
       
       // Determine if scrolled past threshold
       setScrolled(currentScrollY > 100);
@@ -311,6 +365,10 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0D1B2A]">
@@ -487,6 +545,18 @@ export default function Home() {
       <AboutSection />
       
       <ContactSection />
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <Button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-40 w-14 h-14 rounded-full bg-pink-600 hover:bg-pink-700 shadow-2xl"
+          size="icon"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={24} />
+        </Button>
+      )}
 
       {/* Live Chat Widget */}
       <LiveChatWidget />
