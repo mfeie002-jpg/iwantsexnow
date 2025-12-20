@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Check, Star, Zap, Crown } from "lucide-react";
 import Link from "next/link";
+import { MobileNav } from "@/components/MobileNav";
 
 export default function Premium() {
   const plans = [

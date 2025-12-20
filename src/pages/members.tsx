@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, MapPin, MessageCircle, Star, Search as SearchIcon, Filter, Camera, Eye, Calendar, Zap, Gift } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { MobileNav } from "@/components/MobileNav";
 
 export default function Members() {
   const router = useRouter();

@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, AlertCircle, CheckCircle2, Loader2, Eye, EyeOff, Shield, Lock, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { MobileNav } from "@/components/MobileNav";
 
 export default function Register() {
   const router = useRouter();
