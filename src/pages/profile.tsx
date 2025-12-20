@@ -9,9 +9,12 @@ import { ProfileStats } from "@/components/ProfileStats";
 import { ProfileCompletion } from "@/components/ProfileCompletion";
 import { RecentVisitors } from "@/components/RecentVisitors";
 import { MutualMatches } from "@/components/MutualMatches";
+import { useToast } from "@/hooks/use-toast";
+import { MobileNav } from "@/components/MobileNav";
 
 export default function Profile() {
   const router = useRouter();
+  const { toast } = useToast();
   const [user, setUser] = useState<any>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"overview" | "stats" | "visitors" | "matches" | "activity" | "payments">("overview");
@@ -261,6 +264,17 @@ export default function Profile() {
       </div>
     );
   };
+
+  // Add auto-save functionality
+  useEffect(() => {
+    if (user) {
+      const autoSaveTimer = setTimeout(() => {
+        localStorage.setItem("users", JSON.stringify([user]));
+      }, 1000);
+      
+      return () => clearTimeout(autoSaveTimer);
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50">

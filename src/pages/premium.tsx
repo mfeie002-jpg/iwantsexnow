@@ -4,8 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Check, Star, Zap, Crown } from "lucide-react";
 import Link from "next/link";
 import { MobileNav } from "@/components/MobileNav";
+import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 
 export default function Premium() {
+  const { toast } = useToast();
   const plans = [
     {
       name: "Free",
@@ -64,6 +67,23 @@ export default function Premium() {
       ]
     }
   ];
+
+  const handleUpgrade = (planName: string) => {
+    toast({
+      title: "Upgrade gestartet",
+      description: `Du wirst zu ${planName} weitergeleitet...`,
+      duration: 3000,
+    });
+    
+    // Simulate payment process
+    setTimeout(() => {
+      toast({
+        title: "Erfolgreich!",
+        description: `Du bist jetzt ${planName} Mitglied!`,
+        duration: 3000,
+      });
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">

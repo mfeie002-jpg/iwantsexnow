@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Send, Search, MoreVertical } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   id: number;
@@ -24,6 +25,7 @@ interface Conversation {
 }
 
 export default function Messages() {
+  const { toast } = useToast();
   const [selectedChat, setSelectedChat] = useState<number>(1);
   const [messageText, setMessageText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -98,7 +100,15 @@ export default function Messages() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!messageText.trim()) return;
+    if (!messageText.trim()) {
+      toast({
+        title: "Fehler",
+        description: "Nachricht darf nicht leer sein",
+        variant: "destructive",
+        duration: 2000,
+      });
+      return;
+    }
 
     const newMessage: Message = {
       id: messages.length + 1,
@@ -109,6 +119,19 @@ export default function Messages() {
 
     setMessages([...messages, newMessage]);
     setMessageText("");
+    
+    toast({
+      title: "Nachricht gesendet",
+      duration: 1500,
+    });
+
+    // Scroll to bottom
+    setTimeout(() => {
+      const messagesDiv = document.querySelector('.messages-container');
+      if (messagesDiv) {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    }, 100);
   };
 
   const filteredConversations = conversations.filter(conv =>

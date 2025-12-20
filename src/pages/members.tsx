@@ -11,9 +11,13 @@ import { Heart, MapPin, MessageCircle, Star, Search as SearchIcon, Filter, Camer
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { MobileNav } from "@/components/MobileNav";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Members() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -247,6 +251,26 @@ export default function Members() {
         return b.id - a.id;
     }
   });
+
+  // Simulate loading
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, [filters]);
+
+  // Save filters to localStorage
+  useEffect(() => {
+    localStorage.setItem("memberFilters", JSON.stringify(filters));
+  }, [filters]);
+
+  // Load saved filters
+  useEffect(() => {
+    const savedFilters = localStorage.getItem("memberFilters");
+    if (savedFilters) {
+      setFilters(JSON.parse(savedFilters));
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-[#0D1B2A] dark:via-[#1a2a3a] dark:to-[#0D1B2A]">

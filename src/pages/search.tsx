@@ -9,12 +9,16 @@ import { Slider } from "@/components/ui/slider";
 import { Heart, MapPin, MessageCircle, Star, Search as SearchIcon, Filter } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Search() {
   const router = useRouter();
+  const { toast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +36,15 @@ export default function Search() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const [filters, setFilters] = useState({
     gender: "all",
@@ -168,6 +181,17 @@ export default function Search() {
         return b.id - a.id;
     }
   });
+
+  // Show search results count
+  useEffect(() => {
+    if (debouncedQuery) {
+      toast({
+        title: `${sortedProfiles.length} Profile gefunden`,
+        description: `Suche nach: "${debouncedQuery}"`,
+        duration: 2000,
+      });
+    }
+  }, [debouncedQuery, sortedProfiles.length]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
