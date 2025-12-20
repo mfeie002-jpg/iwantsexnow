@@ -266,6 +266,23 @@ export default function Members() {
                 <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
               </span>
             </Link>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-6">
+              <Link href="/members" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Browse Members
+              </Link>
+              <Link href="/messages" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Messages
+              </Link>
+              <Link href="/favorites" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Favorites
+              </Link>
+              <Link href="/profile" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Profile
+              </Link>
+            </nav>
+
             <div className="flex items-center gap-2 md:gap-3">
               <Button variant="ghost" size="sm" asChild className="hidden sm:flex">
                 <Link href="/messages">Messages</Link>
@@ -279,6 +296,11 @@ export default function Members() {
               <Button className="bg-pink-600 hover:bg-pink-700 text-sm md:text-base" size="sm" asChild>
                 <Link href="/premium">Premium</Link>
               </Button>
+              
+              {/* Mobile Navigation */}
+              <div className="lg:hidden">
+                <MobileNav />
+              </div>
             </div>
           </div>
         </div>

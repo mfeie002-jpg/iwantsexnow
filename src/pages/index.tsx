@@ -335,6 +335,30 @@ export default function Home() {
                 <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
               </span>
             </Link>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-6">
+              <Link href="/members" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Browse Members
+              </Link>
+              <Link href="/escort-zurich" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Escorts
+              </Link>
+              <Link href="/messages" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Messages
+              </Link>
+              <Link href="/premium" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Premium
+              </Link>
+              <Link href="/profile" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Profile
+              </Link>
+              <Button className="bg-[#C69C6D] hover:bg-[#B88C5D] text-white" asChild>
+                <Link href="/register">Sign Up</Link>
+              </Button>
+            </nav>
+
+            {/* Mobile Navigation */}
             <MobileNav />
           </div>
         </div>

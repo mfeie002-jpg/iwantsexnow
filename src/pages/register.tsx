@@ -198,14 +198,31 @@ export default function Register() {
       {/* Header */}
       <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0D1B2A] sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">
         <div className="container mx-auto px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold tracking-tight">
-              <span className="text-[#0D1B2A] dark:text-white">iWant</span>
-              <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
-              <span className="text-[#0D1B2A] dark:text-white">Now</span>
-              <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
-            </span>
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <span className="text-2xl font-bold tracking-tight">
+                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
+                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
+                <span className="text-[#0D1B2A] dark:text-white">Now</span>
+                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
+              </span>
+            </Link>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-4">
+              <Link href="/members" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Browse
+              </Link>
+              <Link href="/login" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
+                Login
+              </Link>
+            </nav>
+
+            {/* Mobile Navigation */}
+            <div className="md:hidden">
+              <MobileNav />
+            </div>
+          </div>
         </div>
       </header>
 
