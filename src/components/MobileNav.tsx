@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X, Home, Users, MessageCircle, Star, Settings, Search, Calendar, Gift, Lock, Image as ImageIcon, Bell, Shield, MapPin, Sparkles, ChevronDown, ChevronRight, Phone, HelpCircle } from "lucide-react";
+import { Heart, Menu, X, Home, Users, MessageCircle, Star, Settings, Search, Calendar, Gift, Lock, Image as ImageIcon, Bell, Shield, MapPin, Sparkles, ChevronDown, ChevronRight, Phone, HelpCircle, Crown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -257,6 +257,24 @@ export function MobileNav() {
 
           {/* Footer Actions */}
           <div className="border-t border-white/20 p-4 space-y-2 bg-black/30">
+            <Link
+              href="/web-analyzer"
+              className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              onClick={closeMenu}
+            >
+              <Sparkles className="w-5 h-5 text-pink-600" />
+              <span className="font-medium">Web Analyzer</span>
+            </Link>
+
+            <Link
+              href="/premium"
+              className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              onClick={closeMenu}
+            >
+              <Crown className="w-5 h-5 text-pink-600" />
+              <span className="font-medium">Premium</span>
+            </Link>
+
             <Button className="w-full bg-[#C69C6D] hover:bg-[#B88C5D] text-white font-bold shadow-lg" asChild>
               <Link href="/premium" onClick={closeMenu}>
                 <Sparkles size={18} className="mr-2" />
