@@ -137,6 +137,14 @@ export function Navigation() {
           { label: "Help Center", href: "/faq" },
           { label: "Verify Account", href: "/verify", badge: "Recommended" },
         ]
+      },
+      {
+        title: "Admin Tools",
+        icon: Sparkles,
+        items: [
+          { label: "Web Analyzer", href: "/web-analyzer", description: "Website analysis suite", badge: "Pro" },
+          { label: "Admin Tools", href: "/admin/tools", description: "Advanced admin features", badge: "Admin" },
+        ]
       }
     ]
   };
