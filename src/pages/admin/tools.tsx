@@ -17,6 +17,11 @@ import {
 import { RegressionTestingTab } from "@/components/admin/tools/RegressionTestingTab";
 import { ScheduledMonitoringTab } from "@/components/admin/tools/ScheduledMonitoringTab";
 import { AIFeedbackPackageStandalone } from "@/components/AIFeedbackPackageStandalone";
+import { ScreenshotsTab } from "@/components/admin/tools/ScreenshotsTab";
+import { AIAnalysisTab } from "@/components/admin/tools/AIAnalysisTab";
+import { ChatGPTPromptsTab } from "@/components/admin/tools/ChatGPTPromptsTab";
+import { SEOAnalyzerTab } from "@/components/admin/tools/SEOAnalyzerTab";
+import { ExportTab } from "@/components/admin/tools/ExportTab";
 
 export default function AdminTools() {
   const [activeTab, setActiveTab] = useState("screenshots");
@@ -67,11 +72,11 @@ export default function AdminTools() {
 
           <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm min-h-[600px]">
             <TabsContent value="screenshots" className="m-0">
-              <div className="text-center py-12 text-gray-500">Screenshot Tools coming in next update...</div>
+              <ScreenshotsTab />
             </TabsContent>
             
             <TabsContent value="ai-analysis" className="m-0">
-              <div className="text-center py-12 text-gray-500">AI Analysis Tools coming in next update...</div>
+              <AIAnalysisTab />
             </TabsContent>
 
             <TabsContent value="feedback" className="m-0">
@@ -79,11 +84,11 @@ export default function AdminTools() {
             </TabsContent>
 
             <TabsContent value="prompts" className="m-0">
-              <div className="text-center py-12 text-gray-500">Prompt Library coming in next update...</div>
+              <ChatGPTPromptsTab />
             </TabsContent>
 
             <TabsContent value="seo" className="m-0">
-              <div className="text-center py-12 text-gray-500">SEO Analyzer coming in next update...</div>
+              <SEOAnalyzerTab />
             </TabsContent>
 
             <TabsContent value="regression" className="m-0">
@@ -95,7 +100,7 @@ export default function AdminTools() {
             </TabsContent>
 
             <TabsContent value="export" className="m-0">
-              <div className="text-center py-12 text-gray-500">Export Tools coming in next update...</div>
+              <ExportTab />
             </TabsContent>
           </div>
         </Tabs>
