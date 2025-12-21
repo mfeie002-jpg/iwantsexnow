@@ -35,6 +35,12 @@ enabled = true
 site_url = "http://localhost:3000"
 additional_redirect_urls = []
 jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
 
 [auth.external.google]
 enabled = false
@@ -53,9 +59,18 @@ verify_jwt = false
 [edge_functions.firecrawl-map]
 verify_jwt = false
 
+[edge_functions.lighthouse]
+verify_jwt = false
+
 # Protected functions (auth required)
 [edge_functions.capture-screenshot]
 verify_jwt = true
 
 [edge_functions.ai-website-analyze]
+verify_jwt = true
+
+[edge_functions.ai-extract-project-info]
+verify_jwt = true
+
+[edge_functions.scheduled-screenshots]
 verify_jwt = true
