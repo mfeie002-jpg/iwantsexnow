@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Navigation from "@/components/Navigation";
-import MobileNav from "@/components/MobileNav";
+import { Navigation } from "@/components/Navigation";
+import { MobileNav } from "@/components/MobileNav";
 import { Download, Heart, Star, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
