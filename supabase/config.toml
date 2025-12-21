@@ -1,0 +1,61 @@
+# Supabase Configuration for Web Analyzer Suite
+
+[api]
+# Disable JWT verification for public functions
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[api.jwt]
+# Allow public access to certain edge functions
+secret = "your-jwt-secret-here"
+exp = 3600
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = []
+jwt_expiry = 3600
+
+[auth.external.google]
+enabled = false
+
+[edge_functions]
+# Configuration for edge functions
+enabled = true
+
+# Public functions (no auth required)
+[edge_functions.fetch-html]
+verify_jwt = false
+
+[edge_functions.capture-rendered-html]
+verify_jwt = false
+
+[edge_functions.firecrawl-map]
+verify_jwt = false
+
+# Protected functions (auth required)
+[edge_functions.capture-screenshot]
+verify_jwt = true
+
+[edge_functions.ai-website-analyze]
+verify_jwt = true
