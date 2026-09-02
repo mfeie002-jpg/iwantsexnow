@@ -9,10 +9,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, Mail, AlertCircle, Loader2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export default function AdminLogin() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -20,9 +16,24 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   useEffect(() => {
     // Check if already logged in
     const checkAuth = async () => {
+      const supabase = getSupabaseClient();
+      if (!supabase) return;
+
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         // Check if user has admin role
@@ -45,6 +56,13 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data, error: authError } = await supabase.auth.signInWithPassword({
@@ -81,6 +99,13 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data, error: authError } = await supabase.auth.signUp({
