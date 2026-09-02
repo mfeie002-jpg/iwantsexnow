@@ -12,11 +12,6 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export function AIFeedbackPackageStandalone() {
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
@@ -48,9 +43,27 @@ export function AIFeedbackPackageStandalone() {
     pdfBrief: true,
   });
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   const handleAutoFill = async () => {
     if (!projectInfo.url) {
       setError("Please enter a URL first");
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
       return;
     }
 
@@ -85,6 +98,12 @@ export function AIFeedbackPackageStandalone() {
   const generatePackage = async () => {
     if (!projectInfo.url || !projectInfo.name) {
       setError("Please fill in project details");
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
       return;
     }
 

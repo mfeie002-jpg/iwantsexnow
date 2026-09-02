@@ -6,10 +6,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Play, Clock, CheckCircle, XCircle } from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 interface ScheduledUrl {
   id: string;
   name: string;
@@ -23,11 +19,26 @@ export function ScheduledMonitoringTab() {
   const [loading, setLoading] = useState(false);
   const [running, setRunning] = useState(false);
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   useEffect(() => {
     fetchUrls();
   }, []);
 
   const fetchUrls = async () => {
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
     const { data } = await supabase
       .from("scheduled_screenshot_urls")
       .select("*")
@@ -36,6 +47,9 @@ export function ScheduledMonitoringTab() {
   };
 
   const triggerManualRun = async () => {
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
     setRunning(true);
     try {
       // Trigger the Edge Function manually

@@ -12,10 +12,6 @@ import { Loader2, Camera, Download, AlertCircle } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 const DIMENSION_PRESETS = [
   { label: "Desktop HD", value: "1920x1080" },
   { label: "Desktop Full Page", value: "1920xfull" },
@@ -42,9 +38,27 @@ export function ScreenshotsTab() {
   const [bulkUrls, setBulkUrls] = useState("");
   const [bulkDimension, setBulkDimension] = useState("1920x1080");
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   const captureSingleScreenshot = async () => {
     if (!singleUrl) {
       setError("Please enter a URL");
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
       return;
     }
 
@@ -90,6 +104,12 @@ export function ScreenshotsTab() {
     
     if (urls.length === 0) {
       setError("Please enter at least one URL");
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
       return;
     }
 
