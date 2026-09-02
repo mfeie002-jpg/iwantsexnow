@@ -10,10 +10,6 @@ import { Loader2, Zap, AlertCircle, Copy, Download, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from "react-markdown";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export function AIAnalysisTab() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,9 +18,27 @@ export function AIAnalysisTab() {
   const [result, setResult] = useState<string | null>(null);
   const { toast } = useToast();
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   const analyzeWebsite = async () => {
     if (!url) {
       setError("Please enter a URL");
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
       return;
     }
 

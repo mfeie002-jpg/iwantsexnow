@@ -8,10 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, Code, AlertCircle, ExternalLink } from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export function SEOAnalyzerTab() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -20,9 +16,27 @@ export function SEOAnalyzerTab() {
   const [rawHtml, setRawHtml] = useState<any>(null);
   const [renderedHtml, setRenderedHtml] = useState<any>(null);
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   const analyzeURL = async () => {
     if (!url) {
       setError("Please enter a URL");
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setError("Supabase configuration missing");
       return;
     }
 

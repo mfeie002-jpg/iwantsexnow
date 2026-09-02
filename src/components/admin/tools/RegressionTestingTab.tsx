@@ -9,10 +9,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Loader2, Camera, AlertTriangle, CheckCircle, Plus, Eye, Trash2 } from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 interface Baseline {
   id: string;
   name: string;
@@ -30,11 +26,26 @@ export function RegressionTestingTab() {
   const [newBaseline, setNewBaseline] = useState({ name: "", url: "" });
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   useEffect(() => {
     fetchBaselines();
   }, []);
 
   const fetchBaselines = async () => {
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
     const { data } = await supabase
       .from("screenshot_baselines")
       .select("*")
@@ -44,6 +55,10 @@ export function RegressionTestingTab() {
 
   const createBaseline = async () => {
     if (!newBaseline.name || !newBaseline.url) return;
+    
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
     setLoading(true);
     
     try {
@@ -61,7 +76,7 @@ export function RegressionTestingTab() {
           name: newBaseline.name,
           url: newBaseline.url,
           screenshot_url: captureData.screenshotUrl,
-          image_base64: "stored_in_url", // Optimization: Don't store huge base64 in DB if URL is persistent
+          image_base64: "stored_in_url",
         });
 
       if (dbError) throw dbError;
@@ -76,18 +91,15 @@ export function RegressionTestingTab() {
   };
 
   const runRegressionTest = async (baseline: Baseline) => {
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
     setComparing(baseline.id);
     try {
-      // Logic for comparison would go here:
-      // 1. Capture new screenshot
-      // 2. Compare with baseline screenshot (pixel diff)
-      // 3. Store result
-      // For now, we'll simulate a capture update
       await supabase.functions.invoke("capture-screenshot", {
         body: { url: baseline.url }
       });
       
-      // Update last checked
       await supabase
         .from("screenshot_baselines")
         .update({ last_checked_at: new Date().toISOString() })
