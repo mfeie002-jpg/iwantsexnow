@@ -4,10 +4,6 @@ import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { LogOut, Shield, Loader2 } from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
@@ -17,8 +13,26 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
 
+  // Initialize Supabase client only on client side
+  const getSupabaseClient = () => {
+    if (typeof window === "undefined") return null;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) return null;
+    
+    return createClient(supabaseUrl, supabaseAnonKey);
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
+      const supabase = getSupabaseClient();
+      if (!supabase) {
+        router.push("/admin/login");
+        return;
+      }
+
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
@@ -53,7 +67,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }, [router]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
     router.push("/admin/login");
   };
 
