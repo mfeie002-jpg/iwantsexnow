@@ -29,3 +29,17 @@ jobs:
         run: node scripts/preview-smoke.cjs
       - name: Provider publication policy tests
         run: node --experimental-strip-types --test tests/marketplace-publication.test.mjs
+      - name: Analyzer API authorization policy tests
+        run: node --experimental-strip-types --test tests/analyzer-proxy.test.mjs
+      - name: Mocked authenticated handler and role gate tests
+        run: node --test tests/analyzer-proxy-handler.test.mjs
+      - name: Public API must reject unauthenticated requests
+        run: |
+          npx next start --hostname 127.0.0.1 --port 43127 > /tmp/next-prelaunch.log 2>&1 &
+          APP_PID=$!
+          trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl --silent --output /dev/null http://127.0.0.1:43127/; then break; fi
+            sleep 1
+          done
+          node scripts/analyzer-api-http-smoke.mjs
