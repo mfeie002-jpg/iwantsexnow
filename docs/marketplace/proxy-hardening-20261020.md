@@ -17,6 +17,7 @@ Timestamp: 2026-10-20. Repo: mfeie002-jpg/iwantsexnow. Source changes only.
 - `npm run build` Next.js 15.5.9: PASS, 49 static pages and an API route. Existing repository lint notices remain.
 - `node --experimental-strip-types --test tests/analyzer-proxy.test.mjs`: **12/12 PASS**.
 - Local Next.js bound to `127.0.0.1:43127` with `node scripts/analyzer-api-http-smoke.mjs`: **5/5 PASS** (405 for GET; 400 for invalid/unknown functions; 401 for missing/malformed bearer); local server terminated after test.
+- Compiled-handler mocked Supabase Auth and role checks with `node --test tests/analyzer-proxy-handler.test.mjs`: **3/3 PASS** (expired JWT 401; valid non-admin 403; admin forwards the verified user JWT to the single allowlisted Edge function). No external Supabase calls made.
 - `node scripts/preview-smoke.cjs`: **169/169 PASS**.
 - Full admin JWT with a live provisioned Supabase role was NOT tested; requires an authenticated admin user and live schema inspection.
 
