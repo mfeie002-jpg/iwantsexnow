@@ -50,6 +50,14 @@ const routeMeta: Record<string, { title: string; description: string }> = {
     title: "Geplantes Preismodell (Demo) | iWantSexNow.ch",
     description: "Unverbindliche Preise und Promotion-Beispiele. Derzeit keine kostenpflichtigen Buchungen.",
   },
+  "/privacy": {
+    title: "Datenschutzinformationen – Vorschau | iWantSexNow.ch",
+    description: "Vorläufige Informationen zum Entwicklungsstand. Keine vollständige Datenschutzerklärung; reale Registrierungen sind noch deaktiviert.",
+  },
+  "/terms": {
+    title: "Nutzungsbedingungen – Vorschau | iWantSexNow.ch",
+    description: "Vorläufige Informationen zur noch nicht aktiven Schweizer Vergleichsplattform. Keine echten Buchungen oder kostenpflichtigen Leistungen.",
+  },
 };
 
 // All sensitive or commercial actions remain read-only in the public pre-launch prototype.

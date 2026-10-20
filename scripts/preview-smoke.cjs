@@ -18,6 +18,8 @@ const critical = [
   { file: "forgot-password.html", must: ["Passwort zurücksetzen noch nicht freigeschaltet"], mustNot: ["type=\"email\""] },
   { file: "pricing.html", must: ["Geplantes Preismodell", "kein Kauf möglich"], mustNot: ["Hello World"] },
   { file: "demo-accounts.html", must: ["reine Testdaten", "Design-Vorschau"], mustNot: ["Hello World"] },
+  { file: "privacy.html", must: ["Datenschutzinformationen", "keine abschliessende Datenschutzerklärung", "nicht für echte Registrierungen"], mustNot: ["<form", "Hello World"] },
+  { file: "terms.html", must: ["Nutzungsbedingungen", "kein fertiger Nutzungsvertrag", "Keine kostenpflichtige Leistung"], mustNot: ["<form", "Hello World"] },
 ];
 
 const blockedPreview = [
