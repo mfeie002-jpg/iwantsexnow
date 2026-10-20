@@ -113,13 +113,13 @@ export function HeroSection({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-4 text-center">
             <div className="flex items-center gap-2">
               <Shield size={18} className="text-gray-300" />
-              <span className="text-white font-bold text-sm md:text-base">LIMITED TIME OFFER:</span>
+              <span className="text-white font-bold text-sm md:text-base">DEMO / VORSCHAU:</span>
             </div>
             <span className="text-gray-200 text-xs md:text-sm">
-              Join FREE today & get <strong>7 days Premium access</strong> + 100 bonus credits
+              Alle Profile und Kennzahlen sind Beispieldaten. Noch keine echten Buchungen oder Nutzerkonten.
             </span>
             <Button size="sm" className="bg-white text-gray-900 hover:bg-gray-100 font-bold shadow-lg whitespace-nowrap" asChild>
-              <Link href="/register">Claim Offer →</Link>
+              <Link href="/demo-accounts">Demo ansehen →</Link>
             </Button>
           </div>
         </div>
@@ -422,7 +422,7 @@ export function HeroSection({
                   animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
-                <span><strong className="text-white">127</strong> online jetzt</span>
+                <span><strong className="text-white">Demo</strong> statt Live-Aktivität</span>
               </motion.div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
               <motion.div 
@@ -430,7 +430,7 @@ export function HeroSection({
                 whileHover={{ scale: 1.1 }}
               >
                 <Shield size={16} className="text-gray-400" />
-                <span><strong className="text-white">50,000+</strong> verifizierte Profile</span>
+                <span><strong className="text-white">Beispielprofile</strong> ohne Echtheitsprüfung</span>
               </motion.div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
               <motion.div 
@@ -438,7 +438,7 @@ export function HeroSection({
                 whileHover={{ scale: 1.1 }}
               >
                 <Shield size={16} className="text-gray-400" />
-                <span><strong className="text-white">100%</strong> diskret & sicher</span>
+                <span><strong className="text-white">Vorschau</strong> – kein Live-Buchungsbetrieb</span>
               </motion.div>
             </motion.div>
           </motion.div>

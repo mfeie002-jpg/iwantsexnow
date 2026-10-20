@@ -126,6 +126,7 @@ export function EscortGrid({
     <section id="escorts" className="py-20 bg-black/40 backdrop-blur-sm border-y border-white/10">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
+          <p className="mb-5 rounded-lg border border-amber-500/50 bg-amber-950/60 px-4 py-3 text-sm font-semibold text-amber-100">DEMO-INHALTE: Diese Personen, Fotos, Preise, Verfügbarkeiten und Bewertungen sind fiktive Designbeispiele. Keine echten Buchungen möglich.</p>
           <div className="space-y-6 mb-8">
             {escorts.map((escort) => (
               <Card 
@@ -147,7 +148,7 @@ export function EscortGrid({
                     {escort.topAd && (
                       <div className="absolute top-3 left-3">
                         <Badge className="bg-white text-black border-0 font-black text-base px-4 py-2 shadow-2xl">
-                          TOP AD
+                          DEMO TOP AD
                         </Badge>
                       </div>
                     )}
@@ -155,14 +156,14 @@ export function EscortGrid({
                     {escort.premium && !escort.topAd && (
                       <div className="absolute top-3 left-3">
                         <Badge className="bg-gray-700 text-white border-0 font-bold text-sm px-3 py-1.5 shadow-xl">
-                          PREMIUM
+                          DEMO PREMIUM
                         </Badge>
                       </div>
                     )}
 
                     <div className="absolute top-3 right-3">
                       <Badge className="bg-black/70 text-white border-0 text-xs px-2 py-1">
-                        {escort.postedTime}
+                        Beispiel-Inserat
                       </Badge>
                     </div>
 
@@ -170,25 +171,25 @@ export function EscortGrid({
                       {escort.verified && (
                         <Badge className="bg-blue-500 border-0 text-xs">
                           <Shield size={10} className="mr-1" />
-                          Verified
+                          Demo-Profil
                         </Badge>
                       )}
                       {escort.verifiedPhotos && (
                         <Badge className="bg-green-500 border-0 text-xs">
                           <CheckCircle size={10} className="mr-1" />
-                          Verified Photos
+                          Stockbild / Demo
                         </Badge>
                       )}
                       {escort.hasVideo && (
                         <Badge className="bg-gray-600 border-0 text-xs">
                           <Play size={10} className="mr-1" />
-                          Video
+                          Video (Demo)
                         </Badge>
                       )}
                       {escort.available && (
                         <Badge className="bg-green-500 border-0 text-xs animate-pulse">
                           <div className="w-2 h-2 bg-white rounded-full mr-1" />
-                          Verfügbar
+                          Beispielstatus
                         </Badge>
                       )}
                     </div>
@@ -253,12 +254,12 @@ export function EscortGrid({
                         ))}
                       </div>
                       <span className="text-white text-sm font-medium">{escort.rating.toFixed(1)}</span>
-                      <span className="text-white/60 text-xs">({escort.reviews} Bewertungen)</span>
+                      <span className="text-white/60 text-xs">(Demo-Bewertungen)</span>
                     </div>
 
                     <div className="flex items-center justify-between pt-4 border-t border-white/10">
                       <div>
-                        <div className="text-xs text-gray-400">Ab</div>
+                        <div className="text-xs text-gray-400">Beispielpreis ab</div>
                         <div className="text-2xl font-black text-white">CHF {escort.rate}</div>
                         <div className="text-xs text-gray-400">pro Stunde</div>
                       </div>
@@ -283,7 +284,7 @@ export function EscortGrid({
                           }}
                         >
                           <MessageCircle size={16} className="mr-2" />
-                          Kontakt
+                          Kontakt (Demo)
                         </Button>
                       </div>
                     </div>

@@ -35,8 +35,6 @@ export default function Home() {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [onlineCount, setOnlineCount] = useState(127);
-  const [activeViewers, setActiveViewers] = useState(342);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,14 +93,14 @@ export default function Home() {
 
   // Story Profiles
   const storyProfiles = [
-    { id: 1, name: "Vanessa", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 2, name: "Yasmin", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop", verified: true, online: true },
+    { id: 1, name: "Vanessa", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", verified: false, online: true },
+    { id: 2, name: "Yasmin", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop", verified: false, online: true },
     { id: 3, name: "Damiana", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", verified: false, online: true },
-    { id: 4, name: "Lara", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", verified: true, online: false },
-    { id: 5, name: "Katja", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&h=150&fit=crop", verified: true, online: true },
+    { id: 4, name: "Lara", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", verified: false, online: false },
+    { id: 5, name: "Katja", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&h=150&fit=crop", verified: false, online: true },
     { id: 6, name: "Mely", image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=150&h=150&fit=crop", verified: false, online: true },
-    { id: 7, name: "Ts Aschley", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 8, name: "Anthonella", image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=150&h=150&fit=crop", verified: true, online: false },
+    { id: 7, name: "Ts Aschley", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", verified: false, online: true },
+    { id: 8, name: "Anthonella", image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=150&h=150&fit=crop", verified: false, online: false },
     { id: 9, name: "Valery", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=150&h=150&fit=crop", verified: false, online: true },
   ];
 
@@ -358,13 +356,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOnlineCount(prev => Math.max(100, prev + Math.floor(Math.random() * 3) - 1));
-      setActiveViewers(prev => Math.max(300, prev + Math.floor(Math.random() * 5) - 2));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -373,8 +364,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0D1B2A]">
       <SEO 
-        title="iWantSexNow.ch - Premium Escort Services in Switzerland"
-        description="Discover exclusive escort services across Switzerland. Zürich, Geneva, Basel & more. Verified profiles, discreet bookings."
+        title="iWantSexNow.ch | Schweizer Inserate-Marktplatz (Vorschau)"
+        description="Vorschau eines Schweizer Vergleichsmarktplatzes für Inserate und Dienstleistungen. Alle Profile sind Demo-Beispiele, nicht verifiziert oder buchbar."
       />
 
       {/* Header */}
@@ -440,9 +431,10 @@ export default function Home() {
         filteredCount={filteredEscorts.length}
       />
 
-      {/* Story Row */}
+      {/* Story Row - explicitly fictitious preview data */}
       <section className="py-6 bg-black/30 border-b border-white/10">
         <div className="container mx-auto px-4">
+          <p className="text-xs text-amber-200 mb-3 font-bold">DEMO-STORIES · Stockbilder und erfundene Namen</p>
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
             {storyProfiles.map((profile) => (
               <div key={profile.id} className="flex-shrink-0 cursor-pointer group">
@@ -498,7 +490,7 @@ export default function Home() {
                 Explore Escorts by City
               </h2>
               <p className="text-xl text-gray-400">
-                Premium companions in Switzerland's major cities
+                Beispiel-Städte und Demoprofile – keine bestätigten Live-Inserate
               </p>
             </div>
 
@@ -522,7 +514,7 @@ export default function Home() {
                         </p>
                         <div className="flex items-center justify-between">
                           <Badge className="bg-gray-700 border-0 text-white">
-                            {city.escorts}+ Escorts
+                            {city.escorts} Demo-Profile
                           </Badge>
                           <span className="text-gray-300 font-bold group-hover:translate-x-2 transition-transform">
                             View All →

@@ -1,11 +1,9 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { SEOElements } from "@/components/SEO";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="de-CH">
       <Head>
-        <SEOElements />
         
         {/* Favicon and App Icons - New Logo Pack */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />

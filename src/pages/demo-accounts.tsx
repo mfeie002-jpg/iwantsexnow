@@ -263,12 +263,12 @@ export default function DemoAccounts() {
               Try Before You Sign Up
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              Explore our demo accounts to experience all features for escorts, clients, agencies, and content creators.
+              Fiktive Designkonten für die Oberfläche. Diese E-Mail-Adressen, Passwörter, Bewertungen und Einnahmen sind reine Testdaten und keine echten Konten.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <Shield className="text-green-500" size={16} />
-                <span>100% Safe Testing Environment</span>
+                <span>Nur fiktive Beispielkonten</span>
               </div>
               <div className="flex items-center gap-2">
                 <Lock className="text-blue-500" size={16} />
@@ -276,7 +276,7 @@ export default function DemoAccounts() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="text-pink-500" size={16} />
-                <span>Full Feature Access</span>
+                <span>Design-Vorschau ohne echten Login</span>
               </div>
             </div>
           </div>
@@ -348,16 +348,16 @@ export default function DemoAccounts() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-black text-white mb-6">
-              Ready to Create Your Own Account?
+              Interesse am Konzept?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Join thousands of satisfied users on Switzerland's premier adult platform
+              Vorschauphase: noch keine echten Nutzerkonten oder Vermittlung
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold" asChild>
                 <Link href="/register">
                   <User className="mr-2" size={20} />
-                  Register Free
+                  Registrierung in Vorbereitung
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
