@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import SEO from "@/components/SEO";
+import PreviewAccess from "@/components/PreviewAccess";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -51,14 +52,37 @@ const routeMeta: Record<string, { title: string; description: string }> = {
   },
 };
 
+// All sensitive or commercial actions remain read-only in the public pre-launch prototype.
+// Keep the underlying page components untouched for later authenticated implementation.
+export const previewOnlyRoutes: Record<string, string> = {
+  "/booking-confirmation": "Buchungsanfrage",
+  "/create-post": "Inserat veröffentlichen",
+  "/verify": "Profilprüfung",
+  "/upload-photos": "Foto-Upload",
+  "/messages": "Nachrichten",
+  "/premium": "Premium-Mitgliedschaft",
+  "/boost": "Bezahlte Promotion",
+  "/gifts": "Geschenke",
+  "/content-feed": "Bezahlte Inhalte",
+  "/creator-dashboard": "Creator-Dashboard",
+  "/profile": "Benutzerprofil",
+  "/account-settings": "Kontoeinstellungen",
+};
+
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
+  const previewFeature = previewOnlyRoutes[pathname];
   const fallbackName = pathname
     .split("/")
     .filter((segment) => segment && !segment.startsWith("["))
     .join(" / ")
     .replace(/-/g, " ") || "Plattform-Vorschau";
-  const meta = routeMeta[pathname] || {
+  const meta = previewFeature
+    ? {
+        title: previewFeature + " noch nicht aktiv | iWantSexNow.ch",
+        description: "Diese Funktion ist eine Design-Vorschau. Es werden keine Buchungen, Nachrichten, Zahlungen, Konten oder Identitätsprüfungen verarbeitet.",
+      }
+    : routeMeta[pathname] || {
     title: fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1) + " | iWantSexNow.ch",
     description: "iWantSexNow.ch befindet sich in der Vorschauphase. Profile, Rezensionen, Preise und Nutzerkennzahlen sind Demodaten.",
   };
@@ -66,7 +90,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <SEO title={meta.title} description={meta.description} />
-      <Component {...pageProps} />
+      {previewFeature ? <PreviewAccess feature={previewFeature} /> : <Component {...pageProps} />}
       <div role="status" aria-label="Vorschauhinweis" className="fixed bottom-3 left-3 right-3 sm:right-auto z-[100] sm:max-w-sm rounded-xl border border-amber-400 bg-amber-100 px-3 py-2 text-xs font-semibold leading-relaxed text-amber-950 shadow-lg pointer-events-none">
         DEMO / VORSCHAU: Alle dargestellten Profile, Bilder, Bewertungen und Buchungen sind Beispieldaten. Keine echten Anfragen oder Nutzerkonten.
       </div>
