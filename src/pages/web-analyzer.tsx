@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 import Head from "next/head";
 import { Navigation } from "@/components/Navigation";
 import { MobileNav } from "@/components/MobileNav";
@@ -28,6 +29,25 @@ import {
   Package
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+
+/**
+ * Internal Web Analyzer API calls require an authenticated Supabase admin.
+ * Supabase persists a JWT session; the API validates it server-side and
+ * requires the user_roles admin permission before invoking Edge functions.
+ */
+async function authenticatedAnalyzerFetch(path: string, options: RequestInit): Promise<Response> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anonKey) throw new Error("Analyzer-Backend ist nicht konfiguriert.");
+  const supabase = createClient(url, anonKey);
+  const { data, error } = await supabase.auth.getSession();
+  if (error || !data.session?.access_token) {
+    throw new Error("Admin-Anmeldung erforderlich: /admin/login");
+  }
+  const headers = new Headers(options.headers);
+  headers.set("Authorization", "Bearer " + data.session.access_token);
+  return fetch(path, { ...options, headers });
+}
 
 interface ProjectConfig {
   name: string;
@@ -150,7 +170,7 @@ export default function WebAnalyzer() {
 
     try {
       // 1. Capture screenshot
-      const screenshotRes = await fetch("/api/supabase-function", {
+      const screenshotRes = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -168,7 +188,7 @@ export default function WebAnalyzer() {
       const { screenshotUrl } = await screenshotRes.json();
 
       // 2. Fetch HTML
-      const htmlRes = await fetch("/api/supabase-function", {
+      const htmlRes = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -181,7 +201,7 @@ export default function WebAnalyzer() {
       const { html } = await htmlRes.json();
 
       // 3. AI Analysis
-      const analysisRes = await fetch("/api/supabase-function", {
+      const analysisRes = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -218,7 +238,7 @@ export default function WebAnalyzer() {
     setError(null);
 
     try {
-      const res = await fetch("/api/supabase-function", {
+      const res = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -259,7 +279,7 @@ export default function WebAnalyzer() {
     try {
       const screenshots = await Promise.all(
         urls.map(async (url) => {
-          const res = await fetch("/api/supabase-function", {
+          const res = await authenticatedAnalyzerFetch("/api/supabase-function", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -304,7 +324,7 @@ export default function WebAnalyzer() {
     setError(null);
 
     try {
-      const res = await fetch("/api/supabase-function", {
+      const res = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -336,7 +356,7 @@ export default function WebAnalyzer() {
 
     try {
       // Fetch raw HTML
-      const rawRes = await fetch("/api/supabase-function", {
+      const rawRes = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -350,7 +370,7 @@ export default function WebAnalyzer() {
       setHtmlData(rawData);
 
       // Fetch rendered HTML
-      const renderedRes = await fetch("/api/supabase-function", {
+      const renderedRes = await authenticatedAnalyzerFetch("/api/supabase-function", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
