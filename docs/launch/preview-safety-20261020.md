@@ -28,3 +28,4 @@ Before switching robots to index, prove server-side authentication and safe sess
 - Compiled HTML full static coverage: 47/47 include non-Hello-World title and noindex/nofollow; 0 failures.
 - `git diff --check`: PASS (only Windows LF/CRLF notices).
 - NO production deployment, real registration, payment, booking, messages, personal-data collection, or publication claimed. Preview-marked sample data is intentionally retained in design components.
+- Durable regression check: `node scripts/preview-smoke.cjs` after `npm run build`, **119/119 assertions PASS across 47 static pages**, including critical demo claims, noindex, metadata and public authentication entrypoints.
