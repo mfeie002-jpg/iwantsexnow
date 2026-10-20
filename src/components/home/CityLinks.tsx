@@ -46,7 +46,7 @@ export function CityLinks() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-gray-400 group-hover:text-white transition-colors">
                         <CheckCircle size={14} className="text-green-500" />
-                        <span>Verified profiles</span>
+                        <span>Demo-Profile</span>
                       </div>
                       <Button size="sm" variant="outline" className="text-white border-white/30 group-hover:bg-yellow-500 group-hover:text-black group-hover:border-yellow-500 transition-all duration-300">
                         Browse

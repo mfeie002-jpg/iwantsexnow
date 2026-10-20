@@ -59,7 +59,6 @@ export default function EscortZurich() {
   const [selectedEscort, setSelectedEscort] = useState<Escort | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [liveViewers, setLiveViewers] = useState(247);
   const [recentBookings, setRecentBookings] = useState([
     { name: "Marcus from Zürich", time: "2 min ago", escort: "Sophia" },
     { name: "Stefan from Winterthur", time: "5 min ago", escort: "Mia" },
@@ -284,18 +283,12 @@ export default function EscortZurich() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLiveViewers(prev => Math.max(200, prev + Math.floor(Math.random() * 10) - 5));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <SEO 
         title="Escort Zürich - Premium Escort Services in Zurich | iWantSexNow.ch"
-        description="Find exclusive escort services in Zürich. Browse verified profiles, book premium companions in Zürich City Center, Oerlikon, Seefeld & more. Discreet & professional."
+        description="Vorschau für Zürich: Demoprofile und Beispielpreise einer geplanten Schweizer Vergleichsplattform. Keine verifizierten Inserate oder echten Buchungen."
       />
 
       <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
@@ -317,11 +310,11 @@ export default function EscortZurich() {
             <div className="hidden md:flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-white">
                 <Eye size={16} className="text-blue-400" />
-                <span className="font-semibold">{liveViewers} viewing</span>
+                <span className="font-semibold">Demo-Vorschau</span>
               </div>
               <div className="flex items-center gap-2 text-white">
                 <Zap size={16} className="text-green-500 animate-pulse" />
-                <span className="font-semibold">{zurichEscorts.filter(e => e.available).length} available now</span>
+                <span className="font-semibold">{zurichEscorts.length} Beispielprofile</span>
               </div>
             </div>
             
@@ -354,21 +347,8 @@ export default function EscortZurich() {
           </div>
         </div>
 
-        {/* Live Booking Ticker */}
-        <div className="border-t border-white/10 bg-black/60 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-2">
-            <div className="flex items-center gap-2 text-xs text-white/80 overflow-hidden">
-              <CheckCircle size={14} className="text-green-500 flex-shrink-0" />
-              <div className="animate-marquee whitespace-nowrap">
-                {recentBookings.map((booking, idx) => (
-                  <span key={idx} className="inline-block mx-8">
-                    <strong className="text-white">{booking.name}</strong> booked {booking.escort} {booking.time}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Prototype disclosure replaces fictitious bookings */}
+        <div className="border-t border-amber-500/30 bg-amber-950/60 px-4 py-2 text-center text-sm font-semibold text-amber-100">DEMO: Stockfotos, Beispielprofile, Preise und Bewertungen. Keine echten Buchungen oder Live-Aktivität.</div>
       </header>
 
       {/* Hero Section - Zürich Specific */}
@@ -425,7 +405,7 @@ export default function EscortZurich() {
                 Premium Escort Services in Zurich
               </p>
               <p className="text-lg text-amber-100 max-w-3xl mx-auto drop-shadow-md">
-                Discover exclusive companionship in Switzerland's financial capital. From Paradeplatz to Lake Zürich, find verified escorts for every occasion.
+                Discover exclusive companionship in Switzerland's financial capital. Die Inserate auf dieser Seite sind fiktive Layout- und Filterbeispiele. Keine Profile sind als echt verifiziert.
               </p>
             </motion.div>
 
@@ -439,22 +419,22 @@ export default function EscortZurich() {
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-amber-500/30 hover:border-amber-500/60 transition-all">
                 <Users className="mx-auto text-amber-400 mb-2" size={32} />
                 <div className="text-2xl font-black">{zurichEscorts.length}+</div>
-                <div className="text-xs text-amber-200">Active Escorts</div>
+                <div className="text-xs text-amber-200">Demo-Profile</div>
               </Card>
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-emerald-500/30 hover:border-emerald-500/60 transition-all">
                 <Shield className="mx-auto text-emerald-400 mb-2" size={32} />
-                <div className="text-2xl font-black">100%</div>
-                <div className="text-xs text-emerald-200">Verified</div>
+                <div className="text-2xl font-black">DEMO</div>
+                <div className="text-xs text-emerald-200">Nicht verifiziert</div>
               </Card>
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-yellow-500/30 hover:border-yellow-500/60 transition-all">
                 <Award className="mx-auto text-yellow-400 mb-2" size={32} />
-                <div className="text-2xl font-black">4.9★</div>
-                <div className="text-xs text-yellow-200">Avg Rating</div>
+                <div className="text-2xl font-black">Test</div>
+                <div className="text-xs text-yellow-200">Beispielbewertungen</div>
               </Card>
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-rose-500/30 hover:border-rose-500/60 transition-all">
                 <Video className="mx-auto text-rose-400 mb-2" size={32} />
                 <div className="text-2xl font-black">{zurichEscorts.filter(e => e.hasVideo).length}</div>
-                <div className="text-xs text-rose-200">Video Profiles</div>
+                <div className="text-xs text-rose-200">Video-Demo</div>
               </Card>
             </motion.div>
 
@@ -643,7 +623,7 @@ export default function EscortZurich() {
                           {escort.available && (
                             <Badge className="absolute top-3 right-3 bg-emerald-500 border-0 text-xs animate-pulse">
                               <div className="w-2 h-2 bg-white rounded-full mr-1" />
-                              Available
+                              Demo-Status
                             </Badge>
                           )}
 
@@ -651,7 +631,7 @@ export default function EscortZurich() {
                             {escort.verified && (
                               <Badge className="bg-blue-500 border-0 text-xs">
                                 <Shield size={10} className="mr-1" />
-                                Verified
+                                Demo-Profil
                               </Badge>
                             )}
                             {escort.hasVideo && (
@@ -668,11 +648,6 @@ export default function EscortZurich() {
                             )}
                           </div>
 
-                          {escort.bookingsToday > 0 && (
-                            <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                              🔥 {escort.bookingsToday} bookings today
-                            </div>
-                          )}
                         </div>
 
                         {/* Content */}
@@ -694,7 +669,7 @@ export default function EscortZurich() {
                               </div>
                               <div className="flex items-center gap-1">
                                 <Zap size={12} className="text-emerald-400" />
-                                <span>Responds in {escort.responseTime}</span>
+                                <span>Demo-Reaktionszeit: {escort.responseTime}</span>
                               </div>
                             </div>
                           </div>
@@ -732,35 +707,35 @@ export default function EscortZurich() {
                               ))}
                             </div>
                             <span className="text-white text-sm font-medium">{escort.rating}</span>
-                            <span className="text-slate-400 text-xs">({escort.reviews} reviews)</span>
+                            <span className="text-slate-400 text-xs">(Demo-Bewertungen)</span>
                           </div>
 
                           <div className="grid grid-cols-2 gap-4 p-4 bg-slate-900/60 rounded-lg border border-amber-500/20">
                             {escort.verifiedPhotos && (
                               <div className="flex items-center gap-2 text-emerald-400 text-xs">
-                                <CheckCircle size={14} /> Real Photos
+                                <CheckCircle size={14} /> Stockfoto / Demo
                               </div>
                             )}
                             {escort.idVerified && (
                               <div className="flex items-center gap-2 text-blue-400 text-xs">
-                                <CheckCircle size={14} /> ID Verified
+                                <CheckCircle size={14} /> Nicht geprüft
                               </div>
                             )}
                             {escort.safeDate && (
                               <div className="flex items-center gap-2 text-amber-400 text-xs">
-                                <CheckCircle size={14} /> SafeDate
+                                <CheckCircle size={14} /> Demo-Funktion
                               </div>
                             )}
                             {escort.hasVirtualTour && (
                               <div className="flex items-center gap-2 text-rose-400 text-xs">
-                                <CheckCircle size={14} /> Virtual Tour
+                                <CheckCircle size={14} /> Demo-Tour
                               </div>
                             )}
                           </div>
 
                           <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                             <div>
-                              <div className="text-xs text-slate-400">Starting from</div>
+                              <div className="text-xs text-slate-400">Beispielpreis ab</div>
                               <div className="text-2xl font-black text-amber-400">CHF {escort.rate}</div>
                               <div className="text-xs text-slate-400">per hour</div>
                             </div>
@@ -799,7 +774,7 @@ export default function EscortZurich() {
                               }}
                             >
                                 <MessageCircle size={16} className="mr-2" />
-                                Book Now
+                                Buchungs-Demo
                               </Button>
                             </div>
                           </div>
@@ -939,16 +914,16 @@ export default function EscortZurich() {
                 Booking a <strong className="text-white">Zürich escort</strong> is simple and discreet:
               </p>
               <ol className="space-y-2 text-slate-300">
-                <li>Browse verified profiles with photos, reviews, and detailed descriptions</li>
+                <li>In der Vorschau stehen ausschliesslich fiktive Beispielprofile zur Verfügung</li>
                 <li>Use filters to find escorts by district, service type, and availability</li>
-                <li>Check real client reviews and ratings for peace of mind</li>
-                <li>Contact your chosen companion directly through our secure platform</li>
+                <li>Beispielbewertungen dienen nur zur Illustration der vorgesehenen Vergleichsfunktion</li>
+                <li>Direkte Kontaktaufnahme ist erst nach dem Produktivstart mit genehmigten Profilen vorgesehen</li>
                 <li>Arrange meeting details privately and enjoy your experience</li>
               </ol>
 
               <h3 className="text-2xl font-bold text-white mt-8 mb-4">Safety & Discretion</h3>
               <p>
-                All <strong className="text-white">escort services in Zürich</strong> listed on our platform prioritize your safety and privacy. We verify all profiles, ensuring you connect with legitimate, professional companions. Your personal information is protected, and all communications are encrypted.
+                All <strong className="text-white">escort services in Zürich</strong> listed on our platform prioritize your safety and privacy. Die spätere Aufnahme echter Profile setzt eine nachweisbare Identitäts- und Einwilligungsprüfung voraus. Aktuell ist diese Demo keine sichere Kommunikations- oder Vermittlungsplattform.
               </p>
 
               <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-500/30 rounded-lg p-6 mt-8">
@@ -957,7 +932,7 @@ export default function EscortZurich() {
                   Start Your Zürich Escort Experience Today
                 </h3>
                 <p className="text-slate-300 mb-4">
-                  Join thousands of satisfied clients who have discovered exceptional companionship in Zürich. Browse our verified escorts now and book your perfect match today.
+                  Die Zürich-Seite zeigt den geplanten Such- und Vergleichsablauf mit Beispieldaten. Keine realen Profile oder Buchungen aktiv.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold" asChild>

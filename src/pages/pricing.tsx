@@ -45,13 +45,13 @@ export default function Pricing() {
           <div className="text-center mb-8 md:mb-16">
             <Badge className="mb-4 bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-base md:text-lg px-4 md:px-6 py-2">
               <Zap size={18} className="mr-2" />
-              Premium Membership & Promotion
+              Geplantes Preismodell – DEMO
             </Badge>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 px-4">
               Get More Clients with Smart Promotion
             </h1>
             <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-              Basic membership CHF 15/month + pay only for the promotion you need. Control your budget, maximize your visibility.
+              Unverbindliche Preisbeispiele für die Planung. Keine Buchung oder kostenpflichtige Promotion ist in dieser Vorschau aktiv.
             </p>
           </div>
 
@@ -135,8 +135,8 @@ export default function Pricing() {
             </div>
 
             <Button size="lg" className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg md:text-xl h-14 md:h-16" asChild>
-              <Link href="/register">
-                Start Your Membership - CHF 15/month
+              <Link href="/demo-accounts">
+                Demo ansehen – kein Kauf möglich
               </Link>
             </Button>
           </Card>

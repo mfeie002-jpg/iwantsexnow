@@ -9,15 +9,17 @@ interface SEOProps {
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
 export function SEOElements({
-  title = "Hello World",
-  description = "Welcome to my app",
-  image = "/og-image.png",
+  title = "iWantSexNow.ch | Schweizer Inserate-Marktplatz (Vorschau)",
+  description = "iWantSexNow.ch ist in der Vorschauphase. Profile und Kennzahlen sind Beispiele; Registrierung und Buchung sind noch nicht aktiv.",
+  image,
   url,
 }: SEOProps) {
   return (
     <>
       <title>{title}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={description} key="description" />
+      {/* Deliberately unindexed until verified supply, real auth and booking flow pass release review. */}
+      <meta name="robots" content="noindex, nofollow" key="robots" />
       <link rel="icon" href="/favicon.ico" />
 
       {/* Open Graph */}
