@@ -20,6 +20,21 @@ const critical = [
   { file: "demo-accounts.html", must: ["reine Testdaten", "Design-Vorschau"], mustNot: ["Hello World"] },
 ];
 
+const blockedPreview = [
+  ["booking-confirmation.html", "Buchungsanfrage"],
+  ["create-post.html", "Inserat veröffentlichen"],
+  ["verify.html", "Profilprüfung"],
+  ["upload-photos.html", "Foto-Upload"],
+  ["messages.html", "Nachrichten"],
+  ["premium.html", "Premium-Mitgliedschaft"],
+  ["boost.html", "Bezahlte Promotion"],
+  ["gifts.html", "Geschenke"],
+  ["content-feed.html", "Bezahlte Inhalte"],
+  ["creator-dashboard.html", "Creator-Dashboard"],
+  ["profile.html", "Benutzerprofil"],
+  ["account-settings.html", "Kontoeinstellungen"],
+];
+
 const failures = [];
 let assertions = 0;
 function assert(file, condition, description) {
@@ -50,6 +65,13 @@ for (const row of critical) {
   const normalized = html.replace(/<!--[\s\S]*?-->/g, "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
   for (const phrase of row.must) assert(row.file, normalized.includes(phrase) || html.includes(phrase), "missing: " + phrase);
   for (const phrase of row.mustNot) assert(row.file, !html.includes(phrase), "prohibited: " + phrase);
+}
+for (const [file, feature] of blockedPreview) {
+  const html = fs.readFileSync(path.join(pageRoot, file), "utf8");
+  const plain = html.replace(/<!--[^]*?-->/g, "").replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ");
+  assert(file, plain.includes(feature + " noch nicht freigeschaltet"), "missing preview-only placeholder");
+  assert(file, !/<form(?:\\s|>)/i.test(html), "page still exposes an interactive submission form");
+  assert(file, !/Your booking request has been sent|Submit for Verification|Confirm Booking/.test(plain), "legacy fake-success text visible");
 }
 for (const file of ["register.tsx", "login.tsx", "forgot-password.tsx"]) {
   const source = fs.readFileSync(path.join(root, "src/pages", file), "utf8");
