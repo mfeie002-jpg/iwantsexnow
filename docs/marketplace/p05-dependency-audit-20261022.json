@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-22",
+  "command": "npm audit --json",
+  "scope": "Full unchanged package-lock.json; registry findings, not an exploitability assessment",
+  "counts": {
+    "info": 0,
+    "low": 3,
+    "moderate": 9,
+    "high": 37,
+    "critical": 3,
+    "total": 52
+  },
+  "criticalPackages": [
+    {
+      "name": "next",
+      "direct": true,
+      "installed": "15.5.9",
+      "suggestedFix": {
+        "version": "15.5.28",
+        "semverMajor": false
+      },
+      "criticalAdvisories": [
+        "https://github.com/advisories/GHSA-p293-qw3h-jr36",
+        "https://github.com/advisories/GHSA-2xp9-vwfh-vxw4"
+      ]
+    },
+    {
+      "name": "jspdf",
+      "direct": true,
+      "installed": "3.0.4",
+      "suggestedFix": {
+        "version": "4.2.1",
+        "semverMajor": true
+      },
+      "criticalAdvisories": [
+        "https://github.com/advisories/GHSA-f8cm-6447-x5h2",
+        "https://github.com/advisories/GHSA-wfv2-pwc8-crg5"
+      ]
+    },
+    {
+      "name": "tar",
+      "direct": false,
+      "suggestedFix": {
+        "package": "vercel",
+        "version": "65.1.0",
+        "semverMajor": true
+      },
+      "criticalAdvisories": [
+        "https://github.com/advisories/GHSA-23hp-3jrh-7fpw"
+      ]
+    }
+  ],
+  "releaseDecision": "Blocked pending separately tested dependency remediation and remaining managed-backend/legal gates. No npm audit fix or lockfile change in this PR."
+}
