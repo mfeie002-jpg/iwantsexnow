@@ -18,7 +18,7 @@ Prepared against `main@482ebd0e0c7cde2d84fb710b6a848ed252953e7b` for PR review. 
 | TypeScript (`npx tsc --noEmit`) | Passed |
 | Production build (`npm run build`) | Passed; 51 generated static pages. The build reports lint warnings, with no errors. |
 | Existing preview checks | 173/173 assertions passed; all 51 static pages include noindex |
-| New preview integrity check | 2,146/2,146 assertions passed; 345 internal links to 49 paths; no missing route or anchor |
+| New preview integrity check | 2,206/2,206 assertions passed; 358 internal links to 49 paths; no missing route or anchor |
 | Publication policy | 19/19 tests passed |
 | Analyzer policy | 12/12 tests passed |
 | Mocked authenticated handler | 3/3 tests passed |
@@ -33,3 +33,9 @@ The CI workflow now runs `scripts/preview-integrity.cjs` against built output an
 ## Remaining release boundary
 
 Contact/Imprint pages deliberately acknowledge that confirmed operator/contact details are still required. They are not final legal or support readiness acceptance. Genuine authentication, provider verification, consent, moderation, messaging, bookings and payments remain future implementation work. Keep the preview safeguards until those capabilities pass separate acceptance. This PR does not authorize publication.
+
+## Follow-up review
+
+The homepage still used its original desktop header even though the shared menu had been corrected. The homepage now renders the shared Navigation component above the large-screen breakpoint; MobileNav remains available below it. The last dropdown aligns to the right edge. Built-output checks require the shared desktop menu and every configured destination to be present on the homepage.
+
+A browser check at 1024px confirmed the information dropdown stays inside the viewport (left 705px, right 993px) and its FAQ link works. At 390px, the desktop menu is hidden, the phone menu button is visible and the document remains within the viewport. The production build, 173 preview assertions, 2,206 integrity assertions, 68 HTTP routes, twelve action gates and five API rejection checks all passed again.

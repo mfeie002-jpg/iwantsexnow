@@ -68,6 +68,7 @@ for (const file of publicPages) {
   }
 }
 const home = fs.readFileSync(path.join(pageRoot, "index.html"), "utf8");
+assert(home.includes('aria-label="Vorschau-Navigation"'), "Homepage does not render the shared desktop menu");
 assert(!/<form\b/i.test(home), "Homepage exposes a contact/newsletter form without delivery");
 assert(text(home).includes("Kontakt, Buchungen und Newsletter – noch nicht aktiv"), "Homepage missing contact status");
 for (const [route, marker] of [["contact", "noch kein betreuter Kontakt"], ["imprint", "noch kein vollständiges Impressum"], ["faq", "keine Mitgliedschaften"], ["about", "noch keinen aktiven Vermittlungsbetrieb"]]) {
@@ -83,6 +84,7 @@ const profile = fs.readFileSync(path.join(root, "src/pages/profile/[id].tsx"), "
 assert(!/wa\.me|tel:|profile\.phone|profile\.whatsapp/.test(profile), "Sample profile exposes unconfirmed direct contact");
 const navigation = fs.readFileSync(path.join(root, "src/lib/preview-navigation.ts"), "utf8");
 for (const [, href] of navigation.matchAll(/href: "([^"]+)"/g)) {
+  assert(home.includes(`href="${href}"`), `Homepage does not expose shared menu destination ${href}`);
   const url = new URL(href, "http://preview.local");
   assert(routes.includes(url.pathname), `Menu contains missing destination ${href}`);
   if (url.hash) {
