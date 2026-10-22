@@ -118,7 +118,7 @@ export function RecentVisitors() {
       </div>
 
       <Button variant="outline" className="w-full mt-4" asChild>
-        <Link href="/visitors">View All Visitors</Link>
+        <Link href="/members">View All Visitors</Link>
       </Button>
     </Card>
   );

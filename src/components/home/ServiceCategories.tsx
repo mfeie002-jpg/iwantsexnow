@@ -35,7 +35,7 @@ export function ServiceCategories() {
     { 
       image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=300&fit=crop",
       title: "VIP Elite Services", 
-      description: "Exclusive premium experiences with our highest-rated companions",
+      description: "Beispiel einer Kategorie im geplanten Katalog; kein Live-Angebot.",
       color: "from-yellow-500 to-amber-500"
     }
   ];
@@ -45,16 +45,16 @@ export function ServiceCategories() {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-            Premium Escort Services
+            Beispielkategorien für das Layout
           </h2>
           <p className="text-xl text-gray-300">
-            Exclusive experiences tailored to your desires
+            Diese Kategorien sind Designbeispiele und keine buchbaren Leistungen.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
           {services.map((service, idx) => (
-            <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer group">
+            <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={service.image} 

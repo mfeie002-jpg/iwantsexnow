@@ -16,7 +16,7 @@ export default function LogoConcepts() {
       <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <Link href="/logo-showcase" className="flex items-center gap-3 group">
+            <Link href="/logo-redesigns" className="flex items-center gap-3 group">
               <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" />
               <span className="text-xl font-light tracking-tight text-gray-900 dark:text-white">
                 Alternative Logo Concepts
@@ -447,7 +447,7 @@ export default function LogoConcepts() {
 
         {/* CTA */}
         <div className="text-center mt-16">
-          <Link href="/logo-showcase">
+          <Link href="/logo-redesigns">
             <Button size="lg" variant="outline" className="border-gray-300 dark:border-gray-700">
               <ArrowLeft className="mr-2 w-4 h-4" />
               Back to Current Logo Assets

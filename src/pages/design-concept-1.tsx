@@ -130,7 +130,7 @@ export default function DesignConcept1() {
               
               <p className="text-xl text-[#F5F5DC]/80 mb-8 leading-relaxed">
                 Experience the art of refined companionship in Switzerland's most prestigious circles.
-                Discretion assured, excellence guaranteed.
+                Designkonzept mit fiktiven Profilen. Keine echten Buchungen.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -170,7 +170,7 @@ export default function DesignConcept1() {
                       <div className="absolute bottom-4 left-4">
                         <Badge className="bg-[#D4AF37] text-[#2C2C2C] border-0">
                           <CheckCircle size={12} className="mr-1" />
-                          Verified
+                          Demo-Profil
                         </Badge>
                       </div>
                     )}
@@ -194,7 +194,7 @@ export default function DesignConcept1() {
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} size={16} className={i < escort.rating ? "text-[#D4AF37] fill-[#D4AF37]" : "text-gray-300"} />
                       ))}
-                      <span className="text-sm text-[#2C2C2C] ml-1">({escort.reviews})</span>
+                      <span className="text-sm text-[#2C2C2C] ml-1">(Demo-Bewertungen)</span>
                     </div>
 
                     <div className="border-t-2 border-[#D4AF37]/20 pt-4 flex items-center justify-between">

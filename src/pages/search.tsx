@@ -279,7 +279,7 @@ export default function Search() {
                     onChange={(e) => setFilters({ ...filters, onlineOnly: e.target.checked })}
                     className="w-4 h-4 accent-pink-600"
                   />
-                  <span>Online now only</span>
+                  <span>Demo-Status filtern</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -288,7 +288,7 @@ export default function Search() {
                     onChange={(e) => setFilters({ ...filters, verifiedOnly: e.target.checked })}
                     className="w-4 h-4 accent-pink-600"
                   />
-                  <span>Verified profiles only</span>
+                  <span>Demo-Merkmal filtern</span>
                 </label>
               </div>
 
@@ -314,7 +314,7 @@ export default function Search() {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h1 className="text-4xl font-black mb-2">Browse Members</h1>
+                  <h1 className="text-4xl font-black mb-2">Beispielprofile</h1>
                   <p className="text-gray-600">Found {sortedProfiles.length} profiles matching your criteria</p>
                 </div>
                 <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
@@ -342,12 +342,12 @@ export default function Search() {
                     />
                     {profile.online && (
                       <Badge className="absolute top-3 right-3 bg-green-500 border-0">
-                        Online
+                        Demo-Status
                       </Badge>
                     )}
                     {profile.verified && (
                       <div className="absolute top-3 left-3 bg-blue-500 text-white rounded-full p-1">
-                        <Star size={16} fill="white" />
+                        <span className="text-xs font-bold">Demo</span>
                       </div>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">

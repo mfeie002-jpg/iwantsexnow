@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
-import { Navigation } from "@/components/Navigation";
 import { Heart, CheckCircle, Eye, Phone, ArrowUp } from "lucide-react";
 import Link from "next/link";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
@@ -84,13 +83,6 @@ export default function Home() {
     }
   ];
 
-  // Recent Bookings Ticker
-  const [recentBookings] = useState([
-    { name: "Michael from Zürich", time: "2 min ago", service: "GFE" },
-    { name: "David from Geneva", time: "5 min ago", service: "Dinner Date" },
-    { name: "Thomas from Basel", time: "8 min ago", service: "Overnight" }
-  ]);
-
   // Story Profiles
   const storyProfiles = [
     { id: 1, name: "Vanessa", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", verified: false, online: true },
@@ -130,7 +122,7 @@ export default function Home() {
       bodyType: "Athletic",
       height: "168 cm",
       bio: "Sophisticated companion offering genuine connection.",
-      longDescription: "Im Club Seegirls erlebst du Verführung und Sinnlichkeit in Perfektion.",
+      longDescription: "Fiktiver Profiltext für die Layout-Vorschau. Kein echtes Inserat oder Angebot.",
       availability: "Available today 6PM-11PM",
       postedTime: "vor 1 Minute",
       hasVideo: false,
@@ -403,7 +395,7 @@ export default function Home() {
                 Profile
               </Link>
               <Button className="bg-[#C69C6D] hover:bg-[#B88C5D] text-white" asChild>
-                <Link href="/register">Sign Up</Link>
+                <Link href="/register">Registrierung (Vorschau)</Link>
               </Button>
             </nav>
 
@@ -567,14 +559,14 @@ export default function Home() {
                 </span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Switzerland's premier platform for exclusive companionship. Discreet, verified, and sophisticated.
+                Schweizer Marktplatz-Konzept mit fiktiven Profilen und Stockfotos. Noch keine echten Konten, Buchungen oder geprüften Anbieter.
               </p>
             </div>
             <div>
               <h4 className="font-bold text-white mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/members" className="hover:text-white">Browse Members</Link></li>
-                <li><Link href="/register" className="hover:text-white">Sign Up</Link></li>
+                <li><Link href="/members" className="hover:text-white">Beispielprofile</Link></li>
+                <li><Link href="/register" className="hover:text-white">Registrierung (Vorschau)</Link></li>
                 <li><Link href="/login" className="hover:text-white">Login</Link></li>
                 <li><Link href="/demo-accounts" className="hover:text-gray-300">Demo Accounts</Link></li>
               </ul>
@@ -590,7 +582,7 @@ export default function Home() {
             <div>
               <h4 className="font-bold text-white mb-4">Support</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/help" className="hover:text-white">Help Center</Link></li>
+                <li><Link href="/faq" className="hover:text-white">Help Center</Link></li>
                 <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
                 <li><Link href="/safety" className="hover:text-white">Safety Tips</Link></li>
               </ul>

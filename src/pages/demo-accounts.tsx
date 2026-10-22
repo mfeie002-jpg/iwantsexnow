@@ -39,7 +39,7 @@ export default function DemoAccounts() {
       badge: "VIP",
       description: "Premium verified escort with full profile features, photo gallery, video profile, and priority booking system.",
       features: [
-        "Verified profile with blue checkmark",
+        "Fiktives Profil mit Demo-Merkmal",
         "Premium listing placement",
         "Unlimited photo uploads (50+ photos)",
         "Video profile support",
@@ -62,7 +62,7 @@ export default function DemoAccounts() {
         languages: ["German", "English", "French"],
         services: ["GFE", "Dinner Dates", "Overnight", "Travel"],
         rate: "CHF 500/hour",
-        availability: "Available today"
+        availability: "Demo-Zeit, nicht buchbar"
       }
     },
     {
@@ -74,7 +74,7 @@ export default function DemoAccounts() {
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
       description: "Standard verified escort account with essential features and photo gallery.",
       features: [
-        "Verified profile",
+        "Fiktives Profil – nicht geprüft",
         "Standard listing placement",
         "Up to 20 photo uploads",
         "Basic profile analytics",
@@ -95,7 +95,7 @@ export default function DemoAccounts() {
         languages: ["German", "English"],
         services: ["GFE", "Massage"],
         rate: "CHF 350/hour",
-        availability: "Available tomorrow"
+        availability: "Demo-Zeit, nicht buchbar"
       }
     },
     {
@@ -173,10 +173,10 @@ export default function DemoAccounts() {
         "Revenue tracking"
       ],
       stats: [
-        { label: "Active Escorts", value: "12", icon: Users },
-        { label: "Total Bookings", value: "342", icon: Calendar },
-        { label: "Total Revenue", value: "CHF 245K", icon: Award },
-        { label: "Avg Response", value: "< 2 min", icon: Clock }
+        { label: "Demo-Profile", value: "12", icon: Users },
+        { label: "Demo-Buchungen", value: "342", icon: Calendar },
+        { label: "Fiktiver Umsatz", value: "CHF 245K", icon: Award },
+        { label: "Beispiel-Reaktionszeit", value: "< 2 min", icon: Clock }
       ]
     },
     {

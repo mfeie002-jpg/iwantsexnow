@@ -75,7 +75,7 @@ export default function EscortBern() {
       services: ["GFE", "Dinner Dates", "Cultural Tours"],
       languages: ["German", "English", "French"],
       description: "Sophisticated companion in Bern's UNESCO World Heritage Old Town. Perfect for cultural experiences.",
-      postedTime: "Online now",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: true,
       verifiedPhotos: true,
@@ -102,7 +102,7 @@ export default function EscortBern() {
       services: ["PSE", "Couples", "Overnight"],
       languages: ["German", "Russian", "English"],
       description: "Elite escort near diplomatic quarter. Specializing in exclusive overnight experiences.",
-      postedTime: "Active 4min ago",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: true,
       verifiedPhotos: true,
@@ -156,7 +156,7 @@ export default function EscortBern() {
       services: ["GFE", "Travel", "Events"],
       languages: ["German", "French", "Italian"],
       description: "Multilingual escort perfect for government events and diplomatic receptions in capital.",
-      postedTime: "Online now",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: true,
       verifiedPhotos: true,
@@ -221,8 +221,8 @@ export default function EscortBern() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900">
       <SEO 
-        title="Escort Bern - Premium Escort Services in Bern | iWantSexNow.ch"
-        description="Find exclusive escort services in Bern. Browse verified profiles, book premium companions in Old Town, Kirchenfeld & more. Discreet & professional."
+        title="Escort Bern - Stadtseite mit fiktiven Beispielprofilen"
+        description="Stadt-Vorschau mit fiktiven Profilen, Beispielpreisen und Stockfotos. Keine geprüften Anbieter oder echten Buchungen."
       />
 
       <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
@@ -246,7 +246,7 @@ export default function EscortBern() {
               </div>
               <div className="flex items-center gap-2 text-white">
                 <Zap size={16} className="text-green-500 animate-pulse" />
-                <span className="font-semibold">{bernEscorts.filter(e => e.available).length} available now</span>
+                <span className="font-semibold">{bernEscorts.filter(e => e.available).length} Demo-Status</span>
               </div>
             </div>
             
@@ -315,7 +315,7 @@ export default function EscortBern() {
             >
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
               <span>/</span>
-              <Link href="/cities" className="hover:text-white transition-colors">Cities</Link>
+              <Link href="/#cities" className="hover:text-white transition-colors">Cities</Link>
               <span>/</span>
               <span className="text-white font-semibold">Escort Bern</span>
             </motion.div>
@@ -331,10 +331,10 @@ export default function EscortBern() {
                 </span>
               </h1>
               <p className="text-2xl md:text-3xl text-white font-bold mb-4 drop-shadow-lg">
-                Premium Escort Services in Switzerland's Capital
+                Stadtseite mit fiktiven Beispielprofilen
               </p>
               <p className="text-lg text-amber-100 max-w-3xl mx-auto drop-shadow-md">
-                Discover elite companionship in Switzerland's charming capital city. From UNESCO Old Town to diplomatic events, find verified escorts for sophisticated encounters.
+                Fiktive Profile, Stockfotos und Beispielpreise zeigen das geplante Layout. Keine echten Personen sind geprüft oder buchbar.
               </p>
             </motion.div>
 
@@ -348,22 +348,22 @@ export default function EscortBern() {
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-amber-500/30 hover:border-amber-500/60 transition-all">
                 <Users className="mx-auto text-amber-400 mb-2" size={32} />
                 <div className="text-2xl font-black">{bernEscorts.length}+</div>
-                <div className="text-xs text-amber-200">Active Escorts</div>
+                <div className="text-xs text-amber-200">Demo-Profile</div>
               </Card>
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-emerald-500/30 hover:border-emerald-500/60 transition-all">
                 <Shield className="mx-auto text-emerald-400 mb-2" size={32} />
-                <div className="text-2xl font-black">100%</div>
-                <div className="text-xs text-emerald-200">Verified</div>
+                <div className="text-2xl font-black">DEMO</div>
+                <div className="text-xs text-emerald-200">Nicht geprüft</div>
               </Card>
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-yellow-500/30 hover:border-yellow-500/60 transition-all">
                 <Award className="mx-auto text-yellow-400 mb-2" size={32} />
                 <div className="text-2xl font-black">4.9★</div>
-                <div className="text-xs text-yellow-200">Avg Rating</div>
+                <div className="text-xs text-yellow-200">Beispielbewertung</div>
               </Card>
               <Card className="p-4 bg-white/10 backdrop-blur-sm border-rose-500/30 hover:border-rose-500/60 transition-all">
                 <Video className="mx-auto text-rose-400 mb-2" size={32} />
                 <div className="text-2xl font-black">{bernEscorts.filter(e => e.hasVideo).length}</div>
-                <div className="text-xs text-rose-200">Video Profiles</div>
+                <div className="text-xs text-rose-200">Video-Demo</div>
               </Card>
             </motion.div>
 
@@ -425,12 +425,12 @@ export default function EscortBern() {
                   <div className="flex items-center gap-6 text-white">
                     <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
                       <Checkbox checked={verifiedOnly} onCheckedChange={(checked) => setVerifiedOnly(checked === true)} />
-                      <span className="text-sm font-medium">Verified Only</span>
+                      <span className="text-sm font-medium">Demo-Merkmal</span>
                     </label>
                     
                     <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
                       <Checkbox checked={availableNow} onCheckedChange={(checked) => setAvailableNow(checked === true)} />
-                      <span className="text-sm font-medium">Available Now</span>
+                      <span className="text-sm font-medium">Demo-Status</span>
                     </label>
 
                     <div className="ml-auto">
@@ -494,14 +494,11 @@ export default function EscortBern() {
             <div className="flex items-center gap-4">
               <Crown className="text-amber-400" size={48} />
               <div>
-                <h3 className="text-2xl font-black text-white mb-1">VIP Concierge Service</h3>
-                <p className="text-amber-100">White-glove booking assistance for discerning clients in Bern</p>
+                <h3 className="text-2xl font-black text-white mb-1">Kontaktfunktion in Vorbereitung</h3>
+                <p className="text-amber-100">Keine Concierge-Betreuung oder echten Buchungsanfragen in dieser Vorschau.</p>
               </div>
             </div>
-            <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-black shadow-lg shadow-amber-500/30">
-              <Phone size={20} className="mr-2" />
-              Contact Concierge
-            </Button>
+            <Button size="lg" asChild><Link href="/contact">Kontaktstatus ansehen</Link></Button>
           </div>
         </div>
       </section>
@@ -557,7 +554,7 @@ export default function EscortBern() {
                             {escort.verified && (
                               <Badge className="bg-blue-500 border-0 text-xs">
                                 <Shield size={10} className="mr-1" />
-                                Verified
+                                Demo-Profil
                               </Badge>
                             )}
                             {escort.hasVideo && (
@@ -576,7 +573,7 @@ export default function EscortBern() {
 
                           {escort.bookingsToday > 0 && (
                             <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                              🔥 {escort.bookingsToday} bookings today
+                              Fiktive Beispielaktivität
                             </div>
                           )}
                         </div>
@@ -596,11 +593,11 @@ export default function EscortBern() {
                             <div className="flex items-center gap-4 text-slate-400 text-xs mb-3">
                               <div className="flex items-center gap-1">
                                 <Clock size={12} />
-                                <span>{escort.postedTime}</span>
+                                <span>Beispielstatus</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Zap size={12} className="text-emerald-400" />
-                                <span>Responds in {escort.responseTime}</span>
+                                <span>Keine echte Reaktionszeit</span>
                               </div>
                             </div>
                           </div>
@@ -638,7 +635,7 @@ export default function EscortBern() {
                               ))}
                             </div>
                             <span className="text-white text-sm font-medium">{escort.rating}</span>
-                            <span className="text-slate-400 text-xs">({escort.reviews} reviews)</span>
+                            <span className="text-slate-400 text-xs">(Demo-Bewertungen)</span>
                           </div>
 
                           <div className="grid grid-cols-2 gap-4 p-4 bg-slate-900/60 rounded-lg border border-amber-500/20">
@@ -649,7 +646,7 @@ export default function EscortBern() {
                             )}
                             {escort.idVerified && (
                               <div className="flex items-center gap-2 text-blue-400 text-xs">
-                                <CheckCircle size={14} /> ID Verified
+                                <CheckCircle size={14} /> Nicht geprüft
                               </div>
                             )}
                             {escort.safeDate && (
@@ -705,7 +702,7 @@ export default function EscortBern() {
                                 }}
                               >
                                 <MessageCircle size={16} className="mr-2" />
-                                Book Now
+                                Buchungs-Demo
                               </Button>
                             </div>
                           </div>
@@ -744,9 +741,9 @@ export default function EscortBern() {
       <Dialog open={bookingModalOpen} onOpenChange={setBookingModalOpen}>
         <DialogContent className="bg-gray-900 border-white/20 text-white max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black">Quick Booking Request</DialogTitle>
+            <DialogTitle className="text-2xl font-black">Buchungs-Demo</DialogTitle>
             <DialogDescription className="text-gray-400">
-              Send a booking request to {selectedEscort?.name}
+              Buchungs-Demo für {selectedEscort?.name} – keine Anfrage wird übermittelt.
             </DialogDescription>
           </DialogHeader>
           {selectedEscort && (
@@ -758,11 +755,11 @@ export default function EscortBern() {
                   <p className="text-sm text-gray-400">{selectedEscort.location}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm">{selectedEscort.rating} ({selectedEscort.reviews} reviews)</span>
+                    <span className="text-sm">{selectedEscort.rating} (Demo-Bewertungen)</span>
                   </div>
                 </div>
                 <div className="ml-auto text-right">
-                  <div className="text-2xl font-black text-yellow-500">CHF {selectedEscort.rate}</div>
+                  <div className="text-2xl font-black text-yellow-500">Beispielpreis CHF {selectedEscort.rate}</div>
                   <div className="text-xs text-gray-400">per hour</div>
                 </div>
               </div>
@@ -774,11 +771,11 @@ export default function EscortBern() {
                 >
                   <Link href={`/booking-confirmation?escortId=${selectedEscort.id}&escortName=${selectedEscort.name}`}>
                     <Calendar size={20} className="mr-2" />
-                    Continue to Full Booking Form
+                    Buchungsstatus ansehen
                   </Link>
                 </Button>
                 <p className="text-xs text-gray-400 mt-2">
-                  Response time: {selectedEscort.responseTime}
+                  Keine echte Reaktionszeit oder Erreichbarkeit
                 </p>
               </div>
             </div>
@@ -796,57 +793,19 @@ export default function EscortBern() {
             <div className="text-center">
               <Play size={64} className="text-pink-500 mx-auto mb-4" />
               <p className="text-gray-400">Video preview would load here</p>
-              <p className="text-sm text-gray-500 mt-2">Demo mode - video integration ready</p>
+              <p className="text-sm text-gray-500 mt-2">Demo mode - keine Videointegration aktiv</p>
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* SEO Content Section */}
-      <section className="py-16 bg-slate-900 border-y border-amber-500/20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto prose prose-invert">
-            <h2 className="text-3xl font-black text-white mb-6">Book Premium Escort Services in Bern</h2>
-            
-            <div className="text-slate-300 space-y-4 leading-relaxed">
-              <p>
-                Looking to <strong className="text-white">book an escort in Bern</strong>? Discover Switzerland's most sophisticated escort directory featuring verified companions throughout Bern's historic districts. From UNESCO Old Town to diplomatic receptions, find your perfect match in Switzerland's charming capital.
-              </p>
-
-              <h3 className="text-2xl font-bold text-white mt-8 mb-4">Why Choose Bern Escorts?</h3>
-              <p>
-                Bern, as Switzerland's political capital and a UNESCO World Heritage site, attracts refined professionals seeking discreet, cultured companionship. Our <strong className="text-white">Bern escort services</strong> cater to diplomats, business travelers, and culture enthusiasts who value sophistication and genuine connection.
-              </p>
-
-              <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-500/30 rounded-lg p-6 mt-8">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <Sparkles className="text-amber-400" />
-                  Start Your Bern Escort Experience Today
-                </h3>
-                <p className="text-slate-300 mb-4">
-                  Join discerning clients who have discovered exceptional companionship in Bern. Browse our verified escorts now and book your perfect match today.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold" asChild>
-                    <Link href="#top">
-                      <TrendingUp className="mr-2" size={18} />
-                      Browse Escorts Now
-                    </Link>
-                  </Button>
-                  <Button variant="outline" className="border-amber-500/50 text-white hover:bg-amber-500/10" asChild>
-                    <Link href="/register">
-                      Register Free Account
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section className="border-y border-white/10 bg-slate-900 px-4 py-12 text-white">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-4 text-2xl font-bold">Stadt-Vorschau – keine echten Buchungen</h2>
+          <p>Alle Personen, Fotos, Bewertungen, Preise und Statusanzeigen sind fiktive Beispiele. Die Filter zeigen nur Demodaten. Es gibt keine geprüften Anbieter, bestätigten Termine oder aktive Vermittlung.</p>
+          <Link href="/faq" className="mt-5 inline-block underline">Fragen zur Vorschau</Link>
         </div>
       </section>
-
-      {/* Live Chat Widget */}
-      <LiveChatWidget />
 
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-amber-500/20 py-12">

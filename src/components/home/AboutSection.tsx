@@ -4,38 +4,38 @@ export function AboutSection() {
   const features = [
     {
       image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=300&fit=crop",
-      title: "100% Verified & Safe",
-      description: "Every escort is ID verified and background checked. Your safety is our priority.",
+      title: "Fiktive Beispielprofile",
+      description: "Stockfotos und erfundene Namen zeigen das Layout. Keine Person ist als echt geprüft.",
       color: "bg-blue-500"
     },
     {
       image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=300&fit=crop",
-      title: "Elite Selection Only",
-      description: "Handpicked sophisticated companions. Educated, beautiful, and professional.",
+      title: "Design-Vorschau",
+      description: "Die Auswahl dient ausschliesslich der Illustration. Es gibt noch keine echten Inserate.",
       color: "bg-purple-500"
     },
     {
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=300&fit=crop",
-      title: "Complete Discretion",
-      description: "Anonymous bookings, encrypted communications. Your privacy absolutely guaranteed.",
+      title: "Keine privaten Nachrichten",
+      description: "Nachrichten und Kontaktaufnahme sind deaktiviert. Bitte keine sensiblen Daten eingeben.",
       color: "bg-pink-500"
     },
     {
       image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=300&fit=crop",
-      title: "Top Rated Service",
-      description: "Highest client satisfaction ratings. Verified reviews from real clients.",
+      title: "Beispielbewertungen",
+      description: "Sterne und Bewertungen sind fiktiv und stammen nicht von echten Kundinnen oder Kunden.",
       color: "bg-yellow-500"
     },
     {
       image: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400&h=300&fit=crop",
-      title: "24/7 Availability",
-      description: "Round-the-clock bookings. Escorts available any time, day or night.",
+      title: "Keine Live-Verfügbarkeit",
+      description: "Statusanzeigen sind Demodaten. Es können keine realen Termine oder Buchungen angefragt werden.",
       color: "bg-green-500"
     },
     {
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
-      title: "Professional Service",
-      description: "Licensed, legal, and compliant. Premium experience every time.",
+      title: "Plattform in Vorbereitung",
+      description: "Betreiberangaben, Prüfprozesse und verbindliche Bedingungen müssen vor dem Produktivstart vorliegen.",
       color: "bg-orange-500"
     }
   ];
@@ -46,16 +46,16 @@ export function AboutSection() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Why Choose iWantSexNow.ch?
+              Was diese Vorschau zeigt
             </h2>
             <p className="text-xl text-gray-300">
-              The premier luxury escort service in Switzerland
+              Ein Konzept mit Beispieldaten – noch kein aktiver Vermittlungsbetrieb
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, idx) => (
-              <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group cursor-pointer">
+              <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
                 <div className="relative h-48 overflow-hidden">
                   <img 
                     src={feature.image} 

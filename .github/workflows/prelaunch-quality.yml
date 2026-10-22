@@ -27,6 +27,8 @@ jobs:
         run: npm run build
       - name: Public-preview safety checks
         run: node scripts/preview-smoke.cjs
+      - name: Preview copy, contact and internal-link integrity
+        run: node scripts/preview-integrity.cjs
       - name: Provider publication policy tests
         run: node --experimental-strip-types --test tests/marketplace-publication.test.mjs
       - name: Analyzer API authorization policy tests
@@ -43,3 +45,4 @@ jobs:
             sleep 1
           done
           node scripts/analyzer-api-http-smoke.mjs
+          node scripts/preview-http-smoke.mjs
