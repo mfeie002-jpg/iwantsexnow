@@ -341,13 +341,13 @@ export default function CompareEscorts() {
               />
 
               <ComparisonRow
-                label="Rate (per hour)"
+                label="Beispielpreis (pro Stunde)"
                 icon={DollarSign}
                 getValue={(escort) => <span className="text-yellow-500 font-bold">CHF {escort.rate}</span>}
               />
 
               <ComparisonRow
-                label="Rating"
+                label="Demo-Bewertung"
                 icon={Star}
                 getValue={(escort) => (
                   <div className="flex items-center gap-1">
@@ -359,9 +359,9 @@ export default function CompareEscorts() {
               />
 
               <ComparisonRow
-                label="Response Time"
+                label="Reaktionszeit (Demo)"
                 icon={Clock}
-                getValue={(escort) => escort.responseTime}
+                getValue={() => "Keine echte Erreichbarkeit"}
               />
 
               <ComparisonRow
@@ -397,22 +397,22 @@ export default function CompareEscorts() {
                   <div className="space-y-1">
                     {escort.verified && (
                       <div className="flex items-center gap-1 text-green-400 text-sm">
-                        <CheckCircle size={14} /> Verified Profile
+                        <CheckCircle size={14} /> Demo-Profil – nicht geprüft
                       </div>
                     )}
                     {escort.idVerified && (
                       <div className="flex items-center gap-1 text-blue-400 text-sm">
-                        <CheckCircle size={14} /> ID Verified
+                        <CheckCircle size={14} /> Identität nicht geprüft
                       </div>
                     )}
                     {escort.verifiedPhotos && (
                       <div className="flex items-center gap-1 text-purple-400 text-sm">
-                        <CheckCircle size={14} /> Photos Verified
+                        <CheckCircle size={14} /> Stockfotos / Demo
                       </div>
                     )}
                     {escort.safeDate && (
                       <div className="flex items-center gap-1 text-yellow-400 text-sm">
-                        <CheckCircle size={14} /> SafeDate Certified
+                        <CheckCircle size={14} /> Demo-Funktion
                       </div>
                     )}
                   </div>

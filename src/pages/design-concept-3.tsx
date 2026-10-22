@@ -135,7 +135,7 @@ export default function DesignConcept3() {
               
               <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto font-medium">
                 Connect with Switzerland's most exclusive companions. Premium quality. Zero compromises. 
-                Available 24/7.
+                Ausschliesslich eine Design-Vorschau.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -149,18 +149,18 @@ export default function DesignConcept3() {
 
               <div className="flex items-center justify-center gap-8 mt-12 text-white">
                 <div>
-                  <div className="text-3xl font-black">500+</div>
-                  <div className="text-xs text-white/60 uppercase tracking-wider font-bold">Premium Profiles</div>
+                  <div className="text-3xl font-black">DEMO</div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider font-bold">Beispielprofile</div>
                 </div>
                 <div className="w-px h-12 bg-white/20"></div>
                 <div>
-                  <div className="text-3xl font-black">24/7</div>
-                  <div className="text-xs text-white/60 uppercase tracking-wider font-bold">Always Available</div>
+                  <div className="text-3xl font-black">DEMO</div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider font-bold">Kein Live-Betrieb</div>
                 </div>
                 <div className="w-px h-12 bg-white/20"></div>
                 <div>
-                  <div className="text-3xl font-black">100%</div>
-                  <div className="text-xs text-white/60 uppercase tracking-wider font-bold">Verified</div>
+                  <div className="text-3xl font-black">DEMO</div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider font-bold">Nicht geprüft</div>
                 </div>
               </div>
             </div>
@@ -199,7 +199,7 @@ export default function DesignConcept3() {
                       )}
                       {escort.online && (
                         <Badge className="bg-green-500 text-white border-0 font-black animate-pulse">
-                          ● ONLINE
+                          ● DEMO
                         </Badge>
                       )}
                     </div>
@@ -233,12 +233,12 @@ export default function DesignConcept3() {
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} size={18} className={i < escort.rating ? "text-[#F97316] fill-[#F97316]" : "text-zinc-700"} />
                       ))}
-                      <span className="text-sm text-white/60 ml-2 font-bold">({escort.reviews})</span>
+                      <span className="text-sm text-white/60 ml-2 font-bold">(Demo-Bewertungen)</span>
                     </div>
 
                     <div className="flex items-center justify-between pt-6 border-t-2 border-[#B91C1C]">
                       <div>
-                        <div className="text-xs text-white/60 font-bold mb-1">FROM</div>
+                        <div className="text-xs text-white/60 font-bold mb-1">BEISPIELPREIS</div>
                         <div className="text-4xl font-black text-white">CHF {escort.rate}</div>
                       </div>
                       <Button className="bg-gradient-to-r from-[#B91C1C] to-[#F97316] text-white hover:shadow-lg hover:shadow-[#B91C1C]/50 font-black px-8">

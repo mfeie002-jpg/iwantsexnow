@@ -50,6 +50,14 @@ const routeMeta: Record<string, { title: string; description: string }> = {
     title: "Geplantes Preismodell (Demo) | iWantSexNow.ch",
     description: "Unverbindliche Preise und Promotion-Beispiele. Derzeit keine kostenpflichtigen Buchungen.",
   },
+  "/contact": {
+    title: "Kontakt und Support – in Vorbereitung | iWantSexNow.ch",
+    description: "Noch kein betreuter Kontaktkanal oder Live-Chat. Diese Vorschau nimmt keine Anfragen entgegen.",
+  },
+  "/imprint": {
+    title: "Betreiberangaben – in Vorbereitung | iWantSexNow.ch",
+    description: "Status der noch ausstehenden Betreiberangaben. Kein vollständiges Impressum und kein aktiver Vermittlungsbetrieb.",
+  },
   "/privacy": {
     title: "Datenschutzinformationen – Vorschau | iWantSexNow.ch",
     description: "Vorläufige Informationen zum Entwicklungsstand. Keine vollständige Datenschutzerklärung; reale Registrierungen sind noch deaktiviert.",
@@ -99,7 +107,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <SEO title={meta.title} description={meta.description} />
       {previewFeature ? <PreviewAccess feature={previewFeature} /> : <Component {...pageProps} />}
-      <div role="status" aria-label="Vorschauhinweis" className="fixed bottom-3 left-3 right-3 sm:right-auto z-[100] sm:max-w-sm rounded-xl border border-amber-400 bg-amber-100 px-3 py-2 text-xs font-semibold leading-relaxed text-amber-950 shadow-lg pointer-events-none">
+      <div role="status" aria-label="Vorschauhinweis" className="fixed bottom-20 left-3 right-3 sm:bottom-3 sm:right-auto z-40 sm:max-w-sm rounded-xl border border-amber-400 bg-amber-100 px-3 py-2 text-xs font-semibold leading-relaxed text-amber-950 shadow-lg pointer-events-none">
         DEMO / VORSCHAU: Alle dargestellten Profile, Bilder, Bewertungen und Buchungen sind Beispieldaten. Keine echten Anfragen oder Nutzerkonten.
       </div>
       <Toaster />

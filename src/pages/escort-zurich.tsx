@@ -82,7 +82,7 @@ export default function EscortZurich() {
       services: ["GFE", "Dinner Dates", "Overnight"],
       languages: ["German", "English", "French"],
       description: "Sophisticated companion in Zürich's financial district. Perfect for business dinners and exclusive events.",
-      postedTime: "Online now",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: true,
       verifiedPhotos: true,
@@ -109,7 +109,7 @@ export default function EscortZurich() {
       services: ["PSE", "Tantra", "Couples"],
       languages: ["Italian", "English", "German"],
       description: "Adventurous escort in trendy Zürich West. Specializing in tantric experiences and couples sessions.",
-      postedTime: "Active 5min ago",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: false,
       verifiedPhotos: true,
@@ -163,7 +163,7 @@ export default function EscortZurich() {
       services: ["PSE", "Travel", "Events"],
       languages: ["German", "French", "English"],
       description: "Elite escort in North Zürich. Available for travel and exclusive events throughout Switzerland.",
-      postedTime: "Online now",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: true,
       verifiedPhotos: true,
@@ -190,7 +190,7 @@ export default function EscortZurich() {
       services: ["GFE", "Dinner Dates", "Shopping"],
       languages: ["German", "English"],
       description: "Elegant companion on famous Bahnhofstrasse. Perfect for upscale shopping dates and fine dining.",
-      postedTime: "Online now",
+      postedTime: "Demo-Aktivität",
       hasVideo: true,
       hasVirtualTour: true,
       verifiedPhotos: true,
@@ -217,7 +217,7 @@ export default function EscortZurich() {
       services: ["Massage", "GFE"],
       languages: ["German"],
       description: "Friendly escort in residential Wiedikon. Offering genuine girlfriend experience in quiet surroundings.",
-      postedTime: "Active 15min ago",
+      postedTime: "Demo-Aktivität",
       hasVideo: false,
       hasVirtualTour: false,
       verifiedPhotos: false,
@@ -287,7 +287,7 @@ export default function EscortZurich() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       <SEO 
-        title="Escort Zürich - Premium Escort Services in Zurich | iWantSexNow.ch"
+        title="Escort Zürich - Stadtseite mit fiktiven Beispielprofilen"
         description="Vorschau für Zürich: Demoprofile und Beispielpreise einer geplanten Schweizer Vergleichsplattform. Keine verifizierten Inserate oder echten Buchungen."
       />
 
@@ -386,7 +386,7 @@ export default function EscortZurich() {
             >
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
               <span>/</span>
-              <Link href="/cities" className="hover:text-white transition-colors">Cities</Link>
+              <Link href="/#cities" className="hover:text-white transition-colors">Cities</Link>
               <span>/</span>
               <span className="text-white font-semibold">Escort Zürich</span>
             </motion.div>
@@ -402,7 +402,7 @@ export default function EscortZurich() {
                 </span>
               </h1>
               <p className="text-2xl md:text-3xl text-white font-bold mb-4 drop-shadow-lg">
-                Premium Escort Services in Zurich
+                Stadtseite mit fiktiven Beispielprofilen
               </p>
               <p className="text-lg text-amber-100 max-w-3xl mx-auto drop-shadow-md">
                 Discover exclusive companionship in Switzerland's financial capital. Die Inserate auf dieser Seite sind fiktive Layout- und Filterbeispiele. Keine Profile sind als echt verifiziert.
@@ -499,12 +499,12 @@ export default function EscortZurich() {
                   <div className="flex items-center gap-6 text-white">
                     <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
                       <Checkbox checked={verifiedOnly} onCheckedChange={(checked) => setVerifiedOnly(checked === true)} />
-                      <span className="text-sm font-medium">Verified Only</span>
+                      <span className="text-sm font-medium">Demo-Merkmal</span>
                     </label>
                     
                     <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
                       <Checkbox checked={availableNow} onCheckedChange={(checked) => setAvailableNow(checked === true)} />
-                      <span className="text-sm font-medium">Available Now</span>
+                      <span className="text-sm font-medium">Demo-Status</span>
                     </label>
 
                     <div className="ml-auto">
@@ -568,14 +568,11 @@ export default function EscortZurich() {
             <div className="flex items-center gap-4">
               <Crown className="text-amber-400" size={48} />
               <div>
-                <h3 className="text-2xl font-black text-white mb-1">VIP Concierge Service</h3>
-                <p className="text-amber-100">White-glove booking assistance for discerning clients in Zürich</p>
+                <h3 className="text-2xl font-black text-white mb-1">Kontaktfunktion in Vorbereitung</h3>
+                <p className="text-amber-100">Keine Concierge-Betreuung oder echten Buchungsanfragen in dieser Vorschau.</p>
               </div>
             </div>
-            <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-black shadow-lg shadow-amber-500/30">
-              <Phone size={20} className="mr-2" />
-              Contact Concierge
-            </Button>
+            <Button size="lg" asChild><Link href="/contact">Kontaktstatus ansehen</Link></Button>
           </div>
         </div>
       </section>
@@ -665,11 +662,11 @@ export default function EscortZurich() {
                             <div className="flex items-center gap-4 text-slate-400 text-xs mb-3">
                               <div className="flex items-center gap-1">
                                 <Clock size={12} />
-                                <span>{escort.postedTime}</span>
+                                <span>Beispielstatus</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Zap size={12} className="text-emerald-400" />
-                                <span>Demo-Reaktionszeit: {escort.responseTime}</span>
+                                <span>Keine echte Reaktionszeit</span>
                               </div>
                             </div>
                           </div>
@@ -813,9 +810,9 @@ export default function EscortZurich() {
       <Dialog open={bookingModalOpen} onOpenChange={setBookingModalOpen}>
         <DialogContent className="bg-gray-900 border-white/20 text-white max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black">Quick Booking Request</DialogTitle>
+            <DialogTitle className="text-2xl font-black">Buchungs-Demo</DialogTitle>
             <DialogDescription className="text-gray-400">
-              Send a booking request to {selectedEscort?.name}
+              Buchungs-Demo für {selectedEscort?.name} – keine Anfrage wird übermittelt.
             </DialogDescription>
           </DialogHeader>
           {selectedEscort && (
@@ -827,11 +824,11 @@ export default function EscortZurich() {
                   <p className="text-sm text-gray-400">{selectedEscort.location}</p>
                   <div className="flex items-center gap-1 mt-1">
                     <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm">{selectedEscort.rating} ({selectedEscort.reviews} reviews)</span>
+                    <span className="text-sm">{selectedEscort.rating} (Demo-Bewertungen)</span>
                   </div>
                 </div>
                 <div className="ml-auto text-right">
-                  <div className="text-2xl font-black text-yellow-500">CHF {selectedEscort.rate}</div>
+                  <div className="text-2xl font-black text-yellow-500">Beispielpreis CHF {selectedEscort.rate}</div>
                   <div className="text-xs text-gray-400">per hour</div>
                 </div>
               </div>
@@ -843,11 +840,11 @@ export default function EscortZurich() {
                 >
                   <Link href={`/booking-confirmation?escortId=${selectedEscort.id}&escortName=${selectedEscort.name}`}>
                     <Calendar size={20} className="mr-2" />
-                    Continue to Full Booking Form
+                    Buchungsstatus ansehen
                   </Link>
                 </Button>
                 <p className="text-xs text-gray-400 mt-2">
-                  Response time: {selectedEscort.responseTime}
+                  Keine echte Reaktionszeit oder Erreichbarkeit
                 </p>
               </div>
             </div>
@@ -865,96 +862,19 @@ export default function EscortZurich() {
             <div className="text-center">
               <Play size={64} className="text-pink-500 mx-auto mb-4" />
               <p className="text-gray-400">Video preview would load here</p>
-              <p className="text-sm text-gray-500 mt-2">Demo mode - video integration ready</p>
+              <p className="text-sm text-gray-500 mt-2">Demo mode - keine Videointegration aktiv</p>
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* SEO Content Section */}
-      <section className="py-16 bg-slate-900 border-y border-amber-500/20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto prose prose-invert">
-            <h2 className="text-3xl font-black text-white mb-6">Book Premium Escort Services in Zürich</h2>
-            
-            <div className="text-slate-300 space-y-4 leading-relaxed">
-              <p>
-                Looking to <strong className="text-white">book an escort in Zürich</strong>? Discover Switzerland's most exclusive escort directory featuring verified companions throughout Zürich's premium districts. From the financial heart at Paradeplatz to the trendy nightlife of Zürich West, find your perfect match.
-              </p>
-
-              <h3 className="text-2xl font-bold text-white mt-8 mb-4">Why Choose Zürich Escorts?</h3>
-              <p>
-                Zürich, as Switzerland's largest city and financial hub, attracts sophisticated professionals seeking discreet, high-quality companionship. Our <strong className="text-white">Zürich escort services</strong> cater to discerning clients who value privacy, elegance, and genuine connection.
-              </p>
-
-              <h3 className="text-2xl font-bold text-white mt-8 mb-4">Popular Zürich Districts for Escorts</h3>
-              <ul className="space-y-2 text-slate-300">
-                <li><strong className="text-white">Zürich City Center</strong> - Premium escorts near Bahnhofstrasse and Paradeplatz, perfect for business meetings and upscale dining</li>
-                <li><strong className="text-white">Zürich West</strong> - Trendy companions in the city's hippest district, ideal for nightlife and cultural experiences</li>
-                <li><strong className="text-white">Seefeld</strong> - Elegant escorts by Lake Zürich, offering romantic lakeside encounters</li>
-                <li><strong className="text-white">Oerlikon</strong> - Convenient location for travelers, close to Zürich Airport</li>
-                <li><strong className="text-white">Wiedikon</strong> - Discreet residential area for private, intimate meetings</li>
-              </ul>
-
-              <h3 className="text-2xl font-bold text-white mt-8 mb-4">Services Offered by Zürich Escorts</h3>
-              <p>
-                Our <strong className="text-white">escorts in Zürich</strong> offer a wide range of premium services:
-              </p>
-              <ul className="space-y-2 text-slate-300">
-                <li><strong className="text-white">GFE (Girlfriend Experience)</strong> - Genuine companionship and emotional connection</li>
-                <li><strong className="text-white">Dinner Dates</strong> - Accompany you to Zürich's finest restaurants</li>
-                <li><strong className="text-white">Business Events</strong> - Professional companions for corporate functions</li>
-                <li><strong className="text-white">Travel Companionship</strong> - Escorts available for business trips within Switzerland and abroad</li>
-                <li><strong className="text-white">Overnight Services</strong> - Extended bookings for a complete experience</li>
-                <li><strong className="text-white">Erotic Massage</strong> - Relaxing and sensual massage services</li>
-              </ul>
-
-              <h3 className="text-2xl font-bold text-white mt-8 mb-4">How to Book an Escort in Zürich</h3>
-              <p>
-                Booking a <strong className="text-white">Zürich escort</strong> is simple and discreet:
-              </p>
-              <ol className="space-y-2 text-slate-300">
-                <li>In der Vorschau stehen ausschliesslich fiktive Beispielprofile zur Verfügung</li>
-                <li>Use filters to find escorts by district, service type, and availability</li>
-                <li>Beispielbewertungen dienen nur zur Illustration der vorgesehenen Vergleichsfunktion</li>
-                <li>Direkte Kontaktaufnahme ist erst nach dem Produktivstart mit genehmigten Profilen vorgesehen</li>
-                <li>Arrange meeting details privately and enjoy your experience</li>
-              </ol>
-
-              <h3 className="text-2xl font-bold text-white mt-8 mb-4">Safety & Discretion</h3>
-              <p>
-                All <strong className="text-white">escort services in Zürich</strong> listed on our platform prioritize your safety and privacy. Die spätere Aufnahme echter Profile setzt eine nachweisbare Identitäts- und Einwilligungsprüfung voraus. Aktuell ist diese Demo keine sichere Kommunikations- oder Vermittlungsplattform.
-              </p>
-
-              <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-500/30 rounded-lg p-6 mt-8">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <Sparkles className="text-amber-400" />
-                  Start Your Zürich Escort Experience Today
-                </h3>
-                <p className="text-slate-300 mb-4">
-                  Die Zürich-Seite zeigt den geplanten Such- und Vergleichsablauf mit Beispieldaten. Keine realen Profile oder Buchungen aktiv.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold" asChild>
-                    <Link href="#top">
-                      <TrendingUp className="mr-2" size={18} />
-                      Browse Escorts Now
-                    </Link>
-                  </Button>
-                  <Button variant="outline" className="border-amber-500/50 text-white hover:bg-amber-500/10" asChild>
-                    <Link href="/register">
-                      Register Free Account
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section className="border-y border-white/10 bg-slate-900 px-4 py-12 text-white">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-4 text-2xl font-bold">Stadt-Vorschau – keine echten Buchungen</h2>
+          <p>Alle Personen, Fotos, Bewertungen, Preise und Statusanzeigen sind fiktive Beispiele. Die Filter zeigen nur Demodaten. Es gibt keine geprüften Anbieter, bestätigten Termine oder aktive Vermittlung.</p>
+          <Link href="/faq" className="mt-5 inline-block underline">Fragen zur Vorschau</Link>
         </div>
       </section>
-
-      {/* Live Chat Widget */}
-      <LiveChatWidget />
 
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-amber-500/20 py-12">

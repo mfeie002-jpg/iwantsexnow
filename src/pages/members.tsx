@@ -74,7 +74,7 @@ export default function Members() {
       images: 8,
       online: true,
       verified: true,
-      lastActive: "Active now",
+      lastActive: "Demo-Aktivität",
       bio: "Love traveling and meeting new people. Looking for fun and adventure!",
       lookingFor: "Casual dating",
       bodyType: "Athletic",
@@ -96,7 +96,7 @@ export default function Members() {
       images: 12,
       online: true,
       verified: true,
-      lastActive: "Active now",
+      lastActive: "Demo-Aktivität",
       bio: "Professional woman seeking genuine connections and good times",
       lookingFor: "Friends with benefits",
       bodyType: "Slim",
@@ -140,7 +140,7 @@ export default function Members() {
       images: 5,
       online: true,
       verified: true,
-      lastActive: "Active now",
+      lastActive: "Demo-Aktivität",
       bio: "Tech entrepreneur and fitness enthusiast. Let's make memories!",
       lookingFor: "Casual dating",
       bodyType: "Athletic",
@@ -162,7 +162,7 @@ export default function Members() {
       images: 10,
       online: true,
       verified: false,
-      lastActive: "Active now",
+      lastActive: "Demo-Aktivität",
       bio: "Coffee lover and book enthusiast. Looking for spontaneous adventures",
       lookingFor: "Casual encounters",
       bodyType: "Curvy",
@@ -184,7 +184,7 @@ export default function Members() {
       images: 15,
       online: true,
       verified: true,
-      lastActive: "Active now",
+      lastActive: "Demo-Aktivität",
       bio: "Fitness instructor who loves life. No drama, just good vibes!",
       lookingFor: "Friends with benefits",
       bodyType: "Athletic",
@@ -228,7 +228,7 @@ export default function Members() {
       images: 7,
       online: true,
       verified: false,
-      lastActive: "Active now",
+      lastActive: "Demo-Aktivität",
       bio: "Musician and coffee addict. Always up for new experiences",
       lookingFor: "Casual encounters",
       bodyType: "Average",
@@ -331,7 +331,7 @@ export default function Members() {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-6">
               <Link href="/members" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
-                Browse Members
+                Beispielprofile
               </Link>
               <Link href="/messages" className="text-[#0D1B2A] dark:text-white hover:text-[#C69C6D] dark:hover:text-[#D5A021] font-medium transition-colors">
                 Messages
@@ -376,8 +376,8 @@ export default function Members() {
                 <Zap className="text-white" size={24} />
               </div>
               <div>
-                <h3 className="text-lg md:text-2xl font-black mb-1">Unlock Premium Features!</h3>
-                <p className="text-sm md:text-base text-gray-700">Get 10x more matches with unlimited messaging & advanced filters</p>
+                <h3 className="text-lg md:text-2xl font-black mb-1">Premium-Vorschau</h3>
+                <p className="text-sm md:text-base text-gray-700">Premium ist eine geplante Funktion. Noch keine Mitgliedschaften oder Nachrichten aktiv.</p>
               </div>
             </div>
             <Button size="sm" className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 whitespace-nowrap" asChild>
@@ -556,14 +556,14 @@ export default function Members() {
                     checked={filters.onlineOnly}
                     onCheckedChange={(checked) => setFilters({ ...filters, onlineOnly: checked as boolean })}
                   />
-                  <span className="text-sm">Online now only</span>
+                  <span className="text-sm">Demo-Status filtern</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Checkbox
                     checked={filters.verifiedOnly}
                     onCheckedChange={(checked) => setFilters({ ...filters, verifiedOnly: checked as boolean })}
                   />
-                  <span className="text-sm">Verified profiles only</span>
+                  <span className="text-sm">Demo-Merkmal filtern</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Checkbox
@@ -604,9 +604,9 @@ export default function Members() {
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black mb-2">Browse Members</h1>
+                <h1 className="text-3xl md:text-4xl font-black mb-2">Beispielprofile</h1>
                 <p className="text-sm md:text-base text-gray-600">
-                  {isLoading ? "Loading..." : `${sortedProfiles.length} profiles match your criteria`}
+                  {isLoading ? "Loading..." : `${sortedProfiles.length} Demo-Profile entsprechen den Filtern`}
                 </p>
               </div>
               <div className="flex gap-2 w-full sm:w-auto items-center">
@@ -668,12 +668,12 @@ export default function Members() {
                       />
                       {profile.online && (
                         <Badge className="absolute top-3 right-3 bg-green-500 border-0">
-                          Online
+                          Demo-Status
                         </Badge>
                       )}
                       {profile.verified && (
                         <div className="absolute top-3 left-3 bg-blue-500 text-white rounded-full p-1">
-                          <Star size={16} fill="white" />
+                          <span className="text-xs font-bold">Demo</span>
                         </div>
                       )}
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -682,7 +682,7 @@ export default function Members() {
                           <MapPin size={14} />
                           <span>{profile.location} • {profile.distance} km</span>
                         </div>
-                        <p className="text-white/80 text-xs mt-1">{profile.lastActive}</p>
+                        <p className="text-white/80 text-xs mt-1">Beispielstatus</p>
                       </div>
                     </div>
                     <div className="p-4">
@@ -736,7 +736,7 @@ export default function Members() {
                         )}
                         {profile.verified && (
                           <div className="absolute top-2 left-2 bg-blue-500 text-white rounded-full p-1">
-                            <Star size={12} fill="white" />
+                            <span className="text-xs font-bold">Demo</span>
                           </div>
                         )}
                       </div>
@@ -748,7 +748,7 @@ export default function Members() {
                               <MapPin size={14} />
                               <span>{profile.location} • {profile.distance} km away</span>
                             </div>
-                            <p className="text-xs text-gray-500 mt-1">{profile.lastActive}</p>
+                            <p className="text-xs text-gray-500 mt-1">Beispielstatus</p>
                           </div>
                           <Badge variant="secondary" className="bg-gray-100">
                             <Camera size={12} className="mr-1" />

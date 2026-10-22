@@ -315,7 +315,7 @@ export function HeroSection({
                           whileHover={{ scale: 1.2 }}
                           whileTap={{ scale: 0.9 }}
                         />
-                        <span className="text-sm font-medium">Verifizierte Bilder</span>
+                        <span className="text-sm font-medium">Bildmerkmal (Demo)</span>
                       </motion.label>
                       
                       <motion.label 
@@ -331,7 +331,7 @@ export function HeroSection({
                           whileHover={{ scale: 1.2 }}
                           whileTap={{ scale: 0.9 }}
                         />
-                        <span className="text-sm font-medium">Video Inserate</span>
+                        <span className="text-sm font-medium">Video-Merkmal (Demo)</span>
                       </motion.label>
                     </div>
 
@@ -381,7 +381,7 @@ export function HeroSection({
                   <Link href="/register">
                     <span className="relative z-10 flex items-center">
                       <UserPlus size={24} className="mr-2" />
-                      Kostenlos Registrieren
+                      Registrierung (in Vorbereitung)
                     </span>
                   </Link>
                 </Button>
@@ -401,7 +401,7 @@ export function HeroSection({
                   <Link href="/create-post">
                     <span className="relative z-10 flex items-center">
                       <PlusCircle size={24} className="mr-2" />
-                      Inserat Aufgeben
+                      Inserate (in Vorbereitung)
                     </span>
                   </Link>
                 </Button>

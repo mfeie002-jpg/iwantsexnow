@@ -361,14 +361,14 @@ export default function Branding() {
                 <Card className="p-4 bg-white/80 backdrop-blur">
                   <div className="text-center">
                     <div className="text-3xl font-black" style={{ color: theme.primary }}>
-                      50K+
+                      DEMO
                     </div>
                     <div className="text-sm text-gray-600 font-medium">Members</div>
                   </div>
                 </Card>
                 <Card className="p-4 bg-white/80 backdrop-blur">
                   <Badge className={`${theme.buttonClass} border-0 w-full justify-center h-10 text-base text-white`}>
-                    Online Now
+                    Demo-Status
                   </Badge>
                 </Card>
                 <Card className="p-4 bg-white/80 backdrop-blur">

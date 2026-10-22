@@ -117,7 +117,7 @@ export default function ContentFeed() {
             </Link>
             <div className="flex items-center gap-2 md:gap-3">
               <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-                <Link href="/subscriptions">Subscriptions</Link>
+                <Link href="/premium">Subscriptions</Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
                 <Link href="/profile">Profile</Link>

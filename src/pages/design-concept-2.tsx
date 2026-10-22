@@ -142,7 +142,7 @@ export default function DesignConcept2() {
           <div className="container mx-auto px-4">
             <div className="mb-16">
               <h3 className="text-5xl font-black text-black mb-2">Featured</h3>
-              <p className="text-lg text-gray-500 font-light">Verified companions available now</p>
+              <p className="text-lg text-gray-500 font-light">Fiktive Beispielprofile – nicht geprüft oder buchbar</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-12 max-w-6xl">
@@ -163,7 +163,7 @@ export default function DesignConcept2() {
                       {escort.verified && (
                         <Badge className="bg-black text-white border border-white font-bold">
                           <CheckCircle size={12} className="mr-1" />
-                          VERIFIED
+                          DEMO
                         </Badge>
                       )}
                     </div>
@@ -188,12 +188,12 @@ export default function DesignConcept2() {
                       {[...Array(5)].map((_, i) => (
                         <div key={i} className={`w-8 h-1 ${i < escort.rating ? 'bg-black' : 'bg-gray-200'}`}></div>
                       ))}
-                      <span className="text-xs text-gray-500 ml-2 font-medium">{escort.reviews} reviews</span>
+                      <span className="text-xs text-gray-500 ml-2 font-medium">Demo-Bewertungen</span>
                     </div>
 
                     <div className="flex items-center justify-between pt-6 border-t-2 border-black">
                       <div>
-                        <div className="text-xs text-gray-500 font-medium mb-1">FROM</div>
+                        <div className="text-xs text-gray-500 font-medium mb-1">BEISPIELPREIS</div>
                         <div className="text-3xl font-black text-black">CHF {escort.rate}</div>
                       </div>
                       <Button className="bg-black text-white hover:bg-gray-900 font-bold">

@@ -292,7 +292,7 @@ export default function Premium() {
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/about" className="hover:text-white">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link href="/careers" className="hover:text-white">Careers</Link></li>
+                <li><Link href="/about" className="hover:text-white">Careers</Link></li>
               </ul>
             </div>
             <div>
@@ -306,9 +306,9 @@ export default function Premium() {
             <div>
               <h4 className="font-bold mb-4">Support</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/help" className="hover:text-white">Help Center</Link></li>
+                <li><Link href="/faq" className="hover:text-white">Help Center</Link></li>
                 <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
-                <li><Link href="/report" className="hover:text-white">Report Abuse</Link></li>
+                <li><Link href="/safety" className="hover:text-white">Report Abuse</Link></li>
               </ul>
             </div>
           </div>
