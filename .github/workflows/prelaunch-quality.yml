@@ -31,6 +31,8 @@ jobs:
         run: node scripts/preview-integrity.cjs
       - name: Provider publication policy tests
         run: node --experimental-strip-types --test tests/marketplace-publication.test.mjs
+      - name: Private provider draft ownership and input tests
+        run: node --experimental-strip-types --test tests/marketplace-drafts.test.mjs tests/supabase-drafts.test.mjs
       - name: Analyzer API authorization policy tests
         run: node --experimental-strip-types --test tests/analyzer-proxy.test.mjs
       - name: Mocked authenticated handler and role gate tests
