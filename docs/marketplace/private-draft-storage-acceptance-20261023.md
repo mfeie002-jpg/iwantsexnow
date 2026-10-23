@@ -100,3 +100,13 @@ User-facing outputs are in the task outputs directory:
 
 The prior managed-connection diagnosis describes the pre-activation state and
 is superseded by this acceptance record for connection and storage readiness.
+
+## Subsequent source reconciliation
+
+The same-day reconciliation supersedes the earlier export limitation above:
+package files and the generated integration scaffold were exported successfully.
+The client now initializes lazily with browser/configuration guards, and draft
+schema types replace the empty scaffold. The seven accepted storage/SQL files
+were preserved byte for byte. Fresh local checks passed; live database acceptance
+was not repeated. See softgen-reconciliation-20261023.md for provenance, test
+counts, dependency findings and the unchanged release boundary.
