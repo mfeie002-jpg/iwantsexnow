@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-24",
+  "status": "PASS; prepared for review, not deployed",
+  "baseCommit": "38266ad9794e6215e4b891ff60c82745d55a7159",
+  "scope": {
+    "catalogue": "/search",
+    "demoDetail": "/catalogue/[id]",
+    "demoListings": 8,
+    "cityOptions": 9,
+    "categories": [
+      "Escort",
+      "Begleitung",
+      "Massage"
+    ],
+    "source": "explicit in-code synthetic fixtures only",
+    "approvedInventory": "empty, no database integration or fallback to demo",
+    "filters": [
+      "city AND category AND text",
+      "Zürich/Zurich/Zuerich and Genève/Geneve/Genf/Geneva normalization",
+      "shareable GET URLs, reload and history support",
+      "invalid or duplicate values produce an explanatory empty result",
+      "history restoration resets unsent browser form edits to URL defaults"
+    ],
+    "entryPoints": [
+      "shared desktop/mobile menu",
+      "homepage catalogue CTA",
+      "homepage category links"
+    ],
+    "metadataFix": "Flatten shared SEO elements into next/head so titles and metadata remain after client-side navigation"
+  },
+  "researchBasis": {
+    "primaryLanguage": "de-CH",
+    "keywords": [
+      "Erotik Inserate",
+      "Sexinserate Schweiz"
+    ],
+    "principles": [
+      "one catalogue hub, no generated city landing-page matrix",
+      "city/category discovery without false supply, trust, price or availability claims",
+      "no keyword volume totals or ranking promises in product copy"
+    ]
+  },
+  "checks": {
+    "automatedTests": 91,
+    "failedTests": 0,
+    "catalogueTests": 9,
+    "typescript": "PASS",
+    "productionBuild": "PASS",
+    "buildWarnings": "existing unrelated lint warnings and experimental.turbo deprecation",
+    "previewSafetyAssertions": 187,
+    "previewIntegrityAssertions": 2481,
+    "catalogueHttpScenarios": 10,
+    "previewHttpRoutes": 70,
+    "publicActionGates": 12,
+    "privateFlowDisabledChecks": 6,
+    "analyzerApiRejectionChecks": 5,
+    "syntheticPrivateHttpAcceptance": "PASS; no managed backend writes",
+    "auditVulnerabilities": 0,
+    "browser": [
+      "combined city/category selection",
+      "zero-result combination",
+      "approved-inventory empty view",
+      "text search using Zuerich and Genf",
+      "detail link and return filters",
+      "reload persistence",
+      "Back/Forward controls and results agree",
+      "detail title/noindex remain after client-side navigation",
+      "disabled enquiry button",
+      "390px mobile viewport with no horizontal overflow",
+      "no browser console errors observed"
+    ]
+  },
+  "productionReadback": {
+    "homeStatus": 200,
+    "homeNoindex": true,
+    "privatePageStatus": 404,
+    "privateSessionApiStatus": 404,
+    "privateDraftApiStatus": 404,
+    "privateRobotsHeader": "noindex, nofollow, noarchive"
+  },
+  "unchanged": [
+    "private draft storage and managed backend",
+    "private page and API implementation and flags",
+    "database schema and migrations",
+    "dependencies and deployment configuration",
+    "all 12 public action gates"
+  ],
+  "limits": [
+    "No approved public-inventory source connected; the approved view deliberately stays empty.",
+    "No enquiries, registration, publishing, payments or uploads enabled.",
+    "Existing city concept pages and other legacy demo grids remain separate from this catalogue.",
+    "No merge or deployment performed."
+  ]
+}

@@ -6,6 +6,14 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 
 const routeMeta: Record<string, { title: string; description: string }> = {
+  "/search": {
+    title: "Erotik Inserate nach Stadt und Kategorie – Demo-Katalog | iWantSexNow.ch",
+    description: "Filterbarer Schweizer Inserate-Katalog mit fiktiven Beispielen. Noch keine realen Anbieter, freigegebenen Inserate oder privaten Anfragen.",
+  },
+  "/catalogue/[id]": {
+    title: "Fiktives Demo-Inserat – Katalog-Vorschau | iWantSexNow.ch",
+    description: "Beispiel einer Inserate-Detailansicht. Keine reale Person, keine Verfügbarkeit und keine echten Anfragen.",
+  },
   "/": {
     title: "iWantSexNow.ch | Schweizer Inserate-Marktplatz (Vorschau)",
     description: "Vorschau eines Schweizer Vergleichsmarktplatzes. Alle Profile und Kennzahlen sind Demo-Beispiele; keine realen Buchungen oder Konten.",

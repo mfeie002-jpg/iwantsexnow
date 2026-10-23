@@ -3,6 +3,7 @@ export const previewNavigation = [
   {
     label: "Demo entdecken",
     items: [
+      { label: "Inserate-Katalog (Demo)", href: "/search" },
       { label: "Beispielprofile", href: "/members" },
       { label: "Städte-Vorschau", href: "/#cities" },
       { label: "Demo-Übersicht", href: "/demo-accounts" },

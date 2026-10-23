@@ -45,7 +45,7 @@ export function SEOElements({
 export default function SEO(props: SEOProps) {
   return (
     <Head>
-      <SEOElements {...props} />
+      {SEOElements(props)}
     </Head>
   );
 }
