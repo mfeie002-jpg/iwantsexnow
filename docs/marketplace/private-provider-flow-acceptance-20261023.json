@@ -1,0 +1,49 @@
+{
+  "status": "local candidate verified; not deployed or activated",
+  "feature": "Private provider draft create/read/edit flow",
+  "page": "/private/provider-draft",
+  "api": [
+    "/api/private/provider-session",
+    "/api/private/provider-drafts"
+  ],
+  "default": "404 before authentication or backend access",
+  "requiredServerConfiguration": {
+    "PRIVATE_PROVIDER_DRAFTS_ENABLED": "true only in isolated internal acceptance environment",
+    "PRIVATE_PROVIDER_DRAFT_ORIGIN": "exact trusted origin; HTTPS except loopback",
+    "PRIVATE_PROVIDER_DRAFT_USER_IDS": "comma-separated pre-provisioned, email-confirmed test-user UUIDs",
+    "NEXT_PUBLIC_SUPABASE_URL": "existing managed backend; no replacement",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "existing public key; service credentials rejected"
+  },
+  "session": {
+    "cookie": "HttpOnly; SameSite=Strict; Path=/api/private; Secure on HTTPS",
+    "browserLifetimeSeconds": 1800,
+    "refreshTokensStored": false,
+    "logout": "cookie cleared; local backend sign-out attempted; upstream failure reported",
+    "limiting": "conservative in-process backstop only; distributed throttling and full account lifecycle remain beta-readiness work"
+  },
+  "checks": {
+    "existingAndCompatibilityTests": 69,
+    "compiledPrivateRouteTests": 13,
+    "syntheticHttpAcceptance": "PASS",
+    "defaultOffHttpChecks": 6,
+    "publicRouteChecks": 69,
+    "actionGates": 12,
+    "apiRejections": 5,
+    "safetyAssertions": 173,
+    "integrityAssertions": 2206,
+    "typescript": "PASS",
+    "build": "PASS",
+    "auditFindings": 0,
+    "browser": "synthetic sign-in, create, edit, reload, logout, second-account denial passed"
+  },
+  "storage": "Previously live-accepted service/SDK adapter/SQL preserved byte for byte; no new managed database write or migration",
+  "browserStorage": "only saved draft ID scoped by user in tab sessionStorage; no field data, passwords or tokens",
+  "limits": [
+    "No signup, recovery, publishing, review submission, media upload or enquiries",
+    "No public navigation link, sitemap inclusion or gate removal",
+    "No production activation or real-provider intake",
+    "New UI and route acceptance used synthetic transport, not a new live database fixture run",
+    "No automatic write retry; a lost create response can leave an orphan private draft, so draft discovery/idempotency remains follow-up work"
+  ],
+  "dependencyChange": "New Zod advisory discovered during validation; removed unused zod and @t3-oss/env-nextjs after repository-wide import search; audit returned to zero"
+}
