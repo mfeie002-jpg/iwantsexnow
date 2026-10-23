@@ -16,11 +16,11 @@ const information = {
     title: "Häufige Fragen zur Vorschau",
     lead: "Diese Antworten beschreiben den aktuellen Entwicklungsstand. Es werden noch keine Mitgliedschaften oder Dienstleistungen angeboten.",
     sections: [
-      ["Sind die Profile echt?", "Nein. Alle gezeigten Personen, Bilder, Bewertungen, Verfügbarkeiten und Preise sind fiktive Beispiele. Kein Profil ist als echt verifiziert."],
+      ["Sind die Profile echt?", "Es sind keine öffentlichen Profile veröffentlicht. Die bisherigen Beispieldaten wurden entfernt."],
       ["Kann ich mich registrieren oder Nachrichten senden?", "Registrierung, Anmeldung, Nachrichten, Inserate und Foto-Uploads sind noch nicht freigeschaltet. Bitte keine persönlichen Daten, Passwörter oder Ausweisbilder eingeben."],
       ["Kann ich buchen, Premium kaufen oder einen Newsletter abonnieren?", "Nein. Buchungen, Zahlungen, Premium, Promotion und Newsletter sind nicht aktiv. Die Vorschau nimmt keine Bestellungen oder Anmeldungen entgegen."],
       ["Gibt es einen Support-Chat?", "Es gibt noch keinen betreuten Chat und keine bestätigte Supportadresse. Es werden keine Supportnachrichten angenommen und keine Antwortzeiten zugesagt."],
-      ["Was machen die Filter?", "Sie filtern ausschliesslich Beispieldaten. Demo-Merkmale und Beispielstatus bestätigen keine Identität oder tatsächliche Erreichbarkeit."],
+      ["Was machen die Filter?", "Die öffentliche Suche ist noch nicht freigeschaltet. Es werden keine Profile oder Kontaktdaten bereitgestellt."],
     ],
   },
   safety: {
