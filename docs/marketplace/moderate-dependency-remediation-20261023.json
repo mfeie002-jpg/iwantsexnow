@@ -1,0 +1,33 @@
+{
+  "base": "2060d07462a650d32ea68b9238cfbd9a186e2b29",
+  "advisory": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+  "fix": "Override Tailwind subtree selector parser to patched 7.1.6; retains Tailwind 3",
+  "auditBefore": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 0,
+    "critical": 0,
+    "total": 3
+  },
+  "auditAfter": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "changes": [
+    {
+      "path": "node_modules/postcss-selector-parser",
+      "before": "6.1.5",
+      "after": "7.1.6"
+    }
+  ],
+  "boundaries": [
+    "No application, storage, database, noindex or gate source changes",
+    "No database mutation",
+    "Release only after full verification"
+  ]
+}

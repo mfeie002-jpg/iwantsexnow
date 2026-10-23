@@ -84,6 +84,9 @@
   "overrides": {
     "next": {
       "postcss": "8.5.31"
+    },
+    "tailwindcss": {
+      "postcss-selector-parser": "7.1.6"
     }
   }
 }
