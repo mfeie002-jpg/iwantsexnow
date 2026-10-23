@@ -11,6 +11,7 @@ const fixturePath=process.env.PRIVATE_DRAFT_MANAGED_FIXTURE;
 assert(fixturePath?.startsWith('/tmp/'),'Temporary fixture required');
 assert(process.cwd().startsWith('/tmp/'),'Run only in a throwaway checkout, never /app');
 const fixture=JSON.parse(await fs.readFile(fixturePath,'utf8'));
+try {
 assert(fixture.users.length===3&&fixture.users.every(u=>u.email.endsWith('@example.invalid')));
 const file=await fs.readFile('/app/.env.local','utf8');
 for(const key of ['NEXT_PUBLIC_SUPABASE_URL','NEXT_PUBLIC_SUPABASE_ANON_KEY']){
@@ -64,5 +65,9 @@ try{
 }catch(e){await fs.writeFile('/tmp/private-managed-e2e-receipt.json',JSON.stringify({status:'FAIL',error:e.message,checks,createdDraftIds,fixtureUserIds:fixture.users.map(u=>u.id)}),{mode:0o600});throw e;}
 finally{
  for(const cookie of cookies)await call(session,'DELETE',undefined,cookie).catch(()=>{});
- await new Promise(resolve=>server.close(resolve));await app.close();await fs.unlink(fixturePath).catch(()=>{});
+ await new Promise(resolve=>server.close(resolve));await app.close();
+}
+} finally {
+ // Also remove the credential fixture when configuration, build or startup fails.
+ await fs.unlink(fixturePath).catch(()=>{});
 }
