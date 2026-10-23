@@ -21,10 +21,12 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
-      - name: Critical dependency audit
-        run: npm audit --package-lock-only --audit-level=critical
+      - name: High and critical dependency audit
+        run: npm audit --package-lock-only --audit-level=high
       - name: PDF export compatibility
         run: node --test tests/pdf-export.test.mjs
+      - name: Image and CSS dependency compatibility
+        run: node --test tests/dependency-runtime.test.mjs
       - name: TypeScript
         run: npx tsc --noEmit
       - name: Production build
