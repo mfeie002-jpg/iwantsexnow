@@ -27,17 +27,17 @@ const PRODUCTS: Record<string, { name: string; priceChf: number; credits: number
     priceChf: 59,
     credits: 5,
     period: "7 Tage Vollzugriff",
-    desc: "Grünes Direktbuchungs-Siegel + 5 Gratis Lead-Credits inklusive",
+    desc: "GrÃ¼nes Direktbuchungs-Siegel + 5 Gratis Lead-Credits inklusive",
   },
   direct_monthly: {
     name: "Verified Direct Provider (Monats-Paket)",
     priceChf: 190,
     credits: 20,
     period: "30 Tage Vollzugriff",
-    desc: "Grünes Direktbuchungs-Siegel + 20 Lead-Credits + Echtzeit-Ping",
+    desc: "GrÃ¼nes Direktbuchungs-Siegel + 20 Lead-Credits + Echtzeit-Ping",
   },
   vip_monthly: {
-    name: "VIP Smart-Matcher Dominanz (Zürich & Zug)",
+    name: "VIP Smart-Matcher Dominanz (ZÃ¼rich & Zug)",
     priceChf: 390,
     credits: 999,
     period: "30 Tage VIP-Flatrate",
@@ -47,15 +47,15 @@ const PRODUCTS: Record<string, { name: string; priceChf: number; credits: number
     name: "5er-Paket Direkte Kunden-Leads (Pay-per-Lead)",
     priceChf: 95,
     credits: 5,
-    period: "Kein Abo · Kein Verfall",
+    period: "Kein Abo Â· Kein Verfall",
     desc: "Schalte 5 verifizierte Fixpreis-Buchungsanfragen inkl. Kunden-Rufnummer frei",
   },
   boost_24h: {
-    name: "24h „Sofort-Verfügbar“ Radar-Boost",
+    name: "24h â€žSofort-VerfÃ¼gbarâ€œ Radar-Boost",
     priceChf: 29,
     credits: 2,
     period: "24 Stunden Top-Spot",
-    desc: "Sofortige Hervorhebung im Live-Story-Radar für Zürich & Zug",
+    desc: "Sofortige Hervorhebung im Live-Story-Radar fÃ¼r ZÃ¼rich & Zug",
   },
 };
 
@@ -115,7 +115,7 @@ export default function CheckoutPage() {
 
       <main className="container mx-auto px-4 py-10 max-w-5xl space-y-8">
         <Link href="/pricing" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
-          <ArrowLeft size={14} /> Zurück zur Paket-Übersicht
+          <ArrowLeft size={14} /> ZurÃ¼ck zur Paket-Ãœbersicht
         </Link>
 
         <div className="grid lg:grid-cols-12 gap-8">
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
               <Lock size={12} className="mr-1 inline" /> 100% Diskrete B2B-Abrechnung
             </Badge>
             <h1 className="text-2xl md:text-3xl font-serif font-black">
-              1. Paket oder Lead-Credits wählen
+              1. Paket oder Lead-Credits wÃ¤hlen
             </h1>
 
             <div className="space-y-2.5">
@@ -158,7 +158,7 @@ export default function CheckoutPage() {
             <Card className="bg-[#09131E] border-2 border-[#C69C6D]/60 p-6 md:p-8 rounded-2xl text-white space-y-6 shadow-2xl">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/10">
                 <div>
-                  <div className="text-xs text-gray-400">Gewählte Leistung:</div>
+                  <div className="text-xs text-gray-400">GewÃ¤hlte Leistung:</div>
                   <h2 className="text-xl font-serif font-black text-white">{product.name}</h2>
                   <div className="text-xs text-emerald-400 font-semibold">{product.period}</div>
                 </div>
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
               {/* Payment Method Tabs */}
               <div>
                 <label className="text-xs font-bold uppercase text-[#D5A021] block mb-2.5">
-                  2. Bevorzugte Schweizer Zahlungsmethode wählen:
+                  2. Bevorzugte Schweizer Zahlungsmethode wÃ¤hlen:
                 </label>
                 <div className="grid grid-cols-3 gap-2.5">
                   <button
@@ -225,14 +225,14 @@ export default function CheckoutPage() {
                     Referenz <strong>{txReference}</strong> wurde deinem Profil (<strong>{artistName}</strong>) zugeordnet. Deine <strong>+{product.credits} Lead-Credits</strong> stehen ab sofort im Provider-Dashboard bereit.
                   </p>
                   <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
-                    <Link href="/creator-dashboard">Jetzt im Provider-Dashboard Kunden-Leads freischalten →</Link>
+                    <Link href="/creator-dashboard">Jetzt im Provider-Dashboard Kunden-Leads freischalten â†’</Link>
                   </Button>
                 </div>
               ) : (
                 <form onSubmit={handleConfirmPayment} className="space-y-5">
                   <div>
                     <label className="text-xs text-gray-300 block mb-1">
-                      Künstlername oder Schweizer Telefonnummer (für die automatische Profil-Zuordnung)
+                      KÃ¼nstlername oder Schweizer Telefonnummer (fÃ¼r die automatische Profil-Zuordnung)
                     </label>
                     <input
                       type="text"
@@ -254,11 +254,11 @@ export default function CheckoutPage() {
                         </Badge>
                       </div>
                       <p className="text-gray-300">
-                        Scanne den Schweizer QR-Code mit deiner Banking- oder TWINT-App oder überweise mit der Referenznummer. Auf deinem Auszug erscheint neutral <strong>„iW Digital Media Services CH“</strong>.
+                        Scanne den Schweizer QR-Code mit deiner Banking- oder TWINT-App oder Ã¼berweise mit der Referenznummer. Auf deinem Auszug erscheint neutral <strong>â€žiW Digital Media Services CHâ€œ</strong>.
                       </p>
                       <div className="grid sm:grid-cols-2 gap-3 bg-white/5 p-3 rounded-lg border border-white/10">
                         <div>
-                          <div className="text-gray-400 text-[11px]">Empfänger (Neutral):</div>
+                          <div className="text-gray-400 text-[11px]">EmpfÃ¤nger (Neutral):</div>
                           <div className="font-bold text-white">iW Digital Media Services</div>
                           <div className="text-gray-400 text-[11px] mt-2">Zahlungs-Referenz:</div>
                           <div className="font-mono font-bold text-emerald-400">{txReference}</div>
@@ -288,18 +288,18 @@ export default function CheckoutPage() {
                         <span className="font-bold text-emerald-400 uppercase">
                           100% Anonyme Krypto-Zahlung (USDT TRC20 / Solana / Polygon)
                         </span>
-                        <span className="font-mono font-black text-white">≈ {usdtAmount} USDT</span>
+                        <span className="font-mono font-black text-white">â‰ˆ {usdtAmount} USDT</span>
                       </div>
                       <p className="text-gray-300">
-                        Sende <strong>{usdtAmount} USDT</strong> an die untenstehende Adresse. Nach 1 Netzwerk-Bestätigung werden deine Lead-Credits automatisch freigeschaltet:
+                        Sende <strong>{usdtAmount} USDT</strong> an die untenstehende Adresse. Nach 1 Netzwerk-BestÃ¤tigung werden deine Lead-Credits automatisch freigeschaltet:
                       </p>
                       <div className="flex items-center justify-between gap-2 bg-white/5 p-2.5 rounded-lg border border-white/10 font-mono text-[11px] text-amber-300">
-                        <span className="truncate">T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb</span>
+                        <span className="truncate">{process.env.NEXT_PUBLIC_USDT_WALLET || "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"}</span>
                         <Button
                           type="button"
                           size="sm"
                           variant="outline"
-                          onClick={() => handleCopy("T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb", "USDT-Wallet-Adresse")}
+                          onClick={() => handleCopy((process.env.NEXT_PUBLIC_USDT_WALLET || "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"), "USDT-Wallet-Adresse")}
                           className="border-white/20 text-white text-xs h-7 shrink-0"
                         >
                           <Copy size={11} className="mr-1" /> Kopieren
@@ -314,7 +314,7 @@ export default function CheckoutPage() {
                         Schweizer Paysafecard / Prepaid-Code (Tankstelle, Kiosk, SBB-Automat)
                       </div>
                       <p className="text-gray-300">
-                        Du kannst an jedem Schweizer Kiosk, SBB-Billettautomaten oder online bei TWINT einen 16-stelligen Paysafecard-Code holen und hier anonym einlösen:
+                        Du kannst an jedem Schweizer Kiosk, SBB-Billettautomaten oder online bei TWINT einen 16-stelligen Paysafecard-Code holen und hier anonym einlÃ¶sen:
                       </p>
                       <input
                         type="text"
@@ -329,7 +329,7 @@ export default function CheckoutPage() {
                     className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6 text-base shadow-xl"
                   >
                     <Zap size={17} className="mr-2" />
-                    Zahlung bestätigen & {product.credits} Lead-Credits sofort gutschreiben
+                    Zahlung bestÃ¤tigen & {product.credits} Lead-Credits sofort gutschreiben
                   </Button>
                 </form>
               )}
