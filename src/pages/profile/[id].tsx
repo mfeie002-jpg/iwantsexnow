@@ -242,8 +242,18 @@ export default function UniversalProfileDetailPage() {
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title={`${profile.displayName} (${profile.age}) in ${profile.subareas.join(", ")} – Bewertungen, Fotos & Endpreis | iWantSexNow.ch`}
-        description={profile.bio}
+        title={`${profile.displayName} (${profile.age}) Escort ${profile.primaryCity} (${profile.canton}) – Fixpreis CHF ${profile.bestBaseRate60Chf} ★ ${profile.ratingScore.toFixed(1)}`}
+        description={`✓ +41 Nummer & Fotos geprüft (${profile.sourcesCount} Portale verglichen, spare CHF ${profile.savingsPerHourChf}/h). ${profile.displayName} in ${profile.subareas.join(", ")}: Inkl. ${profile.includedServices.slice(0, 4).join(", ")}. Jetzt 3-Min. 1:1 Live-Cam Check oder Fixpreis buchen!`}
+        image={profile.thumbnail}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Schweiz Escort-Index", item: "https://iwantsexnow.ch" },
+            { "@type": "ListItem", position: 2, name: `Escort ${profile.primaryCity} (${profile.canton})`, item: `https://iwantsexnow.ch/search?q=${encodeURIComponent(profile.primaryCity)}` },
+            { "@type": "ListItem", position: 3, name: `${profile.displayName} (${profile.age})`, item: `https://iwantsexnow.ch/profile/${encodeURIComponent(profile.displayName)}` }
+          ]
+        }}
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">

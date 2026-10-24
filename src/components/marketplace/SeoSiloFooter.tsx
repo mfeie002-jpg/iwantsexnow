@@ -19,6 +19,12 @@ const CITY_SILO_LINKS = [
   { label: "Escort Genève", href: "/escort-geneva" },
   { label: "Escort Lausanne & Vaud", href: "/escort-lausanne" },
   { label: "Escort Lugano & Ticino", href: "/orte/lugano" },
+  { label: "Escort Pfäffikon SZ & Wollerau", href: "/orte/pfaeffikon-sz" },
+  { label: "Escort St. Moritz & Davos", href: "/orte/st-moritz-davos" },
+  { label: "Escort Zermatt & Wallis", href: "/orte/zermatt-wallis" },
+  { label: "Escort Interlaken & Gstaad", href: "/orte/interlaken-gstaad" },
+  { label: "Escort Thurgau & Bodensee", href: "/orte/thurgau" },
+  { label: "Escort Solothurn & Olten", href: "/orte/solothurn" },
 ];
 
 const SERVICE_COMBINATION_LINKS = [
