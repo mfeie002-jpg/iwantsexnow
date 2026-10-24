@@ -11,15 +11,14 @@ import {
   ShieldCheck,
   Database,
   Bell,
-  CheckCircle2,
   RefreshCw,
-  TrendingUp,
-  Users,
   Lock,
   Check,
   X,
-  Globe,
   CreditCard,
+  Copy,
+  MessageSquare,
+  Send,
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 
@@ -37,6 +36,7 @@ interface PendingVerification {
 export default function AdminDashboardPage() {
   const { toast } = useToast();
   const [isSyncing, setIsSyncing] = useState(false);
+  const [inviteLang, setInviteLang] = useState<"DE" | "EN">("DE");
   const [enquiries, setEnquiries] = useState<any[]>([]);
   const [verifications, setVerifications] = useState<PendingVerification[]>([
     {
@@ -74,6 +74,23 @@ export default function AdminDashboardPage() {
     }
   }, []);
 
+  const buildInviteText = (name: string, city: string, sourcesCount: number) => {
+    const claimUrl = `https://iwantsexnow.ch/create-post?claim=${encodeURIComponent(name)}`;
+    if (inviteLang === "EN") {
+      return `Hi ${name} ✨ Your listing in ${city} (${sourcesCount} portals matched) is indexed on iWantSexNow.ch — Switzerland's Direct Booking & Total-Cost Search Engine. Claim your official Direct Profile for free (includes 2 Free Lead Credits worth CHF 50 & 0% commission): ${claimUrl}`;
+    }
+    return `Hallo ${name} 👋 Dein Inserat in ${city} (${sourcesCount} Portale gebündelt) wurde in den Schweizer Escort-Index auf iWantSexNow.ch aufgenommen. Übernimm dein Direktprofil jetzt kostenlos (inkl. 2 Gratis Lead-Credits im Wert von CHF 50 & 0% Provision): ${claimUrl}`;
+  };
+
+  const handleCopyInvite = (name: string, city: string, sourcesCount: number) => {
+    const text = buildInviteText(name, city, sourcesCount);
+    navigator.clipboard?.writeText(text);
+    toast({
+      title: `Einladung (${inviteLang}) für ${name} kopiert!`,
+      description: "Direkt in WhatsApp, Signal oder SMS einfügen und absenden.",
+    });
+  };
+
   const handleRunCrawl = () => {
     setIsSyncing(true);
     setTimeout(() => {
@@ -91,7 +108,7 @@ export default function AdminDashboardPage() {
       title: status === "approved" ? "Swiss-Shield Siegel freigeschaltet!" : "Verifizierung abgelehnt",
       description:
         status === "approved"
-          ? "Das Profil ist ab sofort als „Direkt Buchbar · Autorisiert“ im Endpreis-Rechner aktiv."
+          ? "Das Profil ist ab sofort als Direkt Buchbar im Endpreis-Rechner aktiv."
           : "Der Antrag wurde zurückgewiesen.",
     });
   };
@@ -99,8 +116,8 @@ export default function AdminDashboardPage() {
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="Master Admin & Index Control Center | iWantSexNow.ch"
-        description="Betreiber-Cockpit für Lead-Tracking, Swiss-Shield-Freigaben und Cross-Portal-Indexierung."
+        title="Master Admin & B2B Growth Cockpit | iWantSexNow.ch"
+        description="Betreiber-Cockpit für Lead-Tracking, Swiss-Shield-Freigaben und 1-Klick WhatsApp Provider-Akquise."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -116,17 +133,16 @@ export default function AdminDashboardPage() {
       </header>
 
       <main className="container mx-auto px-4 py-10 max-w-7xl space-y-8">
-        {/* Top Operator Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl shadow-2xl">
           <div>
             <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2">
-              <Lock size={12} className="mr-1 inline" /> Betreiber-Zentrale · Pilot Zürich, Zug & Schweiz
+              <Lock size={12} className="mr-1 inline" /> Betreiber-Zentrale · Pilot Zürich, Zug & Cham
             </Badge>
             <h1 className="text-2xl md:text-4xl font-serif font-black">
-              Plattform-, Index- & B2B-Steuerung
+              Plattform-, Index- & B2B-Akquise-Steuerung
             </h1>
             <p className="text-xs md:text-sm text-gray-300 mt-1">
-              Überwache alle eingehenden Fixpreis-Buchungen, schalte Swiss-Shield-Verifizierungen frei und steuere den Cross-Portal-Scraper.
+              Lade indexierte Anbieterinnen per 1-Klick über WhatsApp/SMS ein, schalte Swiss-Shield-Siegel frei und überwache alle Fixpreis-Buchungen.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -139,7 +155,7 @@ export default function AdminDashboardPage() {
               {isSyncing ? "Synchronisiere Zürich & Zug..." : "Firecrawl Index-Sync starten"}
             </Button>
             <Button variant="outline" className="border-white/20 text-white" asChild>
-              <Link href="/search">Meta-Index öffnen →</Link>
+              <Link href="/checkout">B2B Checkout testen →</Link>
             </Button>
           </div>
         </div>
@@ -187,8 +203,76 @@ export default function AdminDashboardPage() {
           </Card>
         </div>
 
+        {/* 1-Click B2B WhatsApp / SMS Provider Claim Generator */}
+        <Card className="bg-[#09131E] border-2 border-[#C69C6D]/50 p-6 rounded-2xl text-white space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-1">
+                <MessageSquare size={12} className="mr-1 inline" /> B2B Wachstumsmotor · Zürich, Zug & Cham
+              </Badge>
+              <h2 className="text-xl font-serif font-black">
+                1-Klick WhatsApp / Signal Claim-Einladungen für indexierte Profile
+              </h2>
+              <p className="text-xs text-gray-300">
+                Kopiere mit 1 Klick den personalisierten Claim-Link inkl. 2 Gratis Lead-Credits (CHF 50 Wert) und sende ihn an die Anbieterin:
+              </p>
+            </div>
+            <div className="flex bg-black/50 p-1 rounded-xl border border-white/15">
+              {(["DE", "EN"] as const).map((lng) => (
+                <button
+                  key={lng}
+                  type="button"
+                  onClick={() => setInviteLang(lng)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold ${
+                    inviteLang === lng ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-300"
+                  }`}
+                >
+                  {lng === "DE" ? "🇨🇭 Deutsch" : "🇬🇧 English"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {deduplicated.map((p) => (
+              <div
+                key={p.dedupClusterId}
+                className="p-4 rounded-xl bg-black/40 border border-white/10 flex flex-col justify-between gap-3"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="font-bold text-white text-base">
+                      {p.displayName} ({p.primaryCity}, {p.canton})
+                    </div>
+                    <div className="text-xs text-[#D5A021] font-mono mt-0.5">
+                      📞 {p.normalizedPhoneMask} · {p.sourcesCount} Portale gebündelt
+                    </div>
+                  </div>
+                  <Badge className={p.bookingMode === "direct" ? "bg-emerald-600 text-white" : "bg-sky-600 text-white"}>
+                    {p.bookingMode === "direct" ? "Direkt Aktiv" : "Noch nicht geclaimt"}
+                  </Badge>
+                </div>
+
+                <div className="text-[11px] text-gray-300 bg-white/5 p-2.5 rounded-lg border border-white/5">
+                  {buildInviteText(p.displayName, p.primaryCity, p.sourcesCount)}
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button
+                    size="sm"
+                    onClick={() => handleCopyInvite(p.displayName, p.primaryCity, p.sourcesCount)}
+                    className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs"
+                  >
+                    <Copy size={12} className="mr-1.5" />
+                    {inviteLang}-Einladung + Claim-Link kopieren
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Left 7 Cols: Pending B2B Claims & Swiss Shield Verifications */}
           <div className="lg:col-span-7 space-y-4">
             <h2 className="text-xl font-serif font-black flex items-center gap-2">
               <ShieldCheck size={18} className="text-[#D5A021]" />
@@ -250,7 +334,6 @@ export default function AdminDashboardPage() {
             ))}
           </div>
 
-          {/* Right 5 Cols: Live Platform Lead Stream */}
           <div className="lg:col-span-5 space-y-4">
             <h2 className="text-xl font-serif font-black flex items-center gap-2">
               <Bell size={18} className="text-emerald-400" />

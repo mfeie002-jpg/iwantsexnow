@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import SEO from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
@@ -7,37 +8,52 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Globe, PlusCircle, CheckCircle2, Search, Sparkles, ArrowRight } from "lucide-react";
+import { Globe, PlusCircle, CheckCircle2, Search, ArrowRight, Gift } from "lucide-react";
 
 export default function CreatePostPage() {
+  const router = useRouter();
   const { toast } = useToast();
   const [mode, setMode] = useState<"claim" | "create">("claim");
   const [claimQuery, setClaimQuery] = useState("");
   const [name, setName] = useState("");
   const [city, setCity] = useState("Zürich & Zug");
   const [rate60, setRate60] = useState("450");
+  const [claimFound, setClaimFound] = useState(false);
+
+  useEffect(() => {
+    if (router.query.claim) {
+      const claimParam = String(router.query.claim);
+      setClaimQuery(claimParam);
+      setName(claimParam);
+      setClaimFound(true);
+    }
+  }, [router.query.claim]);
 
   const handleClaimSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setClaimFound(true);
+    localStorage.setItem("providerLeadCredits", "2");
     toast({
-      title: "Index-Suche abgeschlossen",
-      description: `Wir haben passende Einträge für "${claimQuery || "deine Nummer"}" gefunden. Bestätige jetzt per SMS/Signal-Code deine Inhaberschaft.`,
+      title: "Profil im Schweizer Index gefunden!",
+      description: `Eintrag für "${claimQuery}" bereit zur Übernahme (+2 Gratis Lead-Credits aktiviert).`,
     });
   };
 
   const handleCreateDirect = (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem("providerLeadCredits", "2");
     toast({
       title: `Direktprofil für ${name || "Anbieterin"} angelegt!`,
-      description: "Dein Profil ist bereit für den Foto- & ID-Check und ab sofort im Endpreis-Rechner sichtbar.",
+      description: "2 Gratis Start-Credits wurden deinem Provider-Dashboard gutgeschrieben.",
     });
+    router.push("/verify");
   };
 
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
         title="Profil übernehmen oder Direktprofil inserieren | iWantSexNow.ch"
-        description="Übernehme dein automatisch indexiertes Schweizer Profil kostenlos oder erstelle ein verifiziertes Direktbuchungs-Inserat."
+        description="Übernehme dein automatisch indexiertes Schweizer Profil kostenlos inklusive 2 Gratis Lead-Credits."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -51,8 +67,8 @@ export default function CreatePostPage() {
 
       <main className="container mx-auto px-4 py-12 max-w-4xl space-y-8">
         <div className="text-center space-y-3">
-          <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-            Für selbstständige Escorts, Begleiterinnen & Studios
+          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+            <Gift size={13} className="mr-1.5 inline" /> Start-Bonus für Zürich & Zug: 2 Gratis Lead-Credits (CHF 50 Wert) inklusive
           </Badge>
           <h1 className="text-3xl md:text-5xl font-serif font-black">
             In 60 Sekunden zur direkten Buchbarkeit
@@ -62,7 +78,6 @@ export default function CreatePostPage() {
           </p>
         </div>
 
-        {/* Mode Selector */}
         <div className="grid sm:grid-cols-2 gap-4">
           <button
             type="button"
@@ -113,7 +128,7 @@ export default function CreatePostPage() {
               Indexiertes Profil suchen & kostenlos beanspruchen
             </h2>
             <p className="text-xs text-gray-300">
-              Gib deine Schweizer Rufnummer (`+41 79...`) oder deinen Namen auf `xdate.ch`, `fgirl.ch` oder `and6.com` ein. Wir bündeln alle Dubletten unter deiner Kontrolle:
+              Gib deine Schweizer Rufnummer (+41 79...) oder deinen Namen ein. Wir bündeln alle Dubletten unter deiner Kontrolle:
             </p>
             <form onSubmit={handleClaimSearch} className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
@@ -131,12 +146,31 @@ export default function CreatePostPage() {
                 Im Schweizer Index suchen
               </Button>
             </form>
-            <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400">
-              <span>Nach der SMS-/Signal-Verifizierung landest du direkt im Provider-Dashboard.</span>
-              <Link href="/creator-dashboard" className="text-[#D5A021] font-bold hover:underline flex items-center gap-1">
-                Direkt zum Provider-Dashboard <ArrowRight size={14} />
-              </Link>
-            </div>
+
+            {claimFound && (
+              <div className="p-5 rounded-xl bg-emerald-950/50 border border-emerald-400/50 space-y-3">
+                <div className="flex items-center justify-between">
+                  <Badge className="bg-emerald-500 text-[#0D1B2A] font-black">
+                    ✓ INDEX-PROFIL GEFUNDEN
+                  </Badge>
+                  <span className="text-xs text-emerald-300 font-bold">+2 Gratis Lead-Credits reserviert</span>
+                </div>
+                <div className="text-lg font-serif font-black">
+                  Profil „{claimQuery}“ ist bereit zur Übernahme
+                </div>
+                <p className="text-xs text-gray-300">
+                  Klicke unten, um deine Rufnummer per kurzem Tagescode zu bestätigen und sofort Zugriff auf dein Provider-Dashboard zu erhalten.
+                </p>
+                <div className="flex flex-wrap gap-3 pt-1">
+                  <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
+                    <Link href="/verify">Jetzt in 60 Sek. verifizieren & freischalten →</Link>
+                  </Button>
+                  <Button variant="outline" className="border-white/20 text-white" asChild>
+                    <Link href="/creator-dashboard">Vorschau Provider-Dashboard</Link>
+                  </Button>
+                </div>
+              </div>
+            )}
           </Card>
         ) : (
           <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 md:p-8 rounded-2xl text-white space-y-5">
@@ -178,7 +212,7 @@ export default function CreatePostPage() {
                 />
               </div>
               <Button type="submit" className="w-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black py-6 text-base">
-                Direktprofil speichern & zum Foto-Check →
+                Direktprofil speichern & 2 Gratis Lead-Credits sichern →
               </Button>
             </form>
           </Card>
