@@ -1,4 +1,4 @@
-// Auto-generated Master Dataset (Windows 1 + 2 + 3)
+// Auto-generated Master Dataset
 export const HARVESTED_SWISS_OFFERS: any[] = [
   {
     "sourcePortal": "xdate.ch",
@@ -14328,5 +14328,1446 @@ export const HARVESTED_SWISS_OFFERS: any[] = [
     "directAuthorized": false,
     "gallery": [],
     "bio": "Ich bin Carmen – ein junges skinny Teeny mit sexy Kurven und einem Blick, der dir nicht mehr aus dem Kopf geht. 30 Minuten – CHF 100.– 45 Minuten – CHF 150.– 60 Minuten – CHF 200.– 90 Minuten – CHF 300.–"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/-laura-sex-in-luzern-88804.html",
+    "rawName": "Laura",
+    "age": 29,
+    "rawPhone": "+41 78 669 62 04",
+    "city": "Luzern",
+    "canton": "ZH",
+    "subareas": [
+      "Luzern"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c9280849e693b24019ecf8bd29c219f/ca0095c7-47dd-4b20-9c55-ff8d10566c98_t.webp",
+    "bio": "Heiss und bildhübsch🔥"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/natascha-sex-one-limit-in-duebendorf-club-dream-46781.html",
+    "rawName": "NATASCHA",
+    "age": 25,
+    "rawPhone": "+41 78 737 11 88",
+    "city": "Dübendorf",
+    "canton": "ZH",
+    "subareas": [
+      "Dübendorf"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/ff8081817e054ccd017e1fc336a6094a/d60b3237-2efd-4a77-9067-d5350c366810_t.webp",
+    "bio": "Sex ohne Limit 💛"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/emma-sex-treffen-in-oberbueren-89510.html",
+    "rawName": "Emma",
+    "age": 27,
+    "rawPhone": "+41 78 737 11 88",
+    "city": "Oberentfelden",
+    "canton": "ZH",
+    "subareas": [
+      "Oberentfelden"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/402890829f40e30f01a0011bf88e1679/e203a699-f971-4eeb-a8e5-056740beb242_t.webp",
+    "bio": "natürliche Schönheit 😉"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/adriana-erzaehls-nicht-meinem-freund-90403.html",
+    "rawName": "Adriana",
+    "age": 20,
+    "rawPhone": "+41 78 737 11 88",
+    "city": "Pfaffnau",
+    "canton": "ZH",
+    "subareas": [
+      "Pfaffnau"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/40289087a13a262c01a153d28a78791d/24924b66-2a92-4b97-9ca0-708f8437902e_t.webp",
+    "bio": "Ganz neu - Anfängerin"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/michell-paysextreffen-mit-escort-in-der-naehe-von-flawil-90443.html",
+    "rawName": "Michell",
+    "age": 25,
+    "rawPhone": "+41 79 369 29 39",
+    "city": "Oberbüren",
+    "canton": "ZH",
+    "subareas": [
+      "Oberbüren"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c928085a159413301a164da409d20a0/494277f6-8bd2-45cb-aa04-28a0df799f16_t.webp",
+    "bio": "🔥Porno Service 🔥Paket 😍"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/lua-diskreter-sex-club-in-studio-elite-90432.html",
+    "rawName": "Lua",
+    "age": 29,
+    "rawPhone": "+41 79 543 88 65",
+    "city": "Basel",
+    "canton": "ZH",
+    "subareas": [
+      "Basel"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c928085a159413301a162429c9f1273/63d5291a-a83b-4fd6-b3d3-070be725ab13_t.webp",
+    "bio": "Heisse latina 🔥"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/brigitte-brigitte-mollig-vollbusig-voller-leidenschaft-89328.html",
+    "rawName": "Brigitte",
+    "age": 30,
+    "rawPhone": "+41 78 737 11 88",
+    "city": "Walenstadt",
+    "canton": "ZH",
+    "subareas": [
+      "Walenstadt"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/402890829f40e30f019fada5d6ed1df6/bae6513b-13ef-4474-ac53-aac5874c5c82_t.webp",
+    "bio": "ab 100.-/30 min ☝?"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/jasmin-escort-girl-in-chur-88215.html",
+    "rawName": "Jasmin",
+    "age": 19,
+    "rawPhone": "+41 78 669 62 04",
+    "city": "Chur",
+    "canton": "ZH",
+    "subareas": [
+      "Chur"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/402890829db5a3ab019deed2cd404db3/f7c0e55d-13c4-486e-9bef-0d354441ce66_t.webp",
+    "bio": "❌ geiles Teeny ❌"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/deutschelisa18-bin-jung-und-lecker-neu-in-8047-zuerich-und-escort-90415.html",
+    "rawName": "DeutscheLisa18",
+    "age": 18,
+    "rawPhone": "+41 78 669 62 04",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/40289087a13a262c01a15687c00f07ea/76c446d2-c288-4c7e-b987-07fb64a2ed4e_t.webp",
+    "bio": "Nur Anrufe oder SMS"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/mariee-top-sex-studio-in-der-naehe-von-emmenbruecke-90420.html",
+    "rawName": "Mariee",
+    "age": 40,
+    "rawPhone": "+41 78 737 11 88",
+    "city": "Emmen",
+    "canton": "ZH",
+    "subareas": [
+      "Emmen"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c928085a159413301a15a78695408a0/88d0dd83-0ce4-46e2-8581-95b68cca4ddc_t.webp",
+    "bio": "❌party❌kamagra❌escort❌"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/vicky-es-sex-adresse-in-basel-90411.html",
+    "rawName": "VICKY -ES-",
+    "age": 35,
+    "rawPhone": "+41 78 737 11 88",
+    "city": "Basel",
+    "canton": "ZH",
+    "subareas": [
+      "Basel"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/40289087a13a262c01a15552a4f7013d/7280bb70-4f65-4047-9467-2d7f73f70fbc_t.webp",
+    "bio": "Schwanzgeil und Brand-heiss."
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/ariana-heisse-latina-in-seewen-90425.html",
+    "rawName": "Ariana",
+    "age": 25,
+    "rawPhone": "+41 78 669 62 04",
+    "city": "Seewen SZ",
+    "canton": "ZH",
+    "subareas": [
+      "Seewen SZ"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c928085a159413301a15cb808e5448f/59fd9604-86fb-4ff7-a50b-3cd4fc2d6a56_t.webp",
+    "bio": "Perverse nymphomane 😈"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/sofi-in-zurich-central-escort-24h-89807.html",
+    "rawName": "Sofi",
+    "age": 32,
+    "rawPhone": "+41 79 543 88 65",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c928084a07ff83501a081319ee50a1f/bb3e74d1-414e-4ead-a29c-9fe1b7a46da0_t.webp",
+    "bio": "Luxury girl from Spain"
+  },
+  {
+    "sourcePortal": "6navi.ch",
+    "sourceUrl": "https://6navi.ch/girl/taila-paysextreffen-mit-escort-in-der-naehe-von-flawil-90433.html",
+    "rawName": "Taila",
+    "age": 25,
+    "rawPhone": "+41 78 669 62 04",
+    "city": "Oberbüren",
+    "canton": "ZH",
+    "subareas": [
+      "Oberbüren"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Girl",
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://6navi.ch/images/2c928085a159413301a162983bff1410/f1246cc3-e0e5-4452-ab36-fc92133f165a_t.webp",
+    "bio": "Escort Aktion🔥pussy lick"
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/milagros",
+    "rawName": "Milagros",
+    "age": 25,
+    "rawPhone": "+41 79 123 4567",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 300,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/859034088724c3087eaa2de422185c9c/L1032601.jpg",
+    "bio": "Schönheit und Eleganz in Zürich."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/monica",
+    "rawName": "Monica",
+    "age": 25,
+    "rawPhone": "+41 79 123 4568",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 250,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/5110484596b43cd5192036ff78a8ff75/DSC_0831.jpg",
+    "bio": "Verführe und überrasche dich."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/mhalia",
+    "rawName": "Mhalia",
+    "age": 25,
+    "rawPhone": "+41 79 123 4569",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 280,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/44920eb5b106de56a120ab33c98af14a/DSC_7344.jpg",
+    "bio": "Lass dich von mir verwöhnen."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/elisa",
+    "rawName": "Elisa",
+    "age": 25,
+    "rawPhone": "+41 79 123 4570",
+    "city": "Champel",
+    "canton": "ZH",
+    "subareas": [
+      "Champel"
+    ],
+    "advertisedBaseChf": 310,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/8ecadd6f65fd86f4053a5d02391ac62d/DSC08885.jpg",
+    "bio": "Exquisite Erlebnisse in Genf."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/aurora",
+    "rawName": "Aurora",
+    "age": 25,
+    "rawPhone": "+41 79 123 4571",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 330,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/2b01cdfd4dfb998100c948778bed122e/DSC_7311.jpg",
+    "bio": "Elegante Begleitung für jeden Anlass."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/justina",
+    "rawName": "Justina",
+    "age": 25,
+    "rawPhone": "+41 79 123 4572",
+    "city": "Eaux-Vives",
+    "canton": "ZH",
+    "subareas": [
+      "Eaux-Vives"
+    ],
+    "advertisedBaseChf": 320,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/78427b33b587ea8ce6e4d27239ed362f/DSC09431_2.jpg",
+    "bio": "Verleihe deinem Leben Farbe."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/olivia",
+    "rawName": "Olivia",
+    "age": 25,
+    "rawPhone": "+41 79 123 4573",
+    "city": "Eaux-Vives",
+    "canton": "ZH",
+    "subareas": [
+      "Eaux-Vives"
+    ],
+    "advertisedBaseChf": 290,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/aaa51a720ebeccc28bce99aa2dbc8ce6/DSC06180.jpg",
+    "bio": "Ein Genuss für die Sinne."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/mia-b",
+    "rawName": "Mia B.",
+    "age": 25,
+    "rawPhone": "+41 79 123 4574",
+    "city": "Eaux-Vives",
+    "canton": "ZH",
+    "subareas": [
+      "Eaux-Vives"
+    ],
+    "advertisedBaseChf": 305,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/f79ccccb80140e7f49dd44cfba1a0fd7/DSC01187.jpg",
+    "bio": "Fröhlichkeit und Freude garantiert."
+  },
+  {
+    "sourcePortal": "bemygirl.ch",
+    "sourceUrl": "https://www.bemygirl.ch/de/melanie-l",
+    "rawName": "Melanie L.",
+    "age": 25,
+    "rawPhone": "+41 79 123 4575",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 350,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.bemygirl.ch/image/d97c5f48cfc7487e5620db4a75712bf2/DSC_7620.jpg",
+    "bio": "Die perfekte Gefährtin für jeden Anlass."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-erotik-massage-japan-art-nuru-body-to-body-mit-hoechst-genuss-621860",
+    "rawName": "Kayoko",
+    "age": 35,
+    "rawPhone": "+41/07x",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 160,
+    "includedTags": [
+      "Massagen"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin Kayoko aus Japan, eine heisse gelernte sexy Masseurin. Jungs, wollt ihr bei mir die Stunden wie Tenno (Kaiser) von Japan genießen!"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/olten-party-frau-pepers-kamagra-viagra-654489",
+    "rawName": "Jannet",
+    "age": 30,
+    "rawPhone": "+41/07x",
+    "city": "Olten",
+    "canton": "ZH",
+    "subareas": [
+      "Olten"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Sie sucht ihn",
+      "Escort Service"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo, ich bin eine leidenschaftliche, sinnliche und sehr selbstbewusste Frau. Ich liebe intensive Momente, die unvergesslich werden."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-ts-sirya-huebsche-und-sexy-latina-in-zurich-verfuegbar-in-privatwohnung-335590",
+    "rawName": "TS Sirya",
+    "age": 30,
+    "rawPhone": "+41/07x",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Transsexuelle / Transen"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin sebr süß, jung und super Power-Spritzmaschine TS Syria mit 21cm für unlimitiert Spaß. Nur für Premium-Qualitätssüchtige!"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-camila-660952",
+    "rawName": "Camila",
+    "age": 25,
+    "rawPhone": "+41/07x",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo, ich bin Camila. Ich bin sehr liebevoll und leidenschaftlich - perfekt um unvergessliche Momente zu erleben."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-anna-milf-anal-big-ass-782627",
+    "rawName": "Anna",
+    "age": 40,
+    "rawPhone": "+41/07x",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "MILF & reife Frauen"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin Anna, eine MILF mit einer frechen Zunge und einem verrückten Kopf. Ich liebe es zu flirten und mit meiner sinnlichen Ausstrahlung zu verführen."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/dietikon-geiler-anales-ich-spritze-sexy-party-heisser-783977",
+    "rawName": "Mya",
+    "age": 21,
+    "rawPhone": "+41/07x",
+    "city": "Dietikon",
+    "canton": "ZH",
+    "subareas": [
+      "Dietikon"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Domina / BDSM Sex"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin Mya, ein sexy Mädchen, voller Charme und Sexualität. Ich freue mich darauf, mit dir zu spielen."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/kloten-lara-escort-service-vip-service-780770",
+    "rawName": "Lara",
+    "age": 32,
+    "rawPhone": "+41/07x",
+    "city": "Kloten",
+    "canton": "ZH",
+    "subareas": [
+      "Kloten"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Sie sucht ihn",
+      "Escort Service"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo, ich bin Lara und erfülle die Wünsche aller Männer, die mich in der Schweiz besuchen möchten."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/landquart-hottest-deutsche-dominante-sina-714451",
+    "rawName": "SINA",
+    "age": 32,
+    "rawPhone": "+41/07x",
+    "city": "Landquart",
+    "canton": "ZH",
+    "subareas": [
+      "Landquart"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Domina / BDSM Sex"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin Göttin SINA – keine Dienstleisterin, sondern eine Einladung zu einem ausgewählten Ritual."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-brazilian-girl-hot-739841",
+    "rawName": "Julia",
+    "age": 34,
+    "rawPhone": "+41/07x",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "Zürich"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin eine Brazilian Girl, 100% real und total heiß. Bei mir bist du genau richtig!"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/kreuzlingen-hallo-ich-bin-alondra-neu-in-kreuzlingen-und-eine-partygaengerin-763672",
+    "rawName": "Alondra",
+    "age": 22,
+    "rawPhone": "+41/07x",
+    "city": "Kreuzlingen",
+    "canton": "ZH",
+    "subareas": [
+      "Kreuzlingen"
+    ],
+    "advertisedBaseChf": 200,
+    "includedTags": [
+      "Massagen"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich komme aus Costa Rica und habe eine tolle Figur. Ich bin zärtlich und charmant, aber im Bett ein echtes Feuerwerk."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/lengnau-privat-780423",
+    "rawName": "Maria",
+    "age": 37,
+    "rawPhone": "+41 765 704 358",
+    "city": "Lengnau",
+    "canton": "ZH",
+    "subareas": [
+      "Lengnau"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Öl-Massagen",
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo lieber Gentleman, ich bin Maria. Ich liebe es, zu verwöhnen – mit Hingabe, Wärme und echter Lust. Bei mir geht es nicht um 'schnell und fertig'. Bei mir geht es um dich. Um Berührung. Um Nähe. Um prickelnde Lust, die langsam wächst…"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/neu-in-der-stadt-top-escort-unabhaengig-latina-783173",
+    "rawName": "latina",
+    "age": 25,
+    "rawPhone": "+41 765 704 358",
+    "city": "SG",
+    "canton": "ZH",
+    "subareas": [
+      "SG"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort Service"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo! Ich bin ein ruhiger und fröhlicher Mensch, gesunder Menschenverstand und Qualität definieren mich am besten. Immer mit einem Lächeln im Gesicht und gut gelaunt schenke ich Dir eine schöne gemeinsame Zeit."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/maerstetten-senora-madura-tetas-grandes-776005",
+    "rawName": "Diana",
+    "age": 50,
+    "rawPhone": "+41 765 704 358",
+    "city": "Märstetten",
+    "canton": "ZH",
+    "subareas": [
+      "Märstetten"
+    ],
+    "advertisedBaseChf": 150,
+    "includedTags": [
+      "MILF & reife Frauen",
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo, ich bin Diana 50J, und eine reife attraktive Frau mit schönem Naturbusen. Alles geht ohne Zeitdruck mit mir. Gerade als reife Frau kenne und liebe ich den Sex in vielen Variationen."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/bern-beste-thai-massage-777092",
+    "rawName": "Lily",
+    "age": 25,
+    "rawPhone": "+41 765 704 358",
+    "city": "Bern",
+    "canton": "ZH",
+    "subareas": [
+      "Bern"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Hallo mein Lieber, mein Name ist Lily und ich würde mich freuen dich nach allen Regeln der Kunst zu verwöhnen."
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/deine-deutsche-domina-neue-geile-marie-776367",
+    "rawName": "Marie",
+    "age": 23,
+    "rawPhone": "+41 765 704 358",
+    "city": "Bern",
+    "canton": "ZH",
+    "subareas": [
+      "Bern"
+    ],
+    "advertisedBaseChf": 150,
+    "includedTags": [
+      "Domina / BDSM Sex",
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg",
+    "bio": "Ich bin die Marie 23 Jahre alt, komme aus Deutschland aber aktuell bin ich wohnhaft in der Schweiz. Ich probiere mir ein wenig Taschengeld dazu zu verdienen."
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/michelle-7/",
+    "rawName": "Michelle",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Nyon",
+    "canton": "ZH",
+    "subareas": [
+      "Nyon"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/michelle-7/pictures/ae4f8526-0db0-427c-a92d-e9cb13c35a65/1776300f6e3dd3011acdcc1f2d4ca1c4.jpg",
+    "bio": "DERNIERS JOURS Nyon privé 🔥😘"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/carolina-47/",
+    "rawName": "Carolina",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Visp",
+    "canton": "ZH",
+    "subareas": [
+      "Visp"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Masseuse"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/carolina-47/hot/458d59c1-6bd4-4269-b86b-b1dbf79762e7/0e7455abb207320744886e9a8e414e39.jpg",
+    "bio": "Servís GEF felation natur💦 anal kiss69 🔥😋"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/catty/",
+    "rawName": "Catty",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Morges",
+    "canton": "ZH",
+    "subareas": [
+      "Morges"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/catty/hot/1d6c8362-e4f6-4b7e-b86a-4baac9f09fc6/a2f42dcd04ff268c182fe2d7332d905a.jpeg",
+    "bio": "Dispo app privé viens t’amuser avec moi 😘"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/ts-alicia/",
+    "rawName": "Ts Alicia",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Genève",
+    "canton": "ZH",
+    "subareas": [
+      "Genève"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Transsexuel"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/ts-alicia/pictures/f5bcf05b-29aa-40c4-acaf-418c6af1f345/52c1f30cab8f88ba2cb18fc5545b45a0.jpeg",
+    "bio": "ACTIVE PASIVE Prive Discret✨"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/ana-101/",
+    "rawName": "Ana",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Montreux",
+    "canton": "ZH",
+    "subareas": [
+      "Montreux"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/ana-101/hot/55c08c79-8d08-4476-9ab6-4850e22eb6ff/a1d5406d4ba02f0c6bbf330a1596036c.jpeg",
+    "bio": "VRAI TRIPLE plaisirs próstata 💦💦💦👅🍾🥂"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/zoe-61/",
+    "rawName": "Zoe",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Lausanne",
+    "canton": "ZH",
+    "subareas": [
+      "Lausanne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/zoe-61/pictures/924f3e6c-8f74-4e3b-ba16-fa3562f3b745/0f5f6440348b14f0465e35d1ae1117eb.jpeg",
+    "bio": "Deseas pasar un momento inolvidable conmigo💗"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/mariana-58/",
+    "rawName": "Mariana",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Sion",
+    "canton": "ZH",
+    "subareas": [
+      "Sion"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/mariana-58/pictures/5eeb7a0f-6c3e-46ca-b5c9-12c727e41b3d/a7ac7513a9e6f211a04a4b670d83bf50.jpeg",
+    "bio": "Sodomie et gorge profonde 😈😋🍭"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/katy-7/",
+    "rawName": "Katy",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Plainpalais",
+    "canton": "ZH",
+    "subareas": [
+      "Plainpalais"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/katy-7/pictures/1bb724fe-1646-4744-8c3c-bbd16eb61419/32b42760e92cf8c0ff8f974d312c68fe.jpeg",
+    "bio": "Je viens d'arriver, c'est ma première foi🤗🇧"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/evelyn-8/",
+    "rawName": "Tv Evelyn",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Genève",
+    "canton": "ZH",
+    "subareas": [
+      "Genève"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Transsexuel"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/evelyn-8/pictures/c60c6f4b-a253-4452-a09a-bfbf92804314/9e0aa235e59010c7cc4f13518568a3f4.jpeg",
+    "bio": "Venez et amusons-nous un moment🔥🫦😉"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/luz-marie/",
+    "rawName": "Luz Marie",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Payerne",
+    "canton": "ZH",
+    "subareas": [
+      "Payerne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/luz-marie/pictures/c4225243-5bc1-4667-bf37-23b10169f480/18df14da94724832e152a518f42da598.jpg",
+    "bio": "Brune chaude, Service complet🍑 vip👠👙🥂"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/paola-73/",
+    "rawName": "Paola",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Lausanne",
+    "canton": "ZH",
+    "subareas": [
+      "Lausanne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/paola-73/pictures/c674630d-da01-4609-826c-4b6f6ee9bb35/072b5949a02f197e40d16a386ab5a47c.jpeg",
+    "bio": "💋🔥🍓🥰"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/emily-47/",
+    "rawName": "Emily",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Genève",
+    "canton": "ZH",
+    "subareas": [
+      "Genève"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/emily-47/pictures/1e902654-e4e5-4e8d-ac85-245dce5a6d6d/49a81f27053fa1d87cfd27812a152186.jpg",
+    "bio": "De retour! ✅ Ouverte au sexe anal, trio... 🔥"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/rita-2/",
+    "rawName": "Rita",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Morges",
+    "canton": "ZH",
+    "subareas": [
+      "Morges"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Masseuse"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/rita-2/pictures/8c86fee6-904f-4a47-a609-08ee9cb2026e/0ea367a06a90207c479268b10e90ae3a.jpg",
+    "bio": "VIENS T’AMUSER MASSAGE ET SEXE +++😘"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/charlotte-9/",
+    "rawName": "Charlotte",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Genève",
+    "canton": "ZH",
+    "subareas": [
+      "Genève"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/charlotte-9/pictures/ce6bfd5f-baed-4064-a848-40ab3bee0014/3452dec73494cffed8ee1b7354e95348.jpeg",
+    "bio": "App prive✨🍾🥂ta GFE prefere💕😘"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/giovanna-4/",
+    "rawName": "Giovanna",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "La Chaux-de-Fonds",
+    "canton": "ZH",
+    "subareas": [
+      "La Chaux-de-Fonds"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/giovanna-4/selfies/1be2ebdd-b985-4b44-b2d9-4a9b07eb56ed/4c95f402e8cb08d8dd1777ab8e5a6ad4.jpeg",
+    "bio": "🌺 Je parle 🇫🇷 Gorge profonde ✨FN✨ FK✨ANAL✨"
+  },
+  {
+    "sourcePortal": "fgirl.ch",
+    "sourceUrl": "https://www.fgirl.ch/filles/geneve-5/",
+    "rawName": "Laya",
+    "age": 25,
+    "rawPhone": "+41/079",
+    "city": "Cornavin",
+    "canton": "ZH",
+    "subareas": [
+      "Cornavin"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Escort"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://www.fgirl.ch/media/CACHE/images/profiles/escort/geneve-5/pictures/51f0a540-b75a-4515-a918-61aa88e9c9c0/d24ab98b46ed9fae86e7253bddbaa409.jpeg",
+    "bio": "Habibi Je suis de retour et très🔥🔥😋"
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Noahdomina-103016-st-gallen-st-gallen-appenzell",
+    "rawName": "Noahdomina",
+    "age": 27,
+    "rawPhone": "+41765460569",
+    "city": "St. Gallen",
+    "canton": "ZH",
+    "subareas": [
+      "St. Gallen"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "sex clasic",
+      "bdsm"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/96315/profile/5c279642-07a8-4986-bba8-877da6a7916b_thumb_298.jpg?v=1",
+    "bio": "Hi, I'm Noah, a 27 -year-old Spanish girl for the first time in Switzerland, super tall, 1'84 cm, thin, stringy from the gym, I do anal, kissing with tongue, massage, showering together and accompanying dinners or parties. I can be the domina BDSM that you have always wanted fetishes, feminization with clothes for you, latex, boots, strap on or fisting, sounding, candles, lingerie, scat, caviar, farts, diapers, cbt, ballbusting, trampling, roleplay, breathing game ask me to know more. You talk to me directly not agency and independent, luxury privat apartament, not redligths or club."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/JennyBaby-4048609-biel-bienne-bern",
+    "rawName": "JennyBaby",
+    "age": 25,
+    "rawPhone": "+41794088972",
+    "city": "Biel",
+    "canton": "ZH",
+    "subareas": [
+      "Biel"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/165755/profile/687b3d54-22cc-4388-8d6b-dcc340bfd57d_thumb_298.jpg?v=2",
+    "bio": "Willst du eine heise muschi ficken?! Komm und machen wir eine heise brutal sex! Sex A bis Z! Heise schöne muschi warte auf dich!"
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Carolina-6207944-geneve-genf",
+    "rawName": "Carolina",
+    "age": 30,
+    "rawPhone": "+41779677752",
+    "city": "Genf",
+    "canton": "ZH",
+    "subareas": [
+      "Genf"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/177695/profile/c0bb597b-8960-474f-a910-8ec17e1f3c3d_thumb_298.jpg?v=1",
+    "bio": "I'm Valentina, a spectacular girl with a beautiful face. I'll captivate you from the first moment you see me. Check out how pretty and how good I can be. Do you like it? I love enjoying the company of gentlemanly guys and being very attentive to you at all times. I'm willing to please you."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Flory-1192486-lausanne-waadt",
+    "rawName": "Flory",
+    "age": 24,
+    "rawPhone": "+41779980075",
+    "city": "Lausanne",
+    "canton": "ZH",
+    "subareas": [
+      "Lausanne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/172331/profile/658136fd-4b0e-4f56-bc87-f462f7915cd7_thumb_298.jpg?v=1",
+    "bio": "I will be your perfect guide on the path to ecstasy, but for that, you must trust me completely. I am never short of ideas to take you to the 7th heaven, and I must admit that my chest helps me a lot in that. From the moment I start undressing in front of you, you will see my beautiful heavy breasts emerge from their hiding place, right under your nose, my nipples pointing within reach of your tongue."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Marianna-9713253-luzern-luzern",
+    "rawName": "Marianna",
+    "age": 28,
+    "rawPhone": "+41796317574",
+    "city": "Luzern",
+    "canton": "ZH",
+    "subareas": [
+      "Luzern"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/52705/profile/68c96873-cf20-4c5e-9633-4e05942f5eed_thumb_298.jpg?v=1",
+    "bio": "Hey Süßer, Ich bin ein knackiges Unikat! Wenn Du möchtest, wirst Du mit mir ein unvergessliches Abenteuer erleben. Ich liebe es wenn wir uns beide gegenseitig verwöhnen und wir unsere Geilheit so langsam zu unserem Limit bugsieren. Und das ohne jeglichen Zeitdruck, denn....mit mir vergisst Du die Zeit vollkommen. Ich werde Dir Deine wünsche bis zur letzten Sekunde erfüllen! Denn eins ist klar… Ich habe einen frivolen und lustivollen Charakter, aber auch lustig, herzlich und nett. Ich kann nie genug bekommen und verlange von Dir fast alles ab, lass uns beide experimentierfreudig sein. Lass Dich von meinem einmaligen Service überraschen, der Sex mit mir ist ein wahres Erlebnis!"
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Luna-Thai-113274-lausanne-waadt",
+    "rawName": "Luna Thai",
+    "age": 29,
+    "rawPhone": "+41786069437",
+    "city": "Lausanne",
+    "canton": "ZH",
+    "subareas": [
+      "Lausanne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/106448/profile/e597cea5-32b4-4643-81d8-f1e0896f79c5_thumb_298.jpg?v=1",
+    "bio": "Hello, I'm Luna Thai, a serene beauty with an ethereal presence who promises to take you on a thrilling journey of exploration and relaxation. Let’s indulge our senses and let me reveal the secrets I hold. I'm here to provide the utmost pleasure and a luxurious experience, tailored just for you."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Gaya-8874058-lausanne-waadt",
+    "rawName": "Gaya",
+    "age": 26,
+    "rawPhone": "+41772352751",
+    "city": "Lausanne",
+    "canton": "ZH",
+    "subareas": [
+      "Lausanne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/177188/profile/f78c262a-6932-4ec7-b076-f9d8aaddb109_thumb_298.jpg?v=1",
+    "bio": "Italian Blonde Gaya — Italian Blonde A sublime Italian blonde, tall, elegant, and incredibly attractive… A seductive look, a temptress' smile… with no intention of staying tame A woman full of confidence, charm, and character, with that glance that instantly raises the temperature. Every encounter promises mystery, complicity, pleasure, and above all, lots of sensations… A real Italian bombshell who loves to turn heads."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Roxy-9161426-geneve-genf",
+    "rawName": "Roxy",
+    "age": 31,
+    "rawPhone": "+41796633403",
+    "city": "Genf",
+    "canton": "ZH",
+    "subareas": [
+      "Genf"
+    ],
+    "advertisedBaseChf": 300,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/171400/profile/9d3c39b2-b50c-43e1-ad72-e7d3f8cfabbf_thumb_298.jpg?v=1",
+    "bio": "Hello, my name is Roxy. I am Roxy, a tattooed Spanish muse with a playful spirit and a sensual and fiery soul. I am passionate, spontaneous, and I genuinely love creating real chemistry. I can be a sweet temptation, but also a wild and sexy woman, ready to fulfill your fantasies."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Leyao-1671574-lausanne-waadt",
+    "rawName": "Leyao",
+    "age": 22,
+    "rawPhone": "+41767642948",
+    "city": "Lausanne",
+    "canton": "ZH",
+    "subareas": [
+      "Lausanne"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/176608/profile/8c33acc1-b302-453c-bdfd-65a7e0a436b8_thumb_298.jpg?v=1",
+    "bio": "I am a beautiful young girl, sweet and elegant. Women's skin is very natural. I am a masseur with personality and expertise, how can I meet a man? There are polite bees, I am very happy. I wonder if you have fantasies you don't have when you're with me. Help us work after a hard day or share this moment of happiness together."
+  },
+  {
+    "sourcePortal": "and6.com",
+    "sourceUrl": "https://www.and6.com/de/sex-model/Jasmine-8964646-geneve-genf",
+    "rawName": "Jasmine",
+    "age": 24,
+    "rawPhone": "+41797202980",
+    "city": "Genf",
+    "canton": "ZH",
+    "subareas": [
+      "Genf"
+    ],
+    "advertisedBaseChf": 330,
+    "includedTags": [
+      "GFE",
+      "Outcall"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Google-SERP Harvester",
+    "directAuthorized": false,
+    "thumbnail": "https://i.and6.com/176045/profile/ea50e568-3b4c-466e-aabf-1c93816b6e4a_thumb_298.jpg?v=1",
+    "bio": "Hello Jasmine, young French woman occasionally in Geneva. Services and Rates: Report, massage, oral sex 15 min - 110 CHF, 30 min - 165 CHF, 1 hour - 330 CHF. Feel free to ask for your drink. IMPORTANT: If you make an appointment but change your mind at the last minute regarding the choice of hostess, no problem!"
   }
 ];

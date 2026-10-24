@@ -270,7 +270,7 @@ export default function UniversalProfileDetailPage() {
             {/* Main Image + Multi-Photo Gallery Thumbnails */}
             <div className="space-y-3">
               <div className="relative rounded-2xl overflow-hidden border border-[#C69C6D]/40 bg-black/40 h-[460px] shadow-2xl">
-                <img src={activePhoto || profile.thumbnail} alt={profile.displayName} className="w-full h-full object-cover" />
+                <img src={activePhoto || profile.thumbnail} alt={profile.displayName} onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"; }} className="w-full h-full object-cover" />
                 <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                   <Badge className="bg-emerald-600 text-white border-0 px-3 py-1 text-xs font-bold flex items-center gap-1.5">
                     <ShieldCheck size={14} /> ID & Rufnummer verifiziert
@@ -657,6 +657,41 @@ export default function UniversalProfileDetailPage() {
           </div>
         </div>
       </main>
+
+      {/* MOBILE STICKY BOTTOM ACTION BAR (80% Mobile Conversion Booster) */}
+      <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-[#07101A]/95 backdrop-blur-xl border-t-2 border-[#C69C6D] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
+        <div>
+          <div className="text-[10px] text-gray-300 uppercase font-bold">
+            Fixpreis ({duration} Min. inkl. Extras)
+          </div>
+          <div className="text-xl font-black text-[#D5A021] leading-none mt-0.5">
+            CHF {totalCost}{" "}
+            <span className="text-[11px] text-emerald-400 font-bold ml-1">✓ 0% Aufpreis</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button size="sm" className="bg-rose-600 hover:bg-rose-700 text-white font-black text-xs px-3 h-10" asChild>
+            <Link href={`/live-cam?provider=${encodeURIComponent(profile.displayName)}`}>
+              🔴 Cam
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs px-4 h-10 shadow-lg"
+            asChild
+          >
+            <Link
+              href={`/booking-confirmation?provider=${encodeURIComponent(
+                profile.displayName
+              )}&city=${encodeURIComponent(profile.primaryCity)}&duration=${duration}&total=${totalCost}&extras=${encodeURIComponent(
+                [...profile.includedServices, ...selectedExtraIds].slice(0, 4).join(", ")
+              )}`}
+            >
+              Jetzt buchen →
+            </Link>
+          </Button>
+        </div>
+      </div>
 
       {activeViewerItem && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">

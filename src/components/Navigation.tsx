@@ -97,6 +97,13 @@ export function Navigation() {
           Claim
         </Link>
       </Button>
+      <a
+        href="https://www.sbb.ch"
+        title="Diskreter Quick-Exit (Sofort zu SBB.ch wechseln)"
+        className="px-2 py-1.5 rounded-lg text-[10px] font-black bg-white/5 hover:bg-rose-600/80 text-gray-400 hover:text-white border border-white/10 transition-all ml-1"
+      >
+        ESC
+      </a>
     </nav>
   );
 }
