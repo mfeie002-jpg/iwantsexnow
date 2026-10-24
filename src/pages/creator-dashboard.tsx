@@ -21,7 +21,7 @@ import {
   Video,
   PlusCircle,
   Wallet,
-  LogOut,
+  Radio,
 } from "lucide-react";
 
 interface IncomingLead {
@@ -95,6 +95,14 @@ export default function CreatorDashboardPage() {
   const [leads, setLeads] = useState<IncomingLead[]>(DEFAULT_DEMO_LEADS);
   const [leadCredits, setLeadCredits] = useState<number>(2);
 
+  // 1:1 Live-Cam & Vibe-Check Controls
+  const [camOnline, setCamOnline] = useState<boolean>(true);
+  const [camRate3Min, setCamRate3Min] = useState<number>(29);
+  const [camRate10Min, setCamRate10Min] = useState<number>(59);
+  const [camRate20Min, setCamRate20Min] = useState<number>(99);
+  const [camVoucherChf, setCamVoucherChf] = useState<number>(20);
+  const [completedCamCalls] = useState<number>(8);
+
   // PPV Locked Content Manager State
   const [vaultItems, setVaultItems] = useState<VaultMediaItem[]>(INITIAL_VAULT_ITEMS);
   const [newMediaTitle, setNewMediaTitle] = useState("");
@@ -107,6 +115,20 @@ export default function CreatorDashboardPage() {
 
     const savedCredits = localStorage.getItem("providerLeadCredits");
     if (savedCredits) setLeadCredits(Number(savedCredits));
+
+    const savedCamSettings = localStorage.getItem("providerCamSettings");
+    if (savedCamSettings) {
+      try {
+        const parsed = JSON.parse(savedCamSettings);
+        if (typeof parsed.camOnline === "boolean") setCamOnline(parsed.camOnline);
+        if (parsed.camRate3Min) setCamRate3Min(Number(parsed.camRate3Min));
+        if (parsed.camRate10Min) setCamRate10Min(Number(parsed.camRate10Min));
+        if (parsed.camRate20Min) setCamRate20Min(Number(parsed.camRate20Min));
+        if (parsed.camVoucherChf) setCamVoucherChf(Number(parsed.camVoucherChf));
+      } catch {
+        // ignore
+      }
+    }
 
     const storedLeads = localStorage.getItem("privateEnquiries");
     if (storedLeads) {
@@ -133,7 +155,31 @@ export default function CreatorDashboardPage() {
     }
   }, []);
 
-  const grossVaultRevenue = vaultItems.reduce((sum, item) => sum + item.priceChf * item.unlockCount, 0);
+  const handleSaveCamSettings = (nextOnlineState?: boolean) => {
+    const targetOnline = typeof nextOnlineState === "boolean" ? nextOnlineState : camOnline;
+    setCamOnline(targetOnline);
+    const payload = {
+      camOnline: targetOnline,
+      camRate3Min,
+      camRate10Min,
+      camRate20Min,
+      camVoucherChf,
+      updatedAt: new Date().toISOString(),
+    };
+    localStorage.setItem("providerCamSettings", JSON.stringify(payload));
+    toast({
+      title: targetOnline
+        ? "🟢 1:1 Live-Cam & Video-Check ist jetzt LIVE!"
+        : "⚫ Live-Cam Status auf Offline gesetzt",
+      description: targetOnline
+        ? `Kunden sehen deinen roten Live-Punkt (3 Min. Check: CHF ${camRate3Min} inkl. CHF ${camVoucherChf} Date-Gutschein).`
+        : "Du empfängst aktuell keine neuen Live-Kamera-Anrufe.",
+    });
+  };
+
+  const grossVaultRevenue =
+    vaultItems.reduce((sum, item) => sum + item.priceChf * item.unlockCount, 0) +
+    completedCamCalls * camRate10Min;
   const netProviderPayout = Math.round(grossVaultRevenue * 0.8);
   const platformFee = grossVaultRevenue - netProviderPayout;
 
@@ -160,7 +206,7 @@ export default function CreatorDashboardPage() {
   const handleRequestPayout = () => {
     toast({
       title: `Auszahlung von CHF ${netProviderPayout} angefordert!`,
-      description: "Dein 80% VIP-Medien-Erlös wird per TWINT / USDT auf dein hinterlegtes Konto überwiesen.",
+      description: "Dein 80% VIP-Medien- & Live-Cam-Erlös wird per TWINT / USDT auf dein hinterlegtes Konto überwiesen.",
       duration: 4500,
     });
   };
@@ -215,8 +261,8 @@ export default function CreatorDashboardPage() {
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="Provider Self-Service, Lead-Tresor & VIP Media Manager | iWantSexNow.ch"
-        description="Verwalte deine Echtzeit-Verfügbarkeit, Lead-Credits, gesperrte VIP-Videos (Locked Content) und Direktbuchungen."
+        title="Provider Self-Service, 1:1 Live-Cam & VIP Media Manager | iWantSexNow.ch"
+        description="Verwalte deine Echtzeit-Verfügbarkeit, 1:1 Live-Cam-Tarife, gesperrte VIP-Videos (Locked Content) und Direktbuchungen."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -236,30 +282,36 @@ export default function CreatorDashboardPage() {
               <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                 <ShieldCheck size={13} className="mr-1 inline" /> Eingeloggt als: {providerName}
               </Badge>
+              <Badge className={camOnline ? "bg-rose-600 text-white border-0 animate-pulse" : "bg-white/10 text-gray-400 border-0"}>
+                <Radio size={12} className="mr-1 inline" />
+                {camOnline ? "1:1 LIVE-CAM EMPFANG BEREIT" : "LIVE-CAM OFFLINE"}
+              </Badge>
               <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
                 <Coins size={12} className="mr-1 inline" /> Lead-Credits: {leadCredits}
               </Badge>
               <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                <Wallet size={12} className="mr-1 inline" /> VIP-Video Guthaben (80%): CHF {netProviderPayout}
+                <Wallet size={12} className="mr-1 inline" /> 80% Netto-Guthaben: CHF {netProviderPayout}
               </Badge>
             </div>
             <h1 className="text-2xl md:text-4xl font-serif font-black">
-              Provider Control Center & VIP Media Tresor
+              Provider Control Center · Live-Cam & VIP Tresor
             </h1>
             <p className="text-sm text-gray-300 mt-1">
-              Steuere deine Fixpreis-Buchungen, verkaufe gesperrte Vorab-Videos (Locked Content) und pinge deine Live-Verfügbarkeit.
+              Steuere deine Fixpreis-Buchungen, deine 1:1 Live-Kamera-Tarife und verkaufe gesperrte Vorab-Videos (80% Sofort-Anteil).
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <Button
-              variant="outline"
-              className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-bold"
-              asChild
+              onClick={() => handleSaveCamSettings(!camOnline)}
+              className={
+                camOnline
+                  ? "bg-rose-600 hover:bg-rose-700 text-white font-black shadow-lg"
+                  : "bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg"
+              }
             >
-              <Link href="/checkout?plan=credits_5">
-                <Coins size={15} className="mr-1.5" /> Credits / VIP aufladen
-              </Link>
+              <Video size={15} className="mr-2" />
+              {camOnline ? "🔴 Live-Cam aktiv (Ausschalten)" : "🟢 Jetzt für 1:1 Live-Cam online gehen"}
             </Button>
             <Button
               onClick={handleConfirmFreshness}
@@ -355,7 +407,7 @@ export default function CreatorDashboardPage() {
               ))}
             </div>
 
-            {/* NEW: LOCKED CONTENT VAULT MANAGER (80% Provider / 20% Platform Split) */}
+            {/* LOCKED CONTENT VAULT MANAGER (80% Provider / 20% Platform Split) */}
             <Card className="bg-gradient-to-br from-[#131F31] to-[#09131E] border-2 border-[#C69C6D]/60 p-6 rounded-2xl text-white space-y-5 shadow-2xl">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -370,7 +422,7 @@ export default function CreatorDashboardPage() {
                   </p>
                 </div>
                 <div className="bg-black/50 border border-emerald-500/40 rounded-xl p-3 text-right">
-                  <div className="text-[10px] text-gray-400 uppercase">Dein 80% Netto-Erlös</div>
+                  <div className="text-[10px] text-gray-400 uppercase">Dein 80% Netto-Erlös (inkl. Cam)</div>
                   <div className="text-2xl font-black text-emerald-400">CHF {netProviderPayout}</div>
                   <div className="text-[10px] text-gray-400">Brutto: CHF {grossVaultRevenue} (Plattform: CHF {platformFee})</div>
                 </div>
@@ -452,15 +504,90 @@ export default function CreatorDashboardPage() {
             </Card>
           </div>
 
-          {/* Right 5 Cols: Tariff Configurator, Boost & No-Show Radar */}
+          {/* Right 5 Cols: 1:1 Live-Cam Configurator + Real Date Tariff Configurator */}
           <div className="lg:col-span-5 space-y-6">
+            {/* NEW: 1:1 LIVE-CAM & VIBE-CHECK MINUTE RATE CONFIGURATOR */}
+            <Card className="bg-gradient-to-br from-[#24101C] to-[#09131E] border-2 border-rose-500/50 p-6 rounded-2xl text-white space-y-4 shadow-2xl">
+              <div className="flex items-center justify-between">
+                <Badge className="bg-rose-600 text-white border-0 font-black">
+                  ● 1:1 LIVE-CAM & VIDEO-CHECK STUDIO
+                </Badge>
+                <span className="text-xs font-bold text-emerald-400">80% Sofort-Auszahlung</span>
+              </div>
+
+              <h2 className="text-xl font-serif font-black">
+                Deine 1:1 Kamera-Tarife & Date-Gutschein
+              </h2>
+              <p className="text-xs text-gray-300">
+                Bestimme selbst, was Kunden für deinen <strong>3-Minuten Vorab-Echtheits-Check</strong> oder eine private 1:1 Cam-Session zahlen:
+              </p>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-gray-300 block mb-1">3 Min. Vibe-Check (CHF)</label>
+                  <input
+                    type="number"
+                    value={camRate3Min}
+                    onChange={(e) => setCamRate3Min(Number(e.target.value))}
+                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3 py-2 text-sm font-black text-[#D5A021]"
+                  />
+                </div>
+                <div>
+                  <label className="text-gray-300 block mb-1">Davon Date-Gutschein (CHF)</label>
+                  <input
+                    type="number"
+                    value={camVoucherChf}
+                    onChange={(e) => setCamVoucherChf(Number(e.target.value))}
+                    className="w-full rounded-xl bg-black/50 border border-emerald-500/40 px-3 py-2 text-sm font-black text-emerald-400"
+                  />
+                </div>
+                <div>
+                  <label className="text-gray-300 block mb-1">10 Min. Private Cam (CHF)</label>
+                  <input
+                    type="number"
+                    value={camRate10Min}
+                    onChange={(e) => setCamRate10Min(Number(e.target.value))}
+                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3 py-2 text-sm font-black text-[#D5A021]"
+                  />
+                </div>
+                <div>
+                  <label className="text-gray-300 block mb-1">20 Min. VIP Cam-Date (CHF)</label>
+                  <input
+                    type="number"
+                    value={camRate20Min}
+                    onChange={(e) => setCamRate20Min(Number(e.target.value))}
+                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3 py-2 text-sm font-black text-[#D5A021]"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                <Button
+                  type="button"
+                  onClick={() => handleSaveCamSettings(true)}
+                  className="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs"
+                >
+                  Cam-Tarife speichern & LIVE schalten
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10 text-xs"
+                  asChild
+                >
+                  <Link href={`/live-cam?provider=${encodeURIComponent(providerName)}`}>
+                    1:1 Cam-Raum öffnen →
+                  </Link>
+                </Button>
+              </div>
+            </Card>
+
             <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white space-y-5">
               <div>
                 <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-2">
                   <Calculator size={13} className="mr-1 inline" /> Endpreis-Rechner Konfiguration
                 </Badge>
                 <h2 className="text-xl font-serif font-black">
-                  Deine Direktbuchungs-Tarife
+                  Deine Direktbuchungs-Tarife (Reales Treffen)
                 </h2>
               </div>
 
@@ -529,21 +656,6 @@ export default function CreatorDashboardPage() {
                 className="w-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black"
               >
                 Tarife speichern
-              </Button>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-[#16283E] to-[#09131E] border border-[#C69C6D]/50 p-6 rounded-2xl text-white space-y-3">
-              <div className="text-xs font-bold uppercase text-[#D5A021] flex items-center gap-1.5">
-                <Zap size={14} /> Sofort mehr Buchungen heute Abend?
-              </div>
-              <h3 className="text-lg font-serif font-black">
-                24h „Heute direkt buchbar“ Radar-Boost (CHF 29)
-              </h3>
-              <p className="text-xs text-gray-300">
-                Platziert dein Profil für 24 Stunden ganz vorne im Live-Story-Radar und auf Platz 1 für Suchanfragen in Zürich & Zug.
-              </p>
-              <Button className="w-full bg-white text-[#0D1B2A] hover:bg-gray-200 font-black text-xs" asChild>
-                <Link href="/checkout?plan=boost_24h">24h Radar-Boost aktivieren (CHF 29) →</Link>
               </Button>
             </Card>
 

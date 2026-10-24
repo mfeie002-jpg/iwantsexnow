@@ -32,7 +32,7 @@ const CAM_PACKAGES = [
     minutes: 3,
     priceChf: 29,
     voucherChf: 20,
-    desc: "Sieh sie live vor dem Treffen! Inkl. CHF 20 Gutschein für deine Direktbuchung heute.",
+    desc: "Sieh sie live vor dem Treffen! Inkl. CHF 20 Gutschein fÃ¼r deine Direktbuchung heute.",
   },
   {
     id: "private_10",
@@ -40,7 +40,7 @@ const CAM_PACKAGES = [
     minutes: 10,
     priceChf: 59,
     voucherChf: 25,
-    desc: "Diskretes 1:1 Live-Video im verschlüsselten Browser-Raum (ohne Rufnummern-Tausch).",
+    desc: "Diskretes 1:1 Live-Video im verschlÃ¼sselten Browser-Raum (ohne Rufnummern-Tausch).",
   },
   {
     id: "vip_20",
@@ -62,13 +62,28 @@ export default function LiveCamPage() {
 
   const [selectedProfileName, setSelectedProfileName] = useState<string>(requestedProvider || "Sophia");
   const [selectedPkgId, setSelectedPkgId] = useState<string>("vibe_3");
+  const [customCamRates, setCustomCamRates] = useState({ camRate3Min: 29, camRate10Min: 59, camRate20Min: 99, camVoucherChf: 20 });
+  useEffect(() => {
+    const saved = localStorage.getItem("providerCamSettings");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setCustomCamRates({
+          camRate3Min: Number(parsed.camRate3Min) || 29,
+          camRate10Min: Number(parsed.camRate10Min) || 59,
+          camRate20Min: Number(parsed.camRate20Min) || 99,
+          camVoucherChf: Number(parsed.camVoucherChf) || 20,
+        });
+      } catch {}
+    }
+  }, []);
   const [sessionActive, setSessionActive] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(180);
   const [camEnabled, setCamEnabled] = useState(false);
   const [micEnabled, setMicEnabled] = useState(true);
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([
-    { sender: "System", text: "Ende-zu-Ende verschlüsselter 1:1 Swiss Shield Video-Kanal bereit." },
+    { sender: "System", text: "Ende-zu-Ende verschlÃ¼sselter 1:1 Swiss Shield Video-Kanal bereit." },
   ]);
 
   useEffect(() => {
@@ -84,7 +99,12 @@ export default function LiveCamPage() {
     );
   }, [allProfiles, selectedProfileName]);
 
-  const selectedPkg = CAM_PACKAGES.find((p) => p.id === selectedPkgId) || CAM_PACKAGES[0];
+  const dynamicPackages = CAM_PACKAGES.map((p) => ({
+    ...p,
+    priceChf: p.id === "vibe_3" ? customCamRates.camRate3Min : p.id === "private_10" ? customCamRates.camRate10Min : customCamRates.camRate20Min,
+    voucherChf: p.id === "vibe_3" ? customCamRates.camVoucherChf : p.voucherChf,
+  }));
+  const selectedPkg = dynamicPackages.find((p) => p.id === selectedPkgId) || dynamicPackages[0];
 
   // Countdown timer when live session is running
   useEffect(() => {
@@ -118,7 +138,7 @@ export default function LiveCamPage() {
     } catch {
       toast({
         title: "Kamera im anonymen Zuschauer-Modus",
-        description: "Deine eigene Kamera bleibt aus (1-Way-Privacy aktiv) – du siehst nur die Anbieterin.",
+        description: "Deine eigene Kamera bleibt aus (1-Way-Privacy aktiv) â€“ du siehst nur die Anbieterin.",
       });
     }
   };
@@ -150,13 +170,13 @@ export default function LiveCamPage() {
       ...prev,
       {
         sender: activeProfile.displayName,
-        text: `Hallo Süßer ✨ Ich bin jetzt live für dich im privaten Raum (${selectedPkg.minutes} Min.). Dein CHF ${selectedPkg.voucherChf} Buchungs-Gutschein für heute Abend ist ebenfalls aktiviert!`,
+        text: `Hallo SÃ¼ÃŸer âœ¨ Ich bin jetzt live fÃ¼r dich im privaten Raum (${selectedPkg.minutes} Min.). Dein CHF ${selectedPkg.voucherChf} Buchungs-Gutschein fÃ¼r heute Abend ist ebenfalls aktiviert!`,
       },
     ]);
 
     toast({
       title: `1:1 Live-Cam mit ${activeProfile.displayName} gestartet!`,
-      description: `${selectedPkg.minutes} Min. aktiv + CHF ${selectedPkg.voucherChf} Gutschein für dein reales Treffen hinterlegt.`,
+      description: `${selectedPkg.minutes} Min. aktiv + CHF ${selectedPkg.voucherChf} Gutschein fÃ¼r dein reales Treffen hinterlegt.`,
       duration: 4500,
     });
   };
@@ -172,7 +192,7 @@ export default function LiveCamPage() {
         ...prev,
         {
           sender: activeProfile.displayName,
-          text: "Gefällt dir, was du siehst? Wenn du mich heute noch in " + activeProfile.primaryCity + " treffen willst, klicke rechts einfach auf Direktbuchung mit deinem Gutschein 😘",
+          text: "GefÃ¤llt dir, was du siehst? Wenn du mich heute noch in " + activeProfile.primaryCity + " treffen willst, klicke rechts einfach auf Direktbuchung mit deinem Gutschein ðŸ˜˜",
         },
       ]);
     }, 1200);
@@ -187,7 +207,7 @@ export default function LiveCamPage() {
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="1:1 Private Live-Cam & Video-Vibe-Check (Zürich, Zug & Schweiz) | iWantSexNow.ch"
+        title="1:1 Private Live-Cam & Video-Vibe-Check (ZÃ¼rich, Zug & Schweiz) | iWantSexNow.ch"
         description="Sieh verifizierte Anbieterinnen live im 1:1 Video-Check vor deiner Buchung oder starte eine diskrete Private-Cam-Session im Browser."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
@@ -206,13 +226,13 @@ export default function LiveCamPage() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <Badge className="bg-rose-600 text-white border-0 mb-1.5 animate-pulse">
-                ● LIVE · 1:1 PRIVATE VIDEO-CHECK & CAM-LOUNGE
+                â— LIVE Â· 1:1 PRIVATE VIDEO-CHECK & CAM-LOUNGE
               </Badge>
               <h1 className="text-2xl md:text-4xl font-serif font-black">
                 Jetzt Online: 1:1 Live-Kamera & Vorab-Echtheits-Check
               </h1>
               <p className="text-xs sm:text-sm text-gray-300 mt-1">
-                Kein öffentlicher Massen-Chat: Buche einen 100% privaten, verschlüsselten 1:1 Video-Call direkt im Browser (inkl. Gutschein-Anrechnung auf dein reales Date!).
+                Kein Ã¶ffentlicher Massen-Chat: Buche einen 100% privaten, verschlÃ¼sselten 1:1 Video-Call direkt im Browser (inkl. Gutschein-Anrechnung auf dein reales Date!).
               </p>
             </div>
           </div>
@@ -244,7 +264,7 @@ export default function LiveCamPage() {
                       {p.displayName}, {p.age}
                     </div>
                     <div className={`text-[10px] ${isSelected ? "text-[#0D1B2A]/80" : "text-emerald-400"}`}>
-                      ● Cam bereit · {p.primaryCity}
+                      â— Cam bereit Â· {p.primaryCity}
                     </div>
                   </div>
                 </button>
@@ -272,7 +292,7 @@ export default function LiveCamPage() {
                 <div className="flex items-center gap-2.5">
                   <span className="px-3 py-1 rounded-full bg-rose-600 text-white text-xs font-black flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                    {sessionActive ? "1:1 LIVE STREAM AKTIV" : "BEREIT FÜR 1:1 VERBINDUNG"}
+                    {sessionActive ? "1:1 LIVE STREAM AKTIV" : "BEREIT FÃœR 1:1 VERBINDUNG"}
                   </span>
                   <span className="text-xs font-bold text-white bg-black/60 px-3 py-1 rounded-full border border-white/15">
                     {activeProfile.displayName} ({activeProfile.primaryCity}, {activeProfile.canton})
@@ -296,7 +316,7 @@ export default function LiveCamPage() {
                     Privater 1:1 Video-Kanal mit {activeProfile.displayName}
                   </h2>
                   <p className="text-xs text-gray-300 leading-relaxed">
-                    Starte den <strong>3-Minuten Live-Echtheits-Check (CHF 29 inkl. CHF 20 Buchungs-Gutschein)</strong> oder ein privates 1:1 Cam-Date. Deine eigene Kamera bleibt standardmässig ausgeschaltet (100% anonym).
+                    Starte den <strong>3-Minuten Live-Echtheits-Check (CHF 29 inkl. CHF 20 Buchungs-Gutschein)</strong> oder ein privates 1:1 Cam-Date. Deine eigene Kamera bleibt standardmÃ¤ssig ausgeschaltet (100% anonym).
                   </p>
                   <Button
                     onClick={handleStartLiveSession}
@@ -345,7 +365,7 @@ export default function LiveCamPage() {
                   {camEnabled ? (
                     <video ref={localVideoRef} autoPlay muted playsInline className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-center px-2">🔒 Deine Cam ist geschützt</span>
+                    <span className="text-center px-2">ðŸ”’ Deine Cam ist geschÃ¼tzt</span>
                   )}
                 </div>
               </div>
@@ -385,11 +405,11 @@ export default function LiveCamPage() {
                 <Lock size={12} className="mr-1 inline" /> 1:1 Tarif & Gutschein-Anrechnung
               </Badge>
               <h2 className="text-xl font-serif font-black">
-                1:1 Kamera-Paket wählen
+                1:1 Kamera-Paket wÃ¤hlen
               </h2>
 
               <div className="space-y-2.5">
-                {CAM_PACKAGES.map((pkg) => {
+                {dynamicPackages.map((pkg) => {
                   const active = selectedPkgId === pkg.id;
                   return (
                     <button
@@ -408,7 +428,7 @@ export default function LiveCamPage() {
                       </div>
                       <p className="text-[11px] text-gray-300 mt-1">{pkg.desc}</p>
                       <div className="mt-1.5 text-[10px] font-bold text-emerald-400">
-                        ✓ Inkl. CHF {pkg.voucherChf} Gutschein auf reales Treffen!
+                        âœ“ Inkl. CHF {pkg.voucherChf} Gutschein auf reales Treffen!
                       </div>
                     </button>
                   );
@@ -420,7 +440,7 @@ export default function LiveCamPage() {
                 className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6 text-sm shadow-xl"
               >
                 <Video size={16} className="mr-2" />
-                {sessionActive ? "Zeit verlängern" : `1:1 Live-Call starten (CHF ${selectedPkg.priceChf})`}
+                {sessionActive ? "Zeit verlÃ¤ngern" : `1:1 Live-Call starten (CHF ${selectedPkg.priceChf})`}
               </Button>
             </Card>
 
@@ -437,7 +457,7 @@ export default function LiveCamPage() {
               </p>
               <Button className="w-full bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs" asChild>
                 <Link href={`/profile/${encodeURIComponent(activeProfile.displayName)}`}>
-                  Mit Gutschein zum Fixpreis buchen →
+                  Mit Gutschein zum Fixpreis buchen â†’
                 </Link>
               </Button>
             </Card>

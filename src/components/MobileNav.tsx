@@ -12,7 +12,7 @@ export function MobileNav() {
         variant="ghost"
         size="icon"
         onClick={() => setOpen(!open)}
-        aria-label="Menü öffnen"
+        aria-label="MenÃ¼ Ã¶ffnen"
         className="text-white hover:bg-white/10"
       >
         {open ? <X size={24} /> : <Menu size={24} />}
@@ -39,6 +39,14 @@ export function MobileNav() {
             >
               <SlidersHorizontal size={16} className="text-emerald-400" />
               Endpreis- & Portal-Matrix
+            </Link>
+            <Link
+              href="/live-cam"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-black bg-rose-950/50 border border-rose-500/40 text-rose-200 hover:bg-rose-900/50"
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+              1:1 Live-Cam & Video-Vibe-Check
             </Link>
             <Link
               href="/rankings"
@@ -68,7 +76,7 @@ export function MobileNav() {
 
           <div className="space-y-1.5 pt-3 border-t border-white/10">
             <div className="text-[11px] font-bold uppercase tracking-widest text-[#D5A021] px-2">
-              Städte & Kantone
+              StÃ¤dte & Kantone
             </div>
             <div className="grid grid-cols-2 gap-2">
               <Link
@@ -76,7 +84,7 @@ export function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
               >
-                <MapPin size={13} className="text-[#D5A021]" /> Zürich & Zug
+                <MapPin size={13} className="text-[#D5A021]" /> ZÃ¼rich & Zug
               </Link>
               <Link
                 href="/escort-basel"
@@ -97,7 +105,7 @@ export function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
               >
-                <MapPin size={13} className="text-[#D5A021]" /> Genève & Vaud
+                <MapPin size={13} className="text-[#D5A021]" /> GenÃ¨ve & Vaud
               </Link>
             </div>
           </div>
@@ -128,7 +136,7 @@ export function MobileNav() {
               className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#C69C6D] py-3 text-sm font-black text-[#0D1B2A] shadow-lg"
             >
               <PlusCircle size={16} />
-              Profil übernehmen / Inserieren
+              Profil Ã¼bernehmen / Inserieren
             </Link>
           </div>
         </div>
