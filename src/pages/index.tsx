@@ -26,7 +26,7 @@ export default function Home() {
         <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.2fr_1fr]">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#d7b484]">Informationen · Schweiz · 18+</p>
-            <h1 className="mt-6 text-5xl font-bold leading-[1.08] tracking-tight md:text-7xl">Mehr Klarheit.<br />Für deine<br /><span className="text-[#d7b484]">Entscheidungen.</span></h1>
+            <h1 className="mt-6 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-7xl">Mehr Klarheit.<br />Für deine<br /><span className="text-[#d7b484]">Entscheidungen.</span></h1>
             <p className="mt-7 max-w-lg text-lg leading-relaxed text-slate-300">Ein klarer Einstieg: Antworten auf häufige Fragen, Hinweise zum Umgang mit persönlichen Daten und transparente Informationen zum aktuellen Stand.</p>
             <div className="mt-8 flex flex-wrap items-center gap-5"><a href="#orientierung" className="rounded-lg bg-[#d7b484] px-7 py-4 font-bold text-slate-950 hover:bg-amber-100">Informationen ansehen <span aria-hidden="true">→</span></a><Link href="/faq" className="font-semibold text-white underline underline-offset-4">Zu den Antworten</Link></div>
           </div>
