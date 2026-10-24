@@ -9,18 +9,18 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import {
   ShieldCheck,
-  Clock,
-  CheckCircle2,
-  Sparkles,
-  TrendingUp,
   Bell,
+  TrendingUp,
   MapPin,
   Calculator,
   RefreshCw,
   Check,
   X,
-  PlusCircle,
   Globe,
+  Lock,
+  Unlock,
+  Coins,
+  Zap,
 } from "lucide-react";
 
 interface IncomingLead {
@@ -35,6 +35,7 @@ interface IncomingLead {
   notes: string;
   createdAt: string;
   status?: "new" | "accepted" | "declined";
+  unlocked?: boolean;
 }
 
 const DEFAULT_DEMO_LEADS: IncomingLead[] = [
@@ -46,10 +47,11 @@ const DEFAULT_DEMO_LEADS: IncomingLead[] = [
     guaranteedTotalChf: 800,
     requestedTime: "Heute, 20:30 Uhr",
     city: "Zug / Park Hotel",
-    contact: "+41 79 812 ** ** (Signal / WhatsApp)",
+    contact: "+41 79 812 44 19 (Signal / WhatsApp)",
     notes: "Diskreter Hotelbesuch in Zug, Rezeption informiert.",
     createdAt: new Date(Date.now() - 14 * 60000).toISOString(),
     status: "new",
+    unlocked: false,
   },
   {
     id: 902,
@@ -59,16 +61,16 @@ const DEFAULT_DEMO_LEADS: IncomingLead[] = [
     guaranteedTotalChf: 500,
     requestedTime: "Morgen, 18:00 Uhr",
     city: "Zürich Paradeplatz (Incall)",
-    contact: "Threema-ID: CH98K2**",
+    contact: "Threema-ID: CH98K29A",
     notes: "Erstkontakt über Endpreis-Rechner.",
     createdAt: new Date(Date.now() - 95 * 60000).toISOString(),
     status: "accepted",
+    unlocked: true,
   },
 ];
 
 export default function CreatorDashboardPage() {
   const { toast } = useToast();
-  const [liveStatus, setLiveStatus] = useState(true);
   const [activeZone, setActiveZone] = useState("Zürich City & Zug (Outcall)");
   const [lastConfirmedMins, setLastConfirmedMins] = useState(1);
   const [rate30, setRate30] = useState(300);
@@ -76,36 +78,59 @@ export default function CreatorDashboardPage() {
   const [rate120, setRate120] = useState(800);
   const [includedServices, setIncludedServices] = useState<string[]>(["GFE", "Dinner Dates", "Outcall"]);
   const [leads, setLeads] = useState<IncomingLead[]>(DEFAULT_DEMO_LEADS);
+  const [leadCredits, setLeadCredits] = useState<number>(2);
 
   useEffect(() => {
+    const savedCredits = localStorage.getItem("providerLeadCredits");
+    if (savedCredits) {
+      setLeadCredits(Number(savedCredits));
+    }
     const stored = localStorage.getItem("privateEnquiries");
     if (stored) {
       try {
         const parsed = JSON.parse(stored) as IncomingLead[];
         if (Array.isArray(parsed) && parsed.length > 0) {
           setLeads([
-            ...parsed.map((l) => ({ ...l, status: l.status || ("new" as const) })).reverse(),
+            ...parsed.map((l) => ({ ...l, status: l.status || ("new" as const), unlocked: false })).reverse(),
             ...DEFAULT_DEMO_LEADS,
           ]);
         }
       } catch {
-        // ignore malformed localStorage
+        // ignore
       }
     }
   }, []);
 
+  const handleUnlockLead = (id: number) => {
+    if (leadCredits <= 0) {
+      toast({
+        title: "Keine Lead-Credits mehr verfügbar",
+        description: "Bitte lade dein Lead-Guthaben per TWINT, Swiss QR oder USDT auf.",
+      });
+      return;
+    }
+    const nextCredits = leadCredits - 1;
+    setLeadCredits(nextCredits);
+    localStorage.setItem("providerLeadCredits", String(nextCredits));
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, unlocked: true } : l)));
+    toast({
+      title: "Kunden-Kontakt erfolgreich freigeschaltet!",
+      description: `1 Lead-Credit eingelöst (Restguthaben: ${nextCredits} Credits). Du siehst jetzt die volle Rufnummer / Threema-ID.`,
+      duration: 4000,
+    });
+  };
+
   const handleConfirmFreshness = () => {
     setLastConfirmedMins(0);
-    setLiveStatus(true);
     toast({
       title: "Echtzeit-Verfügbarkeit bestätigt!",
-      description: `Dein Profil trägt jetzt den grünen Live-Zeitstempel für ${activeZone} und wird im Smart-Matcher ganz oben gerankt.`,
+      description: `Dein Profil trägt jetzt den grünen Live-Zeitstempel für ${activeZone}.`,
       duration: 3500,
     });
   };
 
   const handleLeadAction = (id: number, status: "accepted" | "declined") => {
-    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status } : l)));
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status, unlocked: true } : l)));
     toast({
       title: status === "accepted" ? "Buchungsanfrage bestätigt" : "Anfrage abgelehnt",
       description:
@@ -122,11 +147,16 @@ export default function CreatorDashboardPage() {
     );
   };
 
+  const maskContactString = (raw: string) => {
+    if (raw.length <= 6) return "••••••";
+    return raw.slice(0, 8) + " •• •• (Gesperrt)";
+  };
+
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="Provider Self-Service & Lead Dashboard | iWantSexNow.ch"
-        description="Verwalte deine Echtzeit-Verfügbarkeit, Endpreis-Tarife, Portal-Deduplizierung und direkte Buchungsanfragen."
+        title="Provider Self-Service & Lead-Tresor | iWantSexNow.ch"
+        description="Verwalte deine Echtzeit-Verfügbarkeit, Lead-Credits und direkte Fixpreis-Buchungsanfragen."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -139,175 +169,130 @@ export default function CreatorDashboardPage() {
       </header>
 
       <main className="container mx-auto px-4 py-10 max-w-7xl space-y-8">
-        {/* Top Header + 1-Click Freshness Ping */}
+        {/* Top Bar with Credit Balance & 24h Boost Button */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-[#09131E] border border-[#C69C6D]/40 rounded-2xl p-6 shadow-2xl">
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                <ShieldCheck size={13} className="mr-1 inline" /> Autorisiertes Direktprofil · ID & Fotos verifiziert
+                <ShieldCheck size={13} className="mr-1 inline" /> Autorisiertes Direktprofil
               </Badge>
               <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-                4 Schweizer Portale gebündelt
+                <Coins size={12} className="mr-1 inline" /> Verfügbare Lead-Credits: {leadCredits}
               </Badge>
             </div>
             <h1 className="text-2xl md:text-4xl font-serif font-black">
-              Provider Control Center & Lead-Engine
+              Provider Control Center & Lead-Tresor
             </h1>
             <p className="text-sm text-gray-300 mt-1">
-              Steuere deine Live-Sichtbarkeit in Zürich & Zug, pflege deinen echten Endpreis-Rechner und verwalte direkte Buchungsanfragen ohne Agentur-Provision.
+              Schalte eingehende Fixpreis-Buchungen frei, pinge deine Echtzeit-Verfügbarkeit und verwalte deine Tarife.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-            <div className="bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs">
-              <div className="text-gray-400">Aktueller Freshness-Status:</div>
-              <div className="text-emerald-400 font-bold flex items-center gap-1.5 mt-0.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                {lastConfirmedMins === 0 ? "Gerade eben bestätigt" : `Vor ${lastConfirmedMins} Min. bestätigt`}
-              </div>
-            </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Button
+              variant="outline"
+              className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-bold"
+              asChild
+            >
+              <Link href="/checkout?plan=credits_5">
+                <Coins size={15} className="mr-1.5" /> Lead-Credits / VIP aufladen
+              </Link>
+            </Button>
             <Button
               onClick={handleConfirmFreshness}
-              className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black px-5 py-6 h-auto shadow-xl"
+              className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black shadow-xl"
             >
-              <RefreshCw size={16} className="mr-2" />
+              <RefreshCw size={15} className="mr-2" />
               Jetzt für 4 Std. „Sofort Verfügbar“ pingen
             </Button>
           </div>
         </div>
 
-        {/* KPI Row */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-[#09131E] border-white/15 p-5 text-white rounded-2xl">
-            <div className="text-xs text-gray-400 flex items-center justify-between">
-              <span>Qualifizierte Direkt-Anfragen</span>
-              <Bell size={15} className="text-[#D5A021]" />
-            </div>
-            <div className="text-3xl font-black text-[#D5A021] mt-2">{leads.length} Leads</div>
-            <div className="text-xs text-emerald-400 mt-1">100% mit vorab akzeptiertem Endpreis</div>
-          </Card>
-
-          <Card className="bg-[#09131E] border-white/15 p-5 text-white rounded-2xl">
-            <div className="text-xs text-gray-400 flex items-center justify-between">
-              <span>Smart-Matcher Impressionen</span>
-              <TrendingUp size={15} className="text-emerald-400" />
-            </div>
-            <div className="text-3xl font-black text-white mt-2">1,420</div>
-            <div className="text-xs text-gray-400 mt-1">Top-3 Platzierung in Zürich & Zug</div>
-          </Card>
-
-          <Card className="bg-[#09131E] border-white/15 p-5 text-white rounded-2xl">
-            <div className="text-xs text-gray-400 flex items-center justify-between">
-              <span>Eliminierte Fremd-Dubletten</span>
-              <Globe size={15} className="text-sky-400" />
-            </div>
-            <div className="text-3xl font-black text-white mt-2">3 Portale</div>
-            <div className="text-xs text-amber-300 mt-1">xdate, fgirl & and6 auf Direktprofil geleitet</div>
-          </Card>
-
-          <Card className="bg-[#09131E] border-white/15 p-5 text-white rounded-2xl">
-            <div className="text-xs text-gray-400 flex items-center justify-between">
-              <span>Aktive Einsatz-Region</span>
-              <MapPin size={15} className="text-[#D5A021]" />
-            </div>
-            <input
-              type="text"
-              value={activeZone}
-              onChange={(e) => setActiveZone(e.target.value)}
-              className="mt-2 w-full rounded-lg bg-black/40 border border-white/15 px-2.5 py-1.5 text-sm font-bold text-white"
-            />
-            <div className="text-[11px] text-gray-400 mt-1">Steuert das Geo-Routing für Outcalls</div>
-          </Card>
-        </div>
-
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Left 7 Cols: Live Private Enquiry Inbox */}
+          {/* Left 7 Cols: Pay-Per-Lead Inbox */}
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-serif font-black flex items-center gap-2">
                 <Bell size={18} className="text-[#D5A021]" />
-                Eingegangene Direktbuchungs-Anfragen (Private Enquiries)
+                Eingegangene Fixpreis-Buchungsanfragen ({leads.length})
               </h2>
-              <span className="text-xs text-gray-400">Echtzeit-Sync aktiv</span>
+              <Link href="/checkout?plan=vip_monthly" className="text-xs text-[#D5A021] underline font-bold">
+                Mit VIP-Paket alle Leads automatisch freischalten →
+              </Link>
             </div>
 
             {leads.map((lead) => (
               <Card
                 key={lead.id}
-                className={`p-5 rounded-2xl border transition-all text-white ${
-                  lead.status === "new"
-                    ? "bg-[#09131E] border-[#C69C6D]/60 shadow-xl"
-                    : "bg-white/5 border-white/10 opacity-85"
-                }`}
+                className="p-5 rounded-2xl bg-[#09131E] border border-[#C69C6D]/50 text-white shadow-xl space-y-3"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      {lead.status === "new" && (
-                        <Badge className="bg-emerald-500 text-[#0D1B2A] font-black text-[11px]">
-                          NEUE ANFRAGE
-                        </Badge>
-                      )}
-                      {lead.status === "accepted" && (
-                        <Badge className="bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 text-[11px]">
-                          ✓ Bestätigt
-                        </Badge>
-                      )}
-                      {lead.status === "declined" && (
-                        <Badge className="bg-rose-950 text-rose-300 text-[11px]">
-                          Abgelehnt
-                        </Badge>
-                      )}
-                      <span className="text-xs text-gray-400">
+                      <Badge className="bg-emerald-500 text-[#0D1B2A] font-black text-[11px]">
+                        FIXPREIS AKZEPTIERT
+                      </Badge>
+                      <span className="text-xs text-gray-300">
                         📍 {lead.city} · 🕒 {lead.requestedTime}
                       </span>
                     </div>
                     <h3 className="text-lg font-bold mt-2">
-                      {lead.duration} Min. Direktbuchung · Wunsch-Optionen: {lead.extras.join(", ")}
+                      {lead.duration} Min. Direktbuchung · Extras: {lead.extras.join(", ")}
                     </h3>
                   </div>
 
                   <div className="text-right bg-black/40 border border-[#C69C6D]/40 rounded-xl px-3.5 py-2">
-                    <div className="text-[10px] text-gray-400 uppercase">Fixierter Endpreis</div>
+                    <div className="text-[10px] text-gray-400 uppercase">Dein Honorar (0% Abzug)</div>
                     <div className="text-2xl font-black text-[#D5A021]">CHF {lead.guaranteedTotalChf}</div>
                   </div>
                 </div>
 
-                <div className="mt-3 p-3 rounded-xl bg-black/30 border border-white/10 text-xs space-y-1">
+                {/* Contact Unlock Vault */}
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <div>
-                    <span className="text-gray-400">Verifizierter Kunden-Kontakt:</span>{" "}
-                    <strong className="text-emerald-300">{lead.contact}</strong>
+                    <span className="text-gray-400 block">Hinterlegter Kunden-Kontakt (SMS / WhatsApp / Signal / Threema):</span>
+                    {lead.unlocked ? (
+                      <strong className="text-emerald-400 text-sm font-mono">{lead.contact}</strong>
+                    ) : (
+                      <strong className="text-amber-300 text-sm font-mono">{maskContactString(lead.contact)}</strong>
+                    )}
+                    {lead.notes && <div className="text-gray-300 mt-1">Notiz: {lead.notes}</div>}
                   </div>
-                  {lead.notes && (
-                    <div>
-                      <span className="text-gray-400">Nachricht / Hotel-Info:</span>{" "}
-                      <span className="text-gray-200">{lead.notes}</span>
-                    </div>
+
+                  {!lead.unlocked && (
+                    <Button
+                      size="sm"
+                      onClick={() => handleUnlockLead(lead.id)}
+                      className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs shrink-0"
+                    >
+                      <Unlock size={13} className="mr-1.5" />
+                      Kontakt freischalten (1 Credit)
+                    </Button>
                   )}
                 </div>
 
-                <div className="mt-4 flex items-center justify-end gap-2">
+                <div className="flex items-center justify-end gap-2 pt-1">
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleLeadAction(lead.id, "declined")}
-                    className="border-white/20 text-gray-300 hover:bg-white/10 text-xs"
+                    className="border-white/20 text-gray-300 text-xs"
                   >
-                    <X size={14} className="mr-1" /> Ablehnen
+                    <X size={13} className="mr-1" /> Ablehnen
                   </Button>
                   <Button
                     size="sm"
                     onClick={() => handleLeadAction(lead.id, "accepted")}
                     className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs"
                   >
-                    <Check size={14} className="mr-1" /> Termin zum Fixpreis bestätigen
+                    <Check size={13} className="mr-1" /> Termin bestätigen
                   </Button>
                 </div>
               </Card>
             ))}
           </div>
 
-          {/* Right 5 Cols: Transparent Total Cost Tariff Configurator */}
+          {/* Right 5 Cols: Tariff Configurator & 24h Radar Boost */}
           <div className="lg:col-span-5 space-y-6">
             <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white space-y-5">
               <div>
@@ -315,11 +300,8 @@ export default function CreatorDashboardPage() {
                   <Calculator size={13} className="mr-1 inline" /> Endpreis-Rechner Konfiguration
                 </Badge>
                 <h2 className="text-xl font-serif font-black">
-                  Deine Direktbuchungs-Tarife & Inklusiv-Services
+                  Deine Direktbuchungs-Tarife
                 </h2>
-                <p className="text-xs text-gray-400 mt-1">
-                  Diese Werte speisen live den Endpreis-Rechner auf der Startseite und verhindern Preis-Missverständnisse vor dem Treffen.
-                </p>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
@@ -354,7 +336,7 @@ export default function CreatorDashboardPage() {
 
               <div>
                 <label className="text-xs text-gray-300 font-bold block mb-2">
-                  Im Grundtarif inklusive (CHF 0 Aufpreis im Rechner):
+                  Im Grundtarif inklusive (CHF 0 Aufpreis):
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {["GFE", "Dinner Dates", "Outcall", "Massage", "Events"].map((srv) => {
@@ -364,7 +346,7 @@ export default function CreatorDashboardPage() {
                         key={srv}
                         type="button"
                         onClick={() => toggleIncluded(srv)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border ${
                           active
                             ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
                             : "bg-black/30 border-white/10 text-gray-400"
@@ -380,13 +362,28 @@ export default function CreatorDashboardPage() {
               <Button
                 onClick={() =>
                   toast({
-                    title: "Tarife & Inklusiv-Leistungen gespeichert",
-                    description: "Dein Endpreis-Rechner wurde im gesamten Schweizer Index aktualisiert.",
+                    title: "Tarife im Live-Index gespeichert",
+                    description: "Dein Endpreis-Rechner wurde aktualisiert.",
                   })
                 }
                 className="w-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black"
               >
-                Tarife im Live-Index aktualisieren
+                Tarife speichern
+              </Button>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-[#16283E] to-[#09131E] border border-[#C69C6D]/50 p-6 rounded-2xl text-white space-y-3">
+              <div className="text-xs font-bold uppercase text-[#D5A021] flex items-center gap-1.5">
+                <Zap size={14} /> Sofort mehr Buchungen heute Abend?
+              </div>
+              <h3 className="text-lg font-serif font-black">
+                24h „Heute direkt buchbar“ Radar-Boost (CHF 29)
+              </h3>
+              <p className="text-xs text-gray-300">
+                Platziert dein Profil für 24 Stunden ganz vorne im Live-Story-Radar und auf Platz 1 für Suchanfragen in Zürich & Zug.
+              </p>
+              <Button className="w-full bg-white text-[#0D1B2A] hover:bg-gray-200 font-black text-xs" asChild>
+                <Link href="/checkout?plan=boost_24h">24h Radar-Boost aktivieren (CHF 29) →</Link>
               </Button>
             </Card>
           </div>

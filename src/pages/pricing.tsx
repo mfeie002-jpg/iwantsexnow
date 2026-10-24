@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
@@ -22,55 +22,55 @@ import {
 const B2B_PLANS = [
   {
     id: "claim",
-    badge: "Einstieg · Schweizer Markt-Index",
+    badge: "Einstieg Â· Schweizer Markt-Index",
     name: "Index-Claim & Dubletten-Schutz",
     priceMonthly: 0,
     priceWeekly: 0,
-    subtitle: "Für Anbieterinnen, die bereits auf Schweizer Portalen inserieren",
+    subtitle: "FÃ¼r Anbieterinnen, die bereits auf Schweizer Portalen inserieren",
     features: [
-      "Bestehendes Index-Profil per SMS/Signal kostenlos übernehmen",
-      "Automatische Zusammenführung aller Fremdportal-Dubletten unter 1 ID",
+      "Bestehendes Index-Profil per SMS/Signal kostenlos Ã¼bernehmen",
+      "Automatische ZusammenfÃ¼hrung aller Fremdportal-Dubletten unter 1 ID",
       "Eigener Grundtarif (30m / 60m / 2h) im Endpreis-Rechner",
       "Basis-Sichtbarkeit in der schweizweiten Meta-Suche (/search)",
     ],
-    cta: "Profil jetzt kostenlos übernehmen",
+    cta: "Profil jetzt kostenlos Ã¼bernehmen",
     href: "/create-post",
     highlight: false,
   },
   {
     id: "direct",
-    badge: "Beliebtestes Paket · Direktbuchung",
+    badge: "Beliebtestes Paket Â· Direktbuchung",
     name: "Verified Direct Provider",
     priceMonthly: 190,
     priceWeekly: 59,
-    subtitle: "Für selbstständige Escorts & Studios mit direkter Terminbuchung",
+    subtitle: "FÃ¼r selbststÃ¤ndige Escorts & Studios mit direkter Terminbuchung",
     features: [
-      "Grünes Siegel: „Direkt Buchbar · ID & Originalfotos geprüft“",
+      "GrÃ¼nes Siegel: â€žDirekt Buchbar Â· ID & Originalfotos geprÃ¼ftâ€œ",
       "0% Provision: Alle Direktbuchungs-Anfragen gehen 1:1 an dich (WhatsApp/Signal/Threema)",
-      "1-Klick Echtzeit-Verfügbarkeits-Ping („Jetzt für 4 Std. verfügbar“)",
+      "1-Klick Echtzeit-VerfÃ¼gbarkeits-Ping (â€žJetzt fÃ¼r 4 Std. verfÃ¼gbarâ€œ)",
       "Voller Zugriff auf das Provider Self-Service & Lead Dashboard",
       "Bevorzugtes Ranking vor nicht-verifizierten Index-Profilen",
     ],
     cta: "Direktbuchung & Siegel aktivieren",
-    href: "/verify",
+    href: "/checkout?plan=direct_monthly",
     highlight: true,
   },
   {
     id: "vip",
-    badge: "Maximale Leads · Zürich & Zug",
+    badge: "Maximale Leads Â· ZÃ¼rich & Zug",
     name: "VIP Smart-Matcher Dominanz",
     priceMonthly: 390,
     priceWeekly: 119,
-    subtitle: "Maximale Auslastung in deiner Wunsch-Region (z.B. Zürich, Zug, Basel, Genf)",
+    subtitle: "Maximale Auslastung in deiner Wunsch-Region (z.B. ZÃ¼rich, Zug, Basel, Genf)",
     features: [
       "Alle Vorteile des Verified Direct Provider Pakets inklusive",
       "Garantierte Top-Platzierung im Endpreis-Rechner auf der Startseite",
-      "Hervorhebung im Live-Story-Radar („Heute direkt buchbar“)",
-      "Prioritäts-Matching bei High-Budget & Overnight-Anfragen",
-      "Persönlicher B2B Concierge-Support & Profil-Optimierung",
+      "Hervorhebung im Live-Story-Radar (â€žHeute direkt buchbarâ€œ)",
+      "PrioritÃ¤ts-Matching bei High-Budget & Overnight-Anfragen",
+      "PersÃ¶nlicher B2B Concierge-Support & Profil-Optimierung",
     ],
     cta: "VIP-Platzierung sichern",
-    href: "/verify",
+    href: "/checkout?plan=direct_monthly",
     highlight: false,
   },
 ];
@@ -83,8 +83,8 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="B2B Konditionen & Direktbuchungs-Pakete für Anbieter | iWantSexNow.ch"
-        description="Übernehme dein Schweizer Index-Profil kostenlos oder aktiviere direkte Fixpreis-Buchungen ohne Agentur-Provision."
+        title="B2B Konditionen & Direktbuchungs-Pakete fÃ¼r Anbieter | iWantSexNow.ch"
+        description="Ãœbernehme dein Schweizer Index-Profil kostenlos oder aktiviere direkte Fixpreis-Buchungen ohne Agentur-Provision."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -99,13 +99,13 @@ export default function PricingPage() {
       <main className="container mx-auto px-4 py-12 max-w-6xl space-y-12">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-            Für selbstständige Anbieterinnen, Begleiterinnen & Studios (B2B)
+            FÃ¼r selbststÃ¤ndige Anbieterinnen, Begleiterinnen & Studios (B2B)
           </Badge>
           <h1 className="text-3xl md:text-5xl font-serif font-black">
             0% Vermittlungs-Provision. 100% Direkte Kunden-Leads.
           </h1>
           <p className="text-gray-300 text-sm md:text-base">
-            Anders als Agenturen verlangen wir keinen prozentualen Anteil an deinen Buchungen. Du behältst 100% deines Honorars und erhältst vorqualifizierte Anfragen mit bereits akzeptiertem Endpreis.
+            Anders als Agenturen verlangen wir keinen prozentualen Anteil an deinen Buchungen. Du behÃ¤ltst 100% deines Honorars und erhÃ¤ltst vorqualifizierte Anfragen mit bereits akzeptiertem Endpreis.
           </p>
 
           {/* Billing Cycle Toggle */}
@@ -207,20 +207,20 @@ export default function PricingPage() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="text-xs font-bold uppercase text-[#D5A021] flex items-center gap-1.5">
-                <Lock size={14} /> Diskrete Schweizer Abrechnung ohne verräterische Buchungstexte
+                <Lock size={14} /> Diskrete Schweizer Abrechnung ohne verrÃ¤terische Buchungstexte
               </div>
               <h3 className="text-xl font-serif font-black mt-1">
-                Unterstützte B2B-Zahlungsarten für Anbieterinnen
+                UnterstÃ¼tzte B2B-Zahlungsarten fÃ¼r Anbieterinnen
               </h3>
               <p className="text-xs text-gray-400 mt-1">
-                Alle Buchungen erscheinen neutral als „iW Digital Media Services CH“ auf deinem Auszug.
+                Alle Buchungen erscheinen neutral als â€žiW Digital Media Services CHâ€œ auf deinem Auszug.
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
               {([
-                { id: "twint", label: "🇨🇭 TWINT Sofort" },
-                { id: "card", label: "💳 Kreditkarte / Apple Pay" },
-                { id: "crypto", label: "₿ USDT / Bitcoin (100% Anonym)" },
+                { id: "twint", label: "ðŸ‡¨ðŸ‡­ TWINT Sofort" },
+                { id: "card", label: "ðŸ’³ Kreditkarte / Apple Pay" },
+                { id: "crypto", label: "â‚¿ USDT / Bitcoin (100% Anonym)" },
               ] as const).map((pm) => (
                 <button
                   key={pm.id}
@@ -228,7 +228,7 @@ export default function PricingPage() {
                   onClick={() => {
                     setPaymentMethod(pm.id);
                     toast({
-                      title: `${pm.label} ausgewählt`,
+                      title: `${pm.label} ausgewÃ¤hlt`,
                       description: "Diese Zahlungsmethode ist im Verifizierungs-Abschluss hinterlegt.",
                     });
                   }}
