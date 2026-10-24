@@ -1,14 +1,10 @@
-import type { GetServerSideProps } from "next";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
-export default function RedirectPage() {
+export default function LegacyRedirectLogin() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/login");
+  }, [router]);
   return null;
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    redirect: {
-      destination: "/login",
-      permanent: true,
-    },
-  };
-};
