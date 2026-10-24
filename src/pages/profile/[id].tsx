@@ -16,16 +16,14 @@ import {
   Send,
   ArrowLeft,
   Calculator,
-  Car,
   Globe,
-  CalendarCheck,
-  Award,
   PhoneCall,
   Lock,
   Unlock,
   Play,
-  Image as ImageIcon,
   Star,
+  X,
+  Eye,
   Sparkles,
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
@@ -64,12 +62,14 @@ export default function UniversalProfileDetailPage() {
   const [notes, setNotes] = useState("");
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
 
-  // Locked VIP Content Vault State (Pay-Per-View before booking)
   const [unlockedMediaIds, setUnlockedMediaIds] = useState<string[]>([]);
+  const [activeViewerItem, setActiveViewerItem] = useState<any | null>(null);
+  const [customVaultItems, setCustomVaultItems] = useState<any[]>([]);
   const [userRating, setUserRating] = useState<number>(10);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   useEffect(() => {
+    setMeetingPlace(`${profile.primaryCity} (${profile.subareas[0] || profile.canton})`);
     const saved = localStorage.getItem(`unlockedMedia_${profile.dedupClusterId}`);
     if (saved) {
       try {
@@ -78,9 +78,17 @@ export default function UniversalProfileDetailPage() {
         // ignore
       }
     }
-  }, [profile.dedupClusterId]);
+    const creatorCustom = localStorage.getItem("providerVaultItems");
+    if (creatorCustom) {
+      try {
+        setCustomVaultItems(JSON.parse(creatorCustom));
+      } catch {
+        // ignore
+      }
+    }
+  }, [profile.dedupClusterId, profile.primaryCity, profile.subareas, profile.canton]);
 
-  const lockedVaultItems = [
+  const defaultVaultItems = [
     {
       id: "vid-1",
       type: "video" as const,
@@ -88,7 +96,7 @@ export default function UniversalProfileDetailPage() {
       durationOrCount: "01:45 Min. · 4K Originalaufnahme + Stimm-Gruss",
       priceChf: 19,
       previewImg: profile.thumbnail,
-      unlockedCaption: "✓ 4K Originalvideo freigeschaltet · 100% echte Person wie auf den Bildern bestätigt!",
+      unlockedCaption: "✓ 4K Originalvideo freigeschaltet · 100% echte Person bestätigt!",
     },
     {
       id: "set-2",
@@ -102,7 +110,7 @@ export default function UniversalProfileDetailPage() {
     {
       id: "vid-3",
       type: "bundle" as const,
-      title: `VIP Vorab-Check Bundle (Alle Videos + Privat-Galerie +CHF 20 Buchungs-Gutschein)`,
+      title: `VIP Vorab-Check Bundle (Alle Videos + Privat-Galerie + CHF 20 Buchungs-Gutschein)`,
       durationOrCount: "Komplett-Tresor + CHF 20 Anrechnung bei Buchung heute",
       priceChf: 39,
       previewImg: profile.thumbnail,
@@ -110,13 +118,53 @@ export default function UniversalProfileDetailPage() {
     },
   ];
 
-  const handleUnlockMedia = (item: typeof lockedVaultItems[0]) => {
-    const next = [...unlockedMediaIds, item.id];
+  const lockedVaultItems = useMemo(() => {
+    const extras = customVaultItems
+      .filter((c) => !["vid-1", "set-2", "vid-3"].includes(c.id))
+      .map((c) => ({
+        id: c.id,
+        type: (c.type || "video") as "video" | "photos" | "bundle",
+        title: c.title,
+        durationOrCount: "Exklusiver Creator-Upload · Direkt verifiziert",
+        priceChf: Number(c.priceChf) || 25,
+        previewImg: profile.thumbnail,
+        unlockedCaption: "✓ Creator-Upload freigeschaltet!",
+      }));
+    return [...extras, ...defaultVaultItems];
+  }, [customVaultItems, profile.thumbnail, profile.displayName]);
+
+  const handleUnlockMedia = async (item: typeof lockedVaultItems[0]) => {
+    const next = Array.from(new Set([...unlockedMediaIds, item.id]));
     setUnlockedMediaIds(next);
     localStorage.setItem(`unlockedMedia_${profile.dedupClusterId}`, JSON.stringify(next));
+
+    // Increment unlock counter in Creator Dashboard storage so 80/20 payout updates live
+    try {
+      const storedVault = JSON.parse(localStorage.getItem("providerVaultItems") || "null");
+      if (Array.isArray(storedVault)) {
+        const updatedVault = storedVault.map((v: any) =>
+          v.id === item.id ? { ...v, unlockCount: (Number(v.unlockCount) || 0) + 1 } : v
+        );
+        localStorage.setItem("providerVaultItems", JSON.stringify(updatedVault));
+      }
+      await fetch("/api/vault/unlock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          providerName: profile.displayName,
+          itemId: item.id,
+          itemTitle: item.title,
+          priceChf: item.priceChf,
+        }),
+      });
+    } catch {
+      // non-blocking
+    }
+
+    setActiveViewerItem(item);
     toast({
       title: `"${item.title}" sofort freigeschaltet!`,
-      description: `CHF ${item.priceChf} verbucht – du hast jetzt vollen Zugriff auf den privaten Vorab-Content von ${profile.displayName}.`,
+      description: `CHF ${item.priceChf} verbucht (80% an ${profile.displayName}, 20% Plattform). Der VIP-Player ist jetzt geöffnet.`,
       duration: 4500,
     });
   };
@@ -223,7 +271,6 @@ export default function UniversalProfileDetailPage() {
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Left 7 Columns */}
           <div className="lg:col-span-7 space-y-6">
             <div className="relative rounded-2xl overflow-hidden border border-[#C69C6D]/40 bg-black/40 h-[440px] shadow-2xl">
               <img src={profile.thumbnail} alt={profile.displayName} className="w-full h-full object-cover" />
@@ -246,7 +293,7 @@ export default function UniversalProfileDetailPage() {
               </div>
             </div>
 
-            {/* NEW: LOCKED VIP CONTENT VAULT (Pay-Per-View Videos & Uncensored Photos before booking) */}
+            {/* LOCKED VIP CONTENT VAULT WITH FULLSCREEN PLAYER MODAL */}
             <Card className="bg-gradient-to-br from-[#131F31] to-[#09131E] border-2 border-[#C69C6D]/60 p-6 rounded-2xl text-white space-y-4 shadow-2xl">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -275,7 +322,10 @@ export default function UniversalProfileDetailPage() {
                       }`}
                     >
                       <div className="flex items-center gap-3.5">
-                        <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white/20">
+                        <div
+                          onClick={() => isUnlocked && setActiveViewerItem(item)}
+                          className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white/20 cursor-pointer"
+                        >
                           <img
                             src={item.previewImg}
                             alt={item.title}
@@ -303,9 +353,14 @@ export default function UniversalProfileDetailPage() {
 
                       <div className="shrink-0 flex sm:flex-col items-end justify-between gap-2">
                         {isUnlocked ? (
-                          <Badge className="bg-emerald-500 text-[#0D1B2A] font-black px-3 py-1.5">
-                            ✓ Freigeschaltet
-                          </Badge>
+                          <Button
+                            size="sm"
+                            onClick={() => setActiveViewerItem(item)}
+                            className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs px-4"
+                          >
+                            <Eye size={13} className="mr-1.5" />
+                            Jetzt ansehen
+                          </Button>
                         ) : (
                           <Button
                             size="sm"
@@ -352,70 +407,38 @@ export default function UniversalProfileDetailPage() {
               </div>
             </Card>
 
-            {/* Verified Rating & Review Box */}
-            <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-serif font-black text-[#D5A021] flex items-center gap-2">
-                  <Star size={18} className="fill-[#D5A021]" />
-                  Verifizierte Schweizer Bewertungen & Preis-Ehrlichkeit
-                </h2>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                  9.9 / 10 Gesamtnote
-                </Badge>
-              </div>
-
-              <div className="grid sm:grid-cols-3 gap-3 text-xs bg-black/40 p-3.5 rounded-xl border border-white/10">
-                <div>
-                  <span className="text-gray-400 block">Foto- & Video-Echtheit:</span>
-                  <strong className="text-emerald-400 text-sm">10.0 / 10 (Original)</strong>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Endpreis-Einhaltung:</span>
-                  <strong className="text-[#D5A021] text-sm">100% (0% Nachforderung)</strong>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Diskretion & Service:</span>
-                  <strong className="text-white text-sm">9.9 / 10 (Top-Level)</strong>
-                </div>
-              </div>
-
-              {!reviewSubmitted ? (
-                <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 text-xs">
-                  <span className="text-gray-300">Hattest du ein verifiziertes Treffen mit {profile.displayName}?</span>
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={userRating}
-                      onChange={(e) => setUserRating(Number(e.target.value))}
-                      className="rounded-lg bg-black/60 border border-white/20 px-2.5 py-1.5 text-xs text-white"
-                    >
-                      <option value={10}>10/10 – Herausragend</option>
-                      <option value={9}>9/10 – Sehr gut</option>
-                      <option value={8}>8/10 – Gut</option>
-                    </select>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        setReviewSubmitted(true);
-                        toast({
-                          title: "Bewertung gespeichert!",
-                          description: `Deine ${userRating}/10 Bewertung fliesst in die Schweizer Bestenliste (/rankings) ein.`,
-                        });
-                      }}
-                      className="bg-[#C69C6D] text-[#0D1B2A] font-black text-xs h-8"
-                    >
-                      Bewertung abgeben
-                    </Button>
+            {/* Cross-Portal Deduplication Proof */}
+            <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white">
+              <h2 className="text-lg font-serif font-black text-[#D5A021] mb-1">
+                Schweizer Cross-Portal-Index ({profile.sourcesCount} Quellen gebündelt)
+              </h2>
+              <div className="space-y-2.5 text-xs mt-3">
+                {profile.sources.map((src, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-center justify-between p-3 rounded-xl border ${
+                      src.isDirect ? "bg-emerald-950/40 border-emerald-500/40" : "bg-white/5 border-white/10"
+                    }`}
+                  >
+                    <div>
+                      <div className={src.isDirect ? "font-bold text-emerald-300 text-sm" : "font-semibold text-gray-300"}>
+                        {src.portal}
+                      </div>
+                      <div className="text-gray-400 text-[11px]">Zuletzt geprüft: {src.lastSeenIso}</div>
+                    </div>
+                    <div className="text-right">
+                      <span className={src.isDirect ? "text-xl font-black text-[#D5A021]" : "text-sm text-gray-400 line-through"}>
+                        CHF {src.priceChf}
+                      </span>
+                      <div className="text-[10px] text-gray-400">pro 60 Min.</div>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className="text-xs text-emerald-400 font-bold">
-                  ✓ Danke! Deine verifizierte Bewertung ({userRating}/10) wurde im Schweizer Ranking gezählt.
-                </div>
-              )}
+                ))}
+              </div>
             </Card>
           </div>
 
-          {/* Right 5 Columns: Sticky Calculator & Direct Enquiry */}
+          {/* Right 5 Columns: Sticky Calculator */}
           <div className="lg:col-span-5">
             <Card className="bg-[#09131E] border-2 border-[#C69C6D]/60 p-6 rounded-2xl text-white sticky top-24 shadow-2xl">
               <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-2">
@@ -554,6 +577,58 @@ export default function UniversalProfileDetailPage() {
           </div>
         </div>
       </main>
+
+      {/* FULLSCREEN VIP MEDIA PLAYER & LIGHTBOX MODAL */}
+      {activeViewerItem && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="bg-[#09131E] border-2 border-[#C69C6D] rounded-2xl max-w-3xl w-full p-6 text-white space-y-5 shadow-2xl relative">
+            <button
+              type="button"
+              onClick={() => setActiveViewerItem(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+            >
+              <X size={22} />
+            </button>
+
+            <div className="flex items-center gap-2">
+              <Badge className="bg-emerald-500 text-[#0D1B2A] font-black">
+                ✓ VIP MEDIA UNLOCKED
+              </Badge>
+              <span className="text-xs text-[#D5A021] font-bold">
+                Originalaufnahme von {profile.displayName} ({profile.primaryCity})
+              </span>
+            </div>
+
+            <h3 className="text-xl font-serif font-black">{activeViewerItem.title}</h3>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="relative h-72 rounded-xl overflow-hidden border border-[#C69C6D]/40">
+                <img src={profile.thumbnail} alt={profile.displayName} className="w-full h-full object-cover" />
+                <div className="absolute bottom-3 left-3 bg-black/80 px-3 py-1 rounded-full text-xs text-emerald-300 font-bold flex items-center gap-1.5">
+                  <Sparkles size={13} /> 4K Original-Auflösung (Unzensiert)
+                </div>
+              </div>
+              <div className="flex flex-col justify-between bg-black/40 p-4 rounded-xl border border-white/10 text-xs space-y-3">
+                <div className="space-y-2">
+                  <div className="text-[#D5A021] font-bold uppercase">Swiss Shield Echtheits-Garantie</div>
+                  <p className="text-gray-300 leading-relaxed">
+                    Dieses Medium wurde von <strong>{profile.displayName}</strong> mit persönlichem Tagescode verifiziert. Keine Filter, keine Fremdbilder.
+                  </p>
+                  <div className="p-2.5 rounded-lg bg-emerald-950/50 border border-emerald-500/30 text-emerald-300">
+                    ✓ Dein Kauf wurde registriert. Bei einer Direktbuchung heute Abend wird dir ein VIP-Bonus direkt angerechnet.
+                  </div>
+                </div>
+                <Button
+                  onClick={() => setActiveViewerItem(null)}
+                  className="w-full bg-[#C69C6D] text-[#0D1B2A] font-black"
+                >
+                  Schliessen & direkt zum Fixpreis buchen
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
