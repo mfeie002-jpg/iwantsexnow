@@ -7,7 +7,7 @@ import {
   PlusCircle,
   Trophy,
   KeyRound,
-  Sparkles,
+  Video,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,10 +16,10 @@ export function Navigation() {
   const isActive = (path: string) => router.pathname === path;
 
   return (
-    <nav className="flex items-center gap-2 xl:gap-3">
+    <nav className="flex items-center gap-1.5 xl:gap-2.5">
       <Link
         href="/search"
-        className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
           isActive("/search") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
         }`}
       >
@@ -29,7 +29,7 @@ export function Navigation() {
 
       <Link
         href="/compare-escorts"
-        className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
           isActive("/compare-escorts") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
         }`}
       >
@@ -38,18 +38,29 @@ export function Navigation() {
       </Link>
 
       <Link
+        href="/live-cam"
+        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+          isActive("/live-cam") ? "bg-rose-600 text-white" : "text-gray-200 hover:bg-white/10"
+        }`}
+      >
+        <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+        <Video size={14} className="text-rose-400" />
+        <span>1:1 Live-Cam</span>
+      </Link>
+
+      <Link
         href="/rankings"
-        className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
           isActive("/rankings") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
         }`}
       >
         <Trophy size={14} className={isActive("/rankings") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
-        <span>Bestenliste & Ratings</span>
+        <span>Bestenliste</span>
       </Link>
 
       <Link
         href="/escort-zurich"
-        className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
           isActive("/escort-zurich") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
         }`}
       >
@@ -59,20 +70,20 @@ export function Navigation() {
 
       <Link
         href="/login"
-        className="px-3 py-2 rounded-xl text-xs font-bold text-gray-200 hover:bg-white/10 flex items-center gap-1.5 border border-white/15"
+        className="px-2.5 py-2 rounded-xl text-xs font-bold text-gray-200 hover:bg-white/10 flex items-center gap-1.5 border border-white/15"
       >
         <KeyRound size={13} className="text-[#D5A021]" />
-        <span>Login / Cockpit</span>
+        <span>Login</span>
       </Link>
 
       <Button
         size="sm"
-        className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs px-3.5 h-9 shadow-lg"
+        className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs px-3 h-9 shadow-lg"
         asChild
       >
         <Link href="/create-post">
-          <PlusCircle size={14} className="mr-1.5" />
-          Profil übernehmen
+          <PlusCircle size={14} className="mr-1" />
+          Claim
         </Link>
       </Button>
     </nav>
