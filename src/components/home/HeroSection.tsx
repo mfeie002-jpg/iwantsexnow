@@ -51,7 +51,7 @@ export function HeroSection({
 
   return (
     <>
-      <div className="bg-gradient-to-r from-[#09131E] via-[#13263B] to-[#09131E] py-2.5 border-b border-white/15 mt-16">
+      <div className="bg-gradient-to-r from-[#09131E] via-[#13263B] to-[#09131E] py-3 border-b border-white/15 mt-[72px] md:mt-[82px]">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-4 text-center">
             <div className="flex items-center gap-2">
@@ -260,3 +260,4 @@ export function HeroSection({
     </>
   );
 }
+
