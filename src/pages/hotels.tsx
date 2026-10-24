@@ -21,6 +21,7 @@ import {
   Users,
 } from "lucide-react";
 import { SWISS_DISCREET_HOTELS } from "@/data/swissHotels";
+import harvestedV2Hotels from "@/data/harvested-hotels-v2.json";
 import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
 
 export default function SwissDiscreetHotelsPage() {
@@ -203,6 +204,55 @@ export default function SwissDiscreetHotelsPage() {
             </Card>
           ))}
         </div>
+
+        {/* Live Firecrawl v2 Discovered Swiss Day-Use & Serviced Apartment Directory */}
+        {Array.isArray(harvestedV2Hotels) && harvestedV2Hotels.length > 0 && (
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-1">
+                  🌐 Live via Firecrawl v2 Hotel-Radar ({harvestedV2Hotels.length} weitere Adressen)
+                </Badge>
+                <h2 className="text-2xl font-serif font-black">
+                  Weitere geprüfte Schweizer Tageszimmer, Boutique-Hotels & Serviced Apartments
+                </h2>
+              </div>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              {harvestedV2Hotels.slice(0, 12).map((item: any, idx: number) => (
+                <Card
+                  key={idx}
+                  className="bg-[#09131E] border border-white/15 hover:border-[#C69C6D]/60 p-4 rounded-2xl text-white flex flex-col justify-between space-y-2"
+                >
+                  <div className="space-y-1">
+                    <div className="text-[10px] text-[#D5A021] font-bold uppercase">
+                      {String(item.query || "Schweiz Day-Use").replace("dayuse hotel ", "📍 ")}
+                    </div>
+                    <div className="font-bold text-sm text-white line-clamp-2">{item.title}</div>
+                    <p className="text-gray-400 text-[11px] line-clamp-2">{item.description}</p>
+                  </div>
+                  <div className="pt-2 flex items-center justify-between border-t border-white/10">
+                    <button
+                      type="button"
+                      onClick={() => handleSelectHotelForDate(item.title, "Zürich / Zug", 140)}
+                      className="text-emerald-400 font-bold hover:underline text-[11px]"
+                    >
+                      + Für Date vormerken
+                    </button>
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-white underline text-[11px]"
+                    >
+                      Hotel-Info ↗
+                    </a>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* B2B Partner Callout for Hotel & Apartment Owners */}
         <Card className="bg-gradient-to-r from-[#13263B] to-[#09131E] border-2 border-[#C69C6D] p-6 md:p-8 rounded-2xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
