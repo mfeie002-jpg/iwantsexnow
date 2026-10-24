@@ -40,7 +40,9 @@ const ALL_SERVICE_FILTERS = [
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [canton, setCanton] = useState("ALL");
-  const [modeFilter, setModeFilter] = useState<"ALL" | "direct" | "indexed">("ALL");
+  const [modeFilter,
+    genderFilter, setModeFilter] = useState<"ALL" | "direct" | "indexed">("ALL");
+  const [genderFilter, setGenderFilter] = useState<"ALL" | "female" | "male" | "couple">("ALL");
   const [duration, setDuration] = useState<30 | 60 | 120>(60);
   const [wantedExtras, setWantedExtras] = useState<string[]>(["GFE"]);
 
@@ -111,6 +113,7 @@ export default function SearchPage() {
     const filtered = deduplicatedProfiles.filter((p) => {
       if (canton !== "ALL" && p.canton !== canton) return false;
       if (modeFilter !== "ALL" && p.bookingMode !== modeFilter) return false;
+      if (genderFilter !== "ALL" && p.genderCategory !== genderFilter) return false;
       if (meetingFilter === "incall" && !p.incall) return false;
       if (meetingFilter === "outcall" && !p.outcall) return false;
 
@@ -170,6 +173,7 @@ export default function SearchPage() {
     query,
     canton,
     modeFilter,
+    genderFilter,
     meetingFilter,
     ageGroup,
     hairFilter,
@@ -211,6 +215,27 @@ export default function SearchPage() {
                 <Link href="/how-it-works" className="text-xs text-[#D5A021] font-bold hover:underline flex items-center gap-1">
                   <HelpCircle size={13} /> Rufnummern-Scanner & Erklärung
                 </Link>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {[
+                  { id: "ALL", label: "✨ Alle Profile" },
+                  { id: "female", label: "👩 Female Escorts" },
+                  { id: "male", label: "🤵 Gigolos & Callboys (Für Damen, Herren & Paare)" },
+                  { id: "couple", label: "👩‍❤️‍👨 Paare & Duo" },
+                ].map((g) => (
+                  <button
+                    key={g.id}
+                    type="button"
+                    onClick={() => setGenderFilter(g.id as any)}
+                    className={`px-3 py-1 rounded-xl text-xs font-black border transition-all ${
+                      genderFilter === g.id
+                        ? "bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D]"
+                        : "bg-black/40 border-white/15 text-gray-300 hover:text-white"
+                    }`}
+                  >
+                    {g.label}
+                  </button>
+                ))}
               </div>
               <h1 className="text-xl md:text-3xl font-serif font-black">
                 Schweizer Präzisions-Suche & Endpreis-Filter

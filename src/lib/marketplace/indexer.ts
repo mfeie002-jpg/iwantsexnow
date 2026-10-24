@@ -12,6 +12,7 @@ export interface RawScrapedOffer {
   sourcePortal: string;
   sourceUrl?: string;
   rawName: string;
+  genderCategory?: "female" | "male" | "trans" | "couple";
   age?: number;
   rawPhone: string;
   city: string;
@@ -46,6 +47,7 @@ export interface DeduplicatedIndexProfile {
   normalizedPhoneMask: string;
   rawPhoneFull: string;
   displayName: string;
+  genderCategory: "female" | "male" | "trans" | "couple";
   age: number;
   primaryCity: string;
   canton: string;
@@ -200,6 +202,7 @@ export function deduplicateScrapedOffers(offers: readonly RawScrapedOffer[]): De
       normalizedPhoneMask: phoneVal ? maskSwissPhone(phoneVal) : "Im Schweizer Index hinterlegt",
       rawPhoneFull: phoneVal || "+41 79 (via Direkt-Anfrage)",
       displayName: String(primary.rawName),
+      genderCategory: primary.genderCategory || "female",
       age: Number(primary.age) >= 18 && Number(primary.age) <= 60 ? Number(primary.age) : 25,
       primaryCity: String(primary.city || "Zürich"),
       canton: String(primary.canton || "ZH"),
@@ -252,6 +255,58 @@ export function deduplicateScrapedOffers(offers: readonly RawScrapedOffer[]): De
 }
 
 const CORE_SEED_OFFERS: RawScrapedOffer[] = [
+  {
+    sourcePortal: "iWantSexNow.ch (Direktbuchung · Gigolo)",
+    rawName: "Julian (VIP Gentleman & Gigolo)",
+    genderCategory: "male",
+    age: 29,
+    rawPhone: "+41 79 512 90 44",
+    city: "Zürich",
+    canton: "ZH",
+    subareas: ["Zürich Paradeplatz", "Seefeld", "Zug", "Luzern"],
+    advertisedBaseChf: 450,
+    rate30Chf: 300,
+    rate120Chf: 800,
+    hairColor: "Brünett",
+    bust: "Athletisch (186 cm)",
+    height: "186 cm",
+    languages: ["Schweizerdeutsch", "Deutsch", "English", "Français"],
+    includedTags: ["Gigolo für Damen", "Begleitung für Paare (MMF)", "Dinner Dates", "Outcall", "Wellness-Massage"],
+    incall: true,
+    outcall: true,
+    scrapedAtIso: "Gerade eben",
+    directAuthorized: true,
+    bio: "Charmanter, akademisch gebildeter Schweizer Gentleman & Gigolo (29, 186 cm, athletisch) für anspruchsvolle Damen, stilvolle Dinner-Dates, Wellness-Wochenenden und diskrete Paare (MMF) in Zürich, Zug und schweizweit.",
+    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=800&fit=crop",
+    ],
+  },
+  {
+    sourcePortal: "iWantSexNow.ch (Direktbuchung · Gigolo)",
+    rawName: "Matteo (Male Escort & Callboy)",
+    genderCategory: "male",
+    age: 27,
+    rawPhone: "+41 78 644 18 20",
+    city: "Zug",
+    canton: "ZG",
+    subareas: ["Zug Zentrum", "Cham", "Zürich", "Genève"],
+    advertisedBaseChf: 400,
+    rate30Chf: 280,
+    rate120Chf: 720,
+    hairColor: "Schwarz",
+    bust: "Definiert / Sportlich (183 cm)",
+    height: "183 cm",
+    languages: ["Deutsch", "Italiano", "English"],
+    includedTags: ["Gigolo für Damen", "Callboy (Bisexuell / Herren)", "Paare", "Outcall", "Massage"],
+    incall: true,
+    outcall: true,
+    scrapedAtIso: "Gerade eben",
+    directAuthorized: true,
+    bio: "Italienisch-schweizerischer Male Escort & sinnlicher Masseur in Zug, Cham & Zürich. 100% diskrete Begleitung für Frauen, Paare und Gentlemen im Hotel oder Privat-Apartment.",
+    thumbnail: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600&h=800&fit=crop",
+  },
   {
     sourcePortal: "iWantSexNow.ch (Direktbuchung)",
     rawName: "Sophia",

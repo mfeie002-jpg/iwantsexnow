@@ -60,13 +60,13 @@ export function Navigation() {
       </Link>
 
       <Link
-        href="/how-it-works"
+        href="/guides"
         className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
           isActive("/how-it-works") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
         }`}
       >
         <HelpCircle size={14} className={isActive("/how-it-works") ? "text-[#0D1B2A]" : "text-emerald-400"} />
-        <span>So funktioniert's</span>
+        <span>Guides & Hilfe</span>
       </Link>
 
       <Link
