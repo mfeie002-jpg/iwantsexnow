@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-24",
+  "mainAtReview": "844601e0b08f380f1d24ad0928a4d5c90139723e",
+  "pr6": {
+    "head": "7a1c89f6cfd4b4e3a32335f5cd2fc6c12683198a",
+    "mergeable": "CONFLICTING",
+    "missingMainCommits": 21,
+    "recommendation": "Keep unmerged. Reassess whether extra session/readiness API routes are needed before reconciling with current authentication and scope.",
+    "observations": [
+      "Read-only handlers enforce GET, server Auth verification, no-store/noindex and blocked publication.",
+      "Its passing CI and dependency audit are historical; current main audit has zero findings.",
+      "An unchanged merge is not available because the branch conflicts with main.",
+      "No PR6 source was added by this change."
+    ]
+  },
+  "pr11": {
+    "priorHead": "edc21adb4d8f49a7150910277b3e0da146badc8c",
+    "recommendation": "Review the hardened opt-in tooling on current main. Do not interpret historical managed acceptance as a fresh run.",
+    "fixed": [
+      "Canonical path containment replaces string-prefix checks.",
+      "Symlink, hard-link, size and private-permission checks for fixtures.",
+      "JSON parsing is inside the cleanup boundary; parse errors omit credential excerpts.",
+      "Cleanup refuses to delete a replacement file.",
+      "Build log handle closes on build failure.",
+      "Listener errors reject; app/listener resources are closed on normal failure paths.",
+      "HTTP failure receipts omit raw assertion/cookie details."
+    ],
+    "freshOfflineChecks": {
+      "tests": 101,
+      "passedOnWindows": 99,
+      "failed": 0,
+      "platformSkips": 2,
+      "newCases": 18,
+      "dependencyVulnerabilities": 0
+    },
+    "limitations": [
+      "No fresh managed-backend run, account creation or database writes.",
+      "Original managed-acceptance JSON is historical evidence and remains unchanged.",
+      "Forced process termination is outside ordinary try/finally cleanup guarantees.",
+      "The managed runner uses fixed receipt/log paths and one loopback port; concurrent live runs are unsupported.",
+      "User/account/draft retirement remains an operator step using receipt IDs; the runner does not auto-delete backend records."
+    ]
+  },
+  "preservation": {
+    "applicationAndHomepageByteIdenticalToMain": true,
+    "noindexAndAllActionGatesUnchanged": true,
+    "privateFlowDisabledByDefault": true,
+    "all40OriginalLocalFilesHashVerified": true,
+    "mergePerformed": false,
+    "deploymentPerformed": false
+  }
+}

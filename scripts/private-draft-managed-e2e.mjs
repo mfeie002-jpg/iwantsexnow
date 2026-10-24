@@ -5,14 +5,14 @@ import http from 'node:http';
 import next from 'next';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
-const run=process.env.PRIVATE_DRAFT_MANAGED_E2E;
-assert.equal(run,'1','Explicit managed acceptance opt-in required');
-const fixturePath=process.env.PRIVATE_DRAFT_MANAGED_FIXTURE;
-assert(fixturePath?.startsWith('/tmp/'),'Temporary fixture required');
-assert(process.cwd().startsWith('/tmp/'),'Run only in a throwaway checkout, never /app');
-const fixture=JSON.parse(await fs.readFile(fixturePath,'utf8'));
-try {
-assert(fixture.users.length===3&&fixture.users.every(u=>u.email.endsWith('@example.invalid')));
+import { withManagedFixture, listenLoopback } from './lib/managed-fixture.mjs';
+await withManagedFixture({
+ enabled: process.env.PRIVATE_DRAFT_MANAGED_E2E,
+ cwd: process.cwd(),
+ fixturePath: process.env.PRIVATE_DRAFT_MANAGED_FIXTURE,
+}, async fixture => {
+assert(Array.isArray(fixture.users) && fixture.users.length===3 &&
+ fixture.users.every(u=>typeof u?.email==='string' && /^[^@\s]+@example\.invalid$/i.test(u.email)), 'Three synthetic users required');
 const file=await fs.readFile('/app/.env.local','utf8');
 for(const key of ['NEXT_PUBLIC_SUPABASE_URL','NEXT_PUBLIC_SUPABASE_ANON_KEY']){
  const line=file.split(/\r?\n/).find(l=>l.startsWith(key+'='));assert(line,'Existing managed configuration required');
@@ -24,20 +24,24 @@ delete process.env.PRIVATE_PROVIDER_DRAFTS_ENABLED;
 delete process.env.PRIVATE_PROVIDER_DRAFT_USER_IDS;
 delete process.env.PRIVATE_PROVIDER_DRAFT_ORIGIN;
 const buildLog=await fs.open('/tmp/private-managed-build.log','w',0o600);
-const build=spawn(process.execPath,['node_modules/next/dist/bin/next','build'],{env:process.env,stdio:['ignore',buildLog.fd,buildLog.fd]});
-await new Promise((resolve,reject)=>{build.once('exit',c=>c===0?resolve():reject(Error('Isolated build failed; inspect private-managed-build.log')));build.once('error',reject)});
-await buildLog.close();
+try {
+ const build=spawn(process.execPath,['node_modules/next/dist/bin/next','build'],{env:process.env,stdio:['ignore',buildLog.fd,buildLog.fd]});
+ await new Promise((resolve,reject)=>{build.once('exit',c=>c===0?resolve():reject(Error('Isolated build failed; inspect private-managed-build.log')));build.once('error',reject)});
+} finally { await buildLog.close(); }
 process.env.PRIVATE_PROVIDER_DRAFTS_ENABLED='true';
 process.env.PRIVATE_PROVIDER_DRAFT_ORIGIN=origin;
 process.env.PRIVATE_PROVIDER_DRAFT_USER_IDS=fixture.users.slice(0,2).map(u=>u.id).join(',');
-const app=next({dev:false,hostname:'127.0.0.1',port});await app.prepare();
-const server=http.createServer(app.getRequestHandler());await new Promise(resolve=>server.listen(port,'127.0.0.1',resolve));
+const app=next({dev:false,hostname:'127.0.0.1',port});
+let server;
 const createdDraftIds=[],checks=[],cookies=[];
 async function call(path,method='GET',body,cookie=''){
  return fetch(origin+path,{method,headers:{Origin:origin,'Content-Type':'application/json',...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(25000)});
 }
 const session='/api/private/provider-session',drafts='/api/private/provider-drafts';
 try{
+ await app.prepare();
+ server=http.createServer(app.getRequestHandler());
+ await listenLoopback(server,port);
  const page=await call('/private/provider-draft');assert.equal(page.status,200);assert.match(page.headers.get('x-robots-tag'),/noindex/);checks.push('isolated editor available on loopback only with noindex');
  assert.equal((await call(drafts,'POST',{})).status,401);
  for(const u of fixture.users.slice(0,2)){
@@ -62,12 +66,14 @@ try{
  checks.push('captured pre-logout cookie replay status '+replay.status+' (vendor JWT lifetime checked separately)');
  const receipt={status:'PASS',backend:'existing platform-managed resource; no replacement',listener:origin,checks,createdDraftIds,fixtureUserIds:fixture.users.map(u=>u.id)};
  await fs.writeFile('/tmp/private-managed-e2e-receipt.json',JSON.stringify(receipt,null,2),{mode:0o600});console.log(JSON.stringify(receipt));
-}catch(e){await fs.writeFile('/tmp/private-managed-e2e-receipt.json',JSON.stringify({status:'FAIL',error:e.message,checks,createdDraftIds,fixtureUserIds:fixture.users.map(u=>u.id)}),{mode:0o600});throw e;}
+}catch{await fs.writeFile('/tmp/private-managed-e2e-receipt.json',JSON.stringify({status:'FAIL',error:'Managed HTTP acceptance failed; checks identify the last completed boundary',checks,createdDraftIds,fixtureUserIds:fixture.users.map(u=>u.id)}),{mode:0o600});throw new Error('Managed HTTP acceptance failed; inspect the sanitized receipt');}
 finally{
  for(const cookie of cookies)await call(session,'DELETE',undefined,cookie).catch(()=>{});
- await new Promise(resolve=>server.close(resolve));await app.close();
+ if(server?.listening) {
+  server.closeAllConnections();
+  await new Promise(resolve=>server.close(resolve));
+ }
+ await app.close();
 }
-} finally {
- // Also remove the credential fixture when configuration, build or startup fails.
- await fs.unlink(fixturePath).catch(()=>{});
-}
+});
+
