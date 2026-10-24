@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
 import { Navigation } from "@/components/Navigation";
-import { CheckCircle, ArrowUp, ShieldCheck, Clock, Calculator, Send, X, Sparkles, Car, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { CheckCircle, ArrowUp, ShieldCheck, Clock, Calculator, Send, X, Car, ChevronDown, SlidersHorizontal, Globe, CalendarCheck } from "lucide-react";
 import Link from "next/link";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
 import { useToast } from "@/hooks/use-toast";
@@ -24,6 +24,28 @@ const EXTRA_OPTIONS = [
   { id: "Overnight", label: "Overnight Upgrade (+4 Std.)", defaultExtraChf: 600 },
 ];
 
+export function BrandLogo({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="flex items-center gap-3 group">
+      <div className={`relative flex items-center justify-center rounded-xl bg-gradient-to-br from-[#16293D] to-[#09131E] border border-[#C69C6D]/60 shadow-lg group-hover:border-[#D5A021] transition-all ${compact ? "w-9 h-9" : "w-11 h-11"}`}>
+        <span className="font-serif font-black text-[#D5A021] tracking-tighter text-lg">iW</span>
+        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#0D1B2A] flex items-center justify-center text-[8px] font-bold text-white" title="Swiss Verified Index">+</span>
+      </div>
+      <div className="flex flex-col">
+        <span className={`font-black tracking-tight leading-none ${compact ? "text-xl" : "text-2xl md:text-3xl"}`}>
+          <span className="text-white">iWant</span>
+          <span className="bg-gradient-to-r from-[#C69C6D] via-[#F3D078] to-[#D5A021] bg-clip-text text-transparent">Sex</span>
+          <span className="text-white">Now</span>
+          <span className="text-[#C69C6D] text-sm font-bold ml-0.5">.ch</span>
+        </span>
+        <span className="text-[9px] uppercase tracking-[0.18em] text-gray-400 font-semibold mt-0.5">
+          Swiss Escort Index & Direct Booking
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { toast } = useToast();
 
@@ -35,7 +57,6 @@ export default function Home() {
   const [verifiedPhotos, setVerifiedPhotos] = useState(false);
   const [videoAds, setVideoAds] = useState(false);
 
-  // Decision Engine & Smart Matcher State
   const [selectedDuration, setSelectedDuration] = useState<30 | 60 | 120>(60);
   const [selectedExtras, setSelectedExtras] = useState<string[]>(["GFE"]);
   const [maxBudgetChf, setMaxBudgetChf] = useState<number>(1200);
@@ -63,7 +84,7 @@ export default function Home() {
       slug: "zurich",
       image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&h=600&fit=crop",
       escorts: 18,
-      description: "Pilot-Region · Geprüfte Direktprofile & Echtzeit-Status",
+      description: "Pilot-Region · Direkt buchbare Profile & gesamter Stadt-Index",
       featured: true
     },
     {
@@ -71,7 +92,7 @@ export default function Home() {
       slug: "zurich",
       image: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&h=600&fit=crop",
       escorts: 9,
-      description: "Pilot-Region · Diskrete Begleitung & Hotelbesuche in Zug/Cham",
+      description: "Pilot-Region · Diskrete Direktbuchung & Hotelbesuche in Zug/Cham",
       featured: true
     },
     {
@@ -125,6 +146,8 @@ export default function Home() {
       id: 1,
       name: "Sophia",
       age: 26,
+      bookingMode: "direct" as const,
+      bookingBadge: "Direkt Buchbar · Autorisiert",
       location: "Zürich & Zug",
       locations: ["Zürich", "Winterthur", "Zug"],
       travelInfo: "Zürich City (Incall) · Outcall nach Zug/Cham in 25 Min.",
@@ -142,12 +165,12 @@ export default function Home() {
       rate: 450,
       portalAvgRate: 520,
       portalsCount: 4,
-      portalNames: ["Direktprofil", "xdate.ch", "fgirl.ch", "and6.com"],
+      portalNames: ["Direktbuchung (Hier)", "xdate.ch", "fgirl.ch", "and6.com"],
       portalBreakdown: [
-        { name: "iWantSexNow.ch (Direkt)", price: 450, note: "0% Vermittlungsgebühr · Geprüft" },
-        { name: "xdate.ch", price: 500, note: "Gleiche Fotos · +CHF 50 für Outcall" },
-        { name: "fgirl.ch", price: 520, note: "Agentur-Inserat (Duplikat erkannt)" },
-        { name: "and6.com", price: 540, note: "Extras separat berechnet" },
+        { name: "iWantSexNow.ch (Direktbuchung)", price: 450, note: "Garantierter Fixpreis · Sofort buchbar" },
+        { name: "xdate.ch (Index-Fund)", price: 500, note: "Gleiche Telefonnummer · +CHF 50 Outcall" },
+        { name: "fgirl.ch (Index-Fund)", price: 520, note: "Agentur-Dublette erkannt" },
+        { name: "and6.com (Index-Fund)", price: 540, note: "Extras werden separat nachberechnet" },
       ],
       services: ["GFE", "Dinner Dates", "Outcall", "Events"],
       extraPrices: { "Massage": 50, "Overnight": 550 } as Record<string, number>,
@@ -155,9 +178,9 @@ export default function Home() {
       languages: ["German", "English", "French"],
       bodyType: "Athletic",
       height: "168 cm",
-      bio: "Verifiziertes Direktprofil ohne Agentur-Aufschlag. Echtzeit-Verfügbarkeit für Zürich & Zug.",
-      longDescription: "Autorisiertes Direktprofil mit Identitäts- und Foto-Check. Transparente Endpreise ohne versteckte Nachverhandlungen.",
-      availability: "Heute verfügbar (18:00 – 23:30 Uhr)",
+      bio: "Direkt über iWantSexNow.ch buchbar. Gleichzeitig auf 3 externen Portalen indexiert – hier mit Bestpreis-Garantie.",
+      longDescription: "Autorisiertes Direktprofil mit Identitäts- und Foto-Check. Sofortige Termin-Anfrage ohne Drittportal-Umwege.",
+      availability: "Heute direkt buchbar (18:00 – 23:30 Uhr)",
       postedTime: "Vor 12 Min. vom Provider bestätigt",
       hasVideo: true,
       verifiedPhotos: true
@@ -166,6 +189,8 @@ export default function Home() {
       id: 2,
       name: "Elena",
       age: 24,
+      bookingMode: "direct" as const,
+      bookingBadge: "Direkt Buchbar · Autorisiert",
       location: "Zug, Cham & Zürichsee",
       locations: ["Zug", "Zürich", "Luzern"],
       travelInfo: "Privat-Appartement in Zug/Cham · Outcall Zürich & Luzern (20 Min.)",
@@ -183,11 +208,11 @@ export default function Home() {
       rate: 400,
       portalAvgRate: 480,
       portalsCount: 3,
-      portalNames: ["Direktprofil", "and6.com", "xdate.ch"],
+      portalNames: ["Direktbuchung (Hier)", "and6.com", "xdate.ch"],
       portalBreakdown: [
-        { name: "iWantSexNow.ch (Direkt)", price: 400, note: "Direktpreis inkl. GFE & Outcall Zug" },
-        { name: "and6.com", price: 460, note: "Aufpreis für Hotelbesuch" },
-        { name: "xdate.ch", price: 500, note: "Älteres Duplikat-Inserat" },
+        { name: "iWantSexNow.ch (Direktbuchung)", price: 400, note: "Direktpreis inkl. GFE & Outcall Zug" },
+        { name: "and6.com (Index-Fund)", price: 460, note: "Aufpreis für Hotelbesuch" },
+        { name: "xdate.ch (Index-Fund)", price: 500, note: "Älteres Duplikat-Inserat" },
       ],
       services: ["GFE", "Outcall", "Massage"],
       extraPrices: { "Dinner Dates": 60, "Overnight": 500 } as Record<string, number>,
@@ -195,9 +220,9 @@ export default function Home() {
       languages: ["German", "English", "Italian"],
       bodyType: "Slim",
       height: "165 cm",
-      bio: "Exklusive Begleitung in Zug, Cham und Zürich. 100% geprüfte Originalbilder.",
-      longDescription: "Direkt verifiziertes Profil mit garantierter Preis-Transparenz und diskreter Direkt-Anfrage.",
-      availability: "Sofort verfügbar in Zug / Zürich",
+      bio: "Exklusive Begleitung in Zug, Cham und Zürich. Direkt buchbar mit bestätigten Originalbildern.",
+      longDescription: "Direkt verifiziertes Profil mit garantierter Preis-Transparenz und sofortiger Buchungsbestätigung.",
+      availability: "Sofort buchbar in Zug / Zürich",
       postedTime: "Vor 8 Min. vom Provider bestätigt",
       hasVideo: true,
       verifiedPhotos: true
@@ -206,6 +231,8 @@ export default function Home() {
       id: 3,
       name: "Emma",
       age: 28,
+      bookingMode: "indexed" as const,
+      bookingBadge: "Schweizer Markt-Index + Anfrage",
       location: "Basel & Zürich",
       locations: ["Basel", "Zürich"],
       travelInfo: "Privat-Studio Basel City (5 Min. ab SBB) · Diskreter Parkplatz",
@@ -223,10 +250,10 @@ export default function Home() {
       rate: 350,
       portalAvgRate: 420,
       portalsCount: 2,
-      portalNames: ["Direktprofil", "and6.com"],
+      portalNames: ["Markt-Index Bestpreis", "and6.com"],
       portalBreakdown: [
-        { name: "iWantSexNow.ch (Direkt)", price: 350, note: "Komplettpreis inkl. Tantra & GFE" },
-        { name: "and6.com", price: 420, note: "Basis-Inserat ohne Extras" },
+        { name: "iWantSexNow.ch Direkt-Anfrage", price: 350, note: "Komplettpreis inkl. Tantra & GFE" },
+        { name: "and6.com (Index-Fund)", price: 420, note: "Basis-Inserat ohne Extras" },
       ],
       services: ["GFE", "Massage"],
       extraPrices: { "Outcall": 60, "Dinner Dates": 80, "Overnight": 480 } as Record<string, number>,
@@ -234,10 +261,10 @@ export default function Home() {
       languages: ["German", "English"],
       bodyType: "Athletic",
       height: "170 cm",
-      bio: "Zertifizierte Tantra- & sinnliche Massage im privaten Studio.",
+      bio: "Aus dem Schweizer Markt-Index erfasst & preisbereinigt. Direkt-Anfrage möglich.",
       longDescription: "Alle Basis-Extras bereits im Stundenpreis kalkuliert – kein Nachverkauf vor Ort.",
       availability: "Heute ab 19:00 Uhr verfügbar",
-      postedTime: "Vor 27 Min. vom Provider bestätigt",
+      postedTime: "Vor 27 Min. im Live-Index aktualisiert",
       hasVideo: false,
       verifiedPhotos: true
     },
@@ -245,6 +272,8 @@ export default function Home() {
       id: 4,
       name: "Mia",
       age: 25,
+      bookingMode: "direct" as const,
+      bookingBadge: "Direkt Buchbar · VIP",
       location: "Bern, Zürich & Zug",
       locations: ["Bern", "Zürich", "Zug"],
       travelInfo: "Incall Bern & Zürich · Schweizweiter VIP Hotel-Outcall",
@@ -262,12 +291,12 @@ export default function Home() {
       rate: 550,
       portalAvgRate: 650,
       portalsCount: 5,
-      portalNames: ["Direktprofil", "xdate.ch", "fgirl.ch", "and6.com", "6navi.ch"],
+      portalNames: ["Direktbuchung (Hier)", "xdate.ch", "fgirl.ch", "and6.com", "6navi.ch"],
       portalBreakdown: [
-        { name: "iWantSexNow.ch (Direkt)", price: 550, note: "Verifizierter VIP-Direkttarif" },
-        { name: "xdate.ch", price: 650, note: "Agentur-Aufschlag +CHF 100" },
-        { name: "fgirl.ch", price: 650, note: "Duplikat-Profil" },
-        { name: "and6.com", price: 680, note: "Exklusive Anfahrt" },
+        { name: "iWantSexNow.ch (Direktbuchung)", price: 550, note: "Verifizierter VIP-Direkttarif" },
+        { name: "xdate.ch (Index-Fund)", price: 650, note: "Agentur-Aufschlag +CHF 100" },
+        { name: "fgirl.ch (Index-Fund)", price: 650, note: "Duplikat-Profil" },
+        { name: "and6.com (Index-Fund)", price: 680, note: "Exklusive Anfahrt" },
       ],
       services: ["GFE", "Dinner Dates", "Outcall", "Overnight"],
       extraPrices: { "Massage": 40 } as Record<string, number>,
@@ -275,9 +304,9 @@ export default function Home() {
       languages: ["German", "French", "English"],
       bodyType: "Athletic",
       height: "172 cm",
-      bio: "High-Class Dinner & Overnight Companion für Zürich, Zug & Bern.",
-      longDescription: "Auf 5 Schweizer Portalen gelistet – hier zum verifizierten Direkt-Tarif ohne Vermittlungsgebühr.",
-      availability: "Heute 17:00 – 23:00 Uhr",
+      bio: "High-Class Dinner & Overnight Companion. Auf 5 Schweizer Seiten gefunden – hier direkt zum Bestpreis buchbar.",
+      longDescription: "Auf 5 Schweizer Portalen indexiert – über iWantSexNow.ch direkt ohne Vermittlungsgebühr buchbar.",
+      availability: "Heute 17:00 – 23:00 Uhr direkt buchbar",
       postedTime: "Vor 19 Min. vom Provider bestätigt",
       hasVideo: true,
       verifiedPhotos: true
@@ -304,8 +333,6 @@ export default function Home() {
 
     const totalCost = basePrice + extrasCost;
     const thirdPartyTotal = Math.round((escort.portalAvgRate * durationMultiplier) / 10) * 10 + extrasCost + (paidList.length * 20);
-
-    // Calculate intelligent Match Score (0 - 99%)
     const includedRatio = selectedExtras.length > 0 ? includedList.length / selectedExtras.length : 1;
     const budgetScore = totalCost <= maxBudgetChf ? 15 : 0;
     const matchScore = Math.min(99, Math.round(78 + includedRatio * 6 + budgetScore));
@@ -348,8 +375,8 @@ export default function Home() {
     });
     localStorage.setItem("privateEnquiries", JSON.stringify(savedLeads));
     toast({
-      title: `Diskrete Anfrage an ${enquiryTarget.name} gesendet`,
-      description: `Fixpreis CHF ${calc.totalCost} (${selectedDuration} Min.) wurde als verifizierter Lead übermittelt.`,
+      title: `Direktbuchungs-Anfrage an ${enquiryTarget.name} übermittelt`,
+      description: `Garantierter Fixpreis CHF ${calc.totalCost} (${selectedDuration} Min.) wurde direkt an ${enquiryTarget.name} gesendet.`,
       duration: 4500,
     });
     setEnquiryTarget(null);
@@ -403,8 +430,8 @@ export default function Home() {
       const newFavorites = prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id];
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
       toast({
-        title: prev.includes(id) ? "Von Favoriten entfernt" : "Zu Favoriten hinzugefügt",
-        description: prev.includes(id) ? "Profil wurde entfernt" : "Profil wurde zur Vergleichsliste hinzugefügt",
+        title: prev.includes(id) ? "Von Merkliste entfernt" : "Zur Merkliste hinzugefügt",
+        description: prev.includes(id) ? "Profil wurde entfernt" : "Profil für deinen Preisvergleich gespeichert",
         duration: 2000,
       });
       return newFavorites;
@@ -443,23 +470,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#0D1B2A]">
       <SEO
-        title="iWantSexNow.ch | Verifizierter Schweizer Escort- & Preisvergleich (Zürich & Zug)"
-        description="Finden, vergleichen und direkt anfragen: Transparente Endpreise, geprüfte Identitäten, Dubletten-Check über 47 Portale und Echtzeit-Verfügbarkeit."
+        title="iWantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
+        description="Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung."
       />
       <header className={`border-b border-gray-800 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-[#0D1B2A]/95 backdrop-blur-sm py-3' : 'bg-[#0D1B2A] py-4'
+        scrolled ? 'bg-[#0D1B2A]/95 backdrop-blur-sm py-2.5' : 'bg-[#0D1B2A] py-3.5'
       } ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className={`font-bold tracking-tight transition-all duration-300 ${
-                scrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'
-              }`}>
-                <span className="text-white">iWant</span>
-                <span className="text-[#D5A021]">Sex</span>
-                <span className="text-white">Now</span>
-                <span className="text-gray-400 text-lg">.ch</span>
-              </span>
+            <Link href="/">
+              <BrandLogo compact={scrolled} />
             </Link>
             <div className="hidden lg:block">
               <Navigation />
@@ -493,10 +513,10 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <p className="text-xs text-[#D5A021] font-bold uppercase tracking-wider flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Echtzeit-Status · Verifizierte Direktprofile in Zürich, Zug & Schweiz
+              Live-Verfügbarkeit · Direkt buchbare Profile & Schweizer Markt-Index
             </p>
             <Link href="/compare-escorts" className="text-xs text-gray-300 hover:text-white underline font-semibold">
-              Alle 47 Portale & Preise nebeneinander vergleichen →
+              Schweizer Portal- & Endpreis-Matrix öffnen →
             </Link>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -527,25 +547,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* UMZUGSCHECK DECISION ENGINE & SMART MATCHER */}
-      <section className="py-12 md:py-16 bg-gradient-to-b from-[#0D1B2A] to-[#13263B] border-b border-white/10">
+      {/* SWISS ESCORT INDEX + DIRECT BOOKING ENGINE */}
+      <section id="decision-engine" className="py-12 md:py-16 bg-gradient-to-b from-[#0D1B2A] to-[#13263B] border-b border-white/10">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
               <div>
                 <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-3">
                   <Calculator size={14} className="mr-1.5 inline" />
-                  Schweizer Endpreis- & Portal-Decision-Engine
+                  Meta-Index + Direktbuchung in Echtzeit
                 </Badge>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">
-                  Echter Endpreis statt Lockvogel-Tarife
+                  Alle Schweizer Portale durchsucht. Direkt hier buchbar.
                 </h2>
                 <p className="text-gray-300 text-sm md:text-base mt-1 max-w-2xl">
-                  Wähle Dauer, Treffpunkt und gewünschte Services: Wir berechnen sofort den garantierten Komplettpreis, prüfen Dubletten auf 47 Portalen und zeigen dein persönliches Match-Ergebnis.
+                  Wähle Dauer, Treffpunkt und gewünschte Services: Unsere Engine vergleicht alle Online-Inserate der Schweiz, filtert Mehrfach-Kopien heraus und lässt dich verifizierte Anbieterinnen direkt zum Fixpreis buchen.
                 </p>
               </div>
 
-              {/* Duration & Meeting Type Controls */}
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
                   {([30, 60, 120] as const).map((mins) => (
@@ -585,13 +604,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Smart Matcher Bar: Extras + Max Budget Filter */}
+            {/* Smart Matcher Bar */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 mb-8 space-y-4">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex-1">
                   <div className="text-xs text-gray-400 uppercase font-bold mb-2.5 flex items-center gap-1.5">
                     <SlidersHorizontal size={13} className="text-[#D5A021]" />
-                    Gewünschte Optionen anklicken (Inklusive vs. Aufpreis wird live pro Profil berechnet):
+                    Gewünschte Services anklicken (Berechnet live den echten Endpreis ohne Nachverhandlung):
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {EXTRA_OPTIONS.map((opt) => {
@@ -637,18 +656,18 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Perfectly Aligned Responsive Decision Cards (Mobile & Desktop) */}
+            {/* Responsive Decision Cards */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredEscorts.map((escort) => {
                 const calc = calculateProviderTotal(escort);
                 const isExpanded = expandedPortalId === escort.id;
+                const isDirect = escort.bookingMode === "direct";
                 return (
                   <div
                     key={escort.id}
                     className="rounded-2xl bg-[#09131E]/90 border border-white/15 hover:border-[#C69C6D]/70 transition-all p-4 sm:p-6 flex flex-col justify-between shadow-xl"
                   >
                     <div>
-                      {/* Top Row: Image + Name/Location/Badges */}
                       <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
                         <Link href={`/profile/${escort.id}`} className="relative w-full sm:w-44 h-60 sm:h-48 flex-shrink-0 rounded-xl overflow-hidden group block">
                           <img
@@ -656,18 +675,20 @@ export default function Home() {
                             alt={escort.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute top-2.5 left-2.5 bg-emerald-600/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow">
-                            <ShieldCheck size={12} /> ID & Fotos geprüft
+                          <div className={`absolute top-2.5 left-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow ${
+                            isDirect ? "bg-emerald-600/95" : "bg-blue-600/95"
+                          }`}>
+                            {isDirect ? <CalendarCheck size={12} /> : <Globe size={12} />}
+                            {escort.bookingBadge}
                           </div>
                           <div className="absolute top-2.5 right-2.5 bg-[#0D1B2A]/90 border border-[#C69C6D]/60 text-[#D5A021] text-[11px] font-black px-2.5 py-1 rounded-full">
                             {calc.matchScore}% Match
                           </div>
                           <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-sm text-[11px] text-amber-300 px-2.5 py-1 rounded-lg text-center font-medium">
-                            Auf {escort.portalsCount} von 47 Portalen · 1 Original-ID
+                            {escort.portalsCount} Schweizer Quellen gebündelt
                           </div>
                         </Link>
 
-                        {/* Right Column: Title, Locations, Freshness & Dedicated Price Box */}
                         <div className="flex-1 min-w-0 flex flex-col justify-between">
                           <div>
                             <div className="flex items-start justify-between gap-2">
@@ -690,18 +711,17 @@ export default function Home() {
                             </p>
                           </div>
 
-                          {/* Dedicated Price & Savings Box (Never clips on any screen size!) */}
                           <div className="mt-3 bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3">
                             <div>
                               <div className="text-[11px] text-gray-400">
-                                Garantierter Endpreis ({selectedDuration} Min.)
+                                {isDirect ? `Direktbuchungs-Fixpreis (${selectedDuration} Min.)` : `Bereinigter Endpreis (${selectedDuration} Min.)`}
                               </div>
                               <div className="flex items-baseline gap-2 mt-0.5">
                                 <span className="text-2xl sm:text-3xl font-black text-[#D5A021]">
                                   CHF {calc.totalCost}
                                 </span>
                                 <span className="text-xs text-gray-400 line-through">
-                                  Ø CHF {calc.thirdPartyTotal}
+                                  Andere Portale Ø CHF {calc.thirdPartyTotal}
                                 </span>
                               </div>
                             </div>
@@ -710,23 +730,21 @@ export default function Home() {
                                 Sparvorteil CHF {calc.savings}
                               </span>
                               <div className="text-[10px] text-gray-400 mt-1">
-                                vs. Drittportale
+                                0% Aufschlag hier
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* Freshness Indicator */}
                       <div className="mt-4 flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-2 rounded-xl">
                         <Clock size={14} className="shrink-0" />
                         <span className="font-medium">{escort.postedTime} · {escort.availability}</span>
                       </div>
 
-                      {/* Transparent Breakdown of Selected Services */}
                       <div className="mt-3 bg-black/30 rounded-xl p-3 space-y-1.5 text-xs border border-white/5">
                         <div className="flex justify-between text-gray-300">
-                          <span>Grundtarif ({selectedDuration} Min. Direktbuchung):</span>
+                          <span>Grundtarif ({selectedDuration} Min.):</span>
                           <span className="font-bold text-white">CHF {calc.basePrice}</span>
                         </div>
                         {calc.includedList.length > 0 && (
@@ -743,11 +761,10 @@ export default function Home() {
                         )}
                       </div>
 
-                      {/* Expandable 47-Portal Price Proof */}
                       {isExpanded && (
                         <div className="mt-3 bg-black/50 border border-[#C69C6D]/30 rounded-xl p-3 text-xs space-y-2">
                           <div className="font-bold text-[#D5A021] flex items-center justify-between">
-                            <span>Quellen- & Dubletten-Abgleich (über 47 Schweizer Portale):</span>
+                            <span>Schweizer Cross-Portal-Index (Gefundene Inserate dieser Anbieterin):</span>
                             <span>1h Basis</span>
                           </div>
                           {escort.portalBreakdown.map((p, idx) => (
@@ -765,7 +782,6 @@ export default function Home() {
                       )}
                     </div>
 
-                    {/* Card Footer Actions */}
                     <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
                       <button
                         type="button"
@@ -773,7 +789,7 @@ export default function Home() {
                         className="text-xs text-gray-300 hover:text-[#D5A021] flex items-center gap-1 font-medium"
                       >
                         <ChevronDown size={14} className={`transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-                        {isExpanded ? "Portal-Preise ausblenden" : `Alle ${escort.portalsCount} Portal-Preise prüfen`}
+                        {isExpanded ? "Quellen-Vergleich schließen" : `Alle ${escort.portalsCount} gefundenen Quellen & Preise zeigen`}
                       </button>
 
                       <div className="flex items-center gap-2 ml-auto">
@@ -783,7 +799,7 @@ export default function Home() {
                           className="border-white/20 text-white hover:bg-white/10 text-xs h-9"
                           asChild
                         >
-                          <Link href={`/profile/${escort.id}`}>Details</Link>
+                          <Link href={`/profile/${escort.id}`}>Profil öffnen</Link>
                         </Button>
                         <Button
                           size="sm"
@@ -794,7 +810,7 @@ export default function Home() {
                           className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold text-xs px-4 h-9"
                         >
                           <Send size={13} className="mr-1.5" />
-                          Diskret anfragen
+                          {isDirect ? "Jetzt direkt buchen" : "Termin anfragen"}
                         </Button>
                       </div>
                     </div>
@@ -828,7 +844,7 @@ export default function Home() {
                 Schweizer Regionen & Kantone
               </h2>
               <p className="text-lg md:text-xl text-gray-400">
-                Pilot-Städte Zürich & Zug sowie verifizierte Direktprofile in der ganzen Schweiz
+                Pilot-Städte Zürich & Zug sowie der komplette Schweizer Markt-Index nach Kanton
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -851,7 +867,7 @@ export default function Home() {
                         </p>
                         <div className="flex items-center justify-between">
                           <Badge className="bg-[#C69C6D] border-0 text-[#0D1B2A] font-bold">
-                            {city.escorts} Geprüfte Profile
+                            {city.escorts} Verifizierte Profile
                           </Badge>
                           <span className="text-white text-sm font-bold group-hover:translate-x-1 transition-transform">
                             Region öffnen →
@@ -872,6 +888,7 @@ export default function Home() {
       <AboutSection />
       <ContactSection />
 
+      {/* Direct Booking & Private Enquiry Modal */}
       {enquiryTarget && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#0D1B2A] border border-[#C69C6D]/50 rounded-2xl max-w-lg w-full p-6 text-white shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -882,13 +899,13 @@ export default function Home() {
               <X size={20} />
             </button>
             <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2">
-              Verifizierter Private-Enquiry-Flow
+              Direktbuchung & Diskrete Termin-Anfrage
             </Badge>
             <h3 className="text-2xl font-black">
-              Diskrete Anfrage an {enquiryTarget.name} ({enquiryTarget.age})
+              {enquiryTarget.name} ({enquiryTarget.age}) direkt buchen
             </h3>
             <p className="text-xs text-gray-300 mt-1">
-              Kein Callcenter, keine Drittportal-Gebühren: Deine Anfrage geht verschlüsselt direkt an den autorisierten Provider.
+              Kein Callcenter, keine Drittportal-Aufschläge: Deine Buchungsanfrage geht mit garantiertem Endpreis direkt an {enquiryTarget.name}.
             </p>
 
             <div className="mt-4 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs space-y-1">
@@ -897,13 +914,13 @@ export default function Home() {
                 <span className="text-[#D5A021]">CHF {calculateProviderTotal(enquiryTarget).totalCost}</span>
               </div>
               <div className="text-gray-400">
-                Gewählte Optionen: {selectedExtras.length ? selectedExtras.join(", ") : "Standard"}
+                Inkludierte Optionen: {selectedExtras.length ? selectedExtras.join(", ") : "Standard"}
               </div>
             </div>
 
             <form onSubmit={handleSendPrivateEnquiry} className="mt-4 space-y-3">
               <div>
-                <label className="text-xs text-gray-300 block mb-1">Gewünschter Ort (Zürich / Zug / Hotel / Studio)</label>
+                <label className="text-xs text-gray-300 block mb-1">Treffpunkt (Zürich / Zug / Hotel / Studio)</label>
                 <input
                   type="text"
                   value={enquiryCity}
@@ -913,7 +930,7 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-300 block mb-1">Wunschzeitpunkt</label>
+                <label className="text-xs text-gray-300 block mb-1">Gewünschte Uhrzeit & Datum</label>
                 <input
                   type="text"
                   value={enquiryTime}
@@ -923,7 +940,7 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-300 block mb-1">Deine Rückrufnummer / Signal / WhatsApp / Threema</label>
+                <label className="text-xs text-gray-300 block mb-1">Deine Nummer für Rückbestätigung (SMS / WhatsApp / Signal / Threema)</label>
                 <input
                   type="text"
                   placeholder="+41 79 ... oder Threema-ID"
@@ -934,10 +951,10 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-300 block mb-1">Diskrete Nachricht (optional)</label>
+                <label className="text-xs text-gray-300 block mb-1">Diskrete Notiz (optional)</label>
                 <textarea
                   rows={2}
-                  placeholder="Besondere Wünsche oder Treffpunkt-Details..."
+                  placeholder="Hotelname, besondere Wünsche oder Fragen..."
                   value={enquiryNotes}
                   onChange={(e) => setEnquiryNotes(e.target.value)}
                   className="w-full rounded-lg bg-black/40 border border-white/20 px-3 py-2 text-sm text-white"
@@ -956,7 +973,7 @@ export default function Home() {
                   type="submit"
                   className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold"
                 >
-                  Verbindliche Anfrage senden
+                  Jetzt verbindlich anfragen
                 </Button>
               </div>
             </form>
@@ -982,24 +999,19 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
             <div>
               <div className="mb-4">
-                <span className="text-2xl font-bold tracking-tight">
-                  <span className="text-white">iWant</span>
-                  <span className="text-[#D5A021]">Sex</span>
-                  <span className="text-white">Now</span>
-                  <span className="text-gray-400 text-xl">.ch</span>
-                </span>
+                <BrandLogo compact />
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Schweizer Decision-Marketplace für verifizierte Direktprofile, transparente Gesamtpreise und diskrete Direkt-Anfragen in Zürich, Zug und der gesamten Schweiz.
+              <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                Der Schweizer Escort-Index: Alle Online-Inserate der Schweiz in einer Suche gebündelt, um Dubletten bereinigt und zum transparenten Endpreis direkt buchbar.
               </p>
             </div>
             <div>
-              <h4 className="font-bold text-white mb-4">Marktplatz & Vergleich</h4>
+              <h4 className="font-bold text-white mb-4">Suchmaschine & Buchung</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/compare-escorts" className="hover:text-white">47 Portale & Preise vergleichen</Link></li>
-                <li><Link href="/search" className="hover:text-white">Intent-Suche & Filter</Link></li>
+                <li><Link href="/compare-escorts" className="hover:text-white">Endpreis- & Portal-Vergleich</Link></li>
+                <li><Link href="/search" className="hover:text-white">Schweizweite Meta-Suche</Link></li>
                 <li><Link href="/escort-zurich" className="hover:text-white">Pilot-Region Zürich & Zug</Link></li>
-                <li><Link href="/create-post" className="hover:text-white">Als Provider listen</Link></li>
+                <li><Link href="/create-post" className="hover:text-white">Profil übernehmen / Inserieren</Link></li>
               </ul>
             </div>
             <div>
@@ -1011,16 +1023,16 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-white mb-4">Vertrauen & Sicherheit</h4>
+              <h4 className="font-bold text-white mb-4">Vertrauen & B2B</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/faq" className="hover:text-white">Verifizierungs-Prozess</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Diskreter Support</Link></li>
-                <li><Link href="/safety" className="hover:text-white">Richtlinien & Schutz</Link></li>
+                <li><Link href="/pricing" className="hover:text-white">B2B Pakete & Direktbuchung</Link></li>
+                <li><Link href="/safety" className="hover:text-white">Richtlinien & Quellennachweis</Link></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} iWantSexNow.ch · Schweizer Decision-Marketplace (18+)</p>
+            <p>&copy; {new Date().getFullYear()} iWantSexNow.ch · Swiss Escort Index & Direct Booking Engine (18+)</p>
           </div>
         </div>
       </footer>

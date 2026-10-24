@@ -51,20 +51,18 @@ export function HeroSection({
 
   return (
     <>
-      {/* TOP TRUST BAR */}
       <div className="bg-gradient-to-r from-[#09131E] via-[#13263B] to-[#09131E] py-2.5 border-b border-white/15 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-4 text-center">
             <div className="flex items-center gap-2">
-              <ShieldCheck size={17} className="text-emerald-400" />
-              <span className="text-[#D5A021] font-bold text-xs md:text-sm">SCHWEIZER DECISION-MARKETPLACE:</span>
+              <ShieldCheck size={16} className="text-emerald-400" />
+              <span className="text-[#D5A021] font-bold text-xs uppercase tracking-wider">
+                DIE SCHWEIZER SUCH- & BUCHUNGSMASCHINE:
+              </span>
             </div>
             <span className="text-gray-200 text-xs md:text-sm">
-              Echte Endpreise ohne Lockvogel-Tarife · Dubletten-Check über 47 Portale · Geprüfte Direktprofile in Zürich & Zug
+              Alle Online-Inserate der Schweiz in einer Suche · Bereinigt um Fake-Dubletten · Direkt buchbar zum Fixpreis
             </span>
-            <Link href="/compare-escorts" className="text-xs font-bold text-white underline hover:text-[#D5A021]">
-              Portal-Vergleich öffnen →
-            </Link>
           </div>
         </div>
       </div>
@@ -90,13 +88,18 @@ export function HeroSection({
             className="max-w-5xl mx-auto text-center space-y-7"
           >
             <motion.div variants={itemVariants} className="space-y-4">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight">
-                <span className="text-white drop-shadow-2xl">Verifizierte Escorts &</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#C69C6D]/40 bg-[#C69C6D]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#D5A021]">
+                Der Schweizer Escort-Index · Alle Profile · Echte Endpreise
+              </div>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
+                <span className="text-white drop-shadow-2xl">Eine Suche für die ganze Schweiz.</span>
                 <br />
-                <span className="text-[#D5A021] drop-shadow-2xl">Echter Endpreis-Vergleich</span>
+                <span className="bg-gradient-to-r from-[#C69C6D] via-[#F3D078] to-[#D5A021] bg-clip-text text-transparent drop-shadow-2xl">
+                  Vergleichen & Direkt Buchen.
+                </span>
               </h1>
               <p className="text-base md:text-lg text-gray-200 max-w-3xl mx-auto">
-                Finde, vergleiche und kontaktiere geprüfte Anbieterinnen in Zürich, Zug und der ganzen Schweiz – mit bestätigter Echtzeit-Verfügbarkeit und transparenten Gesamtkosten.
+                Wir bündeln alle verfügbaren Escorts, Studios und Portale der Schweiz an einem Ort: Mit echtem Endpreis-Rechner, automatischer Dubletten-Erkennung und diskreter Sofort-Buchung.
               </p>
             </motion.div>
 
@@ -122,9 +125,9 @@ export function HeroSection({
                         <SelectValue placeholder="Region / Kanton" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Alle Regionen (Schweiz)</SelectItem>
+                        <SelectItem value="all">Ganze Schweiz (Alle Kantone)</SelectItem>
                         <SelectItem value="zürich">Zürich</SelectItem>
-                        <SelectItem value="zug">Zug (Pilot)</SelectItem>
+                        <SelectItem value="zug">Zug & Cham</SelectItem>
                         <SelectItem value="winterthur">Winterthur</SelectItem>
                         <SelectItem value="basel">Basel</SelectItem>
                         <SelectItem value="bern">Bern</SelectItem>
@@ -152,22 +155,22 @@ export function HeroSection({
 
                     <Select value={selectedOffer} onValueChange={setSelectedOffer}>
                       <SelectTrigger className="bg-gray-900/80 border-gray-700 text-white">
-                        <SelectValue placeholder="Angebotstyp" />
+                        <SelectValue placeholder="Buchungsart" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Alle Angebote</SelectItem>
-                        <SelectItem value="sie-sucht-ihn">Direktprofil (Verifiziert)</SelectItem>
-                        <SelectItem value="escort-service">High-Class Escort</SelectItem>
-                        <SelectItem value="erotik-massage">Tantra & Massage</SelectItem>
+                        <SelectItem value="all">Direktbuchung + Markt-Index</SelectItem>
+                        <SelectItem value="sie-sucht-ihn">Sofort direkt buchbar</SelectItem>
+                        <SelectItem value="escort-service">High-Class & Agenturen</SelectItem>
+                        <SelectItem value="erotik-massage">Studios & Tantra</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#D5A021]" size={22} />
                     <Input
-                      placeholder="Name, Kanton (z.B. Zürich, Zug), Service oder Stichwort eingeben..."
-                      className="pl-12 pr-12 py-6 bg-gray-900/80 border-gray-700 text-white placeholder:text-gray-400 text-base md:text-lg"
+                      placeholder="Suchmaschine: Name, Stadt (z.B. Zürich, Zug), Service, Telefonnummer oder Studio..."
+                      className="pl-12 pr-12 py-6 bg-gray-900/90 border-gray-700 text-white placeholder:text-gray-400 text-base md:text-lg rounded-xl"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -182,7 +185,7 @@ export function HeroSection({
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
-                    <div className="flex items-center gap-6">
+                    <div className="flex flex-wrap items-center gap-6">
                       <label className="flex items-center gap-2 cursor-pointer hover:text-gray-300">
                         <input
                           type="checkbox"
@@ -190,7 +193,7 @@ export function HeroSection({
                           onChange={(e) => setVerifiedPhotos(e.target.checked)}
                           className="w-4 h-4 rounded accent-[#C69C6D] cursor-pointer"
                         />
-                        <span className="text-sm font-medium">100% Geprüfte Originalfotos</span>
+                        <span className="text-sm font-medium">Nur geprüfte Originalfotos</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer hover:text-gray-300">
                         <input
@@ -199,13 +202,13 @@ export function HeroSection({
                           onChange={(e) => setVideoAds(e.target.checked)}
                           className="w-4 h-4 rounded accent-[#C69C6D] cursor-pointer"
                         />
-                        <span className="text-sm font-medium">Mit Video-Verifizierung</span>
+                        <span className="text-sm font-medium">Direkt online buchbar</span>
                       </label>
                     </div>
 
                     <div className="flex items-center gap-2 bg-[#C69C6D] px-4 py-1.5 rounded-full">
-                      <span className="text-[#0D1B2A] font-black text-base">
-                        {filteredCount} Verifizierte Treffer
+                      <span className="text-[#0D1B2A] font-black text-sm md:text-base">
+                        {filteredCount} Profile im Live-Index
                       </span>
                     </div>
                   </div>
@@ -217,10 +220,10 @@ export function HeroSection({
               <Button
                 size="lg"
                 className="bg-[#C69C6D] text-[#0D1B2A] hover:bg-[#b5895a] font-black text-base px-8 py-6 shadow-2xl w-full sm:w-auto"
-                onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('decision-engine')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Users size={20} className="mr-2" />
-                Verifizierte Profile vergleichen
+                Endpreise vergleichen & Direkt buchen
               </Button>
               <Button
                 size="lg"
@@ -230,18 +233,7 @@ export function HeroSection({
               >
                 <Link href="/create-post">
                   <PlusCircle size={20} className="mr-2" />
-                  Als Provider inserieren
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-base px-8 py-6 w-full sm:w-auto"
-                asChild
-              >
-                <Link href="/creator-dashboard">
-                  <UserPlus size={20} className="mr-2" />
-                  Provider Dashboard
+                  Profil übernehmen / Inserieren
                 </Link>
               </Button>
             </motion.div>
@@ -249,17 +241,17 @@ export function HeroSection({
             <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center gap-6 mt-4 text-white/90 text-xs md:text-sm">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse" />
-                <span><strong className="text-white">Echtzeit-Verfügbarkeit</strong> durch Provider bestätigt</span>
+                <span><strong className="text-white">Schweizweiter Meta-Index</strong> + Verifizierte Direktbuchung</span>
               </div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
               <div className="flex items-center gap-2">
                 <CheckCircle2 size={16} className="text-emerald-400" />
-                <span><strong className="text-white">Identitäts- & Foto-Check</strong> gegen Fake-Profile</span>
+                <span><strong className="text-white">Cross-Portal Dubletten-Schutz</strong> gegen Mehrfach-Inserate</span>
               </div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
               <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-[#D5A021]" />
-                <span><strong className="text-white">Transparente Endpreise</strong> inkl. Extras-Kalkulator</span>
+                <span><strong className="text-white">Garantierter Endpreis</strong> vor der Buchungsanfrage</span>
               </div>
             </motion.div>
           </motion.div>
