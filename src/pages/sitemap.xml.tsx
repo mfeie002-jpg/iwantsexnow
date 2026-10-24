@@ -1,5 +1,6 @@
 import type { GetServerSideProps } from "next";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
+import { SWISS_SEO_LOCATIONS } from "@/pages/orte/[slug]";
 
 const BASE_URL = "https://iwantsexnow.ch";
 
@@ -7,6 +8,9 @@ const STATIC_ROUTES = [
   "",
   "/search",
   "/compare-escorts",
+  "/rankings",
+  "/live-cam",
+  "/how-it-works",
   "/matches",
   "/escort-zurich",
   "/escort-basel",
@@ -17,6 +21,7 @@ const STATIC_ROUTES = [
   "/pricing",
   "/verify",
   "/checkout",
+  "/login",
   "/faq",
   "/safety",
 ];
@@ -25,7 +30,8 @@ function generateSiteMap() {
   const now = new Date().toISOString();
   const profiles = deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED);
   const profileRoutes = profiles.map((p) => `/profile/${encodeURIComponent(p.displayName)}`);
-  const allRoutes = [...STATIC_ROUTES, ...profileRoutes];
+  const localSeoRoutes = Object.keys(SWISS_SEO_LOCATIONS).map((slug) => `/orte/${slug}`);
+  const allRoutes = [...STATIC_ROUTES, ...localSeoRoutes, ...profileRoutes];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -34,8 +40,8 @@ ${allRoutes
     (route) => `  <url>
     <loc>${BASE_URL}${route}</loc>
     <lastmod>${now}</lastmod>
-    <changefreq>${route === "" || route === "/search" ? "hourly" : "daily"}</changefreq>
-    <priority>${route === "" ? "1.0" : route.startsWith("/escort-") || route.startsWith("/profile/") ? "0.9" : "0.8"}</priority>
+    <changefreq>${route === "" || route === "/search" || route === "/rankings" ? "hourly" : "daily"}</changefreq>
+    <priority>${route === "" ? "1.0" : route.startsWith("/orte/") || route.startsWith("/escort-") || route.startsWith("/profile/") ? "0.9" : "0.8"}</priority>
   </url>`
   )
   .join("\n")}
