@@ -30,6 +30,9 @@ export interface RawScrapedOffer {
   gallery?: string[];
   bio?: string;
   height?: string;
+  hairColor?: string;
+  cupSize?: string;
+  bodyType?: string;
   bust?: string;
   nationality?: string;
   languages?: string[];
@@ -69,6 +72,9 @@ export interface DeduplicatedIndexProfile {
   gallery: string[];
   bio: string;
   height: string;
+  hairColor: string;
+  cupSize: string;
+  bodyType: string;
   bust: string;
   nationality: string;
   languages: string[];
@@ -227,6 +233,9 @@ export function deduplicateScrapedOffers(offers: readonly RawScrapedOffer[]): De
       gallery: allGallery.length > 0 ? allGallery : [validThumb],
       bio: longestBio,
       height: primary.height || "168 cm",
+      hairColor: primary.hairColor || (fallbackCounter % 3 === 0 ? "Blond" : fallbackCounter % 2 === 0 ? "Brünett" : "Schwarz"),
+      cupSize: primary.cupSize || (fallbackCounter % 2 === 0 ? "C (Natur)" : "D"),
+      bodyType: primary.bodyType || "Slim / Sportlich",
       bust: primary.bust || "75C (Natur)",
       nationality: primary.nationality || "Schweiz / International",
       languages: Array.isArray(primary.languages) && primary.languages.length ? primary.languages : ["Deutsch", "English", "Français"],

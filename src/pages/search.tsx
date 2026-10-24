@@ -8,7 +8,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Search as SearchIcon,
-  ShieldCheck,
   Calculator,
   PhoneCall,
   Send,
@@ -17,14 +16,26 @@ import {
   Star,
   Video,
   HelpCircle,
-  CheckCircle2,
   Camera,
+  SlidersHorizontal,
+  Sparkles,
+  RotateCcw,
+  ArrowUpDown,
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
 import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
 
-const EXTRA_TOGGLES = ["GFE", "Dinner Dates", "Outcall", "Massage"];
+const ALL_SERVICE_FILTERS = [
+  { id: "GFE", label: "Girlfriend Experience (GFE)" },
+  { id: "Französisch Pur", label: "Französisch (FO)" },
+  { id: "Küssen", label: "Zungenküsse (ZK)" },
+  { id: "Outcall", label: "Hotel- & Hausbesuch" },
+  { id: "Massage", label: "Tantra- & Erotik-Massage" },
+  { id: "Dinner Dates", label: "VIP Dinner Date" },
+  { id: "69", label: "Position 69" },
+  { id: "Overnight", label: "Overnight Begleitung" },
+];
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -32,6 +43,16 @@ export default function SearchPage() {
   const [modeFilter, setModeFilter] = useState<"ALL" | "direct" | "indexed">("ALL");
   const [duration, setDuration] = useState<30 | 60 | 120>(60);
   const [wantedExtras, setWantedExtras] = useState<string[]>(["GFE"]);
+
+  // Deep Filter State (Superior to xdate & fgirl)
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(true);
+  const [ageGroup, setAgeGroup] = useState<"ALL" | "18-24" | "25-30" | "31+">("ALL");
+  const [hairFilter, setHairFilter] = useState<"ALL" | "Blond" | "Brünett" | "Schwarz">("ALL");
+  const [cupFilter, setCupFilter] = useState<"ALL" | "Natur" | "C-D">("ALL");
+  const [languageFilter, setLanguageFilter] = useState<"ALL" | "Deutsch" | "English" | "Français" | "Italiano">("ALL");
+  const [meetingFilter, setMeetingFilter] = useState<"ALL" | "incall" | "outcall">("ALL");
+  const [maxPriceChf, setMaxPriceChf] = useState<number>(1200);
+  const [sortBy, setSortBy] = useState<"recommended" | "price_asc" | "savings_desc" | "rating_desc">("recommended");
 
   const deduplicatedProfiles = useMemo(
     () => deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED),
@@ -44,37 +65,6 @@ export default function SearchPage() {
     );
   };
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const tokens = q.split(/\s+/).filter(Boolean);
-    const digits = q.replace(/\D/g, "");
-
-    return deduplicatedProfiles.filter((p) => {
-      if (canton !== "ALL" && p.canton !== canton) return false;
-      if (modeFilter !== "ALL" && p.bookingMode !== modeFilter) return false;
-      if (!q) return true;
-
-      if (digits.length >= 3 && p.rawPhoneFull.replace(/\D/g, "").includes(digits)) return true;
-
-      const searchableText = [
-        p.displayName,
-        p.primaryCity,
-        p.canton,
-        ...p.subareas,
-        ...p.includedServices,
-        p.bio,
-        p.height,
-        p.bust,
-        ...p.languages,
-        ...p.sources.map((s) => s.portal),
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return tokens.every((tok) => searchableText.includes(tok));
-    });
-  }, [deduplicatedProfiles, query, canton, modeFilter]);
-
   const computeTotalChf = (profile: typeof deduplicatedProfiles[0]) => {
     const base =
       duration === 30 ? profile.rate30Chf : duration === 120 ? profile.rate120Chf : profile.bestBaseRate60Chf;
@@ -83,7 +73,7 @@ export default function SearchPage() {
     const freeExtras: string[] = [];
 
     for (const srv of wantedExtras) {
-      if (profile.includedServices.includes(srv)) {
+      if (profile.includedServices.some((inc) => inc.toLowerCase().includes(srv.toLowerCase()))) {
         freeExtras.push(srv);
       } else {
         extrasSum += profile.extraPricesChf[srv] ?? 70;
@@ -99,11 +89,103 @@ export default function SearchPage() {
     };
   };
 
+  const resetAllFilters = () => {
+    setQuery("");
+    setCanton("ALL");
+    setModeFilter("ALL");
+    setAgeGroup("ALL");
+    setHairFilter("ALL");
+    setCupFilter("ALL");
+    setLanguageFilter("ALL");
+    setMeetingFilter("ALL");
+    setMaxPriceChf(1200);
+    setWantedExtras(["GFE"]);
+    setSortBy("recommended");
+  };
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const tokens = q.split(/\s+/).filter(Boolean);
+    const digits = q.replace(/\D/g, "");
+
+    const filtered = deduplicatedProfiles.filter((p) => {
+      if (canton !== "ALL" && p.canton !== canton) return false;
+      if (modeFilter !== "ALL" && p.bookingMode !== modeFilter) return false;
+      if (meetingFilter === "incall" && !p.incall) return false;
+      if (meetingFilter === "outcall" && !p.outcall) return false;
+
+      if (ageGroup === "18-24" && (p.age < 18 || p.age > 24)) return false;
+      if (ageGroup === "25-30" && (p.age < 25 || p.age > 30)) return false;
+      if (ageGroup === "31+" && p.age < 31) return false;
+
+      if (hairFilter !== "ALL" && !(p.hairColor || "").toLowerCase().includes(hairFilter.toLowerCase())) {
+        return false;
+      }
+      if (cupFilter === "Natur" && !(p.bust || "").toLowerCase().includes("natur")) {
+        return false;
+      }
+      if (cupFilter === "C-D" && !/[cd]/i.test(p.bust || "")) {
+        return false;
+      }
+      if (
+        languageFilter !== "ALL" &&
+        !p.languages.some((l) => l.toLowerCase().includes(languageFilter.toLowerCase()))
+      ) {
+        return false;
+      }
+
+      const calc = computeTotalChf(p);
+      if (calc.total > maxPriceChf) return false;
+
+      if (!q) return true;
+      if (digits.length >= 3 && p.rawPhoneFull.replace(/\D/g, "").includes(digits)) return true;
+
+      const searchableText = [
+        p.displayName,
+        p.primaryCity,
+        p.canton,
+        ...p.subareas,
+        ...p.includedServices,
+        p.bio,
+        p.height,
+        p.bust,
+        p.hairColor,
+        ...p.languages,
+        ...p.sources.map((s) => s.portal),
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return tokens.every((tok) => searchableText.includes(tok));
+    });
+
+    return [...filtered].sort((a, b) => {
+      if (sortBy === "price_asc") return computeTotalChf(a).total - computeTotalChf(b).total;
+      if (sortBy === "savings_desc") return b.savingsPerHourChf - a.savingsPerHourChf;
+      if (sortBy === "rating_desc") return b.ratingScore - a.ratingScore;
+      return a.bookingMode === "direct" ? -1 : 1;
+    });
+  }, [
+    deduplicatedProfiles,
+    query,
+    canton,
+    modeFilter,
+    meetingFilter,
+    ageGroup,
+    hairFilter,
+    cupFilter,
+    languageFilter,
+    maxPriceChf,
+    wantedExtras,
+    duration,
+    sortBy,
+  ]);
+
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="Schweizer Escort-Suchmaschine (Google-Style Meta-Index) | iWantSexNow.ch"
-        description="Durchsuche alle Schweizer Escort-Portale in Echtzeit nach Name, Stadt (Zürich, Zug, Cham), +41 Rufnummer, Services und echtem Komplettpreis."
+        title="Schweizer Escort-Suchmaschine & Deep-Filter (Besser als xdate & fgirl) | iWantSexNow.ch"
+        description="Filtere alle Schweizer Escort-Portale nach Haarfarbe, Alter, Oberweite, Tabu-freien Services, +41 Rufnummer und garantiertem Endpreis."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -116,56 +198,56 @@ export default function SearchPage() {
       </header>
 
       <LivePortalSyncBanner totalProfiles={deduplicatedProfiles.length} />
-      <main className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
-        {/* Search Engine Console */}
-        <div className="bg-[#09131E] border-2 border-[#C69C6D]/50 rounded-2xl p-6 shadow-2xl space-y-5">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+
+      <main className="container mx-auto px-4 py-6 max-w-7xl space-y-6">
+        {/* Precision Search & Deep Filter Console */}
+        <div className="bg-[#09131E] border-2 border-[#C69C6D]/55 rounded-2xl p-5 shadow-2xl space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="flex flex-wrap items-center gap-2 mb-2">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                  ✓ {INITIAL_RAW_SWISS_FEED.length} Roh-Inserate gescannt → {deduplicatedProfiles.length} echte Profile
+                  ✓ {INITIAL_RAW_SWISS_FEED.length} Inserate gescannt → {results.length} passende Profile
                 </Badge>
                 <Link href="/how-it-works" className="text-xs text-[#D5A021] font-bold hover:underline flex items-center gap-1">
-                  <HelpCircle size={13} /> Wie funktioniert der Preis- & Dubletten-Abgleich?
+                  <HelpCircle size={13} /> Rufnummern-Scanner & Erklärung
                 </Link>
               </div>
-              <h1 className="text-2xl md:text-4xl font-serif font-black">
-                Schweizer Escort-Suchmaschine & Rufnummern-Index
+              <h1 className="text-xl md:text-3xl font-serif font-black">
+                Schweizer Präzisions-Suche & Endpreis-Filter
               </h1>
             </div>
 
-            <div className="flex bg-black/50 p-1 rounded-xl border border-white/15 shrink-0">
-              {(
-                [
-                  { id: "ALL", label: "Alle Treffer" },
-                  { id: "direct", label: "Nur Direkt Buchbar" },
-                  { id: "indexed", label: "Markt-Index" },
-                ] as const
-              ).map((m) => (
-                <button
-                  key={m.id}
-                  onClick={() => setModeFilter(m.id)}
-                  className={
-                    modeFilter === m.id
-                      ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-[#C69C6D] text-[#0D1B2A]"
-                      : "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-300 hover:text-white"
-                  }
-                >
-                  {m.label}
-                </button>
-              ))}
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                className="border-[#C69C6D]/50 text-[#D5A021] hover:bg-[#C69C6D]/10 text-xs font-bold"
+              >
+                <SlidersHorizontal size={13} className="mr-1.5" />
+                {showAdvancedFilters ? "Detail-Filter einklappen" : "Alle Detail-Filter öffnen (Optik, Busen, Services)"}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={resetAllFilters}
+                className="text-gray-400 hover:text-white text-xs"
+              >
+                <RotateCcw size={13} className="mr-1" /> Reset
+              </Button>
             </div>
           </div>
 
+          {/* Primary Search Row */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3 pt-2 border-t border-white/10">
-            <div className="md:col-span-6 relative">
+            <div className="md:col-span-5 relative">
               <SearchIcon size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D5A021]" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Name, Stadt (Zug, Cham, Zürich), Service (GFE, Massage) oder +41 Rufnummer..."
-                className="w-full rounded-xl bg-black/50 border border-white/25 pl-10 pr-4 py-3 text-sm text-white focus:border-[#D5A021] focus:outline-none"
+                placeholder="Name, Ort (Zug, Cham, Zürich), +41 Rufnummer oder Vorliebe..."
+                className="w-full rounded-xl bg-black/60 border border-white/25 pl-10 pr-4 py-2.5 text-sm text-white focus:border-[#D5A021] focus:outline-none"
               />
             </div>
 
@@ -173,9 +255,9 @@ export default function SearchPage() {
               <select
                 value={canton}
                 onChange={(e) => setCanton(e.target.value)}
-                className="w-full rounded-xl bg-black/50 border border-white/25 px-3 py-3 text-sm text-white"
+                className="w-full rounded-xl bg-black/60 border border-white/25 px-3 py-2.5 text-sm text-white"
               >
-                <option value="ALL">Alle Schweizer Kantone ({deduplicatedProfiles.length})</option>
+                <option value="ALL">📍 Alle Kantone ({deduplicatedProfiles.length})</option>
                 <option value="ZH">Zürich (ZH)</option>
                 <option value="ZG">Zug & Cham (ZG)</option>
                 <option value="BS">Basel (BS)</option>
@@ -189,55 +271,170 @@ export default function SearchPage() {
               </select>
             </div>
 
-            <div className="md:col-span-3 flex bg-black/50 p-1 rounded-xl border border-white/20">
+            <div className="md:col-span-2 flex bg-black/60 p-1 rounded-xl border border-white/20">
               {([30, 60, 120] as const).map((mins) => (
                 <button
                   key={mins}
                   onClick={() => setDuration(mins)}
                   className={
                     duration === mins
-                      ? "flex-1 py-2 rounded-lg text-xs font-black bg-[#C69C6D] text-[#0D1B2A]"
-                      : "flex-1 py-2 rounded-lg text-xs font-bold text-gray-300"
+                      ? "flex-1 py-1.5 rounded-lg text-xs font-black bg-[#C69C6D] text-[#0D1B2A]"
+                      : "flex-1 py-1.5 rounded-lg text-xs font-bold text-gray-300"
                   }
                 >
-                  {mins === 120 ? "2 Std." : `${mins} Min.`}
+                  {mins === 120 ? "2h" : `${mins}m`}
                 </button>
               ))}
             </div>
+
+            <div className="md:col-span-2">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full rounded-xl bg-black/60 border border-[#C69C6D]/40 px-2.5 py-2.5 text-xs font-bold text-[#D5A021]"
+              >
+                <option value="recommended">👑 Top & Direkt zuerst</option>
+                <option value="price_asc">💰 Günstigster Endpreis</option>
+                <option value="savings_desc">🔥 Grösste Ersparnis</option>
+                <option value="rating_desc">⭐ Beste Bewertung</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2">
-            <span className="text-xs text-[#D5A021] font-bold flex items-center gap-1 mr-2">
-              <Calculator size={14} /> Gewünschte Leistungen im Endpreis einrechnen:
-            </span>
-            {EXTRA_TOGGLES.map((srv) => {
-              const active = wantedExtras.includes(srv);
-              return (
-                <button
-                  key={srv}
-                  onClick={() => toggleExtra(srv)}
-                  className={
-                    active
-                      ? "px-3 py-1.5 rounded-xl text-xs font-bold border bg-emerald-500/20 border-emerald-400 text-white"
-                      : "px-3 py-1.5 rounded-xl text-xs font-bold border bg-white/5 border-white/15 text-gray-300"
-                  }
-                >
-                  {active ? "✓ " : "+ "}{srv}
-                </button>
-              );
-            })}
-          </div>
+          {/* Collapsible Deep Attribute & Service Filter Drawer */}
+          {showAdvancedFilters && (
+            <div className="pt-3 border-t border-white/10 space-y-4 text-xs">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                {/* Age Filter */}
+                <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
+                  <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Alter</label>
+                  <select
+                    value={ageGroup}
+                    onChange={(e) => setAgeGroup(e.target.value as any)}
+                    className="w-full bg-transparent text-white font-bold focus:outline-none"
+                  >
+                    <option value="ALL" className="bg-[#09131E]">Alle Altersklassen</option>
+                    <option value="18-24" className="bg-[#09131E]">18 – 24 Jahre (Young)</option>
+                    <option value="25-30" className="bg-[#09131E]">25 – 30 Jahre</option>
+                    <option value="31+" className="bg-[#09131E]">31+ Jahre (Lady / MILF)</option>
+                  </select>
+                </div>
+
+                {/* Hair Color */}
+                <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
+                  <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Haarfarbe</label>
+                  <select
+                    value={hairFilter}
+                    onChange={(e) => setHairFilter(e.target.value as any)}
+                    className="w-full bg-transparent text-white font-bold focus:outline-none"
+                  >
+                    <option value="ALL" className="bg-[#09131E]">Alle Haarfarben</option>
+                    <option value="Blond" className="bg-[#09131E]">Blond</option>
+                    <option value="Brünett" className="bg-[#09131E]">Brünett / Braun</option>
+                    <option value="Schwarz" className="bg-[#09131E]">Schwarz</option>
+                  </select>
+                </div>
+
+                {/* Cup / Bust */}
+                <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
+                  <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Oberweite</label>
+                  <select
+                    value={cupFilter}
+                    onChange={(e) => setCupFilter(e.target.value as any)}
+                    className="w-full bg-transparent text-white font-bold focus:outline-none"
+                  >
+                    <option value="ALL" className="bg-[#09131E]">Alle Körbchengrössen</option>
+                    <option value="Natur" className="bg-[#09131E]">100% Naturbusen</option>
+                    <option value="C-D" className="bg-[#09131E]">Grosse Oberweite (C–DD)</option>
+                  </select>
+                </div>
+
+                {/* Language */}
+                <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
+                  <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Sprache</label>
+                  <select
+                    value={languageFilter}
+                    onChange={(e) => setLanguageFilter(e.target.value as any)}
+                    className="w-full bg-transparent text-white font-bold focus:outline-none"
+                  >
+                    <option value="ALL" className="bg-[#09131E]">Alle Sprachen</option>
+                    <option value="Deutsch" className="bg-[#09131E]">Deutsch / CH-Deutsch</option>
+                    <option value="English" className="bg-[#09131E]">English</option>
+                    <option value="Français" className="bg-[#09131E]">Français</option>
+                    <option value="Italiano" className="bg-[#09131E]">Italiano</option>
+                  </select>
+                </div>
+
+                {/* Meeting Type */}
+                <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
+                  <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Treffpunkt</label>
+                  <select
+                    value={meetingFilter}
+                    onChange={(e) => setMeetingFilter(e.target.value as any)}
+                    className="w-full bg-transparent text-white font-bold focus:outline-none"
+                  >
+                    <option value="ALL" className="bg-[#09131E]">Studio & Hotel-Outcall</option>
+                    <option value="incall" className="bg-[#09131E]">Nur Privat-Studio (Incall)</option>
+                    <option value="outcall" className="bg-[#09131E]">Hotel- / Hausbesuch (Outcall)</option>
+                  </select>
+                </div>
+
+                {/* Max Budget Slider */}
+                <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
+                  <div className="flex justify-between text-[10px] mb-1">
+                    <span className="text-gray-400 uppercase font-bold">Max. Endpreis</span>
+                    <strong className="text-[#D5A021]">CHF {maxPriceChf}</strong>
+                  </div>
+                  <input
+                    type="range"
+                    min={250}
+                    max={1500}
+                    step={50}
+                    value={maxPriceChf}
+                    onChange={(e) => setMaxPriceChf(Number(e.target.value))}
+                    className="w-full accent-[#C69C6D] cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              {/* Service & Taboo-Free Calculator Toggles */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs text-[#D5A021] font-bold flex items-center gap-1 mr-1">
+                  <Calculator size={13} /> Gewünschte Services (live im Endpreis eingerechnet):
+                </span>
+                {ALL_SERVICE_FILTERS.map((srv) => {
+                  const active = wantedExtras.includes(srv.id);
+                  return (
+                    <button
+                      key={srv.id}
+                      type="button"
+                      onClick={() => toggleExtra(srv.id)}
+                      className={
+                        active
+                          ? "px-3 py-1.5 rounded-xl text-xs font-bold border bg-emerald-500/20 border-emerald-400 text-white shadow"
+                          : "px-3 py-1.5 rounded-xl text-xs font-bold border bg-white/5 border-white/15 text-gray-300 hover:border-white/30"
+                      }
+                    >
+                      {active ? "✓ " : "+ "}{srv.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Rich Search Engine Result Cards */}
+        {/* Rich Result Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {results.map((p) => {
+          {results.map((p, idx) => {
             const calc = computeTotalChf(p);
             const isDirect = p.bookingMode === "direct";
             return (
               <Card
                 key={p.dedupClusterId}
-                className="bg-[#09131E] border border-[#C69C6D]/45 hover:border-[#D5A021] rounded-2xl p-5 text-white flex flex-col justify-between shadow-xl transition-all"
+                className={`bg-[#09131E] rounded-2xl p-5 text-white flex flex-col justify-between shadow-xl transition-all ${
+                  idx < 2 ? "border-2 border-[#C69C6D]" : "border border-[#C69C6D]/40 hover:border-[#D5A021]"
+                }`}
               >
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -245,7 +442,15 @@ export default function SearchPage() {
                       href={`/profile/${encodeURIComponent(p.displayName)}`}
                       className="relative w-full sm:w-44 h-60 sm:h-52 rounded-xl overflow-hidden shrink-0 border border-white/15 block group"
                     >
-                      <img src={p.thumbnail} alt={p.displayName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img
+                        src={p.thumbnail}
+                        alt={p.displayName}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src =
+                            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop";
+                        }}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                       <div
                         className={
                           isDirect
@@ -282,14 +487,12 @@ export default function SearchPage() {
                           📍 {p.subareas.join(" · ")} ({p.canton})
                         </p>
 
-                        {/* Body Specs & Languages Pill Bar */}
+                        {/* Deep Attribute Pills (Hair, Bust, Height, Languages) */}
                         <div className="flex flex-wrap gap-1.5 mt-2 text-[11px] text-gray-300">
+                          <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.hairColor}</span>
                           <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.height}</span>
                           <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.bust}</span>
                           <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.languages.slice(0, 2).join(" / ")}</span>
-                          <span className="bg-emerald-950/60 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">
-                            {p.reviewCount} Bewertungen
-                          </span>
                         </div>
 
                         <p className="text-xs text-gray-400 mt-2 line-clamp-2">
@@ -325,23 +528,6 @@ export default function SearchPage() {
                       <span key={srv} className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-200">
                         {srv}
                       </span>
-                    ))}
-                  </div>
-
-                  {/* Cross-Portal Deduplication Breakdown */}
-                  <div className="bg-black/40 rounded-xl p-3 border border-white/10 text-xs space-y-1">
-                    <div className="text-[#D5A021] font-bold">
-                      Quellen- & Dubletten-Abgleich für dieses Profil:
-                    </div>
-                    {p.sources.map((src, i) => (
-                      <div key={i} className="flex justify-between text-gray-300">
-                        <span>
-                          {src.portal} ({src.lastSeenIso})
-                        </span>
-                        <span className={src.isDirect ? "text-emerald-400 font-bold" : "line-through text-gray-500"}>
-                          CHF {src.priceChf} / 60m
-                        </span>
-                      </div>
                     ))}
                   </div>
                 </div>
