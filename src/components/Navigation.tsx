@@ -8,6 +8,7 @@ import {
   Trophy,
   KeyRound,
   Video,
+  HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,7 +17,7 @@ export function Navigation() {
   const isActive = (path: string) => router.pathname === path;
 
   return (
-    <nav className="flex items-center gap-1.5 xl:gap-2.5">
+    <nav className="flex items-center gap-1.5 xl:gap-2">
       <Link
         href="/search"
         className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
@@ -24,7 +25,7 @@ export function Navigation() {
         }`}
       >
         <Search size={14} className={isActive("/search") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
-        <span>Meta-Suche</span>
+        <span>Suche</span>
       </Link>
 
       <Link
@@ -56,6 +57,16 @@ export function Navigation() {
       >
         <Trophy size={14} className={isActive("/rankings") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
         <span>Bestenliste</span>
+      </Link>
+
+      <Link
+        href="/how-it-works"
+        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+          isActive("/how-it-works") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
+        }`}
+      >
+        <HelpCircle size={14} className={isActive("/how-it-works") ? "text-[#0D1B2A]" : "text-emerald-400"} />
+        <span>So funktioniert's</span>
       </Link>
 
       <Link
