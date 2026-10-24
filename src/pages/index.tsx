@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +19,6 @@ import {
   Globe,
   CalendarCheck,
   Palette,
-  Sparkles,
   TrendingDown,
   Lock,
 } from "lucide-react";
@@ -32,6 +31,7 @@ import { ServiceCategories } from "@/components/home/ServiceCategories";
 import { CityLinks } from "@/components/home/CityLinks";
 import { AboutSection } from "@/components/home/AboutSection";
 import { ContactSection } from "@/components/home/ContactSection";
+import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 
 export type BrandThemeId = "A" | "B" | "C" | "D";
 
@@ -118,10 +118,8 @@ export function BrandLogo({
   const theme = BRAND_THEMES[variant] || BRAND_THEMES.A;
   return (
     <div className="flex items-center gap-3 group select-none">
-      {/* Vector SVG Emblem matching Concepts A, B, C, D */}
       <div className={`relative flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 ${compact ? "w-10 h-10" : "w-12 h-12"}`}>
         {variant === "A" && (
-          /* Concept A: The Swiss Shield (Gold Shield + Swiss Cross + iW Serif Monogram) */
           <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(213,160,33,0.35)]">
             <defs>
               <linearGradient id="shieldGoldA" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -134,83 +132,39 @@ export function BrandLogo({
                 <stop offset="100%" stopColor="#07101A" />
               </linearGradient>
             </defs>
-            <path
-              d="M32 4 L56 12 V30 C56 46 45 55 32 60 C19 55 8 46 8 30 V12 L32 4 Z"
-              fill="url(#shieldBgA)"
-              stroke="url(#shieldGoldA)"
-              strokeWidth="3"
-            />
-            <path
-              d="M32 8 L52 15 V29 C52 43 42 51 32 55 C22 51 12 43 12 29 V15 L32 8 Z"
-              fill="none"
-              stroke="url(#shieldGoldA)"
-              strokeWidth="0.9"
-              strokeOpacity="0.6"
-            />
-            {/* Subtle Swiss Cross at top of shield */}
+            <path d="M32 4 L56 12 V30 C56 46 45 55 32 60 C19 55 8 46 8 30 V12 L32 4 Z" fill="url(#shieldBgA)" stroke="url(#shieldGoldA)" strokeWidth="3" />
+            <path d="M32 8 L52 15 V29 C52 43 42 51 32 55 C22 51 12 43 12 29 V15 L32 8 Z" fill="none" stroke="url(#shieldGoldA)" strokeWidth="0.9" strokeOpacity="0.6" />
             <path d="M30.5 11 H33.5 V14 H36.5 V17 H33.5 V20 H30.5 V17 H27.5 V14 H30.5 Z" fill="#F6E27A" />
-            {/* iW Monogram */}
-            <text
-              x="32"
-              y="44"
-              textAnchor="middle"
-              fill="url(#shieldGoldA)"
-              fontFamily="Georgia, serif"
-              fontWeight="900"
-              fontSize="24"
-              letterSpacing="-1"
-            >
+            <text x="32" y="44" textAnchor="middle" fill="url(#shieldGoldA)" fontFamily="Georgia, serif" fontWeight="900" fontSize="24" letterSpacing="-1">
               iW
             </text>
           </svg>
         )}
-
         {variant === "B" && (
-          /* Concept B: The Golden Key & Compass */
           <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(230,185,128,0.35)]">
-            <defs>
-              <linearGradient id="keyGoldB" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FAD6A5" />
-                <stop offset="100%" stopColor="#B77B3B" />
-              </linearGradient>
-            </defs>
-            <circle cx="32" cy="32" r="27" fill="#1F0B17" stroke="url(#keyGoldB)" strokeWidth="2.5" />
-            <circle cx="32" cy="32" r="22" fill="none" stroke="url(#keyGoldB)" strokeWidth="0.8" strokeDasharray="3 2" />
-            <polygon points="32,10 36,28 54,32 36,36 32,54 28,36 10,32 28,28" fill="url(#keyGoldB)" fillOpacity="0.25" stroke="url(#keyGoldB)" strokeWidth="1.5" />
-            <text x="32" y="39" textAnchor="middle" fill="#FAD6A5" fontFamily="Georgia, serif" fontWeight="900" fontSize="20">
-              iW
-            </text>
+            <circle cx="32" cy="32" r="27" fill="#1F0B17" stroke="#FAD6A5" strokeWidth="2.5" />
+            <polygon points="32,10 36,28 54,32 36,36 32,54 28,36 10,32 28,28" fill="#FAD6A5" fillOpacity="0.25" stroke="#FAD6A5" strokeWidth="1.5" />
+            <text x="32" y="39" textAnchor="middle" fill="#FAD6A5" fontFamily="Georgia, serif" fontWeight="900" fontSize="20">iW</text>
           </svg>
         )}
-
         {variant === "C" && (
-          /* Concept C: The Swiss Monogram Crest */
           <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(226,194,117,0.35)]">
             <circle cx="32" cy="34" r="25" fill="#0B0D13" stroke="#E2C275" strokeWidth="2.8" />
-            <circle cx="32" cy="34" r="21" fill="none" stroke="#E2C275" strokeWidth="1" strokeOpacity="0.6" />
-            {/* Crown + Red Swiss Cross Badge */}
             <path d="M24 9 L28 13 L32 7 L36 13 L40 9 L38 15 H26 Z" fill="#E2C275" />
             <rect x="28" y="16" width="8" height="8" rx="1.5" fill="#D92626" />
             <path d="M31 18 H33 V19.5 H34.5 V21 H33 V22.5 H31 V21 H29.5 V19.5 H31 Z" fill="#FFFFFF" />
-            <text x="32" y="45" textAnchor="middle" fill="#E2C275" fontFamily="Georgia, serif" fontWeight="900" fontSize="22">
-              iW
-            </text>
+            <text x="32" y="45" textAnchor="middle" fill="#E2C275" fontFamily="Georgia, serif" fontWeight="900" fontSize="22">iW</text>
           </svg>
         )}
-
         {variant === "D" && (
-          /* Concept D: The Modern Search-Mark */
           <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(56,189,248,0.35)]">
             <circle cx="28" cy="28" r="21" fill="#0D1F3C" stroke="#F3D078" strokeWidth="3.5" />
             <line x1="43" y1="43" x2="57" y2="57" stroke="#F3D078" strokeWidth="6" strokeLinecap="round" />
-            <text x="28" y="35" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="900" fontSize="19">
-              iW
-            </text>
+            <text x="28" y="35" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="900" fontSize="19">iW</text>
           </svg>
         )}
       </div>
 
-      {/* Typography Lockup */}
       <div className="flex flex-col">
         <span className={`font-serif font-black tracking-tight leading-none ${compact ? "text-xl" : "text-2xl md:text-3xl"}`}>
           <span className="text-white">iWant</span>
@@ -228,7 +182,6 @@ export function BrandLogo({
   );
 }
 
-/** Ornamental Swiss Luxury Section Divider */
 function LuxuryDivider({ label }: { label?: string }) {
   return (
     <div className="relative py-2 flex items-center justify-center overflow-hidden bg-transparent">
@@ -247,8 +200,6 @@ function LuxuryDivider({ label }: { label?: string }) {
 
 export default function Home() {
   const { toast } = useToast();
-
-  // Live Brand & Theme Switcher State (Default: Concept A "The Swiss Shield")
   const [brandTheme, setBrandTheme] = useState<BrandThemeId>("A");
   const activeTheme = BRAND_THEMES[brandTheme];
 
@@ -267,7 +218,7 @@ export default function Home() {
   const [expandedPortalId, setExpandedPortalId] = useState<number | null>(null);
 
   const [enquiryTarget, setEnquiryTarget] = useState<any | null>(null);
-  const [enquiryTime, setEnquiryTime] = useState("Heute, 20:00 Uhr");
+  const [enquiryTime, setEnquiryTime] = useState("Heute, 20:30 Uhr");
   const [enquiryCity, setEnquiryCity] = useState("Zürich / Zug");
   const [enquiryContact, setEnquiryContact] = useState("");
   const [enquiryNotes, setEnquiryNotes] = useState("");
@@ -279,24 +230,83 @@ export default function Home() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 6;
+  const ITEMS_PER_PAGE = 12;
+
+  // Map all deduplicated Swiss profiles (from Firecrawl harvested-offers.json + Direct Seed) into Home View
+  const deduplicatedClusters = useMemo(() => deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED), []);
+
+  const allEscorts = useMemo(() => {
+    return deduplicatedClusters.map((p, idx) => ({
+      id: idx + 1,
+      clusterId: p.dedupClusterId,
+      name: p.displayName,
+      age: p.age,
+      bookingMode: p.bookingMode,
+      bookingBadge: p.bookingMode === "direct" ? "Direkt Buchbar · Autorisiert" : "Schweizer Markt-Index",
+      location: `${p.primaryCity} (${p.canton})`,
+      locations: p.subareas.length ? p.subareas : [p.primaryCity, p.canton],
+      travelInfo: `${p.subareas.join(" · ")} (${p.canton}) · Diskreter Incall & Hotel-Outcall`,
+      incall: p.incall,
+      outcall: p.outcall,
+      gender: "female",
+      images: [p.thumbnail],
+      thumbnail: p.thumbnail,
+      verified: true,
+      premium: p.bookingMode === "direct",
+      topAd: idx < 6,
+      available: true,
+      rating: p.bookingMode === "direct" ? 5.0 : 4.8,
+      reviews: 42 + idx * 7,
+      rate: p.bestBaseRate60Chf,
+      portalAvgRate: p.portalAverage60Chf,
+      portalsCount: p.sourcesCount,
+      portalNames: p.sources.map((s) => s.portal),
+      portalBreakdown: p.sources.map((s) => ({
+        name: s.portal,
+        price: s.priceChf,
+        note: s.isDirect ? "Garantierter Fixpreis · 0% Aufschlag" : `Gefunden (${s.lastSeenIso})`,
+      })),
+      services: p.includedServices,
+      extraPrices: p.extraPricesChf,
+      serviceType: "escort-service",
+      languages: ["Deutsch", "English"],
+      bodyType: "Slim",
+      height: "168 cm",
+      bio: `Im Schweizer Index erfasst (${p.normalizedPhoneMask}). Direkt zum transparenten Endpreis anfragbar.`,
+      longDescription: p.freshnessLabel,
+      availability: p.freshnessLabel,
+      postedTime: p.freshnessLabel,
+      hasVideo: p.bookingMode === "direct",
+      verifiedPhotos: true,
+    }));
+  }, [deduplicatedClusters]);
+
+  const storyProfiles = useMemo(() => {
+    return allEscorts.slice(0, 14).map((e) => ({
+      id: e.id,
+      name: `${e.name.slice(0, 10)} · ${e.locations[0]?.slice(0, 6) || "CH"}`,
+      image: e.thumbnail,
+      verified: true,
+      online: true,
+    }));
+  }, [allEscorts]);
 
   const cityPages = [
     {
       name: "Zürich",
       slug: "zurich",
       image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&h=600&fit=crop",
-      escorts: 18,
+      escorts: deduplicatedClusters.filter((p) => p.canton === "ZH").length,
       description: "Pilot-Region · Direkt buchbare Profile & gesamter Stadt-Index",
-      featured: true
+      featured: true,
     },
     {
       name: "Zug & Cham",
       slug: "zurich",
       image: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&h=600&fit=crop",
-      escorts: 9,
+      escorts: deduplicatedClusters.filter((p) => p.canton === "ZG" || p.subareas.includes("Zug")).length,
       description: "Pilot-Region · Diskrete Direktbuchung & Hotelbesuche in Zug/Cham",
-      featured: true
+      featured: true,
     },
     {
       name: "Geneva",
@@ -304,216 +314,32 @@ export default function Home() {
       image: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800&h=600&fit=crop",
       escorts: 12,
       description: "International VIP Companionship & Events",
-      featured: true
+      featured: true,
     },
     {
       name: "Basel",
       slug: "basel",
       image: "https://images.unsplash.com/photo-1549877452-9c387954fbc2?w=800&h=600&fit=crop",
-      escorts: 8,
+      escorts: 9,
       description: "Verifizierte Anbieterinnen & Studios am Rhein",
-      featured: true
+      featured: true,
     },
     {
       name: "Bern",
       slug: "bern",
       image: "https://images.unsplash.com/photo-1559564484-e48d68d8ffad?w=800&h=600&fit=crop",
-      escorts: 7,
+      escorts: 8,
       description: "Diskrete High-Class Kontakte in der Bundesstadt",
-      featured: true
+      featured: true,
     },
     {
       name: "Lausanne",
       slug: "lausanne",
       image: "https://images.unsplash.com/photo-1583212692277-a2b6b5c8c2e1?w=800&h=600&fit=crop",
-      escorts: 6,
+      escorts: 7,
       description: "Exklusive Profile am Genfersee",
-      featured: true
-    }
-  ];
-
-  const storyProfiles = [
-    { id: 1, name: "Vanessa · ZH", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 2, name: "Elena · ZG", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 3, name: "Damiana · ZH", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 4, name: "Lara · BS", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", verified: true, online: false },
-    { id: 5, name: "Katja · ZG", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 6, name: "Mely · GE", image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 7, name: "Aschley · ZH", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", verified: true, online: true },
-    { id: 8, name: "Anthonella · BE", image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=150&h=150&fit=crop", verified: true, online: false },
-    { id: 9, name: "Valery · LU", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=150&h=150&fit=crop", verified: true, online: true },
-  ];
-
-  const allEscorts = [
-    {
-      id: 1,
-      name: "Sophia",
-      age: 26,
-      bookingMode: "direct" as const,
-      bookingBadge: "Direkt Buchbar · Autorisiert",
-      location: "Zürich & Zug",
-      locations: ["Zürich", "Winterthur", "Zug"],
-      travelInfo: "Zürich City (Incall) · Outcall nach Zug/Cham in 25 Min.",
-      incall: true,
-      outcall: true,
-      gender: "female",
-      images: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1200&fit=crop"],
-      thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      topAd: true,
-      available: true,
-      rating: 5.0,
-      reviews: 127,
-      rate: 450,
-      portalAvgRate: 520,
-      portalsCount: 4,
-      portalNames: ["Direktbuchung (Hier)", "xdate.ch", "fgirl.ch", "and6.com"],
-      portalBreakdown: [
-        { name: "iWantSexNow.ch (Direktbuchung)", price: 450, note: "Garantierter Fixpreis · Sofort buchbar" },
-        { name: "xdate.ch (Index-Fund)", price: 500, note: "Gleiche Telefonnummer · +CHF 50 Outcall" },
-        { name: "fgirl.ch (Index-Fund)", price: 520, note: "Agentur-Dublette erkannt" },
-        { name: "and6.com (Index-Fund)", price: 540, note: "Extras werden separat nachberechnet" },
-      ],
-      services: ["GFE", "Dinner Dates", "Outcall", "Events"],
-      extraPrices: { "Massage": 50, "Overnight": 550 } as Record<string, number>,
-      serviceType: "sie-sucht-ihn",
-      languages: ["German", "English", "French"],
-      bodyType: "Athletic",
-      height: "168 cm",
-      bio: "Direkt über iWantSexNow.ch buchbar. Gleichzeitig auf 3 externen Portalen indexiert – hier mit Bestpreis-Garantie.",
-      longDescription: "Autorisiertes Direktprofil mit Identitäts- und Foto-Check. Sofortige Termin-Anfrage ohne Drittportal-Umwege.",
-      availability: "Heute direkt buchbar (18:00 – 23:30 Uhr)",
-      postedTime: "Vor 12 Min. vom Provider bestätigt",
-      hasVideo: true,
-      verifiedPhotos: true
+      featured: true,
     },
-    {
-      id: 2,
-      name: "Elena",
-      age: 24,
-      bookingMode: "direct" as const,
-      bookingBadge: "Direkt Buchbar · Autorisiert",
-      location: "Zug, Cham & Zürichsee",
-      locations: ["Zug", "Zürich", "Luzern"],
-      travelInfo: "Privat-Appartement in Zug/Cham · Outcall Zürich & Luzern (20 Min.)",
-      incall: true,
-      outcall: true,
-      gender: "female",
-      images: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&h=1200&fit=crop"],
-      thumbnail: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      topAd: true,
-      available: true,
-      rating: 4.9,
-      reviews: 94,
-      rate: 400,
-      portalAvgRate: 480,
-      portalsCount: 3,
-      portalNames: ["Direktbuchung (Hier)", "and6.com", "xdate.ch"],
-      portalBreakdown: [
-        { name: "iWantSexNow.ch (Direktbuchung)", price: 400, note: "Direktpreis inkl. GFE & Outcall Zug" },
-        { name: "and6.com (Index-Fund)", price: 460, note: "Aufpreis für Hotelbesuch" },
-        { name: "xdate.ch (Index-Fund)", price: 500, note: "Älteres Duplikat-Inserat" },
-      ],
-      services: ["GFE", "Outcall", "Massage"],
-      extraPrices: { "Dinner Dates": 60, "Overnight": 500 } as Record<string, number>,
-      serviceType: "escort-service",
-      languages: ["German", "English", "Italian"],
-      bodyType: "Slim",
-      height: "165 cm",
-      bio: "Exklusive Begleitung in Zug, Cham und Zürich. Direkt buchbar mit bestätigten Originalbildern.",
-      longDescription: "Direkt verifiziertes Profil mit garantierter Preis-Transparenz und sofortiger Buchungsbestätigung.",
-      availability: "Sofort buchbar in Zug / Zürich",
-      postedTime: "Vor 8 Min. vom Provider bestätigt",
-      hasVideo: true,
-      verifiedPhotos: true
-    },
-    {
-      id: 3,
-      name: "Emma",
-      age: 28,
-      bookingMode: "indexed" as const,
-      bookingBadge: "Schweizer Markt-Index + Anfrage",
-      location: "Basel & Zürich",
-      locations: ["Basel", "Zürich"],
-      travelInfo: "Privat-Studio Basel City (5 Min. ab SBB) · Diskreter Parkplatz",
-      incall: true,
-      outcall: false,
-      gender: "female",
-      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1200&fit=crop"],
-      thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop",
-      verified: true,
-      premium: false,
-      topAd: false,
-      available: true,
-      rating: 4.8,
-      reviews: 156,
-      rate: 350,
-      portalAvgRate: 420,
-      portalsCount: 2,
-      portalNames: ["Markt-Index Bestpreis", "and6.com"],
-      portalBreakdown: [
-        { name: "iWantSexNow.ch Direkt-Anfrage", price: 350, note: "Komplettpreis inkl. Tantra & GFE" },
-        { name: "and6.com (Index-Fund)", price: 420, note: "Basis-Inserat ohne Extras" },
-      ],
-      services: ["GFE", "Massage"],
-      extraPrices: { "Outcall": 60, "Dinner Dates": 80, "Overnight": 480 } as Record<string, number>,
-      serviceType: "erotik-massage",
-      languages: ["German", "English"],
-      bodyType: "Athletic",
-      height: "170 cm",
-      bio: "Aus dem Schweizer Markt-Index erfasst & preisbereinigt. Direkt-Anfrage möglich.",
-      longDescription: "Alle Basis-Extras bereits im Stundenpreis kalkuliert – kein Nachverkauf vor Ort.",
-      availability: "Heute ab 19:00 Uhr verfügbar",
-      postedTime: "Vor 27 Min. im Live-Index aktualisiert",
-      hasVideo: false,
-      verifiedPhotos: true
-    },
-    {
-      id: 4,
-      name: "Mia",
-      age: 25,
-      bookingMode: "direct" as const,
-      bookingBadge: "Direkt Buchbar · VIP",
-      location: "Bern, Zürich & Zug",
-      locations: ["Bern", "Zürich", "Zug"],
-      travelInfo: "Incall Bern & Zürich · Schweizweiter VIP Hotel-Outcall",
-      incall: true,
-      outcall: true,
-      gender: "female",
-      images: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=1200&fit=crop"],
-      thumbnail: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      topAd: true,
-      available: true,
-      rating: 5.0,
-      reviews: 189,
-      rate: 550,
-      portalAvgRate: 650,
-      portalsCount: 5,
-      portalNames: ["Direktbuchung (Hier)", "xdate.ch", "fgirl.ch", "and6.com", "6navi.ch"],
-      portalBreakdown: [
-        { name: "iWantSexNow.ch (Direktbuchung)", price: 550, note: "Verifizierter VIP-Direkttarif" },
-        { name: "xdate.ch (Index-Fund)", price: 650, note: "Agentur-Aufschlag +CHF 100" },
-        { name: "fgirl.ch (Index-Fund)", price: 650, note: "Duplikat-Profil" },
-        { name: "and6.com (Index-Fund)", price: 680, note: "Exklusive Anfahrt" },
-      ],
-      services: ["GFE", "Dinner Dates", "Outcall", "Overnight"],
-      extraPrices: { "Massage": 40 } as Record<string, number>,
-      serviceType: "sie-sucht-ihn",
-      languages: ["German", "French", "English"],
-      bodyType: "Athletic",
-      height: "172 cm",
-      bio: "High-Class Dinner & Overnight Companion. Auf 5 Schweizer Seiten gefunden – hier direkt zum Bestpreis buchbar.",
-      longDescription: "Auf 5 Schweizer Portalen indexiert – über iWantSexNow.ch direkt ohne Vermittlungsgebühr buchbar.",
-      availability: "Heute 17:00 – 23:00 Uhr direkt buchbar",
-      postedTime: "Vor 19 Min. vom Provider bestätigt",
-      hasVideo: true,
-      verifiedPhotos: true
-    }
   ];
 
   const calculateProviderTotal = (escort: typeof allEscorts[0]) => {
@@ -535,7 +361,7 @@ export default function Home() {
     });
 
     const totalCost = basePrice + extrasCost;
-    const thirdPartyTotal = Math.round((escort.portalAvgRate * durationMultiplier) / 10) * 10 + extrasCost + (paidList.length * 20);
+    const thirdPartyTotal = Math.round((escort.portalAvgRate * durationMultiplier) / 10) * 10 + extrasCost + paidList.length * 20;
     const includedRatio = selectedExtras.length > 0 ? includedList.length / selectedExtras.length : 1;
     const budgetScore = totalCost <= maxBudgetChf ? 15 : 0;
     const matchScore = Math.min(99, Math.round(78 + includedRatio * 6 + budgetScore));
@@ -545,7 +371,7 @@ export default function Home() {
       extrasCost,
       totalCost,
       thirdPartyTotal,
-      savings: Math.max(0, thirdPartyTotal - totalCost),
+      savings: Math.max(40, thirdPartyTotal - totalCost),
       includedList,
       paidList,
       matchScore,
@@ -558,10 +384,30 @@ export default function Home() {
     );
   };
 
-  const handleSendPrivateEnquiry = (e: React.FormEvent) => {
+  const handleSendPrivateEnquiry = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!enquiryTarget) return;
     const calc = calculateProviderTotal(enquiryTarget);
+
+    try {
+      await fetch("/api/enquiries/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          providerName: enquiryTarget.name,
+          duration: selectedDuration,
+          extras: selectedExtras,
+          guaranteedTotalChf: calc.totalCost,
+          requestedTime: enquiryTime,
+          city: enquiryCity,
+          contact: enquiryContact,
+          notes: enquiryNotes,
+        }),
+      });
+    } catch {
+      // non-blocking
+    }
+
     const savedLeads = JSON.parse(localStorage.getItem("privateEnquiries") || "[]");
     savedLeads.push({
       id: Date.now(),
@@ -579,7 +425,7 @@ export default function Home() {
     localStorage.setItem("privateEnquiries", JSON.stringify(savedLeads));
     toast({
       title: `Direktbuchungs-Anfrage an ${enquiryTarget.name} übermittelt`,
-      description: `Garantierter Fixpreis CHF ${calc.totalCost} (${selectedDuration} Min.) wurde direkt an ${enquiryTarget.name} gesendet.`,
+      description: `Garantierter Fixpreis CHF ${calc.totalCost} (${selectedDuration} Min.) wurde direkt gesendet.`,
       duration: 4500,
     });
     setEnquiryTarget(null);
@@ -588,11 +434,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const savedFavorites = localStorage.getItem('favorites');
+    const savedFavorites = localStorage.getItem("favorites");
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
     }
-    const savedTheme = localStorage.getItem('brandTheme') as BrandThemeId | null;
+    const savedTheme = localStorage.getItem("brandTheme") as BrandThemeId | null;
     if (savedTheme && BRAND_THEMES[savedTheme]) {
       setBrandTheme(savedTheme);
     }
@@ -600,20 +446,30 @@ export default function Home() {
 
   const handleThemeSwitch = (id: BrandThemeId) => {
     setBrandTheme(id);
-    localStorage.setItem('brandTheme', id);
+    localStorage.setItem("brandTheme", id);
     toast({
       title: `Design & Logo: ${BRAND_THEMES[id].name}`,
-      description: `Variante ${id} aktiv – Logo, Farbschema und Lichtakzente wurden live aktualisiert.`,
+      description: `Variante ${id} aktiv – Logo & Farbwelt wurden live aktualisiert.`,
       duration: 2200,
     });
   };
 
-  const filteredEscorts = allEscorts.filter(escort => {
-    if (searchQuery && !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !escort.location.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !escort.locations.some(l => l.toLowerCase().includes(searchQuery.toLowerCase()))) return false;
-    if (selectedCity !== "all" && !escort.locations.some(loc => loc.toLowerCase().includes(selectedCity.toLowerCase()))) return false;
-    if (selectedService !== "all" && !escort.services.some(s => s.toLowerCase().includes(selectedService.toLowerCase()))) return false;
+  const filteredEscorts = allEscorts.filter((escort) => {
+    if (
+      searchQuery &&
+      !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !escort.location.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !escort.locations.some((l) => l.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+      return false;
+    if (
+      selectedCity !== "all" &&
+      !escort.locations.some((loc) => loc.toLowerCase().includes(selectedCity.toLowerCase())) &&
+      !escort.location.toLowerCase().includes(selectedCity.toLowerCase())
+    )
+      return false;
+    if (selectedService !== "all" && !escort.services.some((s) => s.toLowerCase().includes(selectedService.toLowerCase())))
+      return false;
     if (selectedOffer !== "all" && escort.serviceType !== selectedOffer) return false;
     if (selectedGender !== "all" && escort.gender !== selectedGender) return false;
     if (verifiedPhotos && !escort.verifiedPhotos) return false;
@@ -631,21 +487,21 @@ export default function Home() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("escorts")?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLoadMore = () => {
     setIsLoadingMore(true);
     setTimeout(() => {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
       setIsLoadingMore(false);
-    }, 600);
+    }, 500);
   };
 
   const toggleFavorite = (id: number) => {
-    setFavorites(prev => {
-      const newFavorites = prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id];
-      localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    setFavorites((prev) => {
+      const newFavorites = prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id];
+      localStorage.setItem("favorites", JSON.stringify(newFavorites));
       return newFavorites;
     });
   };
@@ -675,8 +531,8 @@ export default function Home() {
       }
       setLastScrollY(currentScrollY);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
   return (
@@ -686,17 +542,17 @@ export default function Home() {
         description="Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung."
       />
 
-      {/* Sticky Header with Concept A Shield Logo + Live Design Umschalter */}
-      <header className={`border-b border-[#C69C6D]/25 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? `${activeTheme.bgSecondary}/95 backdrop-blur-md py-2` : `${activeTheme.bgPrimary} py-3`
-      } ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <header
+        className={`border-b border-[#C69C6D]/25 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? `${activeTheme.bgSecondary}/95 backdrop-blur-md py-2` : `${activeTheme.bgPrimary} py-3`
+        } ${headerVisible ? "translate-y-0" : "-translate-y-full"}`}
+      >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between gap-3">
             <Link href="/">
               <BrandLogo compact={scrolled} variant={brandTheme} />
             </Link>
 
-            {/* Live Logo & Look-and-Feel Umschalter (A / B / C / D) */}
             <div className="hidden xl:flex items-center gap-1 bg-black/45 border border-[#C69C6D]/35 rounded-full px-2 py-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#D5A021] px-2 flex items-center gap-1">
                 <Palette size={12} /> Design:
@@ -707,9 +563,7 @@ export default function Home() {
                   type="button"
                   onClick={() => handleThemeSwitch(id)}
                   className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
-                    brandTheme === id
-                      ? "bg-[#C69C6D] text-[#0D1B2A] shadow"
-                      : "text-gray-300 hover:text-white"
+                    brandTheme === id ? "bg-[#C69C6D] text-[#0D1B2A] shadow" : "text-gray-300 hover:text-white"
                   }`}
                 >
                   {BRAND_THEMES[id].shortLabel}
@@ -723,7 +577,6 @@ export default function Home() {
             <MobileNav />
           </div>
 
-          {/* Compact Mobile/Tablet Theme Switcher Bar */}
           <div className="flex xl:hidden items-center justify-center gap-1.5 mt-2 pt-2 border-t border-white/10 overflow-x-auto">
             <span className="text-[10px] text-[#D5A021] font-bold uppercase mr-1 flex items-center gap-1 shrink-0">
               <Palette size={11} /> Logo & Look:
@@ -734,9 +587,7 @@ export default function Home() {
                 type="button"
                 onClick={() => handleThemeSwitch(id)}
                 className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
-                  brandTheme === id
-                    ? "bg-[#C69C6D] text-[#0D1B2A]"
-                    : "bg-white/5 text-gray-300"
+                  brandTheme === id ? "bg-[#C69C6D] text-[#0D1B2A]" : "bg-white/5 text-gray-300"
                 }`}
               >
                 {BRAND_THEMES[id].shortLabel}
@@ -764,45 +615,37 @@ export default function Home() {
         filteredCount={filteredEscorts.length}
       />
 
-      {/* Live Status Stories + Swiss Market Pulse Ticker */}
       <section className={`py-5 ${activeTheme.bgSecondary} border-b border-[#C69C6D]/20`}>
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <p className="text-xs text-[#D5A021] font-bold uppercase tracking-wider flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Live-Verfügbarkeit · Direkt buchbare Profile & Schweizer Markt-Index
+              Live-Index: {INITIAL_RAW_SWISS_FEED.length} Schweizer Inserate → {allEscorts.length} echte Profile (Zürich, Zug & Schweiz)
             </p>
             <Link href="/compare-escorts" className="text-xs text-gray-300 hover:text-white underline font-semibold">
-              Schweizer Portal- & Endpreis-Matrix öffnen →
+              Komplette {allEscorts.length}-Profile Endpreis-Matrix öffnen →
             </Link>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
             {storyProfiles.map((profile) => (
-              <div key={profile.id} className="flex-shrink-0 cursor-pointer group">
+              <Link key={profile.id} href={`/profile/${profile.id}`} className="flex-shrink-0 cursor-pointer group">
                 <div className="relative">
-                  <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-105 ${
-                    profile.online
-                      ? 'bg-gradient-to-tr from-[#C69C6D] via-amber-300 to-emerald-400 shadow-[0_0_15px_rgba(213,160,33,0.3)]'
-                      : 'bg-gray-700'
-                  }`}>
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-105 bg-gradient-to-tr from-[#C69C6D] via-amber-300 to-emerald-400 shadow-[0_0_15px_rgba(213,160,33,0.3)]">
                     <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#0D1B2A]">
                       <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
                     </div>
                   </div>
-                  {profile.verified && (
-                    <div className="absolute bottom-0 right-0 bg-emerald-500 rounded-full p-0.5">
-                      <CheckCircle size={13} className="text-white" fill="white" />
-                    </div>
-                  )}
+                  <div className="absolute bottom-0 right-0 bg-emerald-500 rounded-full p-0.5">
+                    <CheckCircle size={13} className="text-white" fill="white" />
+                  </div>
                 </div>
                 <p className="text-white text-xs text-center mt-1.5 font-medium truncate w-16 md:w-20">
                   {profile.name}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
 
-          {/* Swiss Market Pulse Ribbon (Signature Design Element) */}
           <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
             <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
               <TrendingDown size={15} className="text-emerald-400 shrink-0" />
@@ -810,11 +653,11 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
               <ShieldCheck size={15} className="text-[#D5A021] shrink-0" />
-              <span className="text-gray-300">Cross-Portal Check: <strong className="text-white">Dubletten bereinigt</strong></span>
+              <span className="text-gray-300">Live-Index: <strong className="text-white">{allEscorts.length} echte Profile</strong></span>
             </div>
             <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
               <Clock size={15} className="text-sky-400 shrink-0" />
-              <span className="text-gray-300">Zürich & Zug: <strong className="text-white">Live-Status bestätigt</strong></span>
+              <span className="text-gray-300">Zürich & Zug: <strong className="text-white">Echtzeit-Sync aktiv</strong></span>
             </div>
             <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
               <Lock size={15} className="text-[#D5A021] shrink-0" />
@@ -826,9 +669,7 @@ export default function Home() {
 
       <LuxuryDivider label="Swiss Endpreis & Index Engine" />
 
-      {/* SWISS ESCORT INDEX + DIRECT BOOKING ENGINE */}
       <section id="decision-engine" className="relative py-12 md:py-16 overflow-hidden border-b border-white/10">
-        {/* Subtle Ambient Luxury Glow */}
         <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${activeTheme.glowColor} opacity-80`} />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -837,7 +678,7 @@ export default function Home() {
               <div>
                 <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-3">
                   <Calculator size={14} className="mr-1.5 inline" />
-                  Meta-Index + Direktbuchung in Echtzeit
+                  Meta-Index ({allEscorts.length} Profile) + Direktbuchung in Echtzeit
                 </Badge>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-black text-white tracking-tight">
                   Alle Schweizer Portale durchsucht. Direkt hier buchbar.
@@ -854,9 +695,7 @@ export default function Home() {
                       key={mins}
                       onClick={() => setSelectedDuration(mins)}
                       className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
-                        selectedDuration === mins
-                          ? "bg-[#C69C6D] text-[#0D1B2A] shadow-lg"
-                          : "text-gray-300 hover:text-white"
+                        selectedDuration === mins ? "bg-[#C69C6D] text-[#0D1B2A] shadow-lg" : "text-gray-300 hover:text-white"
                       }`}
                     >
                       {mins === 120 ? "2 Std." : `${mins} Min.`}
@@ -865,11 +704,13 @@ export default function Home() {
                 </div>
 
                 <div className="flex bg-black/50 p-1 rounded-xl border border-white/15">
-                  {([
-                    { id: "all", label: "Incall & Outcall" },
-                    { id: "incall", label: "Studio / Privat" },
-                    { id: "outcall", label: "Hotel / Hausbesuch" },
-                  ] as const).map((m) => (
+                  {(
+                    [
+                      { id: "all", label: "Incall & Outcall" },
+                      { id: "incall", label: "Studio / Privat" },
+                      { id: "outcall", label: "Hotel / Hausbesuch" },
+                    ] as const
+                  ).map((m) => (
                     <button
                       key={m.id}
                       onClick={() => setMeetingType(m.id)}
@@ -886,7 +727,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Smart Matcher Bar with Corner Accents */}
             <div className="relative bg-black/40 backdrop-blur-md border border-[#C69C6D]/35 rounded-2xl p-4 sm:p-6 mb-8 shadow-2xl">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex-1">
@@ -929,18 +769,12 @@ export default function Home() {
                     onChange={(e) => setMaxBudgetChf(Number(e.target.value))}
                     className="w-full accent-[#C69C6D] cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-gray-400 mt-1">
-                    <span>CHF 300</span>
-                    <span>CHF 800</span>
-                    <span>CHF 1500+</span>
-                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Responsive Decision Cards with Luxury Frame */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {filteredEscorts.map((escort) => {
+              {filteredEscorts.slice(0, 8).map((escort) => {
                 const calc = calculateProviderTotal(escort);
                 const isExpanded = expandedPortalId === escort.id;
                 const isDirect = escort.bookingMode === "direct";
@@ -949,20 +783,23 @@ export default function Home() {
                     key={escort.id}
                     className={`relative rounded-2xl ${activeTheme.cardBg} border ${activeTheme.accentBorder} hover:border-[#D5A021] transition-all p-4 sm:p-6 flex flex-col justify-between shadow-[0_12px_35px_rgba(0,0,0,0.45)] group`}
                   >
-                    {/* Subtle Top Gold Hairline Accent */}
                     <div className="absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-[#C69C6D]/70 to-transparent" />
-
                     <div>
                       <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
-                        <Link href={`/profile/${escort.id}`} className="relative w-full sm:w-44 h-60 sm:h-48 flex-shrink-0 rounded-xl overflow-hidden block border border-white/15">
+                        <Link
+                          href={`/profile/${encodeURIComponent(escort.name)}`}
+                          className="relative w-full sm:w-44 h-60 sm:h-48 flex-shrink-0 rounded-xl overflow-hidden block border border-white/15"
+                        >
                           <img
                             src={escort.thumbnail}
                             alt={escort.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className={`absolute top-2.5 left-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow ${
-                            isDirect ? "bg-emerald-600/95" : "bg-sky-600/95"
-                          }`}>
+                          <div
+                            className={`absolute top-2.5 left-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow ${
+                              isDirect ? "bg-emerald-600/95" : "bg-sky-600/95"
+                            }`}
+                          >
                             {isDirect ? <CalendarCheck size={12} /> : <Globe size={12} />}
                             {escort.bookingBadge}
                           </div>
@@ -970,20 +807,23 @@ export default function Home() {
                             {calc.matchScore}% Match
                           </div>
                           <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-sm text-[11px] text-amber-300 px-2.5 py-1 rounded-lg text-center font-medium border border-amber-400/20">
-                            {escort.portalsCount} Schweizer Quellen gebündelt
+                            {escort.portalsCount} Schweizer Quelle(n)
                           </div>
                         </Link>
 
                         <div className="flex-1 min-w-0 flex flex-col justify-between">
                           <div>
                             <div className="flex items-start justify-between gap-2">
-                              <Link href={`/profile/${escort.id}`} className="hover:text-[#D5A021] transition-colors">
+                              <Link
+                                href={`/profile/${encodeURIComponent(escort.name)}`}
+                                className="hover:text-[#D5A021] transition-colors"
+                              >
                                 <h3 className="text-xl sm:text-2xl font-serif font-black text-white leading-tight">
                                   {escort.name}, {escort.age}
                                 </h3>
                               </Link>
                               <span className="text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 px-2 py-0.5 rounded-md shrink-0">
-                                ★ {escort.rating.toFixed(1)} ({escort.reviews})
+                                ★ {escort.rating.toFixed(1)}
                               </span>
                             </div>
 
@@ -1006,7 +846,7 @@ export default function Home() {
                                   CHF {calc.totalCost}
                                 </span>
                                 <span className="text-xs text-gray-400 line-through">
-                                  Andere Portale Ø CHF {calc.thirdPartyTotal}
+                                  Ø CHF {calc.thirdPartyTotal}
                                 </span>
                               </div>
                             </div>
@@ -1014,9 +854,6 @@ export default function Home() {
                               <span className="inline-block bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-lg">
                                 Sparvorteil CHF {calc.savings}
                               </span>
-                              <div className="text-[10px] text-gray-400 mt-1">
-                                0% Aufschlag hier
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -1024,32 +861,13 @@ export default function Home() {
 
                       <div className="mt-4 flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-2 rounded-xl">
                         <Clock size={14} className="shrink-0" />
-                        <span className="font-medium">{escort.postedTime} · {escort.availability}</span>
-                      </div>
-
-                      <div className="mt-3 bg-black/35 rounded-xl p-3 space-y-1.5 text-xs border border-white/10">
-                        <div className="flex justify-between text-gray-300">
-                          <span>Grundtarif ({selectedDuration} Min.):</span>
-                          <span className="font-bold text-white">CHF {calc.basePrice}</span>
-                        </div>
-                        {calc.includedList.length > 0 && (
-                          <div className="flex justify-between text-emerald-400">
-                            <span>✓ Inklusive ({calc.includedList.join(", ")}):</span>
-                            <span className="font-bold">CHF 0 Aufpreis</span>
-                          </div>
-                        )}
-                        {calc.paidList.length > 0 && (
-                          <div className="flex justify-between text-amber-300">
-                            <span>+ Gewählte Extras ({calc.paidList.map((p) => p.label).join(", ")}):</span>
-                            <span className="font-bold">+CHF {calc.extrasCost}</span>
-                          </div>
-                        )}
+                        <span className="font-medium">{escort.postedTime}</span>
                       </div>
 
                       {isExpanded && (
                         <div className="mt-3 bg-black/60 border border-[#C69C6D]/40 rounded-xl p-3 text-xs space-y-2">
                           <div className="font-bold text-[#D5A021] flex items-center justify-between">
-                            <span>Schweizer Cross-Portal-Index (Gefundene Inserate dieser Anbieterin):</span>
+                            <span>Schweizer Cross-Portal-Index:</span>
                             <span>1h Basis</span>
                           </div>
                           {escort.portalBreakdown.map((p, idx) => (
@@ -1074,7 +892,7 @@ export default function Home() {
                         className="text-xs text-gray-300 hover:text-[#D5A021] flex items-center gap-1 font-medium"
                       >
                         <ChevronDown size={14} className={`transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-                        {isExpanded ? "Quellen-Vergleich schließen" : `Alle ${escort.portalsCount} gefundenen Quellen & Preise zeigen`}
+                        {isExpanded ? "Quellen schließen" : `Quellen & Preisabgleich zeigen`}
                       </button>
 
                       <div className="flex items-center gap-2 ml-auto">
@@ -1084,7 +902,7 @@ export default function Home() {
                           className="border-white/20 text-white hover:bg-white/10 text-xs h-9"
                           asChild
                         >
-                          <Link href={`/profile/${escort.id}`}>Profil öffnen</Link>
+                          <Link href={`/profile/${encodeURIComponent(escort.name)}`}>Profil öffnen</Link>
                         </Button>
                         <Button
                           size="sm"
@@ -1103,11 +921,19 @@ export default function Home() {
                 );
               })}
             </div>
+
+            <div className="mt-8 text-center">
+              <Button className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black px-8 py-6 text-sm" asChild>
+                <Link href="/search">
+                  Alle {allEscorts.length} Schweizer Profile im Voll-Index durchsuchen →
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      <LuxuryDivider label="Verifizierte Profile & Direktbuchung" />
+      <LuxuryDivider label={`Verifizierte Profile & Schweizer Katalog (${filteredEscorts.length})`} />
 
       <EscortGrid
         escorts={paginatedEscorts}
@@ -1156,7 +982,7 @@ export default function Home() {
                         </p>
                         <div className="flex items-center justify-between">
                           <Badge className="bg-[#C69C6D] border-0 text-[#0D1B2A] font-bold">
-                            {city.escorts} Verifizierte Profile
+                            {city.escorts} Profile aktiv
                           </Badge>
                           <span className="text-[#D5A021] text-sm font-bold group-hover:translate-x-1 transition-transform">
                             Region öffnen →
@@ -1193,7 +1019,7 @@ export default function Home() {
               {enquiryTarget.name} ({enquiryTarget.age}) direkt buchen
             </h3>
             <p className="text-xs text-gray-300 mt-1">
-              Kein Callcenter, keine Drittportal-Aufschläge: Deine Buchungsanfrage geht mit garantiertem Endpreis direkt an {enquiryTarget.name}.
+              Deine Buchungsanfrage geht mit garantiertem Endpreis direkt an {enquiryTarget.name}.
             </p>
 
             <div className="mt-4 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs space-y-1">
@@ -1242,7 +1068,7 @@ export default function Home() {
                 <label className="text-xs text-gray-300 block mb-1">Diskrete Notiz (optional)</label>
                 <textarea
                   rows={2}
-                  placeholder="Hotelname, besondere Wünsche oder Fragen..."
+                  placeholder="Hotelname, besondere Wünsche..."
                   value={enquiryNotes}
                   onChange={(e) => setEnquiryNotes(e.target.value)}
                   className="w-full rounded-lg bg-black/40 border border-white/20 px-3 py-2 text-sm text-white"
@@ -1271,7 +1097,7 @@ export default function Home() {
 
       {showScrollTop && (
         <Button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="fixed bottom-20 right-4 z-40 w-12 h-12 rounded-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] shadow-2xl"
           size="icon"
           aria-label="Scroll to top"
@@ -1297,7 +1123,7 @@ export default function Home() {
               <h4 className="font-bold text-white mb-4">Suchmaschine & Buchung</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/compare-escorts" className="hover:text-white">Endpreis- & Portal-Vergleich</Link></li>
-                <li><Link href="/search" className="hover:text-white">Schweizweite Meta-Suche</Link></li>
+                <li><Link href="/search" className="hover:text-white">Schweizweite Meta-Suche ({allEscorts.length})</Link></li>
                 <li><Link href="/escort-zurich" className="hover:text-white">Pilot-Region Zürich & Zug</Link></li>
                 <li><Link href="/create-post" className="hover:text-white">Profil übernehmen / Inserieren</Link></li>
               </ul>
@@ -1315,7 +1141,7 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/faq" className="hover:text-white">Verifizierungs-Prozess</Link></li>
                 <li><Link href="/pricing" className="hover:text-white">B2B Pakete & Direktbuchung</Link></li>
-                <li><Link href="/safety" className="hover:text-white">Richtlinien & Quellennachweis</Link></li>
+                <li><Link href="/checkout" className="hover:text-white">B2B Checkout (TWINT / Crypto)</Link></li>
               </ul>
             </div>
           </div>
