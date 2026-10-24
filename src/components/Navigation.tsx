@@ -17,68 +17,47 @@ export function Navigation() {
   const isActive = (path: string) =>
     router.pathname === path || router.pathname.startsWith(path + "/");
 
+  const getLinkClass = (path: string) => {
+    const base = "px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ";
+    return base + (isActive(path) ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10");
+  };
+
   return (
     <nav className="flex items-center gap-1.5 xl:gap-2">
-      <Link
-        href="/search"
-        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-          isActive("/search") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
-        }`}
-      >
+      <Link href="/search" className={getLinkClass("/search")}>
         <Search size={14} className={isActive("/search") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
         <span>Suche</span>
       </Link>
 
-      <Link
-        href="/compare-escorts"
-        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-          isActive("/compare-escorts") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
-        }`}
-      >
-        <SlidersHorizontal
-          size={14}
-          className={isActive("/compare-escorts") ? "text-[#0D1B2A]" : "text-emerald-400"}
-        />
+      <Link href="/compare-escorts" className={getLinkClass("/compare-escorts")}>
+        <SlidersHorizontal size={14} className={isActive("/compare-escorts") ? "text-[#0D1B2A]" : "text-emerald-400"} />
         <span>Endpreis-Matrix</span>
       </Link>
 
       <Link
         href="/live-cam"
-        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-          isActive("/live-cam") ? "bg-rose-600 text-white" : "text-gray-200 hover:bg-white/10"
-        }`}
+        className={
+          isActive("/live-cam")
+            ? "px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-rose-600 text-white"
+            : "px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all text-gray-200 hover:bg-white/10"
+        }
       >
         <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
         <Video size={14} className="text-rose-400" />
         <span>1:1 Live-Cam</span>
       </Link>
 
-      <Link
-        href="/rankings"
-        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-          isActive("/rankings") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
-        }`}
-      >
+      <Link href="/rankings" className={getLinkClass("/rankings")}>
         <Trophy size={14} className={isActive("/rankings") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
         <span>Bestenliste</span>
       </Link>
 
-      <Link
-        href="/guides"
-        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-          isActive("/guides") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
-        }`}
-      >
+      <Link href="/guides" className={getLinkClass("/guides")}>
         <HelpCircle size={14} className={isActive("/guides") ? "text-[#0D1B2A]" : "text-emerald-400"} />
         <span>Guides & Hilfe</span>
       </Link>
 
-      <Link
-        href="/escort-zurich"
-        className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-          isActive("/escort-zurich") ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10"
-        }`}
-      >
+      <Link href="/escort-zurich" className={getLinkClass("/escort-zurich")}>
         <MapPin size={14} className={isActive("/escort-zurich") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
         <span>Zürich & Zug</span>
       </Link>
