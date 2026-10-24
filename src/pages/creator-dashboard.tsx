@@ -60,9 +60,9 @@ const DEFAULT_DEMO_LEADS: IncomingLead[] = [
     extras: ["GFE", "Massage"],
     guaranteedTotalChf: 500,
     requestedTime: "Morgen, 18:00 Uhr",
-    city: "Zürich Paradeplatz (Incall)",
+    city: "ZÃ¼rich Paradeplatz (Incall)",
     contact: "Threema-ID: CH98K29A",
-    notes: "Erstkontakt über Endpreis-Rechner.",
+    notes: "Erstkontakt Ã¼ber Endpreis-Rechner.",
     createdAt: new Date(Date.now() - 95 * 60000).toISOString(),
     status: "accepted",
     unlocked: true,
@@ -71,7 +71,7 @@ const DEFAULT_DEMO_LEADS: IncomingLead[] = [
 
 export default function CreatorDashboardPage() {
   const { toast } = useToast();
-  const [activeZone, setActiveZone] = useState("Zürich City & Zug (Outcall)");
+  const [activeZone, setActiveZone] = useState("ZÃ¼rich City & Zug (Outcall)");
   const [lastConfirmedMins, setLastConfirmedMins] = useState(1);
   const [rate30, setRate30] = useState(300);
   const [rate60, setRate60] = useState(450);
@@ -104,7 +104,7 @@ export default function CreatorDashboardPage() {
   const handleUnlockLead = (id: number) => {
     if (leadCredits <= 0) {
       toast({
-        title: "Keine Lead-Credits mehr verfügbar",
+        title: "Keine Lead-Credits mehr verfÃ¼gbar",
         description: "Bitte lade dein Lead-Guthaben per TWINT, Swiss QR oder USDT auf.",
       });
       return;
@@ -115,7 +115,7 @@ export default function CreatorDashboardPage() {
     setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, unlocked: true } : l)));
     toast({
       title: "Kunden-Kontakt erfolgreich freigeschaltet!",
-      description: `1 Lead-Credit eingelöst (Restguthaben: ${nextCredits} Credits). Du siehst jetzt die volle Rufnummer / Threema-ID.`,
+      description: `1 Lead-Credit eingelÃ¶st (Restguthaben: ${nextCredits} Credits). Du siehst jetzt die volle Rufnummer / Threema-ID.`,
       duration: 4000,
     });
   };
@@ -123,8 +123,8 @@ export default function CreatorDashboardPage() {
   const handleConfirmFreshness = () => {
     setLastConfirmedMins(0);
     toast({
-      title: "Echtzeit-Verfügbarkeit bestätigt!",
-      description: `Dein Profil trägt jetzt den grünen Live-Zeitstempel für ${activeZone}.`,
+      title: "Echtzeit-VerfÃ¼gbarkeit bestÃ¤tigt!",
+      description: `Dein Profil trÃ¤gt jetzt den grÃ¼nen Live-Zeitstempel fÃ¼r ${activeZone}.`,
       duration: 3500,
     });
   };
@@ -132,10 +132,10 @@ export default function CreatorDashboardPage() {
   const handleLeadAction = (id: number, status: "accepted" | "declined") => {
     setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status, unlocked: true } : l)));
     toast({
-      title: status === "accepted" ? "Buchungsanfrage bestätigt" : "Anfrage abgelehnt",
+      title: status === "accepted" ? "Buchungsanfrage bestÃ¤tigt" : "Anfrage abgelehnt",
       description:
         status === "accepted"
-          ? "Der Kunde erhält deine diskrete Terminbestätigung zum vereinbarten Fixpreis."
+          ? "Der Kunde erhÃ¤lt deine diskrete TerminbestÃ¤tigung zum vereinbarten Fixpreis."
           : "Die Anfrage wurde archiviert.",
       duration: 2500,
     });
@@ -148,15 +148,15 @@ export default function CreatorDashboardPage() {
   };
 
   const maskContactString = (raw: string) => {
-    if (raw.length <= 6) return "••••••";
-    return raw.slice(0, 8) + " •• •• (Gesperrt)";
+    if (raw.length <= 6) return "â€¢â€¢â€¢â€¢â€¢â€¢";
+    return raw.slice(0, 8) + " â€¢â€¢ â€¢â€¢ (Gesperrt)";
   };
 
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
         title="Provider Self-Service & Lead-Tresor | iWantSexNow.ch"
-        description="Verwalte deine Echtzeit-Verfügbarkeit, Lead-Credits und direkte Fixpreis-Buchungsanfragen."
+        description="Verwalte deine Echtzeit-VerfÃ¼gbarkeit, Lead-Credits und direkte Fixpreis-Buchungsanfragen."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -177,14 +177,14 @@ export default function CreatorDashboardPage() {
                 <ShieldCheck size={13} className="mr-1 inline" /> Autorisiertes Direktprofil
               </Badge>
               <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-                <Coins size={12} className="mr-1 inline" /> Verfügbare Lead-Credits: {leadCredits}
+                <Coins size={12} className="mr-1 inline" /> VerfÃ¼gbare Lead-Credits: {leadCredits}
               </Badge>
             </div>
             <h1 className="text-2xl md:text-4xl font-serif font-black">
               Provider Control Center & Lead-Tresor
             </h1>
             <p className="text-sm text-gray-300 mt-1">
-              Schalte eingehende Fixpreis-Buchungen frei, pinge deine Echtzeit-Verfügbarkeit und verwalte deine Tarife.
+              Schalte eingehende Fixpreis-Buchungen frei, pinge deine Echtzeit-VerfÃ¼gbarkeit und verwalte deine Tarife.
             </p>
           </div>
 
@@ -203,7 +203,7 @@ export default function CreatorDashboardPage() {
               className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black shadow-xl"
             >
               <RefreshCw size={15} className="mr-2" />
-              Jetzt für 4 Std. „Sofort Verfügbar“ pingen
+              Jetzt fÃ¼r 4 Std. â€žSofort VerfÃ¼gbarâ€œ pingen
             </Button>
           </div>
         </div>
@@ -217,7 +217,7 @@ export default function CreatorDashboardPage() {
                 Eingegangene Fixpreis-Buchungsanfragen ({leads.length})
               </h2>
               <Link href="/checkout?plan=vip_monthly" className="text-xs text-[#D5A021] underline font-bold">
-                Mit VIP-Paket alle Leads automatisch freischalten →
+                Mit VIP-Paket alle Leads automatisch freischalten â†’
               </Link>
             </div>
 
@@ -233,11 +233,11 @@ export default function CreatorDashboardPage() {
                         FIXPREIS AKZEPTIERT
                       </Badge>
                       <span className="text-xs text-gray-300">
-                        📍 {lead.city} · 🕒 {lead.requestedTime}
+                        ðŸ“ {lead.city} Â· ðŸ•’ {lead.requestedTime}
                       </span>
                     </div>
                     <h3 className="text-lg font-bold mt-2">
-                      {lead.duration} Min. Direktbuchung · Extras: {lead.extras.join(", ")}
+                      {lead.duration} Min. Direktbuchung Â· Extras: {lead.extras.join(", ")}
                     </h3>
                   </div>
 
@@ -285,7 +285,7 @@ export default function CreatorDashboardPage() {
                     onClick={() => handleLeadAction(lead.id, "accepted")}
                     className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs"
                   >
-                    <Check size={13} className="mr-1" /> Termin bestätigen
+                    <Check size={13} className="mr-1" /> Termin bestÃ¤tigen
                   </Button>
                 </div>
               </Card>
@@ -352,7 +352,7 @@ export default function CreatorDashboardPage() {
                             : "bg-black/30 border-white/10 text-gray-400"
                         }`}
                       >
-                        {active ? "✓ " : "+ "}{srv}
+                        {active ? "âœ“ " : "+ "}{srv}
                       </button>
                     );
                   })}
@@ -377,14 +377,25 @@ export default function CreatorDashboardPage() {
                 <Zap size={14} /> Sofort mehr Buchungen heute Abend?
               </div>
               <h3 className="text-lg font-serif font-black">
-                24h „Heute direkt buchbar“ Radar-Boost (CHF 29)
+                24h â€žHeute direkt buchbarâ€œ Radar-Boost (CHF 29)
               </h3>
               <p className="text-xs text-gray-300">
-                Platziert dein Profil für 24 Stunden ganz vorne im Live-Story-Radar und auf Platz 1 für Suchanfragen in Zürich & Zug.
+                Platziert dein Profil fÃ¼r 24 Stunden ganz vorne im Live-Story-Radar und auf Platz 1 fÃ¼r Suchanfragen in ZÃ¼rich & Zug.
               </p>
               <Button className="w-full bg-white text-[#0D1B2A] hover:bg-gray-200 font-black text-xs" asChild>
-                <Link href="/checkout?plan=boost_24h">24h Radar-Boost aktivieren (CHF 29) →</Link>
+                <Link href="/checkout?plan=boost_24h">24h Radar-Boost aktivieren (CHF 29) â†’</Link>
               </Button>
+            </Card>
+            <Card className="bg-[#09131E] border border-emerald-500/40 p-6 rounded-2xl text-white space-y-3">
+              <div className="text-xs font-bold uppercase text-emerald-400 flex items-center gap-1.5">
+                <ShieldCheck size={14} /> B2B Schutz · Schweizer No-Show & Fake-Radar
+              </div>
+              <h3 className="text-lg font-serif font-black">
+                Kunden-Rufnummer vor dem Termin prüfen
+              </h3>
+              <p className="text-xs text-gray-300">
+                Alle eingehenden Anfragen auf iWantSexNow.ch werden automatisch gegen bekannte Zeitverschwender- und No-Show-Nummern abgeglichen (Status für deine aktuellen Anfragen: <strong className="text-emerald-400">0 Warnungen · Vertrauenswürdig</strong>).
+              </p>
             </Card>
           </div>
         </div>
