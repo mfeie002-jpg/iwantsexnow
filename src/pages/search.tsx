@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
@@ -111,7 +111,7 @@ export default function SwissMetaSearchPage() {
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
         title="Schweizer Escort-Suchmaschine & Dubletten-Index | iWantSexNow.ch"
-        description="Durchsuche alle Schweizer Portale und Direktprofile in Zürich, Zug, Cham und der ganzen Schweiz – automatisch um Dubletten bereinigt und nach echtem Endpreis sortiert."
+        description="Durchsuche alle Schweizer Portale und Direktprofile in ZÃ¼rich, Zug, Cham und der ganzen Schweiz â€“ automatisch um Dubletten bereinigt und nach echtem Endpreis sortiert."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -131,14 +131,14 @@ export default function SwissMetaSearchPage() {
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
                   <Database size={12} className="mr-1.5 inline" />
-                  Live Cross-Portal Index: {rawFeed.length} Roh-Inserate → {deduplicatedProfiles.length} echte Profile ({duplicatesRemoved} Dubletten eliminiert)
+                  Live Cross-Portal Index: {rawFeed.length} Roh-Inserate â†’ {deduplicatedProfiles.length} echte Profile ({duplicatesRemoved} Dubletten eliminiert)
                 </Badge>
               </div>
               <h1 className="text-2xl md:text-4xl font-serif font-black">
                 Schweizer Meta-Suche & Endpreis-Sortierung
               </h1>
               <p className="text-sm text-gray-300 mt-1">
-                Eine Suche über alle Schweizer Portale und autorisierten Direktprofile – automatisch nach dem günstigsten echten Komplettpreis sortiert.
+                Eine Suche Ã¼ber alle Schweizer Portale und autorisierten Direktprofile â€“ automatisch nach dem gÃ¼nstigsten echten Komplettpreis sortiert.
               </p>
             </div>
 
@@ -148,7 +148,7 @@ export default function SwissMetaSearchPage() {
               className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-bold self-start"
             >
               <Plus size={16} className="mr-1.5" />
-              {showImporter ? "Firecrawl-Importer schließen" : "Firecrawl / Portal-Import testen"}
+              {showImporter ? "Firecrawl-Importer schlieÃŸen" : "Firecrawl / Portal-Import testen"}
             </Button>
           </div>
 
@@ -162,7 +162,7 @@ export default function SwissMetaSearchPage() {
                 <span className="text-xs text-gray-400">API: POST /api/indexer/import</span>
               </div>
               <p className="text-xs text-gray-300">
-                Simuliere, wie unser Scraper ein weiteres Inserat auf einem Drittportal findet. Hat die Anbieterin dieselbe Telefonnummer (egal in welcher Schreibweise, z. B. <code>078 901 33 21</code> für Elena in Zug/Cham), wird kein Duplikat erzeugt, sondern das bestehende Profil um die Quelle ergänzt:
+                Simuliere, wie unser Scraper ein weiteres Inserat auf einem Drittportal findet. Hat die Anbieterin dieselbe Telefonnummer (egal in welcher Schreibweise, z. B. <code>078 901 33 21</code> fÃ¼r Elena in Zug/Cham), wird kein Duplikat erzeugt, sondern das bestehende Profil um die Quelle ergÃ¤nzt:
               </p>
               <form onSubmit={handleSimulateFirecrawlImport} className="grid sm:grid-cols-2 lg:grid-cols-6 gap-3">
                 <input
@@ -215,7 +215,7 @@ export default function SwissMetaSearchPage() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Name, Ort (Zürich, Zug, Cham), Telefonnummer..."
+                placeholder="Name, Ort (ZÃ¼rich, Zug, Cham), Telefonnummer..."
                 className="w-full rounded-xl bg-black/50 border border-white/20 pl-10 pr-4 py-3 text-sm text-white"
               />
             </div>
@@ -274,7 +274,7 @@ export default function SwissMetaSearchPage() {
                         : "bg-black/30 border-white/10 text-gray-400"
                     }`}
                   >
-                    {active ? "✓ " : "+ "}{ext}
+                    {active ? "âœ“ " : "+ "}{ext}
                   </button>
                 );
               })}
@@ -320,7 +320,7 @@ export default function SwissMetaSearchPage() {
                         {isDirect ? "Direkt Buchbar" : "Markt-Index"}
                       </div>
                       <div className="absolute bottom-2 left-2 right-2 bg-black/85 text-amber-300 text-[10px] font-bold px-2 py-1 rounded text-center">
-                        {p.sourcesCount} Inserate → 1 Cluster-ID
+                        {p.sourcesCount} Inserate â†’ 1 Cluster-ID
                       </div>
                     </div>
 
@@ -336,7 +336,7 @@ export default function SwissMetaSearchPage() {
                           </span>
                         </div>
                         <p className="text-xs text-[#D5A021] font-semibold mt-1">
-                          📍 {p.subareas.join(" · ")} ({p.canton})
+                          ðŸ“ {p.subareas.join(" Â· ")} ({p.canton})
                         </p>
                         <p className="text-[11px] text-emerald-300 mt-1">{p.freshnessLabel}</p>
                       </div>
@@ -348,7 +348,7 @@ export default function SwissMetaSearchPage() {
                           </div>
                           <div className="flex items-baseline gap-2">
                             <span className="text-2xl font-black text-[#D5A021]">CHF {calc.total}</span>
-                            <span className="text-xs text-gray-400 line-through">Ø CHF {calc.portalTotal}</span>
+                            <span className="text-xs text-gray-400 line-through">Ã˜ CHF {calc.portalTotal}</span>
                           </div>
                         </div>
                         <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs">
@@ -361,7 +361,7 @@ export default function SwissMetaSearchPage() {
                   {/* Sources deduplicated into this profile */}
                   <div className="mt-4 bg-black/40 rounded-xl p-3 border border-white/10 text-xs space-y-1.5">
                     <div className="text-[11px] font-bold text-gray-400 uppercase">
-                      Gefundene & zusammengeführte Quellen für diese Telefonnummer:
+                      Gefundene & zusammengefÃ¼hrte Quellen fÃ¼r diese Telefonnummer:
                     </div>
                     {p.sources.map((s, idx) => (
                       <div key={idx} className="flex items-center justify-between">
@@ -378,14 +378,14 @@ export default function SwissMetaSearchPage() {
 
                 <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
                   <Link href="/create-post" className="text-[11px] text-gray-400 hover:text-[#D5A021] underline">
-                    Sind Sie {p.displayName}? Profil übernehmen
+                    Sind Sie {p.displayName}? Profil Ã¼bernehmen
                   </Link>
                   <Button
                     size="sm"
                     className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs"
                     asChild
                   >
-                    <Link href="/profile/1">
+                    <Link href={`/profile/${encodeURIComponent(p.displayName)}`}>
                       <Send size={12} className="mr-1.5" />
                       {isDirect ? "Direkt zum Fixpreis buchen" : "Termin anfragen"}
                     </Link>
