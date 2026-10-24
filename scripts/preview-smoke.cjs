@@ -11,13 +11,13 @@ if (!fs.existsSync(pageRoot)) {
 }
 
 const critical = [
-  { file: "index.html", must: ["DEMO / VORSCHAU", "Beispielprofile"], mustNot: ["50,000+", "Join FREE today"] },
-  { file: "escort-zurich.html", must: ["Demo-Profile", "Keine echten Buchungen"], mustNot: ["bookings today", "100% Verified"] },
+  { file: "index.html", must: ["Plattform noch nicht freigeschaltet"], mustNot: ["50,000+", "Join FREE today"] },
+  { file: "escort-zurich.html", must: ["Inserate Zürich noch nicht freigeschaltet"], mustNot: ["bookings today", "100% Verified"] },
   { file: "register.html", must: ["Registrierung noch nicht freigeschaltet"], mustNot: ["type=\"password\"", "Create Your Account"] },
   { file: "login.html", must: ["Anmeldung noch nicht freigeschaltet"], mustNot: ["type=\"password\""] },
   { file: "forgot-password.html", must: ["Passwort zurücksetzen noch nicht freigeschaltet"], mustNot: ["type=\"email\""] },
-  { file: "pricing.html", must: ["Geplantes Preismodell", "kein Kauf möglich"], mustNot: ["Hello World"] },
-  { file: "demo-accounts.html", must: ["reine Testdaten", "Design-Vorschau"], mustNot: ["Hello World"] },
+  { file: "pricing.html", must: ["Preise noch nicht freigeschaltet"], mustNot: ["Hello World"] },
+  { file: "demo-accounts.html", must: ["Kontobereich noch nicht freigeschaltet"], mustNot: ["Hello World"] },
   { file: "privacy.html", must: ["Datenschutzinformationen", "keine abschliessende Datenschutzerklärung", "nicht für echte Registrierungen"], mustNot: ["<form", "Hello World"] },
   { file: "terms.html", must: ["Nutzungsbedingungen", "kein fertiger Nutzungsvertrag", "Keine kostenpflichtige Leistung"], mustNot: ["<form", "Hello World"] },
 ];

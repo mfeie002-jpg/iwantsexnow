@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-24",
+  "status": "PASS: cleanup-only local validation; no deployment",
+  "supersedes": "Earlier demo catalogue acceptance at 261a913; that public UI and fictional inventory are retired by this cleanup.",
+  "baseCommit": "38266ad9794e6215e4b891ff60c82745d55a7159",
+  "parentCommit": "261a9132dce487d8bad6cd4fdb59c16b2a7d55d9",
+  "scope": {
+    "publicInventory": 0,
+    "publicDiscovery": "Inactive placeholders; no new catalogue UI or real provider integration",
+    "retiredRecords": "/catalogue/[id] and /profile/[id] return 404",
+    "legacyPages": "Remove fabricated profiles, activity, rates and statistics; replace with inactive placeholders",
+    "support": "FAQ link; no simulated support or message collection",
+    "links": "Replace stale /#cities target; remove fictional record links"
+  },
+  "validation": {
+    "productionBuild": "PASS",
+    "typescript": "PASS",
+    "unitTests": "83/83",
+    "staticSmoke": "167/167; 50 static pages",
+    "integrity": "1845/1845; 235 links, 12 paths",
+    "httpRoutes": "52/52",
+    "publicActionGates": "12/12; definitions unchanged",
+    "privateDisabled": "6/6",
+    "retiredCatalogueHTTP": "6/6",
+    "analyzerHTTP": "5/5",
+    "syntheticPrivateHTTP": "PASS; mocked isolated backend only",
+    "dependencyAudit": "0 vulnerabilities"
+  },
+  "preserved": {
+    "noindex": true,
+    "privateFlowDisabledByDefault": true,
+    "publicGates": true,
+    "privateAPIAndDatabaseSourceUnchanged": true,
+    "dependenciesUnchanged": true
+  },
+  "limitations": [
+    "No fresh managed-backend acceptance run; private code is unchanged.",
+    "No merge or deployment.",
+    "Separate catalogue/design edits remain uncommitted in the original checkout."
+  ],
+  "followUp": {
+    "scope": "Correct About/privacy/terms statements that still claimed removed fictional records and demo filters were displayed. Add 12 built-copy regression assertions.",
+    "freshValidation": [
+      "Production build including TypeScript",
+      "Static smoke 167/167",
+      "Integrity 1858/1858",
+      "HTTP routes 52/52 and gates 12/12",
+      "Private disabled 6/6",
+      "Retired catalogue HTTP 6/6"
+    ],
+    "previousValidation": "Other recorded local checks were run for fa63a3a; full GitHub CI runs again on the follow-up head."
+  },
+  "localEditReview": {
+    "reviewed": 40,
+    "alreadyInPR": 20,
+    "additionalCleanupFiles": 4,
+    "mixedOrFeatureFilesPreserved": 16,
+    "allOriginalFileHashesUnchanged": true,
+    "report": "docs/marketplace/local-edit-review-20261024.json",
+    "freshChecks": [
+      "Production build with TypeScript",
+      "167/167 static smoke assertions",
+      "1845/1845 integrity assertions; 235 links",
+      "52/52 HTTP routes; 12/12 public gates",
+      "6/6 private disabled",
+      "6/6 retired catalogue routes"
+    ],
+    "otherLocalChecks": "Earlier local unit/security validation remains historical; full CI will rerun on the new commit."
+  }
+}
