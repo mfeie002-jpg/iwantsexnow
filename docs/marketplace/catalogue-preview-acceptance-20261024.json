@@ -1,94 +1,70 @@
 {
   "date": "2026-10-24",
-  "status": "PASS; prepared for review, not deployed",
+  "status": "PASS: cleanup-only local validation; no deployment",
+  "supersedes": "Earlier demo catalogue acceptance at 261a913; that public UI and fictional inventory are retired by this cleanup.",
   "baseCommit": "38266ad9794e6215e4b891ff60c82745d55a7159",
+  "parentCommit": "261a9132dce487d8bad6cd4fdb59c16b2a7d55d9",
   "scope": {
-    "catalogue": "/search",
-    "demoDetail": "/catalogue/[id]",
-    "demoListings": 8,
-    "cityOptions": 9,
-    "categories": [
-      "Escort",
-      "Begleitung",
-      "Massage"
-    ],
-    "source": "explicit in-code synthetic fixtures only",
-    "approvedInventory": "empty, no database integration or fallback to demo",
-    "filters": [
-      "city AND category AND text",
-      "Zürich/Zurich/Zuerich and Genève/Geneve/Genf/Geneva normalization",
-      "shareable GET URLs, reload and history support",
-      "invalid or duplicate values produce an explanatory empty result",
-      "history restoration resets unsent browser form edits to URL defaults"
-    ],
-    "entryPoints": [
-      "shared desktop/mobile menu",
-      "homepage catalogue CTA",
-      "homepage category links"
-    ],
-    "metadataFix": "Flatten shared SEO elements into next/head so titles and metadata remain after client-side navigation"
+    "publicInventory": 0,
+    "publicDiscovery": "Inactive placeholders; no new catalogue UI or real provider integration",
+    "retiredRecords": "/catalogue/[id] and /profile/[id] return 404",
+    "legacyPages": "Remove fabricated profiles, activity, rates and statistics; replace with inactive placeholders",
+    "support": "FAQ link; no simulated support or message collection",
+    "links": "Replace stale /#cities target; remove fictional record links"
   },
-  "researchBasis": {
-    "primaryLanguage": "de-CH",
-    "keywords": [
-      "Erotik Inserate",
-      "Sexinserate Schweiz"
-    ],
-    "principles": [
-      "one catalogue hub, no generated city landing-page matrix",
-      "city/category discovery without false supply, trust, price or availability claims",
-      "no keyword volume totals or ranking promises in product copy"
-    ]
-  },
-  "checks": {
-    "automatedTests": 91,
-    "failedTests": 0,
-    "catalogueTests": 9,
-    "typescript": "PASS",
+  "validation": {
     "productionBuild": "PASS",
-    "buildWarnings": "existing unrelated lint warnings and experimental.turbo deprecation",
-    "previewSafetyAssertions": 187,
-    "previewIntegrityAssertions": 2481,
-    "catalogueHttpScenarios": 10,
-    "previewHttpRoutes": 70,
-    "publicActionGates": 12,
-    "privateFlowDisabledChecks": 6,
-    "analyzerApiRejectionChecks": 5,
-    "syntheticPrivateHttpAcceptance": "PASS; no managed backend writes",
-    "auditVulnerabilities": 0,
-    "browser": [
-      "combined city/category selection",
-      "zero-result combination",
-      "approved-inventory empty view",
-      "text search using Zuerich and Genf",
-      "detail link and return filters",
-      "reload persistence",
-      "Back/Forward controls and results agree",
-      "detail title/noindex remain after client-side navigation",
-      "disabled enquiry button",
-      "390px mobile viewport with no horizontal overflow",
-      "no browser console errors observed"
-    ]
+    "typescript": "PASS",
+    "unitTests": "83/83",
+    "staticSmoke": "167/167; 50 static pages",
+    "integrity": "1845/1845; 235 links, 12 paths",
+    "httpRoutes": "52/52",
+    "publicActionGates": "12/12; definitions unchanged",
+    "privateDisabled": "6/6",
+    "retiredCatalogueHTTP": "6/6",
+    "analyzerHTTP": "5/5",
+    "syntheticPrivateHTTP": "PASS; mocked isolated backend only",
+    "dependencyAudit": "0 vulnerabilities"
   },
-  "productionReadback": {
-    "homeStatus": 200,
-    "homeNoindex": true,
-    "privatePageStatus": 404,
-    "privateSessionApiStatus": 404,
-    "privateDraftApiStatus": 404,
-    "privateRobotsHeader": "noindex, nofollow, noarchive"
+  "preserved": {
+    "noindex": true,
+    "privateFlowDisabledByDefault": true,
+    "publicGates": true,
+    "privateAPIAndDatabaseSourceUnchanged": true,
+    "dependenciesUnchanged": true
   },
-  "unchanged": [
-    "private draft storage and managed backend",
-    "private page and API implementation and flags",
-    "database schema and migrations",
-    "dependencies and deployment configuration",
-    "all 12 public action gates"
+  "limitations": [
+    "No fresh managed-backend acceptance run; private code is unchanged.",
+    "No merge or deployment.",
+    "Separate catalogue/design edits remain uncommitted in the original checkout."
   ],
-  "limits": [
-    "No approved public-inventory source connected; the approved view deliberately stays empty.",
-    "No enquiries, registration, publishing, payments or uploads enabled.",
-    "Existing city concept pages and other legacy demo grids remain separate from this catalogue.",
-    "No merge or deployment performed."
-  ]
+  "followUp": {
+    "scope": "Correct About/privacy/terms statements that still claimed removed fictional records and demo filters were displayed. Add 12 built-copy regression assertions.",
+    "freshValidation": [
+      "Production build including TypeScript",
+      "Static smoke 167/167",
+      "Integrity 1858/1858",
+      "HTTP routes 52/52 and gates 12/12",
+      "Private disabled 6/6",
+      "Retired catalogue HTTP 6/6"
+    ],
+    "previousValidation": "Other recorded local checks were run for fa63a3a; full GitHub CI runs again on the follow-up head."
+  },
+  "localEditReview": {
+    "reviewed": 40,
+    "alreadyInPR": 20,
+    "additionalCleanupFiles": 4,
+    "mixedOrFeatureFilesPreserved": 16,
+    "allOriginalFileHashesUnchanged": true,
+    "report": "docs/marketplace/local-edit-review-20261024.json",
+    "freshChecks": [
+      "Production build with TypeScript",
+      "167/167 static smoke assertions",
+      "1845/1845 integrity assertions; 235 links",
+      "52/52 HTTP routes; 12/12 public gates",
+      "6/6 private disabled",
+      "6/6 retired catalogue routes"
+    ],
+    "otherLocalChecks": "Earlier local unit/security validation remains historical; full CI will rerun on the new commit."
+  }
 }

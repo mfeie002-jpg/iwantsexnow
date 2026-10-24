@@ -6,7 +6,7 @@ export function CatalogueHeader() {
       <nav aria-label="Katalog-Navigation" className="flex flex-wrap gap-5 text-sm font-semibold">
         <Link href="/search" className="hover:underline">Inserate-Katalog</Link>
         <Link href="/safety" className="hover:underline">Sicherheit</Link>
-        <Link href="/about" className="hover:underline">Über die Vorschau</Link>
+        <Link href="/about" className="hover:underline">Über die Plattform</Link>
       </nav>
     </div>
   </header>;

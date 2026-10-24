@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-24",
+  "status": "PASS",
+  "testedCommit": "786b26cd31bd225cbe38408638730bc95a27b706",
+  "applicationTree": "944807bb3cfcabb5b2bf44abb3036e506bcc2ff5",
+  "backend": "Existing Softgen managed backend; no replacement or migration",
+  "isolation": {
+    "checkout": "/tmp/iwantsexnow-private-e2e-20261024",
+    "origin": "http://127.0.0.1:43129",
+    "productionFlagsChanged": false,
+    "build": "PASS; existing lint warnings"
+  },
+  "checks": [
+    "compiled private page 200 and noindex on isolated loopback listener",
+    "anonymous write 401",
+    "two real confirmed managed Auth users sign in through compiled cookie API",
+    "cookie HttpOnly, SameSite=Strict and Max-Age=1800",
+    "third confirmed but non-allowlisted user denied",
+    "owner creates, reads, edits and reloads persisted draft across real HTTP/SDK/database requests",
+    "second owner read and update return 404",
+    "ownership and approval injection return 400",
+    "cross-origin write returns 403",
+    "logout clears cookie; no-cookie and captured old-cookie reads return 401"
+  ],
+  "fixtures": {
+    "users": [
+      "a26be335-137c-4f1d-9c92-538a4b421b58",
+      "2c6ea6e4-ffee-4936-88c9-9f50c01b9ff4",
+      "15623b9c-d238-4c85-b619-9a46783d3a94"
+    ],
+    "draft": "6582ee5d-6253-49a2-80ce-fe98c885db6b",
+    "retirement": {
+      "activeFixtureUsers": 0,
+      "draftState": "rejected",
+      "userRetirement": "soft deleted and banned; no permanent deletion",
+      "sqlEditorWrites": false,
+      "temporaryCredentialFileRemoved": true,
+      "isolatedListenerClosed": true,
+      "throwawayCheckoutRemoved": true
+    }
+  },
+  "productionReadback": {
+    "home": 200,
+    "homeMetaNoindex": true,
+    "privatePage": 404,
+    "privateSessionApi": 404,
+    "privateDraftApi": 404,
+    "privateXRobotsTag": "noindex, nofollow, noarchive",
+    "buildId": "STsxox1qx93HK2l4qzJHO",
+    "deploymentPerformed": false
+  },
+  "localChecks": {
+    "tests": 82,
+    "failed": 0,
+    "typescript": "PASS",
+    "syntax": "PASS",
+    "previewSafetyAssertions": 173,
+    "previewIntegrityAssertions": 2206,
+    "auditVulnerabilities": 0
+  },
+  "limitations": [
+    "This run exercised actual compiled HTTP routes and backend; it did not drive a browser against the managed backend. Previous browser acceptance used synthetic transport.",
+    "Cookie replay denial was observed in this run; it is not a general guarantee of immediate revocation for every vendor JWT.",
+    "No publication, enquiries, uploads, signup, recovery or production activation accepted by this test.",
+    "Opt-in runner cleanup was extended after the successful live run to remove fixture credentials on setup/build failure; the successful live run predates that cleanup-only edit."
+  ]
+}

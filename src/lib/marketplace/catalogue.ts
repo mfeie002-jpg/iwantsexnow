@@ -20,16 +20,7 @@ export interface DemoListing {
   description: string;
   demo: true;
 }
-export const demoListings: readonly DemoListing[] = [
-  { id: "demo-zurich-escort", title: "Demo Zürich 01", city: "zurich", category: "escort", description: "Fiktives Inserat zum Testen der Kategorie Escort in Zürich.", demo: true },
-  { id: "demo-zurich-begleitung", title: "Demo Zürich 02", city: "zurich", category: "companionship", description: "Fiktives Inserat zum Testen der Kategorie Begleitung in Zürich.", demo: true },
-  { id: "demo-basel-massage", title: "Demo Basel 01", city: "basel", category: "massage", description: "Fiktives Inserat zum Testen der Kategorie Massage in Basel.", demo: true },
-  { id: "demo-bern-escort", title: "Demo Bern 01", city: "bern", category: "escort", description: "Fiktives Inserat zum Testen der Kategorie Escort in Bern.", demo: true },
-  { id: "demo-luzern-begleitung", title: "Demo Luzern 01", city: "luzern", category: "companionship", description: "Fiktives Inserat zum Testen der Kategorie Begleitung in Luzern.", demo: true },
-  { id: "demo-geneva-escort", title: "Demo Genève 01", city: "geneva", category: "escort", description: "Fiktives Inserat für Genève / Genf. Keine reale Person.", demo: true },
-  { id: "demo-lausanne-massage", title: "Demo Lausanne 01", city: "lausanne", category: "massage", description: "Fiktives Inserat zum Testen der Kategorie Massage in Lausanne.", demo: true },
-  { id: "demo-lugano-begleitung", title: "Demo Lugano 01", city: "lugano", category: "companionship", description: "Fiktives Inserat zum Testen der Kategorie Begleitung in Lugano.", demo: true },
-];
+export const demoListings: readonly DemoListing[] = [];
 export interface CatalogueFilters {
   city: CityId | "";
   category: CategoryId | "";

@@ -9,8 +9,8 @@ interface SEOProps {
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
 export function SEOElements({
-  title = "iWantSexNow.ch | Schweizer Inserate-Marktplatz (Vorschau)",
-  description = "iWantSexNow.ch ist in der Vorschauphase. Profile und Kennzahlen sind Beispiele; Registrierung und Buchung sind noch nicht aktiv.",
+  title = "iWantSexNow.ch | Plattform in Vorbereitung",
+  description = "Es sind keine öffentlichen Profile veröffentlicht. Registrierung, Anfragen und Zahlungen sind nicht freigeschaltet.",
   image,
   url,
 }: SEOProps) {

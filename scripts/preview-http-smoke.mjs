@@ -22,7 +22,7 @@ for (const route of targets) {
   const target = new URL(route, origin);
   assert.equal(target.origin, new URL(origin).origin, "Refusing an external link: " + route);
   const response = await fetch(target, { signal: AbortSignal.timeout(10000), redirect: "manual" });
-  assert.equal(response.status, route === "/404" || route === "/private/provider-draft" ? 404 : route === "/500" ? 500 : 200, route + " has unexpected status");
+  assert.equal(response.status, route === "/404" || route === "/private/provider-draft" || route === "/profile/1" || route === "/catalogue/1" ? 404 : route === "/500" ? 500 : 200, route + " has unexpected status");
   const html = await response.text();
   assert.match(html, /<meta(?=[^>]*name="robots")(?=[^>]*content="noindex, nofollow")[^>]*>/, route + " lost noindex");
   if (gates.includes(route.slice(1))) {
