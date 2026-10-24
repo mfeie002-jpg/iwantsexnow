@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
 import { Navigation } from "@/components/Navigation";
-import { CheckCircle, ArrowUp, ShieldCheck, Clock, Calculator, Send, X } from "lucide-react";
+import { CheckCircle, ArrowUp, ShieldCheck, Clock, Calculator, Send, X, Sparkles, Car, ChevronDown, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
 import { useToast } from "@/hooks/use-toast";
@@ -35,8 +35,13 @@ export default function Home() {
   const [verifiedPhotos, setVerifiedPhotos] = useState(false);
   const [videoAds, setVideoAds] = useState(false);
 
+  // Decision Engine & Smart Matcher State
   const [selectedDuration, setSelectedDuration] = useState<30 | 60 | 120>(60);
   const [selectedExtras, setSelectedExtras] = useState<string[]>(["GFE"]);
+  const [maxBudgetChf, setMaxBudgetChf] = useState<number>(1200);
+  const [meetingType, setMeetingType] = useState<"all" | "incall" | "outcall">("all");
+  const [expandedPortalId, setExpandedPortalId] = useState<number | null>(null);
+
   const [enquiryTarget, setEnquiryTarget] = useState<any | null>(null);
   const [enquiryTime, setEnquiryTime] = useState("Heute, 20:00 Uhr");
   const [enquiryCity, setEnquiryCity] = useState("Zürich / Zug");
@@ -62,7 +67,7 @@ export default function Home() {
       featured: true
     },
     {
-      name: "Zug",
+      name: "Zug & Cham",
       slug: "zurich",
       image: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&h=600&fit=crop",
       escorts: 9,
@@ -122,6 +127,9 @@ export default function Home() {
       age: 26,
       location: "Zürich & Zug",
       locations: ["Zürich", "Winterthur", "Zug"],
+      travelInfo: "Zürich City (Incall) · Outcall nach Zug/Cham in 25 Min.",
+      incall: true,
+      outcall: true,
       gender: "female",
       images: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1200&fit=crop"],
       thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop",
@@ -135,6 +143,12 @@ export default function Home() {
       portalAvgRate: 520,
       portalsCount: 4,
       portalNames: ["Direktprofil", "xdate.ch", "fgirl.ch", "and6.com"],
+      portalBreakdown: [
+        { name: "iWantSexNow.ch (Direkt)", price: 450, note: "0% Vermittlungsgebühr · Geprüft" },
+        { name: "xdate.ch", price: 500, note: "Gleiche Fotos · +CHF 50 für Outcall" },
+        { name: "fgirl.ch", price: 520, note: "Agentur-Inserat (Duplikat erkannt)" },
+        { name: "and6.com", price: 540, note: "Extras separat berechnet" },
+      ],
       services: ["GFE", "Dinner Dates", "Outcall", "Events"],
       extraPrices: { "Massage": 50, "Overnight": 550 } as Record<string, number>,
       serviceType: "sie-sucht-ihn",
@@ -152,8 +166,11 @@ export default function Home() {
       id: 2,
       name: "Elena",
       age: 24,
-      location: "Zug & Zürichsee",
+      location: "Zug, Cham & Zürichsee",
       locations: ["Zug", "Zürich", "Luzern"],
+      travelInfo: "Privat-Appartement in Zug/Cham · Outcall Zürich & Luzern (20 Min.)",
+      incall: true,
+      outcall: true,
       gender: "female",
       images: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&h=1200&fit=crop"],
       thumbnail: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop",
@@ -167,6 +184,11 @@ export default function Home() {
       portalAvgRate: 480,
       portalsCount: 3,
       portalNames: ["Direktprofil", "and6.com", "xdate.ch"],
+      portalBreakdown: [
+        { name: "iWantSexNow.ch (Direkt)", price: 400, note: "Direktpreis inkl. GFE & Outcall Zug" },
+        { name: "and6.com", price: 460, note: "Aufpreis für Hotelbesuch" },
+        { name: "xdate.ch", price: 500, note: "Älteres Duplikat-Inserat" },
+      ],
       services: ["GFE", "Outcall", "Massage"],
       extraPrices: { "Dinner Dates": 60, "Overnight": 500 } as Record<string, number>,
       serviceType: "escort-service",
@@ -184,8 +206,11 @@ export default function Home() {
       id: 3,
       name: "Emma",
       age: 28,
-      location: "Basel",
+      location: "Basel & Zürich",
       locations: ["Basel", "Zürich"],
+      travelInfo: "Privat-Studio Basel City (5 Min. ab SBB) · Diskreter Parkplatz",
+      incall: true,
+      outcall: false,
       gender: "female",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1200&fit=crop"],
       thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop",
@@ -199,6 +224,10 @@ export default function Home() {
       portalAvgRate: 420,
       portalsCount: 2,
       portalNames: ["Direktprofil", "and6.com"],
+      portalBreakdown: [
+        { name: "iWantSexNow.ch (Direkt)", price: 350, note: "Komplettpreis inkl. Tantra & GFE" },
+        { name: "and6.com", price: 420, note: "Basis-Inserat ohne Extras" },
+      ],
       services: ["GFE", "Massage"],
       extraPrices: { "Outcall": 60, "Dinner Dates": 80, "Overnight": 480 } as Record<string, number>,
       serviceType: "erotik-massage",
@@ -216,8 +245,11 @@ export default function Home() {
       id: 4,
       name: "Mia",
       age: 25,
-      location: "Bern & Zürich",
+      location: "Bern, Zürich & Zug",
       locations: ["Bern", "Zürich", "Zug"],
+      travelInfo: "Incall Bern & Zürich · Schweizweiter VIP Hotel-Outcall",
+      incall: true,
+      outcall: true,
       gender: "female",
       images: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=1200&fit=crop"],
       thumbnail: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop",
@@ -231,6 +263,12 @@ export default function Home() {
       portalAvgRate: 650,
       portalsCount: 5,
       portalNames: ["Direktprofil", "xdate.ch", "fgirl.ch", "and6.com", "6navi.ch"],
+      portalBreakdown: [
+        { name: "iWantSexNow.ch (Direkt)", price: 550, note: "Verifizierter VIP-Direkttarif" },
+        { name: "xdate.ch", price: 650, note: "Agentur-Aufschlag +CHF 100" },
+        { name: "fgirl.ch", price: 650, note: "Duplikat-Profil" },
+        { name: "and6.com", price: 680, note: "Exklusive Anfahrt" },
+      ],
       services: ["GFE", "Dinner Dates", "Outcall", "Overnight"],
       extraPrices: { "Massage": 40 } as Record<string, number>,
       serviceType: "sie-sucht-ihn",
@@ -266,6 +304,12 @@ export default function Home() {
 
     const totalCost = basePrice + extrasCost;
     const thirdPartyTotal = Math.round((escort.portalAvgRate * durationMultiplier) / 10) * 10 + extrasCost + (paidList.length * 20);
+
+    // Calculate intelligent Match Score (0 - 99%)
+    const includedRatio = selectedExtras.length > 0 ? includedList.length / selectedExtras.length : 1;
+    const budgetScore = totalCost <= maxBudgetChf ? 15 : 0;
+    const matchScore = Math.min(99, Math.round(78 + includedRatio * 6 + budgetScore));
+
     return {
       basePrice,
       extrasCost,
@@ -274,6 +318,7 @@ export default function Home() {
       savings: Math.max(0, thirdPartyTotal - totalCost),
       includedList,
       paidList,
+      matchScore,
     };
   };
 
@@ -313,33 +358,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const savedFilters = localStorage.getItem('searchFilters');
-    if (savedFilters) {
-      const filters = JSON.parse(savedFilters);
-      setSelectedCity(filters.city || "all");
-      setSelectedService(filters.service || "all");
-      setSelectedOffer(filters.offer || "all");
-      setSelectedGender(filters.gender || "all");
-      setVerifiedPhotos(filters.verifiedPhotos || false);
-      setVideoAds(filters.videoAds || false);
-    }
     const savedFavorites = localStorage.getItem('favorites');
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
     }
   }, []);
-
-  useEffect(() => {
-    const filters = {
-      city: selectedCity,
-      service: selectedService,
-      offer: selectedOffer,
-      gender: selectedGender,
-      verifiedPhotos,
-      videoAds
-    };
-    localStorage.setItem('searchFilters', JSON.stringify(filters));
-  }, [selectedCity, selectedService, selectedOffer, selectedGender, verifiedPhotos, videoAds]);
 
   const filteredEscorts = allEscorts.filter(escort => {
     if (searchQuery && !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -351,13 +374,16 @@ export default function Home() {
     if (selectedGender !== "all" && escort.gender !== selectedGender) return false;
     if (verifiedPhotos && !escort.verifiedPhotos) return false;
     if (videoAds && !escort.hasVideo) return false;
+    if (meetingType === "incall" && !escort.incall) return false;
+    if (meetingType === "outcall" && !escort.outcall) return false;
+    const calc = calculateProviderTotal(escort);
+    if (calc.totalCost > maxBudgetChf) return false;
     return true;
   });
 
   const totalPages = Math.ceil(filteredEscorts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedEscorts = filteredEscorts.slice(startIndex, endIndex);
+  const paginatedEscorts = filteredEscorts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -374,15 +400,11 @@ export default function Home() {
 
   const toggleFavorite = (id: number) => {
     setFavorites(prev => {
-      const newFavorites = prev.includes(id)
-        ? prev.filter(fav => fav !== id)
-        : [...prev, id];
+      const newFavorites = prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id];
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
       toast({
         title: prev.includes(id) ? "Von Favoriten entfernt" : "Zu Favoriten hinzugefügt",
-        description: prev.includes(id)
-          ? "Profil wurde aus deinen Favoriten entfernt"
-          : "Profil wurde zu deiner Vergleichsliste hinzugefügt",
+        description: prev.includes(id) ? "Profil wurde entfernt" : "Profil wurde zur Vergleichsliste hinzugefügt",
         duration: 2000,
       });
       return newFavorites;
@@ -397,12 +419,10 @@ export default function Home() {
     setSelectedGender("all");
     setVerifiedPhotos(false);
     setVideoAds(false);
+    setMaxBudgetChf(1200);
+    setMeetingType("all");
     setCurrentPage(1);
   };
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedCity, selectedService, selectedOffer, selectedGender, verifiedPhotos, videoAds]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -420,18 +440,14 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0D1B2A]">
+    <div className="min-h-screen bg-[#0D1B2A]">
       <SEO
         title="iWantSexNow.ch | Verifizierter Schweizer Escort- & Preisvergleich (Zürich & Zug)"
         description="Finden, vergleichen und direkt anfragen: Transparente Endpreise, geprüfte Identitäten, Dubletten-Check über 47 Portale und Echtzeit-Verfügbarkeit."
       />
-      <header className={`border-b border-gray-200 dark:border-gray-800 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 dark:bg-[#0D1B2A]/95 backdrop-blur-sm py-3' : 'bg-white dark:bg-[#0D1B2A] py-4'
+      <header className={`border-b border-gray-800 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-[#0D1B2A]/95 backdrop-blur-sm py-3' : 'bg-[#0D1B2A] py-4'
       } ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
@@ -439,10 +455,10 @@ export default function Home() {
               <span className={`font-bold tracking-tight transition-all duration-300 ${
                 scrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'
               }`}>
-                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
-                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
-                <span className="text-[#0D1B2A] dark:text-white">Now</span>
-                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
+                <span className="text-white">iWant</span>
+                <span className="text-[#D5A021]">Sex</span>
+                <span className="text-white">Now</span>
+                <span className="text-gray-400 text-lg">.ch</span>
               </span>
             </Link>
             <div className="hidden lg:block">
@@ -471,41 +487,38 @@ export default function Home() {
         filteredCount={filteredEscorts.length}
       />
 
+      {/* Live Status Stories */}
       <section className="py-5 bg-[#09131E] border-b border-white/10">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <p className="text-xs text-[#D5A021] font-bold uppercase tracking-wider flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               Echtzeit-Status · Verifizierte Direktprofile in Zürich, Zug & Schweiz
             </p>
-            <Link href="/compare-escorts" className="text-xs text-gray-300 hover:text-white underline">
-              Alle 47 Portale & Preise vergleichen →
+            <Link href="/compare-escorts" className="text-xs text-gray-300 hover:text-white underline font-semibold">
+              Alle 47 Portale & Preise nebeneinander vergleichen →
             </Link>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
             {storyProfiles.map((profile) => (
               <div key={profile.id} className="flex-shrink-0 cursor-pointer group">
                 <div className="relative">
-                  <div className={`w-20 h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-105 ${
+                  <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-105 ${
                     profile.online
                       ? 'bg-gradient-to-tr from-[#C69C6D] via-amber-400 to-emerald-400'
                       : 'bg-gray-700'
                   }`}>
                     <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#0D1B2A]">
-                      <img
-                        src={profile.image}
-                        alt={profile.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                      />
+                      <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
                     </div>
                   </div>
                   {profile.verified && (
                     <div className="absolute bottom-0 right-0 bg-emerald-500 rounded-full p-0.5">
-                      <CheckCircle size={14} className="text-white" fill="white" />
+                      <CheckCircle size={13} className="text-white" fill="white" />
                     </div>
                   )}
                 </div>
-                <p className="text-white text-xs text-center mt-2 font-medium truncate w-20">
+                <p className="text-white text-xs text-center mt-1.5 font-medium truncate w-16 md:w-20">
                   {profile.name}
                 </p>
               </div>
@@ -514,139 +527,271 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-12 bg-gradient-to-b from-[#0D1B2A] to-[#13263B] border-b border-white/10">
+      {/* UMZUGSCHECK DECISION ENGINE & SMART MATCHER */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-[#0D1B2A] to-[#13263B] border-b border-white/10">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
               <div>
                 <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-3">
                   <Calculator size={14} className="mr-1.5 inline" />
                   Schweizer Endpreis- & Portal-Decision-Engine
                 </Badge>
-                <h2 className="text-2xl md:text-4xl font-black text-white">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">
                   Echter Endpreis statt Lockvogel-Tarife
                 </h2>
-                <p className="text-gray-300 text-sm md:text-base mt-1">
-                  Wähle Dauer und gewünschte Services: Wir berechnen sofort den echten Komplettpreis, prüfen Dubletten auf 47 Portalen und zeigen dir geprüfte Direkt-Verfügbarkeit.
+                <p className="text-gray-300 text-sm md:text-base mt-1 max-w-2xl">
+                  Wähle Dauer, Treffpunkt und gewünschte Services: Wir berechnen sofort den garantierten Komplettpreis, prüfen Dubletten auf 47 Portalen und zeigen dein persönliches Match-Ergebnis.
                 </p>
               </div>
-              <div className="flex bg-black/40 p-1.5 rounded-xl border border-white/10 self-start">
-                {([30, 60, 120] as const).map((mins) => (
-                  <button
-                    key={mins}
-                    onClick={() => setSelectedDuration(mins)}
-                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                      selectedDuration === mins
-                        ? "bg-[#C69C6D] text-[#0D1B2A] shadow-lg"
-                        : "text-gray-300 hover:text-white"
-                    }`}
-                  >
-                    {mins === 120 ? "2 Stunden" : `${mins} Min.`}
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-8">
-              <div className="text-xs text-gray-400 uppercase font-bold mb-3">
-                Gewünschte Optionen anklicken (Inklusive vs. Aufpreis wird live pro Anbieter berechnet):
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {EXTRA_OPTIONS.map((opt) => {
-                  const active = selectedExtras.includes(opt.id);
-                  return (
+              {/* Duration & Meeting Type Controls */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
+                  {([30, 60, 120] as const).map((mins) => (
                     <button
-                      key={opt.id}
-                      onClick={() => toggleExtra(opt.id)}
-                      className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold border transition-all flex items-center gap-2 ${
-                        active
-                          ? "bg-emerald-500/20 border-emerald-400 text-white"
-                          : "bg-black/20 border-white/10 text-gray-300 hover:border-white/30"
+                      key={mins}
+                      onClick={() => setSelectedDuration(mins)}
+                      className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
+                        selectedDuration === mins
+                          ? "bg-[#C69C6D] text-[#0D1B2A] shadow-lg"
+                          : "text-gray-300 hover:text-white"
                       }`}
                     >
-                      <CheckCircle size={14} className={active ? "text-emerald-400" : "text-gray-500"} />
-                      {opt.label}
+                      {mins === 120 ? "2 Std." : `${mins} Min.`}
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
+
+                <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
+                  {([
+                    { id: "all", label: "Incall & Outcall" },
+                    { id: "incall", label: "Studio / Privat" },
+                    { id: "outcall", label: "Hotel / Hausbesuch" },
+                  ] as const).map((m) => (
+                    <button
+                      key={m.id}
+                      onClick={() => setMeetingType(m.id)}
+                      className={`px-3 py-2 rounded-lg text-xs font-bold transition-all ${
+                        meetingType === m.id
+                          ? "bg-white/15 text-white border border-white/20"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            {/* Smart Matcher Bar: Extras + Max Budget Filter */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 mb-8 space-y-4">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex-1">
+                  <div className="text-xs text-gray-400 uppercase font-bold mb-2.5 flex items-center gap-1.5">
+                    <SlidersHorizontal size={13} className="text-[#D5A021]" />
+                    Gewünschte Optionen anklicken (Inklusive vs. Aufpreis wird live pro Profil berechnet):
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {EXTRA_OPTIONS.map((opt) => {
+                      const active = selectedExtras.includes(opt.id);
+                      return (
+                        <button
+                          key={opt.id}
+                          onClick={() => toggleExtra(opt.id)}
+                          className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all flex items-center gap-2 ${
+                            active
+                              ? "bg-emerald-500/20 border-emerald-400 text-white shadow-sm"
+                              : "bg-black/30 border-white/10 text-gray-300 hover:border-white/30"
+                          }`}
+                        >
+                          <CheckCircle size={14} className={active ? "text-emerald-400 shrink-0" : "text-gray-500 shrink-0"} />
+                          <span>{opt.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="md:w-64 bg-black/30 border border-white/10 rounded-xl p-3.5 shrink-0">
+                  <div className="flex items-center justify-between text-xs mb-2">
+                    <span className="text-gray-400 font-semibold">Max. Gesamtbudget:</span>
+                    <span className="text-[#D5A021] font-black text-sm">bis CHF {maxBudgetChf}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={300}
+                    max={1500}
+                    step={50}
+                    value={maxBudgetChf}
+                    onChange={(e) => setMaxBudgetChf(Number(e.target.value))}
+                    className="w-full accent-[#C69C6D] cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+                    <span>CHF 300</span>
+                    <span>CHF 800</span>
+                    <span>CHF 1500+</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Perfectly Aligned Responsive Decision Cards (Mobile & Desktop) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredEscorts.map((escort) => {
                 const calc = calculateProviderTotal(escort);
+                const isExpanded = expandedPortalId === escort.id;
                 return (
                   <div
                     key={escort.id}
-                    className="rounded-2xl bg-white/5 border border-white/15 hover:border-[#C69C6D]/60 transition-all p-5 flex flex-col sm:flex-row gap-5"
+                    className="rounded-2xl bg-[#09131E]/90 border border-white/15 hover:border-[#C69C6D]/70 transition-all p-4 sm:p-6 flex flex-col justify-between shadow-xl"
                   >
-                    <div className="relative w-full sm:w-40 h-52 sm:h-auto flex-shrink-0 rounded-xl overflow-hidden">
-                      <img src={escort.thumbnail} alt={escort.name} className="w-full h-full object-cover" />
-                      <div className="absolute top-2 left-2 bg-emerald-600/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                        <ShieldCheck size={12} /> ID & Fotos geprüft
-                      </div>
-                      <div className="absolute bottom-2 left-2 right-2 bg-black/80 backdrop-blur-sm text-[11px] text-amber-300 px-2.5 py-1 rounded-md">
-                        Auf {escort.portalsCount} von 47 Portalen · 1 Duplikat-ID
-                      </div>
-                    </div>
+                    <div>
+                      {/* Top Row: Image + Name/Location/Badges */}
+                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
+                        <Link href={`/profile/${escort.id}`} className="relative w-full sm:w-44 h-60 sm:h-48 flex-shrink-0 rounded-xl overflow-hidden group block">
+                          <img
+                            src={escort.thumbnail}
+                            alt={escort.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-2.5 left-2.5 bg-emerald-600/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow">
+                            <ShieldCheck size={12} /> ID & Fotos geprüft
+                          </div>
+                          <div className="absolute top-2.5 right-2.5 bg-[#0D1B2A]/90 border border-[#C69C6D]/60 text-[#D5A021] text-[11px] font-black px-2.5 py-1 rounded-full">
+                            {calc.matchScore}% Match
+                          </div>
+                          <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-sm text-[11px] text-amber-300 px-2.5 py-1 rounded-lg text-center font-medium">
+                            Auf {escort.portalsCount} von 47 Portalen · 1 Original-ID
+                          </div>
+                        </Link>
 
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-start justify-between gap-2">
+                        {/* Right Column: Title, Locations, Freshness & Dedicated Price Box */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-between">
                           <div>
-                            <h3 className="text-xl font-bold text-white">
-                              {escort.name}, {escort.age}
-                            </h3>
-                            <p className="text-xs text-gray-300 mt-0.5">
+                            <div className="flex items-start justify-between gap-2">
+                              <Link href={`/profile/${escort.id}`} className="hover:text-[#D5A021] transition-colors">
+                                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                                  {escort.name}, {escort.age}
+                                </h3>
+                              </Link>
+                              <span className="text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 px-2 py-0.5 rounded-md shrink-0">
+                                ★ {escort.rating.toFixed(1)} ({escort.reviews})
+                              </span>
+                            </div>
+
+                            <p className="text-xs sm:text-sm text-[#D5A021] font-semibold mt-1">
                               📍 {escort.locations.join(" · ")}
                             </p>
+                            <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1.5">
+                              <Car size={12} className="text-gray-400 shrink-0" />
+                              <span className="truncate">{escort.travelInfo}</span>
+                            </p>
                           </div>
-                          <div className="text-right">
-                            <div className="text-[11px] text-gray-400 line-through">
-                              Drittportale Ø CHF {calc.thirdPartyTotal}
-                            </div>
-                            <div className="text-2xl font-black text-[#D5A021]">
-                              CHF {calc.totalCost}
-                            </div>
-                            <div className="text-[11px] text-emerald-400 font-semibold">
-                              Endpreis für {selectedDuration} Min. (Sparvorteil CHF {calc.savings})
-                            </div>
-                          </div>
-                        </div>
 
-                        <div className="mt-3 flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-1.5 rounded-lg">
-                          <Clock size={13} />
-                          <span>{escort.postedTime} · {escort.availability}</span>
-                        </div>
-
-                        <div className="mt-3 space-y-1 text-xs">
-                          <div className="text-gray-300">
-                            <span className="text-gray-400">Grundtarif ({selectedDuration} Min.):</span>{" "}
-                            <span className="font-semibold text-white">CHF {calc.basePrice}</span>
+                          {/* Dedicated Price & Savings Box (Never clips on any screen size!) */}
+                          <div className="mt-3 bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3">
+                            <div>
+                              <div className="text-[11px] text-gray-400">
+                                Garantierter Endpreis ({selectedDuration} Min.)
+                              </div>
+                              <div className="flex items-baseline gap-2 mt-0.5">
+                                <span className="text-2xl sm:text-3xl font-black text-[#D5A021]">
+                                  CHF {calc.totalCost}
+                                </span>
+                                <span className="text-xs text-gray-400 line-through">
+                                  Ø CHF {calc.thirdPartyTotal}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <span className="inline-block bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-lg">
+                                Sparvorteil CHF {calc.savings}
+                              </span>
+                              <div className="text-[10px] text-gray-400 mt-1">
+                                vs. Drittportale
+                              </div>
+                            </div>
                           </div>
-                          {calc.includedList.length > 0 && (
-                            <div className="text-emerald-400">
-                              ✓ Im Grundpreis inklusive: {calc.includedList.join(", ")} (CHF 0 Aufpreis)
-                            </div>
-                          )}
-                          {calc.paidList.length > 0 && (
-                            <div className="text-amber-300">
-                              + Gewählte Extras: {calc.paidList.map((p) => `${p.label} (+CHF ${p.price})`).join(", ")}
-                            </div>
-                          )}
                         </div>
                       </div>
 
-                      <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-3">
-                        <div className="text-[11px] text-gray-400 truncate">
-                          Quellen: {escort.portalNames.join(", ")}
+                      {/* Freshness Indicator */}
+                      <div className="mt-4 flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-2 rounded-xl">
+                        <Clock size={14} className="shrink-0" />
+                        <span className="font-medium">{escort.postedTime} · {escort.availability}</span>
+                      </div>
+
+                      {/* Transparent Breakdown of Selected Services */}
+                      <div className="mt-3 bg-black/30 rounded-xl p-3 space-y-1.5 text-xs border border-white/5">
+                        <div className="flex justify-between text-gray-300">
+                          <span>Grundtarif ({selectedDuration} Min. Direktbuchung):</span>
+                          <span className="font-bold text-white">CHF {calc.basePrice}</span>
                         </div>
+                        {calc.includedList.length > 0 && (
+                          <div className="flex justify-between text-emerald-400">
+                            <span>✓ Inklusive ({calc.includedList.join(", ")}):</span>
+                            <span className="font-bold">CHF 0 Aufpreis</span>
+                          </div>
+                        )}
+                        {calc.paidList.length > 0 && (
+                          <div className="flex justify-between text-amber-300">
+                            <span>+ Gewählte Extras ({calc.paidList.map((p) => p.label).join(", ")}):</span>
+                            <span className="font-bold">+CHF {calc.extrasCost}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Expandable 47-Portal Price Proof */}
+                      {isExpanded && (
+                        <div className="mt-3 bg-black/50 border border-[#C69C6D]/30 rounded-xl p-3 text-xs space-y-2">
+                          <div className="font-bold text-[#D5A021] flex items-center justify-between">
+                            <span>Quellen- & Dubletten-Abgleich (über 47 Schweizer Portale):</span>
+                            <span>1h Basis</span>
+                          </div>
+                          {escort.portalBreakdown.map((p, idx) => (
+                            <div key={idx} className="flex items-center justify-between py-1 border-b border-white/5 last:border-0">
+                              <div>
+                                <span className={idx === 0 ? "font-bold text-emerald-400" : "text-gray-300"}>{p.name}</span>
+                                <span className="text-gray-500 ml-2">({p.note})</span>
+                              </div>
+                              <span className={idx === 0 ? "font-black text-emerald-400" : "text-gray-400 line-through"}>
+                                CHF {p.price}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Card Footer Actions */}
+                    <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setExpandedPortalId(isExpanded ? null : escort.id)}
+                        className="text-xs text-gray-300 hover:text-[#D5A021] flex items-center gap-1 font-medium"
+                      >
+                        <ChevronDown size={14} className={`transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                        {isExpanded ? "Portal-Preise ausblenden" : `Alle ${escort.portalsCount} Portal-Preise prüfen`}
+                      </button>
+
+                      <div className="flex items-center gap-2 ml-auto">
                         <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-white/20 text-white hover:bg-white/10 text-xs h-9"
+                          asChild
+                        >
+                          <Link href={`/profile/${escort.id}`}>Details</Link>
+                        </Button>
+                        <Button
+                          size="sm"
                           onClick={() => {
                             setEnquiryTarget(escort);
                             setEnquiryCity(escort.locations[0]);
                           }}
-                          className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold text-xs px-4 py-2 h-auto shrink-0"
+                          className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold text-xs px-4 h-9"
                         >
                           <Send size={13} className="mr-1.5" />
                           Diskret anfragen
@@ -679,18 +824,18 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
                 Schweizer Regionen & Kantone
               </h2>
-              <p className="text-xl text-gray-400">
+              <p className="text-lg md:text-xl text-gray-400">
                 Pilot-Städte Zürich & Zug sowie verifizierte Direktprofile in der ganzen Schweiz
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {cityPages.map((city, idx) => (
                 <Link key={`${city.slug}-${idx}`} href={`/escort-${city.slug}`}>
-                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-black/40">
-                    <div className="relative h-64 overflow-hidden">
+                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-[#C69C6D] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-2xl">
+                    <div className="relative h-60 overflow-hidden">
                       <img
                         src={city.image}
                         alt={city.name}
@@ -698,17 +843,17 @@ export default function Home() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-3xl font-black text-white mb-2">
+                        <h3 className="text-2xl md:text-3xl font-black text-white mb-1">
                           {city.name}
                         </h3>
-                        <p className="text-gray-300 text-sm mb-3">
+                        <p className="text-gray-300 text-xs md:text-sm mb-3">
                           {city.description}
                         </p>
                         <div className="flex items-center justify-between">
                           <Badge className="bg-[#C69C6D] border-0 text-[#0D1B2A] font-bold">
                             {city.escorts} Geprüfte Profile
                           </Badge>
-                          <span className="text-gray-300 font-bold group-hover:translate-x-2 transition-transform">
+                          <span className="text-white text-sm font-bold group-hover:translate-x-1 transition-transform">
                             Region öffnen →
                           </span>
                         </div>
@@ -729,7 +874,7 @@ export default function Home() {
 
       {enquiryTarget && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0D1B2A] border border-[#C69C6D]/50 rounded-2xl max-w-lg w-full p-6 text-white shadow-2xl relative">
+          <div className="bg-[#0D1B2A] border border-[#C69C6D]/50 rounded-2xl max-w-lg w-full p-6 text-white shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setEnquiryTarget(null)}
               className="absolute top-4 right-4 text-gray-400 hover:text-white"
@@ -748,7 +893,7 @@ export default function Home() {
 
             <div className="mt-4 p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs space-y-1">
               <div className="flex justify-between font-bold text-sm">
-                <span>Kalkulierter Komplettpreis ({selectedDuration} Min.):</span>
+                <span>Garantierter Komplettpreis ({selectedDuration} Min.):</span>
                 <span className="text-[#D5A021]">CHF {calculateProviderTotal(enquiryTarget).totalCost}</span>
               </div>
               <div className="text-gray-400">
@@ -821,12 +966,12 @@ export default function Home() {
 
       {showScrollTop && (
         <Button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-40 w-14 h-14 rounded-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] shadow-2xl"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-20 right-4 z-40 w-12 h-12 rounded-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] shadow-2xl"
           size="icon"
           aria-label="Scroll to top"
         >
-          <ArrowUp size={24} />
+          <ArrowUp size={20} />
         </Button>
       )}
 
@@ -834,9 +979,9 @@ export default function Home() {
 
       <footer className="bg-[#0D1B2A] text-white py-16 border-t border-gray-800">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
             <div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <span className="text-2xl font-bold tracking-tight">
                   <span className="text-white">iWant</span>
                   <span className="text-[#D5A021]">Sex</span>
@@ -853,8 +998,8 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/compare-escorts" className="hover:text-white">47 Portale & Preise vergleichen</Link></li>
                 <li><Link href="/search" className="hover:text-white">Intent-Suche & Filter</Link></li>
-                <li><Link href="/register" className="hover:text-white">Als Provider listen</Link></li>
-                <li><Link href="/admin-dashboard" className="hover:text-gray-300">Provider Self-Service Dashboard</Link></li>
+                <li><Link href="/escort-zurich" className="hover:text-white">Pilot-Region Zürich & Zug</Link></li>
+                <li><Link href="/create-post" className="hover:text-white">Als Provider listen</Link></li>
               </ul>
             </div>
             <div>
