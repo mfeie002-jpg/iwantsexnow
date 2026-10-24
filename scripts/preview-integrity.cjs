@@ -78,6 +78,14 @@ const home = fs.readFileSync(path.join(pageRoot, "index.html"), "utf8");
 assert(text(home).includes("Persönliche Funktionen bleiben geschlossen."), "Homepage must explain disabled actions");
 assert(home.includes('aria-label="Hauptnavigation"'), "Homepage must retain designed navigation");
 assert(!/href="\/(?:search|catalogue|profile|create-post|messages|booking-confirmation)(?:[/?#"])/.test(home), "Neutral homepage must not promote discovery or enquiry routes");
+// Preserve the complete reference layout, using neutral information destinations.
+assert((home.match(/<section\b/g) || []).length === 5, "Homepage must retain all five reference sections");
+const quick = home.match(/<nav[^>]*aria-label="Schnellzugriff"[^>]*>([\s\S]*?)<\/nav>/)?.[1] || "";
+assert((quick.match(/<a\b/g) || []).length === 6, "Hero must retain the six-link panel");
+const cards = home.match(/<ul[^>]*aria-label="Informationsbereiche"[^>]*>([\s\S]*?)<\/ul>/)?.[1] || "";
+assert((cards.match(/<li\b/g) || []).length === 3, "Homepage must retain three full cards");
+const topics = home.match(/<nav[^>]*aria-label="Alle Themen"[^>]*>([\s\S]*?)<\/nav>/)?.[1] || "";
+assert((topics.match(/<a\b/g) || []).length === 9, "Homepage must retain nine topic chips");
 assert(!/<form\b/i.test(home), "Homepage exposes a contact/newsletter form without delivery");
 assert(text(home).includes("keine persönlichen Angaben"), "Homepage missing contact status");
 for (const [route, marker] of [["contact", "noch kein betreuter Kontakt"], ["imprint", "noch kein vollständiges Impressum"], ["faq", "keine Mitgliedschaften"], ["about", "noch keinen aktiven Vermittlungsbetrieb"]]) {
