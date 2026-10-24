@@ -21,6 +21,7 @@ import {
   Camera,
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
+import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
 
 const EXTRA_TOGGLES = ["GFE", "Dinner Dates", "Outcall", "Massage"];
 
@@ -113,6 +114,7 @@ export default function SearchPage() {
         </div>
       </header>
 
+      <LivePortalSyncBanner totalProfiles={deduplicatedProfiles.length} />
       <main className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
         {/* Search Engine Console */}
         <div className="bg-[#09131E] border-2 border-[#C69C6D]/50 rounded-2xl p-6 shadow-2xl space-y-5">

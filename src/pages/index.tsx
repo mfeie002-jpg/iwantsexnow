@@ -32,6 +32,7 @@ import { CityLinks } from "@/components/home/CityLinks";
 import { AboutSection } from "@/components/home/AboutSection";
 import { ContactSection } from "@/components/home/ContactSection";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
+import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
 
 export type BrandThemeId = "A" | "B" | "C" | "D";
 
@@ -667,6 +668,7 @@ export default function Home() {
         </div>
       </section>
 
+      <LivePortalSyncBanner totalProfiles={allEscorts.length} />
       <LuxuryDivider label="Swiss Endpreis & Index Engine" />
 
       <section id="decision-engine" className="relative py-12 md:py-16 overflow-hidden border-b border-white/10">
