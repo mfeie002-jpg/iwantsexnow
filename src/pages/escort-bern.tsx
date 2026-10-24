@@ -78,11 +78,11 @@ export default function RegionalEscortPage() {
             <button
               key={area}
               onClick={() => setSelectedSubarea(area)}
-              className={px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
+              className={
                 selectedSubarea === area
-                  ? "bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D]"
-                  : "bg-white/5 text-gray-300 border-white/10 hover:border-white/30"
-              }}
+                  ? "px-4 py-2 rounded-xl text-xs font-bold border transition-all bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D]"
+                  : "px-4 py-2 rounded-xl text-xs font-bold border transition-all bg-white/5 text-gray-300 border-white/10 hover:border-white/30"
+              }
             >
               {area}
             </button>
@@ -122,7 +122,7 @@ export default function RegionalEscortPage() {
               </div>
               <div className="p-5 pt-0">
                 <Button className="w-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black" asChild>
-                  <Link href={/profile/${p.id}}>
+                  <Link href={"/profile/" + p.id}>
                     <Send size={14} className="mr-1.5" /> Direkt zum Fixpreis buchen
                   </Link>
                 </Button>
