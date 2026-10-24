@@ -18,9 +18,7 @@ import {
   HelpCircle,
   Camera,
   SlidersHorizontal,
-  Sparkles,
   RotateCcw,
-  ArrowUpDown,
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
@@ -45,7 +43,6 @@ export default function SearchPage() {
   const [duration, setDuration] = useState<30 | 60 | 120>(60);
   const [wantedExtras, setWantedExtras] = useState<string[]>(["GFE"]);
 
-  // Deep Filter State (Superior to xdate & fgirl)
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(true);
   const [ageGroup, setAgeGroup] = useState<"ALL" | "18-24" | "25-30" | "31+">("ALL");
   const [hairFilter, setHairFilter] = useState<"ALL" | "Blond" | "Brünett" | "Schwarz">("ALL");
@@ -94,6 +91,7 @@ export default function SearchPage() {
     setQuery("");
     setCanton("ALL");
     setModeFilter("ALL");
+    setGenderFilter("ALL");
     setAgeGroup("ALL");
     setHairFilter("ALL");
     setCupFilter("ALL");
@@ -188,7 +186,7 @@ export default function SearchPage() {
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
         title="Schweizer Escort-Suchmaschine & Deep-Filter (Besser als xdate & fgirl) | iWantSexNow.ch"
-        description="Filtere alle Schweizer Escort-Portale nach Haarfarbe, Alter, Oberweite, Tabu-freien Services, +41 Rufnummer und garantiertem Endpreis."
+        description="Filtere alle Schweizer Escort-Portale nach Haarfarbe, Alter, Oberweite, Gigolos, Services, +41 Rufnummer und garantiertem Endpreis."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -203,11 +201,10 @@ export default function SearchPage() {
       <LivePortalSyncBanner totalProfiles={deduplicatedProfiles.length} />
 
       <main className="container mx-auto px-4 py-6 max-w-7xl space-y-6">
-        {/* Precision Search & Deep Filter Console */}
         <div className="bg-[#09131E] border-2 border-[#C69C6D]/55 rounded-2xl p-5 shadow-2xl space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="flex flex-wrap items-center gap-2 mb-1">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
                 <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                   ✓ {INITIAL_RAW_SWISS_FEED.length} Inserate gescannt → {results.length} passende Profile
                 </Badge>
@@ -215,6 +212,7 @@ export default function SearchPage() {
                   <HelpCircle size={13} /> Rufnummern-Scanner & Erklärung
                 </Link>
               </div>
+
               <div className="flex flex-wrap gap-1.5 mb-2">
                 {[
                   { id: "ALL", label: "✨ Alle Profile" },
@@ -236,6 +234,7 @@ export default function SearchPage() {
                   </button>
                 ))}
               </div>
+
               <h1 className="text-xl md:text-3xl font-serif font-black">
                 Schweizer Präzisions-Suche & Endpreis-Filter
               </h1>
@@ -249,7 +248,7 @@ export default function SearchPage() {
                 className="border-[#C69C6D]/50 text-[#D5A021] hover:bg-[#C69C6D]/10 text-xs font-bold"
               >
                 <SlidersHorizontal size={13} className="mr-1.5" />
-                {showAdvancedFilters ? "Detail-Filter einklappen" : "Alle Detail-Filter öffnen (Optik, Busen, Services)"}
+                {showAdvancedFilters ? "Detail-Filter einklappen" : "Alle Detail-Filter öffnen"}
               </Button>
               <Button
                 size="sm"
@@ -262,7 +261,6 @@ export default function SearchPage() {
             </div>
           </div>
 
-          {/* Primary Search Row */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3 pt-2 border-t border-white/10">
             <div className="md:col-span-5 relative">
               <SearchIcon size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D5A021]" />
@@ -325,11 +323,9 @@ export default function SearchPage() {
             </div>
           </div>
 
-          {/* Collapsible Deep Attribute & Service Filter Drawer */}
           {showAdvancedFilters && (
             <div className="pt-3 border-t border-white/10 space-y-4 text-xs">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                {/* Age Filter */}
                 <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
                   <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Alter</label>
                   <select
@@ -344,7 +340,6 @@ export default function SearchPage() {
                   </select>
                 </div>
 
-                {/* Hair Color */}
                 <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
                   <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Haarfarbe</label>
                   <select
@@ -359,7 +354,6 @@ export default function SearchPage() {
                   </select>
                 </div>
 
-                {/* Cup / Bust */}
                 <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
                   <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Oberweite</label>
                   <select
@@ -373,7 +367,6 @@ export default function SearchPage() {
                   </select>
                 </div>
 
-                {/* Language */}
                 <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
                   <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Sprache</label>
                   <select
@@ -389,7 +382,6 @@ export default function SearchPage() {
                   </select>
                 </div>
 
-                {/* Meeting Type */}
                 <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
                   <label className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Treffpunkt</label>
                   <select
@@ -403,7 +395,6 @@ export default function SearchPage() {
                   </select>
                 </div>
 
-                {/* Max Budget Slider */}
                 <div className="bg-black/40 p-2.5 rounded-xl border border-white/10">
                   <div className="flex justify-between text-[10px] mb-1">
                     <span className="text-gray-400 uppercase font-bold">Max. Endpreis</span>
@@ -421,7 +412,6 @@ export default function SearchPage() {
                 </div>
               </div>
 
-              {/* Service & Taboo-Free Calculator Toggles */}
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs text-[#D5A021] font-bold flex items-center gap-1 mr-1">
                   <Calculator size={13} /> Gewünschte Services (live im Endpreis eingerechnet):
@@ -448,7 +438,6 @@ export default function SearchPage() {
           )}
         </div>
 
-        {/* Rich Result Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {results.map((p, idx) => {
             const calc = computeTotalChf(p);
@@ -511,7 +500,6 @@ export default function SearchPage() {
                           📍 {p.subareas.join(" · ")} ({p.canton})
                         </p>
 
-                        {/* Deep Attribute Pills (Hair, Bust, Height, Languages) */}
                         <div className="flex flex-wrap gap-1.5 mt-2 text-[11px] text-gray-300">
                           <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.hairColor}</span>
                           <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.height}</span>
@@ -545,7 +533,6 @@ export default function SearchPage() {
                     </div>
                   </div>
 
-                  {/* Included Services Badges */}
                   <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
                     <span className="text-emerald-400 font-bold mr-1">✓ Inklusive:</span>
                     {p.includedServices.slice(0, 6).map((srv) => (
