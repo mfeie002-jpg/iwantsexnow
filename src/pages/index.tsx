@@ -34,6 +34,7 @@ import { ContactSection } from "@/components/home/ContactSection";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
 import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
+import { MoneyPageSeoContent } from "@/components/marketplace/MoneyPageSeoContent";
 
 export type BrandThemeId = "A" | "B" | "C" | "D";
 
@@ -1005,6 +1006,7 @@ export default function Home() {
       <CityLinks />
       <AboutSection />
       <ContactSection />
+      <MoneyPageSeoContent profileCount={allEscorts.length} />
       <SeoSiloFooter />
 
       {enquiryTarget && (

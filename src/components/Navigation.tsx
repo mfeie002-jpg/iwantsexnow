@@ -98,6 +98,13 @@ export function Navigation() {
         </Link>
       </Button>
       <a
+        href="/guides/english-tourist-expat-escort-guide-switzerland"
+        title="English Guide for Tourists & Expats in Switzerland"
+        className="px-2 py-1.5 rounded-lg text-[10px] font-black bg-[#C69C6D]/15 hover:bg-[#C69C6D] text-[#D5A021] hover:text-[#0D1B2A] border border-[#C69C6D]/40 transition-all"
+      >
+        🇬🇧 EN
+      </Link>
+      <a
         href="https://www.sbb.ch"
         title="Diskreter Quick-Exit (Sofort zu SBB.ch wechseln)"
         className="px-2 py-1.5 rounded-lg text-[10px] font-black bg-white/5 hover:bg-rose-600/80 text-gray-400 hover:text-white border border-white/10 transition-all ml-1"

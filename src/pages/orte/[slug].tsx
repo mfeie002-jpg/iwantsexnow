@@ -19,6 +19,7 @@ import {
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
 import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
+import { MoneyPageSeoContent } from "@/components/marketplace/MoneyPageSeoContent";
 
 export const SWISS_SEO_LOCATIONS: Record<
   string,
@@ -483,6 +484,7 @@ export default function LocalSeoHubPage({ slug }: { slug: string }) {
         </Card>
       </main>
 
+      <MoneyPageSeoContent cityOrRegion={loc.title} canton={loc.canton} minRateChf={minRate60} avgRateChf={avgRate60} profileCount={matchingProfiles.length} />
       <SeoSiloFooter />
     </div>
   );

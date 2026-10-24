@@ -23,6 +23,7 @@ import {
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
 import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
+import { MoneyPageSeoContent } from "@/components/marketplace/MoneyPageSeoContent";
 
 const ALL_SERVICE_FILTERS = [
   { id: "GFE", label: "Girlfriend Experience (GFE)" },
@@ -590,6 +591,7 @@ export default function SearchPage() {
           })}
         </div>
       </main>
+      <MoneyPageSeoContent profileCount={deduplicatedProfiles.length} />
       <SeoSiloFooter />
     </div>
   );
