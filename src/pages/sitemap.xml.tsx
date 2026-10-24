@@ -43,6 +43,8 @@ const STATIC_ROUTES = [
   "/orte/solothurn",
   "/orte/haus-aphrodite",
   "/orte/haus-zeus",
+  "/orte/tantra-massage-schweiz",
+  "/orte/domina-bdsm-schweiz",
   "/create-post",
   "/pricing",
   "/verify",

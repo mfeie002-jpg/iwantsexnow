@@ -184,6 +184,22 @@ export const SWISS_SEO_LOCATIONS: Record<
     hotelsAndSpots: "Olten Bahnhof, Mövenpick Egerkingen, Solothurn Altstadt & Grenchen",
     intro: "Der komplette Escort- & Studio-Preisvergleich für Solothurn, Olten und das Schweizer Mittelland (A1/A2).",
   },
+  "tantra-massage-schweiz": {
+    slug: "tantra-massage-schweiz",
+    title: "Erotik-, Tantra- & Body-to-Body-Massage (Zürich, Zug, Cham & Schweiz)",
+    canton: "ZH",
+    filterKeyword: "ALL",
+    hotelsAndSpots: "Diskrete Privat-Ateliers mit Dusche & Parkplatz in Zürich, Zug, Cham, Basel, Bern & Hotel-Outcall",
+    intro: "Vergleiche alle verifizierten Tantra-, Lingam-, Nuru- und sinnlichen Body-to-Body-Masseurinnen in der Schweiz. 100% transparente Endpreise für 60 und 90 Minuten ohne versteckte Aufpreise.",
+  },
+  "domina-bdsm-schweiz": {
+    slug: "domina-bdsm-schweiz",
+    title: "Domina, BDSM & Fetisch-Studios Schweiz (Zürich, Zug, Basel & Bern)",
+    canton: "ZH",
+    filterKeyword: "ALL",
+    hotelsAndSpots: "Vollausgestattete Privat-Studios & diskrete Hotel-Sessions in Zürich, Zug, Basel, Bern & Genf",
+    intro: "Geprüfte Schweizer Dominas, Bizarr-Ladies und Fetisch-Begleiterinnen im direkten Honorar- und Leistungsvergleich.",
+  },
   "haus-zeus": {
     slug: "haus-zeus",
     title: "Haus / Club Zeus · Preise, Zimmer-Tarife & Direkt-Alternativen",
