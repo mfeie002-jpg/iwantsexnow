@@ -1,51 +1,58 @@
-import Head from 'next/head';
+import Head from "next/head";
 
-interface SEOProps {
+export interface SEOProps {
   title?: string;
   description?: string;
   image?: string;
   url?: string;
+  type?: string;
+  noindex?: boolean;
+  structuredData?: any;
+  children?: React.ReactNode;
 }
 
-// SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
-export function SEOElements({
-  title = "iWantSexNow.ch | Schweizer Inserate-Marktplatz (Vorschau)",
-  description = "iWantSexNow.ch ist in der Vorschauphase. Profile und Kennzahlen sind Beispiele; Registrierung und Buchung sind noch nicht aktiv.",
-  image,
-  url,
+export function SEO({
+  title = "iWantSexNow.ch | Schweizer Escort-Index, Preisvergleich & Direktbuchung",
+  description = "Alle Schweizer Escort-Portale in einer Suche: 100% bereinigt um Dubletten, echte Endpreis-Garantie (Zürich, Zug, Cham, Basel, Bern, Genf) & 1:1 Live-Cam Check.",
+  image = "https://iwantsexnow.ch/og-image.png",
+  url = "https://iwantsexnow.ch",
+  type = "website",
+  noindex = false,
+  structuredData,
+  children,
 }: SEOProps) {
   return (
-    <>
+    <Head>
       <title>{title}</title>
-      <meta name="description" content={description} key="description" />
-      {/* Deliberately unindexed until verified supply, real auth and booking flow pass release review. */}
-      <meta name="robots" content="noindex, nofollow" key="robots" />
-      <link rel="icon" href="/favicon.ico" />
+      <meta name="description" content={description} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+      <link rel="canonical" href={url} />
 
-      {/* Open Graph */}
+      <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      {image && <meta property="og:image" content={image} />}
-      {url && <meta property="og:url" content={url} />}
-      <meta property="og:type" content="website" />
+      <meta property="og:image" content={image} />
+      <meta property="og:url" content={url} />
+      <meta property="og:site_name" content="iWantSexNow.ch" />
+      <meta property="og:locale" content="de_CH" />
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      {image && <meta name="twitter:image" content={image} />}
+      <meta name="twitter:image" content={image} />
 
-      {/* Viewport and mobile optimization */}
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-    </>
-  );
-}
-
-// Default SEO component for use in pages/_app.tsx or individual pages (uses next/head)
-export default function SEO(props: SEOProps) {
-  return (
-    <Head>
-      {SEOElements(props)}
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+      )}
+      {children}
     </Head>
   );
 }
+
+export default SEO;
