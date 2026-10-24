@@ -1,6 +1,5 @@
 import type { GetServerSideProps } from "next";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
-import { SWISS_SEO_LOCATIONS } from "@/pages/orte/[slug]";
 
 const BASE_URL = "https://iwantsexnow.ch";
 
@@ -11,12 +10,27 @@ const STATIC_ROUTES = [
   "/rankings",
   "/live-cam",
   "/how-it-works",
+  "/guides",
   "/matches",
   "/escort-zurich",
   "/escort-basel",
   "/escort-bern",
   "/escort-geneva",
   "/escort-lausanne",
+  "/orte/cham",
+  "/orte/baar",
+  "/orte/rotkreuz",
+  "/orte/zug",
+  "/orte/zuerich-paradeplatz",
+  "/orte/zuerich-oerlikon",
+  "/orte/zuerich-seefeld",
+  "/orte/winterthur",
+  "/orte/luzern",
+  "/orte/aargau",
+  "/orte/st-gallen",
+  "/orte/lugano",
+  "/orte/haus-aphrodite",
+  "/orte/haus-zeus",
   "/create-post",
   "/pricing",
   "/verify",
@@ -30,8 +44,7 @@ function generateSiteMap() {
   const now = new Date().toISOString();
   const profiles = deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED);
   const profileRoutes = profiles.map((p) => `/profile/${encodeURIComponent(p.displayName)}`);
-  const localSeoRoutes = Object.keys(SWISS_SEO_LOCATIONS).map((slug) => `/orte/${slug}`);
-  const allRoutes = [...STATIC_ROUTES, ...localSeoRoutes, ...profileRoutes];
+  const allRoutes = [...STATIC_ROUTES, ...profileRoutes];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
