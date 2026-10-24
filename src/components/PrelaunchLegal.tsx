@@ -13,7 +13,7 @@ const content: Record<Variant, {
     sections: [
       {
         heading: "Welche Funktionen sind aktuell aktiv?",
-        body: "Du kannst den Entwurf ansehen. Öffentliche Registrierung, Buchungen, Nachrichten, Zahlungsfunktionen, Identitätsprüfung und Foto-Uploads sind deaktiviert. Angezeigte Personen und Bewertungen sind Demo-Beispiele."
+        body: "Du kannst den Entwurf ansehen. Öffentliche Registrierung, Buchungen, Nachrichten, Zahlungsfunktionen, Identitätsprüfung und Foto-Uploads sind deaktiviert. Es sind keine öffentlichen Profile oder Bewertungen veröffentlicht."
       },
       {
         heading: "Technische Verarbeitung",
@@ -35,7 +35,7 @@ const content: Record<Variant, {
     sections: [
       {
         heading: "Kein aktiver Vermittlungsbetrieb",
-        body: "Profile, Fotos, Preise, Bewertungen, vermeintliche Verfügbarkeiten und Buchungsbeispiele dienen der Darstellung des Konzepts. Es gibt derzeit keine über diese Vorschau buchbaren Personen oder angebotenen Live-Transaktionen."
+        body: "Die früheren Beispielprofile, Fotos, Preise, Bewertungen und Buchungsbeispiele wurden entfernt. Es gibt keine veröffentlichten Profile, buchbaren Personen oder angebotenen Live-Transaktionen."
       },
       {
         heading: "Keine kostenpflichtige Leistung",

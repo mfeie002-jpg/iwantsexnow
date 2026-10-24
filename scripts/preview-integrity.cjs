@@ -67,10 +67,19 @@ for (const file of publicPages) {
     }
   }
 }
+// Cleanup must not leave informational pages advertising removed fixtures or filters.
+for (const route of ["about", "privacy", "terms"]) {
+ const visible = text(fs.readFileSync(path.join(pageRoot, route + ".html"), "utf8"));
+ for (const stale of ["Die gezeigten Namen, Fotos", "Die Suche und Filter arbeiten mit Beispieldaten", "Angezeigte Personen und Bewertungen sind Demo-Beispiele", "Buchungsbeispiele dienen der Darstellung"]) {
+  assert(!visible.includes(stale), route + ": stale claim about removed fictional content");
+ }
+}
 const home = fs.readFileSync(path.join(pageRoot, "index.html"), "utf8");
-assert(home.includes('aria-label="Vorschau-Navigation"'), "Homepage does not render the shared desktop menu");
+assert(text(home).includes("Persönliche Funktionen bleiben geschlossen."), "Homepage must explain disabled actions");
+assert(home.includes('aria-label="Hauptnavigation"'), "Homepage must retain designed navigation");
+assert(!/href="\/(?:search|catalogue|profile|create-post|messages|booking-confirmation)(?:[/?#"])/.test(home), "Neutral homepage must not promote discovery or enquiry routes");
 assert(!/<form\b/i.test(home), "Homepage exposes a contact/newsletter form without delivery");
-assert(text(home).includes("Kontakt, Buchungen und Newsletter – noch nicht aktiv"), "Homepage missing contact status");
+assert(text(home).includes("keine persönlichen Angaben"), "Homepage missing contact status");
 for (const [route, marker] of [["contact", "noch kein betreuter Kontakt"], ["imprint", "noch kein vollständiges Impressum"], ["faq", "keine Mitgliedschaften"], ["about", "noch keinen aktiven Vermittlungsbetrieb"]]) {
   const html = fs.readFileSync(path.join(pageRoot, route + ".html"), "utf8");
   assert(text(html).includes(marker), `${route}: missing honest preview information`);
@@ -79,18 +88,21 @@ for (const [route, marker] of [["contact", "noch kein betreuter Kontakt"], ["imp
 // The Radix mobile menu and help dialog render when opened, so also protect their sources.
 const chat = fs.readFileSync(path.join(root, "src/components/LiveChatWidget.tsx"), "utf8");
 assert(!/setTimeout|setMessages|<Input|<form|<Textarea|timestamp/.test(chat), "Preview help still simulates or collects messages");
-assert(chat.includes("Keine Nachrichten") || chat.includes("keine Nachrichten"), "Help must explain non-delivery");
+assert(chat.includes('href="/faq"'), "Help must link to FAQ without collecting messages");
 const profile = fs.readFileSync(path.join(root, "src/pages/profile/[id].tsx"), "utf8");
 assert(!/wa\.me|tel:|profile\.phone|profile\.whatsapp/.test(profile), "Sample profile exposes unconfirmed direct contact");
+for (const file of publicPages) {
+ const html = fs.readFileSync(file, "utf8");
+ assert(!/href="\/(?:profile|catalogue)\/[^"/]+/.test(html), "Retired fictional record link: " + file);
+}
+// Shared defaults and menus must not advertise the removed demonstration inventory.
+const defaults = fs.readFileSync(path.join(root, "src/components/SEO.tsx"), "utf8");
+assert(!defaults.includes("Profile und Kennzahlen sind Beispiele"), "Default metadata claims removed samples still exist");
+assert(defaults.includes('content="noindex, nofollow"'), "Default metadata lost noindex");
 const navigation = fs.readFileSync(path.join(root, "src/lib/preview-navigation.ts"), "utf8");
+assert(!/Demo|Beispielprofile|#cities|\/members|\/demo-accounts/.test(navigation), "Navigation advertises removed demo inventory");
 for (const [, href] of navigation.matchAll(/href: "([^"]+)"/g)) {
-  assert(home.includes(`href="${href}"`), `Homepage does not expose shared menu destination ${href}`);
-  const url = new URL(href, "http://preview.local");
-  assert(routes.includes(url.pathname), `Menu contains missing destination ${href}`);
-  if (url.hash) {
-    const target = fs.readFileSync(path.join(serverRoot, manifest[url.pathname]), "utf8");
-    assert(target.includes(`id="${url.hash.slice(1)}"`), `Menu contains missing anchor ${href}`);
-  }
+ assert(routes.includes(href), "Shared navigation has missing destination: " + href);
 }
 console.log(`Preview integrity: ${assertions - failures.length}/${assertions} assertions; ${publicPages.length} built pages; ${links} internal links to ${destinations.size} paths.`);
 for (const failure of failures) console.error("FAIL " + failure);

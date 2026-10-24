@@ -176,6 +176,8 @@ export function HeroSection({
                   Inserate in der Schweiz
                 </motion.span>
               </motion.h1>
+              <p className="text-base text-gray-200">Städte und Kategorien mit fiktiven Inseraten testen.</p>
+              <Link href="/search" className="inline-block rounded-lg bg-white px-6 py-3 font-bold text-slate-950 hover:bg-gray-100">Inserate-Katalog öffnen →</Link>
             </motion.div>
 
             {/* Filters with Animations */}

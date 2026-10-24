@@ -1,0 +1,215 @@
+{
+  "date": "2026-10-24",
+  "sourceCheckout": "work/iwantsexnow",
+  "sourceHEAD": "261a9132dce487d8bad6cd4fdb59c16b2a7d55d9",
+  "reviewedFiles": 40,
+  "originalFilesUnchanged": true,
+  "counts": {
+    "already_in_PR": 20,
+    "cleanup_extracted_with_neutral_status_copy": 4,
+    "mixed_or_feature_work_preserved_locally": 16
+  },
+  "scope": "Extract metadata and navigation cleanup only. Do not copy the unfinished catalogue, filters, city layouts or homepage redesign. Mixed components and tests have prior cleanup equivalents in the PR; their remaining local variants are preserved.",
+  "entries": [
+    {
+      "path": "scripts/catalogue-http-smoke.mjs",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "d0ac603672b2e2c1546b1d39dbe320a3fcbf2efa1cc13d12f92557ba1d950d9a"
+    },
+    {
+      "path": "scripts/preview-http-smoke.mjs",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "8521a820aa8e3b70495eee1bfed854de04355018e073d15ce2a4788221a95177"
+    },
+    {
+      "path": "scripts/preview-integrity.cjs",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "2666cb8d8e0c3851d12c295e17ca29d5908ea2bbd32bc29e3765a34a815f3490"
+    },
+    {
+      "path": "scripts/preview-smoke.cjs",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "fdaf72d0a870b68bafe2d6aad934def12c21a82914966248e276051564524141"
+    },
+    {
+      "path": "src/components/LiveChatWidget.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "aeb3239f2422cef4ef19a861cf68ddde3d6053b0d9bb492dc49a7dd51a5cdd22"
+    },
+    {
+      "path": "src/components/MobileNav.tsx",
+      "disposition": "cleanup_extracted_with_neutral_status_copy",
+      "originalWorkingFileSHA256": "75c73f51a476cfa1bf1fe40f0a5ad2f24d0b3e61429cfb957748566560a87f6e"
+    },
+    {
+      "path": "src/components/PrelaunchLegal.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "c16223fc97e0441b4ca250f75cdf9790fba030507faf31e93635b8d159436d52"
+    },
+    {
+      "path": "src/components/PreviewAccess.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "45059b58bd1992b4b216be1ca617754678b1b9ffe0749bb211febc9cbbd48d3e"
+    },
+    {
+      "path": "src/components/PreviewInformation.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "1e1772294c81108ccf68a73b3fa59427a5ebc15b363a87e395e3c23d8e1912b4"
+    },
+    {
+      "path": "src/components/SEO.tsx",
+      "disposition": "cleanup_extracted_with_neutral_status_copy",
+      "originalWorkingFileSHA256": "8085db25ac45e36010a54b65ebea85245ef0b14732e3c1c87eaa8612f27abde5"
+    },
+    {
+      "path": "src/components/catalogue/CatalogueHeader.tsx",
+      "disposition": "cleanup_extracted_with_neutral_status_copy",
+      "originalWorkingFileSHA256": "373b7fa27938b5f554e28826f4ee8a72e2c8011e8576dc0c72376c7c3d64db46"
+    },
+    {
+      "path": "src/lib/marketplace/catalogue.ts",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "2b7484188dd63fe4f4bb7ef227139b9e5e01e6ddfe3fdca4469e5cdb2ea77dc9"
+    },
+    {
+      "path": "src/lib/preview-navigation.ts",
+      "disposition": "cleanup_extracted_with_neutral_status_copy",
+      "originalWorkingFileSHA256": "72be44bfe3ff50624281cada3e980aed161c71dfb2cffe1221a6f000bae7f67d"
+    },
+    {
+      "path": "src/pages/_app.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "5543378b5feb8b73d5e56497caffc226edf40fd74834c118160aac3095441c8c"
+    },
+    {
+      "path": "src/pages/admin-dashboard.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "47f8052acf41bca5a1ce8098761cb6b9d2873bf133a03762633fc27bfcfbb2f1"
+    },
+    {
+      "path": "src/pages/branding.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "5e5e84cdf28909c245e7487f84bf5aa7d40e42cae0cd4d2bb63e25dd742b0d55"
+    },
+    {
+      "path": "src/pages/catalogue/[id].tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "3f9224642bd3bd5f372c430e4e0199f89b395b2fece0a29719f46372b0c82f06"
+    },
+    {
+      "path": "src/pages/compare-escorts.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "517e1a63dbd81b0bcf52efb56f57c90678c4da50e52ea018a4aa311e6e4b360e"
+    },
+    {
+      "path": "src/pages/demo-accounts.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "f303b890a11dda20a7d6d11f5f8220ab68e0d905aa8b2a46b68c814c82ea6e3e"
+    },
+    {
+      "path": "src/pages/design-concept-1.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "baea6460fb7a6bfead308637fbe183f512825e9b168775f38ffc561e3eeca6cb"
+    },
+    {
+      "path": "src/pages/design-concept-2.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "baea6460fb7a6bfead308637fbe183f512825e9b168775f38ffc561e3eeca6cb"
+    },
+    {
+      "path": "src/pages/design-concept-3.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "baea6460fb7a6bfead308637fbe183f512825e9b168775f38ffc561e3eeca6cb"
+    },
+    {
+      "path": "src/pages/escort-basel.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "a01a70f24f380ed7ee77149b626f209f7a4c920af60cc8b58776124e59ce6472"
+    },
+    {
+      "path": "src/pages/escort-bern.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "f1d8686eddadf3c9f8510438406163bf06d9a376b93e812292ef96aad85b4189"
+    },
+    {
+      "path": "src/pages/escort-geneva.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "de19d42dd9fc0c723fa6ac79e006a403c4311f256213067b8d80d47e9b896eca"
+    },
+    {
+      "path": "src/pages/escort-lausanne.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "f906e1da9d4c98c31a76459d8cb35d8e4b02239c173d5c700fd3f2c211400029"
+    },
+    {
+      "path": "src/pages/escort-zurich.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "bd521fe5a4e98b427b6da3cb914e7d8f94bc4e6e0d45973ac08b388be619208f"
+    },
+    {
+      "path": "src/pages/events.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "df2fc10389990dae85154387b5e17f7cea35a90b47a18d4d29f7158e10bf73dc"
+    },
+    {
+      "path": "src/pages/favorites.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "2e96a3ebffe55febfcc2997cc15e6de3ab3879a7171ea31ba70128b4a1cac2df"
+    },
+    {
+      "path": "src/pages/index.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "8a19fd1ee00f5a8b88a291150662d9142ccba50883aab652c0d26ae19d1b82c3"
+    },
+    {
+      "path": "src/pages/logo-concepts.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "5e5e84cdf28909c245e7487f84bf5aa7d40e42cae0cd4d2bb63e25dd742b0d55"
+    },
+    {
+      "path": "src/pages/logo-redesigns.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "5e5e84cdf28909c245e7487f84bf5aa7d40e42cae0cd4d2bb63e25dd742b0d55"
+    },
+    {
+      "path": "src/pages/matches.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "9dda99b791f678b6535ee0f04ec698cf9bac3d6c5c045bbd8306bb01a8a4cc7d"
+    },
+    {
+      "path": "src/pages/members.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "b0ecf5487f1ac6187181a2ecff4edb3b7a526ccd327da2bead8f47fadbbb2c87"
+    },
+    {
+      "path": "src/pages/notifications.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "14d90d477efd5b01c3ec207d7eba53240670f3a7749d7c6967e7679548f08df0"
+    },
+    {
+      "path": "src/pages/pricing.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "94c668654066d919c90a5328e5f8aadf6df7dad1a5695f33c7be06e256efb3d1"
+    },
+    {
+      "path": "src/pages/profile/[id].tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "df003d8020d69e408614422039b2b56b107f7c2f499b4f32b9284bcec6900a8e"
+    },
+    {
+      "path": "src/pages/search.tsx",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "eaaa91f730c815c1927cf0f2424a76267d3da1ec53b7508fb681c786b935c0e8"
+    },
+    {
+      "path": "src/pages/stories.tsx",
+      "disposition": "already_in_PR",
+      "originalWorkingFileSHA256": "776a45b92bd58f6e06dd14e59c18fe0860c7b3b4ee64721c6b0b33f3f25e1e96"
+    },
+    {
+      "path": "tests/catalogue.test.mjs",
+      "disposition": "mixed_or_feature_work_preserved_locally",
+      "originalWorkingFileSHA256": "7768c290791a35bf844d8c8c9f3bfe34b1b5204a190684423e47bc5eb324f0f3"
+    }
+  ]
+}

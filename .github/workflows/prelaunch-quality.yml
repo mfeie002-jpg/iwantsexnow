@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: "22"
           cache: npm
@@ -39,6 +39,8 @@ jobs:
         run: node --experimental-strip-types --test tests/marketplace-publication.test.mjs
       - name: Private provider draft ownership and input tests
         run: node --experimental-strip-types --test tests/marketplace-drafts.test.mjs tests/supabase-drafts.test.mjs tests/integration-client.test.mjs
+      - name: Catalogue filter and preview inventory tests
+        run: node --experimental-strip-types --test tests/catalogue.test.mjs
       - name: Analyzer API authorization policy tests
         run: node --experimental-strip-types --test tests/analyzer-proxy.test.mjs
       - name: Mocked authenticated handler and role gate tests
@@ -59,3 +61,4 @@ jobs:
           node scripts/analyzer-api-http-smoke.mjs
           node scripts/preview-http-smoke.mjs
           node scripts/private-draft-disabled-http.mjs
+          node scripts/catalogue-http-smoke.mjs
