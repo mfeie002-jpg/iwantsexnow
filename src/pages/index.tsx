@@ -1,11 +1,28 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
 import { Navigation } from "@/components/Navigation";
-import { CheckCircle, ArrowUp, ShieldCheck, Clock, Calculator, Send, X, Car, ChevronDown, SlidersHorizontal, Globe, CalendarCheck } from "lucide-react";
+import {
+  CheckCircle,
+  ArrowUp,
+  ShieldCheck,
+  Clock,
+  Calculator,
+  Send,
+  X,
+  Car,
+  ChevronDown,
+  SlidersHorizontal,
+  Globe,
+  CalendarCheck,
+  Palette,
+  Sparkles,
+  TrendingDown,
+  Lock,
+} from "lucide-react";
 import Link from "next/link";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +33,73 @@ import { CityLinks } from "@/components/home/CityLinks";
 import { AboutSection } from "@/components/home/AboutSection";
 import { ContactSection } from "@/components/home/ContactSection";
 
+export type BrandThemeId = "A" | "B" | "C" | "D";
+
+export const BRAND_THEMES: Record<
+  BrandThemeId,
+  {
+    id: BrandThemeId;
+    shortLabel: string;
+    name: string;
+    subtitle: string;
+    bgPrimary: string;
+    bgSecondary: string;
+    cardBg: string;
+    accentText: string;
+    accentBorder: string;
+    glowColor: string;
+  }
+> = {
+  A: {
+    id: "A",
+    shortLabel: "A · Swiss Shield",
+    name: "The Swiss Shield",
+    subtitle: "SWISS ESCORT INDEX & DIRECT BOOKING",
+    bgPrimary: "bg-[#0B1623]",
+    bgSecondary: "bg-[#07101A]",
+    cardBg: "bg-[#09131E]/95",
+    accentText: "text-[#D5A021]",
+    accentBorder: "border-[#C69C6D]/50",
+    glowColor: "from-[#C69C6D]/15 via-transparent to-emerald-500/10",
+  },
+  B: {
+    id: "B",
+    shortLabel: "B · Golden Key",
+    name: "The Golden Key & Compass",
+    subtitle: "THE LUXURY SWISS INDEX & CONCIERGE",
+    bgPrimary: "bg-[#160810]",
+    bgSecondary: "bg-[#0F050B]",
+    cardBg: "bg-[#1F0B17]/95",
+    accentText: "text-[#E6B980]",
+    accentBorder: "border-[#E6B980]/50",
+    glowColor: "from-rose-500/15 via-transparent to-[#E6B980]/10",
+  },
+  C: {
+    id: "C",
+    shortLabel: "C · Royal Crest",
+    name: "The Swiss Monogram Crest",
+    subtitle: "SWITZERLAND'S ELITE VERIFIED INDEX",
+    bgPrimary: "bg-[#08090D]",
+    bgSecondary: "bg-[#050608]",
+    cardBg: "bg-[#0E1017]/95",
+    accentText: "text-[#E2C275]",
+    accentBorder: "border-[#E2C275]/50",
+    glowColor: "from-[#E2C275]/15 via-transparent to-red-500/10",
+  },
+  D: {
+    id: "D",
+    shortLabel: "D · Search-Mark",
+    name: "The Modern Search-Mark",
+    subtitle: "ALLE PORTALE · ECHTE ENDPREISE",
+    bgPrimary: "bg-[#091326]",
+    bgSecondary: "bg-[#060C1A]",
+    cardBg: "bg-[#0D1B36]/95",
+    accentText: "text-[#F3D078]",
+    accentBorder: "border-sky-400/40",
+    glowColor: "from-sky-500/15 via-transparent to-[#F3D078]/10",
+  },
+};
+
 const EXTRA_OPTIONS = [
   { id: "GFE", label: "Girlfriend Experience (GFE)", defaultExtraChf: 80 },
   { id: "Dinner Dates", label: "Dinner Date Begleitung", defaultExtraChf: 100 },
@@ -24,23 +108,138 @@ const EXTRA_OPTIONS = [
   { id: "Overnight", label: "Overnight Upgrade (+4 Std.)", defaultExtraChf: 600 },
 ];
 
-export function BrandLogo({ compact = false }: { compact?: boolean }) {
+export function BrandLogo({
+  compact = false,
+  variant = "A",
+}: {
+  compact?: boolean;
+  variant?: BrandThemeId;
+}) {
+  const theme = BRAND_THEMES[variant] || BRAND_THEMES.A;
   return (
-    <div className="flex items-center gap-3 group">
-      <div className={`relative flex items-center justify-center rounded-xl bg-gradient-to-br from-[#16293D] to-[#09131E] border border-[#C69C6D]/60 shadow-lg group-hover:border-[#D5A021] transition-all ${compact ? "w-9 h-9" : "w-11 h-11"}`}>
-        <span className="font-serif font-black text-[#D5A021] tracking-tighter text-lg">iW</span>
-        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#0D1B2A] flex items-center justify-center text-[8px] font-bold text-white" title="Swiss Verified Index">+</span>
+    <div className="flex items-center gap-3 group select-none">
+      {/* Vector SVG Emblem matching Concepts A, B, C, D */}
+      <div className={`relative flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 ${compact ? "w-10 h-10" : "w-12 h-12"}`}>
+        {variant === "A" && (
+          /* Concept A: The Swiss Shield (Gold Shield + Swiss Cross + iW Serif Monogram) */
+          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(213,160,33,0.35)]">
+            <defs>
+              <linearGradient id="shieldGoldA" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#F6E27A" />
+                <stop offset="50%" stopColor="#C69C6D" />
+                <stop offset="100%" stopColor="#9A6F32" />
+              </linearGradient>
+              <linearGradient id="shieldBgA" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#16283E" />
+                <stop offset="100%" stopColor="#07101A" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M32 4 L56 12 V30 C56 46 45 55 32 60 C19 55 8 46 8 30 V12 L32 4 Z"
+              fill="url(#shieldBgA)"
+              stroke="url(#shieldGoldA)"
+              strokeWidth="3"
+            />
+            <path
+              d="M32 8 L52 15 V29 C52 43 42 51 32 55 C22 51 12 43 12 29 V15 L32 8 Z"
+              fill="none"
+              stroke="url(#shieldGoldA)"
+              strokeWidth="0.9"
+              strokeOpacity="0.6"
+            />
+            {/* Subtle Swiss Cross at top of shield */}
+            <path d="M30.5 11 H33.5 V14 H36.5 V17 H33.5 V20 H30.5 V17 H27.5 V14 H30.5 Z" fill="#F6E27A" />
+            {/* iW Monogram */}
+            <text
+              x="32"
+              y="44"
+              textAnchor="middle"
+              fill="url(#shieldGoldA)"
+              fontFamily="Georgia, serif"
+              fontWeight="900"
+              fontSize="24"
+              letterSpacing="-1"
+            >
+              iW
+            </text>
+          </svg>
+        )}
+
+        {variant === "B" && (
+          /* Concept B: The Golden Key & Compass */
+          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(230,185,128,0.35)]">
+            <defs>
+              <linearGradient id="keyGoldB" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FAD6A5" />
+                <stop offset="100%" stopColor="#B77B3B" />
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="27" fill="#1F0B17" stroke="url(#keyGoldB)" strokeWidth="2.5" />
+            <circle cx="32" cy="32" r="22" fill="none" stroke="url(#keyGoldB)" strokeWidth="0.8" strokeDasharray="3 2" />
+            <polygon points="32,10 36,28 54,32 36,36 32,54 28,36 10,32 28,28" fill="url(#keyGoldB)" fillOpacity="0.25" stroke="url(#keyGoldB)" strokeWidth="1.5" />
+            <text x="32" y="39" textAnchor="middle" fill="#FAD6A5" fontFamily="Georgia, serif" fontWeight="900" fontSize="20">
+              iW
+            </text>
+          </svg>
+        )}
+
+        {variant === "C" && (
+          /* Concept C: The Swiss Monogram Crest */
+          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(226,194,117,0.35)]">
+            <circle cx="32" cy="34" r="25" fill="#0B0D13" stroke="#E2C275" strokeWidth="2.8" />
+            <circle cx="32" cy="34" r="21" fill="none" stroke="#E2C275" strokeWidth="1" strokeOpacity="0.6" />
+            {/* Crown + Red Swiss Cross Badge */}
+            <path d="M24 9 L28 13 L32 7 L36 13 L40 9 L38 15 H26 Z" fill="#E2C275" />
+            <rect x="28" y="16" width="8" height="8" rx="1.5" fill="#D92626" />
+            <path d="M31 18 H33 V19.5 H34.5 V21 H33 V22.5 H31 V21 H29.5 V19.5 H31 Z" fill="#FFFFFF" />
+            <text x="32" y="45" textAnchor="middle" fill="#E2C275" fontFamily="Georgia, serif" fontWeight="900" fontSize="22">
+              iW
+            </text>
+          </svg>
+        )}
+
+        {variant === "D" && (
+          /* Concept D: The Modern Search-Mark */
+          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(56,189,248,0.35)]">
+            <circle cx="28" cy="28" r="21" fill="#0D1F3C" stroke="#F3D078" strokeWidth="3.5" />
+            <line x1="43" y1="43" x2="57" y2="57" stroke="#F3D078" strokeWidth="6" strokeLinecap="round" />
+            <text x="28" y="35" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="900" fontSize="19">
+              iW
+            </text>
+          </svg>
+        )}
       </div>
+
+      {/* Typography Lockup */}
       <div className="flex flex-col">
-        <span className={`font-black tracking-tight leading-none ${compact ? "text-xl" : "text-2xl md:text-3xl"}`}>
+        <span className={`font-serif font-black tracking-tight leading-none ${compact ? "text-xl" : "text-2xl md:text-3xl"}`}>
           <span className="text-white">iWant</span>
-          <span className="bg-gradient-to-r from-[#C69C6D] via-[#F3D078] to-[#D5A021] bg-clip-text text-transparent">Sex</span>
+          <span className={variant === "D" ? "text-sky-400" : "bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#D5A021] bg-clip-text text-transparent"}>
+            Sex
+          </span>
           <span className="text-white">Now</span>
-          <span className="text-[#C69C6D] text-sm font-bold ml-0.5">.ch</span>
+          <span className="text-[#C69C6D] text-sm font-sans font-bold ml-0.5">.ch</span>
         </span>
-        <span className="text-[9px] uppercase tracking-[0.18em] text-gray-400 font-semibold mt-0.5">
-          Swiss Escort Index & Direct Booking
+        <span className="text-[9px] uppercase tracking-[0.2em] text-gray-300 font-sans font-semibold mt-1">
+          {theme.subtitle}
         </span>
+      </div>
+    </div>
+  );
+}
+
+/** Ornamental Swiss Luxury Section Divider */
+function LuxuryDivider({ label }: { label?: string }) {
+  return (
+    <div className="relative py-2 flex items-center justify-center overflow-hidden bg-transparent">
+      <div className="w-full max-w-5xl mx-auto px-4 flex items-center gap-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#C69C6D]/50 to-[#C69C6D]" />
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-[#C69C6D]/40 bg-black/50 text-[10px] uppercase tracking-[0.22em] text-[#D5A021] font-bold shadow-lg">
+          <span>❖</span>
+          {label && <span>{label}</span>}
+          <span>❖</span>
+        </div>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#C69C6D]/50 to-[#C69C6D]" />
       </div>
     </div>
   );
@@ -48,6 +247,10 @@ export function BrandLogo({ compact = false }: { compact?: boolean }) {
 
 export default function Home() {
   const { toast } = useToast();
+
+  // Live Brand & Theme Switcher State (Default: Concept A "The Swiss Shield")
+  const [brandTheme, setBrandTheme] = useState<BrandThemeId>("A");
+  const activeTheme = BRAND_THEMES[brandTheme];
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("all");
@@ -389,7 +592,21 @@ export default function Home() {
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
     }
+    const savedTheme = localStorage.getItem('brandTheme') as BrandThemeId | null;
+    if (savedTheme && BRAND_THEMES[savedTheme]) {
+      setBrandTheme(savedTheme);
+    }
   }, []);
+
+  const handleThemeSwitch = (id: BrandThemeId) => {
+    setBrandTheme(id);
+    localStorage.setItem('brandTheme', id);
+    toast({
+      title: `Design & Logo: ${BRAND_THEMES[id].name}`,
+      description: `Variante ${id} aktiv – Logo, Farbschema und Lichtakzente wurden live aktualisiert.`,
+      duration: 2200,
+    });
+  };
 
   const filteredEscorts = allEscorts.filter(escort => {
     if (searchQuery && !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -429,11 +646,6 @@ export default function Home() {
     setFavorites(prev => {
       const newFavorites = prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id];
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
-      toast({
-        title: prev.includes(id) ? "Von Merkliste entfernt" : "Zur Merkliste hinzugefügt",
-        description: prev.includes(id) ? "Profil wurde entfernt" : "Profil für deinen Preisvergleich gespeichert",
-        duration: 2000,
-      });
       return newFavorites;
     });
   };
@@ -468,23 +680,68 @@ export default function Home() {
   }, [lastScrollY]);
 
   return (
-    <div className="min-h-screen bg-[#0D1B2A]">
+    <div className={`min-h-screen transition-colors duration-500 ${activeTheme.bgPrimary}`}>
       <SEO
         title="iWantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
         description="Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung."
       />
-      <header className={`border-b border-gray-800 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-[#0D1B2A]/95 backdrop-blur-sm py-2.5' : 'bg-[#0D1B2A] py-3.5'
+
+      {/* Sticky Header with Concept A Shield Logo + Live Design Umschalter */}
+      <header className={`border-b border-[#C69C6D]/25 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? `${activeTheme.bgSecondary}/95 backdrop-blur-md py-2` : `${activeTheme.bgPrimary} py-3`
       } ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <Link href="/">
-              <BrandLogo compact={scrolled} />
+              <BrandLogo compact={scrolled} variant={brandTheme} />
             </Link>
+
+            {/* Live Logo & Look-and-Feel Umschalter (A / B / C / D) */}
+            <div className="hidden xl:flex items-center gap-1 bg-black/45 border border-[#C69C6D]/35 rounded-full px-2 py-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#D5A021] px-2 flex items-center gap-1">
+                <Palette size={12} /> Design:
+              </span>
+              {(["A", "B", "C", "D"] as BrandThemeId[]).map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => handleThemeSwitch(id)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
+                    brandTheme === id
+                      ? "bg-[#C69C6D] text-[#0D1B2A] shadow"
+                      : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  {BRAND_THEMES[id].shortLabel}
+                </button>
+              ))}
+            </div>
+
             <div className="hidden lg:block">
               <Navigation />
             </div>
             <MobileNav />
+          </div>
+
+          {/* Compact Mobile/Tablet Theme Switcher Bar */}
+          <div className="flex xl:hidden items-center justify-center gap-1.5 mt-2 pt-2 border-t border-white/10 overflow-x-auto">
+            <span className="text-[10px] text-[#D5A021] font-bold uppercase mr-1 flex items-center gap-1 shrink-0">
+              <Palette size={11} /> Logo & Look:
+            </span>
+            {(["A", "B", "C", "D"] as BrandThemeId[]).map((id) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => handleThemeSwitch(id)}
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
+                  brandTheme === id
+                    ? "bg-[#C69C6D] text-[#0D1B2A]"
+                    : "bg-white/5 text-gray-300"
+                }`}
+              >
+                {BRAND_THEMES[id].shortLabel}
+              </button>
+            ))}
           </div>
         </div>
       </header>
@@ -507,8 +764,8 @@ export default function Home() {
         filteredCount={filteredEscorts.length}
       />
 
-      {/* Live Status Stories */}
-      <section className="py-5 bg-[#09131E] border-b border-white/10">
+      {/* Live Status Stories + Swiss Market Pulse Ticker */}
+      <section className={`py-5 ${activeTheme.bgSecondary} border-b border-[#C69C6D]/20`}>
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <p className="text-xs text-[#D5A021] font-bold uppercase tracking-wider flex items-center gap-2">
@@ -525,7 +782,7 @@ export default function Home() {
                 <div className="relative">
                   <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full p-0.5 transition-all duration-300 hover:scale-105 ${
                     profile.online
-                      ? 'bg-gradient-to-tr from-[#C69C6D] via-amber-400 to-emerald-400'
+                      ? 'bg-gradient-to-tr from-[#C69C6D] via-amber-300 to-emerald-400 shadow-[0_0_15px_rgba(213,160,33,0.3)]'
                       : 'bg-gray-700'
                   }`}>
                     <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#0D1B2A]">
@@ -544,12 +801,37 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* Swiss Market Pulse Ribbon (Signature Design Element) */}
+          <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+              <TrendingDown size={15} className="text-emerald-400 shrink-0" />
+              <span className="text-gray-300">Ø Ersparnis Direktbuchung: <strong className="text-emerald-400">CHF 85 / Std.</strong></span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+              <ShieldCheck size={15} className="text-[#D5A021] shrink-0" />
+              <span className="text-gray-300">Cross-Portal Check: <strong className="text-white">Dubletten bereinigt</strong></span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+              <Clock size={15} className="text-sky-400 shrink-0" />
+              <span className="text-gray-300">Zürich & Zug: <strong className="text-white">Live-Status bestätigt</strong></span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+              <Lock size={15} className="text-[#D5A021] shrink-0" />
+              <span className="text-gray-300">Anfrage-Schutz: <strong className="text-white">100% Diskret & Direkt</strong></span>
+            </div>
+          </div>
         </div>
       </section>
 
+      <LuxuryDivider label="Swiss Endpreis & Index Engine" />
+
       {/* SWISS ESCORT INDEX + DIRECT BOOKING ENGINE */}
-      <section id="decision-engine" className="py-12 md:py-16 bg-gradient-to-b from-[#0D1B2A] to-[#13263B] border-b border-white/10">
-        <div className="container mx-auto px-4">
+      <section id="decision-engine" className="relative py-12 md:py-16 overflow-hidden border-b border-white/10">
+        {/* Subtle Ambient Luxury Glow */}
+        <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${activeTheme.glowColor} opacity-80`} />
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
               <div>
@@ -557,7 +839,7 @@ export default function Home() {
                   <Calculator size={14} className="mr-1.5 inline" />
                   Meta-Index + Direktbuchung in Echtzeit
                 </Badge>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-black text-white tracking-tight">
                   Alle Schweizer Portale durchsucht. Direkt hier buchbar.
                 </h2>
                 <p className="text-gray-300 text-sm md:text-base mt-1 max-w-2xl">
@@ -566,7 +848,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
+                <div className="flex bg-black/50 p-1 rounded-xl border border-[#C69C6D]/30">
                   {([30, 60, 120] as const).map((mins) => (
                     <button
                       key={mins}
@@ -582,7 +864,7 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
+                <div className="flex bg-black/50 p-1 rounded-xl border border-white/15">
                   {([
                     { id: "all", label: "Incall & Outcall" },
                     { id: "incall", label: "Studio / Privat" },
@@ -593,7 +875,7 @@ export default function Home() {
                       onClick={() => setMeetingType(m.id)}
                       className={`px-3 py-2 rounded-lg text-xs font-bold transition-all ${
                         meetingType === m.id
-                          ? "bg-white/15 text-white border border-white/20"
+                          ? "bg-white/15 text-white border border-[#C69C6D]/40"
                           : "text-gray-400 hover:text-white"
                       }`}
                     >
@@ -604,12 +886,12 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Smart Matcher Bar */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 mb-8 space-y-4">
+            {/* Smart Matcher Bar with Corner Accents */}
+            <div className="relative bg-black/40 backdrop-blur-md border border-[#C69C6D]/35 rounded-2xl p-4 sm:p-6 mb-8 shadow-2xl">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex-1">
-                  <div className="text-xs text-gray-400 uppercase font-bold mb-2.5 flex items-center gap-1.5">
-                    <SlidersHorizontal size={13} className="text-[#D5A021]" />
+                  <div className="text-xs text-[#D5A021] uppercase font-bold mb-2.5 flex items-center gap-1.5 tracking-wider">
+                    <SlidersHorizontal size={13} />
                     Gewünschte Services anklicken (Berechnet live den echten Endpreis ohne Nachverhandlung):
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -619,10 +901,10 @@ export default function Home() {
                         <button
                           key={opt.id}
                           onClick={() => toggleExtra(opt.id)}
-                          className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all flex items-center gap-2 ${
+                          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all flex items-center gap-2 ${
                             active
-                              ? "bg-emerald-500/20 border-emerald-400 text-white shadow-sm"
-                              : "bg-black/30 border-white/10 text-gray-300 hover:border-white/30"
+                              ? "bg-emerald-500/20 border-emerald-400 text-white shadow-[0_0_12px_rgba(16,185,129,0.2)]"
+                              : "bg-white/5 border-white/10 text-gray-300 hover:border-[#C69C6D]/50"
                           }`}
                         >
                           <CheckCircle size={14} className={active ? "text-emerald-400 shrink-0" : "text-gray-500 shrink-0"} />
@@ -633,9 +915,9 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="md:w-64 bg-black/30 border border-white/10 rounded-xl p-3.5 shrink-0">
+                <div className="md:w-64 bg-white/5 border border-white/15 rounded-xl p-3.5 shrink-0">
                   <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="text-gray-400 font-semibold">Max. Gesamtbudget:</span>
+                    <span className="text-gray-300 font-semibold">Max. Gesamtbudget:</span>
                     <span className="text-[#D5A021] font-black text-sm">bis CHF {maxBudgetChf}</span>
                   </div>
                   <input
@@ -647,7 +929,7 @@ export default function Home() {
                     onChange={(e) => setMaxBudgetChf(Number(e.target.value))}
                     className="w-full accent-[#C69C6D] cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+                  <div className="flex justify-between text-[10px] text-gray-400 mt-1">
                     <span>CHF 300</span>
                     <span>CHF 800</span>
                     <span>CHF 1500+</span>
@@ -656,7 +938,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Responsive Decision Cards */}
+            {/* Responsive Decision Cards with Luxury Frame */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredEscorts.map((escort) => {
                 const calc = calculateProviderTotal(escort);
@@ -665,26 +947,29 @@ export default function Home() {
                 return (
                   <div
                     key={escort.id}
-                    className="rounded-2xl bg-[#09131E]/90 border border-white/15 hover:border-[#C69C6D]/70 transition-all p-4 sm:p-6 flex flex-col justify-between shadow-xl"
+                    className={`relative rounded-2xl ${activeTheme.cardBg} border ${activeTheme.accentBorder} hover:border-[#D5A021] transition-all p-4 sm:p-6 flex flex-col justify-between shadow-[0_12px_35px_rgba(0,0,0,0.45)] group`}
                   >
+                    {/* Subtle Top Gold Hairline Accent */}
+                    <div className="absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-[#C69C6D]/70 to-transparent" />
+
                     <div>
                       <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
-                        <Link href={`/profile/${escort.id}`} className="relative w-full sm:w-44 h-60 sm:h-48 flex-shrink-0 rounded-xl overflow-hidden group block">
+                        <Link href={`/profile/${escort.id}`} className="relative w-full sm:w-44 h-60 sm:h-48 flex-shrink-0 rounded-xl overflow-hidden block border border-white/15">
                           <img
                             src={escort.thumbnail}
                             alt={escort.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                           <div className={`absolute top-2.5 left-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow ${
-                            isDirect ? "bg-emerald-600/95" : "bg-blue-600/95"
+                            isDirect ? "bg-emerald-600/95" : "bg-sky-600/95"
                           }`}>
                             {isDirect ? <CalendarCheck size={12} /> : <Globe size={12} />}
                             {escort.bookingBadge}
                           </div>
-                          <div className="absolute top-2.5 right-2.5 bg-[#0D1B2A]/90 border border-[#C69C6D]/60 text-[#D5A021] text-[11px] font-black px-2.5 py-1 rounded-full">
+                          <div className="absolute top-2.5 right-2.5 bg-black/85 border border-[#C69C6D] text-[#D5A021] text-[11px] font-black px-2.5 py-1 rounded-full">
                             {calc.matchScore}% Match
                           </div>
-                          <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-sm text-[11px] text-amber-300 px-2.5 py-1 rounded-lg text-center font-medium">
+                          <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-sm text-[11px] text-amber-300 px-2.5 py-1 rounded-lg text-center font-medium border border-amber-400/20">
                             {escort.portalsCount} Schweizer Quellen gebündelt
                           </div>
                         </Link>
@@ -693,7 +978,7 @@ export default function Home() {
                           <div>
                             <div className="flex items-start justify-between gap-2">
                               <Link href={`/profile/${escort.id}`} className="hover:text-[#D5A021] transition-colors">
-                                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                                <h3 className="text-xl sm:text-2xl font-serif font-black text-white leading-tight">
                                   {escort.name}, {escort.age}
                                 </h3>
                               </Link>
@@ -711,9 +996,9 @@ export default function Home() {
                             </p>
                           </div>
 
-                          <div className="mt-3 bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3">
+                          <div className="mt-3 bg-gradient-to-r from-white/10 to-white/5 border border-[#C69C6D]/35 rounded-xl p-3 flex items-center justify-between gap-3">
                             <div>
-                              <div className="text-[11px] text-gray-400">
+                              <div className="text-[11px] text-gray-300">
                                 {isDirect ? `Direktbuchungs-Fixpreis (${selectedDuration} Min.)` : `Bereinigter Endpreis (${selectedDuration} Min.)`}
                               </div>
                               <div className="flex items-baseline gap-2 mt-0.5">
@@ -742,7 +1027,7 @@ export default function Home() {
                         <span className="font-medium">{escort.postedTime} · {escort.availability}</span>
                       </div>
 
-                      <div className="mt-3 bg-black/30 rounded-xl p-3 space-y-1.5 text-xs border border-white/5">
+                      <div className="mt-3 bg-black/35 rounded-xl p-3 space-y-1.5 text-xs border border-white/10">
                         <div className="flex justify-between text-gray-300">
                           <span>Grundtarif ({selectedDuration} Min.):</span>
                           <span className="font-bold text-white">CHF {calc.basePrice}</span>
@@ -762,7 +1047,7 @@ export default function Home() {
                       </div>
 
                       {isExpanded && (
-                        <div className="mt-3 bg-black/50 border border-[#C69C6D]/30 rounded-xl p-3 text-xs space-y-2">
+                        <div className="mt-3 bg-black/60 border border-[#C69C6D]/40 rounded-xl p-3 text-xs space-y-2">
                           <div className="font-bold text-[#D5A021] flex items-center justify-between">
                             <span>Schweizer Cross-Portal-Index (Gefundene Inserate dieser Anbieterin):</span>
                             <span>1h Basis</span>
@@ -807,7 +1092,7 @@ export default function Home() {
                             setEnquiryTarget(escort);
                             setEnquiryCity(escort.locations[0]);
                           }}
-                          className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold text-xs px-4 h-9"
+                          className="bg-gradient-to-r from-[#C69C6D] via-[#E5C178] to-[#C69C6D] hover:opacity-95 text-[#0D1B2A] font-black text-xs px-4 h-9 shadow-lg"
                         >
                           <Send size={13} className="mr-1.5" />
                           {isDirect ? "Jetzt direkt buchen" : "Termin anfragen"}
@@ -821,6 +1106,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <LuxuryDivider label="Verifizierte Profile & Direktbuchung" />
 
       <EscortGrid
         escorts={paginatedEscorts}
@@ -836,11 +1123,13 @@ export default function Home() {
         onPageChange={handlePageChange}
       />
 
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-gray-950 border-y border-white/10">
+      <LuxuryDivider label="Kantone & Pilot-Regionen" />
+
+      <section className="py-20 bg-gradient-to-b from-black/40 to-black/70 border-y border-white/10">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+              <h2 className="text-3xl md:text-5xl font-serif font-black text-white mb-4">
                 Schweizer Regionen & Kantone
               </h2>
               <p className="text-lg md:text-xl text-gray-400">
@@ -850,16 +1139,16 @@ export default function Home() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {cityPages.map((city, idx) => (
                 <Link key={`${city.slug}-${idx}`} href={`/escort-${city.slug}`}>
-                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-[#C69C6D] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-2xl">
+                  <Card className="group overflow-hidden bg-white/5 backdrop-blur-sm border-white/15 hover:border-[#C69C6D] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-2xl">
                     <div className="relative h-60 overflow-hidden">
                       <img
                         src={city.image}
                         alt={city.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-2xl md:text-3xl font-black text-white mb-1">
+                        <h3 className="text-2xl md:text-3xl font-serif font-black text-white mb-1">
                           {city.name}
                         </h3>
                         <p className="text-gray-300 text-xs md:text-sm mb-3">
@@ -869,7 +1158,7 @@ export default function Home() {
                           <Badge className="bg-[#C69C6D] border-0 text-[#0D1B2A] font-bold">
                             {city.escorts} Verifizierte Profile
                           </Badge>
-                          <span className="text-white text-sm font-bold group-hover:translate-x-1 transition-transform">
+                          <span className="text-[#D5A021] text-sm font-bold group-hover:translate-x-1 transition-transform">
                             Region öffnen →
                           </span>
                         </div>
@@ -888,7 +1177,6 @@ export default function Home() {
       <AboutSection />
       <ContactSection />
 
-      {/* Direct Booking & Private Enquiry Modal */}
       {enquiryTarget && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#0D1B2A] border border-[#C69C6D]/50 rounded-2xl max-w-lg w-full p-6 text-white shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -901,7 +1189,7 @@ export default function Home() {
             <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2">
               Direktbuchung & Diskrete Termin-Anfrage
             </Badge>
-            <h3 className="text-2xl font-black">
+            <h3 className="text-2xl font-serif font-black">
               {enquiryTarget.name} ({enquiryTarget.age}) direkt buchen
             </h3>
             <p className="text-xs text-gray-300 mt-1">
@@ -994,12 +1282,12 @@ export default function Home() {
 
       <LiveChatWidget />
 
-      <footer className="bg-[#0D1B2A] text-white py-16 border-t border-gray-800">
+      <footer className={`${activeTheme.bgSecondary} text-white py-16 border-t border-[#C69C6D]/25`}>
         <div className="container mx-auto px-6">
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
             <div>
               <div className="mb-4">
-                <BrandLogo compact />
+                <BrandLogo compact variant={brandTheme} />
               </div>
               <p className="text-gray-400 text-sm leading-relaxed mt-3">
                 Der Schweizer Escort-Index: Alle Online-Inserate der Schweiz in einer Suche gebündelt, um Dubletten bereinigt und zum transparenten Endpreis direkt buchbar.
