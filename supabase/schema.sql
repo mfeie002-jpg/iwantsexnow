@@ -1,4 +1,4 @@
--- iWantSexNow.ch · Swiss Escort Index & Direct Booking Schema
+-- iWantSexNow.ch · Master Production Schema (Supabase PostgreSQL)
 create table if not exists public.provider_profiles (
   id uuid primary key default gen_random_uuid(),
   dedup_cluster_id text unique not null,
@@ -17,14 +17,17 @@ create table if not exists public.provider_profiles (
   extra_prices_chf jsonb default '{}'::jsonb,
   incall boolean default true,
   outcall boolean default true,
+  thumbnail_url text,
+  gallery_urls text[] default '{}',
   verified_shield boolean default false,
+  lead_credits int default 2,
   last_freshness_ping timestamptz default now(),
   created_at timestamptz default now()
 );
 
 create table if not exists public.portal_sources (
   id uuid primary key default gen_random_uuid(),
-  profile_id uuid references public.provider_profiles(id) on delete cascade,
+  dedup_cluster_id text not null,
   portal_name text not null,
   source_url text,
   listed_price_chf int not null,
@@ -44,5 +47,17 @@ create table if not exists public.private_enquiries (
   customer_contact text not null,
   notes text,
   status text default 'new' check (status in ('new', 'accepted', 'declined')),
+  created_at timestamptz default now()
+);
+
+create table if not exists public.profile_claims (
+  id uuid primary key default gen_random_uuid(),
+  claim_code text unique not null,
+  artist_name text not null,
+  phone_number text not null,
+  city text not null,
+  daily_verification_code text,
+  bonus_credits_granted int default 2,
+  status text default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamptz default now()
 );

@@ -7,22 +7,39 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Camera, PhoneCall, CheckCircle2, Lock, Sparkles, ArrowRight } from "lucide-react";
+import { ShieldCheck, Camera, PhoneCall, CheckCircle2, Lock, ArrowRight } from "lucide-react";
 
 export default function VerifyPage() {
   const { toast } = useToast();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [phone, setPhone] = useState("+41 79 ");
   const [artistName, setArtistName] = useState("");
+  const [city, setCity] = useState("Zürich & Zug");
   const [dailyCode] = useState(() => `CH-${Math.floor(1000 + Math.random() * 9000)}`);
   const [completed, setCompleted] = useState(false);
 
-  const handleComplete = (e: React.FormEvent) => {
+  const handleComplete = async (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem("providerLeadCredits", "2");
+    try {
+      await fetch("/api/claims/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          artistName,
+          phone,
+          city,
+          dailyCode,
+          mode: "verify",
+        }),
+      });
+    } catch {
+      // non-blocking
+    }
     setCompleted(true);
     toast({
       title: "Verifizierungs-Antrag übermittelt!",
-      description: "Dein Swiss-Shield Echtheits-Siegel wird freigeschaltet. Du hast ab sofort Zugriff auf dein Provider-Dashboard.",
+      description: "Dein Swiss-Shield Echtheits-Siegel + 2 Gratis Lead-Credits wurden freigeschaltet.",
       duration: 5000,
     });
   };
@@ -52,11 +69,10 @@ export default function VerifyPage() {
             ID- & Foto-Verifizierung in 3 Schritten
           </h1>
           <p className="text-gray-300 text-sm md:text-base">
-            Profile mit dem grünen <strong>„ID & Originalfotos geprüft“</strong>-Siegel erhalten bis zu 4x mehr Direktbuchungs-Anfragen und stehen im Endpreis-Rechner ganz oben.
+            Profile mit dem grünen <strong>„ID & Originalfotos geprüft“</strong>-Siegel erhalten bis zu 4x mehr Direktbuchungs-Anfragen und starten mit <strong>2 Gratis Lead-Credits (CHF 50 Wert)</strong>.
           </p>
         </div>
 
-        {/* Step Indicator */}
         <div className="grid grid-cols-3 gap-3">
           {([
             { num: 1, title: "1. Rufnummer & Index-Claim" },
@@ -82,10 +98,10 @@ export default function VerifyPage() {
           <Card className="bg-[#09131E] border-2 border-emerald-500/60 p-8 rounded-2xl text-white text-center space-y-4">
             <CheckCircle2 size={48} className="text-emerald-400 mx-auto" />
             <h2 className="text-2xl font-serif font-black">
-              Verifizierung eingereicht · Direktprofil bereit!
+              Verifizierung registriert · 2 Gratis Lead-Credits aktiv!
             </h2>
             <p className="text-sm text-gray-300 max-w-lg mx-auto">
-              Deine Rufnummer <strong>{phone}</strong> und dein Code <strong>{dailyCode}</strong> wurden registriert. Alle gefundenen Drittportal-Inserate wurden mit deinem Direktprofil verknüpft.
+              Deine Rufnummer <strong>{phone}</strong> und dein Code <strong>{dailyCode}</strong> wurden übermittelt. Alle gefundenen Drittportal-Inserate wurden mit deinem Direktprofil verknüpft.
             </p>
             <div className="pt-4 flex justify-center gap-3">
               <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
@@ -102,7 +118,7 @@ export default function VerifyPage() {
                 <label className="text-xs font-bold uppercase text-[#D5A021] flex items-center gap-1.5 mb-2">
                   <PhoneCall size={14} /> Schritt 1: Schweizer Rufnummer für Dubletten-Bündelung & SMS-Code
                 </label>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-3 gap-3">
                   <input
                     type="text"
                     placeholder="Künstlername (z.B. Sophia)"
@@ -118,6 +134,13 @@ export default function VerifyPage() {
                     required
                     className="w-full rounded-xl bg-black/50 border border-white/20 px-3.5 py-2.5 text-sm text-white"
                   />
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    required
+                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3.5 py-2.5 text-sm text-white"
+                  />
                 </div>
               </div>
 
@@ -126,7 +149,7 @@ export default function VerifyPage() {
                   <Camera size={14} /> Schritt 2: Dein persönlicher Tages-Prüfcode
                 </div>
                 <p className="text-xs text-gray-300">
-                  Schreibe diesen Code auf einen Zettel und halte ihn beim kurzen Verifizierungs-Selfie sichtbar ins Bild (wird niemals veröffentlicht und nach der Prüfung gemäß CH-DSG gelöscht):
+                  Schreibe diesen Code auf einen Zettel und halte ihn beim kurzen Verifizierungs-Selfie sichtbar ins Bild (wird niemals veröffentlicht und nach der Prüfung gemäss CH-DSG gelöscht):
                 </p>
                 <div className="text-2xl font-mono font-black text-[#D5A021] tracking-widest bg-white/5 px-4 py-2 rounded-lg inline-block border border-[#C69C6D]/40">
                   {dailyCode}
@@ -144,7 +167,7 @@ export default function VerifyPage() {
                 type="submit"
                 className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6 text-base shadow-xl"
               >
-                Verifizierung abschließen & Direktbuchung freischalten
+                Verifizierung abschliessen & 2 Gratis Lead-Credits aktivieren
               </Button>
             </form>
           </Card>
