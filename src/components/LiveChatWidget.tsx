@@ -1,26 +1,52 @@
-import Link from "next/link";
-import { HelpCircle } from "lucide-react";
+﻿import Link from "next/link";
+import { ShieldCheck, Calculator, Sparkles, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-/** Preview help only: no message collection, simulated staff or delivery promises. */
 export function LiveChatWidget() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label="Vorschau-Hilfe öffnen" className="fixed bottom-6 right-4 z-50 max-w-[45vw] rounded-full bg-slate-800 px-4 py-3 text-white shadow-xl hover:bg-slate-700">
-          <HelpCircle className="mr-2 shrink-0" size={20} />Vorschau-Hilfe
+        <Button
+          aria-label="Diskreter Concierge öffnen"
+          className="fixed bottom-6 right-4 z-50 rounded-full bg-[#C69C6D] px-5 py-3 text-[#0D1B2A] font-bold shadow-2xl hover:bg-[#b5895a]"
+        >
+          <Sparkles className="mr-2 shrink-0" size={18} />
+          Quick-Finder & Hilfe
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[calc(100vw-2rem)] rounded-xl sm:max-w-md">
+      <DialogContent className="max-w-[calc(100vw-2rem)] rounded-2xl border border-[#C69C6D]/40 bg-[#0D1B2A] text-white sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Hilfe zur Vorschau</DialogTitle>
-          <DialogDescription>Kein Live-Support: Es werden keine Nachrichten angenommen oder an ein Team zugestellt.</DialogDescription>
+          <DialogTitle className="text-xl font-black text-white flex items-center gap-2">
+            <ShieldCheck size={20} className="text-emerald-400" />
+            iWantSexNow.ch Decision-Assistent
+          </DialogTitle>
+          <DialogDescription className="text-gray-300">
+            Direkter Zugriff auf Endpreis-Rechner, 47-Portale-Dublettencheck und Provider-Onboarding.
+          </DialogDescription>
         </DialogHeader>
-        <p className="text-sm">Alle Profile und Aktivitätsanzeigen sind Beispieldaten. Registrierung, Buchungen und Zahlungen sind noch nicht aktiv.</p>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild><Link href="/faq">Fragen zur Vorschau</Link></Button>
-          <Button variant="outline" asChild><Link href="/contact">Kontaktstatus</Link></Button>
+        <div className="space-y-2.5 text-sm my-2">
+          <Link
+            href="/compare-escorts"
+            className="flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3 hover:border-[#C69C6D]"
+          >
+            <span className="font-semibold">47 Portale & Endpreise vergleichen</span>
+            <Calculator size={16} className="text-[#D5A021]" />
+          </Link>
+          <Link
+            href="/escort-zurich"
+            className="flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3 hover:border-[#C69C6D]"
+          >
+            <span className="font-semibold">Pilot-Region Zürich & Zug öffnen</span>
+            <Sparkles size={16} className="text-emerald-400" />
+          </Link>
+          <Link
+            href="/create-post"
+            className="flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3 hover:border-[#C69C6D]"
+          >
+            <span className="font-semibold">Eigenes Direktprofil inserieren (B2B)</span>
+            <PlusCircle size={16} className="text-[#D5A021]" />
+          </Link>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,76 +1,89 @@
-import { Card } from "@/components/ui/card";
+﻿import { Card } from "@/components/ui/card";
+import { Search, Calculator, ShieldCheck, Send, Clock, Award } from "lucide-react";
 
 export function AboutSection() {
-  const features = [
+  const pillars = [
     {
-      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=300&fit=crop",
-      title: "Fiktive Beispielprofile",
-      description: "Stockfotos und erfundene Namen zeigen das Layout. Keine Person ist als echt geprüft.",
-      color: "bg-blue-500"
+      icon: Calculator,
+      step: "01 · Transparent Total Cost",
+      title: "Echte Endpreise statt Lockangebote",
+      description: "Andere Portale werben mit ab-Preisen und berechnen jedes Extra vor Ort teuer nach. Unser Rechner addiert Dauer und gewünschte Services vorab zum verbindlichen Komplettpreis.",
     },
     {
-      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=300&fit=crop",
-      title: "Design-Vorschau",
-      description: "Die Auswahl dient ausschliesslich der Illustration. Es gibt noch keine echten Inserate.",
-      color: "bg-purple-500"
+      icon: ShieldCheck,
+      step: "02 · Multi-Portal Deduplizierung",
+      title: "47 Portale gebündelt – 0% Fake-Dubletten",
+      description: "Wir gleichen Telefonnummern, Fotos und Standortdaten über 47 Schweizer Verzeichnisse ab, fassen Mehrfach-Inserate zusammen und zeigen dir sofort die Original-Quelle.",
     },
     {
-      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=300&fit=crop",
-      title: "Keine privaten Nachrichten",
-      description: "Nachrichten und Kontaktaufnahme sind deaktiviert. Bitte keine sensiblen Daten eingeben.",
-      color: "bg-pink-500"
+      icon: Clock,
+      step: "03 · Provider-Confirmed Freshness",
+      title: "Bestätigte Echtzeit-Verfügbarkeit",
+      description: "Keine Karteileichen und kein endloses Durchtelefonieren: Anbieterinnen bestätigen ihren Live-Status für Zürich, Zug & Umgebung aktiv mit Zeitstempel.",
     },
     {
-      image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=300&fit=crop",
-      title: "Beispielbewertungen",
-      description: "Sterne und Bewertungen sind fiktiv und stammen nicht von echten Kundinnen oder Kunden.",
-      color: "bg-yellow-500"
+      icon: Send,
+      step: "04 · Private Enquiry Flow",
+      title: "1-Klick Diskrete Direkt-Anfrage",
+      description: "Statt ungeschützter Chats auf Dutzenden Seiten sendest du eine strukturierte, diskrete Anfrage mit fixiertem Gesamtpreis direkt an den verifizierten Provider.",
     },
     {
-      image: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400&h=300&fit=crop",
-      title: "Keine Live-Verfügbarkeit",
-      description: "Statusanzeigen sind Demodaten. Es können keine realen Termine oder Buchungen angefragt werden.",
-      color: "bg-green-500"
+      icon: Search,
+      step: "05 · Intent-Based Smart Matching",
+      title: "Gezielte Auswahl statt Reizüberflutung",
+      description: "Nach dem bewährten Schweizer Vergleichsprinzip filtern wir nach echtem Vorhaben, Budget, Zeitfenster und verifizierten Merkmalen.",
     },
     {
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
-      title: "Plattform in Vorbereitung",
-      description: "Betreiberangaben, Prüfprozesse und verbindliche Bedingungen müssen vor dem Produktivstart vorliegen.",
-      color: "bg-orange-500"
-    }
+      icon: Award,
+      step: "06 · Self-Service für Anbieterinnen",
+      title: "Direktprofile ohne Zwischenhändler",
+      description: "Verifizierte Anbieterinnen verwalten ihre Verfügbarkeit, Konditionen und qualifizierten Anfragen direkt im eigenen Provider-Dashboard.",
+    },
   ];
 
   return (
-    <section id="about" className="py-20">
+    <section id="about" className="py-20 bg-gradient-to-b from-[#09131E] to-[#0D1B2A]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Was diese Vorschau zeigt
+          <div className="text-center mb-14">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D5A021]">
+              Search → Compare → Match → Enquire
+            </span>
+            <h2 className="text-3xl md:text-5xl font-black text-white mt-2 mb-4">
+              Warum iWantSexNow.ch mehr kann als klassische Portale
             </h2>
-            <p className="text-xl text-gray-300">
-              Ein Konzept mit Beispieldaten – noch kein aktiver Vermittlungsbetrieb
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              Wir kombinieren den Marktüberblick eines Portal-Aggregators mit der Zuverlässigkeit einer Schweizer Vergleichs- und Buchungsplattform.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, idx) => (
-              <Card key={idx} className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={feature.image} 
-                    alt={feature.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className={`absolute inset-0 ${feature.color} opacity-30 group-hover:opacity-20 transition-opacity duration-300`} />
-                </div>
-                <div className="p-6 relative">
-                  <div className={`absolute top-0 left-0 w-full h-1 ${feature.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-yellow-400 transition-colors">{feature.title}</h3>
-                  <p className="text-gray-300 group-hover:text-white transition-colors">{feature.description}</p>
-                </div>
-              </Card>
-            ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pillars.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <Card
+                  key={idx}
+                  className="p-6 bg-white/5 border-white/15 hover:border-[#C69C6D]/60 transition-all duration-300 text-white flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs font-bold text-[#D5A021] uppercase tracking-wider">
+                        {item.step}
+                      </span>
+                      <div className="w-10 h-10 rounded-xl bg-[#C69C6D]/15 border border-[#C69C6D]/40 flex items-center justify-center text-[#D5A021]">
+                        <Icon size={20} />
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </div>
