@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
@@ -6,112 +6,102 @@ import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
 import {
-  Search,
+  Search as SearchIcon,
   ShieldCheck,
-  Globe,
-  CalendarCheck,
   Calculator,
-  SlidersHorizontal,
-  Database,
-  Plus,
-  Send,
-  CheckCircle,
-  TrendingDown,
-  MapPin,
   PhoneCall,
+  Send,
+  CalendarCheck,
+  Globe,
+  Star,
+  Video,
+  HelpCircle,
+  CheckCircle2,
+  Camera,
 } from "lucide-react";
-import {
-  INITIAL_RAW_SWISS_FEED,
-  deduplicateScrapedOffers,
-  RawScrapedOffer,
-} from "@/lib/marketplace/indexer";
+import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 
-const EXTRA_LIST = ["GFE", "Dinner Dates", "Outcall", "Massage", "Overnight"];
+const EXTRA_TOGGLES = ["GFE", "Dinner Dates", "Outcall", "Massage"];
 
-export default function SwissMetaSearchPage() {
-  const { toast } = useToast();
-  const [rawFeed, setRawFeed] = useState<RawScrapedOffer[]>(INITIAL_RAW_SWISS_FEED);
+export default function SearchPage() {
   const [query, setQuery] = useState("");
-  const [selectedCanton, setSelectedCanton] = useState("ALL");
-  const [modeFilter, setModeFilter] = useState<"all" | "direct" | "indexed">("all");
+  const [canton, setCanton] = useState("ALL");
+  const [modeFilter, setModeFilter] = useState<"ALL" | "direct" | "indexed">("ALL");
   const [duration, setDuration] = useState<30 | 60 | 120>(60);
-  const [selectedExtras, setSelectedExtras] = useState<string[]>(["GFE"]);
-  const [showImporter, setShowImporter] = useState(false);
+  const [wantedExtras, setWantedExtras] = useState<string[]>(["GFE"]);
 
-  // Live Scraper / Firecrawl Test Input
-  const [newPortal, setNewPortal] = useState("xdate.ch");
-  const [newName, setNewName] = useState("Elena");
-  const [newPhone, setNewPhone] = useState("078 901 33 21");
-  const [newCity, setNewCity] = useState("Cham / Zug");
-  const [newCanton, setNewCanton] = useState("ZG");
-  const [newPrice, setNewPrice] = useState(490);
+  const deduplicatedProfiles = useMemo(
+    () => deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED),
+    []
+  );
 
-  const deduplicatedProfiles = useMemo(() => deduplicateScrapedOffers(rawFeed), [rawFeed]);
-  const duplicatesRemoved = rawFeed.length - deduplicatedProfiles.length;
-
-  const calculateTotal = (p: typeof deduplicatedProfiles[0]) => {
-    const mult = duration === 30 ? 0.65 : duration === 120 ? 1.8 : 1;
-    const base = Math.round((p.bestBaseRate60Chf * mult) / 10) * 10;
-    let extraSum = 0;
-    selectedExtras.forEach((ext) => {
-      if (!p.includedServices.includes(ext)) {
-        extraSum += p.extraPricesChf[ext] ?? 70;
-      }
-    });
-    const total = base + extraSum;
-    const portalTotal = Math.round((p.portalAverage60Chf * mult) / 10) * 10 + extraSum + 30;
-    return { base, extraSum, total, portalTotal, savings: Math.max(0, portalTotal - total) };
+  const toggleExtra = (srv: string) => {
+    setWantedExtras((prev) =>
+      prev.includes(srv) ? prev.filter((x) => x !== srv) : [...prev, srv]
+    );
   };
 
-  const filteredProfiles = deduplicatedProfiles
-    .filter((p) => {
-      if (selectedCanton !== "ALL" && p.canton !== selectedCanton) return false;
-      if (modeFilter !== "all" && p.bookingMode !== modeFilter) return false;
-      if (query) {
-        const q = query.toLowerCase();
-        const hay = `${p.displayName} ${p.primaryCity} ${p.canton} ${p.subareas.join(" ")} ${p.normalizedPhoneMask}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    })
-    .sort((a, b) => calculateTotal(a).total - calculateTotal(b).total);
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const tokens = q.split(/\s+/).filter(Boolean);
+    const digits = q.replace(/\D/g, "");
 
-  const handleSimulateFirecrawlImport = (e: React.FormEvent) => {
-    e.preventDefault();
-    const incomingOffer: RawScrapedOffer = {
-      sourcePortal: newPortal,
-      rawName: newName,
-      age: 24,
-      rawPhone: newPhone,
-      city: newCity,
-      canton: newCanton,
-      subareas: [newCity],
-      advertisedBaseChf: Number(newPrice),
-      includedTags: ["GFE"],
-      incall: true,
-      outcall: true,
-      scrapedAtIso: "Gerade via Firecrawl importiert",
-      directAuthorized: false,
+    return deduplicatedProfiles.filter((p) => {
+      if (canton !== "ALL" && p.canton !== canton) return false;
+      if (modeFilter !== "ALL" && p.bookingMode !== modeFilter) return false;
+      if (!q) return true;
+
+      if (digits.length >= 3 && p.rawPhoneFull.replace(/\D/g, "").includes(digits)) return true;
+
+      const searchableText = [
+        p.displayName,
+        p.primaryCity,
+        p.canton,
+        ...p.subareas,
+        ...p.includedServices,
+        p.bio,
+        p.height,
+        p.bust,
+        ...p.languages,
+        ...p.sources.map((s) => s.portal),
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return tokens.every((tok) => searchableText.includes(tok));
+    });
+  }, [deduplicatedProfiles, query, canton, modeFilter]);
+
+  const computeTotalChf = (profile: typeof deduplicatedProfiles[0]) => {
+    const base =
+      duration === 30 ? profile.rate30Chf : duration === 120 ? profile.rate120Chf : profile.bestBaseRate60Chf;
+    let extrasSum = 0;
+    const paidExtras: string[] = [];
+    const freeExtras: string[] = [];
+
+    for (const srv of wantedExtras) {
+      if (profile.includedServices.includes(srv)) {
+        freeExtras.push(srv);
+      } else {
+        extrasSum += profile.extraPricesChf[srv] ?? 70;
+        paidExtras.push(srv);
+      }
+    }
+    return {
+      base,
+      extrasSum,
+      total: base + extrasSum,
+      freeExtras,
+      paidExtras,
     };
-    setRawFeed((prev) => [incomingOffer, ...prev]);
-    toast({
-      title: `Inserat von ${newPortal} importiert & dedupliziert!`,
-      description: `Telefonnummer (${newPhone}) wurde abgeglichen: Kein doppeltes Profil erzeugt, Preisvergleich aktualisiert.`,
-      duration: 4500,
-    });
-  };
-
-  const toggleExtra = (ext: string) => {
-    setSelectedExtras((prev) => (prev.includes(ext) ? prev.filter((x) => x !== ext) : [...prev, ext]));
   };
 
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="Schweizer Escort-Suchmaschine & Dubletten-Index | iWantSexNow.ch"
-        description="Durchsuche alle Schweizer Portale und Direktprofile in ZÃ¼rich, Zug, Cham und der ganzen Schweiz â€“ automatisch um Dubletten bereinigt und nach echtem Endpreis sortiert."
+        title="Schweizer Escort-Suchmaschine (Google-Style Meta-Index) | iWantSexNow.ch"
+        description="Durchsuche alle Schweizer Escort-Portale in Echtzeit nach Name, Stadt (Zürich, Zug, Cham), +41 Rufnummer, Services und echtem Komplettpreis."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -123,131 +113,40 @@ export default function SwissMetaSearchPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-10 max-w-7xl space-y-8">
-        {/* Top Meta-Index Header + Live Deduplication Stats */}
-        <div className="bg-[#09131E] border border-[#C69C6D]/40 rounded-2xl p-6 shadow-2xl space-y-6">
+      <main className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
+        {/* Search Engine Console */}
+        <div className="bg-[#09131E] border-2 border-[#C69C6D]/50 rounded-2xl p-6 shadow-2xl space-y-5">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-                  <Database size={12} className="mr-1.5 inline" />
-                  Live Cross-Portal Index: {rawFeed.length} Roh-Inserate â†’ {deduplicatedProfiles.length} echte Profile ({duplicatesRemoved} Dubletten eliminiert)
+                <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                  ✓ {INITIAL_RAW_SWISS_FEED.length} Roh-Inserate gescannt → {deduplicatedProfiles.length} echte Profile
                 </Badge>
+                <Link href="/how-it-works" className="text-xs text-[#D5A021] font-bold hover:underline flex items-center gap-1">
+                  <HelpCircle size={13} /> Wie funktioniert der Preis- & Dubletten-Abgleich?
+                </Link>
               </div>
               <h1 className="text-2xl md:text-4xl font-serif font-black">
-                Schweizer Meta-Suche & Endpreis-Sortierung
+                Schweizer Escort-Suchmaschine & Rufnummern-Index
               </h1>
-              <p className="text-sm text-gray-300 mt-1">
-                Eine Suche Ã¼ber alle Schweizer Portale und autorisierten Direktprofile â€“ automatisch nach dem gÃ¼nstigsten echten Komplettpreis sortiert.
-              </p>
             </div>
 
-            <Button
-              variant="outline"
-              onClick={() => setShowImporter(!showImporter)}
-              className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-bold self-start"
-            >
-              <Plus size={16} className="mr-1.5" />
-              {showImporter ? "Firecrawl-Importer schlieÃŸen" : "Firecrawl / Portal-Import testen"}
-            </Button>
-          </div>
-
-          {/* Interactive Firecrawl / Scraper Ingestion Simulator */}
-          {showImporter && (
-            <div className="p-5 rounded-xl bg-black/50 border border-emerald-500/40 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold text-emerald-400 uppercase tracking-wider">
-                  Firecrawl / Scraper Live-Deduplizierung testen (Telefonnummern-Cluster)
-                </h2>
-                <span className="text-xs text-gray-400">API: POST /api/indexer/import</span>
-              </div>
-              <p className="text-xs text-gray-300">
-                Simuliere, wie unser Scraper ein weiteres Inserat auf einem Drittportal findet. Hat die Anbieterin dieselbe Telefonnummer (egal in welcher Schreibweise, z. B. <code>078 901 33 21</code> fÃ¼r Elena in Zug/Cham), wird kein Duplikat erzeugt, sondern das bestehende Profil um die Quelle ergÃ¤nzt:
-              </p>
-              <form onSubmit={handleSimulateFirecrawlImport} className="grid sm:grid-cols-2 lg:grid-cols-6 gap-3">
-                <input
-                  type="text"
-                  value={newPortal}
-                  onChange={(e) => setNewPortal(e.target.value)}
-                  placeholder="Quell-Portal (z.B. xdate.ch)"
-                  className="rounded-lg bg-black/60 border border-white/20 px-3 py-2 text-xs text-white"
-                />
-                <input
-                  type="text"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder="Name im Inserat"
-                  className="rounded-lg bg-black/60 border border-white/20 px-3 py-2 text-xs text-white"
-                />
-                <input
-                  type="text"
-                  value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
-                  placeholder="Telefon (+41 / 078...)"
-                  className="rounded-lg bg-black/60 border border-white/20 px-3 py-2 text-xs text-white"
-                />
-                <input
-                  type="text"
-                  value={newCity}
-                  onChange={(e) => setNewCity(e.target.value)}
-                  placeholder="Ort (z.B. Cham / Zug)"
-                  className="rounded-lg bg-black/60 border border-white/20 px-3 py-2 text-xs text-white"
-                />
-                <input
-                  type="number"
-                  value={newPrice}
-                  onChange={(e) => setNewPrice(Number(e.target.value))}
-                  placeholder="Preis CHF"
-                  className="rounded-lg bg-black/60 border border-white/20 px-3 py-2 text-xs text-white"
-                />
-                <Button type="submit" className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs">
-                  Inserat einspeisen
-                </Button>
-              </form>
-            </div>
-          )}
-
-          {/* Search & Filter Controls */}
-          <div className="grid md:grid-cols-12 gap-3">
-            <div className="md:col-span-5 relative">
-              <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D5A021]" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Name, Ort (ZÃ¼rich, Zug, Cham), Telefonnummer..."
-                className="w-full rounded-xl bg-black/50 border border-white/20 pl-10 pr-4 py-3 text-sm text-white"
-              />
-            </div>
-
-            <div className="md:col-span-3 flex gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
-              {(["ALL", "ZH", "ZG", "BS"] as const).map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setSelectedCanton(c)}
-                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
-                    selectedCanton === c ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-300 hover:text-white"
-                  }`}
-                >
-                  {c === "ALL" ? "Alle" : c}
-                </button>
-              ))}
-            </div>
-
-            <div className="md:col-span-4 flex gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
-              {([
-                { id: "all", label: "Alle Profile" },
-                { id: "direct", label: "Direkt Buchbar" },
-                { id: "indexed", label: "Markt-Index" },
-              ] as const).map((m) => (
+            <div className="flex bg-black/50 p-1 rounded-xl border border-white/15 shrink-0">
+              {(
+                [
+                  { id: "ALL", label: "Alle Treffer" },
+                  { id: "direct", label: "Nur Direkt Buchbar" },
+                  { id: "indexed", label: "Markt-Index" },
+                ] as const
+              ).map((m) => (
                 <button
                   key={m.id}
-                  type="button"
                   onClick={() => setModeFilter(m.id)}
-                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
-                    modeFilter === m.id ? "bg-white/15 text-white border border-[#C69C6D]/40" : "text-gray-400"
-                  }`}
+                  className={
+                    modeFilter === m.id
+                      ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-[#C69C6D] text-[#0D1B2A]"
+                      : "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-300 hover:text-white"
+                  }
                 >
                   {m.label}
                 </button>
@@ -255,141 +154,236 @@ export default function SwissMetaSearchPage() {
             </div>
           </div>
 
-          {/* Total Cost Calculator Bar inside Search */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold text-[#D5A021] uppercase mr-1 flex items-center gap-1">
-                <Calculator size={13} /> Endpreis-Optionen:
-              </span>
-              {EXTRA_LIST.map((ext) => {
-                const active = selectedExtras.includes(ext);
-                return (
-                  <button
-                    key={ext}
-                    type="button"
-                    onClick={() => toggleExtra(ext)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                      active
-                        ? "bg-emerald-500/20 border-emerald-400 text-white"
-                        : "bg-black/30 border-white/10 text-gray-400"
-                    }`}
-                  >
-                    {active ? "âœ“ " : "+ "}{ext}
-                  </button>
-                );
-              })}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 pt-2 border-t border-white/10">
+            <div className="md:col-span-6 relative">
+              <SearchIcon size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D5A021]" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Name, Stadt (Zug, Cham, Zürich), Service (GFE, Massage) oder +41 Rufnummer..."
+                className="w-full rounded-xl bg-black/50 border border-white/25 pl-10 pr-4 py-3 text-sm text-white focus:border-[#D5A021] focus:outline-none"
+              />
             </div>
 
-            <div className="flex bg-black/50 p-1 rounded-xl border border-white/15">
+            <div className="md:col-span-3">
+              <select
+                value={canton}
+                onChange={(e) => setCanton(e.target.value)}
+                className="w-full rounded-xl bg-black/50 border border-white/25 px-3 py-3 text-sm text-white"
+              >
+                <option value="ALL">Alle Schweizer Kantone ({deduplicatedProfiles.length})</option>
+                <option value="ZH">Zürich (ZH)</option>
+                <option value="ZG">Zug & Cham (ZG)</option>
+                <option value="BS">Basel (BS)</option>
+                <option value="BE">Bern (BE)</option>
+                <option value="LU">Luzern (LU)</option>
+                <option value="SG">St. Gallen (SG)</option>
+                <option value="AG">Aargau (AG)</option>
+                <option value="GE">Genève (GE)</option>
+                <option value="VD">Lausanne / Vaud (VD)</option>
+                <option value="TI">Lugano / Ticino (TI)</option>
+              </select>
+            </div>
+
+            <div className="md:col-span-3 flex bg-black/50 p-1 rounded-xl border border-white/20">
               {([30, 60, 120] as const).map((mins) => (
                 <button
                   key={mins}
-                  type="button"
                   onClick={() => setDuration(mins)}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                    duration === mins ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-300"
-                  }`}
+                  className={
+                    duration === mins
+                      ? "flex-1 py-2 rounded-lg text-xs font-black bg-[#C69C6D] text-[#0D1B2A]"
+                      : "flex-1 py-2 rounded-lg text-xs font-bold text-gray-300"
+                  }
                 >
                   {mins === 120 ? "2 Std." : `${mins} Min.`}
                 </button>
               ))}
             </div>
           </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2">
+            <span className="text-xs text-[#D5A021] font-bold flex items-center gap-1 mr-2">
+              <Calculator size={14} /> Gewünschte Leistungen im Endpreis einrechnen:
+            </span>
+            {EXTRA_TOGGLES.map((srv) => {
+              const active = wantedExtras.includes(srv);
+              return (
+                <button
+                  key={srv}
+                  onClick={() => toggleExtra(srv)}
+                  className={
+                    active
+                      ? "px-3 py-1.5 rounded-xl text-xs font-bold border bg-emerald-500/20 border-emerald-400 text-white"
+                      : "px-3 py-1.5 rounded-xl text-xs font-bold border bg-white/5 border-white/15 text-gray-300"
+                  }
+                >
+                  {active ? "✓ " : "+ "}{srv}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Deduplicated Search Results */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {filteredProfiles.map((p) => {
-            const calc = calculateTotal(p);
+        {/* Rich Search Engine Result Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {results.map((p) => {
+            const calc = computeTotalChf(p);
             const isDirect = p.bookingMode === "direct";
             return (
               <Card
                 key={p.dedupClusterId}
-                className="bg-[#09131E] border border-[#C69C6D]/40 rounded-2xl p-5 text-white flex flex-col justify-between shadow-xl"
+                className="bg-[#09131E] border border-[#C69C6D]/45 hover:border-[#D5A021] rounded-2xl p-5 text-white flex flex-col justify-between shadow-xl transition-all"
               >
-                <div>
+                <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="relative w-full sm:w-40 h-52 sm:h-44 rounded-xl overflow-hidden shrink-0 border border-white/15">
-                      <img src={p.thumbnail} alt={p.displayName} className="w-full h-full object-cover" />
+                    <Link
+                      href={`/profile/${encodeURIComponent(p.displayName)}`}
+                      className="relative w-full sm:w-44 h-60 sm:h-52 rounded-xl overflow-hidden shrink-0 border border-white/15 block group"
+                    >
+                      <img src={p.thumbnail} alt={p.displayName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div
-                        className={`absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 ${
-                          isDirect ? "bg-emerald-600 text-white" : "bg-sky-600 text-white"
-                        }`}
+                        className={
+                          isDirect
+                            ? "absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 bg-emerald-600 text-white"
+                            : "absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 bg-sky-700 text-white"
+                        }
                       >
-                        {isDirect ? <CalendarCheck size={11} /> : <Globe size={11} />}
-                        {isDirect ? "Direkt Buchbar" : "Markt-Index"}
+                        {isDirect ? <CalendarCheck size={12} /> : <Globe size={12} />}
+                        {isDirect ? "Direkt Buchbar" : "Schweizer Index"}
                       </div>
-                      <div className="absolute bottom-2 left-2 right-2 bg-black/85 text-amber-300 text-[10px] font-bold px-2 py-1 rounded text-center">
-                        {p.sourcesCount} Inserate â†’ 1 Cluster-ID
+                      <div className="absolute top-2.5 right-2.5 bg-black/85 border border-[#C69C6D] text-[#D5A021] text-[11px] font-black px-2 py-0.5 rounded-md flex items-center gap-1">
+                        <Star size={11} className="fill-[#D5A021]" /> {p.ratingScore.toFixed(1)}
                       </div>
-                    </div>
+                      <div className="absolute bottom-2 left-2 right-2 bg-black/85 rounded-lg px-2 py-1 text-[11px] text-amber-300 text-center font-mono flex items-center justify-center gap-1.5">
+                        <Camera size={11} /> {p.gallery.length} Foto(s) · {p.sourcesCount} Portal(e)
+                      </div>
+                    </Link>
 
-                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                    <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <div className="flex items-start justify-between gap-2">
-                          <h2 className="text-xl font-serif font-black">
-                            {p.displayName}, {p.age}
-                          </h2>
-                          <span className="text-[11px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300 font-mono">
-                            <PhoneCall size={10} className="inline mr-1 text-[#D5A021]" />
+                        <div className="flex items-center justify-between gap-2">
+                          <Link href={`/profile/${encodeURIComponent(p.displayName)}`} className="hover:text-[#D5A021]">
+                            <h2 className="text-2xl font-serif font-black">
+                              {p.displayName}, {p.age}
+                            </h2>
+                          </Link>
+                          <span className="text-xs text-gray-300 font-mono bg-white/5 px-2 py-1 rounded border border-white/10">
+                            <PhoneCall size={11} className="inline mr-1 text-[#D5A021]" />
                             {p.normalizedPhoneMask}
                           </span>
                         </div>
+
                         <p className="text-xs text-[#D5A021] font-semibold mt-1">
-                          ðŸ“ {p.subareas.join(" Â· ")} ({p.canton})
+                          📍 {p.subareas.join(" · ")} ({p.canton})
                         </p>
-                        <p className="text-[11px] text-emerald-300 mt-1">{p.freshnessLabel}</p>
+
+                        {/* Body Specs & Languages Pill Bar */}
+                        <div className="flex flex-wrap gap-1.5 mt-2 text-[11px] text-gray-300">
+                          <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.height}</span>
+                          <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.bust}</span>
+                          <span className="bg-black/40 px-2 py-0.5 rounded border border-white/10">{p.languages.slice(0, 2).join(" / ")}</span>
+                          <span className="bg-emerald-950/60 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">
+                            {p.reviewCount} Bewertungen
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-gray-400 mt-2 line-clamp-2">
+                          {p.bio}
+                        </p>
                       </div>
 
-                      <div className="mt-3 bg-white/5 border border-[#C69C6D]/30 rounded-xl p-3 flex items-center justify-between">
+                      <div className="mt-3 p-3 rounded-xl bg-white/5 border border-[#C69C6D]/35 flex items-center justify-between">
                         <div>
-                          <div className="text-[10px] text-gray-400">
-                            Echter Komplettpreis ({duration} Min.)
+                          <div className="text-[11px] text-gray-300">
+                            Garantierter Endpreis ({duration} Min. inkl. Extras)
                           </div>
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-2xl font-black text-[#D5A021]">CHF {calc.total}</span>
-                            <span className="text-xs text-gray-400 line-through">Ã˜ CHF {calc.portalTotal}</span>
+                          <div className="text-2xl font-black text-[#D5A021]">
+                            CHF {calc.total}
                           </div>
                         </div>
-                        <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs">
-                          Sparvorteil CHF {calc.savings}
-                        </Badge>
+                        <div className="text-right text-xs">
+                          <div className="text-gray-400 line-through">
+                            Andere Portale: CHF {p.portalAverage60Chf + calc.extrasSum}
+                          </div>
+                          <div className="text-emerald-400 font-bold">
+                            Spare CHF {Math.max(40, p.portalAverage60Chf - p.bestBaseRate60Chf)}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Sources deduplicated into this profile */}
-                  <div className="mt-4 bg-black/40 rounded-xl p-3 border border-white/10 text-xs space-y-1.5">
-                    <div className="text-[11px] font-bold text-gray-400 uppercase">
-                      Gefundene & zusammengefÃ¼hrte Quellen fÃ¼r diese Telefonnummer:
+                  {/* Included Services Badges */}
+                  <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+                    <span className="text-emerald-400 font-bold mr-1">✓ Inklusive:</span>
+                    {p.includedServices.slice(0, 6).map((srv) => (
+                      <span key={srv} className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-200">
+                        {srv}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Cross-Portal Deduplication Breakdown */}
+                  <div className="bg-black/40 rounded-xl p-3 border border-white/10 text-xs space-y-1">
+                    <div className="text-[#D5A021] font-bold">
+                      Quellen- & Dubletten-Abgleich für dieses Profil:
                     </div>
-                    {p.sources.map((s, idx) => (
-                      <div key={idx} className="flex items-center justify-between">
-                        <span className={s.isDirect ? "text-emerald-400 font-bold" : "text-gray-300"}>
-                          {s.portal} <span className="text-gray-500">({s.lastSeenIso})</span>
+                    {p.sources.map((src, i) => (
+                      <div key={i} className="flex justify-between text-gray-300">
+                        <span>
+                          {src.portal} ({src.lastSeenIso})
                         </span>
-                        <span className={s.isDirect ? "text-emerald-400 font-black" : "text-gray-400 line-through"}>
-                          CHF {s.priceChf}/Std.
+                        <span className={src.isDirect ? "text-emerald-400 font-bold" : "line-through text-gray-500"}>
+                          CHF {src.priceChf} / 60m
                         </span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                  <Link href="/create-post" className="text-[11px] text-gray-400 hover:text-[#D5A021] underline">
-                    Sind Sie {p.displayName}? Profil Ã¼bernehmen
-                  </Link>
+                <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
                   <Button
                     size="sm"
-                    className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs"
+                    variant="outline"
+                    className="border-rose-500/50 text-rose-300 hover:bg-rose-950/50 text-xs"
                     asChild
                   >
-                    <Link href={`/profile/${encodeURIComponent(p.displayName)}`}>
-                      <Send size={12} className="mr-1.5" />
-                      {isDirect ? "Direkt zum Fixpreis buchen" : "Termin anfragen"}
+                    <Link href={`/live-cam?provider=${encodeURIComponent(p.displayName)}`}>
+                      <Video size={13} className="mr-1.5 text-rose-400" />
+                      3-Min. Live-Cam Check
                     </Link>
                   </Button>
+
+                  <div className="flex gap-2 ml-auto">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-white/20 text-white hover:bg-white/10 text-xs"
+                      asChild
+                    >
+                      <Link href={`/profile/${encodeURIComponent(p.displayName)}`}>
+                        Alle Fotos & Berichte
+                      </Link>
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs"
+                      asChild
+                    >
+                      <Link
+                        href={`/booking-confirmation?provider=${encodeURIComponent(
+                          p.displayName
+                        )}&city=${encodeURIComponent(p.primaryCity)}&duration=${duration}&total=${
+                          calc.total
+                        }&extras=${encodeURIComponent(wantedExtras.join(", "))}`}
+                      >
+                        <Send size={13} className="mr-1.5" />
+                        Zum Fixpreis buchen
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </Card>
             );
