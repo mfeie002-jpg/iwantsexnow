@@ -1,885 +1,136 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link";
+import SEO from "@/components/SEO";
+import { Navigation } from "@/components/Navigation";
+import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
-import SEO from "@/components/SEO";
-import { MobileNav } from "@/components/MobileNav";
-import { Heart, MapPin, Star, Shield, CheckCircle, Phone, MessageCircle, Search, X, Clock, Award, Sparkles, TrendingUp, Users, Play, Video, Eye, Calendar, Zap, Crown, ThumbsUp, Camera } from "lucide-react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { LiveChatWidget } from "@/components/LiveChatWidget";
+import { ShieldCheck, Clock, Send, ArrowLeft } from "lucide-react";
 
-interface Escort {
-  id: number;
-  name: string;
-  age: number;
-  district: string;
-  location: string;
-  image: string;
-  verified: boolean;
-  premium: boolean;
-  available: boolean;
-  rating: number;
-  reviews: number;
-  rate: number;
-  services: string[];
-  languages: string[];
-  description: string;
-  postedTime: string;
-  hasVideo: boolean;
-  hasVirtualTour: boolean;
-  verifiedPhotos: boolean;
-  idVerified: boolean;
-  safeDate: boolean;
-  bodyType: string;
-  height: string;
-  responseTime: string;
-  bookingsToday: number;
-}
+const REGIONAL_PROVIDERS = [
+  {
+    id: 2,
+    name: "Lausanne Direct VIP",
+    age: 25,
+    zone: "Lausanne, Ouchy & Montreux",
+    subareas: ["Lausanne Flon", "Ouchy", "Montreux", "Vevey"],
+    rate60: 420,
+    portalAvg: 500,
+    freshness: "Vor 14 Min. bestätigt · Heute direkt buchbar",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",
+    included: ["GFE", "Dinner Date", "Outcall Lausanne"],
+  },
+  {
+    id: 1,
+    name: "Sophia",
+    age: 26,
+    zone: "Lausanne & Schweizweiter VIP Outcall",
+    subareas: ["Lausanne Flon", "Ouchy", "Montreux", "Vevey"],
+    rate60: 450,
+    portalAvg: 520,
+    freshness: "Vor 12 Min. bestätigt · Direkt buchbar",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
+    included: ["GFE", "Dinner Date", "Hotel-Outcall"],
+  },
+];
 
-export default function EscortLausanne() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("all");
-  const [selectedService, setSelectedService] = useState("all");
-  const [verifiedOnly, setVerifiedOnly] = useState(false);
-  const [availableNow, setAvailableNow] = useState(false);
-  const [priceRange, setPriceRange] = useState([400, 800]);
-  const [minRating, setMinRating] = useState(0);
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [comparison, setComparison] = useState<number[]>([]);
-  const [scrolled, setScrolled] = useState(false);
-  const [selectedEscort, setSelectedEscort] = useState<Escort | null>(null);
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [liveViewers, setLiveViewers] = useState(156);
+export default function RegionalEscortPage() {
+  const [selectedSubarea, setSelectedSubarea] = useState("Alle");
+  const subareas = ["Alle", "Lausanne Flon", "Ouchy", "Montreux", "Vevey"];
 
-  const lausanneEscorts: Escort[] = [
-    {
-      id: 15,
-      name: "Céline",
-      age: 25,
-      district: "Lausanne Centre",
-      location: "Place St-François, Lausanne",
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      available: true,
-      rating: 4.9,
-      reviews: 156,
-      rate: 580,
-      services: ["GFE", "Dinner Dates", "Lake Cruises"],
-      languages: ["French", "English", "German"],
-      description: "Elegant companion in Lausanne's shopping heart. Perfect for Lake Geneva experiences and fine dining.",
-      postedTime: "Demo-Aktivität",
-      hasVideo: true,
-      hasVirtualTour: true,
-      verifiedPhotos: true,
-      idVerified: true,
-      safeDate: true,
-      bodyType: "Slim",
-      height: "168 cm",
-      responseTime: "< 5 min",
-      bookingsToday: 3
-    },
-    {
-      id: 16,
-      name: "Amelie",
-      age: 24,
-      district: "Ouchy",
-      location: "Ouchy Waterfront, Lausanne",
-      image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      available: true,
-      rating: 5.0,
-      reviews: 187,
-      rate: 650,
-      services: ["PSE", "Couples", "Overnight"],
-      languages: ["French", "Italian", "English"],
-      description: "Lakeside companion in picturesque Ouchy. Specializing in romantic Lake Geneva encounters.",
-      postedTime: "Demo-Aktivität",
-      hasVideo: true,
-      hasVirtualTour: true,
-      verifiedPhotos: true,
-      idVerified: true,
-      safeDate: true,
-      bodyType: "Athletic",
-      height: "170 cm",
-      responseTime: "< 10 min",
-      bookingsToday: 5
-    },
-    {
-      id: 17,
-      name: "Juliette",
-      age: 27,
-      district: "Flon",
-      location: "Flon District, Lausanne",
-      image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=600&fit=crop",
-      verified: true,
-      premium: false,
-      available: true,
-      rating: 4.7,
-      reviews: 98,
-      rate: 480,
-      services: ["GFE", "Massage", "Tantra"],
-      languages: ["French", "English"],
-      description: "Sensual companion in trendy Flon district. Offering relaxing tantric experiences.",
-      postedTime: "Available tonight",
-      hasVideo: false,
-      hasVirtualTour: false,
-      verifiedPhotos: true,
-      idVerified: true,
-      safeDate: false,
-      bodyType: "Average",
-      height: "166 cm",
-      responseTime: "< 30 min",
-      bookingsToday: 1
-    },
-    {
-      id: 18,
-      name: "Gabrielle",
-      age: 26,
-      district: "Lausanne Centre",
-      location: "Rue de Bourg, Lausanne",
-      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      available: true,
-      rating: 4.8,
-      reviews: 134,
-      rate: 600,
-      services: ["GFE", "Travel", "Shopping"],
-      languages: ["French", "English", "Spanish"],
-      description: "Sophisticated escort perfect for Lausanne's luxury shopping and cultural venues.",
-      postedTime: "Demo-Aktivität",
-      hasVideo: true,
-      hasVirtualTour: true,
-      verifiedPhotos: true,
-      idVerified: true,
-      safeDate: true,
-      bodyType: "Slim",
-      height: "172 cm",
-      responseTime: "< 5 min",
-      bookingsToday: 4
-    },
-    {
-      id: 19,
-      name: "Olivia",
-      age: 23,
-      district: "Renens",
-      location: "Renens, Lausanne",
-      image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=600&fit=crop",
-      verified: true,
-      premium: true,
-      available: true,
-      rating: 4.9,
-      reviews: 112,
-      rate: 520,
-      services: ["GFE", "Events", "Overnight"],
-      languages: ["French", "English"],
-      description: "Charming companion near EPFL. Perfect for university events and intellectual conversations.",
-      postedTime: "Demo-Aktivität",
-      hasVideo: true,
-      hasVirtualTour: false,
-      verifiedPhotos: true,
-      idVerified: true,
-      safeDate: true,
-      bodyType: "Athletic",
-      height: "169 cm",
-      responseTime: "< 5 min",
-      bookingsToday: 2
-    }
-  ];
-
-  const filteredEscorts = lausanneEscorts.filter(escort => {
-    if (searchQuery && !escort.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !escort.location.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    if (selectedDistrict !== "all" && escort.district !== selectedDistrict) return false;
-    if (selectedService !== "all" && !escort.services.some(s => s.toLowerCase().includes(selectedService.toLowerCase()))) return false;
-    if (verifiedOnly && !escort.verified) return false;
-    if (availableNow && !escort.available) return false;
-    if (escort.rate < priceRange[0] || escort.rate > priceRange[1]) return false;
-    if (escort.rating < minRating) return false;
-    return true;
-  });
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => 
-      prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id]
-    );
-  };
-
-  const toggleComparison = (id: number) => {
-    if (comparison.includes(id)) {
-      setComparison(prev => prev.filter(c => c !== id));
-    } else if (comparison.length < 3) {
-      setComparison(prev => [...prev, id]);
-    }
-  };
-
-  const openBookingModal = (escort: Escort) => {
-    setSelectedEscort(escort);
-    setBookingModalOpen(true);
-  };
-
-  const openVideoModal = (escort: Escort) => {
-    setSelectedEscort(escort);
-    setVideoModalOpen(true);
-  };
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLiveViewers(prev => Math.max(130, prev + Math.floor(Math.random() * 8) - 4));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const filtered = REGIONAL_PROVIDERS.filter(
+    (p) => selectedSubarea === "Alle" || p.subareas.some((s) => s.toLowerCase().includes(selectedSubarea.toLowerCase()))
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900">
-      <SEO 
-        title="Escort Lausanne - Stadtseite mit fiktiven Beispielprofilen"
-        description="Stadt-Vorschau mit fiktiven Profilen, Beispielpreisen und Stockfotos. Keine geprüften Anbieter oder echten Buchungen."
+    <div className="min-h-screen bg-[#0B1623] text-white">
+      <SEO
+        title="Escort Lausanne – Verifizierte Direktprofile & Endpreis-Index | iWantSexNow.ch"
+        description="Geprüfte Direktprofile und Dubletten-bereinigter Markt-Index für Lausanne, Ouchy & Montreux."
       />
-
-      <header className={`border-b border-white/10 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/90 shadow-2xl' : 'bg-black/60'
-      }`}>
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="text-2xl font-bold tracking-tight transition-all group-hover:scale-105">
-                <span className="text-white">iWant</span>
-                <span className="text-[#D5A021]">Sex</span>
-                <span className="text-white">Now</span>
-                <span className="text-gray-400 text-lg">.ch</span>
-              </div>
-            </Link>
-            
-            <div className="hidden md:flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2 text-white">
-                <Eye size={16} className="text-blue-400" />
-                <span className="font-semibold">{liveViewers} viewing</span>
-              </div>
-              <div className="flex items-center gap-2 text-white">
-                <Zap size={16} className="text-green-500 animate-pulse" />
-                <span className="font-semibold">{lausanneEscorts.filter(e => e.available).length} Demo-Status</span>
-              </div>
-            </div>
-            
-            <nav className="hidden md:flex items-center gap-4">
-              <Button variant="ghost" className="text-white hover:text-amber-400" asChild>
-                <Link href="/">Home</Link>
-              </Button>
-              <Button variant="ghost" className="text-white hover:text-amber-400" asChild>
-                <Link href="/members">All Escorts</Link>
-              </Button>
-              <Button variant="ghost" className="text-white hover:text-amber-400" asChild>
-                <Link href="/account-settings">Account</Link>
-              </Button>
-              {comparison.length > 0 && (
-                <Button variant="outline" className="border-amber-500 text-amber-500 hover:bg-amber-500/10" asChild>
-                  <Link href={`/compare-escorts?ids=${comparison.join(',')}`}>
-                    Compare ({comparison.length})
-                  </Link>
-                </Button>
-              )}
-              <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold" asChild>
-                <Link href="/register">
-                  <Phone size={18} className="mr-2" />
-                  Join Free
-                </Link>
-              </Button>
-            </nav>
-
-            <MobileNav />
-          </div>
+      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-serif font-black">
+            <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
+          </Link>
+          <div className="hidden lg:block"><Navigation /></div>
+          <MobileNav />
         </div>
       </header>
 
-      {/* Hero Section - Lausanne Specific */}
-      <section className="relative py-20 overflow-hidden">
-        {/* Background with romantic couple imagery and warm tones */}
-        <div className="absolute inset-0">
-          {/* Romantic couple background - sophisticated and emotional */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80')",
-              filter: "brightness(0.4)"
-            }}
-          />
-          
-          {/* Warm gradient overlay - gold, amber, rose tones */}
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/80 via-rose-900/70 to-slate-900/90" />
-          
-          {/* Soft vignette for depth */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
-          
-          {/* Subtle animated glow */}
-          <div className="absolute inset-0 bg-gradient-to-t from-amber-600/10 via-transparent to-rose-600/10 animate-pulse" 
-               style={{ animationDuration: "4s" }} 
-          />
+      <main className="container mx-auto px-4 py-10 max-w-6xl">
+        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white mb-4">
+          <ArrowLeft size={14} /> Zurück zur Schweizer Gesamtübersicht
+        </Link>
+        <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-3 block w-fit">
+          Regionaler Direktbuchungs- & Markt-Index · Lausanne, Ouchy & Montreux
+        </Badge>
+        <h1 className="text-3xl md:text-5xl font-serif font-black">
+          Verifizierte Escorts & Direktprofile in Lausanne
+        </h1>
+        <p className="text-gray-300 mt-2 max-w-3xl text-sm md:text-base">
+          Alle gelisteten Profile in Lausanne sind um Mehrfach-Inserate bereinigt, verfügen über echte Endpreis-Kalkulation und können direkt ohne Agentur-Gebühren angefragt werden.
+        </p>
+
+        <div className="flex flex-wrap gap-2 my-6">
+          {subareas.map((area) => (
+            <button
+              key={area}
+              onClick={() => setSelectedSubarea(area)}
+              className={px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
+                selectedSubarea === area
+                  ? "bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D]"
+                  : "bg-white/5 text-gray-300 border-white/10 hover:border-white/30"
+              }}
+            >
+              {area}
+            </button>
+          ))}
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto text-center space-y-8">
-            {/* Breadcrumb */}
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center justify-center gap-2 text-sm text-amber-200/80"
-            >
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <span>/</span>
-              <Link href="/#cities" className="hover:text-white transition-colors">Cities</Link>
-              <span>/</span>
-              <span className="text-white font-semibold">Escort Lausanne</span>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-rose-300 to-orange-200">
-                  Escort Lausanne
-                </span>
-              </h1>
-              <p className="text-2xl md:text-3xl text-white font-bold mb-4 drop-shadow-lg">
-                Stadtseite mit fiktiven Beispielprofilen
-              </p>
-              <p className="text-lg text-amber-100 max-w-3xl mx-auto drop-shadow-md">
-                Fiktive Profile, Stockfotos und Beispielpreise zeigen das geplante Layout. Keine echten Personen sind geprüft oder buchbar.
-              </p>
-            </motion.div>
-
-            {/* Quick Stats */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white"
-            >
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-amber-500/30 hover:border-amber-500/60 transition-all">
-                <Users className="mx-auto text-amber-400 mb-2" size={32} />
-                <div className="text-2xl font-black">{lausanneEscorts.length}+</div>
-                <div className="text-xs text-amber-200">Demo-Profile</div>
-              </Card>
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-emerald-500/30 hover:border-emerald-500/60 transition-all">
-                <Shield className="mx-auto text-emerald-400 mb-2" size={32} />
-                <div className="text-2xl font-black">DEMO</div>
-                <div className="text-xs text-emerald-200">Nicht geprüft</div>
-              </Card>
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-yellow-500/30 hover:border-yellow-500/60 transition-all">
-                <Award className="mx-auto text-yellow-400 mb-2" size={32} />
-                <div className="text-2xl font-black">4.9★</div>
-                <div className="text-xs text-yellow-200">Beispielbewertung</div>
-              </Card>
-              <Card className="p-4 bg-white/10 backdrop-blur-sm border-rose-500/30 hover:border-rose-500/60 transition-all">
-                <Video className="mx-auto text-rose-400 mb-2" size={32} />
-                <div className="text-2xl font-black">{lausanneEscorts.filter(e => e.hasVideo).length}</div>
-                <div className="text-xs text-rose-200">Video-Demo</div>
-              </Card>
-            </motion.div>
-
-            {/* Search & Filters */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <Card className="p-6 bg-slate-900/80 backdrop-blur-md border-amber-500/20 shadow-2xl">
-                <div className="grid md:grid-cols-3 gap-4 mb-4">
-                  <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
-                    <SelectTrigger className="bg-slate-800/80 border-slate-700 text-white hover:border-amber-500/50 transition-all">
-                      <SelectValue placeholder="District" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Districts</SelectItem>
-                      <SelectItem value="Lausanne Centre">Lausanne Centre</SelectItem>
-                      <SelectItem value="Ouchy">Ouchy</SelectItem>
-                      <SelectItem value="Flon">Flon</SelectItem>
-                      <SelectItem value="Renens">Renens</SelectItem>
-                      <SelectItem value="Pully">Pully</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={selectedService} onValueChange={setSelectedService}>
-                    <SelectTrigger className="bg-slate-800/80 border-slate-700 text-white hover:border-amber-500/50 transition-all">
-                      <SelectValue placeholder="Service Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Services</SelectItem>
-                      <SelectItem value="gfe">GFE Experience</SelectItem>
-                      <SelectItem value="pse">PSE Experience</SelectItem>
-                      <SelectItem value="massage">Erotic Massage</SelectItem>
-                      <SelectItem value="dinner">Dinner Dates</SelectItem>
-                      <SelectItem value="travel">Travel Companion</SelectItem>
-                      <SelectItem value="lake">Lake Cruises</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400" size={20} />
-                    <Input
-                      placeholder="Search by name or location..."
-                      className="pl-10 bg-slate-800/80 border-slate-700 text-white placeholder:text-slate-400 hover:border-amber-500/50 focus:border-amber-500 transition-all"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    {searchQuery && (
-                      <button 
-                        onClick={() => setSearchQuery("")} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
-                      >
-                        <X size={16} />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-6 text-white">
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
-                      <Checkbox checked={verifiedOnly} onCheckedChange={(checked) => setVerifiedOnly(checked === true)} />
-                      <span className="text-sm font-medium">Demo-Merkmal</span>
-                    </label>
-                    
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-amber-400 transition-colors">
-                      <Checkbox checked={availableNow} onCheckedChange={(checked) => setAvailableNow(checked === true)} />
-                      <span className="text-sm font-medium">Demo-Status</span>
-                    </label>
-
-                    <div className="ml-auto">
-                      <span className="text-amber-400 font-bold text-lg">{filteredEscorts.length} Results</span>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <div className="flex justify-between text-sm text-white mb-2">
-                        <span>Price Range</span>
-                        <span>CHF {priceRange[0]} - {priceRange[1]}</span>
-                      </div>
-                      <Slider
-                        value={priceRange}
-                        onValueChange={setPriceRange}
-                        min={300}
-                        max={1000}
-                        step={50}
-                        className="mt-2"
-                      />
-                    </div>
-
-                    <div>
-                      <div className="text-sm text-white mb-2">Minimum Rating</div>
-                      <div className="flex items-center gap-1 mt-2">
-                        {[1, 2, 3, 4, 5].map((rating) => (
-                          <button
-                            key={rating}
-                            onClick={() => setMinRating(rating === minRating ? 0 : rating)}
-                            className="transition-transform hover:scale-110"
-                          >
-                            <Star
-                              size={24}
-                              className={rating <= minRating ? "text-amber-400 fill-amber-400" : "text-slate-600"}
-                            />
-                          </button>
-                        ))}
-                        {minRating > 0 && (
-                          <button
-                            onClick={() => setMinRating(0)}
-                            className="ml-2 text-xs text-slate-400 hover:text-white transition-colors"
-                          >
-                            Clear
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* VIP Concierge Banner */}
-      <section className="py-8 bg-gradient-to-r from-amber-900/30 via-rose-900/30 to-orange-900/30 border-y border-amber-500/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <Crown className="text-amber-400" size={48} />
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
+          {filtered.map((p, idx) => (
+            <Card key={idx} className="bg-[#09131E] border border-[#C69C6D]/40 overflow-hidden rounded-2xl text-white flex flex-col justify-between">
               <div>
-                <h3 className="text-2xl font-black text-white mb-1">Kontaktfunktion in Vorbereitung</h3>
-                <p className="text-amber-100">Keine Concierge-Betreuung oder echten Buchungsanfragen in dieser Vorschau.</p>
-              </div>
-            </div>
-            <Button size="lg" asChild><Link href="/contact">Kontaktstatus ansehen</Link></Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Escort Listings */}
-      <section className="py-12 bg-gradient-to-b from-gray-900 to-black">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto space-y-6">
-            {filteredEscorts.length > 0 ? (
-              filteredEscorts.map((escort, index) => (
-                <motion.div
-                  key={escort.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Link href={`/profile/${escort.id}`}>
-                    <Card className="overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-2xl hover:shadow-black/40 cursor-pointer">
-                      <div className="flex flex-col md:flex-row gap-6 p-6">
-                        {/* Image */}
-                        <div className="relative w-full md:w-72 flex-shrink-0 group">
-                          <img
-                            src={escort.image}
-                            alt={escort.name}
-                            className="w-full h-80 object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
-                          />
-                          
-                          {escort.hasVideo && (
-                            <button
-                              onClick={() => openVideoModal(escort)}
-                              className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                            >
-                              <div className="bg-amber-500 rounded-full p-4 transform group-hover:scale-110 transition-transform">
-                                <Play size={32} className="text-slate-900" fill="currentColor" />
-                              </div>
-                            </button>
-                          )}
-
-                          {escort.premium && (
-                            <Badge className="absolute top-3 left-3 bg-gradient-to-r from-amber-400 to-orange-400 text-slate-900 border-0 font-bold shadow-xl">
-                              PREMIUM
-                            </Badge>
-                          )}
-
-                          {escort.available && (
-                            <Badge className="absolute top-3 right-3 bg-emerald-500 border-0 text-xs animate-pulse">
-                              <div className="w-2 h-2 bg-white rounded-full mr-1" />
-                              Available
-                            </Badge>
-                          )}
-
-                          <div className="absolute bottom-3 left-3 flex gap-2 flex-wrap">
-                            {escort.verified && (
-                              <Badge className="bg-blue-500 border-0 text-xs">
-                                <Shield size={10} className="mr-1" />
-                                Demo-Profil
-                              </Badge>
-                            )}
-                            {escort.hasVideo && (
-                              <Badge className="bg-rose-500 border-0 text-xs">
-                                <Video size={10} className="mr-1" />
-                                Video
-                              </Badge>
-                            )}
-                            {escort.hasVirtualTour && (
-                              <Badge className="bg-pink-500 border-0 text-xs">
-                                <Eye size={10} className="mr-1" />
-                                Tour
-                              </Badge>
-                            )}
-                          </div>
-
-                          {escort.bookingsToday > 0 && (
-                            <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                              Fiktive Beispielaktivität
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 space-y-4">
-                          <div>
-                            <h3 className="text-3xl font-black text-white mb-2 hover:text-amber-400 transition-colors cursor-pointer">
-                              {escort.name}, {escort.age}
-                            </h3>
-                            
-                            <div className="flex items-center gap-2 text-amber-400 text-sm mb-3">
-                              <MapPin size={14} />
-                              <span className="font-medium">{escort.location}</span>
-                            </div>
-
-                            <div className="flex items-center gap-4 text-slate-400 text-xs mb-3">
-                              <div className="flex items-center gap-1">
-                                <Clock size={12} />
-                                <span>Beispielstatus</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Zap size={12} className="text-emerald-400" />
-                                <span>Keine echte Reaktionszeit</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <p className="text-slate-300 leading-relaxed">
-                            {escort.description}
-                          </p>
-
-                          <div className="flex flex-wrap gap-2">
-                            {escort.services.map((service, idx) => (
-                              <Badge key={idx} variant="outline" className="border-amber-500/30 text-slate-300 hover:bg-amber-500/10 hover:text-amber-200 transition-colors">
-                                {service}
-                              </Badge>
-                            ))}
-                          </div>
-
-                          <div className="flex flex-wrap gap-2 text-sm text-slate-400">
-                            <span className="flex items-center gap-1">
-                              <Camera size={14} /> {escort.bodyType}
-                            </span>
-                            <span>•</span>
-                            <span>{escort.height}</span>
-                            <span>•</span>
-                            <span>{escort.languages.join(", ")}</span>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star 
-                                  key={i} 
-                                  size={16} 
-                                  className={i < Math.floor(escort.rating) ? "text-amber-400 fill-amber-400" : "text-slate-600"}
-                                />
-                              ))}
-                            </div>
-                            <span className="text-white text-sm font-medium">{escort.rating}</span>
-                            <span className="text-slate-400 text-xs">(Demo-Bewertungen)</span>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-900/60 rounded-lg border border-amber-500/20">
-                            {escort.verifiedPhotos && (
-                              <div className="flex items-center gap-2 text-emerald-400 text-xs">
-                                <CheckCircle size={14} /> Real Photos
-                              </div>
-                            )}
-                            {escort.idVerified && (
-                              <div className="flex items-center gap-2 text-blue-400 text-xs">
-                                <CheckCircle size={14} /> Nicht geprüft
-                              </div>
-                            )}
-                            {escort.safeDate && (
-                              <div className="flex items-center gap-2 text-amber-400 text-xs">
-                                <CheckCircle size={14} /> SafeDate
-                              </div>
-                            )}
-                            {escort.hasVirtualTour && (
-                              <div className="flex items-center gap-2 text-rose-400 text-xs">
-                                <CheckCircle size={14} /> Virtual Tour
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                            <div>
-                              <div className="text-xs text-slate-400">Starting from</div>
-                              <div className="text-2xl font-black text-amber-400">CHF {escort.rate}</div>
-                              <div className="text-xs text-slate-400">per hour</div>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button 
-                                size="sm"
-                                variant="outline"
-                                className={`text-white border-slate-600 hover:bg-slate-700 ${
-                                  comparison.includes(escort.id) ? "border-amber-500 bg-amber-500/10" : ""
-                                }`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleComparison(escort.id);
-                                }}
-                                disabled={comparison.length >= 3 && !comparison.includes(escort.id)}
-                              >
-                                <ThumbsUp size={16} />
-                              </Button>
-                              <Button 
-                                size="sm"
-                                variant="outline"
-                                className="text-white border-slate-600 hover:bg-slate-700 hover:border-rose-500"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleFavorite(escort.id);
-                                }}
-                              >
-                                <Heart size={16} className={favorites.includes(escort.id) ? "fill-rose-500 text-rose-500" : ""} />
-                              </Button>
-                              <Button 
-                                size="sm"
-                                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-900 font-bold shadow-lg shadow-amber-500/20"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  openBookingModal(escort);
-                                }}
-                              >
-                                <MessageCircle size={16} className="mr-2" />
-                                Buchungs-Demo
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  </Link>
-                </motion.div>
-              ))
-            ) : (
-              <Card className="p-12 text-center bg-slate-800/50 backdrop-blur-sm border-amber-500/20">
-                <Search size={64} className="mx-auto text-slate-500 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-2">No Escorts found</h3>
-                <p className="text-slate-400 mb-6">Try adjusting your filters</p>
-                <Button 
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedDistrict("all");
-                    setSelectedService("all");
-                    setVerifiedOnly(false);
-                    setAvailableNow(false);
-                    setPriceRange([400, 800]);
-                    setMinRating(0);
-                  }}
-                  className="bg-amber-500 text-slate-900 hover:bg-amber-600 font-bold"
-                >
-                  Reset Filters
-                </Button>
-              </Card>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Booking Modal */}
-      <Dialog open={bookingModalOpen} onOpenChange={setBookingModalOpen}>
-        <DialogContent className="bg-gray-900 border-white/20 text-white max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-black">Buchungs-Demo</DialogTitle>
-            <DialogDescription className="text-gray-400">
-              Buchungs-Demo für {selectedEscort?.name} – keine Anfrage wird übermittelt.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedEscort && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg">
-                <img src={selectedEscort.image} alt={selectedEscort.name} className="w-20 h-20 rounded-lg object-cover" />
-                <div>
-                  <h4 className="font-bold text-lg">{selectedEscort.name}, {selectedEscort.age}</h4>
-                  <p className="text-sm text-gray-400">{selectedEscort.location}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm">{selectedEscort.rating} (Demo-Bewertungen)</span>
+                <div className="relative h-72">
+                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                  <div className="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                    <ShieldCheck size={13} /> Direkt Buchbar · Verifiziert
                   </div>
                 </div>
-                <div className="ml-auto text-right">
-                  <div className="text-2xl font-black text-yellow-500">Beispielpreis CHF {selectedEscort.rate}</div>
-                  <div className="text-xs text-gray-400">per hour</div>
+                <div className="p-5">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h2 className="text-2xl font-serif font-black">{p.name}, {p.age}</h2>
+                      <p className="text-xs text-[#D5A021] font-semibold mt-0.5">📍 {p.zone}</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[11px] text-gray-400 line-through">Andere Portale CHF {p.portalAvg}</div>
+                      <div className="text-2xl font-black text-[#D5A021]">CHF {p.rate60}</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                    <Clock size={13} /> {p.freshness}
+                  </div>
+
+                  <div className="mt-3 text-xs text-gray-300">
+                    <strong className="text-white">Inklusive:</strong> {p.included.join(" · ")}
+                  </div>
                 </div>
               </div>
-              <div className="text-center">
-                <Button 
-                  size="lg"
-                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold w-full"
-                  asChild
-                >
-                  <Link href={`/booking-confirmation?escortId=${selectedEscort.id}&escortName=${selectedEscort.name}`}>
-                    <Calendar size={20} className="mr-2" />
-                    Buchungsstatus ansehen
+              <div className="p-5 pt-0">
+                <Button className="w-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black" asChild>
+                  <Link href={/profile/${p.id}}>
+                    <Send size={14} className="mr-1.5" /> Direkt zum Fixpreis buchen
                   </Link>
                 </Button>
-                <p className="text-xs text-gray-400 mt-2">
-                  Keine echte Reaktionszeit oder Erreichbarkeit
-                </p>
               </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Video Modal */}
-      <Dialog open={videoModalOpen} onOpenChange={setVideoModalOpen}>
-        <DialogContent className="bg-gray-900 border-white/20 text-white max-w-4xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-black">{selectedEscort?.name}'s Video Profile</DialogTitle>
-          </DialogHeader>
-          <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <Play size={64} className="text-pink-500 mx-auto mb-4" />
-              <p className="text-gray-400">Video preview would load here</p>
-              <p className="text-sm text-gray-500 mt-2">Demo mode - keine Videointegration aktiv</p>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <section className="border-y border-white/10 bg-slate-900 px-4 py-12 text-white">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="mb-4 text-2xl font-bold">Stadt-Vorschau – keine echten Buchungen</h2>
-          <p>Alle Personen, Fotos, Bewertungen, Preise und Statusanzeigen sind fiktive Beispiele. Die Filter zeigen nur Demodaten. Es gibt keine geprüften Anbieter, bestätigten Termine oder aktive Vermittlung.</p>
-          <Link href="/faq" className="mt-5 inline-block underline">Fragen zur Vorschau</Link>
+            </Card>
+          ))}
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-slate-950 border-t border-amber-500/20 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Heart className="text-amber-500 fill-amber-500" size={24} />
-                <span className="text-xl font-bold text-white">iWantSexNow.ch</span>
-              </div>
-              <p className="text-slate-400 text-sm">
-                Switzerland's premier escort directory
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-4">Other Cities</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li><Link href="/escort-zurich" className="hover:text-amber-400 transition-colors">Escort Zürich</Link></li>
-                <li><Link href="/escort-geneva" className="hover:text-amber-400 transition-colors">Escort Geneva</Link></li>
-                <li><Link href="/escort-basel" className="hover:text-amber-400 transition-colors">Escort Basel</Link></li>
-                <li><Link href="/escort-bern" className="hover:text-amber-400 transition-colors">Escort Bern</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li><Link href="/" className="hover:text-amber-400 transition-colors">Home</Link></li>
-                <li><Link href="/members" className="hover:text-amber-400 transition-colors">All Escorts</Link></li>
-                <li><Link href="/register" className="hover:text-amber-400 transition-colors">Register</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li><Link href="/safety" className="hover:text-amber-400 transition-colors">Safety Tips</Link></li>
-                <li><Link href="/faq" className="hover:text-amber-400 transition-colors">FAQ</Link></li>
-                <li><Link href="/contact" className="hover:text-amber-400 transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-amber-500/20 pt-8 text-center text-slate-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} iWantSexNow.ch - Escort Lausanne. All rights reserved. 18+</p>
-          </div>
-        </div>
-      </footer>
+      </main>
     </div>
   );
 }
