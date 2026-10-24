@@ -1,28 +1,8 @@
 [
   {
     "sourcePortal": "xdate.ch",
-    "sourceUrl": "https://www.xdate.ch/de/zuerich-neu-in-zuerich-772802",
-    "rawName": "Neu in Zürich",
-    "age": 25,
-    "rawPhone": "",
-    "city": "Zürich",
-    "canton": "ZH",
-    "subareas": [
-      "ZH Stadt"
-    ],
-    "advertisedBaseChf": 400,
-    "includedTags": [
-      "Massagen"
-    ],
-    "incall": true,
-    "outcall": false,
-    "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
-  },
-  {
-    "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/baden-lass-dich-von-einem-thai-ladyboy-verwoehnen-party-in-baden-783545",
-    "rawName": "❤️Lass Dich von einem Thai-Ladyboy verwöhnen❤️Party in Baden❤️",
+    "rawName": "Party",
     "age": 25,
     "rawPhone": "",
     "city": "Baden",
@@ -36,55 +16,37 @@
       "Massagen"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/18i-swissgirl-785138",
-    "rawName": "18i Swissgirl",
+    "rawName": "Cutiepie",
     "age": 25,
     "rawPhone": "",
     "city": "Basel",
     "canton": "ZH",
     "subareas": [
-      "BS"
+      "Basel"
     ],
     "advertisedBaseChf": 400,
     "includedTags": [
-      "Massagen"
+      "GFE",
+      "Outcall"
     ],
     "incall": true,
-    "outcall": false,
-    "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
-  },
-  {
-    "sourcePortal": "xdate.ch",
-    "sourceUrl": "https://www.xdate.ch/de/ebikon-beste-blaserin-784786",
-    "rawName": "Beste Blaserin!",
-    "age": 25,
-    "rawPhone": "",
-    "city": "Ebikon",
-    "canton": "ZH",
-    "subareas": [
-      "LU"
-    ],
-    "advertisedBaseChf": 400,
-    "includedTags": [
-      "Sie sucht ihn"
-    ],
-    "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
-    "thumbnail": "https://www.xdate.ch/escort-zuerich"
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/rapperswil-jona-ann-ganz-neu-koerper-zu-koerper-massage-privat-und-diskret-781020",
-    "rawName": "Ann: Ganz Neu!!!❤️Körper zu Körper Massage❤️ Privat und diskret❤️",
+    "rawName": "Ann",
     "age": 25,
     "rawPhone": "",
     "city": "Rapperswil-Jona",
@@ -100,14 +62,15 @@
       "Massagen"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/derendingen-bella-girl-in-derendingen-781100",
-    "rawName": "🥰🥰🥰🥰Bella girl in Derendingen !!!! ❤️❤️❤️❤️❤️",
+    "rawName": "Bella",
     "age": 25,
     "rawPhone": "",
     "city": "Derendingen",
@@ -120,9 +83,10 @@
       "Sie sucht ihn"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
@@ -141,15 +105,16 @@
     "includedTags": [
       "Immobilien"
     ],
-    "incall": true,
+    "incall": false,
     "outcall": false,
     "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/weinfelden-sinnvolle-auszeit-mit-eis-das-suesse-asia-girl-781998",
-    "rawName": "Sinnvolle Auszeit mit Eis das süsse Asia Girl",
+    "rawName": "Eis",
     "age": 25,
     "rawPhone": "",
     "city": "Weinfelden",
@@ -163,14 +128,15 @@
       "Massagen"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/glarus-nord-thai-oel-massage-neu-781632",
-    "rawName": "Thai Öl massage neu",
+    "rawName": "Pim",
     "age": 25,
     "rawPhone": "0799318782",
     "city": "Glarus Nord",
@@ -180,27 +146,6 @@
       "SG",
       "SZ"
     ],
-    "advertisedBaseChf": 400,
-    "includedTags": [
-      "Massagen"
-    ],
-    "incall": true,
-    "outcall": false,
-    "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
-  },
-  {
-    "sourcePortal": "xdate.ch",
-    "sourceUrl": "https://www.xdate.ch/de/zuerich-privat-15-minuten-80chf-30-minut-100chf-45-minuten-130-1-stunde-150-784077",
-    "rawName": "Privat ✅15 minuten 80CHF🔥30 minut 100CHF 🔥45 Minuten 130💦 1 Stunde 150",
-    "age": 25,
-    "rawPhone": "",
-    "city": "Zürich",
-    "canton": "ZH",
-    "subareas": [
-      "ZH Stadt",
-      "ZH"
-    ],
     "advertisedBaseChf": 150,
     "includedTags": [
       "Massagen"
@@ -208,25 +153,203 @@
     "incall": true,
     "outcall": false,
     "scrapedAtIso": "Live via Firecrawl",
-    "directAuthorized": false
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
   },
   {
     "sourcePortal": "xdate.ch",
-    "sourceUrl": "https://www.xdate.ch/de/zuerich-carol-service-privat-764367",
-    "rawName": "Carol-Gottesdienst (privat)",
-    "age": 25,
+    "sourceUrl": "https://www.xdate.ch/de/ganz-neu-bereit-eure-schwaenze-zu-empfangen-767252",
+    "rawName": "Naomi",
+    "age": 22,
     "rawPhone": "",
     "city": "Zürich",
     "canton": "ZH",
     "subareas": [
-      "ZH Stadt"
+      "Zürich"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Webcam",
+      "Bilder & Videos"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/muttenz-anita-757835",
+    "rawName": "Anita",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Muttenz",
+    "canton": "ZH",
+    "subareas": [
+      "BL",
+      "AG",
+      "SO"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Sie sucht ihn",
+      "Massagen"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/glarus-2-sexy-frau-sehr-gute-service-782160",
+    "rawName": "Sasa",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Glarus",
+    "canton": "ZH",
+    "subareas": [
+      "GL"
     ],
     "advertisedBaseChf": 400,
     "includedTags": [
       "Sie sucht ihn"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-marcella-783096",
+    "rawName": "Marcella",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Zürich",
+    "canton": "ZH",
+    "subareas": [
+      "ZH"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Sie sucht ihn"
+    ],
+    "incall": true,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false,
+    "thumbnail": "https://www.xdate.ch/img/bg_blur.jpg"
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/meisterschwanden-776358",
+    "rawName": "Süße Ungarin",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Meisterschwanden",
+    "canton": "ZG",
+    "subareas": [
+      "AG",
+      "LU"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Sie sucht ihn",
+      "Massagen"
+    ],
+    "incall": false,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/zuerich-valeryxxl-activ-und-passiv-poppers-sperma-party-kamagra-754891",
+    "rawName": "Valeryxxl",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Zürich",
+    "canton": "ZG",
+    "subareas": [
+      "ZH Stadt",
+      "AG",
+      "ZG"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Transsexuelle / Transen",
+      "Escort Service"
+    ],
+    "incall": false,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/altendorf-la-putona-ts-22cm-party-poppers-719297",
+    "rawName": "La Putona",
+    "age": 24,
+    "rawPhone": "",
+    "city": "Altendorf",
+    "canton": "ZG",
+    "subareas": [
+      "SZ",
+      "ZH"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Transsexuelle / Transen",
+      "Escort Service"
+    ],
+    "incall": false,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/werdenberg-massage-expertin-prostata-geiler-tiefer-blowjob-kamagra-poppers-701685",
+    "rawName": "Lucia",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Werdenberg",
+    "canton": "ZG",
+    "subareas": [
+      "SG",
+      "AT",
+      "LI"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Massagen"
+    ],
+    "incall": false,
+    "outcall": true,
+    "scrapedAtIso": "Live via Firecrawl",
+    "directAuthorized": false
+  },
+  {
+    "sourcePortal": "xdate.ch",
+    "sourceUrl": "https://www.xdate.ch/de/basel-katy-schoenheit-voller-leidenschaft-und-temperament-738777",
+    "rawName": "Katy",
+    "age": 25,
+    "rawPhone": "",
+    "city": "Basel",
+    "canton": "ZG",
+    "subareas": [
+      "BS"
+    ],
+    "advertisedBaseChf": 400,
+    "includedTags": [
+      "Sie sucht ihn"
+    ],
+    "incall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false
   },
@@ -593,12 +716,13 @@
     "subareas": [
       "Kriens"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
-      "Geile KURVEN"
+      "Geile KURVEN",
+      "100% VERIFIZIERT"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/8420/profile/c260c5ae-3710-43f4-ac4c-059f36217d16_thumb_298.jpg?v=1"
@@ -607,20 +731,20 @@
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Ah-Ling-1535150-geneve-genf",
     "rawName": "Ah Ling",
-    "age": 25,
+    "age": 28,
     "rawPhone": "+41779097057",
     "city": "Genf",
     "canton": "ZH",
     "subareas": [
       "Genf"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
-      "GFE",
-      "Outcall"
+      "100% VERIFIZIERT",
+      "sexy"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/171435/profile/b3b3bba2-11c9-4997-a49a-a61e565a2cf6_thumb_298.jpg?v=1"
@@ -629,19 +753,19 @@
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/TS-Camilla-new-8034187-baden-aargau",
     "rawName": "TS Camilla new",
-    "age": 25,
+    "age": 30,
     "rawPhone": "+385955673744",
     "city": "Baden",
     "canton": "ZH",
     "subareas": [
       "Baden"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
       "CAMILLAXXLNEW"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/168256/profile/4f700a54-4481-4d32-ac2f-15a157ac44d1_thumb_298.jpg?v=1"
@@ -663,7 +787,7 @@
       "REAL",
       "SEXY"
     ],
-    "incall": true,
+    "incall": false,
     "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
@@ -680,13 +804,12 @@
     "subareas": [
       "Genf"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
-      "GFE",
-      "Outcall"
+      "100% VERIFIZIERT"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/176785/profile/a99539b4-623d-4d52-a017-ee800520d0e4_thumb_298.jpg?v=1"
@@ -702,13 +825,12 @@
     "subareas": [
       "Genf"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
-      "GFE",
-      "Outcall"
+      "100% VERIFIZIERT"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/177466/profile/b0b1ed30-0062-4277-bbad-787db7e02dcc_thumb_298.jpg?v=1"
@@ -717,17 +839,16 @@
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Alina-73414-zurich-zurich-stadt",
     "rawName": "Alina",
-    "age": 25,
+    "age": 20,
     "rawPhone": "+41767659621",
     "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
-      "GFE",
-      "Outcall"
+      "Privat und alleine"
     ],
     "incall": true,
     "outcall": true,
@@ -739,20 +860,19 @@
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Ioana-2201843-lausanne-waadt",
     "rawName": "Ioana",
-    "age": 25,
+    "age": 24,
     "rawPhone": "+41767502579",
     "city": "Lausanne",
     "canton": "ZH",
     "subareas": [
       "Lausanne"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 350,
     "includedTags": [
-      "GFE",
-      "Outcall"
+      "Soft and very warm"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/174308/profile/12a61a4b-4bd8-4976-9f58-64e2902f2959_thumb_298.jpg?v=1"
@@ -761,19 +881,19 @@
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Mila-9558210-nyon-waadt",
     "rawName": "Mila",
-    "age": 25,
+    "age": 29,
     "rawPhone": "+41799401083",
     "city": "Nyon",
     "canton": "ZH",
     "subareas": [
       "Nyon"
     ],
-    "advertisedBaseChf": 400,
+    "advertisedBaseChf": 300,
     "includedTags": [
       "ÉROTIQUE MASSAGE"
     ],
     "incall": true,
-    "outcall": false,
+    "outcall": true,
     "scrapedAtIso": "Live via Firecrawl",
     "directAuthorized": false,
     "thumbnail": "https://i.and6.com/156110/profile/9827cdc7-9f6c-4ad3-bc7b-5b88f862d66f_thumb_298.jpg?v=1"
@@ -810,9 +930,10 @@
     "subareas": [
       "Kriens"
     ],
-    "advertisedBaseChf": 350,
+    "advertisedBaseChf": 400,
     "includedTags": [
-      "Geile KURVEN"
+      "GFE",
+      "Outcall"
     ],
     "incall": true,
     "outcall": true,
@@ -855,7 +976,8 @@
     ],
     "advertisedBaseChf": 400,
     "includedTags": [
-      "CAMILLAXXLNEW"
+      "GFE",
+      "Outcall"
     ],
     "incall": true,
     "outcall": true,
