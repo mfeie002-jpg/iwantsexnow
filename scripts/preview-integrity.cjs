@@ -93,6 +93,15 @@ for (const file of publicPages) {
  const html = fs.readFileSync(file, "utf8");
  assert(!/href="\/(?:profile|catalogue)\/[^"/]+/.test(html), "Retired fictional record link: " + file);
 }
+// Shared defaults and menus must not advertise the removed demonstration inventory.
+const defaults = fs.readFileSync(path.join(root, "src/components/SEO.tsx"), "utf8");
+assert(!defaults.includes("Profile und Kennzahlen sind Beispiele"), "Default metadata claims removed samples still exist");
+assert(defaults.includes('content="noindex, nofollow"'), "Default metadata lost noindex");
+const navigation = fs.readFileSync(path.join(root, "src/lib/preview-navigation.ts"), "utf8");
+assert(!/Demo|Beispielprofile|#cities|\/members|\/demo-accounts/.test(navigation), "Navigation advertises removed demo inventory");
+for (const [, href] of navigation.matchAll(/href: "([^"]+)"/g)) {
+ assert(routes.includes(href), "Shared navigation has missing destination: " + href);
+}
 console.log(`Preview integrity: ${assertions - failures.length}/${assertions} assertions; ${publicPages.length} built pages; ${links} internal links to ${destinations.size} paths.`);
 for (const failure of failures) console.error("FAIL " + failure);
 if (failures.length) process.exitCode = 1;

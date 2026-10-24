@@ -15,9 +15,9 @@ export function MobileNav() {
       <SheetContent className="w-[90vw] overflow-y-auto bg-slate-950 pb-32 text-white sm:max-w-sm">
         <SheetHeader className="mb-6 text-left">
           <SheetTitle className="text-white">iWantSexNow.ch</SheetTitle>
-          <SheetDescription className="text-amber-200">Entwicklungs-Vorschau · keine echten Konten oder Buchungen</SheetDescription>
+          <SheetDescription className="text-amber-200">Plattform in Vorbereitung · öffentliche Funktionen nicht freigeschaltet</SheetDescription>
         </SheetHeader>
-        <nav aria-label="Mobile Vorschau-Navigation" className="space-y-5">
+        <nav aria-label="Mobile Navigation" className="space-y-5">
           <SheetClose asChild><Link href="/" className="block rounded px-3 py-2 font-bold hover:bg-white/10">Startseite</Link></SheetClose>
           {previewNavigation.map((group) => (
             <section key={group.label}>

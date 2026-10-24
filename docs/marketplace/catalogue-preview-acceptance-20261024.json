@@ -17,7 +17,7 @@
     "typescript": "PASS",
     "unitTests": "83/83",
     "staticSmoke": "167/167; 50 static pages",
-    "integrity": "1858/1858; 244 links, 20 paths",
+    "integrity": "1845/1845; 235 links, 12 paths",
     "httpRoutes": "52/52",
     "publicActionGates": "12/12; definitions unchanged",
     "privateDisabled": "6/6",
@@ -49,5 +49,22 @@
       "Retired catalogue HTTP 6/6"
     ],
     "previousValidation": "Other recorded local checks were run for fa63a3a; full GitHub CI runs again on the follow-up head."
+  },
+  "localEditReview": {
+    "reviewed": 40,
+    "alreadyInPR": 20,
+    "additionalCleanupFiles": 4,
+    "mixedOrFeatureFilesPreserved": 16,
+    "allOriginalFileHashesUnchanged": true,
+    "report": "docs/marketplace/local-edit-review-20261024.json",
+    "freshChecks": [
+      "Production build with TypeScript",
+      "167/167 static smoke assertions",
+      "1845/1845 integrity assertions; 235 links",
+      "52/52 HTTP routes; 12/12 public gates",
+      "6/6 private disabled",
+      "6/6 retired catalogue routes"
+    ],
+    "otherLocalChecks": "Earlier local unit/security validation remains historical; full CI will rerun on the new commit."
   }
 }
