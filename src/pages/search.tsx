@@ -40,8 +40,7 @@ const ALL_SERVICE_FILTERS = [
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [canton, setCanton] = useState("ALL");
-  const [modeFilter,
-    genderFilter, setModeFilter] = useState<"ALL" | "direct" | "indexed">("ALL");
+  const [modeFilter, setModeFilter] = useState<"ALL" | "direct" | "indexed">("ALL");
   const [genderFilter, setGenderFilter] = useState<"ALL" | "female" | "male" | "couple">("ALL");
   const [duration, setDuration] = useState<30 | 60 | 120>(60);
   const [wantedExtras, setWantedExtras] = useState<string[]>(["GFE"]);
