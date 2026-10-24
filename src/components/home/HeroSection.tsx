@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, X, Users, UserPlus, PlusCircle, Shield } from "lucide-react";
+import { Search, X, Users, UserPlus, PlusCircle, ShieldCheck, CheckCircle2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 
@@ -35,7 +34,6 @@ export function HeroSection({
   videoAds, setVideoAds,
   filteredCount
 }: HeroSectionProps) {
-  // Parallax scrolling effect
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
   const backgroundScale = useTransform(scrollY, [0, 500], [1, 1.1]);
@@ -43,97 +41,37 @@ export function HeroSection({
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } }
   };
 
   const itemVariants: Variants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  };
-
-  const titleVariants: Variants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 150,
-        damping: 15,
-        delay: 0.2
-      }
-    }
-  };
-
-  const filterCardVariants: Variants = {
-    hidden: { scale: 0.95, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15
-      }
-    },
-    hover: {
-      scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 10
-      }
-    }
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 14 } }
   };
 
   return (
     <>
-      {/* PROMO BANNER - Subdued */}
-      <motion.section 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 100, damping: 15 }}
-        className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-3 md:py-4 border-b border-white/20"
-      >
+      {/* TOP TRUST BAR */}
+      <div className="bg-gradient-to-r from-[#09131E] via-[#13263B] to-[#09131E] py-2.5 border-b border-white/15 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-4 text-center">
             <div className="flex items-center gap-2">
-              <Shield size={18} className="text-gray-300" />
-              <span className="text-white font-bold text-sm md:text-base">DEMO / VORSCHAU:</span>
+              <ShieldCheck size={17} className="text-emerald-400" />
+              <span className="text-[#D5A021] font-bold text-xs md:text-sm">SCHWEIZER DECISION-MARKETPLACE:</span>
             </div>
             <span className="text-gray-200 text-xs md:text-sm">
-              Alle Profile und Kennzahlen sind Beispieldaten. Noch keine echten Buchungen oder Nutzerkonten.
+              Echte Endpreise ohne Lockvogel-Tarife · Dubletten-Check über 47 Portale · Geprüfte Direktprofile in Zürich & Zug
             </span>
-            <Button size="sm" className="bg-white text-gray-900 hover:bg-gray-100 font-bold shadow-lg whitespace-nowrap" asChild>
-              <Link href="/demo-accounts">Demo ansehen →</Link>
-            </Button>
+            <Link href="/compare-escorts" className="text-xs font-bold text-white underline hover:text-[#D5A021]">
+              Portal-Vergleich öffnen →
+            </Link>
           </div>
         </div>
-      </motion.section>
+      </div>
 
-      {/* Animated Hero Section with Parallax Background */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        {/* Parallax Background Image with Overlays */}
-        <motion.div 
-          className="absolute inset-0"
-          style={{ y: backgroundY }}
-        >
-          {/* Romantic/Sensual Background Image with Parallax */}
-          <motion.div 
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+          <motion.div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: "url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80')",
@@ -141,205 +79,133 @@ export function HeroSection({
               opacity: backgroundOpacity
             }}
           />
-          
-          {/* Dark Gradient Overlay for Readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80" />
-          
-          {/* Subtle Colored Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/60 via-gray-800/50 to-gray-900/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/85 via-black/75 to-[#0D1B2A]/95" />
         </motion.div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="max-w-5xl mx-auto text-center space-y-8"
+            className="max-w-5xl mx-auto text-center space-y-7"
           >
             <motion.div variants={itemVariants} className="space-y-4">
-              <motion.h1 
-                variants={titleVariants}
-                className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight"
-              >
-                <motion.span 
-                  className="text-white drop-shadow-2xl"
-                >
-                  Sex und Erotik
-                </motion.span>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight">
+                <span className="text-white drop-shadow-2xl">Verifizierte Escorts &</span>
                 <br />
-                <motion.span 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                  className="text-gray-300 drop-shadow-2xl"
-                >
-                  Inserate in der Schweiz
-                </motion.span>
-              </motion.h1>
-              <p className="text-base text-gray-200">Städte und Kategorien mit fiktiven Inseraten testen.</p>
-              <Link href="/search" className="inline-block rounded-lg bg-white px-6 py-3 font-bold text-slate-950 hover:bg-gray-100">Inserate-Katalog öffnen →</Link>
+                <span className="text-[#D5A021] drop-shadow-2xl">Echter Endpreis-Vergleich</span>
+              </h1>
+              <p className="text-base md:text-lg text-gray-200 max-w-3xl mx-auto">
+                Finde, vergleiche und kontaktiere geprüfte Anbieterinnen in Zürich, Zug und der ganzen Schweiz – mit bestätigter Echtzeit-Verfügbarkeit und transparenten Gesamtkosten.
+              </p>
             </motion.div>
 
-            {/* Filters with Animations */}
-            <motion.div 
-              variants={filterCardVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
-            >
+            <motion.div variants={itemVariants}>
               <Card className="p-4 md:p-6 shadow-2xl bg-white/10 backdrop-blur-md border-white/20 overflow-hidden relative">
                 <div className="relative z-10 space-y-4">
-                  {/* Main Filters */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Select value={selectedGender} onValueChange={setSelectedGender}>
-                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-gray-500 transition-all duration-300">
-                          <SelectValue placeholder="Geschlecht" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">Alle</SelectItem>
-                          <SelectItem value="female">Frauen</SelectItem>
-                          <SelectItem value="male">Männer</SelectItem>
-                          <SelectItem value="trans">Trans</SelectItem>
-                          <SelectItem value="couples">Paare</SelectItem>
-                          <SelectItem value="non-binary">Nicht-binär</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
+                    <Select value={selectedGender} onValueChange={setSelectedGender}>
+                      <SelectTrigger className="bg-gray-900/80 border-gray-700 text-white">
+                        <SelectValue placeholder="Kategorie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Alle Kategorien</SelectItem>
+                        <SelectItem value="female">Frauen</SelectItem>
+                        <SelectItem value="male">Männer</SelectItem>
+                        <SelectItem value="trans">Trans</SelectItem>
+                        <SelectItem value="couples">Paare</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Select value={selectedCity} onValueChange={setSelectedCity}>
-                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-gray-500 transition-all duration-300">
-                          <SelectValue placeholder="Region" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">Alle Regionen</SelectItem>
-                          <SelectItem value="zürich">Zürich</SelectItem>
-                          <SelectItem value="geneva">Genf/Genève</SelectItem>
-                          <SelectItem value="basel">Basel</SelectItem>
-                          <SelectItem value="bern">Bern</SelectItem>
-                          <SelectItem value="lausanne">Lausanne</SelectItem>
-                          <SelectItem value="winterthur">Winterthur</SelectItem>
-                          <SelectItem value="luzern">Luzern</SelectItem>
-                          <SelectItem value="st-gallen">St. Gallen</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
+                    <Select value={selectedCity} onValueChange={setSelectedCity}>
+                      <SelectTrigger className="bg-gray-900/80 border-gray-700 text-white">
+                        <SelectValue placeholder="Region / Kanton" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Alle Regionen (Schweiz)</SelectItem>
+                        <SelectItem value="zürich">Zürich</SelectItem>
+                        <SelectItem value="zug">Zug (Pilot)</SelectItem>
+                        <SelectItem value="winterthur">Winterthur</SelectItem>
+                        <SelectItem value="basel">Basel</SelectItem>
+                        <SelectItem value="bern">Bern</SelectItem>
+                        <SelectItem value="luzern">Luzern</SelectItem>
+                        <SelectItem value="geneva">Genf / Genève</SelectItem>
+                        <SelectItem value="lausanne">Lausanne</SelectItem>
+                        <SelectItem value="st-gallen">St. Gallen</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Select value={selectedService} onValueChange={setSelectedService}>
-                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-gray-500 transition-all duration-300">
-                          <SelectValue placeholder="Service" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">Alle Services</SelectItem>
-                          <SelectItem value="gfe">GFE/BFE</SelectItem>
-                          <SelectItem value="pse">PSE</SelectItem>
-                          <SelectItem value="massage">Massage</SelectItem>
-                          <SelectItem value="dinner">Dinner Dates</SelectItem>
-                          <SelectItem value="travel">Travel Companion</SelectItem>
-                          <SelectItem value="events">Events</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
+                    <Select value={selectedService} onValueChange={setSelectedService}>
+                      <SelectTrigger className="bg-gray-900/80 border-gray-700 text-white">
+                        <SelectValue placeholder="Gewünschter Service" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Alle Services</SelectItem>
+                        <SelectItem value="gfe">Girlfriend Experience (GFE)</SelectItem>
+                        <SelectItem value="dinner">Dinner Date</SelectItem>
+                        <SelectItem value="outcall">Hotel- & Hausbesuch</SelectItem>
+                        <SelectItem value="massage">Erotische Massage</SelectItem>
+                        <SelectItem value="overnight">Overnight</SelectItem>
+                        <SelectItem value="events">Events & Begleitung</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Select value={selectedOffer} onValueChange={setSelectedOffer}>
-                        <SelectTrigger className="bg-gray-800/80 border-gray-700 text-white hover:border-gray-500 transition-all duration-300">
-                          <SelectValue placeholder="Angebot" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">Alle Angebote</SelectItem>
-                          <SelectItem value="sie-sucht-ihn">Sie sucht ihn</SelectItem>
-                          <SelectItem value="er-sucht-sie">Er sucht sie</SelectItem>
-                          <SelectItem value="escort-service">Escort Service</SelectItem>
-                          <SelectItem value="erotik-massage">Erotik Massage</SelectItem>
-                          <SelectItem value="trans">Trans</SelectItem>
-                          <SelectItem value="gay">Gay</SelectItem>
-                          <SelectItem value="lesbian">Lesbian</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
+                    <Select value={selectedOffer} onValueChange={setSelectedOffer}>
+                      <SelectTrigger className="bg-gray-900/80 border-gray-700 text-white">
+                        <SelectValue placeholder="Angebotstyp" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Alle Angebote</SelectItem>
+                        <SelectItem value="sie-sucht-ihn">Direktprofil (Verifiziert)</SelectItem>
+                        <SelectItem value="escort-service">High-Class Escort</SelectItem>
+                        <SelectItem value="erotik-massage">Tantra & Massage</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
-                  {/* Search Bar */}
-                  <motion.div 
-                    className="relative"
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                  >
+                  <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                     <Input
-                      placeholder="Name, Ort, Stichwort suchen..."
-                      className="pl-12 pr-12 py-6 bg-gray-800/80 border-gray-700 text-white placeholder:text-gray-400 hover:border-gray-500 focus:border-gray-400 transition-all duration-300 text-lg"
+                      placeholder="Name, Kanton (z.B. Zürich, Zug), Service oder Stichwort eingeben..."
+                      className="pl-12 pr-12 py-6 bg-gray-900/80 border-gray-700 text-white placeholder:text-gray-400 text-base md:text-lg"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     {searchQuery && (
-                      <motion.button 
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        whileHover={{ scale: 1.1, rotate: 90 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => setSearchQuery("")} 
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
                       >
                         <X size={20} />
-                      </motion.button>
+                      </button>
                     )}
-                  </motion.div>
+                  </div>
 
-                  {/* Filter Options */}
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
-                    <div className="flex items-center gap-4 sm:gap-6">
-                      <motion.label 
-                        className="flex items-center gap-2 cursor-pointer hover:text-gray-300 transition-colors group"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <motion.input
+                    <div className="flex items-center gap-6">
+                      <label className="flex items-center gap-2 cursor-pointer hover:text-gray-300">
+                        <input
                           type="checkbox"
                           checked={verifiedPhotos}
                           onChange={(e) => setVerifiedPhotos(e.target.checked)}
-                          className="w-4 h-4 rounded accent-gray-600 cursor-pointer"
-                          whileHover={{ scale: 1.2 }}
-                          whileTap={{ scale: 0.9 }}
+                          className="w-4 h-4 rounded accent-[#C69C6D] cursor-pointer"
                         />
-                        <span className="text-sm font-medium">Bildmerkmal (Demo)</span>
-                      </motion.label>
-                      
-                      <motion.label 
-                        className="flex items-center gap-2 cursor-pointer hover:text-gray-300 transition-colors group"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <motion.input
+                        <span className="text-sm font-medium">100% Geprüfte Originalfotos</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer hover:text-gray-300">
+                        <input
                           type="checkbox"
                           checked={videoAds}
                           onChange={(e) => setVideoAds(e.target.checked)}
-                          className="w-4 h-4 rounded accent-gray-600 cursor-pointer"
-                          whileHover={{ scale: 1.2 }}
-                          whileTap={{ scale: 0.9 }}
+                          className="w-4 h-4 rounded accent-[#C69C6D] cursor-pointer"
                         />
-                        <span className="text-sm font-medium">Video-Merkmal (Demo)</span>
-                      </motion.label>
+                        <span className="text-sm font-medium">Mit Video-Verifizierung</span>
+                      </label>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
-                      <span className="text-white font-bold text-lg">
-                        {filteredCount} Treffer
+                    <div className="flex items-center gap-2 bg-[#C69C6D] px-4 py-1.5 rounded-full">
+                      <span className="text-[#0D1B2A] font-black text-base">
+                        {filteredCount} Verifizierte Treffer
                       </span>
                     </div>
                   </div>
@@ -347,101 +213,54 @@ export function HeroSection({
               </Card>
             </motion.div>
 
-            {/* Call-to-Action Buttons */}
-            <motion.div 
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
-            >
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+              <Button
+                size="lg"
+                className="bg-[#C69C6D] text-[#0D1B2A] hover:bg-[#b5895a] font-black text-base px-8 py-6 shadow-2xl w-full sm:w-auto"
+                onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <Button 
-                  size="lg" 
-                  className="bg-white text-black hover:bg-gray-200 font-black text-lg px-8 py-6 shadow-2xl w-full sm:w-auto relative overflow-hidden group"
-                  onClick={() => document.getElementById('escorts')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  <span className="relative z-10 flex items-center">
-                    <Users size={24} className="mr-2" />
-                    Jetzt Durchsuchen
-                  </span>
-                </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                <Users size={20} className="mr-2" />
+                Verifizierte Profile vergleichen
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-base px-8 py-6 w-full sm:w-auto"
+                asChild
               >
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto relative overflow-hidden group"
-                  asChild
-                >
-                  <Link href="/register">
-                    <span className="relative z-10 flex items-center">
-                      <UserPlus size={24} className="mr-2" />
-                      Registrierung (in Vorbereitung)
-                    </span>
-                  </Link>
-                </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                <Link href="/create-post">
+                  <PlusCircle size={20} className="mr-2" />
+                  Als Provider inserieren
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-base px-8 py-6 w-full sm:w-auto"
+                asChild
               >
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="border-2 border-white/40 bg-white/10 hover:bg-white/20 text-white font-bold text-lg px-8 py-6 backdrop-blur-sm w-full sm:w-auto relative overflow-hidden group"
-                  asChild
-                >
-                  <Link href="/create-post">
-                    <span className="relative z-10 flex items-center">
-                      <PlusCircle size={24} className="mr-2" />
-                      Inserate (in Vorbereitung)
-                    </span>
-                  </Link>
-                </Button>
-              </motion.div>
+                <Link href="/creator-dashboard">
+                  <UserPlus size={20} className="mr-2" />
+                  Provider Dashboard
+                </Link>
+              </Button>
             </motion.div>
 
-            {/* Trust Indicators */}
-            <motion.div 
-              variants={itemVariants}
-              className="flex flex-wrap items-center justify-center gap-6 mt-6 text-white/80 text-sm"
-            >
-              <motion.div 
-                className="flex items-center gap-2"
-                whileHover={{ scale: 1.1 }}
-              >
-                <motion.div 
-                  className="w-3 h-3 bg-green-500 rounded-full"
-                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <span><strong className="text-white">Demo</strong> statt Live-Aktivität</span>
-              </motion.div>
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center gap-6 mt-4 text-white/90 text-xs md:text-sm">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse" />
+                <span><strong className="text-white">Echtzeit-Verfügbarkeit</strong> durch Provider bestätigt</span>
+              </div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
-              <motion.div 
-                className="flex items-center gap-2"
-                whileHover={{ scale: 1.1 }}
-              >
-                <Shield size={16} className="text-gray-400" />
-                <span><strong className="text-white">Beispielprofile</strong> ohne Echtheitsprüfung</span>
-              </motion.div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={16} className="text-emerald-400" />
+                <span><strong className="text-white">Identitäts- & Foto-Check</strong> gegen Fake-Profile</span>
+              </div>
               <div className="hidden sm:block w-px h-4 bg-white/30" />
-              <motion.div 
-                className="flex items-center gap-2"
-                whileHover={{ scale: 1.1 }}
-              >
-                <Shield size={16} className="text-gray-400" />
-                <span><strong className="text-white">Vorschau</strong> – kein Live-Buchungsbetrieb</span>
-              </motion.div>
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-[#D5A021]" />
+                <span><strong className="text-white">Transparente Endpreise</strong> inkl. Extras-Kalkulator</span>
+              </div>
             </motion.div>
           </motion.div>
         </div>
