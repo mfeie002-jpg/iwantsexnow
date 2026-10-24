@@ -1,90 +1,57 @@
-﻿import { Card } from "@/components/ui/card";
-import { Search, Calculator, ShieldCheck, Send, Clock, Award } from "lucide-react";
+import { ShieldCheck, Calculator, Database, Video } from "lucide-react";
 
 export function AboutSection() {
   const pillars = [
     {
+      icon: Database,
+      title: "Automatischer Schweizer Dubletten-Filter",
+      desc: "Wir durchsuchen xdate.ch, fgirl.ch, and6.com und Direkt-Inserate, führen mehrfach kopierte Profile unter einer Rufnummer zusammen und zeigen dir den echten Basispreis.",
+    },
+    {
       icon: Calculator,
-      step: "01 · Transparent Total Cost",
-      title: "Echte Endpreise statt Lockangebote",
-      description: "Andere Portale werben mit ab-Preisen und berechnen jedes Extra vor Ort teuer nach. Unser Rechner addiert Dauer und gewünschte Services vorab zum verbindlichen Komplettpreis.",
+      title: "100% Verbindliche Endpreis-Garantie",
+      desc: "Wähle 30 Min., 60 Min. oder 2 Stunden plus deine Wunsch-Extras vorab aus. Der berechnete Komplettpreis gilt garantiert ohne Nachverhandlung im Hotel oder Studio.",
+    },
+    {
+      icon: Video,
+      title: "Vorab-Videos & 1:1 Live-Cam Vibe-Check",
+      desc: "Schalte vor deiner Buchung unzensierte 4K-Originalvideos frei oder buche einen 3-Minuten 1:1 Live-Kameracheck (inkl. CHF 20 Gutschein auf dein reales Treffen).",
     },
     {
       icon: ShieldCheck,
-      step: "02 · Multi-Portal Deduplizierung",
-      title: "47 Portale gebündelt – 0% Fake-Dubletten",
-      description: "Wir gleichen Telefonnummern, Fotos und Standortdaten über 47 Schweizer Verzeichnisse ab, fassen Mehrfach-Inserate zusammen und zeigen dir sofort die Original-Quelle.",
-    },
-    {
-      icon: Clock,
-      step: "03 · Provider-Confirmed Freshness",
-      title: "Bestätigte Echtzeit-Verfügbarkeit",
-      description: "Keine Karteileichen und kein endloses Durchtelefonieren: Anbieterinnen bestätigen ihren Live-Status für Zürich, Zug & Umgebung aktiv mit Zeitstempel.",
-    },
-    {
-      icon: Send,
-      step: "04 · Private Enquiry Flow",
-      title: "1-Klick Diskrete Direkt-Anfrage",
-      description: "Statt ungeschützter Chats auf Dutzenden Seiten sendest du eine strukturierte, diskrete Anfrage mit fixiertem Gesamtpreis direkt an den verifizierten Provider.",
-    },
-    {
-      icon: Search,
-      step: "05 · Intent-Based Smart Matching",
-      title: "Gezielte Auswahl statt Reizüberflutung",
-      description: "Nach dem bewährten Schweizer Vergleichsprinzip filtern wir nach echtem Vorhaben, Budget, Zeitfenster und verifizierten Merkmalen.",
-    },
-    {
-      icon: Award,
-      step: "06 · Self-Service für Anbieterinnen",
-      title: "Direktprofile ohne Zwischenhändler",
-      description: "Verifizierte Anbieterinnen verwalten ihre Verfügbarkeit, Konditionen und qualifizierten Anfragen direkt im eigenen Provider-Dashboard.",
+      title: "Schweizer Datenschutz (revDSG) & Diskretion",
+      desc: "Keine Weitergabe deiner Daten an Werbenetzwerke. Alle Buchungsanfragen und B2B-Transaktionen (TWINT / Swiss QR / USDT) laufen verschlüsselt.",
     },
   ];
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-b from-[#09131E] to-[#0D1B2A]">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#D5A021]">
-              Search → Compare → Match → Enquire
-            </span>
-            <h2 className="text-3xl md:text-5xl font-black text-white mt-2 mb-4">
-              Warum iWantSexNow.ch mehr kann als klassische Portale
-            </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Wir kombinieren den Marktüberblick eines Portal-Aggregators mit der Zuverlässigkeit einer Schweizer Vergleichs- und Buchungsplattform.
-            </p>
+    <section className="py-16 bg-[#07101A] border-t border-[#C69C6D]/20 text-white">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
+          <div className="text-xs font-bold uppercase tracking-widest text-[#D5A021]">
+            Warum iWantSexNow.ch?
           </div>
+          <h2 className="text-2xl md:text-4xl font-serif font-black">
+            Die erste echte Vergleichs- & Direktbuchungsmaschine der Schweiz
+          </h2>
+        </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pillars.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <Card
-                  key={idx}
-                  className="p-6 bg-white/5 border-white/15 hover:border-[#C69C6D]/60 transition-all duration-300 text-white flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-bold text-[#D5A021] uppercase tracking-wider">
-                        {item.step}
-                      </span>
-                      <div className="w-10 h-10 rounded-xl bg-[#C69C6D]/15 border border-[#C69C6D]/40 flex items-center justify-center text-[#D5A021]">
-                        <Icon size={20} />
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-gray-300 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {pillars.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <div
+                key={i}
+                className="p-6 rounded-2xl bg-[#09131E] border border-[#C69C6D]/35 space-y-3 shadow-xl"
+              >
+                <div className="w-11 h-11 rounded-xl bg-[#C69C6D]/15 border border-[#C69C6D]/40 flex items-center justify-center text-[#D5A021]">
+                  <Icon size={20} />
+                </div>
+                <h3 className="text-base font-bold text-white">{p.title}</h3>
+                <p className="text-xs text-gray-300 leading-relaxed">{p.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

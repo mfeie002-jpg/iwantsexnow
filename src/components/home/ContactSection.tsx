@@ -1,63 +1,42 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ShieldCheck, Sparkles, PlusCircle, SlidersHorizontal } from "lucide-react";
+import { PlusCircle, Sparkles, Trophy } from "lucide-react";
 
 export function ContactSection() {
   return (
-    <section id="contact" className="border-y border-white/10 bg-[#09131E] px-4 py-16 text-white">
-      <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-8">
-        <Card className="border-[#C69C6D]/40 bg-white/5 p-8 text-white flex flex-col justify-between">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">
-              <Sparkles size={15} />
-              Für Suchende · Diskreter Entscheidungs-Service
+    <section className="py-14 bg-[#09131E] border-t border-white/10 text-white">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <div className="rounded-2xl bg-gradient-to-r from-[#0D1B2A] via-[#15283E] to-[#0D1B2A] border-2 border-[#C69C6D]/60 p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
+          <div className="space-y-2 text-center lg:text-left max-w-xl">
+            <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+              Für Suchende & Selbstständige Anbieterinnen in Zürich, Zug & der Schweiz
             </div>
-            <h2 className="mb-3 text-2xl md:text-3xl font-black">
-              Keine Lust, 100 Inserate zu durchsuchen?
+            <h2 className="text-2xl sm:text-3xl font-serif font-black">
+              Bereit für echte Endpreise oder deinen kostenlosen Profil-Claim?
             </h2>
-            <p className="mb-6 text-sm md:text-base text-gray-300 leading-relaxed">
-              Nutze unseren vollständigen 47-Portale-Vergleich oder starte das Smart-Matching für Zürich & Zug: Gib Budget, Zeitfenster und Wunsch-Optionen an und vergleiche sofort die besten verifizierten Treffer.
+            <p className="text-xs sm:text-sm text-gray-300">
+              Starte den 30-Sekunden Smart-Matcher oder übernimm als Anbieterin kostenlos dein indexiertes Profil inklusive 2 Gratis Lead-Credits (CHF 50 Wert) und eigenem VIP-Video-Tresor.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Button className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold" asChild>
-              <Link href="/compare-escorts">
-                <SlidersHorizontal size={16} className="mr-2" />
-                47 Portale & Preise vergleichen
-              </Link>
-            </Button>
-            <Button variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white/10" asChild>
-              <Link href="/matches">Smart-Matching öffnen</Link>
-            </Button>
-          </div>
-        </Card>
 
-        <Card className="border-white/15 bg-white/5 p-8 text-white flex flex-col justify-between">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#D5A021] mb-3">
-              <ShieldCheck size={15} />
-              Für selbstständige Anbieterinnen & Studios (B2B)
-            </div>
-            <h2 className="mb-3 text-2xl md:text-3xl font-black">
-              Als verifiziertes Direktprofil listen
-            </h2>
-            <p className="mb-6 text-sm md:text-base text-gray-300 leading-relaxed">
-              Erhalte vorqualifizierte, diskrete Direkt-Anfragen mit klarem Budget statt Zeitverschwendung. Verwalte dein Profil, deine Echtzeit-Verfügbarkeit und deine Konditionen im eigenen Dashboard.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button className="bg-white hover:bg-gray-200 text-[#0D1B2A] font-bold" asChild>
-              <Link href="/create-post">
-                <PlusCircle size={16} className="mr-2" />
-                Direktprofil erstellen
+          <div className="flex flex-wrap justify-center gap-3 shrink-0">
+            <Button className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black" asChild>
+              <Link href="/matches">
+                <Sparkles size={15} className="mr-1.5" /> 30-Sek. Smart-Matcher
               </Link>
             </Button>
-            <Button variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white/10" asChild>
-              <Link href="/pricing">B2B Pakete & Lead-Preise</Link>
+            <Button variant="outline" className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-black" asChild>
+              <Link href="/create-post">
+                <PlusCircle size={15} className="mr-1.5" /> Profil übernehmen (+2 Credits)
+              </Link>
+            </Button>
+            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 font-bold" asChild>
+              <Link href="/rankings">
+                <Trophy size={15} className="mr-1.5 text-[#D5A021]" /> Bestenliste
+              </Link>
             </Button>
           </div>
-        </Card>
+        </div>
       </div>
     </section>
   );
