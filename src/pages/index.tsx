@@ -33,6 +33,7 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { ContactSection } from "@/components/home/ContactSection";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
+import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
 
 export type BrandThemeId = "A" | "B" | "C" | "D";
 
@@ -1004,6 +1005,7 @@ export default function Home() {
       <CityLinks />
       <AboutSection />
       <ContactSection />
+      <SeoSiloFooter />
 
       {enquiryTarget && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">

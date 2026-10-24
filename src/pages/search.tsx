@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
+import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
 
 const EXTRA_TOGGLES = ["GFE", "Dinner Dates", "Outcall", "Massage"];
 
@@ -392,6 +393,7 @@ export default function SearchPage() {
           })}
         </div>
       </main>
+      <SeoSiloFooter />
     </div>
   );
 }
