@@ -1,36 +1,130 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, X, Search, SlidersHorizontal, MapPin, PlusCircle, Heart, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { previewNavigation } from "@/lib/preview-navigation";
 
 export function MobileNav() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menü öffnen"><Menu size={24} /></Button>
-      </SheetTrigger>
-      <SheetContent className="w-[90vw] overflow-y-auto bg-slate-950 pb-32 text-white sm:max-w-sm">
-        <SheetHeader className="mb-6 text-left">
-          <SheetTitle className="text-white">iWantSexNow.ch</SheetTitle>
-          <SheetDescription className="text-amber-200">Entwicklungs-Vorschau · keine echten Konten oder Buchungen</SheetDescription>
-        </SheetHeader>
-        <nav aria-label="Mobile Vorschau-Navigation" className="space-y-5">
-          <SheetClose asChild><Link href="/" className="block rounded px-3 py-2 font-bold hover:bg-white/10">Startseite</Link></SheetClose>
-          {previewNavigation.map((group) => (
-            <section key={group.label}>
-              <h2 className="mb-2 px-3 text-sm font-bold text-amber-200">{group.label}</h2>
-              <ul className="space-y-1">
-                {group.items.map((item) => (
-                  <li key={item.href}><SheetClose asChild><Link href={item.href} className="block rounded px-3 py-2 text-sm hover:bg-white/10 focus-visible:bg-white/10">{item.label}</Link></SheetClose></li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </nav>
-      </SheetContent>
-    </Sheet>
+    <div className="lg:hidden">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setOpen(!open)}
+        aria-label="Menü öffnen"
+        className="text-white hover:bg-white/10"
+      >
+        {open ? <X size={24} /> : <Menu size={24} />}
+      </Button>
+
+      {open && (
+        <div className="fixed inset-x-0 top-[68px] z-50 border-b border-[#C69C6D]/40 bg-[#07101A]/98 backdrop-blur-xl p-5 text-white shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto">
+          <div className="space-y-1.5">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-[#D5A021] px-2">
+              Suchmaschine & Endpreis-Rechner
+            </div>
+            <Link
+              href="/search"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
+            >
+              <Search size={16} className="text-[#D5A021]" />
+              Schweizweite Meta-Suche & Filter
+            </Link>
+            <Link
+              href="/compare-escorts"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
+            >
+              <SlidersHorizontal size={16} className="text-emerald-400" />
+              Endpreis- & Portal-Matrix
+            </Link>
+            <Link
+              href="/matches"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
+            >
+              <Sparkles size={16} className="text-[#D5A021]" />
+              30-Sekunden Smart-Matcher
+            </Link>
+            <Link
+              href="/favorites"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
+            >
+              <Heart size={16} className="text-rose-400" />
+              Meine Merkliste & Preisvergleich
+            </Link>
+          </div>
+
+          <div className="space-y-1.5 pt-3 border-t border-white/10">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-[#D5A021] px-2">
+              Städte & Kantone
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/escort-zurich"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
+              >
+                <MapPin size={13} className="text-[#D5A021]" /> Zürich & Zug
+              </Link>
+              <Link
+                href="/escort-basel"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
+              >
+                <MapPin size={13} className="text-[#D5A021]" /> Basel
+              </Link>
+              <Link
+                href="/escort-bern"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
+              >
+                <MapPin size={13} className="text-[#D5A021]" /> Bern
+              </Link>
+              <Link
+                href="/escort-geneva"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
+              >
+                <MapPin size={13} className="text-[#D5A021]" /> Genève & Vaud
+              </Link>
+            </div>
+          </div>
+
+          <div className="space-y-2 pt-3 border-t border-white/10">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 px-2">
+              Für Anbieterinnen & Studios (B2B)
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <Link
+                href="/creator-dashboard"
+                onClick={() => setOpen(false)}
+                className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 font-bold text-center"
+              >
+                Provider Dashboard
+              </Link>
+              <Link
+                href="/verify"
+                onClick={() => setOpen(false)}
+                className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 font-bold text-center"
+              >
+                ID- & Foto-Siegel
+              </Link>
+            </div>
+            <Link
+              href="/create-post"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#C69C6D] py-3 text-sm font-black text-[#0D1B2A] shadow-lg"
+            >
+              <PlusCircle size={16} />
+              Profil übernehmen / Inserieren
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

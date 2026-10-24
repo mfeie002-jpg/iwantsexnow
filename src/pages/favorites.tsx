@@ -1,205 +1,163 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import SEO from "@/components/SEO";
+import { Navigation } from "@/components/Navigation";
+import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MapPin, MessageCircle, Star, Trash2 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { Heart, Send, Trash2, Sparkles, ArrowLeft } from "lucide-react";
 
-export default function Favorites() {
-  const router = useRouter();
-  const [favorites, setFavorites] = useState<any[]>([]);
-  const [scrolled, setScrolled] = useState(false);
-  const [headerVisible, setHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+const ALL_PROFILES = [
+  {
+    id: 1,
+    name: "Sophia",
+    age: 26,
+    city: "Zürich, Zug & Winterthur",
+    rate60: 450,
+    portalAvg: 520,
+    included: ["GFE", "Dinner Dates", "Outcall"],
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=700&fit=crop",
+  },
+  {
+    id: 2,
+    name: "Elena",
+    age: 24,
+    city: "Zug, Cham & Zürichsee",
+    rate60: 400,
+    portalAvg: 480,
+    included: ["GFE", "Outcall", "Massage"],
+    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&h=700&fit=crop",
+  },
+  {
+    id: 3,
+    name: "Emma",
+    age: 28,
+    city: "Basel & Zürich",
+    rate60: 350,
+    portalAvg: 420,
+    included: ["GFE", "Massage"],
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=700&fit=crop",
+  },
+  {
+    id: 4,
+    name: "Mia",
+    age: 25,
+    city: "Bern, Zürich & Zug",
+    rate60: 550,
+    portalAvg: 650,
+    included: ["GFE", "Dinner Dates", "Outcall", "Overnight"],
+    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&h=700&fit=crop",
+  },
+];
+
+export default function FavoritesPage() {
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([1, 2]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      setScrolled(currentScrollY > 50);
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setHeaderVisible(false);
-      } else {
-        setHeaderVisible(true);
+    const saved = localStorage.getItem("favorites");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setFavoriteIds(parsed);
+        }
+      } catch {
+        // keep defaults
       }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
-  useEffect(() => {
-    // Load favorites from localStorage
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    setFavorites(savedFavorites);
+    }
   }, []);
 
-  const removeFavorite = (id: number) => {
-    const updated = favorites.filter(f => f.id !== id);
-    setFavorites(updated);
+  const removeFav = (id: number) => {
+    const updated = favoriteIds.filter((item) => item !== id);
+    setFavoriteIds(updated);
     localStorage.setItem("favorites", JSON.stringify(updated));
   };
 
-  // Mock favorites data
-  const mockFavorites = [
-    {
-      id: 1,
-      name: "Sarah",
-      age: 26,
-      location: "Zürich",
-      distance: 5,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-      online: true,
-      verified: true,
-      lastActive: "Active now",
-      bio: "Love traveling and meeting new people"
-    },
-    {
-      id: 2,
-      name: "Mia",
-      age: 24,
-      location: "Genève",
-      distance: 150,
-      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop",
-      online: true,
-      verified: true,
-      lastActive: "Active now",
-      bio: "Looking for genuine connections"
-    },
-    {
-      id: 5,
-      name: "Nina",
-      age: 27,
-      location: "Lausanne",
-      distance: 200,
-      image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=400&fit=crop",
-      online: true,
-      verified: true,
-      lastActive: "Active now",
-      bio: "Fitness enthusiast and traveler"
-    }
-  ];
-
-  const displayFavorites = favorites.length > 0 ? favorites : mockFavorites;
+  const savedProfiles = ALL_PROFILES.filter((p) => favoriteIds.includes(p.id));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <header className={`border-b bg-white/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'py-2 md:py-3' : 'py-3 md:py-4'
-      } ${
-        headerVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}>
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className={`font-bold tracking-tight transition-all duration-300 ${
-                scrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'
-              }`}>
-                <span className="text-[#0D1B2A] dark:text-white">iWant</span>
-                <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
-                <span className="text-[#0D1B2A] dark:text-white">Now</span>
-                <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
-              </span>
-            </Link>
-            <div className="flex items-center gap-2 md:gap-3">
-              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-                <Link href="/members">Browse</Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/profile">Profile</Link>
-              </Button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#0B1623] text-white">
+      <SEO
+        title="Meine Merkliste & Direktvergleich | iWantSexNow.ch"
+        description="Gespeicherte Schweizer Direktprofile und Endpreis-Vergleich."
+      />
+      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-serif font-black">
+            <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
+          </Link>
+          <div className="hidden lg:block"><Navigation /></div>
+          <MobileNav />
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 md:py-12 pt-24 md:pt-28">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-6 md:mb-8">
-            <h1 className="text-3xl md:text-4xl font-black mb-2">Your Favorites</h1>
-            <p className="text-sm md:text-base text-gray-600">
-              {displayFavorites.length} {displayFavorites.length === 1 ? "profile" : "profiles"} you've liked
-            </p>
-          </div>
+      <main className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
+          <ArrowLeft size={14} /> Zurück zur Suche
+        </Link>
 
-          {displayFavorites.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayFavorites.map((profile) => (
-                <Card key={profile.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
-                  <div className="relative">
-                    <img
-                      src={profile.image}
-                      alt={profile.name}
-                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
-                      onClick={() => router.push(`/profile/${profile.id}`)}
-                    />
-                    {profile.online && (
-                      <Badge className="absolute top-3 right-3 bg-green-500 border-0">
-                        Online
-                      </Badge>
-                    )}
-                    {profile.verified && (
-                      <div className="absolute top-3 left-3 bg-blue-500 text-white rounded-full p-1">
-                        <Star size={16} fill="white" />
-                      </div>
-                    )}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeFavorite(profile.id);
-                      }}
-                      className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <h3 className="text-white text-2xl font-bold">{profile.name}, {profile.age}</h3>
-                      <div className="flex items-center gap-1 text-white/90 text-sm">
-                        <MapPin size={14} />
-                        <span>{profile.location} • {profile.distance} km</span>
-                      </div>
-                      <p className="text-white/80 text-xs mt-1">{profile.lastActive}</p>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <p className="text-sm text-gray-600 mb-3">{profile.bio}</p>
-                    <div className="flex gap-2">
-                      <Button className="flex-1 bg-pink-600 hover:bg-pink-700" asChild>
-                        <Link href="/messages">
-                          <MessageCircle size={18} className="mr-2" />
-                          Message
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => removeFavorite(profile.id)}
-                      >
-                        <Heart size={18} className="fill-pink-600 text-pink-600" />
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <Card className="p-12 text-center">
-              <Heart size={64} className="mx-auto text-gray-300 mb-4" />
-              <h2 className="text-2xl font-bold mb-2">No favorites yet</h2>
-              <p className="text-gray-600 mb-6">
-                Start browsing and add members you like to your favorites!
-              </p>
-              <Button className="bg-pink-600 hover:bg-pink-700" asChild>
-                <Link href="/members">Browse Members</Link>
-              </Button>
-            </Card>
-          )}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <Badge className="bg-rose-500/20 text-rose-300 border border-rose-500/40 mb-2">
+              <Heart size={12} className="mr-1 inline fill-rose-400" /> Persönliche Shortlist
+            </Badge>
+            <h1 className="text-3xl md:text-4xl font-serif font-black">
+              Meine Merkliste & Preisvergleich
+            </h1>
+          </div>
+          <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
+            <Link href="/matches">
+              <Sparkles size={15} className="mr-1.5" /> Smart-Matcher öffnen
+            </Link>
+          </Button>
         </div>
-      </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {savedProfiles.map((p) => (
+            <Card key={p.id} className="bg-[#09131E] border border-[#C69C6D]/40 p-5 rounded-2xl text-white flex flex-col justify-between">
+              <div className="flex gap-4">
+                <img src={p.image} alt={p.name} className="w-32 h-40 object-cover rounded-xl shrink-0" />
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-start justify-between">
+                      <h2 className="text-2xl font-serif font-black">{p.name}, {p.age}</h2>
+                      <button
+                        type="button"
+                        onClick={() => removeFav(p.id)}
+                        className="text-gray-400 hover:text-rose-400"
+                        title="Entfernen"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <p className="text-xs text-[#D5A021] font-semibold mt-0.5">📍 {p.city}</p>
+                    <p className="text-xs text-emerald-300 mt-2">✓ Inklusive: {p.included.join(", ")}</p>
+                  </div>
+
+                  <div className="mt-3 bg-white/5 border border-white/10 rounded-xl p-2.5 flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] text-gray-400">Direktbuchungs-Fixpreis</div>
+                      <div className="text-xl font-black text-[#D5A021]">CHF {p.rate60}</div>
+                    </div>
+                    <Badge className="bg-emerald-500/20 text-emerald-300 border-0 text-xs">
+                      Spare CHF {p.portalAvg - p.rate60}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-white/10 flex justify-end gap-2">
+                <Button size="sm" className="bg-[#C69C6D] text-[#0D1B2A] font-black text-xs" asChild>
+                  <Link href={`/profile/${p.id}`}>
+                    <Send size={13} className="mr-1.5" /> Direkt zum Fixpreis buchen
+                  </Link>
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </main>
     </div>
   );
 }
