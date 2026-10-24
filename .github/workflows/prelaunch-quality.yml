@@ -27,6 +27,8 @@ jobs:
         run: node --test tests/pdf-export.test.mjs
       - name: Image and CSS dependency compatibility
         run: node --test tests/dependency-runtime.test.mjs tests/css-selector-compatibility.test.mjs
+      - name: Managed acceptance fixture safety (offline)
+        run: node --test tests/managed-fixture.test.mjs
       - name: TypeScript
         run: npx tsc --noEmit
       - name: Production build
