@@ -67,6 +67,13 @@ for (const file of publicPages) {
     }
   }
 }
+// Cleanup must not leave informational pages advertising removed fixtures or filters.
+for (const route of ["about", "privacy", "terms"]) {
+ const visible = text(fs.readFileSync(path.join(pageRoot, route + ".html"), "utf8"));
+ for (const stale of ["Die gezeigten Namen, Fotos", "Die Suche und Filter arbeiten mit Beispieldaten", "Angezeigte Personen und Bewertungen sind Demo-Beispiele", "Buchungsbeispiele dienen der Darstellung"]) {
+  assert(!visible.includes(stale), route + ": stale claim about removed fictional content");
+ }
+}
 const home = fs.readFileSync(path.join(pageRoot, "index.html"), "utf8");
 assert(text(home).includes("Plattform noch nicht freigeschaltet"), "Homepage must remain inactive");
 assert(!/<form\b/i.test(home), "Homepage exposes a contact/newsletter form without delivery");

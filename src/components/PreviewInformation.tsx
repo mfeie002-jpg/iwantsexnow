@@ -7,8 +7,8 @@ const information = {
     title: "Über diese Vorschau",
     lead: "iWantSexNow.ch zeigt einen Entwurf für einen Schweizer Inserate-Marktplatz. Es gibt noch keinen aktiven Vermittlungsbetrieb.",
     sections: [
-      ["Fiktive Beispiele", "Die gezeigten Namen, Fotos, Bewertungen, Preise und Aktivitätsdaten sind Designbeispiele. Sie belegen weder echte Nutzer noch geprüfte Anbieter oder verfügbare Leistungen."],
-      ["Was sich ausprobieren lässt", "Die Suche und Filter arbeiten mit Beispieldaten. Ausgewählte Stadtseiten und Profilansichten zeigen mögliche Layouts. Es werden keine echten Buchungen, Nachrichten oder Zahlungen ausgeführt."],
+      ["Keine veröffentlichten Profile", "Die bisherigen Beispieldaten wurden entfernt. Aktuell werden keine öffentlichen Profile, Bewertungen, Preise oder Verfügbarkeiten angezeigt."],
+      ["Welche Funktionen verfügbar sind", "Die öffentliche Suche und die Stadtseiten sind noch nicht freigeschaltet. Frühere Profilansichten wurden entfernt. Es werden keine Buchungen, Nachrichten oder Zahlungen ausgeführt."],
       ["Vor einer Freischaltung", "Sichere Konten, Alters- und Profilprüfung, Einwilligungen, Moderation, echte Kontaktwege und vollständige Betreiber- und Vertragsinformationen müssen erst umgesetzt und geprüft werden."],
     ],
   },

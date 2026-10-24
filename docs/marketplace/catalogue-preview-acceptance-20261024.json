@@ -17,7 +17,7 @@
     "typescript": "PASS",
     "unitTests": "83/83",
     "staticSmoke": "167/167; 50 static pages",
-    "integrity": "1846/1846; 244 links, 20 paths",
+    "integrity": "1858/1858; 244 links, 20 paths",
     "httpRoutes": "52/52",
     "publicActionGates": "12/12; definitions unchanged",
     "privateDisabled": "6/6",
@@ -37,5 +37,17 @@
     "No fresh managed-backend acceptance run; private code is unchanged.",
     "No merge or deployment.",
     "Separate catalogue/design edits remain uncommitted in the original checkout."
-  ]
+  ],
+  "followUp": {
+    "scope": "Correct About/privacy/terms statements that still claimed removed fictional records and demo filters were displayed. Add 12 built-copy regression assertions.",
+    "freshValidation": [
+      "Production build including TypeScript",
+      "Static smoke 167/167",
+      "Integrity 1858/1858",
+      "HTTP routes 52/52 and gates 12/12",
+      "Private disabled 6/6",
+      "Retired catalogue HTTP 6/6"
+    ],
+    "previousValidation": "Other recorded local checks were run for fa63a3a; full GitHub CI runs again on the follow-up head."
+  }
 }
