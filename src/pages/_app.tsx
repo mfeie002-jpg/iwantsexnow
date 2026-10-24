@@ -6,7 +6,7 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 
 const routeMeta: Record<string, { title: string; description: string }> = {
- "/": { title: "Plattform noch nicht freigeschaltet | iWantSexNow.ch", description: "Keine öffentlichen Profile, Anfragen oder Zahlungen." },
+ "/": { title: "Informationen & Orientierung | iWantSexNow.ch", description: "Häufige Fragen, Datenschutzinformationen und Kontaktstatus an einem Ort. Persönliche Funktionen bleiben deaktiviert." },
  "/search": { title: "Inserate noch nicht freigeschaltet | iWantSexNow.ch", description: "Es sind keine öffentlichen Inserate veröffentlicht." },
 };
 

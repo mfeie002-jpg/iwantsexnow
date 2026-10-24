@@ -11,7 +11,7 @@ if (!fs.existsSync(pageRoot)) {
 }
 
 const critical = [
-  { file: "index.html", must: ["Plattform noch nicht freigeschaltet"], mustNot: ["50,000+", "Join FREE today"] },
+  { file: "index.html", must: ["Mehr Klarheit.", "Informationen ansehen", "Persönliche Funktionen bleiben geschlossen."], mustNot: ["50,000+", "Join FREE today"] },
   { file: "escort-zurich.html", must: ["Inserate Zürich noch nicht freigeschaltet"], mustNot: ["bookings today", "100% Verified"] },
   { file: "register.html", must: ["Registrierung noch nicht freigeschaltet"], mustNot: ["type=\"password\"", "Create Your Account"] },
   { file: "login.html", must: ["Anmeldung noch nicht freigeschaltet"], mustNot: ["type=\"password\""] },
