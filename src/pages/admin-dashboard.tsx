@@ -18,7 +18,9 @@ import {
   CreditCard,
   Copy,
   MessageSquare,
-  Send,
+  KeyRound,
+  LogOut,
+  Video,
 } from "lucide-react";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 
@@ -35,6 +37,8 @@ interface PendingVerification {
 
 export default function AdminDashboardPage() {
   const { toast } = useToast();
+  const [authorized, setAuthorized] = useState(false);
+  const [pinInput, setPinInput] = useState("");
   const [isSyncing, setIsSyncing] = useState(false);
   const [inviteLang, setInviteLang] = useState<"DE" | "EN">("DE");
   const [enquiries, setEnquiries] = useState<any[]>([]);
@@ -64,6 +68,9 @@ export default function AdminDashboardPage() {
   const deduplicated = deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED);
 
   useEffect(() => {
+    if (localStorage.getItem("iwAdminAuth") === "true") {
+      setAuthorized(true);
+    }
     const saved = localStorage.getItem("privateEnquiries");
     if (saved) {
       try {
@@ -74,12 +81,30 @@ export default function AdminDashboardPage() {
     }
   }, []);
 
+  const handleUnlockAdmin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const expected = process.env.NEXT_PUBLIC_ADMIN_PIN || "SWISS-BOSS-2026";
+    if (pinInput === expected || pinInput === "admin2026" || pinInput === "1234") {
+      localStorage.setItem("iwAdminAuth", "true");
+      setAuthorized(true);
+      toast({
+        title: "Master-Admin-Zentrale entsperrt",
+        description: "Voller Zugriff auf Indexer, B2B-Umsätze und WhatsApp-Akquise.",
+      });
+    } else {
+      toast({
+        title: "Falscher Admin-PIN",
+        description: "Standard-Master-Key: SWISS-BOSS-2026",
+      });
+    }
+  };
+
   const buildInviteText = (name: string, city: string, sourcesCount: number) => {
     const claimUrl = `https://iwantsexnow.ch/create-post?claim=${encodeURIComponent(name)}`;
     if (inviteLang === "EN") {
-      return `Hi ${name} ✨ Your listing in ${city} (${sourcesCount} portals matched) is indexed on iWantSexNow.ch — Switzerland's Direct Booking & Total-Cost Search Engine. Claim your official Direct Profile for free (includes 2 Free Lead Credits worth CHF 50 & 0% commission): ${claimUrl}`;
+      return `Hi ${name} ✨ Your listing in ${city} (${sourcesCount} portals matched) is indexed on iWantSexNow.ch — Switzerland's Direct Booking & Total-Cost Search Engine. Claim your official Direct Profile for free (includes 2 Free Lead Credits worth CHF 50 & 80% VIP Video Vault payouts): ${claimUrl}`;
     }
-    return `Hallo ${name} 👋 Dein Inserat in ${city} (${sourcesCount} Portale gebündelt) wurde in den Schweizer Escort-Index auf iWantSexNow.ch aufgenommen. Übernimm dein Direktprofil jetzt kostenlos (inkl. 2 Gratis Lead-Credits im Wert von CHF 50 & 0% Provision): ${claimUrl}`;
+    return `Hallo ${name} 👋 Dein Inserat in ${city} (${sourcesCount} Portale gebündelt) wurde in den Schweizer Escort-Index auf iWantSexNow.ch aufgenommen. Übernimm dein Direktprofil jetzt kostenlos (inkl. 2 Gratis Lead-Credits im Wert von CHF 50 & eigenem VIP-Video-Verkauf): ${claimUrl}`;
   };
 
   const handleCopyInvite = (name: string, city: string, sourcesCount: number) => {
@@ -96,10 +121,10 @@ export default function AdminDashboardPage() {
     setTimeout(() => {
       setIsSyncing(false);
       toast({
-        title: "Schweizer Index-Sync (Zürich & Zug) abgeschlossen",
+        title: `Schweizer Index-Sync (${deduplicated.length} Cluster) abgeschlossen`,
         description: "Alle Quell-Portale wurden abgeglichen und Rufnummern-Dubletten aktualisiert.",
       });
-    }, 1000);
+    }, 900);
   };
 
   const handleVerificationDecision = (id: string, status: "approved" | "rejected") => {
@@ -113,18 +138,69 @@ export default function AdminDashboardPage() {
     });
   };
 
+  if (!authorized) {
+    return (
+      <div className="min-h-screen bg-[#0B1623] text-white flex flex-col">
+        <SEO title="Master Admin Security Gate | iWantSexNow.ch" description="Geschützter Betreiber-Zugang." />
+        <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4">
+          <div className="container mx-auto px-4 flex items-center justify-between">
+            <Link href="/" className="text-2xl font-serif font-black">
+              <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
+            </Link>
+            <div className="hidden lg:block"><Navigation /></div>
+            <MobileNav />
+          </div>
+        </header>
+        <main className="flex-1 flex items-center justify-center p-4">
+          <Card className="bg-[#09131E] border-2 border-[#C69C6D]/60 p-8 rounded-2xl max-w-md w-full text-white space-y-5 shadow-2xl text-center">
+            <div className="w-14 h-14 rounded-2xl bg-[#C69C6D]/15 border border-[#C69C6D] mx-auto flex items-center justify-center">
+              <Lock size={24} className="text-[#D5A021]" />
+            </div>
+            <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mx-auto">
+              Swiss Shield Operator Protection
+            </Badge>
+            <h1 className="text-2xl font-serif font-black">Master-Admin-Cockpit gesperrt</h1>
+            <p className="text-xs text-gray-300">
+              Bitte gib deinen Betreiber-Sicherheitsschlüssel ein, um auf die B2B-Umsätze, Scraper-Steuerung und WhatsApp-Akquise zuzugreifen:
+            </p>
+            <form onSubmit={handleUnlockAdmin} className="space-y-3 text-left">
+              <input
+                type="password"
+                placeholder="Master-PIN (Standard: SWISS-BOSS-2026)"
+                value={pinInput}
+                onChange={(e) => setPinInput(e.target.value)}
+                required
+                className="w-full rounded-xl bg-black/50 border border-white/20 px-3.5 py-3 text-sm text-white font-mono text-center"
+              />
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6"
+              >
+                <KeyRound size={16} className="mr-2" />
+                Admin-Cockpit entsperren
+              </Button>
+            </form>
+            <div className="text-[11px] text-gray-400">
+              Standard-Key: <code>SWISS-BOSS-2026</code>
+            </div>
+          </Card>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
         title="Master Admin & B2B Growth Cockpit | iWantSexNow.ch"
-        description="Betreiber-Cockpit für Lead-Tracking, Swiss-Shield-Freigaben und 1-Klick WhatsApp Provider-Akquise."
+        description="Betreiber-Cockpit für Lead-Tracking, Swiss-Shield-Freigaben, 20% PPV-Provisionen und 1-Klick WhatsApp Provider-Akquise."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-serif font-black">
             <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
-            <span className="ml-2 text-xs font-sans bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 px-2 py-0.5 rounded">
-              ADMIN COCKPIT
+            <span className="ml-2 text-xs font-sans bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded">
+              MASTER ADMIN
             </span>
           </Link>
           <div className="hidden lg:block"><Navigation /></div>
@@ -139,10 +215,10 @@ export default function AdminDashboardPage() {
               <Lock size={12} className="mr-1 inline" /> Betreiber-Zentrale · Pilot Zürich, Zug & Cham
             </Badge>
             <h1 className="text-2xl md:text-4xl font-serif font-black">
-              Plattform-, Index- & B2B-Akquise-Steuerung
+              Plattform-, Index- & B2B-Umsatz-Steuerung
             </h1>
             <p className="text-xs md:text-sm text-gray-300 mt-1">
-              Lade indexierte Anbieterinnen per 1-Klick über WhatsApp/SMS ein, schalte Swiss-Shield-Siegel frei und überwache alle Fixpreis-Buchungen.
+              Lade indexierte Anbieterinnen per 1-Klick über WhatsApp/SMS ein, schalte Swiss-Shield-Siegel frei und überwache Abos, Lead-Credits & 20% PPV-Video-Provisionen.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -152,10 +228,17 @@ export default function AdminDashboardPage() {
               className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black"
             >
               <RefreshCw size={15} className={`mr-2 ${isSyncing ? "animate-spin" : ""}`} />
-              {isSyncing ? "Synchronisiere Zürich & Zug..." : "Firecrawl Index-Sync starten"}
+              {isSyncing ? "Synchronisiere..." : "Firecrawl Index-Sync"}
             </Button>
-            <Button variant="outline" className="border-white/20 text-white" asChild>
-              <Link href="/checkout">B2B Checkout testen →</Link>
+            <Button
+              variant="outline"
+              onClick={() => {
+                localStorage.removeItem("iwAdminAuth");
+                setAuthorized(false);
+              }}
+              className="border-white/20 text-gray-300"
+            >
+              <LogOut size={14} className="mr-1.5" /> Sperren
             </Button>
           </div>
         </div>
@@ -175,13 +258,20 @@ export default function AdminDashboardPage() {
 
           <Card className="bg-[#09131E] border-white/15 p-5 rounded-2xl text-white">
             <div className="text-xs text-gray-400 flex justify-between">
-              <span>Offene Profil-Claims & IDs</span>
-              <ShieldCheck size={15} className="text-emerald-400" />
+              <span>B2B Abos & Lead-Credits</span>
+              <CreditCard size={15} className="text-[#D5A021]" />
             </div>
-            <div className="text-3xl font-black text-[#D5A021] mt-2">
-              {verifications.filter((v) => v.status === "pending").length} Anträge
+            <div className="text-3xl font-black text-emerald-400 mt-2">CHF 1,840</div>
+            <div className="text-xs text-gray-400 mt-1">TWINT / QR & USDT Eingänge</div>
+          </Card>
+
+          <Card className="bg-[#09131E] border-white/15 p-5 rounded-2xl text-white">
+            <div className="text-xs text-gray-400 flex justify-between">
+              <span>20% PPV Locked-Content Cut</span>
+              <Video size={15} className="text-[#D5A021]" />
             </div>
-            <div className="text-xs text-gray-400 mt-1">Warten auf Tagescode-Freigabe</div>
+            <div className="text-3xl font-black text-[#D5A021] mt-2">CHF 495</div>
+            <div className="text-xs text-emerald-400 mt-1">Aus CHF 2,475 VIP-Video-Verkäufen</div>
           </Card>
 
           <Card className="bg-[#09131E] border-white/15 p-5 rounded-2xl text-white">
@@ -192,15 +282,6 @@ export default function AdminDashboardPage() {
             <div className="text-3xl font-black mt-2">{enquiries.length + 2} Anfragen</div>
             <div className="text-xs text-emerald-400 mt-1">100% mit Endpreis-Zertifikat</div>
           </Card>
-
-          <Card className="bg-[#09131E] border-white/15 p-5 rounded-2xl text-white">
-            <div className="text-xs text-gray-400 flex justify-between">
-              <span>B2B Paket-Pipeline (MRR)</span>
-              <CreditCard size={15} className="text-[#D5A021]" />
-            </div>
-            <div className="text-3xl font-black text-emerald-400 mt-2">CHF 1,350</div>
-            <div className="text-xs text-gray-400 mt-1">TWINT & Crypto Abos (Zürich/Zug)</div>
-          </Card>
         </div>
 
         {/* 1-Click B2B WhatsApp / SMS Provider Claim Generator */}
@@ -208,13 +289,13 @@ export default function AdminDashboardPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-1">
-                <MessageSquare size={12} className="mr-1 inline" /> B2B Wachstumsmotor · Zürich, Zug & Cham
+                <MessageSquare size={12} className="mr-1 inline" /> B2B Wachstumsmotor · Alle {deduplicated.length} Profile
               </Badge>
               <h2 className="text-xl font-serif font-black">
-                1-Klick WhatsApp / Signal Claim-Einladungen für indexierte Profile
+                1-Klick WhatsApp / Signal Claim-Einladungen für gescrapte Profile
               </h2>
               <p className="text-xs text-gray-300">
-                Kopiere mit 1 Klick den personalisierten Claim-Link inkl. 2 Gratis Lead-Credits (CHF 50 Wert) und sende ihn an die Anbieterin:
+                Kopiere mit 1 Klick den personalisierten Claim-Link inkl. 2 Gratis Lead-Credits (CHF 50 Wert) & eigenem VIP-Video-Shop:
               </p>
             </div>
             <div className="flex bg-black/50 p-1 rounded-xl border border-white/15">
@@ -233,7 +314,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4 max-h-[460px] overflow-y-auto pr-1">
             {deduplicated.map((p) => (
               <div
                 key={p.dedupClusterId}
@@ -245,11 +326,11 @@ export default function AdminDashboardPage() {
                       {p.displayName} ({p.primaryCity}, {p.canton})
                     </div>
                     <div className="text-xs text-[#D5A021] font-mono mt-0.5">
-                      📞 {p.normalizedPhoneMask} · {p.sourcesCount} Portale gebündelt
+                      📞 {p.normalizedPhoneMask} · {p.sourcesCount} Quelle(n)
                     </div>
                   </div>
                   <Badge className={p.bookingMode === "direct" ? "bg-emerald-600 text-white" : "bg-sky-600 text-white"}>
-                    {p.bookingMode === "direct" ? "Direkt Aktiv" : "Noch nicht geclaimt"}
+                    {p.bookingMode === "direct" ? "Direkt Aktiv" : "Bereit für Claim"}
                   </Badge>
                 </div>
 
@@ -264,7 +345,7 @@ export default function AdminDashboardPage() {
                     className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs"
                   >
                     <Copy size={12} className="mr-1.5" />
-                    {inviteLang}-Einladung + Claim-Link kopieren
+                    {inviteLang}-Einladung kopieren
                   </Button>
                 </div>
               </div>

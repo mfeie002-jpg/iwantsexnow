@@ -10,17 +10,18 @@ import { useToast } from "@/hooks/use-toast";
 import {
   ShieldCheck,
   Bell,
-  TrendingUp,
-  MapPin,
   Calculator,
   RefreshCw,
   Check,
   X,
-  Globe,
-  Lock,
   Unlock,
   Coins,
   Zap,
+  Lock,
+  Video,
+  PlusCircle,
+  Wallet,
+  LogOut,
 } from "lucide-react";
 
 interface IncomingLead {
@@ -36,6 +37,14 @@ interface IncomingLead {
   createdAt: string;
   status?: "new" | "accepted" | "declined";
   unlocked?: boolean;
+}
+
+interface VaultMediaItem {
+  id: string;
+  title: string;
+  type: "video" | "photos" | "bundle";
+  priceChf: number;
+  unlockCount: number;
 }
 
 const DEFAULT_DEMO_LEADS: IncomingLead[] = [
@@ -60,19 +69,25 @@ const DEFAULT_DEMO_LEADS: IncomingLead[] = [
     extras: ["GFE", "Massage"],
     guaranteedTotalChf: 500,
     requestedTime: "Morgen, 18:00 Uhr",
-    city: "ZÃ¼rich Paradeplatz (Incall)",
+    city: "Zürich Paradeplatz (Incall)",
     contact: "Threema-ID: CH98K29A",
-    notes: "Erstkontakt Ã¼ber Endpreis-Rechner.",
+    notes: "Erstkontakt über Endpreis-Rechner.",
     createdAt: new Date(Date.now() - 95 * 60000).toISOString(),
     status: "accepted",
     unlocked: true,
   },
 ];
 
+const INITIAL_VAULT_ITEMS: VaultMediaItem[] = [
+  { id: "vid-1", title: "Unzensiertes 4K Vorab-Verifizierungsvideo (01:45 Min.)", type: "video", priceChf: 19, unlockCount: 14 },
+  { id: "set-2", title: "Uncensored Lingerie & Private Hotel Set (12 Fotos)", type: "photos", priceChf: 29, unlockCount: 9 },
+  { id: "vid-3", title: "VIP Vorab-Check Bundle (Alle Videos + CHF 20 Gutschein)", type: "bundle", priceChf: 39, unlockCount: 11 },
+];
+
 export default function CreatorDashboardPage() {
   const { toast } = useToast();
-  const [activeZone, setActiveZone] = useState("ZÃ¼rich City & Zug (Outcall)");
-  const [lastConfirmedMins, setLastConfirmedMins] = useState(1);
+  const [providerName, setProviderName] = useState("Sophia");
+  const [activeZone] = useState("Zürich City & Zug (Outcall)");
   const [rate30, setRate30] = useState(300);
   const [rate60, setRate60] = useState(450);
   const [rate120, setRate120] = useState(800);
@@ -80,15 +95,23 @@ export default function CreatorDashboardPage() {
   const [leads, setLeads] = useState<IncomingLead[]>(DEFAULT_DEMO_LEADS);
   const [leadCredits, setLeadCredits] = useState<number>(2);
 
+  // PPV Locked Content Manager State
+  const [vaultItems, setVaultItems] = useState<VaultMediaItem[]>(INITIAL_VAULT_ITEMS);
+  const [newMediaTitle, setNewMediaTitle] = useState("");
+  const [newMediaPrice, setNewMediaPrice] = useState(25);
+  const [newMediaType, setNewMediaType] = useState<"video" | "photos">("video");
+
   useEffect(() => {
+    const loggedUser = localStorage.getItem("iwProviderAuth");
+    if (loggedUser) setProviderName(loggedUser);
+
     const savedCredits = localStorage.getItem("providerLeadCredits");
-    if (savedCredits) {
-      setLeadCredits(Number(savedCredits));
-    }
-    const stored = localStorage.getItem("privateEnquiries");
-    if (stored) {
+    if (savedCredits) setLeadCredits(Number(savedCredits));
+
+    const storedLeads = localStorage.getItem("privateEnquiries");
+    if (storedLeads) {
       try {
-        const parsed = JSON.parse(stored) as IncomingLead[];
+        const parsed = JSON.parse(storedLeads) as IncomingLead[];
         if (Array.isArray(parsed) && parsed.length > 0) {
           setLeads([
             ...parsed.map((l) => ({ ...l, status: l.status || ("new" as const), unlocked: false })).reverse(),
@@ -99,12 +122,53 @@ export default function CreatorDashboardPage() {
         // ignore
       }
     }
+
+    const storedVault = localStorage.getItem("providerVaultItems");
+    if (storedVault) {
+      try {
+        setVaultItems(JSON.parse(storedVault));
+      } catch {
+        // ignore
+      }
+    }
   }, []);
+
+  const grossVaultRevenue = vaultItems.reduce((sum, item) => sum + item.priceChf * item.unlockCount, 0);
+  const netProviderPayout = Math.round(grossVaultRevenue * 0.8);
+  const platformFee = grossVaultRevenue - netProviderPayout;
+
+  const handleAddVaultItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMediaTitle.trim()) return;
+    const item: VaultMediaItem = {
+      id: `custom-${Date.now()}`,
+      title: newMediaTitle.trim(),
+      type: newMediaType,
+      priceChf: Number(newMediaPrice) || 25,
+      unlockCount: 1,
+    };
+    const updated = [item, ...vaultItems];
+    setVaultItems(updated);
+    localStorage.setItem("providerVaultItems", JSON.stringify(updated));
+    setNewMediaTitle("");
+    toast({
+      title: "Neuer Locked-Content im Profil-Tresor veröffentlicht!",
+      description: `"${item.title}" ist ab sofort für CHF ${item.priceChf} auf deinem Profil freischaltbar (80% Direkt-Auszahlung an dich).`,
+    });
+  };
+
+  const handleRequestPayout = () => {
+    toast({
+      title: `Auszahlung von CHF ${netProviderPayout} angefordert!`,
+      description: "Dein 80% VIP-Medien-Erlös wird per TWINT / USDT auf dein hinterlegtes Konto überwiesen.",
+      duration: 4500,
+    });
+  };
 
   const handleUnlockLead = (id: number) => {
     if (leadCredits <= 0) {
       toast({
-        title: "Keine Lead-Credits mehr verfÃ¼gbar",
+        title: "Keine Lead-Credits mehr verfügbar",
         description: "Bitte lade dein Lead-Guthaben per TWINT, Swiss QR oder USDT auf.",
       });
       return;
@@ -115,29 +179,25 @@ export default function CreatorDashboardPage() {
     setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, unlocked: true } : l)));
     toast({
       title: "Kunden-Kontakt erfolgreich freigeschaltet!",
-      description: `1 Lead-Credit eingelÃ¶st (Restguthaben: ${nextCredits} Credits). Du siehst jetzt die volle Rufnummer / Threema-ID.`,
-      duration: 4000,
+      description: `1 Lead-Credit eingelöst (Restguthaben: ${nextCredits} Credits).`,
     });
   };
 
   const handleConfirmFreshness = () => {
-    setLastConfirmedMins(0);
     toast({
-      title: "Echtzeit-VerfÃ¼gbarkeit bestÃ¤tigt!",
-      description: `Dein Profil trÃ¤gt jetzt den grÃ¼nen Live-Zeitstempel fÃ¼r ${activeZone}.`,
-      duration: 3500,
+      title: "Echtzeit-Verfügbarkeit bestätigt!",
+      description: `Dein Profil (${providerName}) trägt jetzt den grünen Live-Zeitstempel für ${activeZone}.`,
     });
   };
 
   const handleLeadAction = (id: number, status: "accepted" | "declined") => {
     setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status, unlocked: true } : l)));
     toast({
-      title: status === "accepted" ? "Buchungsanfrage bestÃ¤tigt" : "Anfrage abgelehnt",
+      title: status === "accepted" ? "Buchungsanfrage bestätigt" : "Anfrage abgelehnt",
       description:
         status === "accepted"
-          ? "Der Kunde erhÃ¤lt deine diskrete TerminbestÃ¤tigung zum vereinbarten Fixpreis."
+          ? "Der Kunde erhält deine diskrete Terminbestätigung zum vereinbarten Fixpreis."
           : "Die Anfrage wurde archiviert.",
-      duration: 2500,
     });
   };
 
@@ -148,15 +208,15 @@ export default function CreatorDashboardPage() {
   };
 
   const maskContactString = (raw: string) => {
-    if (raw.length <= 6) return "â€¢â€¢â€¢â€¢â€¢â€¢";
-    return raw.slice(0, 8) + " â€¢â€¢ â€¢â€¢ (Gesperrt)";
+    if (raw.length <= 6) return "••••••";
+    return raw.slice(0, 8) + " •• •• (Gesperrt)";
   };
 
   return (
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
-        title="Provider Self-Service & Lead-Tresor | iWantSexNow.ch"
-        description="Verwalte deine Echtzeit-VerfÃ¼gbarkeit, Lead-Credits und direkte Fixpreis-Buchungsanfragen."
+        title="Provider Self-Service, Lead-Tresor & VIP Media Manager | iWantSexNow.ch"
+        description="Verwalte deine Echtzeit-Verfügbarkeit, Lead-Credits, gesperrte VIP-Videos (Locked Content) und Direktbuchungen."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -169,22 +229,25 @@ export default function CreatorDashboardPage() {
       </header>
 
       <main className="container mx-auto px-4 py-10 max-w-7xl space-y-8">
-        {/* Top Bar with Credit Balance & 24h Boost Button */}
+        {/* Top Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-[#09131E] border border-[#C69C6D]/40 rounded-2xl p-6 shadow-2xl">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                <ShieldCheck size={13} className="mr-1 inline" /> Autorisiertes Direktprofil
+                <ShieldCheck size={13} className="mr-1 inline" /> Eingeloggt als: {providerName}
               </Badge>
               <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-                <Coins size={12} className="mr-1 inline" /> VerfÃ¼gbare Lead-Credits: {leadCredits}
+                <Coins size={12} className="mr-1 inline" /> Lead-Credits: {leadCredits}
+              </Badge>
+              <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                <Wallet size={12} className="mr-1 inline" /> VIP-Video Guthaben (80%): CHF {netProviderPayout}
               </Badge>
             </div>
             <h1 className="text-2xl md:text-4xl font-serif font-black">
-              Provider Control Center & Lead-Tresor
+              Provider Control Center & VIP Media Tresor
             </h1>
             <p className="text-sm text-gray-300 mt-1">
-              Schalte eingehende Fixpreis-Buchungen frei, pinge deine Echtzeit-VerfÃ¼gbarkeit und verwalte deine Tarife.
+              Steuere deine Fixpreis-Buchungen, verkaufe gesperrte Vorab-Videos (Locked Content) und pinge deine Live-Verfügbarkeit.
             </p>
           </div>
 
@@ -195,7 +258,7 @@ export default function CreatorDashboardPage() {
               asChild
             >
               <Link href="/checkout?plan=credits_5">
-                <Coins size={15} className="mr-1.5" /> Lead-Credits / VIP aufladen
+                <Coins size={15} className="mr-1.5" /> Credits / VIP aufladen
               </Link>
             </Button>
             <Button
@@ -203,96 +266,193 @@ export default function CreatorDashboardPage() {
               className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black shadow-xl"
             >
               <RefreshCw size={15} className="mr-2" />
-              Jetzt fÃ¼r 4 Std. â€žSofort VerfÃ¼gbarâ€œ pingen
+              4 Std. „Sofort Verfügbar“ pingen
             </Button>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Left 7 Cols: Pay-Per-Lead Inbox */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-serif font-black flex items-center gap-2">
-                <Bell size={18} className="text-[#D5A021]" />
-                Eingegangene Fixpreis-Buchungsanfragen ({leads.length})
-              </h2>
-              <Link href="/checkout?plan=vip_monthly" className="text-xs text-[#D5A021] underline font-bold">
-                Mit VIP-Paket alle Leads automatisch freischalten â†’
-              </Link>
-            </div>
+          {/* Left 7 Cols: Pay-Per-Lead Inbox + Locked Content Vault Manager */}
+          <div className="lg:col-span-7 space-y-8">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-serif font-black flex items-center gap-2">
+                  <Bell size={18} className="text-[#D5A021]" />
+                  Eingegangene Fixpreis-Buchungsanfragen ({leads.length})
+                </h2>
+                <Link href="/checkout?plan=vip_monthly" className="text-xs text-[#D5A021] underline font-bold">
+                  Mit VIP-Paket alle Leads automatisch freischalten →
+                </Link>
+              </div>
 
-            {leads.map((lead) => (
-              <Card
-                key={lead.id}
-                className="p-5 rounded-2xl bg-[#09131E] border border-[#C69C6D]/50 text-white shadow-xl space-y-3"
-              >
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-emerald-500 text-[#0D1B2A] font-black text-[11px]">
-                        FIXPREIS AKZEPTIERT
-                      </Badge>
-                      <span className="text-xs text-gray-300">
-                        ðŸ“ {lead.city} Â· ðŸ•’ {lead.requestedTime}
-                      </span>
+              {leads.map((lead) => (
+                <Card
+                  key={lead.id}
+                  className="p-5 rounded-2xl bg-[#09131E] border border-[#C69C6D]/50 text-white shadow-xl space-y-3"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-emerald-500 text-[#0D1B2A] font-black text-[11px]">
+                          FIXPREIS AKZEPTIERT
+                        </Badge>
+                        <span className="text-xs text-gray-300">
+                          📍 {lead.city} · 🕒 {lead.requestedTime}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold mt-2">
+                        {lead.duration} Min. Direktbuchung · Extras: {lead.extras.join(", ")}
+                      </h3>
                     </div>
-                    <h3 className="text-lg font-bold mt-2">
-                      {lead.duration} Min. Direktbuchung Â· Extras: {lead.extras.join(", ")}
-                    </h3>
+
+                    <div className="text-right bg-black/40 border border-[#C69C6D]/40 rounded-xl px-3.5 py-2">
+                      <div className="text-[10px] text-gray-400 uppercase">Dein Honorar (0% Abzug)</div>
+                      <div className="text-2xl font-black text-[#D5A021]">CHF {lead.guaranteedTotalChf}</div>
+                    </div>
                   </div>
 
-                  <div className="text-right bg-black/40 border border-[#C69C6D]/40 rounded-xl px-3.5 py-2">
-                    <div className="text-[10px] text-gray-400 uppercase">Dein Honorar (0% Abzug)</div>
-                    <div className="text-2xl font-black text-[#D5A021]">CHF {lead.guaranteedTotalChf}</div>
-                  </div>
-                </div>
+                  <div className="p-3.5 rounded-xl bg-black/40 border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div>
+                      <span className="text-gray-400 block">Hinterlegter Kunden-Kontakt (SMS / WhatsApp / Signal / Threema):</span>
+                      {lead.unlocked ? (
+                        <strong className="text-emerald-400 text-sm font-mono">{lead.contact}</strong>
+                      ) : (
+                        <strong className="text-amber-300 text-sm font-mono">{maskContactString(lead.contact)}</strong>
+                      )}
+                      {lead.notes && <div className="text-gray-300 mt-1">Notiz: {lead.notes}</div>}
+                    </div>
 
-                {/* Contact Unlock Vault */}
-                <div className="p-3.5 rounded-xl bg-black/40 border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                  <div>
-                    <span className="text-gray-400 block">Hinterlegter Kunden-Kontakt (SMS / WhatsApp / Signal / Threema):</span>
-                    {lead.unlocked ? (
-                      <strong className="text-emerald-400 text-sm font-mono">{lead.contact}</strong>
-                    ) : (
-                      <strong className="text-amber-300 text-sm font-mono">{maskContactString(lead.contact)}</strong>
+                    {!lead.unlocked && (
+                      <Button
+                        size="sm"
+                        onClick={() => handleUnlockLead(lead.id)}
+                        className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs shrink-0"
+                      >
+                        <Unlock size={13} className="mr-1.5" />
+                        Kontakt freischalten (1 Credit)
+                      </Button>
                     )}
-                    {lead.notes && <div className="text-gray-300 mt-1">Notiz: {lead.notes}</div>}
                   </div>
 
-                  {!lead.unlocked && (
+                  <div className="flex items-center justify-end gap-2 pt-1">
                     <Button
                       size="sm"
-                      onClick={() => handleUnlockLead(lead.id)}
-                      className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs shrink-0"
+                      variant="outline"
+                      onClick={() => handleLeadAction(lead.id, "declined")}
+                      className="border-white/20 text-gray-300 text-xs"
                     >
-                      <Unlock size={13} className="mr-1.5" />
-                      Kontakt freischalten (1 Credit)
+                      <X size={13} className="mr-1" /> Ablehnen
                     </Button>
-                  )}
-                </div>
+                    <Button
+                      size="sm"
+                      onClick={() => handleLeadAction(lead.id, "accepted")}
+                      className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs"
+                    >
+                      <Check size={13} className="mr-1" /> Termin bestätigen
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
 
-                <div className="flex items-center justify-end gap-2 pt-1">
+            {/* NEW: LOCKED CONTENT VAULT MANAGER (80% Provider / 20% Platform Split) */}
+            <Card className="bg-gradient-to-br from-[#131F31] to-[#09131E] border-2 border-[#C69C6D]/60 p-6 rounded-2xl text-white space-y-5 shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <Badge className="bg-[#C69C6D] text-[#0D1B2A] font-black mb-1.5">
+                    <Lock size={12} className="mr-1 inline" /> Passives Einkommen · Locked VIP Content Tresor
+                  </Badge>
+                  <h2 className="text-xl font-serif font-black">
+                    Gesperrte Vorab-Videos & Uncensored Foto-Sets verkaufen
+                  </h2>
+                  <p className="text-xs text-gray-300 mt-0.5">
+                    Kunden können deine privaten Videos & Fotos vor der Buchung freischalten. Du erhältst <strong>80% Direkt-Auszahlung</strong> (20% Plattform-Gebühr).
+                  </p>
+                </div>
+                <div className="bg-black/50 border border-emerald-500/40 rounded-xl p-3 text-right">
+                  <div className="text-[10px] text-gray-400 uppercase">Dein 80% Netto-Erlös</div>
+                  <div className="text-2xl font-black text-emerald-400">CHF {netProviderPayout}</div>
+                  <div className="text-[10px] text-gray-400">Brutto: CHF {grossVaultRevenue} (Plattform: CHF {platformFee})</div>
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                {vaultItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-3.5 rounded-xl bg-black/40 border border-white/15 flex items-center justify-between gap-3 text-xs"
+                  >
+                    <div>
+                      <div className="font-bold text-white text-sm flex items-center gap-1.5">
+                        <Video size={14} className="text-[#D5A021]" />
+                        {item.title}
+                      </div>
+                      <div className="text-gray-400 mt-0.5">
+                        Verkaufspreis: <strong className="text-[#D5A021]">CHF {item.priceChf}</strong> · Bereits{" "}
+                        <strong className="text-emerald-400">{item.unlockCount}x von Kunden gekauft</strong>
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="font-black text-sm text-emerald-400">
+                        +CHF {Math.round(item.priceChf * item.unlockCount * 0.8)}
+                      </span>
+                      <span className="block text-[10px] text-gray-400">dein 80% Anteil</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <form onSubmit={handleAddVaultItem} className="pt-3 border-t border-white/10 space-y-3">
+                <div className="text-xs font-bold text-[#D5A021] uppercase">
+                  + Neues gesperrtes Video oder Foto-Set hinzufügen:
+                </div>
+                <div className="grid sm:grid-cols-12 gap-2.5">
+                  <input
+                    type="text"
+                    placeholder="Titel (z.B. 4K Hotel-Video heute Abend oder 15 Uncensored Fotos)"
+                    value={newMediaTitle}
+                    onChange={(e) => setNewMediaTitle(e.target.value)}
+                    required
+                    className="sm:col-span-6 rounded-xl bg-black/50 border border-white/20 px-3 py-2 text-xs text-white"
+                  />
+                  <select
+                    value={newMediaType}
+                    onChange={(e) => setNewMediaType(e.target.value as "video" | "photos")}
+                    className="sm:col-span-3 rounded-xl bg-black/50 border border-white/20 px-2.5 py-2 text-xs text-white"
+                  >
+                    <option value="video">4K Video</option>
+                    <option value="photos">Foto-Serie</option>
+                  </select>
+                  <input
+                    type="number"
+                    min={10}
+                    max={250}
+                    value={newMediaPrice}
+                    onChange={(e) => setNewMediaPrice(Number(e.target.value))}
+                    required
+                    className="sm:col-span-3 rounded-xl bg-black/50 border border-white/20 px-3 py-2 text-xs font-bold text-[#D5A021]"
+                  />
+                </div>
+                <div className="flex flex-wrap justify-between gap-2 pt-1">
                   <Button
-                    size="sm"
+                    type="button"
                     variant="outline"
-                    onClick={() => handleLeadAction(lead.id, "declined")}
-                    className="border-white/20 text-gray-300 text-xs"
+                    onClick={handleRequestPayout}
+                    className="border-emerald-500/50 text-emerald-300 hover:bg-emerald-500/10 text-xs font-bold"
                   >
-                    <X size={13} className="mr-1" /> Ablehnen
+                    <Wallet size={14} className="mr-1.5" />
+                    CHF {netProviderPayout} per TWINT / USDT auszahlen
                   </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => handleLeadAction(lead.id, "accepted")}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs"
-                  >
-                    <Check size={13} className="mr-1" /> Termin bestÃ¤tigen
+                  <Button type="submit" className="bg-[#C69C6D] text-[#0D1B2A] font-black text-xs">
+                    <PlusCircle size={14} className="mr-1.5" />
+                    Im Profil-Tresor veröffentlichen
                   </Button>
                 </div>
-              </Card>
-            ))}
+              </form>
+            </Card>
           </div>
 
-          {/* Right 5 Cols: Tariff Configurator & 24h Radar Boost */}
+          {/* Right 5 Cols: Tariff Configurator, Boost & No-Show Radar */}
           <div className="lg:col-span-5 space-y-6">
             <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white space-y-5">
               <div>
@@ -352,7 +512,7 @@ export default function CreatorDashboardPage() {
                             : "bg-black/30 border-white/10 text-gray-400"
                         }`}
                       >
-                        {active ? "âœ“ " : "+ "}{srv}
+                        {active ? "✓ " : "+ "}{srv}
                       </button>
                     );
                   })}
@@ -377,15 +537,16 @@ export default function CreatorDashboardPage() {
                 <Zap size={14} /> Sofort mehr Buchungen heute Abend?
               </div>
               <h3 className="text-lg font-serif font-black">
-                24h â€žHeute direkt buchbarâ€œ Radar-Boost (CHF 29)
+                24h „Heute direkt buchbar“ Radar-Boost (CHF 29)
               </h3>
               <p className="text-xs text-gray-300">
-                Platziert dein Profil fÃ¼r 24 Stunden ganz vorne im Live-Story-Radar und auf Platz 1 fÃ¼r Suchanfragen in ZÃ¼rich & Zug.
+                Platziert dein Profil für 24 Stunden ganz vorne im Live-Story-Radar und auf Platz 1 für Suchanfragen in Zürich & Zug.
               </p>
               <Button className="w-full bg-white text-[#0D1B2A] hover:bg-gray-200 font-black text-xs" asChild>
-                <Link href="/checkout?plan=boost_24h">24h Radar-Boost aktivieren (CHF 29) â†’</Link>
+                <Link href="/checkout?plan=boost_24h">24h Radar-Boost aktivieren (CHF 29) →</Link>
               </Button>
             </Card>
+
             <Card className="bg-[#09131E] border border-emerald-500/40 p-6 rounded-2xl text-white space-y-3">
               <div className="text-xs font-bold uppercase text-emerald-400 flex items-center gap-1.5">
                 <ShieldCheck size={14} /> B2B Schutz · Schweizer No-Show & Fake-Radar
@@ -394,7 +555,7 @@ export default function CreatorDashboardPage() {
                 Kunden-Rufnummer vor dem Termin prüfen
               </h3>
               <p className="text-xs text-gray-300">
-                Alle eingehenden Anfragen auf iWantSexNow.ch werden automatisch gegen bekannte Zeitverschwender- und No-Show-Nummern abgeglichen (Status für deine aktuellen Anfragen: <strong className="text-emerald-400">0 Warnungen · Vertrauenswürdig</strong>).
+                Alle eingehenden Anfragen auf iWantSexNow.ch werden automatisch gegen bekannte Zeitverschwender- und No-Show-Nummern abgeglichen (Status: <strong className="text-emerald-400">0 Warnungen · Vertrauenswürdig</strong>).
               </p>
             </Card>
           </div>

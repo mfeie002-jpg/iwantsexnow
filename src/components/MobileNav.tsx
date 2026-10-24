@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Search, SlidersHorizontal, MapPin, PlusCircle, Heart, Sparkles } from "lucide-react";
+import { Menu, X, Search, SlidersHorizontal, MapPin, PlusCircle, Heart, Sparkles, Trophy, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function MobileNav() {
@@ -22,7 +22,7 @@ export function MobileNav() {
         <div className="fixed inset-x-0 top-[68px] z-50 border-b border-[#C69C6D]/40 bg-[#07101A]/98 backdrop-blur-xl p-5 text-white shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto">
           <div className="space-y-1.5">
             <div className="text-[11px] font-bold uppercase tracking-widest text-[#D5A021] px-2">
-              Suchmaschine & Endpreis-Rechner
+              Suchmaschine, Rankings & Endpreis-Rechner
             </div>
             <Link
               href="/search"
@@ -39,6 +39,14 @@ export function MobileNav() {
             >
               <SlidersHorizontal size={16} className="text-emerald-400" />
               Endpreis- & Portal-Matrix
+            </Link>
+            <Link
+              href="/rankings"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
+            >
+              <Trophy size={16} className="text-[#D5A021]" />
+              Schweizer Bestenliste & Portal-Ratings
             </Link>
             <Link
               href="/matches"
@@ -96,22 +104,22 @@ export function MobileNav() {
 
           <div className="space-y-2 pt-3 border-t border-white/10">
             <div className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 px-2">
-              Für Anbieterinnen & Studios (B2B)
+              Login & B2B Provider-Cockpit
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="rounded-xl bg-white/10 border border-[#C69C6D]/40 px-3 py-2.5 font-bold text-center flex items-center justify-center gap-1.5"
+              >
+                <KeyRound size={13} className="text-[#D5A021]" /> Login / Cockpit
+              </Link>
               <Link
                 href="/creator-dashboard"
                 onClick={() => setOpen(false)}
                 className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 font-bold text-center"
               >
-                Provider Dashboard
-              </Link>
-              <Link
-                href="/verify"
-                onClick={() => setOpen(false)}
-                className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 font-bold text-center"
-              >
-                ID- & Foto-Siegel
+                Provider Tresor
               </Link>
             </div>
             <Link
