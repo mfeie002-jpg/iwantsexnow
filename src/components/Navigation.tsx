@@ -57,6 +57,11 @@ export function Navigation() {
         <span>Guides & Hilfe</span>
       </Link>
 
+      <Link href="/hotels" className={getLinkClass("/hotels")}>
+        <MapPin size={14} className={isActive("/hotels") ? "text-[#0D1B2A]" : "text-emerald-400"} />
+        <span>Hotels & Day-Use</span>
+      </Link>
+
       <Link href="/escort-zurich" className={getLinkClass("/escort-zurich")}>
         <MapPin size={14} className={isActive("/escort-zurich") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
         <span>Zürich & Zug</span>

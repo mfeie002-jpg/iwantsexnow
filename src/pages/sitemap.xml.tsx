@@ -11,6 +11,7 @@ const STATIC_ROUTES = [
   "/live-cam",
   "/how-it-works",
   "/guides",
+  "/hotels",
   "/guides/english-tourist-expat-escort-guide-switzerland",
   "/guides/schweizer-escort-preise-2026-vergleich",
   "/guides/wef-davos-st-moritz-art-basel-vip-escort",

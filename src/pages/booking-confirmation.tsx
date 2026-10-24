@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { SWISS_DISCREET_HOTELS } from "@/data/swissHotels";
 import {
   ShieldCheck,
   CheckCircle2,
@@ -34,6 +35,7 @@ export default function BookingConfirmationPage() {
   const [customerContact, setCustomerContact] = useState("");
   const [requestedTime, setRequestedTime] = useState("Heute, 20:30 Uhr");
   const [hotelOrSpot, setHotelOrSpot] = useState(city);
+  const [needDiscreetRoom, setNeedDiscreetRoom] = useState(false);
   const [dispatched, setDispatched] = useState(false);
 
   useEffect(() => {
@@ -171,7 +173,29 @@ export default function BookingConfirmationPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-300 block mb-1">Treffpunkt (Hotel / Studio in {city})</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs text-gray-300">Treffpunkt (Hotel / Studio)</label>
+                    <button
+                      type="button"
+                      onClick={() => setNeedDiscreetRoom(!needDiscreetRoom)}
+                      className="text-[11px] font-bold text-[#D5A021] underline"
+                    >
+                      {needDiscreetRoom ? "Eigenen Treffpunkt eingeben" : "🏨 Kein Zimmer? Diskretes Day-Use Hotel wählen"}
+                    </button>
+                  </div>
+                  {needDiscreetRoom && (
+                    <select
+                      onChange={(e) => setHotelOrSpot(e.target.value)}
+                      className="w-full mb-2 rounded-xl bg-emerald-950/60 border border-emerald-400/50 px-3 py-2 text-xs font-bold text-emerald-200"
+                    >
+                      <option value={city}>-- Geprüftes Partner-Hotel / Day-Room wählen --</option>
+                      {SWISS_DISCREET_HOTELS.map((h) => (
+                        <option key={h.id} value={`${h.name} (${h.city} · Day-Use +CHF ${h.dayUseRateChf})`}>
+                          🏨 {h.name} ({h.city}) – Day-Use ab CHF {h.dayUseRateChf} (Tiefgaragen-Lift)
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <input
                     type="text"
                     value={hotelOrSpot}
