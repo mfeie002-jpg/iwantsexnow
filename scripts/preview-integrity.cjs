@@ -75,7 +75,9 @@ for (const route of ["about", "privacy", "terms"]) {
  }
 }
 const home = fs.readFileSync(path.join(pageRoot, "index.html"), "utf8");
-assert(text(home).includes("Plattform noch nicht freigeschaltet"), "Homepage must remain inactive");
+assert(text(home).includes("Persönliche Funktionen bleiben geschlossen."), "Homepage must explain disabled actions");
+assert(home.includes('aria-label="Hauptnavigation"'), "Homepage must retain designed navigation");
+assert(!/href="\/(?:search|catalogue|profile|create-post|messages|booking-confirmation)(?:[/?#"])/.test(home), "Neutral homepage must not promote discovery or enquiry routes");
 assert(!/<form\b/i.test(home), "Homepage exposes a contact/newsletter form without delivery");
 assert(text(home).includes("keine persönlichen Angaben"), "Homepage missing contact status");
 for (const [route, marker] of [["contact", "noch kein betreuter Kontakt"], ["imprint", "noch kein vollständiges Impressum"], ["faq", "keine Mitgliedschaften"], ["about", "noch keinen aktiven Vermittlungsbetrieb"]]) {
