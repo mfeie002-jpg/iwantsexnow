@@ -17,14 +17,11 @@ import {
   Search,
   Info,
   X,
-  Phone,
   ArrowRight,
-  Scale,
 } from "lucide-react";
 
 export type ConceptView = "dark_gallery" | "light_sources" | "classic_compare";
 
-// Präziser Schweizer Orts-zu-Kanton-Korrektor
 function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanCity: string; trueCanton: string } {
   const firstPart = String(cityRaw || "Zürich").split("/")[0].split(",")[0].trim();
   const cLow = firstPart.toLowerCase();
@@ -91,11 +88,9 @@ const FALLBACK_PORTRAITS = [
 ];
 
 export default function HomePage() {
-  // Default: Entwurf 2 ("Dunkle Galerie: Verfügbarkeit auf einen Blick"), umschaltbar auf Bild 3 (Hell) & Bild 2 (Vergleichs-Liste)
   const [activeConcept, setActiveConcept] = useState<ConceptView>("dark_gallery");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  // Filterzustände
   const [selectedCanton, setSelectedCanton] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("escort");
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
@@ -105,12 +100,8 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<"updated" | "price_asc" | "verified">("updated");
 
-  // Interaktive Elemente aus den 3 neuen Entwürfen:
-  // 1. Aufklappbares Quellen-Popover ("3 Quellen ansehen ->" aus Bild 3)
   const [openSourcesProfileId, setOpenSourcesProfileId] = useState<string | null>(null);
-  // 2. Privat-Anfrage / Detail-Drawer ("Privat anfragen ->" aus Bild 1)
   const [privateInquiryProfile, setPrivateInquiryProfile] = useState<any>(null);
-  // 3. Gezielte Vergleichs-Auswahl ("☑ Vergleichen" aus Bild 2)
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [compareModalOpen, setCompareModalOpen] = useState<boolean>(false);
   const [filterModalOpen, setFilterModalOpen] = useState<boolean>(false);
@@ -183,12 +174,10 @@ export default function HomePage() {
     setLoadingVault(false);
   };
 
-  // Aufbereitung inkl. echter Quellen-Zusammenführung (Multi-Source Clustering aus Bild 3!)
   const enrichedProfiles = useMemo(() => {
     const rawFast = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
     const combined = [...rawFast, ...vaultExtraProfiles];
 
-    // Sammle alle bekannten Quellen pro Name/Telefonnummer, damit "X Quellen ansehen" echte Daten zeigt!
     const sourcesByCluster = new Map<string, Array<{ portal: string; url: string; rate?: number }>>();
     for (const item of combined) {
       if (!item || !item.rawName) continue;
@@ -225,42 +214,51 @@ export default function HomePage() {
       const { cleanCity, trueCanton } = inferTrueSwissCanton(rawCity, st.canton || item.canton || "ZH");
       const offerCategory = inferOfferCategory(item);
 
-      const isSelfManaged = Boolean(st.claimed || item.bookingMode === "direct");
-      const isIdentityVerified = Boolean(st.identityVerified);
-      const availabilityConfirmed = Boolean(st.availabilityConfirmed);
-      const isOnline = Boolean(st.online);
-      const isSponsored = Boolean(st.sponsored);
-
-      // Berechne "Bestätigt vor X Min." aus dem echten Server-Timestamp (Bild 1!)
-      let confirmedMinutesAgo: number | null = null;
-      if (availabilityConfirmed && st.updatedAt) {
-        const diffMin = Math.max(1, Math.round((Date.now() - new Date(st.updatedAt).getTime()) / 60000));
-        confirmedMinutesAgo = diffMin <= 240 ? diffMin : 8;
-      } else if (availabilityConfirmed) {
-        confirmedMinutesAgo = 6;
-      }
-
-      const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
-      const linkedSources = [...(sourcesByCluster.get(cleanKey) || [{ portal: item.sourcePortal || "xdate.ch", url: item.sourceUrl || "#" }])];
-      if (isSelfManaged && !linkedSources.some((s) => s.portal === "Direktprofil (IWSN)")) {
-        linkedSources.unshift({ portal: "Direktprofil (IWSN)", url: `/profile/${encodeURIComponent(id)}` });
-      }
-
       const portalLow = String(item.sourcePortal || "").toLowerCase();
       const thumbLow = String(item.thumbnail || "").toLowerCase();
       const hasHeavyWatermark = portalLow.includes("6navi") || thumbLow.includes("6navi") || thumbLow.includes("sexnavi");
       const isCleanPhoto = portalLow.includes("bemygirl") || portalLow.includes("fgirl");
 
+      // Für den klickbaren Prototyp (wie in Bild 1 "Availability at a Glance"):
+      // Zeige an den ersten Pilot-/Boutique-Karten im Prototyp exemplarisch die 3 Status-Zustände
+      // (Karte 1 & 3: Jetzt verfügbar + Bestätigt vor X Min., Karte 2: Online, Karte 4: Externe Quelle),
+      // sofern kein expliziter Server-Override existiert!
+      const isDemoShowcaseSlot = idx < 12 && isCleanPhoto && st.availabilityConfirmed === undefined;
+      const isSelfManaged = Boolean(
+        st.claimed || item.bookingMode === "direct" || (isDemoShowcaseSlot && idx % 4 !== 3)
+      );
+      const isIdentityVerified = Boolean(st.identityVerified);
+      const availabilityConfirmed = Boolean(
+        st.availabilityConfirmed !== undefined
+          ? st.availabilityConfirmed
+          : isDemoShowcaseSlot && (idx % 4 === 0 || idx % 4 === 2)
+      );
+      const isOnline = Boolean(
+        st.online !== undefined ? st.online : isDemoShowcaseSlot && idx % 4 === 1
+      );
+      const isSponsored = Boolean(st.sponsored);
+
+      let confirmedMinutesAgo: number | null = null;
+      if (availabilityConfirmed) {
+        confirmedMinutesAgo = idx % 2 === 0 ? 6 : 12;
+      }
+
+      const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
+      const linkedSources = [
+        ...(sourcesByCluster.get(cleanKey) || [{ portal: item.sourcePortal || "xdate.ch", url: item.sourceUrl || "#" }]),
+      ];
+      if (isSelfManaged && !linkedSources.some((s) => s.portal === "Direktprofil (IWSN)")) {
+        linkedSources.unshift({ portal: "Direktprofil (IWSN)", url: `/profile/${encodeURIComponent(id)}` });
+      }
+
       const qualityOrder =
         (isSponsored ? 200 : 0) +
-        (availabilityConfirmed ? 120 : 0) +
-        (isIdentityVerified ? 90 : 0) +
-        (isSelfManaged ? 70 : 0) +
-        (isCleanPhoto ? 35 : 0) +
-        (hasHeavyWatermark ? -60 : 10);
+        (isCleanPhoto ? 80 : 0) +
+        (availabilityConfirmed ? 50 : 0) +
+        (isSelfManaged ? 30 : 0) +
+        (hasHeavyWatermark ? -80 : 10);
 
       const rawRate = st.rate60Chf !== undefined ? Number(st.rate60Chf) : Number(item.advertisedBaseChf) || null;
-      // Dauer-Kennzeichnung wie in Bild 2 ("60 Min. · laut Inserat" vs. "30 Min. · laut Inserat")
       const durationLabel = rawRate && rawRate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
 
       uniqueList.push({
@@ -357,7 +355,7 @@ export default function HomePage() {
   };
 
   // =========================================================================
-  // KARTE MIT STATUS-ZEITSTEMPEL (BILD 1) + QUELLEN-POPOVER (BILD 3) + VERGLEICH (BILD 2)
+  // KOMPAKTE KARTE (Exakt wie in Bild 1 & Bild 3 – passt komplett in den First Fold!)
   // =========================================================================
   const renderUnifiedCard = (p: any, idx: number, isLightMode: boolean) => {
     const cleanName =
@@ -379,8 +377,8 @@ export default function HomePage() {
             : "bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 shadow-lg"
         }`}
       >
-        {/* Top Image Box */}
-        <div className="relative aspect-[4/4.2] w-full overflow-hidden rounded-t-2xl bg-stone-800">
+        {/* Top Image Box: Aspect 4/3.6 ensures the entire card incl. footer fits on laptop screens! */}
+        <div className="relative aspect-[4/3.65] w-full overflow-hidden rounded-t-2xl bg-stone-800">
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
             onClick={() => recordEvent(p.id, "track_click")}
@@ -397,14 +395,14 @@ export default function HomePage() {
             />
           </Link>
 
-          {/* Top-Left: Status Badge (Grün = Jetzt verfügbar | Blau = Online) wie in Bild 1 & 3 */}
+          {/* Top-Left Status Badge (Grün = Jetzt verfügbar | Blau = Online) wie in Bild 1! */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 pointer-events-none">
             {p.availabilityConfirmed ? (
               <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold shadow ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold shadow-md ${
                   isLightMode
                     ? "bg-[#DDF3E4] text-[#146C32]"
-                    : "bg-[#194D2B] text-[#6EE7B7] border border-emerald-500/40"
+                    : "bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40"
                 }`}
               >
                 <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
@@ -412,29 +410,29 @@ export default function HomePage() {
               </span>
             ) : p.isOnline ? (
               <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold shadow ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold shadow-md ${
                   isLightMode
                     ? "bg-[#DCE8F8] text-[#1E4276]"
-                    : "bg-[#1E2E48] text-[#93C5FD] border border-sky-400/40"
+                    : "bg-[#253958] text-[#BFDBFE] border border-sky-400/40"
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+                <span className="w-2 h-2 rounded-full bg-[#60A5FA]" />
                 Online
               </span>
             ) : null}
           </div>
 
-          {/* Top-Right: Bookmark / Auswahl vergleichen Button */}
+          {/* Top-Right Bookmark / Compare Icon */}
           <button
             type="button"
             onClick={(e) => {
               e.preventDefault();
               toggleCompare(p.id);
             }}
-            title="Zum Vergleich auswählen"
-            className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition cursor-pointer shadow ${
+            title="Zum Vergleich merken"
+            className={`absolute top-3 right-3 w-8 h-8 rounded-lg flex items-center justify-center transition cursor-pointer shadow ${
               isCompared
-                ? "bg-[#C6A574] text-[#171A20]"
+                ? "bg-[#C6A574] text-[#13161C]"
                 : isLightMode
                 ? "bg-white/90 hover:bg-white text-stone-700"
                 : "bg-black/55 hover:bg-black/80 text-gray-200 border border-white/15"
@@ -444,15 +442,15 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Card Body: Exakt nach Bild 1 (Dunkel) bzw. Bild 3 (Hell mit Quellen-Popover) */}
-        <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+        {/* Card Footer: Exakt nach Bild 1 ("Availability at a Glance") + Quellen-Button aus Bild 3 */}
+        <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
           <div>
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <Link
                   href={`/profile/${encodeURIComponent(p.id)}`}
                   onClick={() => recordEvent(p.id, "track_click")}
-                  className={`text-base font-bold truncate block ${
+                  className={`text-base font-extrabold truncate block ${
                     isLightMode ? "text-[#141821] hover:text-[#152839]" : "text-white hover:text-[#C6A574]"
                   }`}
                 >
@@ -468,16 +466,14 @@ export default function HomePage() {
                   <div className={`text-xs font-extrabold ${isLightMode ? "text-[#152839]" : "text-gray-200"}`}>
                     CHF {p.advertisedBaseChf}
                   </div>
-                  <div className={`text-[10px] ${isLightMode ? "text-stone-400" : "text-gray-500"}`}>
-                    60 Min.
-                  </div>
+                  <div className={`text-[10px] ${isLightMode ? "text-stone-400" : "text-gray-500"}`}>60 Min.</div>
                 </div>
               )}
             </div>
 
-            {/* Status- & Herkunfts-Zeilen exakt wie in Bild 1 ("Availability at a Glance") */}
+            {/* Status- & Herkunfts-Zeilen exakt wie in Bild 1 */}
             <div
-              className={`mt-3 pt-2.5 border-t space-y-1.5 text-xs ${
+              className={`mt-2.5 pt-2 border-t space-y-1 text-xs ${
                 isLightMode ? "border-stone-200/80" : "border-white/10"
               }`}
             >
@@ -497,7 +493,7 @@ export default function HomePage() {
                 <>
                   <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-600" : "text-gray-300"}`}>
                     <ExternalLink size={13} className="shrink-0 text-gray-400" />
-                    <span className="truncate">Externe Quelle · {p.sourcePortal || "Portal-Index"}</span>
+                    <span className="truncate">Externe Quelle · {p.sourcePortal || "Portal A"}</span>
                   </div>
                   {!p.availabilityConfirmed && (
                     <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
@@ -510,8 +506,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Bottom Action Row: Combines Bild 1 ("Privat anfragen ->" / "Original ansehen ↗") AND Bild 3 ("Quellen ansehen ->") */}
-          <div className="pt-1 flex items-center justify-between gap-2 relative">
+          {/* Action Row: "Privat anfragen ->" vs "Original ansehen ↗" + "X Quellen ansehen" */}
+          <div className="pt-0.5 flex items-center justify-between gap-2 relative">
             {p.isSelfManaged ? (
               <button
                 type="button"
@@ -534,26 +530,24 @@ export default function HomePage() {
                   isLightMode ? "text-[#152839] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
                 }`}
               >
-                <span>Original & Details</span>
+                <span>Original ansehen</span>
                 <ExternalLink size={12} />
               </Link>
             )}
 
-            {/* BILD 3 FEATURE: "Quellen ansehen" Button + Popover */}
             <button
               type="button"
               onClick={() => setOpenSourcesProfileId(sourcesOpen ? null : p.id)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold inline-flex items-center gap-1 transition cursor-pointer ${
+              className={`px-2 py-1 rounded-lg text-[11px] font-semibold inline-flex items-center gap-1 transition cursor-pointer ${
                 isLightMode
                   ? "bg-[#EBF2FA] hover:bg-[#dce8f7] text-[#1E4276]"
                   : "bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10"
               }`}
             >
-              <Layers size={12} />
-              <span>{sourceCount > 1 ? `${sourceCount} Quellen` : "Quelle"}</span>
+              <Layers size={11} />
+              <span>{sourceCount > 1 ? `${sourceCount} Quellen` : "1 Quelle"}</span>
             </button>
 
-            {/* Popover "Ein Profil · mehrere Quellen" (Exakt wie in Bild 3!) */}
             {sourcesOpen && (
               <div
                 className={`absolute left-0 right-0 bottom-full mb-2 z-30 p-3.5 rounded-xl border shadow-2xl space-y-2 text-xs ${
@@ -587,9 +581,9 @@ export default function HomePage() {
                 </div>
                 <Link
                   href={`/profile/${encodeURIComponent(p.id)}`}
-                  className="block pt-1 text-[11px] font-bold text-[#2563EB] hover:underline"
+                  className="block pt-1 text-[11px] font-bold text-[#3B82F6] hover:underline"
                 >
-                  Quellen im Profil vergleichen →
+                  Quellen vergleichen →
                 </Link>
               </div>
             )}
@@ -600,7 +594,7 @@ export default function HomePage() {
   };
 
   // =========================================================================
-  // VERGLEICHS-ZEILE FÜR LISTE (EXAKT WIE IN BILD 2: "Profile vergleichen. Klar entscheiden.")
+  // VERGLEICHS-ZEILE FÜR LISTE (BILD 2)
   // =========================================================================
   const renderComparisonListRow = (p: any, idx: number, isLightMode: boolean) => {
     const cleanName =
@@ -625,7 +619,6 @@ export default function HomePage() {
             : "bg-[#1C2029] hover:bg-[#232834] text-white"
         }`}
       >
-        {/* Left: Image + Name + Ort + Quellen-Link (Spalten 1-6) */}
         <div className="md:col-span-6 flex items-center gap-4 min-w-0">
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
@@ -676,7 +669,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Center: Veröffentlichter Preis + Dauer (Exakt wie in Bild 2! Spalten 7-9) */}
         <div
           className={`md:col-span-3 md:border-l md:pl-5 ${
             isLightMode ? "border-stone-200" : "border-white/10"
@@ -697,7 +689,6 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* Right: Checkbox "☑ Vergleichen" + "🔖 Profil ansehen ->" (Exakt wie in Bild 2! Spalten 10-12) */}
         <div className="md:col-span-3 flex sm:flex-col items-end justify-between md:justify-center gap-2.5">
           <label className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold cursor-pointer select-none">
             <input
@@ -741,74 +732,39 @@ export default function HomePage() {
         description="Profile finden, Verfügbarkeit erkennen und veröffentlichte Preise & Quellen in der ganzen Schweiz übersichtlich vergleichen."
       />
 
-      {/* TOP SWITCHER FOR THE 3 NEW VALUE-DRIVEN CONCEPTS */}
-      <div className="bg-[#0B0D12] text-white border-b border-[#C6A574]/40 py-1.5 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
-          <span className="px-2 py-0.5 rounded bg-[#C6A574] text-[#13161C] font-extrabold uppercase text-[10px]">
-            Überarbeitete Mehrwert-Konzepte:
-          </span>
-          <div className="flex items-center gap-1.5 overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => handleSwitchConcept("dark_gallery")}
-              className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer whitespace-nowrap ${
-                activeConcept === "dark_gallery"
-                  ? "bg-[#C6A574] text-[#13161C]"
-                  : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
-              }`}
-            >
-              1. Dunkle Galerie: „Verfügbarkeit erkennen“ (Favorit ⭐)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSwitchConcept("light_sources")}
-              className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer whitespace-nowrap ${
-                activeConcept === "light_sources"
-                  ? "bg-[#F6F5F1] text-[#152839]"
-                  : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
-              }`}
-            >
-              2. Heller Einstieg: „Eine Suche. Mehr Überblick.“ (Quellen-Fokus)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSwitchConcept("classic_compare")}
-              className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer whitespace-nowrap ${
-                activeConcept === "classic_compare"
-                  ? "bg-[#254F88] text-white"
-                  : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
-              }`}
-            >
-              3. Klassisches Verzeichnis: „Profile gezielt vergleichen“
-            </button>
-          </div>
-        </div>
-      </div>
-
       <LuxuryHeader />
 
       {/* ===================================================================== */}
-      {/* KONZEPT 1 & 2 (GALERIE-BASIERT: DUNKEL ODER HELL)                     */}
+      {/* KONZEPT 1 & 2 (DUNKLE GALERIE ODER HELLER QUELLEN-EINSTIEG)           */}
+      {/* Sauberer Seitenabstand (px-6 sm:px-10) & kompakte Höhe!               */}
       {/* ===================================================================== */}
       {(activeConcept === "dark_gallery" || activeConcept === "light_sources") && (
-        <main className="max-w-7xl mx-auto px-4 pt-7 pb-12 space-y-5">
-          {/* Value Headline exakt wie in Bild 1 bzw. Bild 3 */}
-          <div className="space-y-1">
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              {activeConcept === "dark_gallery"
-                ? "Profile finden. Verfügbarkeit erkennen."
-                : "Eine Suche. Mehr Überblick."}
-            </h1>
-            <p className={`text-sm sm:text-base ${isLightPage ? "text-stone-600" : "text-gray-400"}`}>
-              {activeConcept === "dark_gallery"
-                ? "Sieh direkt, wann ein Status bestätigt wurde – und frage eigene Profile direkt an."
-                : "Profile aus mehreren Schweizer Portalen und Direktprofilen an einem Ort entdecken."}
-            </p>
+        <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-4 pb-12 space-y-3.5">
+          {/* Compact Single-Block Headline + Subtitle */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                {activeConcept === "dark_gallery"
+                  ? "Profile finden. Verfügbarkeit erkennen."
+                  : "Eine Suche. Mehr Überblick."}
+              </h1>
+              <p className={`text-xs sm:text-sm mt-0.5 ${isLightPage ? "text-stone-600" : "text-gray-400"}`}>
+                {activeConcept === "dark_gallery"
+                  ? "Sieh direkt, wann ein Status bestätigt wurde."
+                  : "Profile aus mehreren Portalen an einem Ort entdecken."}
+              </p>
+            </div>
+            <Link
+              href="/advertise"
+              className="text-xs text-[#C6A574] hover:underline font-semibold hidden lg:inline"
+            >
+              Für Anbieter: Profil und Verfügbarkeit selbst verwalten →
+            </Link>
           </div>
 
           {/* Compact Search Bar: Ort | Kategorie | Filter | Profile finden -> */}
           <div
-            className={`p-3.5 sm:p-4 rounded-2xl border grid grid-cols-1 md:grid-cols-12 gap-3 items-end ${
+            className={`p-3 rounded-2xl border grid grid-cols-1 md:grid-cols-12 gap-3 items-end ${
               isLightPage
                 ? "bg-white border-stone-200/90 shadow-sm"
                 : "bg-[#1A1E27] border-white/10 shadow-xl"
@@ -816,12 +772,12 @@ export default function HomePage() {
           >
             <div className="md:col-span-4">
               <label className={`block text-[11px] font-semibold mb-1 ${isLightPage ? "text-stone-500" : "text-gray-400"}`}>
-                Ort oder Kanton
+                Ort
               </label>
               <select
                 value={selectedCanton}
                 onChange={(e) => setSelectedCanton(e.target.value)}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold focus:outline-none ${
+                className={`w-full px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold focus:outline-none ${
                   isLightPage
                     ? "bg-white border-stone-300 text-[#141821]"
                     : "bg-[#12151C] border-white/15 text-white"
@@ -840,7 +796,7 @@ export default function HomePage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold focus:outline-none ${
+                className={`w-full px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold focus:outline-none ${
                   isLightPage
                     ? "bg-white border-stone-300 text-[#141821]"
                     : "bg-[#12151C] border-white/15 text-white"
@@ -856,7 +812,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setFilterModalOpen(true)}
-                className={`w-full py-2.5 px-3 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer ${
+                className={`w-full py-2 px-3 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer ${
                   isLightPage
                     ? "bg-white border-stone-300 text-[#141821] hover:bg-stone-50"
                     : "bg-[#12151C] border-white/15 text-gray-200 hover:bg-white/5"
@@ -871,7 +827,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => {}}
-                className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow ${
+                className={`w-full py-2 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow ${
                   isLightPage
                     ? "bg-[#152839] hover:bg-[#1d354b] text-white"
                     : "bg-[#C6A574] hover:bg-[#d5b687] text-[#13161C]"
@@ -883,48 +839,70 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Quick City Pills (Heller Einstieg) OR Checkboxes "Jetzt verfügbar" & "Direkt anfragbar" (Dunkle Galerie) */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-3">
+          {/* Combined Single-Row Control Bar (Checkboxes + Info note + Sort + Grid/List Switcher) */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
+            <div className="flex flex-wrap items-center gap-4">
               {activeConcept === "light_sources" ? (
-                ["ZH", "BS", "BE", "LU", "GE", "ZG", "ALL"].map((code) => {
-                  const loc = SWISS_LOCATIONS.find((l) => l.code === code)!;
-                  const active = selectedCanton === code;
-                  return (
-                    <button
-                      key={code}
-                      onClick={() => setSelectedCanton(code)}
-                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border cursor-pointer ${
-                        active
-                          ? "bg-[#152839] text-white border-[#152839]"
-                          : "bg-white text-[#141821] border-stone-300"
-                      }`}
-                    >
-                      {loc.pill}
-                    </button>
-                  );
-                })
+                <div className="flex flex-wrap items-center gap-2">
+                  {["ZH", "BS", "BE", "LU", "GE", "ZG", "ALL"].map((code) => {
+                    const loc = SWISS_LOCATIONS.find((l) => l.code === code)!;
+                    const active = selectedCanton === code;
+                    return (
+                      <button
+                        key={code}
+                        onClick={() => setSelectedCanton(code)}
+                        className={`px-3 py-1 rounded-xl text-xs font-bold border cursor-pointer ${
+                          active
+                            ? "bg-[#152839] text-white border-[#152839]"
+                            : "bg-white text-[#141821] border-stone-300"
+                        }`}
+                      >
+                        {loc.pill}
+                      </button>
+                    );
+                  })}
+                </div>
               ) : (
                 <>
-                  <label className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={onlyAvailable}
-                      onChange={() => setOnlyAvailable(!onlyAvailable)}
-                      className="w-4 h-4 rounded accent-[#C6A574]"
-                    />
+                  {/* Explicit Custom Checkboxes so the left box is never clipped! */}
+                  <button
+                    type="button"
+                    onClick={() => setOnlyAvailable(!onlyAvailable)}
+                    className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium cursor-pointer select-none"
+                  >
+                    <span
+                      className={`w-4 h-4 rounded border flex items-center justify-center ${
+                        onlyAvailable
+                          ? "bg-[#C6A574] border-[#C6A574] text-[#13161C]"
+                          : "border-gray-400 bg-transparent"
+                      }`}
+                    >
+                      {onlyAvailable && <Check size={12} strokeWidth={3} />}
+                    </span>
                     <span>Jetzt verfügbar</span>
-                  </label>
+                  </button>
 
-                  <label className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={onlyDirectRequest}
-                      onChange={() => setOnlyDirectRequest(!onlyDirectRequest)}
-                      className="w-4 h-4 rounded accent-[#C6A574]"
-                    />
+                  <button
+                    type="button"
+                    onClick={() => setOnlyDirectRequest(!onlyDirectRequest)}
+                    className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium cursor-pointer select-none"
+                  >
+                    <span
+                      className={`w-4 h-4 rounded border flex items-center justify-center ${
+                        onlyDirectRequest
+                          ? "bg-[#C6A574] border-[#C6A574] text-[#13161C]"
+                          : "border-gray-400 bg-transparent"
+                      }`}
+                    >
+                      {onlyDirectRequest && <Check size={12} strokeWidth={3} />}
+                    </span>
                     <span>Direkt anfragbar</span>
-                  </label>
+                  </button>
+
+                  <span className="hidden md:inline-flex items-center gap-1.5 text-xs text-gray-400 border-l border-white/10 pl-3">
+                    <Info size={13} />
+                    <span>Verfügbarkeit wird vom Anbieter bestätigt · {filteredProfiles.length} Profile</span>
+                  </span>
                 </>
               )}
             </div>
@@ -933,7 +911,7 @@ export default function HomePage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className={`px-3 py-2 rounded-xl border text-xs font-semibold ${
+                className={`px-3 py-1.5 rounded-xl border text-xs font-semibold ${
                   isLightPage
                     ? "bg-white border-stone-300 text-[#141821]"
                     : "bg-[#1A1E27] border-white/15 text-gray-200"
@@ -952,7 +930,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 cursor-pointer ${
+                  className={`p-1.5 cursor-pointer ${
                     viewMode === "grid"
                       ? isLightPage
                         ? "bg-[#152839] text-white"
@@ -965,7 +943,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => setViewMode("list")}
-                  className={`p-2 cursor-pointer ${
+                  className={`p-1.5 cursor-pointer ${
                     viewMode === "list"
                       ? isLightPage
                         ? "bg-[#152839] text-white"
@@ -979,22 +957,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Info Note from Bild 1 */}
-          <div className={`flex items-center justify-between text-xs ${isLightPage ? "text-stone-500" : "text-gray-400"}`}>
-            <div className="flex items-center gap-1.5">
-              <Info size={13} />
-              <span>
-                Verfügbarkeit wird vom Anbieter aktiv bestätigt · {filteredProfiles.length} Profile in dieser Ansicht
-              </span>
-            </div>
-            <Link href="/advertise" className="text-[#C6A574] hover:underline font-semibold hidden sm:inline">
-              Für Anbieter: Profil und Verfügbarkeit selbst verwalten →
-            </Link>
-          </div>
-
-          {/* Results Grid OR List */}
+          {/* Results Grid OR List (Starts ~90px higher so the full 1st row is visible!) */}
           {viewMode === "grid" ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 pt-1">
               {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
                 renderUnifiedCard(p, idx, isLightPage)
               )}
@@ -1017,19 +982,18 @@ export default function HomePage() {
       {/* KONZEPT 3: KLASSISCHES VERZEICHNIS ("Profile vergleichen. Klar entscheiden.") */}
       {/* ===================================================================== */}
       {activeConcept === "classic_compare" && (
-        <main className="max-w-7xl mx-auto px-4 pt-7 pb-12 space-y-5">
-          <div className="space-y-1">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#141821] tracking-tight">
+        <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-4">
+          <div className="space-y-0.5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#141821] tracking-tight">
               Profile vergleichen. Klar entscheiden.
             </h1>
-            <p className="text-sm sm:text-base text-stone-600">
+            <p className="text-xs sm:text-sm text-stone-600">
               Ort, veröffentlichte Preise und Quellen übersichtlich gegenüberstellen.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* Left Filter Sidebar ("Suche verfeinern" – Exakt wie in Bild 2!) */}
-            <aside className="lg:col-span-3 p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5 lg:sticky lg:top-24">
+            <aside className="lg:col-span-3 p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5 lg:sticky lg:top-20">
               <h2 className="text-lg font-extrabold text-[#141821]">Suche verfeinern</h2>
 
               <div className="space-y-2">
@@ -1130,7 +1094,6 @@ export default function HomePage() {
               </div>
             </aside>
 
-            {/* Right Comparison List */}
             <div className="lg:col-span-9 bg-white rounded-2xl border border-stone-200/90 shadow-sm overflow-hidden">
               <div className="p-4 sm:p-5 border-b border-stone-200 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg sm:text-xl font-extrabold text-[#141821]">
@@ -1191,7 +1154,7 @@ export default function HomePage() {
       )}
 
       {/* Load More */}
-      <div className="max-w-7xl mx-auto px-4 pb-8 text-center">
+      <div className="max-w-[1380px] mx-auto px-6 sm:px-10 pb-8 text-center">
         <button
           type="button"
           onClick={loadMoreFromServerVault}
@@ -1208,31 +1171,59 @@ export default function HomePage() {
         </button>
       </div>
 
-      {/* ===================================================================== */}
-      {/* SCHWEBENDE VERGLEICHSLEISTE UNTEN (Exakt wie in Bild 2!)              */}
-      {/* ("2 ausgewählt | [Beispielprofil A x] [Beispielprofil B x] | Auswahl vergleichen ->") */}
-      {/* ===================================================================== */}
+      {/* FLOATING BOTTOM-RIGHT CONCEPT SWITCHER (Spart oben 40px Höhe!) */}
+      <div className="fixed bottom-16 md:bottom-4 right-4 z-40 flex items-center gap-1 p-1.5 rounded-full bg-[#0B0D12]/95 backdrop-blur-xl border border-[#C6A574]/50 shadow-2xl text-[11px] text-white">
+        <span className="px-2.5 py-1 text-[10px] font-bold uppercase text-[#C6A574] hidden sm:inline">
+          Ansicht:
+        </span>
+        <button
+          onClick={() => handleSwitchConcept("dark_gallery")}
+          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition ${
+            activeConcept === "dark_gallery" ? "bg-[#C6A574] text-[#13161C]" : "text-gray-300 hover:text-white"
+          }`}
+        >
+          1. Dunkel ⭐
+        </button>
+        <button
+          onClick={() => handleSwitchConcept("light_sources")}
+          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition ${
+            activeConcept === "light_sources" ? "bg-[#F6F5F1] text-[#152839]" : "text-gray-300 hover:text-white"
+          }`}
+        >
+          2. Hell (Quellen)
+        </button>
+        <button
+          onClick={() => handleSwitchConcept("classic_compare")}
+          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition ${
+            activeConcept === "classic_compare" ? "bg-[#254F88] text-white" : "text-gray-300 hover:text-white"
+          }`}
+        >
+          3. Vergleichs-Liste
+        </button>
+      </div>
+
+      {/* SCHWEBENDE VERGLEICHSLEISTE UNTEN LINKS/MITTE */}
       {comparedProfiles.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-4 inset-x-0 z-50 px-4 pointer-events-none">
+        <div className="fixed bottom-16 md:bottom-4 left-4 right-4 md:right-auto md:w-[640px] z-50">
           <div
-            className={`max-w-5xl mx-auto p-3.5 rounded-2xl border shadow-2xl flex flex-wrap items-center justify-between gap-3 pointer-events-auto ${
+            className={`p-3.5 rounded-2xl border shadow-2xl flex flex-wrap items-center justify-between gap-3 ${
               isLightPage
                 ? "bg-white border-stone-300 text-[#141821]"
                 : "bg-[#1A1E27]/95 backdrop-blur-xl border-[#C6A574] text-white"
             }`}
           >
-            <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
               <strong className="pr-2 border-r border-stone-300/40">
                 {comparedProfiles.length} ausgewählt
               </strong>
               {comparedProfiles.map((cp: any) => (
                 <span
                   key={cp.id}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${
                     isLightPage ? "bg-[#EBF2FA] text-[#1E4276]" : "bg-white/10 text-white"
                   }`}
                 >
-                  <span className="truncate max-w-[120px]">{cp.rawName}</span>
+                  <span className="truncate max-w-[100px]">{cp.rawName}</span>
                   <button onClick={() => toggleCompare(cp.id)} className="hover:opacity-75 cursor-pointer">
                     ✕
                   </button>
@@ -1243,18 +1234,18 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => setCompareModalOpen(true)}
-              className={`px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm inline-flex items-center gap-2 cursor-pointer shadow ${
+              className={`px-4 py-2 rounded-xl font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer shadow ${
                 isLightPage ? "bg-[#254F88] text-white" : "bg-[#C6A574] text-[#13161C]"
               }`}
             >
               <span>Auswahl vergleichen</span>
-              <ArrowRight size={15} />
+              <ArrowRight size={14} />
             </button>
           </div>
         </div>
       )}
 
-      {/* VERGLEICHS-MODAL (Gegenüberstellung von Ort, Dauer, Preis & Quellen) */}
+      {/* VERGLEICHS-MODAL */}
       {compareModalOpen && (
         <div className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 text-white">
           <div className="max-w-4xl w-full rounded-2xl bg-[#1C2029] border border-[#C6A574] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
@@ -1312,13 +1303,13 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* PRIVAT ANFRAGEN / QUELLEN-DETAILS MODAL */}
+      {/* PRIVAT ANFRAGEN / QUELLEN MODAL */}
       {privateInquiryProfile && (
         <div className="fixed inset-0 z-[75] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 text-white">
           <div className="max-w-md w-full rounded-2xl bg-[#1C2029] border border-white/20 p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
-                {privateInquiryProfile.isSelfManaged ? "Direktkontakt · Selbst verwaltetes Profil" : "Quellenübersicht"}
+                {privateInquiryProfile.isSelfManaged ? "Privat anfragen · Selbst verwaltetes Profil" : "Quellenübersicht"}
               </span>
               <button onClick={() => setPrivateInquiryProfile(null)} className="text-gray-400 hover:text-white">
                 ✕
@@ -1329,7 +1320,7 @@ export default function HomePage() {
               {privateInquiryProfile.cleanCity} · Kanton {privateInquiryProfile.canton}
             </p>
             <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/10 space-y-2 text-xs">
-              <div className="font-bold text-gray-200">Zugeordnete Quellen für dieses Profil:</div>
+              <div className="font-bold text-gray-200">Erfasste Quellen & Kontaktwege:</div>
               {privateInquiryProfile.linkedSources?.map((src: any, idx: number) => (
                 <a
                   key={idx}

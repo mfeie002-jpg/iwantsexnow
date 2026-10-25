@@ -22,7 +22,7 @@ export function LuxuryHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#12151C]/95 backdrop-blur-xl text-white">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-[1380px] mx-auto px-6 sm:px-10 h-14 sm:h-16 flex items-center justify-between gap-4">
           {/* Left: Brand Wordmark with Subtitle "Schweizer Profilverzeichnis" */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group shrink-0">
