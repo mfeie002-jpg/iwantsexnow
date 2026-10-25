@@ -1,17 +1,18 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { BrandLogo } from "@/components/BrandLogo";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { VisualDiscoveryHub } from "@/components/marketplace/VisualDiscoveryHub";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
+import { Check, MapPin, Phone, ShieldCheck, Video, ArrowUpRight } from "lucide-react";
 
-const PERSONAL_MOOD_QUOTES = [
-  "„Heute Abend privat bei mir oder mit Champagner bei dir im Hotel 🥂“",
-  "„Ich liebe echte Zärtlichkeit, lange Küsse und genussvolle Stunden ohne Blick auf die Uhr 💋“",
-  "„Neu in der Stadt – lass uns gemeinsam den Alltag vergessen ✨“",
-  "„Sinnliche Body-to-Body Massage & heisse Dessous warten schon auf dich 🔥“",
-  "„Diskrete High-Class Begleitung für Gentlemen, die das Besondere suchen 💎“",
-  "„Spontan frei – schreib mir oder starte kurz die 1:1 Live-Cam mit mir 🔴“",
+const FALLBACK_PORTRAITS = [
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=85",
 ];
 
 function getConsistentMetrics(name: string, index: number) {
@@ -20,56 +21,17 @@ function getConsistentMetrics(name: string, index: number) {
   const clicks = 12 + (seed % 34);
   const isOnline = seed % 3 !== 0;
   const isOfficialVerified = index < 24 || seed % 4 === 0;
-  const moodQuote = PERSONAL_MOOD_QUOTES[index % PERSONAL_MOOD_QUOTES.length];
-  return { views, clicks, isOnline, isOfficialVerified, moodQuote };
+  return { views, clicks, isOnline, isOfficialVerified };
 }
 
-type AtmosphereMode = "velvet" | "champagne" | "crimson";
-
-const ATMOSPHERES: Record<
-  AtmosphereMode,
-  {
-    label: string;
-    pageBg: string;
-    cardBg: string;
-    glowLeft: string;
-    glowRight: string;
-  }
-> = {
-  velvet: {
-    label: "🔥 Velvet Penthouse",
-    pageBg: "bg-[#120912]",
-    cardBg: "bg-gradient-to-b from-[#1F101E]/95 to-[#140A14]/98",
-    glowLeft: "bg-rose-600/15",
-    glowRight: "bg-[#C8A97E]/15",
-  },
-  champagne: {
-    label: "🥂 Midnight Champagne",
-    pageBg: "bg-[#0F1219]",
-    cardBg: "bg-gradient-to-b from-[#181E29]/95 to-[#10141D]/98",
-    glowLeft: "bg-[#C8A97E]/20",
-    glowRight: "bg-amber-500/10",
-  },
-  crimson: {
-    label: "🌹 Crimson Silk",
-    pageBg: "bg-[#16070C]",
-    cardBg: "bg-gradient-to-b from-[#260D16]/95 to-[#17070D]/98",
-    glowLeft: "bg-rose-500/20",
-    glowRight: "bg-purple-600/15",
-  },
-};
-
 export default function HomePage() {
-  const [atmosphere, setAtmosphere] = useState<AtmosphereMode>("velvet");
   const [activeVisualId, setActiveVisualId] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeCanton, setActiveCanton] = useState<string>("ALL");
   const [onlyOnline, setOnlyOnline] = useState<boolean>(false);
   const [onlyVerified, setOnlyVerified] = useState<boolean>(false);
-  const [visibleCount, setVisibleCount] = useState<number>(24);
+  const [visibleCount, setVisibleCount] = useState<number>(28);
   const [selectedTeaserProfile, setSelectedTeaserProfile] = useState<any>(null);
-
-  const atm = ATMOSPHERES[atmosphere];
 
   const enrichedProfiles = useMemo(() => {
     const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
@@ -83,8 +45,8 @@ export default function HomePage() {
         clicks: m.clicks,
         isOnline: m.isOnline,
         isOfficialVerified: m.isOfficialVerified,
-        moodQuote: m.moodQuote,
         hasRealPhone,
+        fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
       };
     });
   }, []);
@@ -111,82 +73,16 @@ export default function HomePage() {
   };
 
   return (
-    <div className={`min-h-screen ${atm.pageBg} text-white relative overflow-x-hidden transition-colors duration-500`}>
+    <div className="min-h-screen bg-[#090A0F] text-white pb-20 lg:pb-10">
       <SEO
-        title="iwantsexnow.ch | Exklusive Escorts, Live-Dates & Sinnliche Begleitung in der Schweiz"
-        description="Erlebe über 7.021+ echte Schweizer Escorts, High-Class Models & sinnliche Massagen. Mit Echtzeit-Stories, Live-Cam Vorab-Check und verifizierten Originalbildern."
+        title="iwantsexnow.ch | Schweizer Escort-Verzeichnis, Privat-Models & Direktbuchung"
+        description="Über 7.021+ verifizierte Escorts, Privat-Models, Tantra-Masseurinnen & 216 Clubs in Zürich, Zug, Basel, Bern & Genf. Geprüfte Fotos & transparente Stundentarife."
       />
 
-      {/* Ambient background glow orbs across the page so it never looks flat */}
-      <div className={`pointer-events-none fixed top-1/3 -left-32 w-96 h-96 rounded-full ${atm.glowLeft} blur-[140px]`} />
-      <div className={`pointer-events-none fixed bottom-1/4 -right-32 w-96 h-96 rounded-full ${atm.glowRight} blur-[140px]`} />
+      {/* Interactive Luxury Header with Dropdown Submenus & Mobile Drawer */}
+      <LuxuryHeader />
 
-      {/* Warm Luxury Glass Header */}
-      <header className="sticky top-0 z-40 border-b border-[#C8A97E]/25 bg-[#120810]/90 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
-          <Link href="/">
-            <BrandLogo compact />
-          </Link>
-
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-gray-200">
-            <Link href="/search" className="hover:text-[#C8A97E] transition">
-              Alle 7.021+ Models
-            </Link>
-            <Link href="/rankings" className="hover:text-[#C8A97E] transition">
-              🏆 Top Rankings & Clubs
-            </Link>
-            <Link href="/reviews" className="hover:text-[#C8A97E] transition">
-              ⭐ Portal-Reviews
-            </Link>
-            <Link href="/live-cam" className="text-rose-300 hover:text-rose-200 transition flex items-center gap-1.5 font-bold">
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" /> 1:1 Live-Cam
-            </Link>
-            <Link href="/hotels" className="hover:text-[#C8A97E] transition">
-              🏨 Diskrete Hotels
-            </Link>
-            <Link href="/for-clients" className="hover:text-[#C8A97E] transition">
-              Für Gentlemen
-            </Link>
-            <Link href="/advertise" className="text-emerald-300 hover:text-emerald-200 transition font-bold">
-              Für Models (1. Monat Gratis)
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-2">
-            {/* Subtle Mood/Ambience Selector */}
-            <div className="hidden xl:flex items-center bg-black/50 border border-[#C8A97E]/30 rounded-full p-0.5 text-[10px]">
-              {(["velvet", "champagne", "crimson"] as AtmosphereMode[]).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setAtmosphere(m)}
-                  className={`px-2.5 py-1 rounded-full font-bold transition ${
-                    atmosphere === m
-                      ? "bg-gradient-to-r from-[#C8A97E] to-[#E5C99B] text-[#120910]"
-                      : "text-gray-300 hover:text-white"
-                  }`}
-                >
-                  {ATMOSPHERES[m].label}
-                </button>
-              ))}
-            </div>
-
-            <Link
-              href="/login"
-              className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold"
-            >
-              Login
-            </Link>
-            <Link
-              href="/create-post"
-              className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C8A97E] via-[#E5C99B] to-[#C8A97E] text-[#120910] text-xs font-extrabold shadow-lg"
-            >
-              + Gratis Inserieren
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* SECTION 1: SENSUAL PENTHOUSE HERO + LIVE STORIES + VISUAL MOOD CARDS */}
+      {/* Clean Visual Category & City Filter Bar */}
       <VisualDiscoveryHub
         activeVisualId={activeVisualId}
         onSelectVisual={handleSelectVisual}
@@ -198,201 +94,246 @@ export default function HomePage() {
         onToggleOnline={() => setOnlyOnline(!onlyOnline)}
         onlyVerified={onlyVerified}
         onToggleVerified={() => setOnlyVerified(!onlyVerified)}
-        storyProfiles={enrichedProfiles.filter((p: any) => p.isOnline)}
       />
 
-      {/* SECTION 2: MAGAZINE-STYLE HUMAN PROFILE CARDS */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white flex items-center gap-2">
-              <span>🔥 Heute Abend für dich verfügbar</span>
-              <span className="text-sm font-sans font-normal text-[#C8A97E]">
-                ({filteredProfiles.length} Profile{activeCanton !== "ALL" ? ` in ${activeCanton}` : " in der Schweiz"})
-              </span>
-            </h2>
+      {/* Main High-Class Escort Portrait Grid */}
+      <main className="max-w-7xl mx-auto px-4 py-7">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-5 pb-3 border-b border-white/10">
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
+            <span className="font-bold text-white">{filteredProfiles.length} Escorts & Studios</span>
+            <span>in {activeCanton === "ALL" ? "der ganzen Schweiz" : `Kanton ${activeCanton}`}</span>
+            {searchQuery && <span className="text-[#C8A97E]">· Filter: „{searchQuery}“</span>}
           </div>
-          <Link href="/advertise" className="text-xs text-[#E5C99B] hover:underline font-semibold">
-            👑 Als Model hier im Spotlight erscheinen (1. Monat Gratis) →
-          </Link>
+          <div className="flex items-center gap-4 text-xs">
+            <Link href="/rankings" className="text-gray-300 hover:text-white">
+              216 Schweizer Clubs ansehen →
+            </Link>
+            <Link href="/advertise" className="text-[#C8A97E] hover:underline font-semibold">
+              Top-Platzierung buchen →
+            </Link>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* 2 columns on mobile (authentic escort directory grid!), 4 columns on desktop */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
           {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) => {
-            const cleanName = String(p.rawName || "VIP Model").slice(0, 30);
+            const cleanName = String(p.rawName || "Model").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 24) || "VIP Model";
+            const age = Number(p.age) >= 18 && Number(p.age) <= 55 ? Number(p.age) : 24 + (idx % 7);
             const city = String(p.city || "Zürich").split("/")[0].trim();
             const rate = p.advertisedBaseChf || 400;
-            const img =
-              p.thumbnail ||
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85";
+            const img = p.thumbnail || p.fallbackImg;
 
             return (
-              <div
+              <article
                 key={`${p.id}-${idx}`}
-                className={`group rounded-3xl overflow-hidden border ${
+                className={`group rounded-xl overflow-hidden bg-[#11131C] border transition-all duration-300 flex flex-col justify-between ${
                   idx < 4
-                    ? "border-[#C8A97E]/80 shadow-[0_12px_40px_rgba(225,29,72,0.22)]"
-                    : "border-white/15 hover:border-[#C8A97E]/60"
-                } ${atm.cardBg} flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5`}
+                    ? "border-[#C8A97E]/60 shadow-[0_8px_30px_rgba(200,169,126,0.12)]"
+                    : "border-white/10 hover:border-[#C8A97E]/50"
+                }`}
               >
-                {/* TALLER, MORE INTIMATE 3:4 PORTRAIT PHOTO */}
-                <div className="relative h-80 w-full overflow-hidden bg-black">
+                {/* 3:4 Portrait Escort Photo */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#07080C]">
                   <Link href={`/profile/${encodeURIComponent(p.id)}`}>
                     <img
                       src={img}
-                      alt={cleanName}
+                      alt={`${cleanName}, ${age} – Escort in ${city}`}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                      }}
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                       loading="lazy"
                     />
                   </Link>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#140A14] via-transparent to-black/35 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#090A0F] via-transparent to-black/25 pointer-events-none" />
 
-                  {/* TOP-LEFT: LIVE / AVAILABLE BADGE */}
-                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                  {/* Top-Left: Subtle Status Indicator */}
+                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
                     {p.isOnline ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500 text-black text-[11px] font-extrabold shadow-lg">
-                        <span className="w-2 h-2 rounded-full bg-black animate-ping" />
-                        JETZT FREI
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/80 backdrop-blur border border-emerald-500/40 text-emerald-300 text-[10px] font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        Verfügbar
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur text-gray-200 text-[10px] font-semibold border border-white/15">
-                        🕒 Heute aktiv
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/70 text-gray-300 text-[10px]">
+                        Heute aktiv
                       </span>
                     )}
-
                     {idx < 4 && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#C8A97E] to-[#E5C99B] text-[#120910] text-[10px] font-extrabold w-fit shadow">
-                        👑 TONIGHT&apos;S TOP #{idx + 1}
+                      <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] text-[9px] font-extrabold uppercase tracking-wider w-fit">
+                        Featured
                       </span>
                     )}
                   </div>
 
-                  {/* TOP-RIGHT: OFFICIAL VERIFIED CHECKMARK */}
-                  <div className="absolute top-3 right-3">
+                  {/* Top-Right: Official Checkmark */}
+                  <div className="absolute top-2.5 right-2.5">
                     {p.isOfficialVerified ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-400 text-black text-[11px] font-extrabold shadow-lg">
-                        ✓ Offiziell Echt
+                      <span
+                        title="Geprüftes Originalprofil"
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/80 backdrop-blur border border-[#C8A97E]/50 text-[#E5C99B] text-[10px] font-semibold"
+                      >
+                        <Check size={11} className="text-[#C8A97E]" /> Verifiziert
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/75 text-gray-200 text-[10px] border border-white/15">
-                        Index · {p.sourcePortal || "CH"}
+                      <span className="px-2 py-0.5 rounded bg-black/70 text-gray-400 text-[9px] border border-white/10">
+                        {p.sourcePortal || "Index"}
                       </span>
                     )}
                   </div>
 
-                  {/* BOTTOM ON PHOTO: NAME + LOCATION + RATE */}
-                  <div className="absolute bottom-3 left-3.5 right-3.5 flex items-end justify-between">
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="text-xl font-serif font-bold text-white leading-tight drop-shadow">
-                          {cleanName}
-                        </h3>
+                  {/* Bottom Photo Overlay: Name, Age, Location & CHF Rate */}
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-1">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1">
+                        <h2 className="text-sm sm:text-base font-serif font-bold text-white truncate">
+                          {cleanName}, {age}
+                        </h2>
                         {p.isOfficialVerified && (
-                          <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-sky-400 text-black text-[10px] font-black">
+                          <span className="w-3.5 h-3.5 rounded-full bg-[#C8A97E] text-[#090A0F] text-[9px] font-black inline-flex items-center justify-center shrink-0">
                             ✓
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-[#E5C99B] font-medium mt-0.5">
-                        📍 {city} ({p.canton || "ZH"}) · Privat & Hotel
+                      <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate">
+                        <MapPin size={11} className="text-[#C8A97E] shrink-0" />
+                        <span>{city} ({p.canton || "ZH"})</span>
                       </p>
                     </div>
-                    <div className="text-right bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-[#C8A97E]/50">
-                      <div className="text-[9px] uppercase tracking-wider text-gray-300">Honorar</div>
-                      <div className="text-sm font-extrabold text-[#E5C99B]">CHF {rate}</div>
+                    <div className="shrink-0 bg-black/85 backdrop-blur px-2 py-1 rounded border border-white/15 text-right">
+                      <div className="text-[9px] text-gray-400 leading-none">1 Std.</div>
+                      <div className="text-xs font-bold text-[#C8A97E]">CHF {rate}</div>
                     </div>
                   </div>
                 </div>
 
-                {/* HUMAN STORY QUOTE + TAGS + CTA */}
-                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                  <div className="space-y-2.5">
-                    {/* Personal Human Whisper / Status */}
-                    <p className="text-xs italic text-gray-200/95 bg-white/5 border-l-2 border-rose-400 pl-2.5 py-1.5 rounded-r-xl leading-relaxed">
-                      {p.moodQuote}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1">
-                      {(p.includedTags || ["Girlfriend (GFE)", "Privat", "Hotelbesuch"]).slice(0, 3).map((tag: string, i: number) => (
-                        <span
-                          key={i}
-                          className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-gray-200"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {p.isOfficialVerified && (
-                        <span className="px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-400/30 text-[10px] text-rose-200">
-                          🔒 Uncensored Videos
-                        </span>
-                      )}
-                    </div>
+                {/* Clean Card Footer */}
+                <div className="p-2.5 sm:p-3.5 flex-1 flex flex-col justify-between gap-2.5">
+                  <div className="flex flex-wrap gap-1">
+                    {(p.includedTags || ["GFE", "Privat", "Hotelbesuch"]).slice(0, 3).map((tag: string, i: number) => (
+                      <span
+                        key={i}
+                        className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300 border border-white/5"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
 
                   {p.isOfficialVerified ? (
-                    <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div className="grid grid-cols-2 gap-1.5">
                       <Link
                         href={`/profile/${encodeURIComponent(p.id)}`}
-                        className="py-2.5 rounded-xl bg-gradient-to-r from-[#C8A97E] via-[#E5C99B] to-[#C8A97E] hover:brightness-110 text-[#120910] font-extrabold text-xs text-center transition shadow-md"
+                        className="py-2 rounded-lg bg-[#C8A97E] hover:bg-[#d8b98e] text-[#090A0F] font-bold text-[11px] text-center transition"
                       >
-                        Date anfragen →
+                        Profil & Kontakt
                       </Link>
                       <Link
                         href={`/live-cam?model=${encodeURIComponent(cleanName)}`}
-                        className="py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/40 text-rose-200 font-bold text-xs text-center transition"
+                        className="py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-gray-200 font-semibold text-[11px] text-center transition flex items-center justify-center gap-1"
                       >
-                        🔴 Live-Cam
+                        <Video size={12} className="text-rose-400" /> Live-Cam
                       </Link>
                     </div>
                   ) : (
-                    <div className="space-y-1.5 pt-1">
+                    <div className="space-y-1.5">
                       <button
                         type="button"
                         onClick={() => setSelectedTeaserProfile(p)}
-                        className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-[#C8A97E] hover:text-[#120910] text-white font-bold text-xs transition border border-white/15"
+                        className="w-full py-2 rounded-lg bg-white/5 hover:bg-[#C8A97E] hover:text-[#090A0F] text-gray-200 font-semibold text-[11px] transition border border-white/10 cursor-pointer"
                       >
-                        💌 Nachricht hinterlegen ({p.clicks} Herren interessiert)
+                        Kontakt & Details ({p.views} Aufrufe)
                       </button>
-                      <div className="flex items-center justify-between text-[10px] text-gray-400 px-1">
+                      <div className="flex items-center justify-between text-[9px] text-gray-500 px-0.5">
                         <Link
                           href={`/create-post?claim=${encodeURIComponent(cleanName)}`}
-                          className="text-emerald-300 hover:underline font-semibold"
+                          className="text-[#C8A97E] hover:underline"
                         >
-                          ✓ Dein Profil? Gratis übernehmen
+                          Profil übernehmen
                         </Link>
-                        <Link
-                          href={`/report?name=${encodeURIComponent(cleanName)}`}
-                          className="hover:text-rose-300"
-                        >
+                        <Link href={`/report?name=${encodeURIComponent(cleanName)}`} className="hover:text-gray-300">
                           Opt-Out / DMCA
                         </Link>
                       </div>
                     </div>
                   )}
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
 
         {visibleCount < filteredProfiles.length && (
-          <div className="text-center mt-10">
+          <div className="text-center mt-8">
             <button
-              onClick={() => setVisibleCount((prev) => prev + 24)}
-              className="px-9 py-3.5 rounded-2xl bg-gradient-to-r from-[#C8A97E] via-[#E5C99B] to-[#C8A97E] text-[#120910] font-extrabold text-sm shadow-xl"
+              type="button"
+              onClick={() => setVisibleCount((prev) => prev + 28)}
+              className="px-8 py-3 rounded-xl border border-[#C8A97E] bg-[#C8A97E]/10 hover:bg-[#C8A97E] text-[#C8A97E] hover:text-[#090A0F] font-bold text-xs uppercase tracking-wider transition cursor-pointer"
             >
-              Mehr verführerische Profile entdecken ({filteredProfiles.length - visibleCount} weitere)
+              Weitere Profile anzeigen ({filteredProfiles.length - visibleCount} weitere)
             </button>
           </div>
         )}
+
+        {/* Editorial B2B & Trust Footer Blocks */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-14 pt-8 border-t border-white/10">
+          <Link
+            href="/advertise"
+            className="p-5 rounded-xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E]/60 transition group"
+          >
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+              Für selbstständige Models & Studios
+            </div>
+            <h3 className="text-base font-serif font-bold text-white mt-1 group-hover:text-[#C8A97E] flex items-center justify-between">
+              <span>1. Monat kostenlos inserieren</span>
+              <ArrowUpRight size={16} />
+            </h3>
+            <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
+              Übernehmen Sie Ihr bestehendes Profil kostenlos: Offizieller Verifizierungs-Haken, eigene Klick-Statistiken, Top-Spot Bidding und Verkauf von Locked Videos.
+            </p>
+          </Link>
+
+          <Link
+            href="/for-clients"
+            className="p-5 rounded-xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E]/60 transition group"
+          >
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+              Für diskrete Gentlemen
+            </div>
+            <h3 className="text-base font-serif font-bold text-white mt-1 group-hover:text-[#C8A97E] flex items-center justify-between">
+              <span>Echte Fotos & Fixpreis-Garantie</span>
+              <ArrowUpRight size={16} />
+            </h3>
+            <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
+              Wie unser dreistufiger Echtheits-Check, der 3-Minuten Vorab-Video-Call und transparente Komplettpreise vor Enttäuschungen schützen.
+            </p>
+          </Link>
+
+          <Link
+            href="/reviews"
+            className="p-5 rounded-xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E]/60 transition group"
+          >
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+              Marktbericht Schweiz 2026
+            </div>
+            <h3 className="text-base font-serif font-bold text-white mt-1 group-hover:text-[#C8A97E] flex items-center justify-between">
+              <span>Top 10 Escort-Portale im Test</span>
+              <ArrowUpRight size={16} />
+            </h3>
+            <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
+              Detaillierte Reviews und Preisvergleiche zu xdate.ch, fgirl.ch, and6.com, rosalon.ch und kaufmich.com.
+            </p>
+          </Link>
+        </div>
       </main>
 
+      {/* Clean Modal for Indexed Profiles */}
       {selectedTeaserProfile && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="max-w-lg w-full rounded-3xl bg-[#1F101E] border border-[#C8A97E] p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-3">
-              <span className="px-3 py-1 rounded-full bg-rose-500/20 text-rose-200 text-xs font-bold">
-                💌 Direkt-Nachricht an {selectedTeaserProfile.rawName}
+          <div className="max-w-md w-full rounded-2xl bg-[#11131C] border border-[#C8A97E]/60 p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
+                Schweizer Markt-Index · {selectedTeaserProfile.sourcePortal || "CH"}
               </span>
               <button
                 onClick={() => setSelectedTeaserProfile(null)}
@@ -404,23 +345,29 @@ export default function HomePage() {
             <h3 className="text-xl font-serif font-bold text-white">
               {selectedTeaserProfile.rawName} ({selectedTeaserProfile.city || "Zürich"})
             </h3>
-            <p className="text-xs text-gray-300 mt-2">
-              Dieses Profil wurde im Schweizer Markt-Index erfasst und hat diese Woche bereits{" "}
-              <strong className="text-[#E5C99B]">{selectedTeaserProfile.views} Profil-Besucher</strong> und{" "}
-              <strong className="text-emerald-300">{selectedTeaserProfile.clicks + 1} Date-Anfragen</strong> angezogen.
+            <p className="text-xs text-gray-300 leading-relaxed">
+              Dieses Profil verzeichnete auf <strong>iwantsexnow.ch</strong> bereits{" "}
+              <strong className="text-white">{selectedTeaserProfile.views} Profil-Aufrufe</strong> und{" "}
+              <strong className="text-[#C8A97E]">{selectedTeaserProfile.clicks + 1} Kontakt-Anfragen</strong>.
             </p>
-            <div className="flex flex-wrap gap-2 pt-4">
+            <div className="flex flex-col gap-2 pt-2">
               <Link
                 href={`/profile/${encodeURIComponent(selectedTeaserProfile.id)}`}
-                className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#120910] font-extrabold text-xs"
+                className="py-2.5 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-xs text-center"
               >
-                Als Gentleman: Date-Wunsch hinterlegen →
+                Als Kunde: Vollständiges Profil & Buchungsanfrage öffnen →
               </Link>
               <Link
                 href={`/create-post?claim=${encodeURIComponent(selectedTeaserProfile.rawName || "")}`}
-                className="px-4 py-2.5 rounded-xl bg-emerald-500 text-black font-bold text-xs"
+                className="py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white font-semibold text-xs text-center border border-white/15"
               >
-                ✓ Als Model gratis freischalten (1. Monat kostenlos)
+                Sind Sie diese Anbieterin? Profil kostenlos übernehmen (1. Monat gratis)
+              </Link>
+              <Link
+                href={`/report?name=${encodeURIComponent(selectedTeaserProfile.rawName || "")}`}
+                className="text-center text-[11px] text-gray-500 hover:text-gray-300 pt-1"
+              >
+                Eintrag entfernen / DMCA melden
               </Link>
             </div>
           </div>
