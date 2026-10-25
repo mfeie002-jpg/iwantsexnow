@@ -7,7 +7,7 @@
     "age": 40,
     "rawPhone": "+41 78 669 62 04",
     "city": "Emmen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Emmen",
       "Zürich"
@@ -40,7 +40,7 @@
     "age": 26,
     "rawPhone": "+41 78 737 11 88",
     "city": "Emmen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Emmen",
       "Zürich"
@@ -73,7 +73,7 @@
     "age": 25,
     "rawPhone": "+41 79 369 29 39",
     "city": "Basel",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Zürich"
@@ -105,7 +105,7 @@
     "age": 25,
     "rawPhone": "+41 79 543 88 65",
     "city": "Menziken",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Menziken",
       "Zürich"
@@ -201,7 +201,7 @@
     "age": 26,
     "rawPhone": "+41 76 543 21 09",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -265,7 +265,7 @@
     "age": 29,
     "rawPhone": "+41 79 476 60 45",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -296,7 +296,7 @@
     "age": 26,
     "rawPhone": "+41 77 543 21 09",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -327,7 +327,7 @@
     "age": 22,
     "rawPhone": "+41 76 987 65 43",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -358,8 +358,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 744 21 32",
-    "city": "Geneva",
-    "canton": "ZH",
+    "city": "Genève",
+    "canton": "GE",
     "subareas": [
       "Geneva",
       "Zürich"
@@ -398,7 +398,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 368 78 32",
-    "city": "Zurich",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zurich",
@@ -437,8 +437,8 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 78 814 40 40",
-    "city": "Aarwangen/BE,AG,SO",
-    "canton": "ZH",
+    "city": "Aarwangen",
+    "canton": "SZ",
     "subareas": [
       "Aarwangen/BE,AG,SO",
       "Zürich"
@@ -468,7 +468,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 257 59 76",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -506,8 +506,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 929 53 24",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -545,7 +545,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 456 13 67",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -580,8 +580,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 41 460 57 57",
-    "city": "Sempach/LU,AG,BE",
-    "canton": "ZH",
+    "city": "Sempach",
+    "canton": "LU",
     "subareas": [
       "Sempach/LU,AG,BE",
       "Zürich"
@@ -649,8 +649,8 @@
     "genderCategory": "female",
     "age": 33,
     "rawPhone": "+41 78 351 63 00",
-    "city": "Härkingen/SO",
-    "canton": "ZH",
+    "city": "Härkingen",
+    "canton": "SO",
     "subareas": [
       "Härkingen/SO",
       "Zürich"
@@ -689,8 +689,8 @@
     "genderCategory": "female",
     "age": 45,
     "rawPhone": "+41 76 535 91 90",
-    "city": "Niederbipp/BE,NW/OW,SO",
-    "canton": "ZH",
+    "city": "Niederbipp",
+    "canton": "BE",
     "subareas": [
       "Niederbipp/BE,NW/OW,SO",
       "Zürich"
@@ -728,8 +728,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 543 97 67",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -765,7 +765,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 979 59 68",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -804,8 +804,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 250 56 35",
-    "city": "Wangen/SZ,GL,SG",
-    "canton": "ZH",
+    "city": "Wangen",
+    "canton": "SZ",
     "subareas": [
       "Wangen/SZ,GL,SG",
       "Zürich"
@@ -841,7 +841,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 380 64 31",
-    "city": "Zürich/ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZH",
@@ -877,7 +877,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 973 57 20",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -913,7 +913,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 465 27 15",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -952,8 +952,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 513 66 62",
-    "city": "Altendorf/SZ,SG,ZH",
-    "canton": "ZH",
+    "city": "Altendorf",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ,SG,ZH",
       "Zürich"
@@ -991,8 +991,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 336 22 68",
-    "city": "Basel/BS,BL,DE",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL,DE",
       "Zürich"
@@ -1069,8 +1069,8 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 77 955 48 03",
-    "city": "Grenchen/SO",
-    "canton": "ZH",
+    "city": "Grenchen",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich"
@@ -1108,8 +1108,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 332 74 59",
-    "city": "Luzern/LU,AG,SZ",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,AG,SZ",
       "Zürich"
@@ -1146,8 +1146,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 77 996 42 94",
-    "city": "St. Gallen/SG,TG,LI,AI / AR",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,LI,AI / AR",
       "Zürich"
@@ -1185,7 +1185,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 472 33 80",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -1253,8 +1253,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 555 12 34",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -1316,8 +1316,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 351 48 80",
-    "city": "Emmenbrücke/LU",
-    "canton": "ZH",
+    "city": "Emmenbrücke",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich"
@@ -1356,7 +1356,7 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 76 270 59 42",
-    "city": "Rüti/ZH",
+    "city": "Rüti",
     "canton": "ZH",
     "subareas": [
       "Rüti/ZH",
@@ -1436,7 +1436,7 @@
     "age": 30,
     "rawPhone": "+41 76 768 22 29",
     "city": "Davos Platz",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Davos Platz",
       "Zürich"
@@ -1473,7 +1473,7 @@
     "age": 25,
     "rawPhone": "+41 78 405 33 89",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Waltenschwil",
       "Zürich"
@@ -1512,7 +1512,7 @@
     "age": 21,
     "rawPhone": "+41 78 245 82 31",
     "city": "St. Gallen",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "St. Gallen",
       "Zürich"
@@ -1590,7 +1590,7 @@
     "age": 28,
     "rawPhone": "+41 77 177 19 99",
     "city": "Bern",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Bern",
       "Zürich"
@@ -1621,7 +1621,7 @@
     "age": 20,
     "rawPhone": "+41 77 925 42 38",
     "city": "Basel",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Zürich"
@@ -1683,7 +1683,7 @@
     "age": 30,
     "rawPhone": "+41 77 993 47 17",
     "city": "Wädenswil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Wädenswil",
       "Zürich"
@@ -1723,7 +1723,7 @@
     "age": 22,
     "rawPhone": "+41 77 470 06 91",
     "city": "Luzern",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zürich"
@@ -1761,8 +1761,8 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 76 717 50 62",
-    "city": "Menziken/AG",
-    "canton": "ZH",
+    "city": "Menziken",
+    "canton": "AG",
     "subareas": [
       "Menziken/AG",
       "Zürich"
@@ -1798,7 +1798,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 519 44 99",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -1838,8 +1838,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 77 972 53 61",
-    "city": "Basel/BS,BL",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL",
       "Zürich"
@@ -1878,8 +1878,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 76 533 78 07",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -1917,7 +1917,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 77 937 18 62",
-    "city": "Bülach/ZH,AG,SH,ZG,DE",
+    "city": "Bülach",
     "canton": "ZH",
     "subareas": [
       "Bülach/ZH,AG,SH,ZG,DE",
@@ -1956,8 +1956,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 76 765 60 96",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich"
@@ -1996,8 +1996,8 @@
     "genderCategory": "female",
     "age": 18,
     "rawPhone": "+41 78 257 22 66",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich"
@@ -2034,7 +2034,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 754 43 45",
-    "city": "Horgen/ZH Stadt",
+    "city": "Horgen",
     "canton": "ZH",
     "subareas": [
       "Horgen/ZH Stadt",
@@ -2073,8 +2073,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 79 450 17 46",
-    "city": "Bad Ragaz/SG",
-    "canton": "ZH",
+    "city": "Bad Ragaz",
+    "canton": "SG",
     "subareas": [
       "Bad Ragaz/SG",
       "Zürich"
@@ -2112,8 +2112,8 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 78 344 05 32",
-    "city": "Wil/SG",
-    "canton": "ZH",
+    "city": "Wil",
+    "canton": "SG",
     "subareas": [
       "Wil/SG",
       "Zürich"
@@ -2151,8 +2151,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 77 937 64 35",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -2190,8 +2190,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 829 80 28",
-    "city": "Wettingen/AG",
-    "canton": "ZH",
+    "city": "Wettingen",
+    "canton": "VS",
     "subareas": [
       "Wettingen/AG",
       "Zürich"
@@ -2227,8 +2227,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 78 000 00 04",
-    "city": "Grenchen/SO",
-    "canton": "ZH",
+    "city": "Grenchen",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich"
@@ -2258,7 +2258,7 @@
     "genderCategory": "female",
     "age": 34,
     "rawPhone": "+41 79 543 21 09",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -2290,7 +2290,7 @@
     "age": 27,
     "rawPhone": "+41 77 904 71 23",
     "city": "Grenchen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Grenchen",
       "Zürich / Schweiz"
@@ -2352,8 +2352,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 78 999 88 77",
-    "city": "Aarau/AG,BE,LU,SO,ZH",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG,BE,LU,SO,ZH",
       "Zürich"
@@ -2384,7 +2384,7 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 77 942 88 06",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -2422,8 +2422,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 629 36 63",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -2461,8 +2461,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 730 57 75",
-    "city": "Wil/SG,AT,LI",
-    "canton": "ZH",
+    "city": "Wil",
+    "canton": "SG",
     "subareas": [
       "Wil/SG,AT,LI",
       "Zürich"
@@ -2501,8 +2501,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 77 991 89 31",
-    "city": "Basel/BS,BL,DE",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL,DE",
       "Zürich"
@@ -2567,8 +2567,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 77 216 42 12",
-    "city": "Basel/BS,BL,SO",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL,SO",
       "Zürich"
@@ -2606,8 +2606,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 958 36 09",
-    "city": "Herzogenbuchsee/BE",
-    "canton": "ZH",
+    "city": "Herzogenbuchsee",
+    "canton": "SG",
     "subareas": [
       "Herzogenbuchsee/BE",
       "Zürich"
@@ -2647,8 +2647,8 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 41 322 12 66",
-    "city": "Kriens/LU,AG,NW / OW",
-    "canton": "ZH",
+    "city": "Kriens",
+    "canton": "LU",
     "subareas": [
       "Kriens/LU,AG,NW / OW",
       "Zürich"
@@ -2682,8 +2682,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 908 91 30",
-    "city": "Thalwil/ZH,SZ,ZH Stadt",
-    "canton": "ZH",
+    "city": "Thalwil",
+    "canton": "SG",
     "subareas": [
       "Thalwil/ZH,SZ,ZH Stadt",
       "Zürich"
@@ -2759,8 +2759,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 76 705 06 82",
-    "city": "Emmenbrücke/LU",
-    "canton": "ZH",
+    "city": "Emmenbrücke",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich"
@@ -2798,8 +2798,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 76 779 22 49",
-    "city": "Wil/SG,TG,ZH",
-    "canton": "ZH",
+    "city": "Wil",
+    "canton": "SG",
     "subareas": [
       "Wil/SG,TG,ZH",
       "Zürich"
@@ -2836,8 +2836,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 79 088 24 06",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -2876,8 +2876,8 @@
     "genderCategory": "female",
     "age": 32,
     "rawPhone": "+41 79 101 75 62",
-    "city": "Carouge (GE)",
-    "canton": "ZG",
+    "city": "Carouge",
+    "canton": "GE",
     "subareas": [
       "Carouge (GE)",
       "Zug / Cham"
@@ -2917,7 +2917,7 @@
     "age": 22,
     "rawPhone": "+41 78 807 34 79",
     "city": "Zürich",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Zürich",
       "Zug / Cham"
@@ -2949,7 +2949,7 @@
     "age": 40,
     "rawPhone": "+41 76 278 84 67",
     "city": "Zürich",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Zürich",
       "Zug / Cham"
@@ -2983,7 +2983,7 @@
     "age": 25,
     "rawPhone": "+41 76 267 29 29",
     "city": "Winterthur",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Winterthur",
       "Zug / Cham"
@@ -3023,7 +3023,7 @@
     "age": 30,
     "rawPhone": "+41 77 944 05 87",
     "city": "Liestal",
-    "canton": "ZG",
+    "canton": "BS",
     "subareas": [
       "Liestal",
       "Zug / Cham"
@@ -3062,8 +3062,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 79 541 96 69",
-    "city": "Schlieren/ZH,AG,ZH Stadt",
-    "canton": "ZG",
+    "city": "Schlieren",
+    "canton": "ZH",
     "subareas": [
       "Schlieren/ZH,AG,ZH Stadt",
       "Zug / Cham"
@@ -3100,8 +3100,8 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 79 888 99 99",
-    "city": "Wetzikon/ZH,SZ,ZH Stadt",
-    "canton": "ZG",
+    "city": "Wetzikon",
+    "canton": "ZH",
     "subareas": [
       "Wetzikon/ZH,SZ,ZH Stadt",
       "Zug / Cham"
@@ -3168,8 +3168,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 521 99 49",
-    "city": "Landquart/GR",
-    "canton": "ZG",
+    "city": "Landquart",
+    "canton": "GR",
     "subareas": [
       "Landquart/GR",
       "Zug / Cham"
@@ -3271,8 +3271,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 78 000 00 14",
-    "city": "Luzern/LU,AG,ZG",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,AG,ZG",
       "Winterthur"
@@ -3380,8 +3380,8 @@
     "genderCategory": "female",
     "age": 39,
     "rawPhone": "+41 77 972 93 07",
-    "city": "Aarau/AG",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Winterthur"
@@ -3418,8 +3418,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 78 330 22 11",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Winterthur"
@@ -3449,8 +3449,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 456 13 47",
-    "city": "Aarau/AG",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Winterthur"
@@ -3481,8 +3481,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 78 354 30 77",
-    "city": "Altendorf/SZ",
-    "canton": "ZH",
+    "city": "Altendorf",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ",
       "Winterthur"
@@ -3635,8 +3635,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 76 368 88 52",
-    "city": "Bad Ragaz/SG",
-    "canton": "ZH",
+    "city": "Bad Ragaz",
+    "canton": "SG",
     "subareas": [
       "Bad Ragaz/SG",
       "Winterthur"
@@ -3677,8 +3677,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 819 77 19",
-    "city": "Biel/BE",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Winterthur"
@@ -3709,7 +3709,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 629 56 89",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -3751,7 +3751,7 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 77 903 65 79",
-    "city": "Bülach/ZH,SH,SZ,ZG,ZH Stadt",
+    "city": "Bülach",
     "canton": "ZH",
     "subareas": [
       "Bülach/ZH,SH,SZ,ZG,ZH Stadt",
@@ -3791,8 +3791,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 420 04 54",
-    "city": "Adliswil/ZH",
-    "canton": "ZH",
+    "city": "Adliswil",
+    "canton": "SG",
     "subareas": [
       "Adliswil/ZH",
       "Winterthur"
@@ -3833,8 +3833,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 123 45 70",
-    "city": "Wohlen/AG,LU,ZG,ZH Stadt,ZH",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,LU,ZG,ZH Stadt,ZH",
       "Winterthur"
@@ -3865,7 +3865,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 222 00 00",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -3897,7 +3897,7 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 77 944 06 74",
-    "city": "Dietikon/ZH,SZ,ZH Stadt",
+    "city": "Dietikon",
     "canton": "ZH",
     "subareas": [
       "Dietikon/ZH,SZ,ZH Stadt",
@@ -3939,8 +3939,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 779 86 48",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Winterthur"
@@ -3978,7 +3978,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 983 65 41",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -4162,7 +4162,7 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 79 315 74 08",
-    "city": "Winterthur/ZH,SH,ZH Stadt",
+    "city": "Winterthur",
     "canton": "ZH",
     "subareas": [
       "Winterthur/ZH,SH,ZH Stadt",
@@ -4193,8 +4193,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 79 548 97 32",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Winterthur"
@@ -4234,8 +4234,8 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 79 663 34 03",
-    "city": "Chur/GR,LI",
-    "canton": "ZH",
+    "city": "Chur",
+    "canton": "GR",
     "subareas": [
       "Chur/GR,LI",
       "Winterthur"
@@ -4265,8 +4265,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 61 364 49 50",
-    "city": "St. Gallen/BE,LU,SG,VD,ZH Stadt",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/BE,LU,SG,VD,ZH Stadt",
       "Winterthur"
@@ -4306,7 +4306,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 321 45 67",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -4377,7 +4377,7 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 76 759 55 28",
-    "city": "Zürich/ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH",
@@ -4419,8 +4419,8 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 79 333 44 44",
-    "city": "Bienne/BE",
-    "canton": "ZH",
+    "city": "Bienne",
+    "canton": "BE",
     "subareas": [
       "Bienne/BE",
       "Winterthur"
@@ -4450,7 +4450,7 @@
     "genderCategory": "female",
     "age": 40,
     "rawPhone": "+41 79 179 76 07",
-    "city": "Zürich/Oerlikon",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/Oerlikon",
@@ -4485,8 +4485,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 787 53 74",
-    "city": "Münchenbuchsee/BE",
-    "canton": "ZH",
+    "city": "Münchenbuchsee",
+    "canton": "SG",
     "subareas": [
       "Münchenbuchsee/BE",
       "Winterthur"
@@ -4519,8 +4519,8 @@
     "genderCategory": "female",
     "age": 35,
     "rawPhone": "+41 79 139 48 56",
-    "city": "Spreitenbach/AG",
-    "canton": "ZH",
+    "city": "Spreitenbach",
+    "canton": "AG",
     "subareas": [
       "Spreitenbach/AG",
       "Winterthur"
@@ -4559,7 +4559,7 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 61 093 89 03",
-    "city": "Zürich/ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH",
@@ -4601,8 +4601,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 76 548 87 96",
-    "city": "Aarau/AG",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Winterthur"
@@ -4640,7 +4640,7 @@
     "age": 35,
     "rawPhone": "+41 77 923 18 39",
     "city": "Rupperswil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Rupperswil",
       "Winterthur"
@@ -4842,8 +4842,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 76 716 65 84",
-    "city": "Olten/SO",
-    "canton": "ZH",
+    "city": "Olten",
+    "canton": "SO",
     "subareas": [
       "Olten/SO",
       "Zürich / Schweiz"
@@ -4922,8 +4922,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 545 34 15",
-    "city": "Gossau/SG",
-    "canton": "ZH",
+    "city": "Gossau",
+    "canton": "SG",
     "subareas": [
       "Gossau/SG",
       "Zürich / Schweiz"
@@ -5000,7 +5000,7 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 77 938 60 34",
-    "city": "Uster/ZH",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH",
@@ -5038,8 +5038,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 238 13 74",
-    "city": "Frauenfeld/TG,SH,ZH",
-    "canton": "ZH",
+    "city": "Frauenfeld",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld/TG,SH,ZH",
       "Zürich / Schweiz"
@@ -5079,7 +5079,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 814 00 69",
-    "city": "Zürich/ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZH",
@@ -5121,8 +5121,8 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 76 746 53 41",
-    "city": "Wil/SG",
-    "canton": "ZH",
+    "city": "Wil",
+    "canton": "SG",
     "subareas": [
       "Wil/SG",
       "Zürich / Schweiz"
@@ -5193,7 +5193,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 922 74 51",
-    "city": "Zürich/ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZH",
@@ -5235,8 +5235,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 975 64 42",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich / Schweiz"
@@ -5269,8 +5269,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 970 54 88",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich / Schweiz"
@@ -5310,7 +5310,7 @@
     "genderCategory": "female",
     "age": 34,
     "rawPhone": "+41 76 481 42 59",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -5342,8 +5342,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 483 83 83",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich / Schweiz"
@@ -5374,8 +5374,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 257 23 22",
-    "city": "Baden/AG,ZH,DE",
-    "canton": "ZH",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG,ZH,DE",
       "Zürich / Schweiz"
@@ -5414,7 +5414,7 @@
     "genderCategory": "female",
     "age": 58,
     "rawPhone": "+41 76 592 97 14",
-    "city": "Dietikon/ZH",
+    "city": "Dietikon",
     "canton": "ZH",
     "subareas": [
       "Dietikon/ZH",
@@ -5458,8 +5458,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 77 963 82 34",
-    "city": "Weinfelden/TG",
-    "canton": "ZH",
+    "city": "Weinfelden",
+    "canton": "TG",
     "subareas": [
       "Weinfelden/TG",
       "Zürich / Schweiz"
@@ -5498,8 +5498,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 757 13 26",
-    "city": "Pratteln/BL",
-    "canton": "ZH",
+    "city": "Pratteln",
+    "canton": "BS",
     "subareas": [
       "Pratteln/BL",
       "Zürich / Schweiz"
@@ -5538,7 +5538,7 @@
     "age": 22,
     "rawPhone": "+41 77 926 82 90",
     "city": "Baden",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Baden",
       "Zürich / Schweiz"
@@ -5617,7 +5617,7 @@
     "age": 29,
     "rawPhone": "+41 79 715 20 64",
     "city": "Hergiswil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Hergiswil",
       "Zürich / Schweiz"
@@ -5649,7 +5649,7 @@
     "age": 20,
     "rawPhone": "+41 77 934 91 49",
     "city": "Emmen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Emmen",
       "Zürich / Schweiz"
@@ -5722,7 +5722,7 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 77 921 89 44",
-    "city": "Bülach/ZH",
+    "city": "Bülach",
     "canton": "ZH",
     "subareas": [
       "Bülach/ZH",
@@ -5764,8 +5764,8 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 77 222 36 75",
-    "city": "Olten/SO,AG,BE,LU",
-    "canton": "ZH",
+    "city": "Olten",
+    "canton": "SO",
     "subareas": [
       "Olten/SO,AG,BE,LU",
       "Zürich / Schweiz"
@@ -5801,7 +5801,7 @@
     "genderCategory": "female",
     "age": 46,
     "rawPhone": "+41 79 386 69 93",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -5832,8 +5832,8 @@
     "genderCategory": "female",
     "age": 35,
     "rawPhone": "+41 79 756 84 97",
-    "city": "Sursee/LU",
-    "canton": "ZH",
+    "city": "Sursee",
+    "canton": "LU",
     "subareas": [
       "Sursee/LU",
       "Zürich / Schweiz"
@@ -5873,8 +5873,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 693 61 16",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich / Schweiz"
@@ -5913,7 +5913,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 477 41 99",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -5995,7 +5995,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 769 37 99",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6035,8 +6035,8 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 77 445 25 03",
-    "city": "St. Gallen/SG,TG,AI / AR",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,AI / AR",
       "Zürich / Schweiz"
@@ -6190,8 +6190,8 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 77 974 48 91",
-    "city": "Luzern/LU,SZ,ZG",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,SZ,ZG",
       "Zürich / Schweiz"
@@ -6227,7 +6227,7 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 79 909 00 80",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6339,7 +6339,7 @@
     "genderCategory": "male",
     "age": 43,
     "rawPhone": "+41 76 606 07 88",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6382,7 +6382,7 @@
     "genderCategory": "male",
     "age": 24,
     "rawPhone": "+41 79 854 63 97",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6424,7 +6424,7 @@
     "genderCategory": "male",
     "age": 24,
     "rawPhone": "+41 76 630 03 80",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6465,7 +6465,7 @@
     "genderCategory": "male",
     "age": 30,
     "rawPhone": "+41 77 915 08 22",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6505,7 +6505,7 @@
     "genderCategory": "male",
     "age": 20,
     "rawPhone": "+41 78 220 70 11",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6577,8 +6577,8 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 78 316 90 14",
-    "city": "Wohlen/AG",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich / Schweiz"
@@ -6615,7 +6615,7 @@
     "age": 25,
     "rawPhone": "+41 77 929 23 48",
     "city": "Grenchen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Grenchen",
       "Zürich / Schweiz"
@@ -6652,8 +6652,8 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 78 853 55 54",
-    "city": "Zofingen/AG,ZH",
-    "canton": "ZH",
+    "city": "Zofingen",
+    "canton": "AG",
     "subareas": [
       "Zofingen/AG,ZH",
       "Zürich / Schweiz"
@@ -6687,7 +6687,7 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 76 702 51 39",
-    "city": "Zürich/ZH Stadt,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZG,ZH",
@@ -6729,7 +6729,7 @@
     "genderCategory": "male",
     "age": 25,
     "rawPhone": "+41 78 338 77 87",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6957,7 +6957,7 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 76 596 57 61",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -6992,7 +6992,7 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 43 243 11 90",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -7031,8 +7031,8 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 78 268 88 77",
-    "city": "Kreuzlingen/TG",
-    "canton": "ZH",
+    "city": "Kreuzlingen",
+    "canton": "TG",
     "subareas": [
       "Kreuzlingen/TG",
       "Zürich / Schweiz"
@@ -7069,8 +7069,8 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 76 123 45 81",
-    "city": "Wil/SG",
-    "canton": "ZH",
+    "city": "Wil",
+    "canton": "SG",
     "subareas": [
       "Wil/SG",
       "Zürich / Schweiz"
@@ -7132,8 +7132,8 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 76 815 88 37",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich / Schweiz"
@@ -7166,8 +7166,8 @@
     "genderCategory": "trans",
     "age": 20,
     "rawPhone": "+41 79 987 65 43",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich / Schweiz"
@@ -7228,8 +7228,8 @@
     "genderCategory": "trans",
     "age": 30,
     "rawPhone": "+41 79 654 32 10",
-    "city": "Pratteln/BL,BS",
-    "canton": "ZH",
+    "city": "Pratteln",
+    "canton": "BS",
     "subareas": [
       "Pratteln/BL,BS",
       "Zürich / Schweiz"
@@ -7322,7 +7322,7 @@
     "age": 40,
     "rawPhone": "+41 75 677 23 95",
     "city": "Bern",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Bern",
       "Zürich / Schweiz"
@@ -7353,7 +7353,7 @@
     "age": 30,
     "rawPhone": "+41 78 900 12 34",
     "city": "St. Gallen",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "St. Gallen",
       "Zürich / Schweiz"
@@ -7490,7 +7490,7 @@
     "age": 29,
     "rawPhone": "+41 76 123 45 74",
     "city": "Genève",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genève",
       "Zürich"
@@ -7521,7 +7521,7 @@
     "age": 27,
     "rawPhone": "+41 76 123 45 69",
     "city": "Genève",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genève",
       "Zürich"
@@ -7551,8 +7551,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 76 123 45 76",
-    "city": "Champel",
-    "canton": "ZH",
+    "city": "Genève (Champel)",
+    "canton": "GE",
     "subareas": [
       "Champel",
       "Zürich"
@@ -7583,7 +7583,7 @@
     "age": 26,
     "rawPhone": "+41 76 123 45 71",
     "city": "Eaux-vives",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Eaux-vives",
       "Zürich"
@@ -7614,7 +7614,7 @@
     "age": 24,
     "rawPhone": "+41 76 123 45 72",
     "city": "Bulle",
-    "canton": "ZH",
+    "canton": "FR",
     "subareas": [
       "Bulle",
       "Zürich"
@@ -7645,7 +7645,7 @@
     "age": 23,
     "rawPhone": "+41 76 123 45 73",
     "city": "Lausanne",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -7676,7 +7676,7 @@
     "age": 31,
     "rawPhone": "+41 76 123 45 75",
     "city": "Martigny",
-    "canton": "ZH",
+    "canton": "VS",
     "subareas": [
       "Martigny",
       "Zürich"
@@ -7707,7 +7707,7 @@
     "age": 30,
     "rawPhone": "+41 76 123 45 77",
     "city": "Genève",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genève",
       "Zürich"
@@ -7738,7 +7738,7 @@
     "age": 25,
     "rawPhone": "+41 76 123 45 78",
     "city": "Martigny",
-    "canton": "ZH",
+    "canton": "VS",
     "subareas": [
       "Martigny",
       "Zürich"
@@ -7769,7 +7769,7 @@
     "age": 27,
     "rawPhone": "+41 76 123 45 79",
     "city": "Genève",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genève",
       "Zürich"
@@ -7831,7 +7831,7 @@
     "age": 26,
     "rawPhone": "+41 76 123 45 82",
     "city": "Fribourg",
-    "canton": "ZH",
+    "canton": "FR",
     "subareas": [
       "Fribourg",
       "Zürich"
@@ -7862,7 +7862,7 @@
     "age": 22,
     "rawPhone": "+41 76 123 45 68",
     "city": "Eaux-vives",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Eaux-vives",
       "Zürich"
@@ -7893,7 +7893,7 @@
     "age": 51,
     "rawPhone": "+41 77 529 24 75",
     "city": "Aarau",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Aarau",
       "Zürich"
@@ -7989,7 +7989,7 @@
     "age": 25,
     "rawPhone": "+41 79 350 35 33",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -8021,7 +8021,7 @@
     "age": 25,
     "rawPhone": "+41 77 986 55 96",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -8053,7 +8053,7 @@
     "age": 25,
     "rawPhone": "+41 77 995 28 66",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -8085,7 +8085,7 @@
     "age": 25,
     "rawPhone": "+41 78 616 68 69",
     "city": "Montreux",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Montreux",
       "Zürich"
@@ -8117,7 +8117,7 @@
     "age": 21,
     "rawPhone": "+41 77 921 46 43",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -8180,8 +8180,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 588 52 06",
-    "city": "Wil/SG",
-    "canton": "ZH",
+    "city": "Wil",
+    "canton": "SG",
     "subareas": [
       "Wil/SG",
       "Zürich"
@@ -8215,7 +8215,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 331 73 94",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -8254,8 +8254,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 703 06 48",
-    "city": "Rapperswil-Jona/SG",
-    "canton": "ZH",
+    "city": "Rapperswil-Jona",
+    "canton": "SG",
     "subareas": [
       "Rapperswil-Jona/SG",
       "Zürich"
@@ -8336,8 +8336,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 969 76 19",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -8376,7 +8376,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 740 93 45",
-    "city": "Dietikon/ZH,AG",
+    "city": "Dietikon",
     "canton": "ZH",
     "subareas": [
       "Dietikon/ZH,AG",
@@ -8414,8 +8414,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 755 81 79",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -8455,7 +8455,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 245 00 15",
-    "city": "Winterthur/ZH",
+    "city": "Winterthur",
     "canton": "ZH",
     "subareas": [
       "Winterthur/ZH",
@@ -8496,8 +8496,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 215 27 79",
-    "city": "Emmenbrücke/LU",
-    "canton": "ZH",
+    "city": "Emmenbrücke",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich"
@@ -8538,8 +8538,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 948 56 62",
-    "city": "Zürich/ZH Stadt",
-    "canton": "ZH",
+    "city": "Zürich",
+    "canton": "VS",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zürich"
@@ -8580,8 +8580,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 965 61 56",
-    "city": "Thun/BE",
-    "canton": "ZH",
+    "city": "Thun",
+    "canton": "BE",
     "subareas": [
       "Thun/BE",
       "Zürich"
@@ -8621,8 +8621,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 78 333 29 67",
-    "city": "Wädenswil/ZH,ZH Stadt",
-    "canton": "ZH",
+    "city": "Wädenswil",
+    "canton": "SG",
     "subareas": [
       "Wädenswil/ZH,ZH Stadt",
       "Zürich"
@@ -8663,8 +8663,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 258 70 34",
-    "city": "Biel/BE",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Zürich"
@@ -8779,7 +8779,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 404 13 13",
-    "city": "Zürich/ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZH",
@@ -8821,8 +8821,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 744 78 17",
-    "city": "Langenthal/BE",
-    "canton": "ZH",
+    "city": "Langenthal",
+    "canton": "BE",
     "subareas": [
       "Langenthal/BE",
       "Zürich"
@@ -8862,8 +8862,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 965 11 33",
-    "city": "Chur/GR,SG",
-    "canton": "ZH",
+    "city": "Chur",
+    "canton": "GR",
     "subareas": [
       "Chur/GR,SG",
       "Zürich"
@@ -8899,7 +8899,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 902 79 92",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -8940,8 +8940,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 77 945 46 34",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -9019,8 +9019,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 739 15 37",
-    "city": "Rapperswil-Jona/SG,SZ,ZH",
-    "canton": "ZH",
+    "city": "Rapperswil-Jona",
+    "canton": "SG",
     "subareas": [
       "Rapperswil-Jona/SG,SZ,ZH",
       "Zürich"
@@ -9059,8 +9059,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 77 941 87 37",
-    "city": "Emmenbrücke/LU",
-    "canton": "ZH",
+    "city": "Emmenbrücke",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich"
@@ -9211,8 +9211,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 725 50 59",
-    "city": "Wohlen/AG",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich"
@@ -9252,7 +9252,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 751 67 02",
-    "city": "Winterthur/ZH,TG,ZH Stadt",
+    "city": "Winterthur",
     "canton": "ZH",
     "subareas": [
       "Winterthur/ZH,TG,ZH Stadt",
@@ -9408,8 +9408,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 917 90 32",
-    "city": "Lausanne/VD",
-    "canton": "ZH",
+    "city": "Lausanne",
+    "canton": "VD",
     "subareas": [
       "Lausanne/VD",
       "Zürich"
@@ -9490,8 +9490,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 751 48 85",
-    "city": "Muttenz/BL,AG,SO",
-    "canton": "ZH",
+    "city": "Muttenz",
+    "canton": "BS",
     "subareas": [
       "Muttenz/BL,AG,SO",
       "Zürich"
@@ -9532,8 +9532,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 632 83 29",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -9611,8 +9611,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 976 93 30",
-    "city": "Wohlen/AG,LU,ZG,ZH",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,LU,ZG,ZH",
       "Zürich"
@@ -9653,8 +9653,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 562 08 13",
-    "city": "Bern/BE,FR",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE,FR",
       "Zürich"
@@ -9695,8 +9695,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 61 527 46 41",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -9737,7 +9737,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 702 23 28",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -9776,8 +9776,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 973 44 71",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -9814,8 +9814,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 829 14 41",
-    "city": "Mägenwil/AG",
-    "canton": "ZH",
+    "city": "Mägenwil",
+    "canton": "SG",
     "subareas": [
       "Mägenwil/AG",
       "Zürich"
@@ -9854,8 +9854,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 207 28 80",
-    "city": "Spreitenbach/AG",
-    "canton": "ZH",
+    "city": "Spreitenbach",
+    "canton": "AG",
     "subareas": [
       "Spreitenbach/AG",
       "Zürich"
@@ -9894,7 +9894,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 481 08 59",
-    "city": "Winterthur/ZH",
+    "city": "Winterthur",
     "canton": "ZH",
     "subareas": [
       "Winterthur/ZH",
@@ -9975,8 +9975,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 912 46 88",
-    "city": "Aarau/AG,SO",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG,SO",
       "Zürich"
@@ -10013,8 +10013,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 521 82 89",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -10055,7 +10055,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 111 22 22",
-    "city": "Zürich/ZH Stadt,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZG,ZH",
@@ -10088,8 +10088,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 963 47 99",
-    "city": "Chur/GR,LI",
-    "canton": "ZH",
+    "city": "Chur",
+    "canton": "GR",
     "subareas": [
       "Chur/GR,LI",
       "Zürich"
@@ -10130,8 +10130,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 914 74 95",
-    "city": "Basel/BS,BL,DE",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL,DE",
       "Zürich"
@@ -10168,8 +10168,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 266 58 08",
-    "city": "Rapperswil-Jona/SG,SZ,ZH",
-    "canton": "ZH",
+    "city": "Rapperswil-Jona",
+    "canton": "SG",
     "subareas": [
       "Rapperswil-Jona/SG,SZ,ZH",
       "Zürich"
@@ -10249,8 +10249,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 638 60 51",
-    "city": "Landquart/GR,AT,LI",
-    "canton": "ZH",
+    "city": "Landquart",
+    "canton": "GR",
     "subareas": [
       "Landquart/GR,AT,LI",
       "Zürich"
@@ -10369,8 +10369,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 445 20 20",
-    "city": "Herzogenbuchsee/BE,AG,SO",
-    "canton": "ZH",
+    "city": "Herzogenbuchsee",
+    "canton": "SG",
     "subareas": [
       "Herzogenbuchsee/BE,AG,SO",
       "Zürich"
@@ -10400,7 +10400,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 333 16 95",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -10481,8 +10481,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 699 62 42",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -10557,8 +10557,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 343 82 53",
-    "city": "Basel/BS,AG,SO",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,AG,SO",
       "Zürich"
@@ -10598,8 +10598,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 665 56 66",
-    "city": "Luzern/LU,SZ,ZG",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,SZ,ZG",
       "Zürich"
@@ -10637,8 +10637,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 239 90 49",
-    "city": "Baden/AG,ZH,DE",
-    "canton": "ZH",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG,ZH,DE",
       "Zürich"
@@ -10756,7 +10756,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 815 75 09",
-    "city": "Kloten/ZH,AG,SG,TG,ZH Stadt",
+    "city": "Kloten",
     "canton": "ZH",
     "subareas": [
       "Kloten/ZH,AG,SG,TG,ZH Stadt",
@@ -10795,7 +10795,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 829 82 79",
-    "city": "Uster/ZH",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH",
@@ -10826,8 +10826,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 245 61 50",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -10865,8 +10865,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 408 69 06",
-    "city": "Baden/AG,ZH Stadt,ZH",
-    "canton": "ZH",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG,ZH Stadt,ZH",
       "Zürich"
@@ -10942,8 +10942,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 928 50 52",
-    "city": "Basel/BS,BL,DE",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL,DE",
       "Zürich"
@@ -10984,8 +10984,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 78 268 41 34",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -11025,8 +11025,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 937 18 81",
-    "city": "Kreuzlingen/TG,SG,ZH,DE",
-    "canton": "ZH",
+    "city": "Kreuzlingen",
+    "canton": "TG",
     "subareas": [
       "Kreuzlingen/TG,SG,ZH,DE",
       "Zürich"
@@ -11063,8 +11063,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 234 56 78",
-    "city": "Wohlen/AG,ZH",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,ZH",
       "Zürich"
@@ -11095,7 +11095,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 983 96 47",
-    "city": "Zürich/ZH Stadt,AG,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,AG,ZG,ZH",
@@ -11178,8 +11178,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 922 13 54",
-    "city": "Muttenz/BL,AG,BS,JU,SO",
-    "canton": "ZH",
+    "city": "Muttenz",
+    "canton": "BS",
     "subareas": [
       "Muttenz/BL,AG,BS,JU,SO",
       "Zürich"
@@ -11220,8 +11220,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 238 05 49",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich"
@@ -11292,7 +11292,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 990 66 30",
-    "city": "Zürich/ZH Stadt,AG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,AG,ZH",
@@ -11370,8 +11370,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 976 08 01",
-    "city": "Basel/BS,BL",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "VS",
     "subareas": [
       "Basel/BS,BL",
       "Zürich"
@@ -11412,8 +11412,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 783 60 69",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -11453,8 +11453,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 891 15 06",
-    "city": "Wädenswil/ZH",
-    "canton": "ZH",
+    "city": "Wädenswil",
+    "canton": "SG",
     "subareas": [
       "Wädenswil/ZH",
       "Zürich"
@@ -11489,8 +11489,8 @@
     "genderCategory": "female",
     "age": 46,
     "rawPhone": "+41 77 412 69 59",
-    "city": "Volketswil/ZH",
-    "canton": "ZH",
+    "city": "Volketswil",
+    "canton": "SG",
     "subareas": [
       "Volketswil/ZH",
       "Zürich"
@@ -11521,7 +11521,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 907 97 80",
-    "city": "Zürich/ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH",
@@ -11642,8 +11642,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 302 16 13",
-    "city": "Wangen an der Aare/BE",
-    "canton": "ZH",
+    "city": "Wangen an der Aare",
+    "canton": "SZ",
     "subareas": [
       "Wangen an der Aare/BE",
       "Zürich"
@@ -11678,8 +11678,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 636 46 90",
-    "city": "Aarau/AG",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Zürich"
@@ -11717,7 +11717,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 286 22 39",
-    "city": "Uster/ZH",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH",
@@ -11756,8 +11756,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 621 90 00",
-    "city": "Biel/BE",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Zürich"
@@ -11871,8 +11871,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 441 04 21",
-    "city": "Baden/AG",
-    "canton": "ZH",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG",
       "Zürich"
@@ -11907,8 +11907,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 591 46 21",
-    "city": "Emmen/LU,SZ,ZG",
-    "canton": "ZH",
+    "city": "Emmen",
+    "canton": "LU",
     "subareas": [
       "Emmen/LU,SZ,ZG",
       "Zürich"
@@ -11949,8 +11949,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 203 47 02",
-    "city": "Grenchen/SO",
-    "canton": "ZH",
+    "city": "Grenchen",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich"
@@ -11992,7 +11992,7 @@
     "age": 25,
     "rawPhone": "+41 79 666 77 77",
     "city": "Renens",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Renens",
       "Zürich"
@@ -12024,7 +12024,7 @@
     "age": 25,
     "rawPhone": "+41 79 933 31 19",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Ebikon",
       "Zürich"
@@ -12121,7 +12121,7 @@
     "age": 25,
     "rawPhone": "+41 77 990 43 89",
     "city": "Lausanne",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -12153,7 +12153,7 @@
     "age": 25,
     "rawPhone": "+41 77 957 55 70",
     "city": "Yverdon-les-Bains",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Yverdon-les-Bains",
       "Zürich"
@@ -12185,7 +12185,7 @@
     "age": 31,
     "rawPhone": "+41 77 473 13 73",
     "city": "Grenchen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Grenchen",
       "Zürich"
@@ -12217,7 +12217,7 @@
     "age": 25,
     "rawPhone": "+41 79 609 60 32",
     "city": "Fribourg",
-    "canton": "ZH",
+    "canton": "FR",
     "subareas": [
       "Fribourg",
       "Zürich"
@@ -12249,7 +12249,7 @@
     "age": 25,
     "rawPhone": "+41 77 945 16 37",
     "city": "Nyon",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Nyon",
       "Zürich"
@@ -12281,7 +12281,7 @@
     "age": 25,
     "rawPhone": "+41 77 967 42 47",
     "city": "Lausanne",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -12312,8 +12312,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 463 03 13",
-    "city": "Hergiswil/NW / OW",
-    "canton": "ZH",
+    "city": "Hergiswil",
+    "canton": "SG",
     "subareas": [
       "Hergiswil/NW / OW",
       "Zürich"
@@ -12343,7 +12343,7 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 78 123 45 71",
-    "city": "Wetzikon/ZH",
+    "city": "Wetzikon",
     "canton": "ZH",
     "subareas": [
       "Wetzikon/ZH",
@@ -12413,7 +12413,7 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 79 900 00 00",
-    "city": "Zürich/ZH Stadt, ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt, ZG,ZH",
@@ -12525,8 +12525,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 000 00 05",
-    "city": "Olten/SO",
-    "canton": "ZH",
+    "city": "Olten",
+    "canton": "SO",
     "subareas": [
       "Olten/SO",
       "Zürich"
@@ -12557,8 +12557,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 973 65 70",
-    "city": "Lenzburg/AG",
-    "canton": "ZH",
+    "city": "Lenzburg",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG",
       "Zürich"
@@ -12636,7 +12636,7 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 77 955 77 32",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -12678,8 +12678,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 612 34 56",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -12710,8 +12710,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 208 59 35",
-    "city": "Kriens/LU,NW / OW,ZG",
-    "canton": "ZH",
+    "city": "Kriens",
+    "canton": "LU",
     "subareas": [
       "Kriens/LU,NW / OW,ZG",
       "Zürich"
@@ -12785,8 +12785,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 478 12 87",
-    "city": "Luzern/LU,AG",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,AG",
       "Zürich"
@@ -12868,8 +12868,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 725 36 65",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich"
@@ -12947,8 +12947,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 780 94 58",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -12988,7 +12988,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 323 88 04",
-    "city": "Dietikon/ZH",
+    "city": "Dietikon",
     "canton": "ZH",
     "subareas": [
       "Dietikon/ZH",
@@ -13100,7 +13100,7 @@
     "age": 23,
     "rawPhone": "+41 77 293 71 69",
     "city": "Montreux",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Montreux",
       "Zürich"
@@ -13168,7 +13168,7 @@
     "age": 25,
     "rawPhone": "+41 77 976 03 30",
     "city": "Yverdon-les-Bains",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Yverdon-les-Bains",
       "Zürich"
@@ -13201,7 +13201,7 @@
     "age": 35,
     "rawPhone": "+41 77 481 23 14",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -13234,7 +13234,7 @@
     "age": 28,
     "rawPhone": "+41 77 974 11 96",
     "city": "Thun",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Thun",
       "Zürich"
@@ -13266,7 +13266,7 @@
     "age": 30,
     "rawPhone": "+41 77 997 56 38",
     "city": "Montreux",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Montreux",
       "Zürich"
@@ -13298,7 +13298,7 @@
     "age": 27,
     "rawPhone": "+41 77 968 32 50",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -13361,8 +13361,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 777 88 88",
-    "city": "Biel/Bienne",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/Bienne",
       "Zürich"
@@ -13394,7 +13394,7 @@
     "age": 25,
     "rawPhone": "+41 79 123 45 73",
     "city": "Nyon",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Nyon",
       "Zürich"
@@ -13426,7 +13426,7 @@
     "age": 25,
     "rawPhone": "+41 79 526 92 97",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -13459,7 +13459,7 @@
     "age": 28,
     "rawPhone": "+41 77 996 33 50",
     "city": "Lausanne",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -13491,7 +13491,7 @@
     "age": 33,
     "rawPhone": "+41 77 956 30 72",
     "city": "Lausanne",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -13523,7 +13523,7 @@
     "age": 25,
     "rawPhone": "+41 79 831 43 67",
     "city": "Montreux",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Montreux",
       "Zürich"
@@ -13555,7 +13555,7 @@
     "age": 30,
     "rawPhone": "+41 76 537 22 98",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -13588,7 +13588,7 @@
     "age": 25,
     "rawPhone": "+41 76 636 97 06",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -13683,8 +13683,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 79 890 12 34",
-    "city": "Geneva",
-    "canton": "ZH",
+    "city": "Genève",
+    "canton": "GE",
     "subareas": [
       "Geneva",
       "Zürich"
@@ -13783,7 +13783,7 @@
     "age": 40,
     "rawPhone": "+41 76 212 63 71",
     "city": "Luzern",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zürich"
@@ -13811,7 +13811,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 517 66 68",
-    "city": "Uster/ZH",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH",
@@ -13835,8 +13835,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 214 00 37",
-    "city": "Wohlen/AG",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich"
@@ -13865,8 +13865,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 744 95 67",
-    "city": "Kriens/LU,SZ,ZG",
-    "canton": "ZH",
+    "city": "Kriens",
+    "canton": "LU",
     "subareas": [
       "Kriens/LU,SZ,ZG",
       "Zürich"
@@ -13897,8 +13897,8 @@
     "genderCategory": "female",
     "age": 32,
     "rawPhone": "+41 76 289 69 96",
-    "city": "Gossau/SG",
-    "canton": "ZH",
+    "city": "Gossau",
+    "canton": "SG",
     "subareas": [
       "Gossau/SG",
       "Zürich"
@@ -13945,8 +13945,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 244 08 70",
-    "city": "Bellinzona/TI,GR,UR",
-    "canton": "ZG",
+    "city": "Bellinzona",
+    "canton": "TI",
     "subareas": [
       "Bellinzona/TI,GR,UR",
       "Zug / Cham"
@@ -13979,8 +13979,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 952 94 38",
-    "city": "Basel/BS",
-    "canton": "ZG",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zug / Cham"
@@ -14035,8 +14035,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 292 08 28",
-    "city": "Thun/BE",
-    "canton": "ZG",
+    "city": "Thun",
+    "canton": "BE",
     "subareas": [
       "Thun/BE",
       "Zug / Cham"
@@ -14092,8 +14092,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 79 314 02 82",
-    "city": "Basel/BS",
-    "canton": "ZG",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zug / Cham"
@@ -14147,8 +14147,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 001 00 10",
-    "city": "Spreitenbach/AG,ZH Stadt,ZH",
-    "canton": "ZH",
+    "city": "Spreitenbach",
+    "canton": "AG",
     "subareas": [
       "Spreitenbach/AG,ZH Stadt,ZH",
       "Zürich"
@@ -14171,8 +14171,8 @@
     "genderCategory": "female",
     "age": 33,
     "rawPhone": "+41 79 001 00 11",
-    "city": "St. Gallen/SG,TG,ZH",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,ZH",
       "Zürich"
@@ -14196,7 +14196,7 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 76 001 00 12",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -14221,8 +14221,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 001 00 13",
-    "city": "Basel/BS,BL",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL",
       "Zürich"
@@ -14269,8 +14269,8 @@
     "genderCategory": "female",
     "age": 45,
     "rawPhone": "+41 79 001 00 15",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -14293,8 +14293,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 001 00 16",
-    "city": "St. Gallen/SG,TG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG",
       "Zürich"
@@ -14317,8 +14317,8 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 79 001 00 17",
-    "city": "Hunzenschwil/AG,ZH",
-    "canton": "ZH",
+    "city": "Hunzenschwil",
+    "canton": "SG",
     "subareas": [
       "Hunzenschwil/AG,ZH",
       "Zürich"
@@ -14342,7 +14342,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 78 254 51 07",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -14390,8 +14390,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 889 12 34",
-    "city": "Chur/GR",
-    "canton": "ZH",
+    "city": "Chur",
+    "canton": "GR",
     "subareas": [
       "Chur/GR",
       "Zürich"
@@ -14446,8 +14446,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 76 456 78 90",
-    "city": "Wohlen/AG,BL,SO",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,BL,SO",
       "Zürich"
@@ -14470,7 +14470,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 789 01 23",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -14494,7 +14494,7 @@
     "genderCategory": "female",
     "age": 32,
     "rawPhone": "+41 76 234 35 51",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -14529,8 +14529,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 123 45 68",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -14601,8 +14601,8 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 79 123 45 71",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -14625,7 +14625,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 123 45 72",
-    "city": "Zürich/ZH Stadt,AG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,AG,ZH",
@@ -14649,7 +14649,7 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 76 540 24 46",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -14770,8 +14770,8 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 76 700 06 86",
-    "city": "Baden/AG,ZH,DE",
-    "canton": "ZG",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG,ZH,DE",
       "Zug"
@@ -14804,8 +14804,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 912 50 22",
-    "city": "Luzern/LU,NW / OW",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,NW / OW",
       "Zürich / Schweiz"
@@ -14862,7 +14862,7 @@
     "age": 25,
     "rawPhone": "+41 76 474 86 86",
     "city": "Muttenz",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Muttenz",
       "Zürich"
@@ -14887,7 +14887,7 @@
     "age": 25,
     "rawPhone": "+41 76 718 17 96",
     "city": "Zug",
-    "canton": "ZH",
+    "canton": "ZG",
     "subareas": [
       "Zug",
       "Zürich"
@@ -14912,7 +14912,7 @@
     "age": 25,
     "rawPhone": "+41 79 819 08 04",
     "city": "Wallisellen",
-    "canton": "ZH",
+    "canton": "VS",
     "subareas": [
       "Wallisellen",
       "Zürich"
@@ -14937,7 +14937,7 @@
     "age": 25,
     "rawPhone": "+41 76 229 50 58",
     "city": "Lausanne",
-    "canton": "ZH",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -14962,7 +14962,7 @@
     "age": 25,
     "rawPhone": "+41 77 929 04 48",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -15012,7 +15012,7 @@
     "age": 34,
     "rawPhone": "+41 76 239 06 66",
     "city": "Luzern",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zürich"
@@ -15086,7 +15086,7 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 77 218 22 81",
-    "city": "Zürich/ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH",
@@ -15125,8 +15125,8 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 76 764 75 05",
-    "city": "Biel/BE",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Zürich"
@@ -15201,8 +15201,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 874 76 29",
-    "city": "St. Gallen/SG,TG,AI / AR",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,AI / AR",
       "Zürich"
@@ -15239,8 +15239,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 793 07 69",
-    "city": "St. Gallen/SG,GR,TG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,GR,TG",
       "Zürich"
@@ -15279,7 +15279,7 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 44 261 96 69",
-    "city": "Unterengstringen/ZH",
+    "city": "Unterengstringen",
     "canton": "ZH",
     "subareas": [
       "Unterengstringen/ZH",
@@ -15317,7 +15317,7 @@
     "genderCategory": "female",
     "age": 31,
     "rawPhone": "+41 78 340 19 59",
-    "city": "Uster/ZH",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH",
@@ -15427,8 +15427,8 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 77 984 00 83",
-    "city": "Wohlen/AG,ZG,ZH Stadt,ZH",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,ZG,ZH Stadt,ZH",
       "Zürich"
@@ -15540,7 +15540,7 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 78 000 00 03",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -15605,8 +15605,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 62 398 60 25",
-    "city": "St. Gallen/SG,TG,ZH",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,ZH",
       "Zürich"
@@ -15642,8 +15642,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 754 47 85",
-    "city": "Baden/AG",
-    "canton": "ZH",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG",
       "Zürich"
@@ -15681,7 +15681,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 241 24 04",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -15719,7 +15719,7 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 76 654 32 10",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -15750,8 +15750,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 000 00 12",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -15780,8 +15780,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 41 765 47 66",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -15810,7 +15810,7 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 76 650 63 99",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -15849,8 +15849,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 77 425 02 18",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -15888,7 +15888,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 515 18 84",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -15927,7 +15927,7 @@
     "genderCategory": "female",
     "age": 34,
     "rawPhone": "+41 79 335 37 99",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -15967,7 +15967,7 @@
     "age": 20,
     "rawPhone": "+41 79 533 36 32",
     "city": "Buchs SG",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Buchs SG",
       "Zürich"
@@ -16111,8 +16111,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 77 997 17 00",
-    "city": "Frauenfeld/TG",
-    "canton": "ZH",
+    "city": "Frauenfeld",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld/TG",
       "Zürich"
@@ -16178,8 +16178,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 111 22 33",
-    "city": "Interlaken/BE,LU,NW / OW",
-    "canton": "ZH",
+    "city": "Interlaken",
+    "canton": "BE",
     "subareas": [
       "Interlaken/BE,LU,NW / OW",
       "Zürich"
@@ -16208,8 +16208,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 333 44 55",
-    "city": "Riehen/BS,BL,DE",
-    "canton": "ZH",
+    "city": "Riehen",
+    "canton": "BS",
     "subareas": [
       "Riehen/BS,BL,DE",
       "Zürich"
@@ -16270,7 +16270,7 @@
     "age": 20,
     "rawPhone": "+41 77 922 78 39",
     "city": "Bern",
-    "canton": "ZG",
+    "canton": "BE",
     "subareas": [
       "Bern",
       "Zug / Cham"
@@ -16309,7 +16309,7 @@
     "age": 26,
     "rawPhone": "+41 76 562 60 32",
     "city": "Luzern",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zug / Cham"
@@ -16347,7 +16347,7 @@
     "age": 25,
     "rawPhone": "+41 76 753 00 16",
     "city": "Luzern",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zug / Cham"
@@ -16420,7 +16420,7 @@
     "age": 28,
     "rawPhone": "+41 78 246 22 88",
     "city": "Winterthur",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Winterthur",
       "Zug / Cham"
@@ -16493,8 +16493,8 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 76 426 08 66",
-    "city": "Aarau/AG",
-    "canton": "ZG",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Zug / Cham"
@@ -16532,8 +16532,8 @@
     "genderCategory": "female",
     "age": 40,
     "rawPhone": "+41 76 708 28 37",
-    "city": "St. Gallen/SG",
-    "canton": "ZG",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zug / Cham"
@@ -16572,8 +16572,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 683 90 05",
-    "city": "Zürich/ZH Stadt",
-    "canton": "ZG",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zug / Cham"
@@ -16607,8 +16607,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 953 14 45",
-    "city": "Bern/BE",
-    "canton": "ZG",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zug / Cham"
@@ -16721,8 +16721,8 @@
     "genderCategory": "female",
     "age": 31,
     "rawPhone": "+41 41 791 23 67",
-    "city": "Grenchen/SO",
-    "canton": "ZH",
+    "city": "Grenchen",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich / Schweiz"
@@ -16815,7 +16815,7 @@
     "age": 29,
     "rawPhone": "+41 76 618 99 58",
     "city": "Basel",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Winterthur"
@@ -16883,7 +16883,7 @@
     "age": 30,
     "rawPhone": "+41 77 967 01 40",
     "city": "Emmenbrücke",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke",
       "Winterthur"
@@ -16922,8 +16922,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 403 34 21",
-    "city": "Olten/SO,AG",
-    "canton": "ZH",
+    "city": "Olten",
+    "canton": "SO",
     "subareas": [
       "Olten/SO,AG",
       "Winterthur"
@@ -16999,7 +16999,7 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 78 491 05 56",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -17035,7 +17035,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 76 762 09 68",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -17111,7 +17111,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 938 37 52",
-    "city": "Uster/ZH,ZH Stadt",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH,ZH Stadt",
@@ -17153,7 +17153,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 509 56 21",
-    "city": "Uster/ZH,ZH Stadt",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH,ZH Stadt",
@@ -17192,8 +17192,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 41 782 12 81",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich / Schweiz"
@@ -17222,7 +17222,7 @@
     "genderCategory": "female",
     "age": 31,
     "rawPhone": "+41 41 764 89 89",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -17253,7 +17253,7 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 41 791 23 45",
-    "city": "Zürich/ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZH",
@@ -17285,7 +17285,7 @@
     "age": 25,
     "rawPhone": "+41 77 979 98 78",
     "city": "Luzern",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zürich / Schweiz"
@@ -17321,7 +17321,7 @@
     "age": 25,
     "rawPhone": "+41 79 320 43 97",
     "city": "Basel",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Zürich / Schweiz"
@@ -17400,7 +17400,7 @@
     "age": 25,
     "rawPhone": "+41 77 531 92 83",
     "city": "Solothurn",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Solothurn",
       "Zürich / Schweiz"
@@ -17439,7 +17439,7 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 76 828 50 51",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -17474,8 +17474,8 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 77 972 77 50",
-    "city": "Basel/BS",
-    "canton": "ZH",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich / Schweiz"
@@ -17514,8 +17514,8 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 76 209 14 38",
-    "city": "Liestal/BL,BS,SO",
-    "canton": "ZH",
+    "city": "Liestal",
+    "canton": "BS",
     "subareas": [
       "Liestal/BL,BS,SO",
       "Zürich / Schweiz"
@@ -17550,8 +17550,8 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 79 238 39 07",
-    "city": "Interlaken/BE",
-    "canton": "ZH",
+    "city": "Interlaken",
+    "canton": "BE",
     "subareas": [
       "Interlaken/BE",
       "Zürich / Schweiz"
@@ -17587,7 +17587,7 @@
     "genderCategory": "trans",
     "age": 25,
     "rawPhone": "+41 76 511 61 17",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -17622,7 +17622,7 @@
     "age": 25,
     "rawPhone": "+41 77 926 48 56",
     "city": "Basel",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Zürich"
@@ -17739,7 +17739,7 @@
     "age": 25,
     "rawPhone": "+41 78 611 99 30",
     "city": "Emmenbrücke",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke",
       "Zürich"
@@ -17774,7 +17774,7 @@
     "age": 28,
     "rawPhone": "+41 77 957 42 16",
     "city": "Menziken",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Menziken",
       "Zürich"
@@ -17850,7 +17850,7 @@
     "age": 25,
     "rawPhone": "+41 79 384 61 05",
     "city": "Bad Ragaz",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Bad Ragaz",
       "Zürich"
@@ -17891,7 +17891,7 @@
     "age": 25,
     "rawPhone": "+41 78 337 01 89",
     "city": "Olten",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Olten",
       "Zürich"
@@ -18003,8 +18003,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 522 37 89",
-    "city": "Wohlen/AG",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich"
@@ -18041,7 +18041,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 263 71 01",
-    "city": "Zürich/ZH Stadt,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZG,ZH",
@@ -18077,8 +18077,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 913 19 63",
-    "city": "Chur/GR",
-    "canton": "ZH",
+    "city": "Chur",
+    "canton": "GR",
     "subareas": [
       "Chur/GR",
       "Zürich"
@@ -18116,8 +18116,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 646 35 98",
-    "city": "Baden/AG",
-    "canton": "ZH",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG",
       "Zürich"
@@ -18155,7 +18155,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 839 90 16",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -18197,8 +18197,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 846 81 94",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -18237,8 +18237,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 974 54 72",
-    "city": "Zug/ZG,AG,LU,ZH Stadt,ZH",
-    "canton": "ZH",
+    "city": "Zug",
+    "canton": "ZG",
     "subareas": [
       "Zug/ZG,AG,LU,ZH Stadt,ZH",
       "Zürich"
@@ -18316,7 +18316,7 @@
     "age": 25,
     "rawPhone": "+41 78 222 03 36",
     "city": "Aarau",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Aarau",
       "Zürich"
@@ -18354,8 +18354,8 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 940 79 22",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -18469,8 +18469,8 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 77 947 60 34",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich"
@@ -18550,8 +18550,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 621 87 78",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -18591,8 +18591,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 563 34 25",
-    "city": "Flawil/SG",
-    "canton": "ZH",
+    "city": "Flawil",
+    "canton": "SG",
     "subareas": [
       "Flawil/SG",
       "Zürich"
@@ -18626,7 +18626,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 910 85 18",
-    "city": "Winterthur/ZH",
+    "city": "Winterthur",
     "canton": "ZH",
     "subareas": [
       "Winterthur/ZH",
@@ -18667,8 +18667,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 721 22 52",
-    "city": "Gontenschwil/AG",
-    "canton": "ZH",
+    "city": "Gontenschwil",
+    "canton": "SG",
     "subareas": [
       "Gontenschwil/AG",
       "Zürich"
@@ -18698,8 +18698,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 617 26 85",
-    "city": "Solothurn/SO",
-    "canton": "ZH",
+    "city": "Solothurn",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO",
       "Zürich"
@@ -18739,7 +18739,7 @@
     "age": 25,
     "rawPhone": "+41 76 483 87 55",
     "city": "Luzern",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zürich"
@@ -18779,8 +18779,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 61 730 96 23",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -18857,7 +18857,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 720 02 79",
-    "city": "Wetzikon/ZH",
+    "city": "Wetzikon",
     "canton": "ZH",
     "subareas": [
       "Wetzikon/ZH",
@@ -18897,7 +18897,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 627 65 18",
-    "city": "Winterthur/ZH,TG",
+    "city": "Winterthur",
     "canton": "ZH",
     "subareas": [
       "Winterthur/ZH,TG",
@@ -18937,8 +18937,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 955 03 48",
-    "city": "Grenchen/SO",
-    "canton": "ZH",
+    "city": "Grenchen",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich"
@@ -18977,8 +18977,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 774 72 93",
-    "city": "Solothurn/SO,BE",
-    "canton": "ZH",
+    "city": "Solothurn",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO,BE",
       "Zürich"
@@ -19017,8 +19017,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 913 09 20",
-    "city": "Sion/VS",
-    "canton": "ZH",
+    "city": "Sion",
+    "canton": "VS",
     "subareas": [
       "Sion/VS",
       "Zürich"
@@ -19052,8 +19052,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 480 43 20",
-    "city": "Rapperswil/SG,SZ",
-    "canton": "ZH",
+    "city": "Rapperswil",
+    "canton": "SG",
     "subareas": [
       "Rapperswil/SG,SZ",
       "Zürich"
@@ -19089,8 +19089,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 445 92 55",
-    "city": "St. Gallen/SG",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -19129,8 +19129,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 797 50 79",
-    "city": "Luzern/LU",
-    "canton": "ZH",
+    "city": "Luzern",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU",
       "Zürich"
@@ -19165,8 +19165,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 697 46 85",
-    "city": "Oberwil/BL,BS",
-    "canton": "ZH",
+    "city": "Oberwil",
+    "canton": "SG",
     "subareas": [
       "Oberwil/BL,BS",
       "Zürich"
@@ -19203,8 +19203,8 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 77 914 07 54",
-    "city": "Mörschwil/SG",
-    "canton": "ZH",
+    "city": "Mörschwil",
+    "canton": "SG",
     "subareas": [
       "Mörschwil/SG",
       "Zürich"
@@ -19241,8 +19241,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 925 54 22",
-    "city": "Emmen/LU,NW / OW,SZ",
-    "canton": "ZH",
+    "city": "Emmen",
+    "canton": "LU",
     "subareas": [
       "Emmen/LU,NW / OW,SZ",
       "Zürich"
@@ -19276,7 +19276,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 340 24 75",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -19307,8 +19307,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 984 85 78",
-    "city": "Aarau/AG",
-    "canton": "ZH",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Zürich"
@@ -19349,7 +19349,7 @@
     "age": 30,
     "rawPhone": "+41 76 319 14 19",
     "city": "Roggwil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Roggwil",
       "Zürich"
@@ -19423,7 +19423,7 @@
     "age": 20,
     "rawPhone": "+41 77 953 59 27",
     "city": "St. Gallen",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "St. Gallen",
       "Zürich"
@@ -19497,7 +19497,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 77 535 79 61",
-    "city": "Oberengstringen/ZH,ZH Stadt",
+    "city": "Oberengstringen",
     "canton": "ZH",
     "subareas": [
       "Oberengstringen/ZH,ZH Stadt",
@@ -19537,7 +19537,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 546 86 06",
-    "city": "Zürich/ZH Stadt,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,ZG,ZH",
@@ -19578,7 +19578,7 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 256 07 17",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -19659,7 +19659,7 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 77 926 40 62",
-    "city": "Zürich/ZH Stadt, AG, ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt, AG, ZH",
@@ -19738,7 +19738,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 936 90 50",
-    "city": "Dietikon/ZH, ZH Stadt",
+    "city": "Dietikon",
     "canton": "ZH",
     "subareas": [
       "Dietikon/ZH, ZH Stadt",
@@ -19775,8 +19775,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 784 84 63",
-    "city": "Zug/ZG, LU, ZH",
-    "canton": "ZH",
+    "city": "Zug",
+    "canton": "ZG",
     "subareas": [
       "Zug/ZG, LU, ZH",
       "Zürich"
@@ -19815,8 +19815,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 988 85 05",
-    "city": "Thun/BE, FR, SO",
-    "canton": "ZH",
+    "city": "Thun",
+    "canton": "BE",
     "subareas": [
       "Thun/BE, FR, SO",
       "Zürich"
@@ -19934,7 +19934,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 291 95 79",
-    "city": "Uster/ZH",
+    "city": "Uster",
     "canton": "ZH",
     "subareas": [
       "Uster/ZH",
@@ -19957,8 +19957,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 577 26 64",
-    "city": "Biel/BE",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Zürich"
@@ -19981,7 +19981,7 @@
     "genderCategory": "female",
     "age": 32,
     "rawPhone": "+41 79 223 34 45",
-    "city": "Zürich/ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
@@ -20034,8 +20034,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 79 445 56 67",
-    "city": "Biel/BE",
-    "canton": "ZH",
+    "city": "Biel",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Zürich"
@@ -20057,8 +20057,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 79 123 45 60",
-    "city": "Wohlen/AG",
-    "canton": "ZH",
+    "city": "Wohlen",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich"
@@ -20080,8 +20080,8 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 79 123 45 61",
-    "city": "Bern/BE",
-    "canton": "ZH",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Zürich"
@@ -20104,7 +20104,7 @@
     "age": 23,
     "rawPhone": "+41 76 123 45 62",
     "city": "Genf",
-    "canton": "ZH",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Zürich"
@@ -20126,8 +20126,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 101 11 23",
-    "city": "Zürich/ZH Stadt",
-    "canton": "ZG",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zug / Cham"
@@ -20195,8 +20195,8 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 78 960 82 50",
-    "city": "Zürich/ZH Stadt,AG,ZG,ZH",
-    "canton": "ZG",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,AG,ZG,ZH",
       "Zug / Cham"
@@ -20218,8 +20218,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 78 111 22 22",
-    "city": "Langenthal/BE",
-    "canton": "ZH",
+    "city": "Langenthal",
+    "canton": "BE",
     "subareas": [
       "Langenthal/BE",
       "Zürich"
@@ -20265,7 +20265,7 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 78 333 44 44",
-    "city": "Wetzikon/ZH",
+    "city": "Wetzikon",
     "canton": "ZH",
     "subareas": [
       "Wetzikon/ZH",
@@ -20288,8 +20288,8 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 79 912 34 56",
-    "city": "Lenzburg/AG",
-    "canton": "ZH",
+    "city": "Lenzburg",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG",
       "Zürich"
@@ -20312,8 +20312,8 @@
     "genderCategory": "female",
     "age": 18,
     "rawPhone": "+41 79 781 21 24",
-    "city": "Emmenbrücke/LU",
-    "canton": "ZH",
+    "city": "Emmenbrücke",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich / Schweiz"
@@ -20335,8 +20335,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 76 789 56 78",
-    "city": "Olten/SO,AG,JU",
-    "canton": "ZH",
+    "city": "Olten",
+    "canton": "SO",
     "subareas": [
       "Olten/SO,AG,JU",
       "Zürich / Schweiz"
@@ -20359,8 +20359,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 456 12 34",
-    "city": "Lausanne/VD",
-    "canton": "ZH",
+    "city": "Lausanne",
+    "canton": "VD",
     "subareas": [
       "Lausanne/VD",
       "Zürich / Schweiz"
@@ -20405,8 +20405,8 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 78 254 25 47",
-    "city": "Solothurn/SO,AG,BE",
-    "canton": "BS",
+    "city": "Solothurn",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO,AG,BE",
       "Basel"
@@ -20444,8 +20444,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 258 21 45",
-    "city": "St. Gallen/SG,TG,AI / AR",
-    "canton": "BS",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,AI / AR",
       "Basel"
@@ -20484,8 +20484,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 611 87 97",
-    "city": "Aarau/AG,SO",
-    "canton": "BS",
+    "city": "Aarau",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG,SO",
       "Basel"
@@ -20521,8 +20521,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 672 83 94",
-    "city": "Wallisellen/ZH,AG,SH,ZH Stadt",
-    "canton": "BS",
+    "city": "Wallisellen",
+    "canton": "VS",
     "subareas": [
       "Wallisellen/ZH,AG,SH,ZH Stadt",
       "Basel"
@@ -20560,8 +20560,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 975 24 92",
-    "city": "Bern/BE",
-    "canton": "BS",
+    "city": "Bern",
+    "canton": "BE",
     "subareas": [
       "Bern/BE",
       "Basel"
@@ -20628,7 +20628,7 @@
     "age": 40,
     "rawPhone": "+41 78 734 07 50",
     "city": "Wil",
-    "canton": "BS",
+    "canton": "SG",
     "subareas": [
       "Wil",
       "Basel"
@@ -20670,7 +20670,7 @@
     "age": 25,
     "rawPhone": "+41 77 991 75 56",
     "city": "Solothurn",
-    "canton": "BS",
+    "canton": "SO",
     "subareas": [
       "Solothurn",
       "Basel"
@@ -20751,8 +20751,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 400 52 47",
-    "city": "Emmen/LU,AG,BE",
-    "canton": "BS",
+    "city": "Emmen",
+    "canton": "LU",
     "subareas": [
       "Emmen/LU,AG,BE",
       "Basel"
@@ -20792,8 +20792,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 393 68 89",
-    "city": "Baden/AG,LU,ZH",
-    "canton": "BS",
+    "city": "Baden",
+    "canton": "AG",
     "subareas": [
       "Baden/AG,LU,ZH",
       "Basel"
@@ -20872,8 +20872,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 518 66 06",
-    "city": "Kloten/ZH",
-    "canton": "BS",
+    "city": "Kloten",
+    "canton": "ZH",
     "subareas": [
       "Kloten/ZH",
       "Basel"
@@ -20986,7 +20986,7 @@
     "age": 35,
     "rawPhone": "+41 76 570 43 58",
     "city": "Adliswil",
-    "canton": "BS",
+    "canton": "SG",
     "subareas": [
       "Adliswil",
       "Basel"
@@ -21021,7 +21021,7 @@
     "age": 26,
     "rawPhone": "+41 78 924 84 67",
     "city": "Bern",
-    "canton": "BS",
+    "canton": "BE",
     "subareas": [
       "Bern",
       "Basel"
@@ -21103,7 +21103,7 @@
     "age": 25,
     "rawPhone": "+41 77 966 85 74",
     "city": "Zürich",
-    "canton": "BS",
+    "canton": "ZH",
     "subareas": [
       "Zürich",
       "Basel"
@@ -21187,7 +21187,7 @@
     "age": 25,
     "rawPhone": "+41 79 841 10 51",
     "city": "Winterthur",
-    "canton": "BS",
+    "canton": "ZH",
     "subareas": [
       "Winterthur",
       "Basel"
@@ -21229,7 +21229,7 @@
     "age": 25,
     "rawPhone": "+41 79 924 69 25",
     "city": "Frauenfeld",
-    "canton": "BS",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld",
       "Basel"
@@ -21311,8 +21311,8 @@
     "genderCategory": "female",
     "age": 18,
     "rawPhone": "+41 76 754 05 70",
-    "city": "Zürich/ZH Stadt",
-    "canton": "LU",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
       "Luzern"
@@ -21343,8 +21343,8 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 79 342 67 89",
-    "city": "Basel/BS",
-    "canton": "BE",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Bern"
@@ -21406,8 +21406,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 222 33 33",
-    "city": "Basel/BS,BL",
-    "canton": "LU",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL",
       "Luzern"
@@ -21469,8 +21469,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 567 89 01",
-    "city": "Zürich/ZH Stadt",
-    "canton": "AG",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
       "Aargau / Baden"
@@ -21501,8 +21501,8 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 76 678 90 12",
-    "city": "Zürich/ZH Stadt",
-    "canton": "AG",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
       "Aargau / Baden"
@@ -21564,8 +21564,8 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 75 612 34 56",
-    "city": "Zürich/ZH Stadt,AG,ZG,ZH",
-    "canton": "SG",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt,AG,ZG,ZH",
       "St. Gallen"
@@ -21627,8 +21627,8 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 79 327 79 01",
-    "city": "Altendorf/SZ,SG,ZH",
-    "canton": "SG",
+    "city": "Altendorf",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ,SG,ZH",
       "St. Gallen"
@@ -21661,7 +21661,7 @@
     "age": 18,
     "rawPhone": "+41 79 124 32 97",
     "city": "Basel",
-    "canton": "SG",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "St. Gallen"
@@ -21763,7 +21763,7 @@
     "age": 22,
     "rawPhone": "+41 78 123 45 69",
     "city": "Basel",
-    "canton": "SO",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Solothurn / Olten"
@@ -21826,7 +21826,7 @@
     "age": 25,
     "rawPhone": "+41 78 227 48 98",
     "city": "Interlaken",
-    "canton": "LU",
+    "canton": "BE",
     "subareas": [
       "Interlaken",
       "Luzern"
@@ -21857,8 +21857,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 77 942 65 24",
-    "city": "Lenzburg/AG",
-    "canton": "TG",
+    "city": "Lenzburg",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG",
       "Thurgau"
@@ -21920,8 +21920,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 78 456 78 91",
-    "city": "Zug/ZG,LU,SZ",
-    "canton": "GR",
+    "city": "Zug",
+    "canton": "ZG",
     "subareas": [
       "Zug/ZG,LU,SZ",
       "Chur / St. Moritz"
@@ -21983,7 +21983,7 @@
     "age": 24,
     "rawPhone": "+41 75 555 66 66",
     "city": "Zürich",
-    "canton": "TI",
+    "canton": "ZH",
     "subareas": [
       "Zürich",
       "Lugano / Locarno"
@@ -22014,7 +22014,7 @@
     "age": 20,
     "rawPhone": "+41 76 777 88 88",
     "city": "Zürich",
-    "canton": "TI",
+    "canton": "ZH",
     "subareas": [
       "Zürich",
       "Lugano / Locarno"
@@ -22271,7 +22271,7 @@
     "age": 32,
     "rawPhone": "+41 78 000 00 07",
     "city": "Plainpalais",
-    "canton": "AG",
+    "canton": "GE",
     "subareas": [
       "Plainpalais",
       "Aargau"
@@ -22334,7 +22334,7 @@
     "age": 27,
     "rawPhone": "+41 78 000 00 13",
     "city": "Martigny",
-    "canton": "AG",
+    "canton": "VS",
     "subareas": [
       "Martigny",
       "Aargau"
@@ -22365,7 +22365,7 @@
     "age": 28,
     "rawPhone": "+41 78 000 00 11",
     "city": "Fribourg",
-    "canton": "AG",
+    "canton": "FR",
     "subareas": [
       "Fribourg",
       "Aargau"
@@ -22396,7 +22396,7 @@
     "age": 32,
     "rawPhone": "+41 78 000 00 10",
     "city": "Genève",
-    "canton": "AG",
+    "canton": "GE",
     "subareas": [
       "Genève",
       "Aargau"
@@ -22427,7 +22427,7 @@
     "age": 30,
     "rawPhone": "+41 78 000 00 09",
     "city": "Sierre",
-    "canton": "AG",
+    "canton": "VS",
     "subareas": [
       "Sierre",
       "Aargau"
@@ -22458,7 +22458,7 @@
     "age": 29,
     "rawPhone": "+41 78 000 00 08",
     "city": "Martigny",
-    "canton": "AG",
+    "canton": "VS",
     "subareas": [
       "Martigny",
       "Aargau"
@@ -22489,7 +22489,7 @@
     "age": 31,
     "rawPhone": "+41 78 000 00 06",
     "city": "Genève",
-    "canton": "AG",
+    "canton": "GE",
     "subareas": [
       "Genève",
       "Aargau"
@@ -22520,7 +22520,7 @@
     "age": 28,
     "rawPhone": "+41 78 000 00 02",
     "city": "Fribourg",
-    "canton": "AG",
+    "canton": "FR",
     "subareas": [
       "Fribourg",
       "Aargau"
@@ -22551,7 +22551,7 @@
     "age": 30,
     "rawPhone": "+41 78 000 00 01",
     "city": "Sion",
-    "canton": "AG",
+    "canton": "VS",
     "subareas": [
       "Sion",
       "Aargau"
@@ -22678,7 +22678,7 @@
     "age": 25,
     "rawPhone": "+41 79 299 54 37",
     "city": "Lausanne",
-    "canton": "AG",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Aargau / Solothurn"
@@ -22740,7 +22740,7 @@
     "age": 25,
     "rawPhone": "+41 76 710 11 43",
     "city": "Genf",
-    "canton": "AG",
+    "canton": "GE",
     "subareas": [
       "Genf",
       "Aargau / Solothurn"
@@ -22771,7 +22771,7 @@
     "age": 25,
     "rawPhone": "+41 76 731 91 11",
     "city": "Zürich",
-    "canton": "AG",
+    "canton": "ZH",
     "subareas": [
       "Zürich",
       "Aargau / Solothurn"
@@ -22801,8 +22801,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 124 58 34",
-    "city": "Basel/BS",
-    "canton": "LU",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Luzern"
@@ -22866,7 +22866,7 @@
     "age": 26,
     "rawPhone": "+41 75 240 80 57",
     "city": "Luzern",
-    "canton": "SG",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "St. Gallen"
@@ -22897,8 +22897,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 346 34 03",
-    "city": "Zürich/ZH Stadt",
-    "canton": "BE",
+    "city": "Zürich",
+    "canton": "ZH",
     "subareas": [
       "Zürich/ZH Stadt",
       "Bern"
@@ -22930,8 +22930,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 853 25 67",
-    "city": "Basel/BS",
-    "canton": "BE",
+    "city": "Basel",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Bern"
