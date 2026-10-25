@@ -1,17 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
   images: {
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "**" },
-      { protocol: "http", hostname: "**" },
+      { protocol: "http", hostname: "**" }
     ],
   },
 };
