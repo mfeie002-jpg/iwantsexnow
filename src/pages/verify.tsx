@@ -1,175 +1,122 @@
-import { BrandLogo } from "@/components/BrandLogo";
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Camera, PhoneCall, CheckCircle2, Lock, ArrowRight } from "lucide-react";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { ShieldCheck, Check, Lock, FileCheck, ArrowLeft } from "lucide-react";
 
-export default function VerifyPage() {
-  const { toast } = useToast();
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [phone, setPhone] = useState("+41 79 ");
-  const [artistName, setArtistName] = useState("");
-  const [city, setCity] = useState("Zürich & Zug");
-  const [dailyCode] = useState(() => `CH-${Math.floor(1000 + Math.random() * 9000)}`);
-  const [completed, setCompleted] = useState(false);
+export default function IdentityVerificationPage() {
+  const [profileName, setProfileName] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
+  const [note, setNote] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleComplete = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("providerLeadCredits", "2");
-    try {
-      await fetch("/api/claims/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          artistName,
-          phone,
-          city,
-          dailyCode,
-          mode: "verify",
-        }),
-      });
-    } catch {
-      // non-blocking
-    }
-    setCompleted(true);
-    toast({
-      title: "Verifizierungs-Antrag übermittelt!",
-      description: "Dein Swiss-Shield Echtheits-Siegel + 2 Gratis Lead-Credits wurden freigeschaltet.",
-      duration: 5000,
-    });
+    setSubmitted(true);
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
+    <div className="min-h-screen bg-[#13161C] text-white pb-24">
       <SEO
-        title="ID- & Foto-Verifizierung (Swiss Shield Siegel) | iWantSexNow.ch"
-        description="Schalte das grüne Direktbuchungs- und Echtheits-Siegel für dein Schweizer Profil frei."
+        title="Identitäts- & Bildprüfung beantragen (✓) | iwantsexnow.ch"
+        description="Dokumentiertes Prüfverfahren für Volljährigkeit (18+) und Bildberechtigung auf iwantsexnow.ch."
       />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+      <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-12 max-w-3xl space-y-8">
-        <div className="text-center space-y-3">
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-            <ShieldCheck size={14} className="mr-1.5 inline" /> Swiss Shield Trust Protocol
-          </Badge>
-          <h1 className="text-3xl md:text-5xl font-serif font-black">
-            ID- & Foto-Verifizierung in 3 Schritten
+      <main className="max-w-3xl mx-auto px-6 sm:px-10 py-10 space-y-8">
+        <Link href="/creator-dashboard" className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-300 hover:text-white">
+          <ArrowLeft size={14} />
+          <span>Zurück zum Anbieter-Cockpit</span>
+        </Link>
+
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#C6A574]/15 border border-[#C6A574]/40 text-[#E5C99B] text-[11px] font-bold uppercase tracking-wider">
+            <ShieldCheck size={13} />
+            <span>NICHT KÄUFLICHES PRÜFMERKMAL · IDENTITÄT GEPRÜFT (✓)</span>
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
+            Was die Kennzeichnung „Identität geprüft“ bedeutet
           </h1>
-          <p className="text-gray-300 text-sm md:text-base">
-            Profile mit dem grünen <strong>„ID & Originalfotos geprüft“</strong>-Siegel erhalten bis zu 4x mehr Direktbuchungs-Anfragen und starten mit <strong>2 Gratis Lead-Credits (CHF 50 Wert)</strong>.
+          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+            Eine blosse Konto-Registrierung löst bei uns noch kein Prüfsiegel aus. Das Merkmal „Identität geprüft (✓)“ wird ausschliesslich vergeben, wenn Volljährigkeit (18+) und die Übereinstimmung mit den eingereichten Profilbildern geprüft wurden.
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
-          {([
-            { num: 1, title: "1. Rufnummer & Index-Claim" },
-            { num: 2, title: "2. Tagescode-Selfie Check" },
-            { num: 3, title: "3. Direktbuchung aktivieren" },
-          ] as const).map((s) => (
-            <button
-              key={s.num}
-              type="button"
-              onClick={() => setStep(s.num)}
-              className={`p-3 rounded-xl border text-xs font-bold text-left transition-all ${
-                step === s.num
-                  ? "bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D]"
-                  : "bg-[#09131E] border-white/15 text-gray-300"
-              }`}
-            >
-              {s.title}
-            </button>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div className="p-4 rounded-xl bg-[#1C2029] border border-white/10 space-y-1.5">
+            <div className="font-bold text-[#C6A574]">1. Volljährigkeit (18+)</div>
+            <p className="text-gray-300 leading-relaxed">
+              Abgleich des Geburtsdatums über ein gültiges Ausweisdokument (nicht relevante Seriennummern dürfen geschwärzt werden).
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-[#1C2029] border border-white/10 space-y-1.5">
+            <div className="font-bold text-[#C6A574]">2. Bildberechtigung</div>
+            <p className="text-gray-300 leading-relaxed">
+              Kurzes Tagescode-Selfie zum Nachweis, dass die veröffentlichten Fotos tatsächlich die anmeldende Person zeigen.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-[#1C2029] border border-white/10 space-y-1.5">
+            <div className="font-bold text-[#C6A574]">3. Datensparsamkeit</div>
+            <p className="text-gray-300 leading-relaxed">
+              Prüfaufnahmen dienen ausschliesslich der Freigabe und werden niemals öffentlich angezeigt oder an Dritte weitergegeben.
+            </p>
+          </div>
         </div>
 
-        {completed ? (
-          <Card className="bg-[#09131E] border-2 border-emerald-500/60 p-8 rounded-2xl text-white text-center space-y-4">
-            <CheckCircle2 size={48} className="text-emerald-400 mx-auto" />
-            <h2 className="text-2xl font-serif font-black">
-              Verifizierung registriert · 2 Gratis Lead-Credits aktiv!
-            </h2>
-            <p className="text-sm text-gray-300 max-w-lg mx-auto">
-              Deine Rufnummer <strong>{phone}</strong> und dein Code <strong>{dailyCode}</strong> wurden übermittelt. Alle gefundenen Drittportal-Inserate wurden mit deinem Direktprofil verknüpft.
-            </p>
-            <div className="pt-4 flex justify-center gap-3">
-              <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
-                <Link href="/creator-dashboard">
-                  Zum Provider-Dashboard <ArrowRight size={15} className="ml-1.5" />
-                </Link>
-              </Button>
+        {submitted ? (
+          <div className="p-6 rounded-2xl bg-[#1C2029] border border-emerald-500/40 space-y-3">
+            <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
+              <Check size={20} />
             </div>
-          </Card>
+            <h2 className="text-lg font-bold text-white">Prüfanfrage wurde vorgemerkt</h2>
+            <p className="text-xs text-gray-300 leading-relaxed">
+              Du erhältst deinen persönlichen Tagescode zur kostenlosen Echtheitsbestätigung an den angegebenen Kontaktweg.
+            </p>
+            <Link href="/creator-dashboard" className="inline-block px-5 py-2.5 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs">
+              Zurück zum Cockpit →
+            </Link>
+          </div>
         ) : (
-          <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 md:p-8 rounded-2xl text-white">
-            <form onSubmit={handleComplete} className="space-y-6">
-              <div>
-                <label className="text-xs font-bold uppercase text-[#D5A021] flex items-center gap-1.5 mb-2">
-                  <PhoneCall size={14} /> Schritt 1: Schweizer Rufnummer für Dubletten-Bündelung & SMS-Code
-                </label>
-                <div className="grid sm:grid-cols-3 gap-3">
-                  <input
-                    type="text"
-                    placeholder="Künstlername (z.B. Sophia)"
-                    value={artistName}
-                    onChange={(e) => setArtistName(e.target.value)}
-                    required
-                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3.5 py-2.5 text-sm text-white"
-                  />
-                  <input
-                    type="text"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3.5 py-2.5 text-sm text-white"
-                  />
-                  <input
-                    type="text"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required
-                    className="w-full rounded-xl bg-black/50 border border-white/20 px-3.5 py-2.5 text-sm text-white"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
-                <div className="text-xs font-bold uppercase text-emerald-400 flex items-center gap-1.5">
-                  <Camera size={14} /> Schritt 2: Dein persönlicher Tages-Prüfcode
-                </div>
-                <p className="text-xs text-gray-300">
-                  Schreibe diesen Code auf einen Zettel und halte ihn beim kurzen Verifizierungs-Selfie sichtbar ins Bild (wird niemals veröffentlicht und nach der Prüfung gemäss CH-DSG gelöscht):
-                </p>
-                <div className="text-2xl font-mono font-black text-[#D5A021] tracking-widest bg-white/5 px-4 py-2 rounded-lg inline-block border border-[#C69C6D]/40">
-                  {dailyCode}
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2.5 text-xs text-gray-300">
-                <Lock size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>
-                  Ich bestätige, dass ich volljährig (18+) bin, selbstständig handle und meine im Endpreis-Rechner hinterlegten Tarife ohne versteckte Nachverhandlungen vor Ort gelten.
-                </span>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6 text-base shadow-xl"
-              >
-                Verifizierung abschliessen & 2 Gratis Lead-Credits aktivieren
-              </Button>
-            </form>
-          </Card>
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#1C2029] border border-white/15 space-y-4 text-xs sm:text-sm">
+            <h2 className="text-lg font-serif font-bold text-white">Prüfcode für dein Profil anfordern</h2>
+            <div>
+              <label className="block text-xs font-semibold text-gray-300 mb-1">Profilname oder Profil-ID *</label>
+              <input
+                type="text"
+                required
+                value={profileName}
+                onChange={(e) => setProfileName(e.target.value)}
+                placeholder="z.B. Elena (ch-1)"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-300 mb-1">Kontakt für die Zusendung des Tagescodes *</label>
+              <input
+                type="text"
+                required
+                value={contactInfo}
+                onChange={(e) => setContactInfo(e.target.value)}
+                placeholder="+41 Nummer oder E-Mail-Adresse..."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-300 mb-1">Optionaler Hinweis</label>
+              <textarea
+                rows={2}
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-3.5 rounded-xl bg-[#C6A574] hover:bg-[#d5b687] text-[#13161C] font-bold text-xs uppercase tracking-wider cursor-pointer"
+            >
+              Kostenlosen Prüfcode anfordern →
+            </button>
+          </form>
         )}
       </main>
     </div>
