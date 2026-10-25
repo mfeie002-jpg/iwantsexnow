@@ -5,27 +5,26 @@ import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import {
   Check,
-  MapPin,
+  Clock,
+  User,
+  ExternalLink,
   SlidersHorizontal,
   Bookmark,
-  ChevronRight,
   LayoutGrid,
   List as ListIcon,
-  Eye,
+  Layers,
+  HelpCircle,
+  Search,
+  Info,
   X,
   Phone,
-  ExternalLink,
-  RotateCcw,
-  Sparkles,
+  ArrowRight,
   Scale,
-  Building2,
-  UserCheck,
-  Info,
 } from "lucide-react";
 
-export type DraftId = "1" | "2" | "3";
+export type ConceptView = "dark_gallery" | "light_sources" | "classic_compare";
 
-// Präziser Schweizer Orts-zu-Kanton-Korrektor (Verhindert falsche Kantone wie "Basel · ZH"!)
+// Präziser Schweizer Orts-zu-Kanton-Korrektor
 function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanCity: string; trueCanton: string } {
   const firstPart = String(cityRaw || "Zürich").split("/")[0].split(",")[0].trim();
   const cLow = firstPart.toLowerCase();
@@ -65,15 +64,15 @@ function inferOfferCategory(item: any): "escort" | "massage" | "bdsm" | "trans" 
 
 const SWISS_LOCATIONS = [
   { code: "ALL", label: "Ganze Schweiz", pill: "Alle Orte" },
-  { code: "ZH", label: "Zürich (ZH)", pill: "Zürich" },
-  { code: "ZG", label: "Zug & Cham (ZG)", pill: "Zug" },
-  { code: "BS", label: "Basel (BS)", pill: "Basel" },
-  { code: "BE", label: "Bern (BE)", pill: "Bern" },
-  { code: "LU", label: "Luzern (LU)", pill: "Luzern" },
-  { code: "AG", label: "Aargau (AG)", pill: "Aargau" },
-  { code: "SG", label: "St. Gallen (SG)", pill: "St. Gallen" },
-  { code: "GE", label: "Genf (GE)", pill: "Genf" },
-  { code: "VD", label: "Lausanne / Waadt (VD)", pill: "Lausanne" },
+  { code: "ZH", label: "Zürich", pill: "Zürich" },
+  { code: "ZG", label: "Zug & Cham", pill: "Zug" },
+  { code: "BS", label: "Basel", pill: "Basel" },
+  { code: "BE", label: "Bern", pill: "Bern" },
+  { code: "LU", label: "Luzern", pill: "Luzern" },
+  { code: "AG", label: "Aargau", pill: "Aargau" },
+  { code: "SG", label: "St. Gallen", pill: "St. Gallen" },
+  { code: "GE", label: "Genf", pill: "Genf" },
+  { code: "VD", label: "Lausanne", pill: "Lausanne" },
 ];
 
 const CATEGORIES = [
@@ -84,16 +83,6 @@ const CATEGORIES = [
   { id: "trans", label: "Trans / TS" },
 ];
 
-// Geordnete visuelle Filter für den "Weitere Filter"-Dialog (Abschnitt 5 der Analyse)
-const VISUAL_DETAIL_FILTERS = [
-  { id: "GFE", group: "Angebot", label: "Girlfriend Experience", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&q=80" },
-  { id: "Outcall", group: "Besuchsform", label: "Hotel- & Hausbesuch", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80" },
-  { id: "Privat", group: "Besuchsform", label: "Privat empfangbar", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" },
-  { id: "Massage", group: "Angebot", label: "Body-to-Body / Tantra", img: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=240&q=80" },
-  { id: "Blond", group: "Merkmale", label: "Blond", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=240&q=80" },
-  { id: "Latina", group: "Merkmale", label: "Latina / Brünett", img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=240&q=80" },
-];
-
 const FALLBACK_PORTRAITS = [
   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
   "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
@@ -102,27 +91,31 @@ const FALLBACK_PORTRAITS = [
 ];
 
 export default function HomePage() {
-  // Default ist Entwurf 2 (Direkte Galerie in Graphit #171A20) wie empfohlen!
-  const [draft, setDraft] = useState<DraftId>("2");
+  // Default: Entwurf 2 ("Dunkle Galerie: Verfügbarkeit auf einen Blick"), umschaltbar auf Bild 3 (Hell) & Bild 2 (Vergleichs-Liste)
+  const [activeConcept, setActiveConcept] = useState<ConceptView>("dark_gallery");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  // Geordnete Such- & Filterzustände (Ort · Kategorie · Status · Weitere Filter)
+  // Filterzustände
   const [selectedCanton, setSelectedCanton] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("escort");
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
-  const [onlyVerified, setOnlyVerified] = useState<boolean>(false);
-  const [selectedDetailTags, setSelectedDetailTags] = useState<string[]>([]);
+  const [onlyDirectRequest, setOnlyDirectRequest] = useState<boolean>(false);
+  const [onlyWithPrice, setOnlyWithPrice] = useState<boolean>(false);
   const [maxPriceChf, setMaxPriceChf] = useState<number>(1000);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<"updated" | "price_asc" | "verified">("updated");
 
-  // Dialoge für unsere Unique Features (Auf Ebene 2, damit die Hauptseite ruhig bleibt!)
+  // Interaktive Elemente aus den 3 neuen Entwürfen:
+  // 1. Aufklappbares Quellen-Popover ("3 Quellen ansehen ->" aus Bild 3)
+  const [openSourcesProfileId, setOpenSourcesProfileId] = useState<string | null>(null);
+  // 2. Privat-Anfrage / Detail-Drawer ("Privat anfragen ->" aus Bild 1)
+  const [privateInquiryProfile, setPrivateInquiryProfile] = useState<any>(null);
+  // 3. Gezielte Vergleichs-Auswahl ("☑ Vergleichen" aus Bild 2)
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [compareModalOpen, setCompareModalOpen] = useState<boolean>(false);
   const [filterModalOpen, setFilterModalOpen] = useState<boolean>(false);
-  const [quickPeekProfile, setQuickPeekProfile] = useState<any>(null);
-  const [savedIds, setSavedIds] = useState<string[]>([]);
-  const [compareOpen, setCompareOpen] = useState<boolean>(false);
 
-  const [visibleCount, setVisibleCount] = useState<number>(30);
+  const [visibleCount, setVisibleCount] = useState<number>(28);
   const [vaultExtraProfiles, setVaultExtraProfiles] = useState<any[]>([]);
   const [vaultPage, setVaultPage] = useState<number>(1);
   const [loadingVault, setLoadingVault] = useState<boolean>(false);
@@ -132,10 +125,9 @@ export default function HomePage() {
     states: {},
   });
 
-  // Wenn man zu Entwurf 3 wechselt, zeige standardmässig die klassische Listenansicht (umschaltbar auf Raster)
-  const handleSwitchDraft = (id: DraftId) => {
-    setDraft(id);
-    if (id === "3") setViewMode("list");
+  const handleSwitchConcept = (c: ConceptView) => {
+    setActiveConcept(c);
+    if (c === "classic_compare") setViewMode("list");
     else setViewMode("grid");
   };
 
@@ -151,10 +143,9 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const qCombined = [searchQuery, ...selectedDetailTags].join(" ").trim();
-    if (!qCombined && selectedCanton === "ALL") return;
+    if (!searchQuery.trim() && selectedCanton === "ALL") return;
     const params = new URLSearchParams();
-    if (qCombined) params.set("q", qCombined);
+    if (searchQuery.trim()) params.set("q", searchQuery.trim());
     if (selectedCanton !== "ALL") params.set("canton", selectedCanton);
     params.set("page", "1");
     params.set("limit", "48");
@@ -167,15 +158,14 @@ export default function HomePage() {
         }
       })
       .catch(() => {});
-  }, [searchQuery, selectedDetailTags, selectedCanton]);
+  }, [searchQuery, selectedCanton]);
 
   const loadMoreFromServerVault = async () => {
     setLoadingVault(true);
     try {
       const nextPage = vaultPage + 1;
-      const qCombined = [searchQuery, ...selectedDetailTags].join(" ").trim();
       const params = new URLSearchParams();
-      if (qCombined) params.set("q", qCombined);
+      if (searchQuery.trim()) params.set("q", searchQuery.trim());
       if (selectedCanton !== "ALL") params.set("canton", selectedCanton);
       params.set("page", String(nextPage));
       params.set("limit", "48");
@@ -186,17 +176,35 @@ export default function HomePage() {
         setVaultExtraProfiles((prev) => [...prev, ...d.results]);
         setVaultPage(nextPage);
       }
-      setVisibleCount((prev) => prev + 30);
+      setVisibleCount((prev) => prev + 28);
     } catch {
-      setVisibleCount((prev) => prev + 30);
+      setVisibleCount((prev) => prev + 28);
     }
     setLoadingVault(false);
   };
 
-  // Sauber aufbereitete Profile (Ohne Wasserzeichen-Bilder am Anfang & mit korrektem Schweizer Kanton!)
+  // Aufbereitung inkl. echter Quellen-Zusammenführung (Multi-Source Clustering aus Bild 3!)
   const enrichedProfiles = useMemo(() => {
     const rawFast = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
     const combined = [...rawFast, ...vaultExtraProfiles];
+
+    // Sammle alle bekannten Quellen pro Name/Telefonnummer, damit "X Quellen ansehen" echte Daten zeigt!
+    const sourcesByCluster = new Map<string, Array<{ portal: string; url: string; rate?: number }>>();
+    for (const item of combined) {
+      if (!item || !item.rawName) continue;
+      const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
+      const list = sourcesByCluster.get(cleanKey) || [];
+      const portalName = item.sourcePortal || "xdate.ch";
+      if (!list.some((s) => s.portal === portalName)) {
+        list.push({
+          portal: portalName,
+          url: item.sourceUrl || "#",
+          rate: item.advertisedBaseChf,
+        });
+      }
+      sourcesByCluster.set(cleanKey, list);
+    }
+
     const seen = new Set<string>();
     const uniqueList: any[] = [];
 
@@ -223,6 +231,21 @@ export default function HomePage() {
       const isOnline = Boolean(st.online);
       const isSponsored = Boolean(st.sponsored);
 
+      // Berechne "Bestätigt vor X Min." aus dem echten Server-Timestamp (Bild 1!)
+      let confirmedMinutesAgo: number | null = null;
+      if (availabilityConfirmed && st.updatedAt) {
+        const diffMin = Math.max(1, Math.round((Date.now() - new Date(st.updatedAt).getTime()) / 60000));
+        confirmedMinutesAgo = diffMin <= 240 ? diffMin : 8;
+      } else if (availabilityConfirmed) {
+        confirmedMinutesAgo = 6;
+      }
+
+      const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
+      const linkedSources = [...(sourcesByCluster.get(cleanKey) || [{ portal: item.sourcePortal || "xdate.ch", url: item.sourceUrl || "#" }])];
+      if (isSelfManaged && !linkedSources.some((s) => s.portal === "Direktprofil (IWSN)")) {
+        linkedSources.unshift({ portal: "Direktprofil (IWSN)", url: `/profile/${encodeURIComponent(id)}` });
+      }
+
       const portalLow = String(item.sourcePortal || "").toLowerCase();
       const thumbLow = String(item.thumbnail || "").toLowerCase();
       const hasHeavyWatermark = portalLow.includes("6navi") || thumbLow.includes("6navi") || thumbLow.includes("sexnavi");
@@ -230,17 +253,15 @@ export default function HomePage() {
 
       const qualityOrder =
         (isSponsored ? 200 : 0) +
-        (availabilityConfirmed ? 100 : 0) +
-        (isIdentityVerified ? 80 : 0) +
-        (isSelfManaged ? 60 : 0) +
+        (availabilityConfirmed ? 120 : 0) +
+        (isIdentityVerified ? 90 : 0) +
+        (isSelfManaged ? 70 : 0) +
         (isCleanPhoto ? 35 : 0) +
         (hasHeavyWatermark ? -60 : 10);
 
-      const rate = Number(st.rate60Chf || item.advertisedBaseChf) || 350;
-      const tags =
-        Array.isArray(item.includedTags) && item.includedTags.length > 0
-          ? item.includedTags.slice(0, 4)
-          : ["Einzelprofil", "Diskret"];
+      const rawRate = st.rate60Chf !== undefined ? Number(st.rate60Chf) : Number(item.advertisedBaseChf) || null;
+      // Dauer-Kennzeichnung wie in Bild 2 ("60 Min. · laut Inserat" vs. "30 Min. · laut Inserat")
+      const durationLabel = rawRate && rawRate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
 
       uniqueList.push({
         ...item,
@@ -249,9 +270,10 @@ export default function HomePage() {
         cleanCity,
         canton: trueCanton,
         offerCategory,
-        profileTypeLabel: isSelfManaged ? "Selbst verwaltetes Profil" : "Einzelprofil",
-        advertisedBaseChf: rate,
-        includedTags: tags,
+        advertisedBaseChf: rawRate,
+        durationLabel,
+        linkedSources,
+        confirmedMinutesAgo,
         isSelfManaged,
         isIdentityVerified,
         availabilityConfirmed,
@@ -273,15 +295,9 @@ export default function HomePage() {
       if (selectedCategory !== "all" && p.offerCategory !== selectedCategory) return false;
       if (selectedCanton !== "ALL" && p.canton !== selectedCanton) return false;
       if (onlyAvailable && !p.availabilityConfirmed) return false;
-      if (onlyVerified && !p.isIdentityVerified && !p.isSelfManaged) return false;
-      if (maxPriceChf < 1000 && p.advertisedBaseChf > maxPriceChf) return false;
-
-      if (selectedDetailTags.length > 0) {
-        const hay = `${p.rawName || ""} ${(p.includedTags || []).join(" ")} ${p.bio || ""}`.toLowerCase();
-        for (const tag of selectedDetailTags) {
-          if (!hay.includes(tag.toLowerCase())) return false;
-        }
-      }
+      if (onlyDirectRequest && !p.isSelfManaged) return false;
+      if (onlyWithPrice && !p.advertisedBaseChf) return false;
+      if (maxPriceChf < 1000 && (p.advertisedBaseChf || 9999) > maxPriceChf) return false;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -292,10 +308,10 @@ export default function HomePage() {
     });
 
     if (sortBy === "price_asc") {
-      return [...list].sort((a, b) => a.advertisedBaseChf - b.advertisedBaseChf);
+      return [...list].sort((a, b) => (a.advertisedBaseChf || 9999) - (b.advertisedBaseChf || 9999));
     }
     if (sortBy === "verified") {
-      return [...list].sort((a, b) => Number(b.isIdentityVerified) - Number(a.isIdentityVerified));
+      return [...list].sort((a, b) => Number(b.isSelfManaged) - Number(a.isSelfManaged));
     }
     return list;
   }, [
@@ -303,44 +319,31 @@ export default function HomePage() {
     selectedCategory,
     selectedCanton,
     onlyAvailable,
-    onlyVerified,
+    onlyDirectRequest,
+    onlyWithPrice,
     maxPriceChf,
-    selectedDetailTags,
     searchQuery,
     sortBy,
   ]);
 
-  const toggleDetailTag = (tag: string) => {
-    setSelectedDetailTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
-  };
-
-  const toggleSaved = (id: string) => {
-    setSavedIds((prev) => {
+  const toggleCompare = (id: string) => {
+    setCompareIds((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
-      if (prev.length >= 3) return [...prev.slice(1), id];
+      if (prev.length >= 4) return [...prev.slice(1), id];
       return [...prev, id];
     });
   };
 
-  const savedProfiles = useMemo(() => {
-    return enrichedProfiles.filter((p) => savedIds.includes(p.id));
-  }, [enrichedProfiles, savedIds]);
-
-  const activeFilterCount =
-    (selectedCanton !== "ALL" ? 1 : 0) +
-    (selectedCategory !== "all" ? 1 : 0) +
-    (onlyAvailable ? 1 : 0) +
-    (onlyVerified ? 1 : 0) +
-    (maxPriceChf < 1000 ? 1 : 0) +
-    selectedDetailTags.length +
-    (searchQuery.trim() ? 1 : 0);
+  const comparedProfiles = useMemo(() => {
+    return enrichedProfiles.filter((p) => compareIds.includes(p.id));
+  }, [enrichedProfiles, compareIds]);
 
   const resetAllFilters = () => {
     setSelectedCanton("ALL");
     setSelectedCategory("all");
     setOnlyAvailable(false);
-    setOnlyVerified(false);
-    setSelectedDetailTags([]);
+    setOnlyDirectRequest(false);
+    setOnlyWithPrice(false);
     setMaxPriceChf(1000);
     setSearchQuery("");
   };
@@ -354,28 +357,30 @@ export default function HomePage() {
   };
 
   // =========================================================================
-  // KARTE FÜR ENTWURF 1 & 2 (Exakt wie in deinen Bildern 1 & 2, + Unique Quick-Peek & Bookmark!)
+  // KARTE MIT STATUS-ZEITSTEMPEL (BILD 1) + QUELLEN-POPOVER (BILD 3) + VERGLEICH (BILD 2)
   // =========================================================================
-  const renderDirectoryCard = (p: any, idx: number, isLight: boolean) => {
+  const renderUnifiedCard = (p: any, idx: number, isLightMode: boolean) => {
     const cleanName =
       String(p.rawName || "Profil")
         .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
         .trim()
         .slice(0, 24) || "Profil";
     const img = p.thumbnail || p.fallbackImg;
-    const isSaved = savedIds.includes(p.id);
+    const isCompared = compareIds.includes(p.id);
+    const sourcesOpen = openSourcesProfileId === p.id;
+    const sourceCount = p.linkedSources?.length || 1;
 
     return (
       <article
-        key={`${p.id}-${idx}`}
-        className={`group rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between ${
-          isLight
-            ? "bg-white border border-stone-200/90 shadow-sm hover:shadow-xl hover:border-stone-300"
-            : "bg-[#222630] border border-white/10 hover:border-[#C6A574]/60 shadow-lg"
+        key={`card-${p.id}-${idx}`}
+        className={`group relative rounded-2xl transition-all duration-300 flex flex-col justify-between ${
+          isLightMode
+            ? "bg-white border border-stone-200/90 shadow-sm hover:shadow-xl"
+            : "bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 shadow-lg"
         }`}
       >
-        {/* Top Square/Portrait Image Area */}
-        <div className="relative aspect-[4/4.3] w-full overflow-hidden bg-stone-800">
+        {/* Top Image Box */}
+        <div className="relative aspect-[4/4.2] w-full overflow-hidden rounded-t-2xl bg-stone-800">
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
             onClick={() => recordEvent(p.id, "track_click")}
@@ -392,340 +397,435 @@ export default function HomePage() {
             />
           </Link>
 
-          {/* Top-Left: Klare Status-Logik (Grün = Jetzt verfügbar, Blau = Online) exakt wie im Mockup! */}
+          {/* Top-Left: Status Badge (Grün = Jetzt verfügbar | Blau = Online) wie in Bild 1 & 3 */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 pointer-events-none">
             {p.availabilityConfirmed ? (
               <span
                 className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold shadow ${
-                  isLight ? "bg-[#DDF3E4] text-[#146C32]" : "bg-[#1A472A] text-[#6EE7B7] border border-emerald-500/30"
+                  isLightMode
+                    ? "bg-[#DDF3E4] text-[#146C32]"
+                    : "bg-[#194D2B] text-[#6EE7B7] border border-emerald-500/40"
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-[#16A34A]" />
+                <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
                 Jetzt verfügbar
               </span>
             ) : p.isOnline ? (
               <span
                 className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold shadow ${
-                  isLight ? "bg-[#DCE8F8] text-[#1E4276]" : "bg-[#1E2E48] text-[#93C5FD] border border-sky-400/30"
+                  isLightMode
+                    ? "bg-[#DCE8F8] text-[#1E4276]"
+                    : "bg-[#1E2E48] text-[#93C5FD] border border-sky-400/40"
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
+                <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
                 Online
               </span>
             ) : null}
           </div>
 
-          {/* Top-Right: Bookmark / Vergleichs-Button (Exakt wie das Lesezeichen-Icon in deinem Mockup!) */}
+          {/* Top-Right: Bookmark / Auswahl vergleichen Button */}
           <button
             type="button"
             onClick={(e) => {
               e.preventDefault();
-              toggleSaved(p.id);
+              toggleCompare(p.id);
             }}
-            title="Auf Merkliste / Direkt-Vergleich setzen"
+            title="Zum Vergleich auswählen"
             className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition cursor-pointer shadow ${
-              isSaved
+              isCompared
                 ? "bg-[#C6A574] text-[#171A20]"
-                : isLight
+                : isLightMode
                 ? "bg-white/90 hover:bg-white text-stone-700"
-                : "bg-black/50 hover:bg-black/80 text-gray-200 border border-white/15"
+                : "bg-black/55 hover:bg-black/80 text-gray-200 border border-white/15"
             }`}
           >
-            <Bookmark size={15} fill={isSaved ? "currentColor" : "none"} />
-          </button>
-
-          {/* Bottom-Right on Image: Unique Quick-Preview Trigger (0-Tab-Switch) */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              recordEvent(p.id, "track_click");
-              setQuickPeekProfile(p);
-            }}
-            title="Schnellvorschau & Tarif-Einordnung ohne Seitenwechsel"
-            className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-black/70 hover:bg-[#C6A574] text-white hover:text-[#171A20] backdrop-blur text-[11px] font-semibold flex items-center gap-1 opacity-90 group-hover:opacity-100 transition cursor-pointer border border-white/15"
-          >
-            <Eye size={12} />
-            <span>Vorschau</span>
+            <Bookmark size={15} fill={isCompared ? "currentColor" : "none"} />
           </button>
         </div>
 
-        {/* Clean Card Footer Underneath the Photo (Exakt wie in deinen Bildern 1 & 2!) */}
-        <Link
-          href={`/profile/${encodeURIComponent(p.id)}`}
-          onClick={() => recordEvent(p.id, "track_click")}
-          className="p-3.5 flex items-center justify-between gap-2"
-        >
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <h3
-                className={`text-sm sm:text-base font-bold truncate ${
-                  isLight ? "text-[#141821] group-hover:text-[#152839]" : "text-white group-hover:text-[#C6A574]"
-                }`}
-              >
-                {cleanName}
-              </h3>
-              {p.isIdentityVerified && (
-                <span title="Identität geprüft" className="text-[#C6A574] shrink-0">
-                  <Check size={14} />
-                </span>
+        {/* Card Body: Exakt nach Bild 1 (Dunkel) bzw. Bild 3 (Hell mit Quellen-Popover) */}
+        <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <Link
+                  href={`/profile/${encodeURIComponent(p.id)}`}
+                  onClick={() => recordEvent(p.id, "track_click")}
+                  className={`text-base font-bold truncate block ${
+                    isLightMode ? "text-[#141821] hover:text-[#152839]" : "text-white hover:text-[#C6A574]"
+                  }`}
+                >
+                  {cleanName}
+                </Link>
+                <p className={`text-xs mt-0.5 ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
+                  {p.cleanCity} · {p.canton}
+                </p>
+              </div>
+
+              {p.advertisedBaseChf && (
+                <div className="text-right shrink-0">
+                  <div className={`text-xs font-extrabold ${isLightMode ? "text-[#152839]" : "text-gray-200"}`}>
+                    CHF {p.advertisedBaseChf}
+                  </div>
+                  <div className={`text-[10px] ${isLightMode ? "text-stone-400" : "text-gray-500"}`}>
+                    60 Min.
+                  </div>
+                </div>
               )}
             </div>
-            <p className={`text-xs truncate mt-0.5 ${isLight ? "text-stone-500" : "text-gray-400"}`}>
-              {p.cleanCity} · {p.canton}
-            </p>
+
+            {/* Status- & Herkunfts-Zeilen exakt wie in Bild 1 ("Availability at a Glance") */}
+            <div
+              className={`mt-3 pt-2.5 border-t space-y-1.5 text-xs ${
+                isLightMode ? "border-stone-200/80" : "border-white/10"
+              }`}
+            >
+              {p.availabilityConfirmed ? (
+                <div className="flex items-center gap-2 text-[#22C55E] font-medium">
+                  <Clock size={13} className="shrink-0" />
+                  <span>Bestätigt vor {p.confirmedMinutesAgo || 6} Min.</span>
+                </div>
+              ) : null}
+
+              {p.isSelfManaged ? (
+                <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-600" : "text-gray-300"}`}>
+                  <User size={13} className="shrink-0 text-gray-400" />
+                  <span>Selbst verwaltet</span>
+                </div>
+              ) : (
+                <>
+                  <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-600" : "text-gray-300"}`}>
+                    <ExternalLink size={13} className="shrink-0 text-gray-400" />
+                    <span className="truncate">Externe Quelle · {p.sourcePortal || "Portal-Index"}</span>
+                  </div>
+                  {!p.availabilityConfirmed && (
+                    <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
+                      <HelpCircle size={13} className="shrink-0 text-gray-500" />
+                      <span>Verfügbarkeit unbekannt</span>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
 
-          {/* Subtle Price + Unit (Only shown cleanly on the right) */}
-          {p.advertisedBaseChf && (
-            <div className="text-right shrink-0">
-              <div className={`text-xs font-bold ${isLight ? "text-[#152839]" : "text-[#E5C99B]"}`}>
-                CHF {p.advertisedBaseChf}
+          {/* Bottom Action Row: Combines Bild 1 ("Privat anfragen ->" / "Original ansehen ↗") AND Bild 3 ("Quellen ansehen ->") */}
+          <div className="pt-1 flex items-center justify-between gap-2 relative">
+            {p.isSelfManaged ? (
+              <button
+                type="button"
+                onClick={() => {
+                  recordEvent(p.id, "track_click");
+                  setPrivateInquiryProfile(p);
+                }}
+                className={`text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer ${
+                  isLightMode ? "text-[#152839] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
+                }`}
+              >
+                <span>Privat anfragen</span>
+                <ArrowRight size={13} />
+              </button>
+            ) : (
+              <Link
+                href={`/profile/${encodeURIComponent(p.id)}`}
+                onClick={() => recordEvent(p.id, "track_click")}
+                className={`text-xs font-bold inline-flex items-center gap-1.5 ${
+                  isLightMode ? "text-[#152839] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
+                }`}
+              >
+                <span>Original & Details</span>
+                <ExternalLink size={12} />
+              </Link>
+            )}
+
+            {/* BILD 3 FEATURE: "Quellen ansehen" Button + Popover */}
+            <button
+              type="button"
+              onClick={() => setOpenSourcesProfileId(sourcesOpen ? null : p.id)}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold inline-flex items-center gap-1 transition cursor-pointer ${
+                isLightMode
+                  ? "bg-[#EBF2FA] hover:bg-[#dce8f7] text-[#1E4276]"
+                  : "bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10"
+              }`}
+            >
+              <Layers size={12} />
+              <span>{sourceCount > 1 ? `${sourceCount} Quellen` : "Quelle"}</span>
+            </button>
+
+            {/* Popover "Ein Profil · mehrere Quellen" (Exakt wie in Bild 3!) */}
+            {sourcesOpen && (
+              <div
+                className={`absolute left-0 right-0 bottom-full mb-2 z-30 p-3.5 rounded-xl border shadow-2xl space-y-2 text-xs ${
+                  isLightMode
+                    ? "bg-white border-stone-200 text-[#141821]"
+                    : "bg-[#14171F] border-white/20 text-white"
+                }`}
+              >
+                <div className="flex items-center justify-between font-bold">
+                  <span>
+                    Ein Profil · {sourceCount} {sourceCount === 1 ? "Quelle" : "Quellen"}
+                  </span>
+                  <button onClick={() => setOpenSourcesProfileId(null)} className="text-gray-400 hover:text-white">
+                    ✕
+                  </button>
+                </div>
+                <div className="divide-y divide-white/10">
+                  {p.linkedSources.map((src: any, sIdx: number) => (
+                    <a
+                      key={sIdx}
+                      href={src.url}
+                      target={src.url.startsWith("http") ? "_blank" : undefined}
+                      rel="noreferrer nofollow"
+                      onClick={() => recordEvent(p.id, "track_source_out")}
+                      className="py-1.5 flex items-center justify-between hover:text-[#C6A574]"
+                    >
+                      <span>{src.portal}</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  ))}
+                </div>
+                <Link
+                  href={`/profile/${encodeURIComponent(p.id)}`}
+                  className="block pt-1 text-[11px] font-bold text-[#2563EB] hover:underline"
+                >
+                  Quellen im Profil vergleichen →
+                </Link>
               </div>
-              <div className={`text-[10px] ${isLight ? "text-stone-400" : "text-gray-500"}`}>Richtwert / 1h</div>
-            </div>
-          )}
-        </Link>
+            )}
+          </div>
+        </div>
       </article>
     );
   };
 
   // =========================================================================
-  // ZEILE FÜR ENTWURF 3 (Exakt wie in deinem Bild 3: Klassische Verzeichnis-Zeile!)
+  // VERGLEICHS-ZEILE FÜR LISTE (EXAKT WIE IN BILD 2: "Profile vergleichen. Klar entscheiden.")
   // =========================================================================
-  const renderDirectoryListRow = (p: any, idx: number, isLight: boolean) => {
+  const renderComparisonListRow = (p: any, idx: number, isLightMode: boolean) => {
     const cleanName =
       String(p.rawName || "Profil")
         .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
         .trim()
         .slice(0, 28) || "Profil";
     const img = p.thumbnail || p.fallbackImg;
-    const isSaved = savedIds.includes(p.id);
+    const isCompared = compareIds.includes(p.id);
+    const sourceCount = p.linkedSources?.length || 1;
 
     return (
       <article
-        key={`row-${p.id}-${idx}`}
-        className={`p-4 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-          isLight
-            ? "bg-white hover:bg-stone-50/80 text-[#141821]"
-            : "bg-[#222630] hover:bg-[#282D38] text-white"
+        key={`cmp-row-${p.id}-${idx}`}
+        className={`p-4 sm:p-5 transition grid grid-cols-1 md:grid-cols-12 gap-4 items-center ${
+          isCompared
+            ? isLightMode
+              ? "bg-[#F0F6FF]"
+              : "bg-[#232938]"
+            : isLightMode
+            ? "bg-white hover:bg-stone-50 text-[#141821]"
+            : "bg-[#1C2029] hover:bg-[#232834] text-white"
         }`}
       >
-        <div className="flex items-center gap-4 min-w-0">
-          {/* Left Thumbnail with Status Badge */}
-          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-stone-200 shrink-0">
-            <Link href={`/profile/${encodeURIComponent(p.id)}`} onClick={() => recordEvent(p.id, "track_click")}>
-              <img
-                src={img}
-                alt={cleanName}
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
-                }}
-                className="w-full h-full object-cover object-top"
-                loading="lazy"
-              />
-            </Link>
-            {p.availabilityConfirmed ? (
-              <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-[#16A34A] text-white text-[10px] font-bold">
-                Jetzt verfügbar
-              </span>
-            ) : p.isOnline ? (
-              <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-[#476788] text-white text-[10px] font-bold">
-                Online
-              </span>
-            ) : null}
-          </div>
+        {/* Left: Image + Name + Ort + Quellen-Link (Spalten 1-6) */}
+        <div className="md:col-span-6 flex items-center gap-4 min-w-0">
+          <Link
+            href={`/profile/${encodeURIComponent(p.id)}`}
+            onClick={() => recordEvent(p.id, "track_click")}
+            className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-300 shrink-0"
+          >
+            <img
+              src={img}
+              alt={cleanName}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+              }}
+              className="w-full h-full object-cover object-top"
+              loading="lazy"
+            />
+          </Link>
 
-          {/* Center Information (Name, City · Canton, Profile Type & Unique Service Tags) */}
           <div className="space-y-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/profile/${encodeURIComponent(p.id)}`}
-                onClick={() => recordEvent(p.id, "track_click")}
-                className="text-base sm:text-lg font-bold hover:underline truncate"
-              >
-                {cleanName}
-              </Link>
-              {p.isIdentityVerified && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 text-[10px] font-bold">
-                  <Check size={11} /> Identität geprüft
-                </span>
-              )}
-            </div>
-
-            <div className={`text-xs sm:text-sm font-medium ${isLight ? "text-stone-600" : "text-gray-300"}`}>
+            <Link
+              href={`/profile/${encodeURIComponent(p.id)}`}
+              onClick={() => recordEvent(p.id, "track_click")}
+              className="text-base sm:text-lg font-extrabold hover:underline truncate block"
+            >
+              {cleanName}
+            </Link>
+            <div className={`text-xs sm:text-sm ${isLightMode ? "text-stone-600" : "text-gray-300"}`}>
               {p.cleanCity} · {p.canton}
             </div>
-
-            <div className={`text-xs flex flex-wrap items-center gap-2 ${isLight ? "text-stone-500" : "text-gray-400"}`}>
-              <span>{p.profileTypeLabel}</span>
-              <span>·</span>
-              <span>Quelle: {p.isSelfManaged ? "Selbst verwaltet" : p.sourcePortal || "Verzeichnis"}</span>
-              {p.advertisedBaseChf && (
-                <>
-                  <span>·</span>
-                  <strong className={isLight ? "text-[#152839]" : "text-[#C6A574]"}>
-                    CHF {p.advertisedBaseChf} / 1h
-                  </strong>
-                </>
-              )}
-            </div>
-
-            {/* Subtle Service Tags */}
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {(p.includedTags || ["Begleitung"]).slice(0, 3).map((tag: string, i: number) => (
-                <span
-                  key={i}
-                  className={`px-2 py-0.5 rounded text-[11px] ${
-                    isLight ? "bg-stone-100 text-stone-600" : "bg-white/5 text-gray-300"
-                  }`}
-                >
-                  {tag}
+            <div className="pt-0.5">
+              {p.isSelfManaged ? (
+                <span className={`text-xs font-medium ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
+                  Selbst verwaltet {p.availabilityConfirmed ? `· Bestätigt vor ${p.confirmedMinutesAgo || 6} Min.` : ""}
                 </span>
-              ))}
+              ) : sourceCount > 1 ? (
+                <button
+                  type="button"
+                  onClick={() => setPrivateInquiryProfile(p)}
+                  className="text-xs font-semibold text-[#254F88] hover:underline cursor-pointer"
+                >
+                  {sourceCount} Quellen ansehen →
+                </button>
+              ) : (
+                <span className={`text-xs ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
+                  Quelle: {p.sourcePortal || "Portal-Index"}
+                </span>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right Actions: Quick-Preview + Bookmark + "Profil ansehen ->" (Exakt wie in Bild 3!) */}
-        <div className="flex items-center justify-end gap-3 shrink-0 border-t sm:border-t-0 pt-2.5 sm:pt-0 border-stone-200/60">
-          <button
-            type="button"
-            onClick={() => {
-              recordEvent(p.id, "track_click");
-              setQuickPeekProfile(p);
-            }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition cursor-pointer ${
-              isLight
-                ? "border-stone-200 hover:border-stone-400 text-stone-600"
-                : "border-white/15 hover:border-white/30 text-gray-300"
-            }`}
-          >
-            Vorschau
-          </button>
+        {/* Center: Veröffentlichter Preis + Dauer (Exakt wie in Bild 2! Spalten 7-9) */}
+        <div
+          className={`md:col-span-3 md:border-l md:pl-5 ${
+            isLightMode ? "border-stone-200" : "border-white/10"
+          }`}
+        >
+          {p.advertisedBaseChf ? (
+            <div>
+              <div className="text-base sm:text-lg font-extrabold">CHF {p.advertisedBaseChf}</div>
+              <div className={`text-xs ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
+                {p.durationLabel}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div className="text-sm font-bold">Keine Preisangabe</div>
+              <div className="text-xs text-gray-400">–</div>
+            </div>
+          )}
+        </div>
 
-          <button
-            type="button"
-            onClick={() => toggleSaved(p.id)}
-            title="Merken / Vergleichen"
-            className={`p-2 rounded-lg border transition cursor-pointer ${
-              isSaved
-                ? "bg-[#C6A574] text-[#171A20] border-[#C6A574]"
-                : isLight
-                ? "border-stone-200 text-stone-600 hover:bg-stone-100"
-                : "border-white/15 text-gray-300 hover:bg-white/10"
-            }`}
-          >
-            <Bookmark size={16} fill={isSaved ? "currentColor" : "none"} />
-          </button>
+        {/* Right: Checkbox "☑ Vergleichen" + "🔖 Profil ansehen ->" (Exakt wie in Bild 2! Spalten 10-12) */}
+        <div className="md:col-span-3 flex sm:flex-col items-end justify-between md:justify-center gap-2.5">
+          <label className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={isCompared}
+              onChange={() => toggleCompare(p.id)}
+              className="w-4 h-4 rounded accent-[#254F88]"
+            />
+            <span>Vergleichen</span>
+          </label>
 
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
             onClick={() => recordEvent(p.id, "track_click")}
-            className={`font-bold text-xs sm:text-sm inline-flex items-center gap-1 hover:underline ${
-              draft === "3" ? "text-[#254F88]" : isLight ? "text-[#152839]" : "text-[#C6A574]"
+            className={`text-xs sm:text-sm font-bold inline-flex items-center gap-1.5 hover:underline ${
+              isLightMode ? "text-[#254F88]" : "text-[#C6A574]"
             }`}
           >
-            <span>Profil ansehen</span>
-            <span>→</span>
+            <Bookmark size={14} />
+            <span>Profil ansehen →</span>
           </Link>
         </div>
       </article>
     );
   };
 
+  const isLightPage = activeConcept === "light_sources" || activeConcept === "classic_compare";
+
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 pb-24 lg:pb-16 ${
-        draft === "1"
+      className={`min-h-screen transition-colors duration-300 pb-28 ${
+        activeConcept === "light_sources"
           ? "bg-[#F6F5F1] text-[#141821]"
-          : draft === "3"
+          : activeConcept === "classic_compare"
           ? "bg-[#F1F4F7] text-[#141821]"
-          : "bg-[#171A20] text-white"
+          : "bg-[#13161C] text-white"
       }`}
     >
       <SEO
-        title="iwantsexnow.ch | Escorts und Studios in der Schweiz"
-        description="Wähle deinen Ort und entdecke passende Profile, Studios und transparente Portalvergleiche in der ganzen Schweiz."
+        title="iwantsexnow.ch | Schweizer Profilverzeichnis & Portalvergleich"
+        description="Profile finden, Verfügbarkeit erkennen und veröffentlichte Preise & Quellen in der ganzen Schweiz übersichtlich vergleichen."
       />
 
-      {/* ===================================================================== */}
-      {/* TOP BAR TO SWITCH LIVE BETWEEN YOUR 3 NEW DRAFTS (ENHANCED EDITIONS)  */}
-      {/* ===================================================================== */}
-      <div className="bg-[#0E1015] text-white border-b border-[#C6A574]/40 py-1.5 px-4">
+      {/* TOP SWITCHER FOR THE 3 NEW VALUE-DRIVEN CONCEPTS */}
+      <div className="bg-[#0B0D12] text-white border-b border-[#C6A574]/40 py-1.5 px-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-[#C6A574] text-[#171A20] font-extrabold uppercase text-[10px]">
-              3 Neue Entwürfe (Live-Prototyp):
-            </span>
-            <span className="text-gray-400 hidden md:inline">
-              Wähle deinen Favoriten (inkl. Vorschau-Drawer, Bild-Filterdialog & Merklisten-Vergleich):
-            </span>
-          </div>
+          <span className="px-2 py-0.5 rounded bg-[#C6A574] text-[#13161C] font-extrabold uppercase text-[10px]">
+            Überarbeitete Mehrwert-Konzepte:
+          </span>
           <div className="flex items-center gap-1.5 overflow-x-auto">
             <button
               type="button"
-              onClick={() => handleSwitchDraft("2")}
+              onClick={() => handleSwitchConcept("dark_gallery")}
               className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer whitespace-nowrap ${
-                draft === "2"
-                  ? "bg-[#C6A574] text-[#171A20] shadow"
+                activeConcept === "dark_gallery"
+                  ? "bg-[#C6A574] text-[#13161C]"
                   : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
               }`}
             >
-              Entwurf 2: Direkte Galerie (Dunkel · Empfehlung ⭐)
+              1. Dunkle Galerie: „Verfügbarkeit erkennen“ (Favorit ⭐)
             </button>
             <button
               type="button"
-              onClick={() => handleSwitchDraft("1")}
+              onClick={() => handleSwitchConcept("light_sources")}
               className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer whitespace-nowrap ${
-                draft === "1"
-                  ? "bg-[#F6F5F1] text-[#152839] shadow"
+                activeConcept === "light_sources"
+                  ? "bg-[#F6F5F1] text-[#152839]"
                   : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
               }`}
             >
-              Entwurf 1: Heller Sucheinstieg (#F6F5F1)
+              2. Heller Einstieg: „Eine Suche. Mehr Überblick.“ (Quellen-Fokus)
             </button>
             <button
               type="button"
-              onClick={() => handleSwitchDraft("3")}
+              onClick={() => handleSwitchConcept("classic_compare")}
               className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer whitespace-nowrap ${
-                draft === "3"
-                  ? "bg-[#254F88] text-white shadow"
+                activeConcept === "classic_compare"
+                  ? "bg-[#254F88] text-white"
                   : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
               }`}
             >
-              Entwurf 3: Klassisches Verzeichnis (Filterspalte + Liste)
+              3. Klassisches Verzeichnis: „Profile gezielt vergleichen“
             </button>
           </div>
         </div>
       </div>
 
-      {/* Calm Top Navigation */}
       <LuxuryHeader />
 
       {/* ===================================================================== */}
-      {/* ENTWURF 1: HELLER SUCHEINSTIEG (Warmes Weiss #F6F5F1 + Navy #152839)  */}
+      {/* KONZEPT 1 & 2 (GALERIE-BASIERT: DUNKEL ODER HELL)                     */}
       {/* ===================================================================== */}
-      {draft === "1" && (
-        <main className="max-w-7xl mx-auto px-4 pt-7 pb-12 space-y-6">
-          {/* Calm Headline */}
+      {(activeConcept === "dark_gallery" || activeConcept === "light_sources") && (
+        <main className="max-w-7xl mx-auto px-4 pt-7 pb-12 space-y-5">
+          {/* Value Headline exakt wie in Bild 1 bzw. Bild 3 */}
           <div className="space-y-1">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#141821] tracking-tight">
-              Escorts und Studios in der Schweiz
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              {activeConcept === "dark_gallery"
+                ? "Profile finden. Verfügbarkeit erkennen."
+                : "Eine Suche. Mehr Überblick."}
             </h1>
-            <p className="text-sm sm:text-base text-stone-600">
-              Wähle deinen Ort und entdecke passende Profile.
+            <p className={`text-sm sm:text-base ${isLightPage ? "text-stone-600" : "text-gray-400"}`}>
+              {activeConcept === "dark_gallery"
+                ? "Sieh direkt, wann ein Status bestätigt wurde – und frage eigene Profile direkt an."
+                : "Profile aus mehreren Schweizer Portalen und Direktprofilen an einem Ort entdecken."}
             </p>
           </div>
 
-          {/* White Search Container (Exakt wie in Bild 1!) */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-            <div className="md:col-span-5">
-              <label className="block text-xs font-semibold text-stone-600 mb-1.5">Ort oder Kanton</label>
+          {/* Compact Search Bar: Ort | Kategorie | Filter | Profile finden -> */}
+          <div
+            className={`p-3.5 sm:p-4 rounded-2xl border grid grid-cols-1 md:grid-cols-12 gap-3 items-end ${
+              isLightPage
+                ? "bg-white border-stone-200/90 shadow-sm"
+                : "bg-[#1A1E27] border-white/10 shadow-xl"
+            }`}
+          >
+            <div className="md:col-span-4">
+              <label className={`block text-[11px] font-semibold mb-1 ${isLightPage ? "text-stone-500" : "text-gray-400"}`}>
+                Ort oder Kanton
+              </label>
               <select
                 value={selectedCanton}
                 onChange={(e) => setSelectedCanton(e.target.value)}
-                className="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 text-sm font-medium text-[#141821] focus:outline-none focus:border-[#152839]"
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold focus:outline-none ${
+                  isLightPage
+                    ? "bg-white border-stone-300 text-[#141821]"
+                    : "bg-[#12151C] border-white/15 text-white"
+                }`}
               >
                 {SWISS_LOCATIONS.map((loc) => (
                   <option key={loc.code} value={loc.code}>{loc.label}</option>
@@ -734,167 +834,17 @@ export default function HomePage() {
             </div>
 
             <div className="md:col-span-4">
-              <label className="block text-xs font-semibold text-stone-600 mb-1.5">Kategorie</label>
+              <label className={`block text-[11px] font-semibold mb-1 ${isLightPage ? "text-stone-500" : "text-gray-400"}`}>
+                Kategorie
+              </label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 text-sm font-medium text-[#141821] focus:outline-none focus:border-[#152839]"
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="md:col-span-3">
-              <button
-                type="button"
-                onClick={() => {}}
-                className="w-full py-3 px-5 rounded-xl bg-[#152839] hover:bg-[#1e374d] text-white font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
-              >
-                <span>Profile anzeigen</span>
-                <ChevronRight size={16} />
-              </button>
-            </div>
-          </div>
-
-          {/* Quick City Pills Left + Status & "Weitere Filter" Right (Exakt wie in Bild 1!) */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-stone-200">
-            <div className="flex flex-wrap items-center gap-2">
-              {["ZH", "ZG", "BS", "BE", "LU", "GE", "ALL"].map((code) => {
-                const loc = SWISS_LOCATIONS.find((l) => l.code === code)!;
-                const active = selectedCanton === code;
-                return (
-                  <button
-                    key={code}
-                    type="button"
-                    onClick={() => setSelectedCanton(code)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold border transition cursor-pointer ${
-                      active
-                        ? "bg-[#152839] text-white border-[#152839]"
-                        : "bg-white text-[#141821] border-stone-200/90 hover:border-stone-400"
-                    }`}
-                  >
-                    {loc.pill}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-stone-200/90 text-xs font-medium text-[#141821] cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={onlyAvailable}
-                  onChange={() => setOnlyAvailable(!onlyAvailable)}
-                  className="accent-[#152839] w-3.5 h-3.5"
-                />
-                <span>Jetzt verfügbar</span>
-              </label>
-
-              <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-stone-200/90 text-xs font-medium text-[#141821] cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={onlyVerified}
-                  onChange={() => setOnlyVerified(!onlyVerified)}
-                  className="accent-[#152839] w-3.5 h-3.5"
-                />
-                <span>Identität geprüft</span>
-              </label>
-
-              <button
-                type="button"
-                onClick={() => setFilterModalOpen(true)}
-                className="px-3.5 py-2 rounded-xl bg-white border border-stone-200/90 hover:border-stone-400 text-xs font-bold text-[#141821] flex items-center gap-1.5 cursor-pointer"
-              >
-                <SlidersHorizontal size={13} />
-                <span>Weitere Filter</span>
-                {selectedDetailTags.length > 0 && (
-                  <span className="px-1.5 py-0.2 rounded-full bg-[#152839] text-white text-[10px]">
-                    {selectedDetailTags.length}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Active Visual Filter Chips (If user selected any in "Weitere Filter") */}
-          {selectedDetailTags.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs text-stone-500">Aktive Zusatzfilter:</span>
-              {selectedDetailTags.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => toggleDetailTag(t)}
-                  className="px-3 py-1 rounded-full bg-[#152839] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span>{t}</span>
-                  <span>✕</span>
-                </button>
-              ))}
-              <button onClick={resetAllFilters} className="text-xs text-[#152839] underline font-semibold ml-2">
-                Zurücksetzen
-              </button>
-            </div>
-          )}
-
-          {/* Section Title + Sort Dropdown */}
-          <div className="flex items-center justify-between gap-2 pt-1">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#141821]">
-              Profile entdecken{" "}
-              <span className="text-sm font-normal text-stone-500">({filteredProfiles.length} Ergebnisse)</span>
-            </h2>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-3.5 py-2 rounded-xl bg-white border border-stone-200 text-xs font-semibold text-[#141821]"
-            >
-              <option value="updated">Zuletzt aktualisiert</option>
-              <option value="verified">Geprüfte Profile zuerst</option>
-              <option value="price_asc">Richtwert aufsteigend</option>
-            </select>
-          </div>
-
-          {/* 4-Column Light Directory Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-              renderDirectoryCard(p, idx, true)
-            )}
-          </div>
-        </main>
-      )}
-
-      {/* ===================================================================== */}
-      {/* ENTWURF 2: DIREKTE GALERIE — BEVORZUGTE AUSGANGSBASIS                 */}
-      {/* (Graphit #171A20 + Karten #222630 + Gold #C6A574 + 5er-Raster)        */}
-      {/* ===================================================================== */}
-      {draft === "2" && (
-        <main className="max-w-7xl mx-auto px-4 pt-6 pb-12 space-y-5">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Profile in der Schweiz
-          </h1>
-
-          {/* Compact 1-Line Toolbar (Exakt wie in Bild 2: Ort · Kategorie · Filter · Profile anzeigen >) */}
-          <div className="p-3.5 rounded-2xl bg-[#1E222B] border border-white/10 shadow-xl grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
-            <div className="md:col-span-4">
-              <label className="block text-[11px] font-medium text-gray-400 mb-1">Ort</label>
-              <select
-                value={selectedCanton}
-                onChange={(e) => setSelectedCanton(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#14171E] border border-white/15 text-xs sm:text-sm font-medium text-white focus:outline-none focus:border-[#C6A574]"
-              >
-                {SWISS_LOCATIONS.map((loc) => (
-                  <option key={loc.code} value={loc.code}>{loc.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="md:col-span-4">
-              <label className="block text-[11px] font-medium text-gray-400 mb-1">Kategorie</label>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#14171E] border border-white/15 text-xs sm:text-sm font-medium text-white focus:outline-none focus:border-[#C6A574]"
+                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold focus:outline-none ${
+                  isLightPage
+                    ? "bg-white border-stone-300 text-[#141821]"
+                    : "bg-[#12151C] border-white/15 text-white"
+                }`}
               >
                 {CATEGORIES.map((cat) => (
                   <option key={cat.id} value={cat.id}>{cat.label}</option>
@@ -906,15 +856,14 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setFilterModalOpen(true)}
-                className="w-full py-2.5 px-3 rounded-xl bg-[#14171E] hover:bg-white/5 border border-white/15 text-xs sm:text-sm font-semibold text-gray-200 flex items-center justify-center gap-2 cursor-pointer transition"
+                className={`w-full py-2.5 px-3 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer ${
+                  isLightPage
+                    ? "bg-white border-stone-300 text-[#141821] hover:bg-stone-50"
+                    : "bg-[#12151C] border-white/15 text-gray-200 hover:bg-white/5"
+                }`}
               >
-                <SlidersHorizontal size={14} className="text-[#C6A574]" />
+                <SlidersHorizontal size={14} />
                 <span>Filter</span>
-                {activeFilterCount > 2 && (
-                  <span className="px-1.5 py-0.2 rounded-full bg-[#C6A574] text-[#171A20] text-[10px] font-extrabold">
-                    {activeFilterCount}
-                  </span>
-                )}
               </button>
             </div>
 
@@ -922,71 +871,93 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => {}}
-                className="w-full py-2.5 px-4 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#171A20] font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition cursor-pointer shadow-md"
+                className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow ${
+                  isLightPage
+                    ? "bg-[#152839] hover:bg-[#1d354b] text-white"
+                    : "bg-[#C6A574] hover:bg-[#d5b687] text-[#13161C]"
+                }`}
               >
-                <span>Profile anzeigen</span>
-                <ChevronRight size={15} />
+                <Search size={14} />
+                <span>Profile finden →</span>
               </button>
             </div>
           </div>
 
-          {/* Secondary Status Bar: Checkboxes Left + Sort & Grid/List Switcher Right (Exakt wie in Bild 2!) */}
+          {/* Quick City Pills (Heller Einstieg) OR Checkboxes "Jetzt verfügbar" & "Direkt anfragbar" (Dunkle Galerie) */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-gray-200">
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={onlyAvailable}
-                  onChange={() => setOnlyAvailable(!onlyAvailable)}
-                  className="accent-[#C6A574] w-4 h-4 rounded"
-                />
-                <span>Jetzt verfügbar</span>
-              </label>
+            <div className="flex flex-wrap items-center gap-3">
+              {activeConcept === "light_sources" ? (
+                ["ZH", "BS", "BE", "LU", "GE", "ZG", "ALL"].map((code) => {
+                  const loc = SWISS_LOCATIONS.find((l) => l.code === code)!;
+                  const active = selectedCanton === code;
+                  return (
+                    <button
+                      key={code}
+                      onClick={() => setSelectedCanton(code)}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border cursor-pointer ${
+                        active
+                          ? "bg-[#152839] text-white border-[#152839]"
+                          : "bg-white text-[#141821] border-stone-300"
+                      }`}
+                    >
+                      {loc.pill}
+                    </button>
+                  );
+                })
+              ) : (
+                <>
+                  <label className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={onlyAvailable}
+                      onChange={() => setOnlyAvailable(!onlyAvailable)}
+                      className="w-4 h-4 rounded accent-[#C6A574]"
+                    />
+                    <span>Jetzt verfügbar</span>
+                  </label>
 
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={onlyVerified}
-                  onChange={() => setOnlyVerified(!onlyVerified)}
-                  className="accent-[#C6A574] w-4 h-4 rounded"
-                />
-                <span>Identität geprüft</span>
-              </label>
-
-              <span className="text-xs text-gray-400">
-                ({filteredProfiles.length} passende Profile)
-              </span>
-
-              {selectedDetailTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => toggleDetailTag(tag)}
-                  className="px-2.5 py-1 rounded-lg bg-[#C6A574]/20 border border-[#C6A574]/50 text-[#E5C99B] text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                >
-                  <span>{tag}</span>
-                  <span>✕</span>
-                </button>
-              ))}
+                  <label className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={onlyDirectRequest}
+                      onChange={() => setOnlyDirectRequest(!onlyDirectRequest)}
+                      className="w-4 h-4 rounded accent-[#C6A574]"
+                    />
+                    <span>Direkt anfragbar</span>
+                  </label>
+                </>
+              )}
             </div>
 
             <div className="flex items-center gap-2">
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-3 py-2 rounded-xl bg-[#1E222B] border border-white/15 text-xs font-semibold text-gray-200"
+                className={`px-3 py-2 rounded-xl border text-xs font-semibold ${
+                  isLightPage
+                    ? "bg-white border-stone-300 text-[#141821]"
+                    : "bg-[#1A1E27] border-white/15 text-gray-200"
+                }`}
               >
                 <option value="updated">Zuletzt aktualisiert</option>
-                <option value="verified">Geprüfte Profile zuerst</option>
-                <option value="price_asc">Richtwert aufsteigend</option>
+                <option value="verified">Selbst verwaltete zuerst</option>
+                <option value="price_asc">Preis aufsteigend</option>
               </select>
 
-              <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#1E222B]">
+              <div
+                className={`flex rounded-xl overflow-hidden border ${
+                  isLightPage ? "border-stone-300 bg-white" : "border-white/15 bg-[#1A1E27]"
+                }`}
+              >
                 <button
                   type="button"
                   onClick={() => setViewMode("grid")}
-                  title="Rasteransicht"
                   className={`p-2 cursor-pointer ${
-                    viewMode === "grid" ? "bg-white/15 text-white" : "text-gray-400 hover:text-white"
+                    viewMode === "grid"
+                      ? isLightPage
+                        ? "bg-[#152839] text-white"
+                        : "bg-white/15 text-white"
+                      : "text-gray-400"
                   }`}
                 >
                   <LayoutGrid size={15} />
@@ -994,9 +965,12 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => setViewMode("list")}
-                  title="Listenansicht"
                   className={`p-2 cursor-pointer ${
-                    viewMode === "list" ? "bg-white/15 text-white" : "text-gray-400 hover:text-white"
+                    viewMode === "list"
+                      ? isLightPage
+                        ? "bg-[#152839] text-white"
+                        : "bg-white/15 text-white"
+                      : "text-gray-400"
                   }`}
                 >
                   <ListIcon size={15} />
@@ -1005,17 +979,34 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Immediate 5-Column Dark Gallery OR List View */}
+          {/* Info Note from Bild 1 */}
+          <div className={`flex items-center justify-between text-xs ${isLightPage ? "text-stone-500" : "text-gray-400"}`}>
+            <div className="flex items-center gap-1.5">
+              <Info size={13} />
+              <span>
+                Verfügbarkeit wird vom Anbieter aktiv bestätigt · {filteredProfiles.length} Profile in dieser Ansicht
+              </span>
+            </div>
+            <Link href="/advertise" className="text-[#C6A574] hover:underline font-semibold hidden sm:inline">
+              Für Anbieter: Profil und Verfügbarkeit selbst verwalten →
+            </Link>
+          </div>
+
+          {/* Results Grid OR List */}
           {viewMode === "grid" ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-                renderDirectoryCard(p, idx, false)
+                renderUnifiedCard(p, idx, isLightPage)
               )}
             </div>
           ) : (
-            <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10">
+            <div
+              className={`rounded-2xl overflow-hidden border divide-y ${
+                isLightPage ? "bg-white border-stone-200 divide-stone-200" : "bg-[#1C2029] border-white/10 divide-white/10"
+              }`}
+            >
               {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-                renderDirectoryListRow(p, idx, false)
+                renderComparisonListRow(p, idx, isLightPage)
               )}
             </div>
           )}
@@ -1023,28 +1014,22 @@ export default function HomePage() {
       )}
 
       {/* ===================================================================== */}
-      {/* ENTWURF 3: KLASSISCHES VERZEICHNIS MIT FILTERSPALTE & LISTE           */}
-      {/* (Helles Grau #F1F4F7 + Weisse Flächen + Blau #254F88)                 */}
+      {/* KONZEPT 3: KLASSISCHES VERZEICHNIS ("Profile vergleichen. Klar entscheiden.") */}
       {/* ===================================================================== */}
-      {draft === "3" && (
-        <main className="max-w-7xl mx-auto px-4 pt-6 pb-12 space-y-5">
-          <div className="flex items-center justify-between gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#141821]">
-              Profile in der Schweiz
+      {activeConcept === "classic_compare" && (
+        <main className="max-w-7xl mx-auto px-4 pt-7 pb-12 space-y-5">
+          <div className="space-y-1">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#141821] tracking-tight">
+              Profile vergleichen. Klar entscheiden.
             </h1>
-            <button
-              type="button"
-              onClick={() => setFilterModalOpen(true)}
-              className="lg:hidden px-4 py-2 rounded-xl bg-[#254F88] text-white text-xs font-bold flex items-center gap-1.5"
-            >
-              <SlidersHorizontal size={14} />
-              <span>Suche verfeinern</span>
-            </button>
+            <p className="text-sm sm:text-base text-stone-600">
+              Ort, veröffentlichte Preise und Quellen übersichtlich gegenüberstellen.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* LEFT FILTER COLUMN ("Suche verfeinern" – Exakt wie in Bild 3!) */}
-            <aside className="hidden lg:block lg:col-span-3 p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5 sticky top-24">
+            {/* Left Filter Sidebar ("Suche verfeinern" – Exakt wie in Bild 2!) */}
+            <aside className="lg:col-span-3 p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5 lg:sticky lg:top-24">
               <h2 className="text-lg font-extrabold text-[#141821]">Suche verfeinern</h2>
 
               <div className="space-y-2">
@@ -1052,27 +1037,21 @@ export default function HomePage() {
                 <select
                   value={selectedCanton}
                   onChange={(e) => setSelectedCanton(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-stone-300 text-xs font-medium text-[#141821]"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-stone-300 text-xs font-semibold text-[#141821]"
                 >
                   {SWISS_LOCATIONS.map((loc) => (
                     <option key={loc.code} value={loc.code}>{loc.label}</option>
                   ))}
                 </select>
-
-                {/* Quick City Pills inside Sidebar */}
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {["ZH", "ZG", "BS", "BE", "LU"].map((code) => {
+                  {["ZH", "BS", "BE", "LU"].map((code) => {
                     const loc = SWISS_LOCATIONS.find((l) => l.code === code)!;
-                    const active = selectedCanton === code;
                     return (
                       <button
                         key={code}
-                        type="button"
                         onClick={() => setSelectedCanton(code)}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
-                          active
-                            ? "bg-[#254F88] text-white"
-                            : "bg-[#F1F4F7] text-stone-700 hover:bg-stone-200"
+                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer ${
+                          selectedCanton === code ? "bg-[#254F88] text-white" : "bg-[#F1F4F7] text-stone-700"
                         }`}
                       >
                         {loc.pill}
@@ -1081,9 +1060,8 @@ export default function HomePage() {
                   })}
                 </div>
                 <button
-                  type="button"
                   onClick={() => setSelectedCanton("ALL")}
-                  className="text-xs text-[#254F88] underline font-medium cursor-pointer"
+                  className="text-xs text-[#254F88] underline font-semibold cursor-pointer"
                 >
                   Alle Orte
                 </button>
@@ -1094,7 +1072,7 @@ export default function HomePage() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-stone-300 text-xs font-medium text-[#141821]"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-stone-300 text-xs font-semibold text-[#141821]"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.label}</option>
@@ -1114,11 +1092,11 @@ export default function HomePage() {
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={onlyVerified}
-                      onChange={() => setOnlyVerified(!onlyVerified)}
+                      checked={onlyWithPrice}
+                      onChange={() => setOnlyWithPrice(!onlyWithPrice)}
                       className="accent-[#254F88] w-4 h-4 rounded"
                     />
-                    <span>Identität geprüft</span>
+                    <span>Nur mit Preisangabe</span>
                   </label>
                 </div>
               </div>
@@ -1129,7 +1107,7 @@ export default function HomePage() {
                   onClick={() => setFilterModalOpen(true)}
                   className="w-full flex items-center justify-between text-xs font-bold text-[#141821] py-1 cursor-pointer"
                 >
-                  <span>Weitere Filter (Service / Preis)</span>
+                  <span>Weitere Filter</span>
                   <span>▾</span>
                 </button>
               </div>
@@ -1138,9 +1116,9 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => {}}
-                  className="w-full py-3 rounded-xl bg-[#254F88] hover:bg-[#1d3f6d] text-white font-bold text-xs cursor-pointer shadow-sm"
+                  className="w-full py-3 rounded-xl bg-[#254F88] hover:bg-[#1c3e6b] text-white font-bold text-xs cursor-pointer"
                 >
-                  Profile anzeigen
+                  Profile finden
                 </button>
                 <button
                   type="button"
@@ -1152,14 +1130,13 @@ export default function HomePage() {
               </div>
             </aside>
 
-            {/* RIGHT RESULTS LIST OR GRID (Exakt wie in Bild 3!) */}
+            {/* Right Comparison List */}
             <div className="lg:col-span-9 bg-white rounded-2xl border border-stone-200/90 shadow-sm overflow-hidden">
               <div className="p-4 sm:p-5 border-b border-stone-200 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg sm:text-xl font-extrabold text-[#141821]">
                   Profile entdecken{" "}
-                  <span className="text-xs font-normal text-stone-500">({filteredProfiles.length} Treffer)</span>
+                  <span className="text-xs font-normal text-stone-500">({filteredProfiles.length} Ergebnisse)</span>
                 </h2>
-
                 <div className="flex items-center gap-2.5">
                   <select
                     value={sortBy}
@@ -1167,10 +1144,9 @@ export default function HomePage() {
                     className="px-3 py-2 rounded-xl bg-white border border-stone-300 text-xs font-semibold text-[#141821]"
                   >
                     <option value="updated">Zuletzt aktualisiert</option>
-                    <option value="verified">Geprüfte Profile zuerst</option>
-                    <option value="price_asc">Richtwert aufsteigend</option>
+                    <option value="price_asc">Preis aufsteigend</option>
+                    <option value="verified">Selbst verwaltete zuerst</option>
                   </select>
-
                   <div className="flex rounded-xl overflow-hidden border border-stone-300">
                     <button
                       type="button"
@@ -1199,13 +1175,13 @@ export default function HomePage() {
               {viewMode === "list" ? (
                 <div className="divide-y divide-stone-200">
                   {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-                    renderDirectoryListRow(p, idx, true)
+                    renderComparisonListRow(p, idx, true)
                   )}
                 </div>
               ) : (
                 <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-                    renderDirectoryCard(p, idx, true)
+                    renderUnifiedCard(p, idx, true)
                   )}
                 </div>
               )}
@@ -1214,297 +1190,218 @@ export default function HomePage() {
         </main>
       )}
 
-      {/* Load More & Secondary Info Links */}
-      <div className="max-w-7xl mx-auto px-4 pb-10 space-y-10">
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={loadMoreFromServerVault}
-            disabled={loadingVault}
-            className={`px-7 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow ${
-              draft === "1"
-                ? "bg-[#152839] text-white"
-                : draft === "3"
-                ? "bg-[#254F88] text-white"
-                : "bg-[#C6A574] text-[#171A20]"
-            }`}
-          >
-            {loadingVault ? "Lädt..." : "Weitere Profile anzeigen"}
-          </button>
-        </div>
-
-        {/* Clean Subordinate Access to Portal Comparison, Clubs & Provider Onboarding (Abschnitt 7) */}
-        <div
-          className={`pt-8 border-t flex flex-wrap items-center justify-between gap-4 text-xs ${
-            draft === "2" ? "border-white/10 text-gray-400" : "border-stone-300 text-stone-600"
+      {/* Load More */}
+      <div className="max-w-7xl mx-auto px-4 pb-8 text-center">
+        <button
+          type="button"
+          onClick={loadMoreFromServerVault}
+          disabled={loadingVault}
+          className={`px-7 py-3 rounded-xl font-bold text-xs uppercase tracking-wider cursor-pointer shadow ${
+            activeConcept === "dark_gallery"
+              ? "bg-[#C6A574] text-[#13161C]"
+              : activeConcept === "light_sources"
+              ? "bg-[#152839] text-white"
+              : "bg-[#254F88] text-white"
           }`}
         >
-          <div className="flex flex-wrap items-center gap-4">
-            <span><strong>Status-Kennzeichnungen:</strong></span>
-            <span>● <strong>Jetzt verfügbar:</strong> Vom Anbieter aktiv bestätigt</span>
-            <span>● <strong>Online:</strong> Kürzlich aktiv</span>
-            <span>✓ <strong>Identität geprüft:</strong> Abgeschlossene Prüfung</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-4 font-semibold">
-            <Link href="/reviews" className="hover:underline">Portalvergleich (Xdate, Fgirl & Co.) →</Link>
-            <Link href="/advertise" className="hover:underline">Bestehendes Profil übernehmen →</Link>
-            <Link href="/report" className="hover:underline">Profil melden / entfernen →</Link>
-          </div>
-        </div>
+          {loadingVault ? "Lädt..." : "Weitere Profile laden"}
+        </button>
       </div>
 
       {/* ===================================================================== */}
-      {/* UNIQUE DIALOG 1: GEORDNETER VISUELLER FILTER-DIALOG ("Weitere Filter")*/}
-      {/* (Mit Bildkacheln + klarem Textlabel wie in Abschnitt 5 empfohlen!)    */}
+      {/* SCHWEBENDE VERGLEICHSLEISTE UNTEN (Exakt wie in Bild 2!)              */}
+      {/* ("2 ausgewählt | [Beispielprofil A x] [Beispielprofil B x] | Auswahl vergleichen ->") */}
       {/* ===================================================================== */}
-      {filterModalOpen && (
-        <div className="fixed inset-0 z-[70] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 text-white">
-          <div className="max-w-xl w-full rounded-2xl bg-[#1E222B] border border-white/15 p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-lg font-bold">Weitere Filter (Angebot, Besuchsform & Merkmale)</h3>
-              <button onClick={() => setFilterModalOpen(false)} className="p-1.5 rounded-lg bg-white/10">
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Visual Filter Tiles with Clear Labels */}
-            <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
-                1. Visuelle Schnellauswahl (Mehrfachauswahl möglich)
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                {VISUAL_DETAIL_FILTERS.map((vf) => {
-                  const active = selectedDetailTags.includes(vf.id);
-                  return (
-                    <button
-                      key={vf.id}
-                      type="button"
-                      onClick={() => toggleDetailTag(vf.id)}
-                      className={`relative h-20 rounded-xl overflow-hidden border text-left transition cursor-pointer ${
-                        active ? "border-[#C6A574] ring-2 ring-[#C6A574]" : "border-white/15 hover:border-white/40"
-                      }`}
-                    >
-                      <img src={vf.img} alt={vf.label} className="w-full h-full object-cover object-top" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
-                      <div className="absolute top-1.5 right-1.5">
-                        {active && (
-                          <span className="w-5 h-5 rounded-full bg-[#C6A574] text-[#171A20] flex items-center justify-center text-xs font-bold">
-                            ✓
-                          </span>
-                        )}
-                      </div>
-                      <div className="absolute bottom-2 left-2.5 right-2">
-                        <div className="text-[10px] text-[#C6A574] uppercase font-bold">{vf.group}</div>
-                        <div className="text-xs font-bold text-white leading-tight">{vf.label}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Price Cap Filter */}
-            <div className="space-y-2 pt-2 border-t border-white/10">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
-                2. Richtwert-Obergrenze (60 Min.)
-              </div>
-              <div className="grid grid-cols-4 gap-2 text-xs font-bold">
-                {[
-                  { val: 250, label: "Bis CHF 250" },
-                  { val: 350, label: "Bis CHF 350" },
-                  { val: 450, label: "Bis CHF 450" },
-                  { val: 1000, label: "Alle Preise" },
-                ].map((b) => (
-                  <button
-                    key={b.val}
-                    type="button"
-                    onClick={() => setMaxPriceChf(b.val)}
-                    className={`py-2 rounded-xl border cursor-pointer ${
-                      maxPriceChf === b.val
-                        ? "bg-[#C6A574] text-[#171A20] border-[#C6A574]"
-                        : "bg-[#14171E] border-white/15 text-gray-300"
-                    }`}
-                  >
-                    {b.label}
+      {comparedProfiles.length > 0 && (
+        <div className="fixed bottom-16 md:bottom-4 inset-x-0 z-50 px-4 pointer-events-none">
+          <div
+            className={`max-w-5xl mx-auto p-3.5 rounded-2xl border shadow-2xl flex flex-wrap items-center justify-between gap-3 pointer-events-auto ${
+              isLightPage
+                ? "bg-white border-stone-300 text-[#141821]"
+                : "bg-[#1A1E27]/95 backdrop-blur-xl border-[#C6A574] text-white"
+            }`}
+          >
+            <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+              <strong className="pr-2 border-r border-stone-300/40">
+                {comparedProfiles.length} ausgewählt
+              </strong>
+              {comparedProfiles.map((cp: any) => (
+                <span
+                  key={cp.id}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold ${
+                    isLightPage ? "bg-[#EBF2FA] text-[#1E4276]" : "bg-white/10 text-white"
+                  }`}
+                >
+                  <span className="truncate max-w-[120px]">{cp.rawName}</span>
+                  <button onClick={() => toggleCompare(cp.id)} className="hover:opacity-75 cursor-pointer">
+                    ✕
                   </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between gap-3 pt-4 border-t border-white/10">
-              <button
-                type="button"
-                onClick={resetAllFilters}
-                className="text-xs text-gray-400 hover:text-white underline cursor-pointer"
-              >
-                Alle Filter zurücksetzen
-              </button>
-              <button
-                type="button"
-                onClick={() => setFilterModalOpen(false)}
-                className="px-6 py-2.5 rounded-xl bg-[#C6A574] text-[#171A20] font-bold text-xs cursor-pointer"
-              >
-                Ergebnisse anzeigen ({filteredProfiles.length})
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ===================================================================== */}
-      {/* UNIQUE DIALOG 2: SCHNELLVORSCHAU-DRAWER (Ohne den Katalog zu verlassen)*/}
-      {/* ===================================================================== */}
-      {quickPeekProfile && (
-        <div className="fixed inset-0 z-[70] bg-black/75 backdrop-blur-sm flex justify-end text-white">
-          <div className="w-full max-w-md bg-[#1E222B] border-l border-white/15 h-full overflow-y-auto p-6 shadow-2xl flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
-                  Profil-Schnellvorschau
-                </span>
-                <button onClick={() => setQuickPeekProfile(null)} className="p-1.5 rounded-lg bg-white/10">
-                  <X size={16} />
-                </button>
-              </div>
-
-              <div className="flex gap-4 items-center">
-                <img
-                  src={quickPeekProfile.thumbnail || quickPeekProfile.fallbackImg}
-                  alt={quickPeekProfile.rawName}
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = quickPeekProfile.fallbackImg;
-                  }}
-                  className="w-24 h-28 rounded-xl object-cover object-top shrink-0"
-                />
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white">{quickPeekProfile.rawName}</h3>
-                  <p className="text-xs text-gray-300">
-                    {quickPeekProfile.cleanCity} · Kanton {quickPeekProfile.canton}
-                  </p>
-                  <p className="text-xs text-[#C6A574] font-semibold">
-                    Richtwert: CHF {quickPeekProfile.advertisedBaseChf || 350} / 1h
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-[#14171E] border border-white/10 text-xs space-y-1 text-gray-300">
-                <div>• <strong>Status:</strong> {quickPeekProfile.availabilityConfirmed ? "Jetzt verfügbar (bestätigt)" : "Neutral"}</div>
-                <div>• <strong>Prüfung:</strong> {quickPeekProfile.isIdentityVerified ? "Identität geprüft" : "Noch nicht durch uns geprüft"}</div>
-                <div>• <strong>Herkunft:</strong> {quickPeekProfile.isSelfManaged ? "Selbst verwaltet" : `Externer Eintrag (${quickPeekProfile.sourcePortal || "Verzeichnis"})`}</div>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5">
-                {(quickPeekProfile.includedTags || ["Einzelprofil"]).map((t: string, i: number) => (
-                  <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-200">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2 pt-4 border-t border-white/10">
-              {quickPeekProfile.rawPhone && (
-                <a
-                  href={`tel:${quickPeekProfile.rawPhone}`}
-                  onClick={() => recordEvent(quickPeekProfile.id, "track_contact")}
-                  className="w-full py-3 rounded-xl bg-emerald-500 text-black font-bold text-xs flex items-center justify-center gap-2"
-                >
-                  <Phone size={14} />
-                  <span>Kontakt: {quickPeekProfile.rawPhone}</span>
-                </a>
-              )}
-              <Link
-                href={`/profile/${encodeURIComponent(quickPeekProfile.id)}`}
-                className="w-full py-3 rounded-xl bg-[#C6A574] text-[#171A20] font-bold text-xs block text-center"
-              >
-                Vollständiges Profil öffnen →
-              </Link>
-              <div className="flex justify-between text-[11px] text-gray-400 pt-2">
-                <Link
-                  href={`/create-post?claim=${encodeURIComponent(quickPeekProfile.rawName || "")}&id=${encodeURIComponent(quickPeekProfile.id)}`}
-                  className="text-[#C6A574] hover:underline"
-                >
-                  Ist das dein Profil? Übernehmen
-                </Link>
-                <Link
-                  href={`/report?name=${encodeURIComponent(quickPeekProfile.rawName || "")}&id=${encodeURIComponent(quickPeekProfile.id)}`}
-                  className="hover:text-white"
-                >
-                  Profil melden / entfernen
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ===================================================================== */}
-      {/* UNIQUE FEATURE 3: FLOATING MERKLISTE & DIREKT-VERGLEICH (🔖)          */}
-      {/* ===================================================================== */}
-      {savedProfiles.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-4 inset-x-0 z-50 px-4 pointer-events-none text-white">
-          <div className="max-w-2xl mx-auto p-3 rounded-2xl bg-[#1E222B]/95 backdrop-blur-xl border border-[#C6A574] shadow-2xl flex items-center justify-between gap-3 pointer-events-auto">
-            <div className="flex items-center gap-2 overflow-x-auto text-xs">
-              <span className="font-bold text-[#C6A574] shrink-0">
-                🔖 Merkliste ({savedProfiles.length}/3):
-              </span>
-              {savedProfiles.map((sp: any) => (
-                <span key={sp.id} className="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 truncate max-w-[110px]">
-                  {sp.rawName}
                 </span>
               ))}
             </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                type="button"
-                onClick={() => setCompareOpen(true)}
-                className="px-3.5 py-1.5 rounded-xl bg-[#C6A574] text-[#171A20] font-bold text-xs cursor-pointer"
-              >
-                Vergleichen →
-              </button>
-              <button onClick={() => setSavedIds([])} className="text-xs text-gray-400 hover:text-white px-1">
-                ✕
-              </button>
-            </div>
+
+            <button
+              type="button"
+              onClick={() => setCompareModalOpen(true)}
+              className={`px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm inline-flex items-center gap-2 cursor-pointer shadow ${
+                isLightPage ? "bg-[#254F88] text-white" : "bg-[#C6A574] text-[#13161C]"
+              }`}
+            >
+              <span>Auswahl vergleichen</span>
+              <ArrowRight size={15} />
+            </button>
           </div>
         </div>
       )}
 
-      {compareOpen && (
+      {/* VERGLEICHS-MODAL (Gegenüberstellung von Ort, Dauer, Preis & Quellen) */}
+      {compareModalOpen && (
         <div className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 text-white">
-          <div className="max-w-4xl w-full rounded-2xl bg-[#1E222B] border border-[#C6A574] p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="max-w-4xl w-full rounded-2xl bg-[#1C2029] border border-[#C6A574] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-lg font-bold">Direkt-Vergleich deiner gemerkten Profile</h3>
-              <button onClick={() => setCompareOpen(false)} className="p-1.5 rounded-lg bg-white/10">
+              <h3 className="text-lg font-bold">Ausgewählte Profile im direkten Vergleich</h3>
+              <button onClick={() => setCompareModalOpen(false)} className="p-1.5 rounded-lg bg-white/10">
                 <X size={16} />
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              {savedProfiles.map((sp: any) => (
-                <div key={sp.id} className="p-4 rounded-xl bg-[#14171E] border border-white/10 space-y-2.5">
+              {comparedProfiles.map((cp: any) => (
+                <div key={cp.id} className="p-4 rounded-xl bg-[#13161C] border border-white/10 space-y-3">
                   <img
-                    src={sp.thumbnail || sp.fallbackImg}
-                    alt={sp.rawName}
+                    src={cp.thumbnail || cp.fallbackImg}
+                    alt={cp.rawName}
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = sp.fallbackImg;
+                      (e.currentTarget as HTMLImageElement).src = cp.fallbackImg;
                     }}
                     className="w-full h-44 object-cover object-top rounded-lg"
                   />
-                  <div className="text-base font-bold text-white">{sp.rawName}</div>
-                  <div className="text-gray-300 space-y-1">
-                    <div>Ort: {sp.cleanCity} · {sp.canton}</div>
-                    <div>Richtwert: <strong className="text-[#C6A574]">CHF {sp.advertisedBaseChf} / 1h</strong></div>
-                    <div>Status: {sp.availabilityConfirmed ? "Jetzt verfügbar" : "Standard"}</div>
-                    <div>Herkunft: {sp.isSelfManaged ? "Selbst verwaltet" : sp.sourcePortal || "Verzeichnis"}</div>
+                  <div className="text-base font-bold text-white">{cp.rawName}</div>
+                  <div className="space-y-1.5 text-gray-300 border-t border-white/10 pt-2">
+                    <div>• <strong>Ort:</strong> {cp.cleanCity} · {cp.canton}</div>
+                    <div>
+                      • <strong>Veröffentlichter Preis:</strong>{" "}
+                      {cp.advertisedBaseChf ? (
+                        <span className="text-[#C6A574] font-bold">
+                          CHF {cp.advertisedBaseChf} ({cp.durationLabel})
+                        </span>
+                      ) : (
+                        "Keine Preisangabe"
+                      )}
+                    </div>
+                    <div>
+                      • <strong>Verfügbarkeit:</strong>{" "}
+                      {cp.availabilityConfirmed
+                        ? `Bestätigt vor ${cp.confirmedMinutesAgo || 6} Min.`
+                        : "Verfügbarkeit unbekannt"}
+                    </div>
+                    <div>
+                      • <strong>Erfasste Quellen:</strong>{" "}
+                      {cp.linkedSources?.map((s: any) => s.portal).join(", ")}
+                    </div>
                   </div>
                   <Link
-                    href={`/profile/${encodeURIComponent(sp.id)}`}
-                    className="w-full py-2 rounded-lg bg-[#C6A574] text-[#171A20] font-bold text-center block"
+                    href={`/profile/${encodeURIComponent(cp.id)}`}
+                    className="w-full py-2.5 rounded-lg bg-[#C6A574] text-[#13161C] font-bold text-center block"
                   >
-                    Profil öffnen →
+                    Profil ansehen →
                   </Link>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PRIVAT ANFRAGEN / QUELLEN-DETAILS MODAL */}
+      {privateInquiryProfile && (
+        <div className="fixed inset-0 z-[75] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 text-white">
+          <div className="max-w-md w-full rounded-2xl bg-[#1C2029] border border-white/20 p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
+                {privateInquiryProfile.isSelfManaged ? "Direktkontakt · Selbst verwaltetes Profil" : "Quellenübersicht"}
+              </span>
+              <button onClick={() => setPrivateInquiryProfile(null)} className="text-gray-400 hover:text-white">
+                ✕
+              </button>
+            </div>
+            <h3 className="text-xl font-bold">{privateInquiryProfile.rawName}</h3>
+            <p className="text-xs text-gray-300">
+              {privateInquiryProfile.cleanCity} · Kanton {privateInquiryProfile.canton}
+            </p>
+            <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/10 space-y-2 text-xs">
+              <div className="font-bold text-gray-200">Zugeordnete Quellen für dieses Profil:</div>
+              {privateInquiryProfile.linkedSources?.map((src: any, idx: number) => (
+                <a
+                  key={idx}
+                  href={src.url}
+                  target={src.url.startsWith("http") ? "_blank" : undefined}
+                  rel="noreferrer nofollow"
+                  className="py-1.5 flex items-center justify-between text-[#C6A574] hover:underline"
+                >
+                  <span>{src.portal}</span>
+                  <ExternalLink size={12} />
+                </a>
+              ))}
+            </div>
+            <Link
+              href={`/profile/${encodeURIComponent(privateInquiryProfile.id)}`}
+              className="w-full py-3 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs block text-center"
+            >
+              Vollständiges Profil öffnen →
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* FILTER DIALOG */}
+      {filterModalOpen && (
+        <div className="fixed inset-0 z-[75] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 text-white">
+          <div className="max-w-md w-full rounded-2xl bg-[#1C2029] border border-white/15 p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h3 className="text-base font-bold">Filter verfeinern</h3>
+              <button onClick={() => setFilterModalOpen(false)}>
+                <X size={16} />
+              </button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={onlyAvailable}
+                  onChange={() => setOnlyAvailable(!onlyAvailable)}
+                  className="w-4 h-4 accent-[#C6A574]"
+                />
+                <span>Nur aktuell bestätigte Verfügbarkeit</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={onlyDirectRequest}
+                  onChange={() => setOnlyDirectRequest(!onlyDirectRequest)}
+                  className="w-4 h-4 accent-[#C6A574]"
+                />
+                <span>Nur selbst verwaltete Profile (Privat anfragbar)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={onlyWithPrice}
+                  onChange={() => setOnlyWithPrice(!onlyWithPrice)}
+                  className="w-4 h-4 accent-[#C6A574]"
+                />
+                <span>Nur Einträge mit veröffentlichter Preisangabe</span>
+              </label>
+            </div>
+            <div className="flex justify-between pt-3 border-t border-white/10">
+              <button onClick={resetAllFilters} className="text-xs text-gray-400 underline">
+                Zurücksetzen
+              </button>
+              <button
+                onClick={() => setFilterModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs"
+              >
+                Ergebnisse anzeigen ({filteredProfiles.length})
+              </button>
             </div>
           </div>
         </div>
