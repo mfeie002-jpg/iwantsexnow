@@ -79,7 +79,7 @@ const BUDDY_TIPS: Record<
     bullets: [
       "Notiere dir den 4-stelligen Tagescode (oder halte ihn kurz auf einem Zettel neben dich für den internen Echtheits-Check).",
       "Dieses Prüf-Bild wird NIEMALS veröffentlicht – es dient nur dazu, Fake-Profile von unserer Plattform fernzuhalten.",
-      "Willkommens-Geschenk: Mit Klick auf 'Jetzt kostenlos aktivieren' schreiben wir dir sofort 2 Gratis Lead-Credits (Wert CHF 50) gut!",
+      "Willkommens-Geschenk: Mit Klick auf 'Jetzt kostenlos aktivieren' schreiben wir dir sofort 1. Monat 100% kostenlos + offizieller ✓ Haken + CHF 50 Startguthaben (Wert CHF 50) gut!",
     ],
     proTip: "Nach dem Klick landest du direkt in deinem persönlichen Provider-Cockpit (/creator-dashboard) und kannst sofort Buchungen & Live-Cam-Anrufe empfangen!",
   },
@@ -178,7 +178,7 @@ export default function CreatePostOnboardingBuddyPage() {
 
     toast({
       title: `🎉 Herzlichen Glückwunsch, ${finalName}!`,
-      description: "Dein Direktprofil ist aktiv + 2 Gratis Lead-Credits (CHF 50) wurden deinem Konto gutgeschrieben!",
+      description: "Dein Direktprofil ist aktiv + 1. Monat 100% kostenlos + offizieller ✓ Haken + CHF 50 Startguthaben (CHF 50) wurden deinem Konto gutgeschrieben!",
       duration: 5000,
     });
 
@@ -191,7 +191,7 @@ export default function CreatePostOnboardingBuddyPage() {
     <div className="min-h-screen bg-[#0B1623] text-white">
       <SEO
         title="Als Escort, Model oder Gigolo registrieren (Mit interaktivem Schweizer Onboarding-Buddy) | iWantSexNow.ch"
-        description="Schritt-für-Schritt Registrierung für Einsteigerinnen, verifizierte Escorts, Gigolos / Callboys und Paare in der Schweiz. Inklusive 2 Gratis Lead-Credits."
+        description="Schritt-für-Schritt Registrierung für Einsteigerinnen, verifizierte Escorts, Gigolos / Callboys und Paare in der Schweiz. Inklusive 1. Monat 100% kostenlos + offizieller ✓ Haken + CHF 50 Startguthaben."
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -689,7 +689,7 @@ export default function CreatePostOnboardingBuddyPage() {
                       <div className="text-xs text-gray-400 uppercase font-bold">Dein persönlicher Verifizierungs-Code heute:</div>
                       <div className="text-3xl font-mono font-black text-[#D5A021] tracking-widest">{dailyCode}</div>
                       <p className="text-xs text-gray-300">
-                        Halte diesen Code für den Echtheits-Check bereit. Dein Profil wird jetzt sofort mit <strong>2 Gratis Lead-Credits (Wert CHF 50)</strong> im Dashboard freigeschaltet!
+                        Halte diesen Code für den Echtheits-Check bereit. Dein Profil wird jetzt sofort mit <strong>1. Monat 100% kostenlos + offizieller ✓ Haken + CHF 50 Startguthaben (Wert CHF 50)</strong> im Dashboard freigeschaltet!
                       </p>
                     </div>
 
@@ -697,7 +697,7 @@ export default function CreatePostOnboardingBuddyPage() {
                       <div className="font-black text-emerald-300">✓ Zusammenfassung für {artistName || (genderCategory === "male" ? "Julian" : "Sophia")}:</div>
                       <div>• Kategorie: {genderCategory === "male" ? "🤵 Gigolo / Male Escort" : genderCategory === "couple" ? "👩‍❤️‍👨 Paar / Duo" : genderCategory === "trans" ? "🏳️‍⚧️ Trans VIP" : "👩 Female Escort"}</div>
                       <div>• Region: {city} ({canton}) · Honorar: CHF {rate60} / 60 Min.</div>
-                      <div>• Startbonus: 2 Gratis Lead-Credits (CHF 50) + 80% VIP-Video-Tresor aktiv</div>
+                      <div>• Startbonus: 1. Monat 100% kostenlos + offizieller ✓ Haken + CHF 50 Startguthaben (CHF 50) + 80% VIP-Video-Tresor aktiv</div>
                     </div>
 
                     <div className="pt-2 flex justify-between gap-3">
