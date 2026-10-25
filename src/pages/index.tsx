@@ -18,13 +18,18 @@ import {
   ExternalLink,
   Info,
   RotateCcw,
-  SlidersHorizontal,
   Flame,
+  Eye,
+  Plus,
+  X,
+  ShieldCheck,
+  Clock,
+  SlidersHorizontal,
 } from "lucide-react";
 
-export type FamiliarLayoutId = "1" | "2" | "3" | "4";
+export type SuperiorLayoutId = "1" | "2" | "3" | "4";
 
-// 1. Korrekte Schweizer Orts-zu-Kanton-Zuordnung (Kein "Emmen (ZH)" oder "Basel (ZH)" mehr!)
+// 1. Präziser Schweizer Orts-zu-Kanton-Korrektor (Verhindert "Basel (ZH)" oder "Emmen (ZH)"!)
 function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanCity: string; trueCanton: string } {
   const firstPart = String(cityRaw || "Zürich").split("/")[0].split(",")[0].trim();
   const cLow = firstPart.toLowerCase();
@@ -54,7 +59,6 @@ function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanC
   return { cleanCity: firstPart || "Zürich", trueCanton: String(fallbackCanton || "ZH").toUpperCase() };
 }
 
-// 2. Vertraute Schweizer Standard-Rubriken (wie auf xdate.ch, and6.com & fgirl.ch)
 function inferFamiliarCategory(item: any): "girls" | "massage" | "bdsm" | "trans" {
   const text = `${item.rawName || ""} ${(item.includedTags || []).join(" ")} ${item.bio || ""}`.toLowerCase();
   if (/\b(trans|ts|ladyboy|shemale|transe)\b/.test(text)) return "trans";
@@ -63,42 +67,41 @@ function inferFamiliarCategory(item: any): "girls" | "massage" | "bdsm" | "trans
   return "girls";
 }
 
-// Die 6 gelernten Haupt-Tabs, die jeder Schweizer Besucher von Xdate / And6 / Fgirl kennt
+// Vertraute Schweizer Haupt-Rubriken
 const FAMILIAR_MAIN_TABS = [
-  { id: "girls", label: "Sie sucht Ihn / Escorts", badge: "Hauptkatalog" },
-  { id: "massage", label: "Erotische Massagen & Tantra", badge: "B2B & Nuru" },
-  { id: "bdsm", label: "Domina & BDSM", badge: "Fetisch" },
-  { id: "trans", label: "Transsexuelle / TS", badge: "TS" },
-  { id: "all", label: "Alle Inserate", badge: "Komplett" },
+  { id: "girls", label: "Sie sucht Ihn / Escorts" },
+  { id: "massage", label: "Erotische Massagen & Tantra" },
+  { id: "bdsm", label: "Domina & BDSM" },
+  { id: "trans", label: "Transsexuelle / TS" },
+  { id: "all", label: "Alle Inserate" },
 ];
 
-// Vertraute Regionen-Liste mit Schweizer Kantonskürzeln (wie auf and6.com / xdate.ch)
+// Vertraute Schweizer Regionen mit Zählern
 const SWISS_REGIONS = [
-  { code: "ALL", name: "Alle Regionen (Schweiz)" },
-  { code: "ZH", name: "Zürich (Stadt & Region)" },
-  { code: "ZG", name: "Zug & Cham" },
-  { code: "AG", name: "Aargau (Baden / Aarau)" },
-  { code: "BS", name: "Basel & Nordwestschweiz" },
-  { code: "LU", name: "Luzern & Zentralschweiz" },
-  { code: "BE", name: "Bern & Mittelland" },
-  { code: "SG", name: "St. Gallen & Ostschweiz" },
-  { code: "SO", name: "Solothurn & Olten" },
-  { code: "TG", name: "Thurgau & Bodensee" },
-  { code: "GE", name: "Genève (Romandie)" },
-  { code: "VD", name: "Waadt / Lausanne" },
+  { code: "ALL", name: "Alle Regionen (Schweiz)", short: "🇨🇭 Alle" },
+  { code: "ZH", name: "Zürich (Stadt & Region)", short: "Zürich" },
+  { code: "ZG", name: "Zug & Cham", short: "Zug & Cham" },
+  { code: "AG", name: "Aargau (Baden / Aarau)", short: "Aargau" },
+  { code: "BS", name: "Basel & Nordwestschweiz", short: "Basel" },
+  { code: "LU", name: "Luzern & Zentralschweiz", short: "Luzern" },
+  { code: "BE", name: "Bern & Mittelland", short: "Bern" },
+  { code: "SG", name: "St. Gallen & Ostschweiz", short: "St. Gallen" },
+  { code: "SO", name: "Solothurn & Olten", short: "Solothurn" },
+  { code: "TG", name: "Thurgau & Bodensee", short: "Thurgau" },
+  { code: "GE", name: "Genève (Romandie)", short: "Genève" },
+  { code: "VD", name: "Waadt / Lausanne", short: "Lausanne" },
 ];
 
-// Vertraute Schweizer Service-Filter (wie auf and6.com & xdate.ch)
+// Vertraute Schweizer Service-Filter + Visuelle Vibe-Pills
 const FAMILIAR_SERVICES = [
-  { label: "Girlfriend Experience (GFE)", tag: "GFE" },
-  { label: "Haus- & Hotelbesuch (Outcall)", tag: "Outcall" },
-  { label: "Privat & Diskret empfangbar", tag: "Privat" },
-  { label: "Erotische / Tantra Massage", tag: "Massage" },
-  { label: "Zungenküsse & Zärtlichkeit", tag: "Küssen" },
-  { label: "Reife Frauen & MILF", tag: "MILF" },
-  { label: "Vollbusig / Kurvig (XXL)", tag: "XXL" },
-  { label: "Asiatin / Thai", tag: "Asia" },
-  { label: "Latina", tag: "Latina" },
+  { label: "Girlfriend Experience (GFE)", tag: "GFE", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=250&q=80" },
+  { label: "Haus- & Hotelbesuch", tag: "Outcall", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=250&q=80" },
+  { label: "Privat & Diskret", tag: "Privat", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80" },
+  { label: "Tantra & Body2Body", tag: "Massage", img: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=250&q=80" },
+  { label: "Latina & Kurvig", tag: "Latina", img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=250&q=80" },
+  { label: "Asiatin & Thai", tag: "Asia", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=250&q=80" },
+  { label: "Zungenküsse & Zärtlich", tag: "Küssen", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=250&q=80" },
+  { label: "Reife Frauen & MILF", tag: "MILF", img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=250&q=80" },
 ];
 
 const FALLBACK_PORTRAITS = [
@@ -109,15 +112,23 @@ const FALLBACK_PORTRAITS = [
 ];
 
 export default function HomePage() {
-  const [layout, setLayout] = useState<FamiliarLayoutId>("1");
+  const [layout, setLayout] = useState<SuperiorLayoutId>("1");
   const [activeTab, setActiveTab] = useState<"girls" | "massage" | "bdsm" | "trans" | "all">("girls");
   const [activeCanton, setActiveCanton] = useState<string>("ALL");
   const [activeServiceTag, setActiveServiceTag] = useState<string>("");
+  const [maxPriceChf, setMaxPriceChf] = useState<number>(1000);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
   const [onlyVerified, setOnlyVerified] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState<number>(32);
-  const [selectedIndexProfile, setSelectedIndexProfile] = useState<any>(null);
+
+  // UNSER UNIQUE FEATURE 1: ⚡ Quick-Peek Slide-Over Drawer (0-Tab-Wechsel!)
+  const [quickPeekProfile, setQuickPeekProfile] = useState<any>(null);
+
+  // UNSER UNIQUE FEATURE 2: ⚖️ Live Compare-Tray (Bis zu 3 Models direkt vergleichen!)
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [compareModalOpen, setCompareModalOpen] = useState<boolean>(false);
+
   const [vaultExtraProfiles, setVaultExtraProfiles] = useState<any[]>([]);
   const [vaultPage, setVaultPage] = useState<number>(1);
   const [loadingVault, setLoadingVault] = useState<boolean>(false);
@@ -184,7 +195,6 @@ export default function HomePage() {
     setLoadingVault(false);
   };
 
-  // Aufbereitete Inserate (Cleane Bilder ohne 6navi-Wasserzeichen zuerst + echte Schweizer Kantons-Zuweisung)
   const enrichedProfiles = useMemo(() => {
     const rawFast = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
     const combined = [...rawFast, ...vaultExtraProfiles];
@@ -227,13 +237,15 @@ export default function HomePage() {
         (isHighResPortal ? 30 : 0) +
         (hasHeavyWatermark ? -50 : 10);
 
-      // Kurze, vertraute Inserate-Headline wie auf xdate.ch / and6.com
-      const tagsList = Array.isArray(item.includedTags) && item.includedTags.length > 0
-        ? item.includedTags.slice(0, 3).join(" · ")
-        : "Privat & Diskret · Direktkontakt";
-      const adHeadline = st.bio || item.bio
-        ? String(st.bio || item.bio).slice(0, 68)
-        : `${tagsList} in ${cleanCity}`;
+      const rate = Number(st.rate60Chf || item.advertisedBaseChf) || 350;
+      const tagsList =
+        Array.isArray(item.includedTags) && item.includedTags.length > 0
+          ? item.includedTags.slice(0, 3)
+          : ["GFE", "Privat", "Diskret"];
+      const adHeadline =
+        st.bio || item.bio
+          ? String(st.bio || item.bio).slice(0, 70)
+          : `${tagsList.join(" · ")} in ${cleanCity}`;
 
       uniqueList.push({
         ...item,
@@ -243,7 +255,8 @@ export default function HomePage() {
         canton: trueCanton,
         category,
         adHeadline,
-        advertisedBaseChf: st.rate60Chf || item.advertisedBaseChf,
+        includedTags: tagsList,
+        advertisedBaseChf: rate,
         isSelfManaged,
         isIdentityVerified,
         availabilityConfirmed,
@@ -259,7 +272,6 @@ export default function HomePage() {
     return uniqueList;
   }, [serverData, vaultExtraProfiles]);
 
-  // Exakte Trefferzahlen in Klammern pro Kanton (Genau wie auf and6.com & xdate.ch!)
   const cantonCounts = useMemo(() => {
     const map: Record<string, number> = { ALL: 0 };
     for (const p of enrichedProfiles) {
@@ -270,7 +282,6 @@ export default function HomePage() {
     return map;
   }, [enrichedProfiles, activeTab]);
 
-  // Exakte Trefferzahlen pro Haupt-Rubrik
   const tabCounts = useMemo(() => {
     const map: Record<string, number> = { all: enrichedProfiles.length, girls: 0, massage: 0, bdsm: 0, trans: 0 };
     for (const p of enrichedProfiles) {
@@ -284,6 +295,7 @@ export default function HomePage() {
     return enrichedProfiles.filter((p: any) => {
       if (activeTab !== "all" && p.category !== activeTab) return false;
       if (activeCanton !== "ALL" && p.canton !== activeCanton) return false;
+      if (maxPriceChf < 1000 && Number(p.advertisedBaseChf || 350) > maxPriceChf) return false;
       if (onlyAvailable && !p.availabilityConfirmed) return false;
       if (onlyVerified && !p.isSelfManaged && !p.isIdentityVerified) return false;
 
@@ -294,12 +306,32 @@ export default function HomePage() {
       }
       return true;
     });
-  }, [enrichedProfiles, activeTab, activeCanton, onlyAvailable, onlyVerified, searchQuery, activeServiceTag]);
+  }, [enrichedProfiles, activeTab, activeCanton, maxPriceChf, onlyAvailable, onlyVerified, searchQuery, activeServiceTag]);
+
+  // Berechne den Live-Marktpreis-Schnitt der aktuellen Auswahl (Unser Unique Comparis-Vorteil!)
+  const avgRegionRate = useMemo(() => {
+    if (filteredProfiles.length === 0) return 350;
+    const sum = filteredProfiles.slice(0, 40).reduce((acc, p) => acc + (Number(p.advertisedBaseChf) || 350), 0);
+    return Math.round(sum / Math.min(40, filteredProfiles.length) / 10) * 10;
+  }, [filteredProfiles]);
+
+  const toggleCompare = (pid: string) => {
+    setCompareIds((prev) => {
+      if (prev.includes(pid)) return prev.filter((x) => x !== pid);
+      if (prev.length >= 3) return [...prev.slice(1), pid];
+      return [...prev, pid];
+    });
+  };
+
+  const comparedProfiles = useMemo(() => {
+    return enrichedProfiles.filter((p) => compareIds.includes(p.id));
+  }, [enrichedProfiles, compareIds]);
 
   const resetAll = () => {
     setActiveCanton("ALL");
     setActiveTab("girls");
     setActiveServiceTag("");
+    setMaxPriceChf(1000);
     setSearchQuery("");
     setOnlyAvailable(false);
     setOnlyVerified(false);
@@ -314,29 +346,34 @@ export default function HomePage() {
   };
 
   // =========================================================================
-  // DIE VERTRAUTE SCHWEIZER INSERATE-KARTE (Wie auf Xdate / And6 / Fgirl:
-  // Grosses Bild + Name/Ort + 1-zeilige Headline + Telefon/Kontakt-Badge!)
+  // DIE "FAMILIAR, YET SUPERIOR" INSERATE-KARTE:
+  // Vertraut wie Xdate/And6/Fgirl, ABER mit:
+  // - ⚡ 1-Klick Quick-Peek (Kein Tab-Wechsel nötig!)
+  // - ⚖️ +Vergleich Checkbox (Bis zu 3 Models nebeneinander vergleichen!)
+  // - 🛡️ Klarem 3-Stufen Herkunfts- & Preis-Check
   // =========================================================================
-  const renderFamiliarAdCard = (p: any, idx: number, keyPrefix: string) => {
+  const renderSuperiorAdCard = (p: any, idx: number, keyPrefix: string) => {
     const cleanName =
       String(p.rawName || "Inserat")
         .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
         .trim()
         .slice(0, 24) || "Model";
-    const rate = p.advertisedBaseChf || null;
+    const rate = p.advertisedBaseChf || 350;
     const img = p.thumbnail || p.fallbackImg;
     const hasPhone = Boolean(p.rawPhone && String(p.rawPhone).length >= 9);
+    const isCompared = compareIds.includes(p.id);
 
     return (
       <article
         key={`${keyPrefix}-${p.id}-${idx}`}
-        className={`group rounded-xl overflow-hidden bg-[#12141D] border transition-all duration-300 flex flex-col justify-between ${
-          p.isSponsored
-            ? "border-[#C8A97E] shadow-[0_8px_25px_rgba(200,169,126,0.18)]"
-            : "border-white/10 hover:border-[#C8A97E]/60"
+        className={`group rounded-2xl overflow-hidden bg-[#121520] border transition-all duration-300 flex flex-col justify-between ${
+          isCompared
+            ? "border-emerald-400 ring-2 ring-emerald-400/40"
+            : p.isSponsored
+            ? "border-[#C8A97E] shadow-[0_10px_30px_rgba(200,169,126,0.2)]"
+            : "border-white/10 hover:border-[#C8A97E]/70 hover:-translate-y-0.5"
         }`}
       >
-        {/* 3:4 Portrait Photo (Entire photo opens the ad immediately!) */}
         <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#07080C]">
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
@@ -349,114 +386,133 @@ export default function HomePage() {
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
               }}
-              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F17] via-transparent to-black/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D14] via-transparent to-black/30" />
           </Link>
 
-          {/* Top-Left: Familiar Status Badges */}
+          {/* Top-Left: 3-Stage Trust & Live Status */}
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 pointer-events-none">
             {p.availabilityConfirmed ? (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500 text-black text-[10px] font-extrabold shadow">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500 text-black text-[10px] font-extrabold shadow">
                 <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
-                HEUTE FREI
+                HEUTE FREI (4h)
               </span>
             ) : p.isIdentityVerified ? (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold shadow">
-                <Check size={10} /> ECHTE FOTOS
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold shadow">
+                <Check size={10} /> GEPRÜFT
               </span>
             ) : (
-              <span className="px-2 py-0.5 rounded bg-black/75 backdrop-blur text-gray-200 text-[10px] font-semibold border border-white/10">
+              <span className="px-2 py-0.5 rounded-md bg-black/75 backdrop-blur text-gray-200 text-[10px] font-semibold border border-white/15">
                 📍 {p.cleanCity} ({p.canton})
               </span>
             )}
           </div>
 
-          {/* Top-Right: Discreet Info / Source Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              recordEvent(p.id, "track_click");
-              setSelectedIndexProfile(p);
-            }}
-            title={`Quelle: ${p.sourcePortal || "Index"}`}
-            className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/65 hover:bg-[#C8A97E] text-gray-300 hover:text-black flex items-center justify-center transition cursor-pointer border border-white/15"
-          >
-            <Info size={13} />
-          </button>
+          {/* Top-Right: UNIQUE FEATURE -> "+ Vergleich" Toggle & Quick-Peek Trigger */}
+          <div className="absolute top-2.5 right-2.5 flex items-center gap-1">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleCompare(p.id);
+              }}
+              title="Zum Direkt-Vergleich hinzufügen"
+              className={`px-2 py-1 rounded-md text-[10px] font-bold backdrop-blur border transition cursor-pointer flex items-center gap-0.5 ${
+                isCompared
+                  ? "bg-emerald-400 text-black border-emerald-300 font-extrabold"
+                  : "bg-black/70 hover:bg-black/90 text-gray-200 border-white/15 hover:border-[#C8A97E]"
+              }`}
+            >
+              {isCompared ? <Check size={11} /> : <Plus size={11} />}
+              <span className="hidden sm:inline">{isCompared ? "Im Vergleich" : "Vergleich"}</span>
+            </button>
+          </div>
 
-          {/* Bottom on Photo: Name + City + Rate */}
+          {/* Bottom on Photo: Name + City + Rate Badge */}
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
             onClick={() => recordEvent(p.id, "track_click")}
             className="absolute bottom-2 left-2.5 right-2.5 flex items-end justify-between gap-1"
           >
             <div className="min-w-0">
-              <h3 className="text-sm sm:text-base font-serif font-bold text-white leading-tight truncate group-hover:text-[#C8A97E] transition">
+              <h3 className="text-sm sm:text-base font-serif font-bold text-white leading-tight truncate group-hover:text-[#E5C99B] transition">
                 {cleanName}
               </h3>
-              <p className="text-[11px] text-[#E5C99B] font-medium truncate">
+              <p className="text-[11px] text-[#C8A97E] font-medium truncate">
                 {p.cleanCity} ({p.canton})
               </p>
             </div>
-            {rate && (
-              <span className="shrink-0 px-2 py-0.5 rounded bg-black/85 border border-[#C8A97E]/40 text-[11px] font-extrabold text-[#C8A97E]">
+            <div className="shrink-0 text-right">
+              <span className="px-2 py-0.5 rounded-md bg-black/85 border border-[#C8A97E]/45 text-[11px] font-extrabold text-[#E5C99B]">
                 CHF {rate}
               </span>
-            )}
+            </div>
           </Link>
         </div>
 
-        {/* Compact Xdate/And6-Style Ad Footer (1-line headline + direct phone/contact indicator) */}
-        <Link
-          href={`/profile/${encodeURIComponent(p.id)}`}
-          onClick={() => recordEvent(p.id, "track_click")}
-          className="p-2.5 flex flex-col justify-between gap-1.5 hover:bg-white/[0.02] transition"
-        >
-          <p className="text-[11px] text-gray-300 line-clamp-1 leading-snug">
-            {p.adHeadline}
-          </p>
-          <div className="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
-            {hasPhone ? (
-              <span className="text-emerald-400 font-semibold flex items-center gap-1 truncate">
-                <Phone size={11} className="shrink-0" />
-                <span>{String(p.rawPhone).slice(0, 12)}…</span>
+        {/* Superior Card Footer: Service Pills + ⚡ 1-Klick Quick-Peek (No Tab Switching!) */}
+        <div className="p-2.5 flex flex-col justify-between gap-2 bg-[#10131C]">
+          <div className="flex items-center gap-1 overflow-hidden">
+            {(p.includedTags || ["GFE", "Privat"]).slice(0, 3).map((t: string, i: number) => (
+              <span
+                key={i}
+                className="px-1.5 py-0.5 rounded bg-white/5 text-[10px] text-gray-300 border border-white/5 truncate"
+              >
+                {t}
               </span>
-            ) : (
-              <span className="text-gray-400">Direkt-Inserat</span>
-            )}
-            <span className="text-[#C8A97E] font-bold group-hover:translate-x-0.5 transition-transform">
-              Ansehen →
-            </span>
+            ))}
           </div>
-        </Link>
+
+          <div className="flex items-center justify-between gap-1.5 pt-1 border-t border-white/10">
+            {/* UNIQUE FEATURE: ⚡ Quick-View Button opens Slide-Over Drawer immediately! */}
+            <button
+              type="button"
+              onClick={() => {
+                recordEvent(p.id, "track_click");
+                setQuickPeekProfile(p);
+              }}
+              className="flex-1 py-1.5 px-2 rounded-lg bg-white/5 hover:bg-[#C8A97E] text-gray-200 hover:text-[#090A0F] text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer border border-white/10"
+            >
+              <Eye size={12} />
+              <span>⚡ Quick-Check</span>
+            </button>
+
+            <Link
+              href={`/profile/${encodeURIComponent(p.id)}`}
+              onClick={() => recordEvent(p.id, "track_click")}
+              className="py-1.5 px-2.5 rounded-lg bg-[#C8A97E]/15 hover:bg-[#C8A97E] text-[#E5C99B] hover:text-[#090A0F] text-[11px] font-bold transition shrink-0"
+            >
+              Inserat →
+            </Link>
+          </div>
+        </div>
       </article>
     );
   };
 
   return (
-    <div className="min-h-screen bg-[#090A0F] text-white pb-24 lg:pb-16">
+    <div className="min-h-screen bg-[#090A0F] text-white pb-28 lg:pb-16">
       <SEO
-        title="iwantsexnow.ch | Schweizer Escorts, Erotische Massagen & Sexkontakte"
-        description="Über 2.800+ Schweizer Escort-Inserate, erotische Massagen, Domina-Studios & 162 Clubs in Zürich, Zug, Aargau, Basel, Luzern, Bern & Genf."
+        title="iwantsexnow.ch | Schweizer Escorts, Erotische Massagen & Direkt-Vergleich"
+        description="Das vertraute Schweizer Erotik-Verzeichnis – aber besser: Mit ⚡ 1-Klick Quick-Check, ⚖️ Direkt-Vergleich, CHF-Preisfilter und geprüften Kontaktdaten."
       />
 
       {/* ===================================================================== */}
-      {/* TOP SWITCHER FOR THE 4 FAMILIAR SWISS TOP-10 PORTAL LAYOUTS           */}
+      {/* TOP SWITCHER FOR THE 4 "FAMILIAR, YET SUPERIOR" SWISS LAYOUTS         */}
       {/* ===================================================================== */}
-      <div className="bg-[#141722] border-b border-[#C8A97E]/40 py-1.5 px-3 sticky top-0 z-[60] shadow-xl">
+      <div className="bg-gradient-to-r from-[#121521] via-[#191D2E] to-[#121521] border-b border-[#C8A97E]/45 py-1.5 px-3 sticky top-0 z-[60] shadow-xl">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
           <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] font-extrabold uppercase text-[10px] shrink-0">
-            Top-10 Google Vorbilder:
+            Vertraut + Unser USP:
           </span>
           <div className="flex items-center gap-1.5 shrink-0">
             {[
-              { id: "1" as FamiliarLayoutId, label: "1. Xdate / And6 Klassiker (Sidebar + Sofort-Grid) ⭐" },
-              { id: "2" as FamiliarLayoutId, label: "2. Fgirl.ch Style (Rubrik-Tabs + Story-Bar + 5er-Grid)" },
-              { id: "3" as FamiliarLayoutId, label: "3. Kaufmich / EuroGirls (1-Zeilen Dropdown-Filterbank)" },
-              { id: "4" as FamiliarLayoutId, label: "4. BeMyGirl Luxury (Kantons-Zähler + Randlose Porträts)" },
+              { id: "1" as SuperiorLayoutId, label: "1. Xdate / And6 NEXT (Smart Sidebar + ⚡ Quick-Check + CHF-Filter) ⭐" },
+              { id: "2" as SuperiorLayoutId, label: "2. Fgirl.ch ULTRA (Foto-Vibe-Chips + 5er-Wall + Vergleich)" },
+              { id: "3" as SuperiorLayoutId, label: "3. Comparis × Escort (Tarif-Radar + 4er-Filterbank + Konditionen)" },
+              { id: "4" as SuperiorLayoutId, label: "4. BeMyGirl × Interactive (Luxury Porträts + Hover-Dossier)" },
             ].map((l) => (
               <button
                 key={l.id}
@@ -479,10 +535,9 @@ export default function HomePage() {
       <LuxuryHeader />
 
       {/* ===================================================================== */}
-      {/* FAMILIAR TOP RUBRIC BAR (SHARED ACROSS SWISS PORTALS:                 */}
-      {/* Sie sucht Ihn / Escorts | Massagen | Domina | Trans/TS | 162 Clubs)   */}
+      {/* FAMILIAR TOP RUBRIC BAR + OUR UNIQUE VALUE STRIP                      */}
       {/* ===================================================================== */}
-      <div className="border-b border-white/10 bg-[#0E1018]">
+      <div className="border-b border-white/10 bg-[#0D1018]">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-1.5 shrink-0">
             {FAMILIAR_MAIN_TABS.map((tab) => {
@@ -496,7 +551,7 @@ export default function HomePage() {
                   className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shrink-0 ${
                     active
                       ? "bg-[#C8A97E] text-[#090A0F] shadow-md"
-                      : "bg-[#151824] text-gray-200 border border-white/10 hover:border-[#C8A97E]/50"
+                      : "bg-[#151926] text-gray-200 border border-white/10 hover:border-[#C8A97E]/50"
                   }`}
                 >
                   <span>{tab.label}</span>
@@ -513,14 +568,13 @@ export default function HomePage() {
 
             <Link
               href="/rankings"
-              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#151824] text-gray-200 border border-white/10 hover:border-[#C8A97E] flex items-center gap-1.5 shrink-0"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#151926] text-gray-200 border border-white/10 hover:border-[#C8A97E] flex items-center gap-1.5 shrink-0"
             >
               <Building2 size={13} className="text-[#C8A97E]" />
               <span>Clubs & Laufhäuser ({totalClubsCount})</span>
             </Link>
           </div>
 
-          {/* Right Quick Search */}
           <div className="flex items-center bg-[#090A0F] border border-white/15 focus-within:border-[#C8A97E] rounded-xl px-3 py-1.5 w-56 sm:w-64 shrink-0">
             <Search size={14} className="text-[#C8A97E] shrink-0" />
             <input
@@ -538,12 +592,12 @@ export default function HomePage() {
       </div>
 
       {/* ===================================================================== */}
-      {/* LAYOUT 1: XDATE / AND6 KLASSIKER (Linke Regionen-/Service-Sidebar     */}
-      {/*           mit Zahlen in Klammern + Rechts sofort das Inserate-Grid!)  */}
+      {/* LAYOUT 1: "XDATE / AND6 NEXT" (Vertraute Sidebar + UNSERE 3 UPGRADES: */}
+      {/*           CHF-Preis-Filter, Live-Tarifspiegel & ⚡ Quick-Check!)       */}
       {/* ===================================================================== */}
       {layout === "1" && (
         <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5">
-          {/* Mobile Horizontal Region Bar (Only visible on mobile where sidebar is hidden) */}
+          {/* Mobile Swipe Region Bar */}
           <div className="lg:hidden flex items-center gap-1.5 overflow-x-auto pb-3 mb-3 border-b border-white/10 scrollbar-hide">
             {SWISS_REGIONS.map((reg) => (
               <button
@@ -552,19 +606,19 @@ export default function HomePage() {
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 cursor-pointer ${
                   activeCanton === reg.code
                     ? "bg-[#C8A97E] text-[#090A0F]"
-                    : "bg-[#12141D] text-gray-300 border border-white/10"
+                    : "bg-[#121520] text-gray-300 border border-white/10"
                 }`}
               >
-                {reg.code === "ALL" ? "Schweiz" : reg.code} ({cantonCounts[reg.code] || 0})
+                {reg.short} ({cantonCounts[reg.code] || 0})
               </button>
             ))}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* LEFT SIDEBAR: Exactly like And6.com & Xdate.ch (Regions with counts + Services) */}
-            <aside className="hidden lg:block lg:col-span-3 space-y-5 sticky top-28">
-              {/* Box 1: Regionen mit exakter Anzahl in Klammern */}
-              <div className="p-4 rounded-2xl bg-[#11131C] border border-white/10 space-y-2.5">
+            {/* SMART LEFT SIDEBAR: Familiar Regions + OUR UNIQUE CHF PRICE FILTER */}
+            <aside className="hidden lg:block lg:col-span-3 space-y-4 sticky top-28">
+              {/* 1. Regionen mit Zahlen in Klammern (wie And6 / Xdate) */}
+              <div className="p-4 rounded-2xl bg-[#11141E] border border-white/10 space-y-2">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-[#C8A97E] flex items-center gap-1.5">
                     <MapPin size={13} />
@@ -576,7 +630,7 @@ export default function HomePage() {
                     </button>
                   )}
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {SWISS_REGIONS.map((reg) => {
                     const isSelected = activeCanton === reg.code;
                     const count = cantonCounts[reg.code] || 0;
@@ -585,18 +639,14 @@ export default function HomePage() {
                         key={reg.code}
                         type="button"
                         onClick={() => setActiveCanton(reg.code)}
-                        className={`w-full px-3 py-2 rounded-lg text-xs flex items-center justify-between transition cursor-pointer ${
+                        className={`w-full px-3 py-1.5 rounded-lg text-xs flex items-center justify-between transition cursor-pointer ${
                           isSelected
                             ? "bg-[#C8A97E] text-[#090A0F] font-extrabold"
                             : "text-gray-300 hover:bg-white/5 hover:text-white"
                         }`}
                       >
                         <span className="truncate">{reg.name}</span>
-                        <span
-                          className={`text-[11px] font-mono ${
-                            isSelected ? "text-[#090A0F] font-black" : "text-gray-500"
-                          }`}
-                        >
+                        <span className={`text-[11px] font-mono ${isSelected ? "text-[#090A0F] font-black" : "text-gray-500"}`}>
                           ({count})
                         </span>
                       </button>
@@ -605,11 +655,47 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Box 2: Beliebte Services (1-Klick wie auf And6 / Xdate) */}
-              <div className="p-4 rounded-2xl bg-[#11131C] border border-white/10 space-y-2.5">
+              {/* 2. UNSER USP: Echter Schweizer Stundentarif-Filter (Hat weder Xdate noch And6!) */}
+              <div className="p-4 rounded-2xl bg-[#11141E] border border-[#C8A97E]/35 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#C8A97E]">
+                    💰 Max. Richtpreis (1 Std.)
+                  </span>
+                  <span className="text-xs font-extrabold text-white">
+                    {maxPriceChf >= 1000 ? "Alle Tarife" : `Bis CHF ${maxPriceChf}`}
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 gap-1.5 text-[11px] font-bold">
+                  {[
+                    { val: 250, label: "≤ 250" },
+                    { val: 350, label: "≤ 350" },
+                    { val: 450, label: "≤ 450" },
+                    { val: 1000, label: "Alle" },
+                  ].map((b) => (
+                    <button
+                      key={b.val}
+                      type="button"
+                      onClick={() => setMaxPriceChf(b.val)}
+                      className={`py-1.5 rounded-lg border cursor-pointer ${
+                        maxPriceChf === b.val
+                          ? "bg-[#C8A97E] text-black border-[#C8A97E]"
+                          : "bg-black/40 border-white/10 text-gray-300"
+                      }`}
+                    >
+                      {b.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-gray-400">
+                  Ø Marktpreis in dieser Auswahl: <strong className="text-[#E5C99B]">CHF {avgRegionRate} / Std.</strong>
+                </p>
+              </div>
+
+              {/* 3. Beliebte Services mit Mini-Thumbnails */}
+              <div className="p-4 rounded-2xl bg-[#11141E] border border-white/10 space-y-2">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-[#C8A97E]">
-                    Beliebte Services & Typ
+                    Service & Vorlieben
                   </h2>
                   {activeServiceTag && (
                     <button onClick={() => setActiveServiceTag("")} className="text-[11px] text-rose-300 hover:underline">
@@ -617,7 +703,7 @@ export default function HomePage() {
                     </button>
                   )}
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="space-y-1">
                   {FAMILIAR_SERVICES.map((srv) => {
                     const active = activeServiceTag === srv.tag;
                     return (
@@ -625,65 +711,68 @@ export default function HomePage() {
                         key={srv.tag}
                         type="button"
                         onClick={() => setActiveServiceTag(active ? "" : srv.tag)}
-                        className={`w-full px-2.5 py-1.5 rounded-lg text-xs text-left flex items-center justify-between transition cursor-pointer ${
+                        className={`w-full p-1.5 rounded-xl text-xs text-left flex items-center justify-between transition cursor-pointer ${
                           active
-                            ? "bg-white/15 text-[#C8A97E] font-bold border border-[#C8A97E]/40"
+                            ? "bg-[#C8A97E] text-[#090A0F] font-extrabold"
                             : "text-gray-300 hover:bg-white/5"
                         }`}
                       >
-                        <span>{srv.label}</span>
-                        <span className="text-[#C8A97E]">{active ? "✓" : "›"}</span>
+                        <div className="flex items-center gap-2 truncate">
+                          <img src={srv.img} alt={srv.label} className="w-6 h-6 rounded-md object-cover shrink-0" />
+                          <span className="truncate">{srv.label}</span>
+                        </div>
+                        <span className="text-[11px] pr-1">{active ? "✓" : "›"}</span>
                       </button>
                     );
                   })}
                 </div>
               </div>
-
-              {/* Box 3: Portal-Test & Anbieter-Box */}
-              <div className="p-4 rounded-2xl bg-[#11131C] border border-[#C8A97E]/30 space-y-2">
-                <div className="text-[10px] font-bold uppercase text-[#C8A97E]">Markt-Vergleich</div>
-                <Link href="/reviews" className="block text-xs font-bold text-white hover:text-[#C8A97E]">
-                  ⭐ Xdate, Fgirl & And6 im Test →
-                </Link>
-                <Link href="/advertise" className="block text-xs text-gray-400 hover:text-white pt-1 border-t border-white/10">
-                  + Eigenes Inserat kostenlos verwalten →
-                </Link>
-              </div>
             </aside>
 
-            {/* RIGHT MAIN COLUMN: Immediate Ad Grid! */}
+            {/* RIGHT MAIN COLUMN: Superior Insights Bar + Immediate 4-Column Ad Grid */}
             <div className="lg:col-span-9 space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-white/10">
-                <div className="text-xs sm:text-sm font-bold text-white">
-                  {FAMILIAR_MAIN_TABS.find((t) => t.id === activeTab)?.label} in{" "}
-                  <span className="text-[#C8A97E]">
+              {/* OUR UNIQUE ADVANTAGE BAR ABOVE THE GRID */}
+              <div className="p-3 rounded-2xl bg-gradient-to-r from-[#121624] via-[#171C2E] to-[#121624] border border-[#C8A97E]/35 flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="font-bold text-white">
                     {SWISS_REGIONS.find((r) => r.code === activeCanton)?.name}
-                  </span>{" "}
-                  <span className="text-gray-400 font-normal">({filteredProfiles.length} Inserate)</span>
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-white/10 text-[#E5C99B] font-bold">
+                    {filteredProfiles.length} Inserate
+                  </span>
+                  <span className="text-gray-400 hidden sm:inline">
+                    · Ø Richtwert: <strong className="text-white">CHF {avgRegionRate}/h</strong>
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 text-xs">
+
+                <div className="flex flex-wrap items-center gap-1.5 text-xs">
                   <button
                     onClick={() => setOnlyAvailable(!onlyAvailable)}
                     className={`px-3 py-1 rounded-lg border cursor-pointer ${
-                      onlyAvailable ? "bg-emerald-500 text-black font-bold" : "bg-[#12141D] border-white/10 text-gray-300"
+                      onlyAvailable ? "bg-emerald-500 text-black font-bold" : "bg-black/40 border-white/15 text-gray-300"
                     }`}
                   >
-                    ● Heute verfügbar
+                    ● Heute frei (4h)
                   </button>
                   <button
                     onClick={() => setOnlyVerified(!onlyVerified)}
                     className={`px-3 py-1 rounded-lg border cursor-pointer ${
-                      onlyVerified ? "bg-[#C8A97E] text-black font-bold" : "bg-[#12141D] border-white/10 text-gray-300"
+                      onlyVerified ? "bg-[#C8A97E] text-black font-bold" : "bg-black/40 border-white/15 text-gray-300"
                     }`}
                   >
-                    ✓ Geprüft
+                    ✓ Geprüft / Selbst verwaltet
                   </button>
+                  {(activeCanton !== "ALL" || activeServiceTag || maxPriceChf < 1000 || onlyAvailable || onlyVerified) && (
+                    <button onClick={resetAll} className="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold cursor-pointer">
+                      Reset
+                    </button>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                 {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-                  renderFamiliarAdCard(p, idx, "l1")
+                  renderSuperiorAdCard(p, idx, "s1")
                 )}
               </div>
             </div>
@@ -692,12 +781,12 @@ export default function HomePage() {
       )}
 
       {/* ===================================================================== */}
-      {/* LAYOUT 2: FGIRL.CH STYLE (Kantons-Zähler-Pills + Hot Stories + 5er Grid) */}
+      {/* LAYOUT 2: "FGIRL.CH ULTRA" (Visual Vibe-Chips + Canton Pills + 5-Grid)*/}
       {/* ===================================================================== */}
       {layout === "2" && (
-        <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-5">
-          {/* Canton Pills with exact counts (like Fgirl.ch) */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-hide">
+        <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-4">
+          {/* Row 1: Canton Pills with exact numbers in parentheses */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
             {SWISS_REGIONS.map((reg) => {
               const active = activeCanton === reg.code;
               return (
@@ -706,151 +795,158 @@ export default function HomePage() {
                   onClick={() => setActiveCanton(reg.code)}
                   className={`px-3.5 py-2 rounded-full text-xs font-bold shrink-0 cursor-pointer transition ${
                     active
-                      ? "bg-rose-600 text-white shadow-lg"
-                      : "bg-[#12141D] text-gray-300 border border-white/10 hover:border-rose-500/50"
+                      ? "bg-[#C8A97E] text-[#090A0F] shadow-lg"
+                      : "bg-[#121520] text-gray-300 border border-white/10 hover:border-[#C8A97E]/50"
                   }`}
                 >
-                  {reg.code === "ALL" ? "🇨🇭 Alle Kantone" : reg.name.split("(")[0].trim()}{" "}
-                  <span className="opacity-75">({cantonCounts[reg.code] || 0})</span>
+                  {reg.short} <span className="opacity-75">({cantonCounts[reg.code] || 0})</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Fgirl-Style "Hot Profiles of the Moment" Strip (Indices 0..7, main grid starts at 8 -> NO DUPLICATES!) */}
-          <div className="p-4 rounded-2xl bg-[#11131C] border border-white/10 space-y-2.5">
-            <div className="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
-              <Flame size={14} />
-              <span>HOT PROFILES OF THE MOMENT ({activeCanton === "ALL" ? "SCHWEIZ" : activeCanton})</span>
+          {/* Row 2: OUR UPGRADE OVER FGIRL -> Visual Photo Vibe Chips + Instant Price Caps */}
+          <div className="flex items-center justify-between gap-3 overflow-x-auto py-1 scrollbar-hide">
+            <div className="flex items-center gap-2 shrink-0">
+              {FAMILIAR_SERVICES.map((srv) => {
+                const active = activeServiceTag === srv.tag;
+                return (
+                  <button
+                    key={srv.tag}
+                    onClick={() => setActiveServiceTag(active ? "" : srv.tag)}
+                    className={`flex items-center gap-2 p-1 pr-3 rounded-full border text-xs font-bold transition cursor-pointer shrink-0 ${
+                      active
+                        ? "bg-white text-black border-white shadow"
+                        : "bg-[#121520] text-gray-200 border-white/10 hover:border-[#C8A97E]"
+                    }`}
+                  >
+                    <img src={srv.img} alt={srv.label} className="w-7 h-7 rounded-full object-cover" />
+                    <span>{srv.tag}</span>
+                  </button>
+                );
+              })}
             </div>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
-              {filteredProfiles.slice(0, 8).map((hp: any, i: number) => (
-                <Link
-                  key={`fg-hot-${i}`}
-                  href={`/profile/${encodeURIComponent(hp.id)}`}
-                  className="group text-center space-y-1"
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              {[250, 350, 1000].map((val) => (
+                <button
+                  key={val}
+                  onClick={() => setMaxPriceChf(val)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-bold border cursor-pointer ${
+                    maxPriceChf === val ? "bg-[#C8A97E] text-black border-[#C8A97E]" : "bg-[#121520] border-white/10 text-gray-300"
+                  }`}
                 >
-                  <div className="aspect-square rounded-2xl overflow-hidden border-2 border-rose-500/70 p-0.5 bg-black">
-                    <img
-                      src={hp.thumbnail || hp.fallbackImg}
-                      alt={hp.rawName}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = hp.fallbackImg;
-                      }}
-                      className="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition"
-                    />
-                  </div>
-                  <div className="text-[11px] font-bold text-white truncate">{hp.rawName}</div>
-                  <div className="text-[10px] text-gray-400 truncate">{hp.cleanCity}</div>
-                </Link>
+                  {val === 1000 ? "Alle CHF" : `≤ CHF ${val}`}
+                </button>
               ))}
             </div>
           </div>
 
-          {/* 5-Column Dense Gallery Grid (Starting at index 8 so 0% duplicate with Hot Strip above!) */}
+          {/* Dense 5-Column Gallery Grid with ⚡ Quick-Check & ⚖️ Compare */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
-            {filteredProfiles.slice(8, 8 + visibleCount).map((p: any, idx: number) =>
-              renderFamiliarAdCard(p, idx, "l2")
+            {filteredProfiles.slice(0, visibleCount + 3).map((p: any, idx: number) =>
+              renderSuperiorAdCard(p, idx, "s2")
             )}
           </div>
         </main>
       )}
 
       {/* ===================================================================== */}
-      {/* LAYOUT 3: KAUFMICH / EUROGIRLS (1-Zeilen Dropdown-Filterbank + Grid)  */}
+      {/* LAYOUT 3: "COMPARIS × ESCORT" (Schweizer Preis- & Qualitäts-Entscheider)*/}
       {/* ===================================================================== */}
       {layout === "3" && (
         <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-5">
-          {/* Familiar 4-Column Horizontal Filter Bar */}
-          <div className="p-4 rounded-2xl bg-[#12141D] border border-[#C8A97E]/40 shadow-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div>
-              <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">
-                1. Rubrik wählen
-              </label>
-              <select
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as any)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
-              >
-                {FAMILIAR_MAIN_TABS.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.label} ({tabCounts[t.id] || 0})
-                  </option>
-                ))}
-              </select>
+          {/* Top Swiss Market Intelligence Cockpit */}
+          <div className="p-5 rounded-2xl bg-gradient-to-b from-[#141826] to-[#10131E] border border-[#C8A97E]/45 shadow-2xl space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+                  SCHWEIZER MARKT- & KONDITIONEN-VERGLEICH (WIE COMPARIS)
+                </span>
+                <h1 className="text-lg sm:text-2xl font-serif font-bold text-white">
+                  Filtere nach Region, Service & Stundentarif – oder vergleiche bis zu 3 Profile direkt
+                </h1>
+              </div>
+              <div className="px-3.5 py-2 rounded-xl bg-black/50 border border-white/10 text-xs">
+                Ø Richtpreis in Auswahl: <strong className="text-[#C8A97E]">CHF {avgRegionRate} / 60 Min.</strong>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">
-                2. Kanton / Stadt
-              </label>
-              <select
-                value={activeCanton}
-                onChange={(e) => setActiveCanton(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
-              >
-                {SWISS_REGIONS.map((r) => (
-                  <option key={r.code} value={r.code}>
-                    {r.name} ({cantonCounts[r.code] || 0})
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">1. Rubrik</label>
+                <select
+                  value={activeTab}
+                  onChange={(e) => setActiveTab(e.target.value as any)}
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+                >
+                  {FAMILIAR_MAIN_TABS.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label} ({tabCounts[t.id] || 0})
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div>
-              <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">
-                3. Beliebter Service / Typ
-              </label>
-              <select
-                value={activeServiceTag}
-                onChange={(e) => setActiveServiceTag(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
-              >
-                <option value="">Alle Services & Vorlieben</option>
-                {FAMILIAR_SERVICES.map((s) => (
-                  <option key={s.tag} value={s.tag}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">2. Kanton / Region</label>
+                <select
+                  value={activeCanton}
+                  onChange={(e) => setActiveCanton(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+                >
+                  {SWISS_REGIONS.map((r) => (
+                    <option key={r.code} value={r.code}>
+                      {r.name} ({cantonCounts[r.code] || 0})
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className="flex items-end gap-2">
-              <button
-                type="button"
-                onClick={() => setOnlyAvailable(!onlyAvailable)}
-                className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-bold cursor-pointer ${
-                  onlyAvailable
-                    ? "bg-emerald-500 text-black border-emerald-400"
-                    : "bg-[#090A0F] border-white/15 text-gray-300"
-                }`}
-              >
-                ● Heute frei
-              </button>
-              <button
-                type="button"
-                onClick={resetAll}
-                className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-[#C8A97E] cursor-pointer"
-              >
-                Reset
-              </button>
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">3. Service / Vorliebe</label>
+                <select
+                  value={activeServiceTag}
+                  onChange={(e) => setActiveServiceTag(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+                >
+                  <option value="">Alle Services & Vorlieben</option>
+                  {FAMILIAR_SERVICES.map((s) => (
+                    <option key={s.tag} value={s.tag}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">4. Preis-Obergrenze (1h)</label>
+                <select
+                  value={maxPriceChf}
+                  onChange={(e) => setMaxPriceChf(Number(e.target.value))}
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+                >
+                  <option value={1000}>Alle Preisklassen</option>
+                  <option value={250}>Bis CHF 250 / Std.</option>
+                  <option value={350}>Bis CHF 350 / Std.</option>
+                  <option value={450}>Bis CHF 450 / Std.</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-              renderFamiliarAdCard(p, idx, "l3")
+              renderSuperiorAdCard(p, idx, "s3")
             )}
           </div>
         </main>
       )}
 
       {/* ===================================================================== */}
-      {/* LAYOUT 4: BEMYGIRL LUXURY (Kantons-Zähler + Randlose 3:4 Porträts)    */}
+      {/* LAYOUT 4: "BEMYGIRL × INTERACTIVE HOVER-DOSSIER"                      */}
       {/* ===================================================================== */}
       {layout === "4" && (
         <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#C8A97E]/25">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#C8A97E]/30">
             <div className="flex flex-wrap gap-1.5">
               {SWISS_REGIONS.slice(0, 9).map((reg) => (
                 <button
@@ -862,37 +958,24 @@ export default function HomePage() {
                       : "bg-[#11131C] text-gray-300 border-white/10 hover:border-[#C8A97E]/50"
                   }`}
                 >
-                  {reg.code === "ALL" ? "Alle Regionen" : reg.name.split("(")[0].trim()}{" "}
-                  <span className="opacity-70">({cantonCounts[reg.code] || 0})</span>
+                  {reg.short} <span className="opacity-70">({cantonCounts[reg.code] || 0})</span>
                 </button>
               ))}
             </div>
-            <div className="flex gap-1.5">
-              {FAMILIAR_SERVICES.slice(0, 4).map((s) => (
-                <button
-                  key={s.tag}
-                  onClick={() => setActiveServiceTag(activeServiceTag === s.tag ? "" : s.tag)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border cursor-pointer ${
-                    activeServiceTag === s.tag
-                      ? "bg-white text-black border-white font-bold"
-                      : "bg-white/5 border-white/10 text-gray-300"
-                  }`}
-                >
-                  {s.tag}
-                </button>
-              ))}
+            <div className="text-xs text-[#E5C99B]">
+              Tipp: Klicke auf <strong>⚡ Quick-Check</strong> für sofortige Tarif- & Kontaktdaten ohne Seitenwechsel!
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
-              renderFamiliarAdCard(p, idx, "l4")
+              renderSuperiorAdCard(p, idx, "s4")
             )}
           </div>
         </main>
       )}
 
-      {/* Load More & Secondary Doors */}
+      {/* Load More & Secondary Pillars */}
       <div className="max-w-7xl mx-auto px-4 pt-4">
         <div className="text-center flex flex-wrap justify-center gap-3">
           <button
@@ -907,13 +990,13 @@ export default function HomePage() {
             href="/search"
             className="px-6 py-3.5 rounded-xl border border-white/15 bg-white/5 text-xs font-bold text-gray-200"
           >
-            Alle Filter öffnen →
+            Erweiterte Suche öffnen →
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12 pt-8 border-t border-white/10">
           <Link href="/reviews" className="p-5 rounded-2xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E] transition">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">01 · Portal-Test</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">01 · Unabhängiger Portal-Test</div>
             <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
               <span>Xdate, Fgirl & And6 im Vergleich</span>
               <ArrowUpRight size={16} />
@@ -922,7 +1005,7 @@ export default function HomePage() {
           </Link>
 
           <Link href="/rankings" className="p-5 rounded-2xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E] transition">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">02 · Etablissements</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">02 · Stationäre Etablissements</div>
             <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
               <span>{totalClubsCount} Schweizer Clubs & Laufhäuser</span>
               <ArrowUpRight size={16} />
@@ -941,56 +1024,228 @@ export default function HomePage() {
         </div>
       </div>
 
-      {selectedIndexProfile && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="max-w-md w-full rounded-2xl bg-[#11131C] border border-[#C8A97E]/50 p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
-                Quellenangabe · {selectedIndexProfile.sourcePortal || "Index"}
-              </span>
-              <button onClick={() => setSelectedIndexProfile(null)} className="text-gray-400 hover:text-white text-sm p-1">
-                ✕
-              </button>
+      {/* ===================================================================== */}
+      {/* UNIQUE FEATURE 1: ⚡ QUICK-PEEK SLIDE-OVER DRAWER (0-TAB-SWITCHING!)   */}
+      {/* ===================================================================== */}
+      {quickPeekProfile && (
+        <div className="fixed inset-0 z-[70] bg-black/75 backdrop-blur-sm flex justify-end">
+          <div className="w-full max-w-md bg-[#11141F] border-l border-[#C8A97E]/50 h-full overflow-y-auto p-5 sm:p-6 shadow-2xl flex flex-col justify-between space-y-5">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold uppercase">
+                    ⚡ Quick-Check
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    Quelle: {quickPeekProfile.sourcePortal || "Index"}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setQuickPeekProfile(null)}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div className="flex gap-4 items-center">
+                <img
+                  src={quickPeekProfile.thumbnail || quickPeekProfile.fallbackImg}
+                  alt={quickPeekProfile.rawName}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = quickPeekProfile.fallbackImg;
+                  }}
+                  className="w-24 h-32 rounded-xl object-cover object-top border border-[#C8A97E]/50 shrink-0"
+                />
+                <div className="space-y-1">
+                  <h3 className="text-xl font-serif font-bold text-white">{quickPeekProfile.rawName}</h3>
+                  <p className="text-xs text-[#C8A97E] flex items-center gap-1">
+                    <MapPin size={13} />
+                    <span>{quickPeekProfile.cleanCity} (Kanton {quickPeekProfile.canton})</span>
+                  </p>
+                  <div className="pt-1 flex flex-wrap gap-1">
+                    {quickPeekProfile.availabilityConfirmed ? (
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
+                        ● Verfügbarkeit bestätigt
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded bg-white/10 text-gray-300 text-[10px]">
+                        Externer Index-Eintrag
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Unique Tariff Breakdown Box */}
+              <div className="p-4 rounded-xl bg-[#090A0F] border border-white/10 space-y-2">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-[#C8A97E]">
+                  Schweizer Tarif- & Markt-Einordnung
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-center text-xs pt-1">
+                  <div className="p-2 rounded-lg bg-white/5">
+                    <div className="text-[10px] text-gray-400">30 Min. (Richtwert)</div>
+                    <div className="font-bold text-white mt-0.5">
+                      CHF {Math.round((quickPeekProfile.advertisedBaseChf || 350) * 0.6)}
+                    </div>
+                  </div>
+                  <div className="p-2 rounded-lg bg-[#C8A97E]/15 border border-[#C8A97E]/40">
+                    <div className="text-[10px] text-[#E5C99B]">60 Min. (Standard)</div>
+                    <div className="font-extrabold text-[#C8A97E] mt-0.5">
+                      CHF {quickPeekProfile.advertisedBaseChf || 350}
+                    </div>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/5">
+                    <div className="text-[10px] text-gray-400">Ø Region {quickPeekProfile.canton}</div>
+                    <div className="font-bold text-gray-300 mt-0.5">CHF {avgRegionRate}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="text-xs font-bold text-gray-300">Services & Beschreibung:</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {(quickPeekProfile.includedTags || ["GFE", "Privat"]).map((t: string, i: number) => (
+                    <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-200">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-300 leading-relaxed pt-1">
+                  {quickPeekProfile.adHeadline}
+                </p>
+              </div>
             </div>
-            <h3 className="text-xl font-serif font-bold text-white">
-              {selectedIndexProfile.rawName} ({selectedIndexProfile.cleanCity}, {selectedIndexProfile.canton})
-            </h3>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              Dieser Eintrag stammt aus einer öffentlich erreichbaren Quelle ({selectedIndexProfile.sourcePortal || "Portal-Index"}).
-            </p>
-            <div className="flex flex-col gap-2 pt-1">
-              <Link
-                href={`/profile/${encodeURIComponent(selectedIndexProfile.id)}`}
-                className="py-2.5 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-xs text-center"
-              >
-                Vollständige Inserate-Ansicht öffnen →
-              </Link>
-              {selectedIndexProfile.sourceUrl && (
+
+            <div className="space-y-2 pt-4 border-t border-white/10">
+              {quickPeekProfile.rawPhone && (
                 <a
-                  href={selectedIndexProfile.sourceUrl}
+                  href={`tel:${quickPeekProfile.rawPhone}`}
+                  onClick={() => recordEvent(quickPeekProfile.id, "track_contact")}
+                  className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+                >
+                  <Phone size={14} />
+                  <span>Direkt anrufen: {quickPeekProfile.rawPhone}</span>
+                </a>
+              )}
+              <Link
+                href={`/profile/${encodeURIComponent(quickPeekProfile.id)}`}
+                className="w-full py-3 rounded-xl bg-[#C8A97E] hover:bg-[#d8b98e] text-[#090A0F] font-bold text-xs uppercase tracking-wider block text-center"
+              >
+                Vollständiges Profil öffnen →
+              </Link>
+              {quickPeekProfile.sourceUrl && (
+                <a
+                  href={quickPeekProfile.sourceUrl}
                   target="_blank"
                   rel="noreferrer nofollow"
-                  onClick={() => recordEvent(selectedIndexProfile.id, "track_source_out")}
-                  className="py-2 rounded-lg bg-white/5 text-gray-200 font-semibold text-xs text-center border border-white/10 flex items-center justify-center gap-1.5"
+                  onClick={() => recordEvent(quickPeekProfile.id, "track_source_out")}
+                  className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 text-xs font-semibold flex items-center justify-center gap-1.5"
                 >
-                  <span>Originalquelle öffnen</span>
+                  <span>Originalquelle ({quickPeekProfile.sourcePortal || "Extern"}) prüfen</span>
                   <ExternalLink size={12} />
                 </a>
               )}
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+              <div className="grid grid-cols-2 gap-2 pt-2">
                 <Link
-                  href={`/create-post?claim=${encodeURIComponent(selectedIndexProfile.rawName || "")}&id=${encodeURIComponent(selectedIndexProfile.id)}`}
-                  className="py-2 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold text-[11px] text-center"
+                  href={`/create-post?claim=${encodeURIComponent(quickPeekProfile.rawName || "")}&id=${encodeURIComponent(quickPeekProfile.id)}`}
+                  className="py-2 rounded-lg bg-white/5 text-[#C8A97E] text-[11px] font-semibold text-center border border-white/10"
                 >
-                  Mein Inserat? Verwalten
+                  Mein Profil? Verwalten
                 </Link>
                 <Link
-                  href={`/report?name=${encodeURIComponent(selectedIndexProfile.rawName || "")}&id=${encodeURIComponent(selectedIndexProfile.id)}`}
-                  className="py-2 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 font-semibold text-[11px] text-center"
+                  href={`/report?name=${encodeURIComponent(quickPeekProfile.rawName || "")}&id=${encodeURIComponent(quickPeekProfile.id)}`}
+                  className="py-2 rounded-lg bg-rose-500/15 text-rose-300 text-[11px] font-semibold text-center border border-rose-500/30"
                 >
                   Melden / Entfernen
                 </Link>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===================================================================== */}
+      {/* UNIQUE FEATURE 2: ⚖️ FLOATING COMPARE-TRAY & SIDE-BY-SIDE MODAL       */}
+      {/* ===================================================================== */}
+      {comparedProfiles.length > 0 && (
+        <div className="fixed bottom-16 lg:bottom-4 inset-x-0 z-50 px-4 pointer-events-none">
+          <div className="max-w-3xl mx-auto p-3 rounded-2xl bg-[#141826]/95 backdrop-blur-xl border-2 border-[#C8A97E] shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex items-center justify-between gap-3 pointer-events-auto">
+            <div className="flex items-center gap-2.5 overflow-x-auto">
+              <span className="text-xs font-bold text-[#C8A97E] shrink-0">
+                ⚖️ Direkt-Vergleich ({comparedProfiles.length}/3):
+              </span>
+              {comparedProfiles.map((cp: any) => (
+                <div
+                  key={cp.id}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 border border-white/15 text-xs"
+                >
+                  <span className="font-bold text-white truncate max-w-[90px]">{cp.rawName}</span>
+                  <button onClick={() => toggleCompare(cp.id)} className="text-gray-400 hover:text-white">
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setCompareModalOpen(true)}
+                className="px-4 py-2 rounded-xl bg-[#C8A97E] text-[#090A0F] font-extrabold text-xs cursor-pointer"
+              >
+                Jetzt vergleichen →
+              </button>
+              <button
+                type="button"
+                onClick={() => setCompareIds([])}
+                className="text-xs text-gray-400 hover:text-white px-2 cursor-pointer"
+              >
+                Leeren
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {compareModalOpen && (
+        <div className="fixed inset-0 z-[80] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="max-w-4xl w-full rounded-2xl bg-[#11141F] border border-[#C8A97E] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h3 className="text-xl font-serif font-bold text-white">
+                ⚖️ Direkt-Vergleich deiner ausgewählten Profile
+              </h3>
+              <button onClick={() => setCompareModalOpen(false)} className="p-1.5 rounded-lg bg-white/10 text-white">
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {comparedProfiles.map((cp: any) => (
+                <div key={cp.id} className="p-4 rounded-xl bg-[#090A0F] border border-white/10 space-y-3 text-xs">
+                  <img
+                    src={cp.thumbnail || cp.fallbackImg}
+                    alt={cp.rawName}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = cp.fallbackImg;
+                    }}
+                    className="w-full h-48 object-cover object-top rounded-lg"
+                  />
+                  <div className="text-base font-serif font-bold text-white">{cp.rawName}</div>
+                  <div className="space-y-1.5 text-gray-300 border-t border-white/10 pt-2">
+                    <div>📍 <strong>Ort:</strong> {cp.cleanCity} ({cp.canton})</div>
+                    <div>💰 <strong>Richtpreis 1h:</strong> <span className="text-[#C8A97E] font-bold">CHF {cp.advertisedBaseChf || 350}</span></div>
+                    <div>🛡️ <strong>Status:</strong> {cp.isIdentityVerified ? "✓ Geprüft" : cp.isSelfManaged ? "Selbst verwaltet" : `Quelle: ${cp.sourcePortal || "Index"}`}</div>
+                    <div>✨ <strong>Services:</strong> {(cp.includedTags || ["GFE"]).join(", ")}</div>
+                  </div>
+                  <Link
+                    href={`/profile/${encodeURIComponent(cp.id)}`}
+                    className="w-full py-2.5 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-center block"
+                  >
+                    Zum Profil →
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </div>
