@@ -541,7 +541,7 @@ export default function Home() {
   return (
     <div className={`min-h-screen transition-colors duration-500 ${activeTheme.bgPrimary}`}>
       <SEO
-        title="XantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
+        title="iwantsexnow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
         description="Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung."
       />
 
@@ -1152,7 +1152,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} XantSexNow.ch · Swiss Escort Index & Direct Booking Engine (18+)</p>
+            <p>&copy; {new Date().getFullYear()} iwantsexnow.ch · Swiss Escort Index & Direct Booking Engine (18+)</p>
           </div>
         </div>
       </footer>
