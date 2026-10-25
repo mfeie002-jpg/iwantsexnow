@@ -1,90 +1,62 @@
 import type { GetServerSideProps } from "next";
-import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 
-const BASE_URL = "https://iwantsexnow.ch";
-
-const STATIC_ROUTES = [
-  "",
+const CANONICAL_ROUTES = [
+  "/",
   "/search",
-  "/compare-escorts",
   "/rankings",
-  "/live-cam",
+  "/reviews",
+  "/reviews/xdate-review",
+  "/reviews/fgirl-review",
+  "/reviews/and6-review",
+  "/reviews/rosalon-review",
+  "/reviews/kaufmich-review",
+  "/advertise",
+  "/for-clients",
   "/how-it-works",
-  "/guides",
-  "/hotels",
-  "/guides/english-tourist-expat-escort-guide-switzerland",
-  "/guides/schweizer-escort-preise-2026-vergleich",
-  "/guides/wef-davos-st-moritz-art-basel-vip-escort",
-  "/guides/escort-twint-crypto-usdt-diskret-bezahlen",
-  "/guides/newcomer-escort-schweiz",
-  "/guides/gigolo-callboy-schweiz-guide",
-  "/matches",
+  "/pricing",
+  "/report",
   "/escort-zurich",
   "/escort-basel",
   "/escort-bern",
   "/escort-geneva",
   "/escort-lausanne",
+  "/hotels",
+  "/compare-escorts",
   "/orte/cham",
-  "/orte/baar",
-  "/orte/rotkreuz",
   "/orte/zug",
   "/orte/zuerich-paradeplatz",
   "/orte/zuerich-oerlikon",
-  "/orte/zuerich-seefeld",
   "/orte/winterthur",
+  "/orte/baden",
   "/orte/luzern",
-  "/orte/aargau",
+  "/orte/basel-city",
+  "/orte/bern-city",
   "/orte/st-gallen",
-  "/orte/lugano",
-  "/orte/pfaeffikon-sz",
-  "/orte/st-moritz-davos",
-  "/orte/zermatt-wallis",
-  "/orte/interlaken-gstaad",
-  "/orte/thurgau",
-  "/orte/solothurn",
-  "/orte/haus-aphrodite",
-  "/orte/haus-zeus",
-  "/orte/tantra-massage-schweiz",
-  "/orte/domina-bdsm-schweiz",
-  "/create-post",
-  "/pricing",
-  "/verify",
-  "/checkout",
-  "/login",
-  "/faq",
-  "/safety",
 ];
 
-function generateSiteMap() {
-  const now = new Date().toISOString();
-  const profiles = deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED);
-  const profileRoutes = profiles.map((p) => `/profile/${encodeURIComponent(p.displayName)}`);
-  const allRoutes = [...STATIC_ROUTES, ...profileRoutes];
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allRoutes
-  .map(
-    (route) => `  <url>
-    <loc>${BASE_URL}${route}</loc>
-    <lastmod>${now}</lastmod>
-    <changefreq>${route === "" || route === "/search" || route === "/rankings" ? "hourly" : "daily"}</changefreq>
-    <priority>${route === "" ? "1.0" : route.startsWith("/orte/") || route.startsWith("/escort-") || route.startsWith("/profile/") ? "0.9" : "0.8"}</priority>
-  </url>`
-  )
-  .join("\n")}
-</urlset>`;
-}
-
-export default function SiteMap() {
-  return null;
-}
-
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const sitemap = generateSiteMap();
+  const baseUrl = "https://iwantsexnow.ch";
+  const today = new Date().toISOString().split("T")[0];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${CANONICAL_ROUTES.map(
+  (route) => `  <url>
+    <loc>${baseUrl}${route}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${route === "/" || route === "/search" ? "daily" : "weekly"}</changefreq>
+    <priority>${route === "/" ? "1.0" : route.startsWith("/reviews") || route === "/advertise" ? "0.9" : "0.8"}</priority>
+  </url>`
+).join("\n")}
+</urlset>`;
+
   res.setHeader("Content-Type", "text/xml");
-  res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-  res.write(sitemap);
+  res.write(xml);
   res.end();
+
   return { props: {} };
 };
+
+export default function SitemapXml() {
+  return null;
+}
