@@ -1,103 +1,96 @@
 import React from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { BrandLogo } from "@/components/BrandLogo";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { ShieldCheck, Clock, HelpCircle, Scale, Check, AlertCircle } from "lucide-react";
 
-export default function ForClientsLandingPage() {
+export default function SafetyAndBeginnerGuidePage() {
   return (
-    <div className="min-h-screen bg-[#0D1826] text-white">
+    <div className="min-h-screen bg-[#F6F5F1] text-[#141821] pb-20">
       <SEO
-        title="Für Gentlemen & Kunden: Sicher, diskret & ohne Fake-Profile buchen | iwantsexnow.ch"
-        description="Warum Schweizer Gentlemen iwantsexnow.ch nutzen: Visuelle Suche über 7.021+ Profile, offizieller Verifizierungs-Haken (✓), 3-Min. Live-Cam Vorab-Check und Fixpreis-Garantie."
+        title="Sicherheit, Etikette & Bedeutung der Kennzeichnungen | iwantsexnow.ch"
+        description="Was Sie vor einer Kontaktaufnahme wissen sollten: Bedeutung von Prüfstatus, Preisangaben, Datenschutz, Einvernehmlichkeit und respektvoller Umgang."
       />
+      <LuxuryHeader />
 
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#08101A]/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/">
-            <BrandLogo compact />
-          </Link>
-          <div className="flex items-center gap-3 text-xs font-bold">
-            <Link href="/advertise" className="text-emerald-300 hover:underline hidden sm:inline">
-              Für Models & Studios →
-            </Link>
-            <Link href="/reviews" className="text-sky-300 hover:underline hidden sm:inline">
-              Top 10 Portal-Reviews
-            </Link>
-            <Link href="/" className="px-4 py-2 rounded-xl bg-[#C8A97E] text-[#0D1826]">
-              🔍 Direkt zur visuellen Suche
-            </Link>
+      <main className="max-w-5xl mx-auto px-6 sm:px-10 py-10 space-y-10">
+        <section className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
+            <span>ORIENTIERUNG, SICHERHEIT & ETIKETTE</span>
           </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 py-10 space-y-14">
-        <section className="text-center max-w-4xl mx-auto space-y-4">
-          <span className="inline-block px-4 py-1 rounded-full bg-[#C8A97E]/15 border border-[#C8A97E]/40 text-[#C8A97E] text-xs font-bold uppercase tracking-wider">
-            🇨🇭 Der Schweizer Gentleman-Standard 2026
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-serif font-bold leading-tight">
-            Schluss mit 20 offenen Browser-Tabs, veralteten Fotos und versteckten Aufpreisen im Hotelzimmer.
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#141821]">
+            Was sollte ich vor einer Entscheidung verstehen?
           </h1>
-          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
-            Erfahre, wie <strong>iwantsexnow.ch</strong> den gesamten Schweizer Escort- & Erotikmarkt (7.021+ Profile & 216 Clubs) an einem Ort bündelt – mit 4 Sicherheits-Garantien für diskrete Kunden.
+          <p className="text-base text-stone-600 leading-relaxed max-w-3xl">
+            Eine transparente Übersicht über die Bedeutung unserer Kennzeichnungen, den Unterschied zwischen eigenen Profilen und externen Quellen sowie Grundregeln für einen sicheren, respektvollen Umgang.
           </p>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-3xl bg-[#111F30] border border-white/10 space-y-3">
-            <div className="text-xs font-bold uppercase text-sky-400">USP #1 · Echtheits-Garantie</div>
-            <h2 className="text-2xl font-serif font-bold">
-              Der offizielle Verifizierungs-Haken (✓) – wie bei Instagram & YouTube
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Auf klassischen Portalen weisst du nie, ob die Fotos 8 Jahre alt oder aus dem Internet kopiert sind. Unser blauer/goldener <strong>✓ Offiziell-Haken</strong> direkt auf dem Profilbild garantiert dir: Diese Anbieterin hat sich bei uns persönlich registriert, ihre Schweizer Rufnummer und ihre Original-Fotos per Tagescode-Selfie bestätigt.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-3xl bg-[#111F30] border border-white/10 space-y-3">
-            <div className="text-xs font-bold uppercase text-emerald-400">USP #2 · Echtzeit-Verfügbarkeit</div>
-            <h2 className="text-2xl font-serif font-bold">
-              🟢 Grüner Live-Status direkt auf dem Bild statt stundenlangem Warten
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Nichts ist frustrierender, als 10 Nummern auf WhatsApp anzuschreiben und keine Antwort zu bekommen. Unser <strong>🟢 ONLINE · VERFÜGBAR</strong>-Badge direkt auf dem Foto zeigt dir in Echtzeit, wer in Zürich, Zug, Basel oder Genf <strong>genau jetzt</strong> für ein Date oder einen Hotel-Besuch bereit ist.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-3xl bg-[#111F30] border border-white/10 space-y-3">
-            <div className="text-xs font-bold uppercase text-rose-400">USP #3 · Vorab-Video-Check & VIP-Tresor</div>
-            <h2 className="text-2xl font-serif font-bold">
-              🔴 3-Minuten 1:1 Live-Cam Check & unzensierte Vorab-Videos
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Du möchtest vor einem CHF 500+ Hotel-Date 100% sicher sein, dass die Chemie stimmt? Starte direkt im Browser einen anonymen <strong>3-Minuten 1:1 Video-Call (Kamera bei dir auf Wunsch aus!)</strong> oder schalte im <strong>VIP Content Tresor</strong> aktuelle unzensierte 4K-Videos der Dame frei.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-3xl bg-[#111F30] border border-white/10 space-y-3">
-            <div className="text-xs font-bold uppercase text-[#C8A97E]">USP #4 · Schweizer Fixpreis-Schutz</div>
-            <h2 className="text-2xl font-serif font-bold">
-              Transparente Komplettpreise ohne unangenehme Nachverhandlungen
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Viele Inserate auf Drittportalen locken mit „CHF 150“, verlangen vor Ort aber plötzlich für jeden Standard-Wunsch horrende Extras. Mit unserem <strong>Endpreis-Rechner & Fixpreis-Zertifikat</strong> ist der Gesamtpreis vor dem Treffen verbindlich fixiert.
-            </p>
-          </div>
-        </section>
-
-        <section className="p-8 rounded-3xl bg-gradient-to-r from-[#111F30] to-[#08101A] border border-[#C8A97E]/50 text-center space-y-4">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold">
-            Bereit für die einfachste visuelle Suche der Schweiz?
+        {/* 1. Was die Kennzeichnungen genau bedeuten (und was nicht!) */}
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5">
+          <h2 className="text-2xl font-serif font-bold text-[#141821]">
+            1. Unsere 5 Status- und Herkunfts-Kennzeichnungen
           </h2>
-          <p className="text-xs sm:text-sm text-gray-300 max-w-xl mx-auto">
-            Klicke einfach auf dein gewünschtes Bild (Blonde, Latina, Ebony, GFE, Tantra-Massage oder Live-Cam) – komplett ohne Tippen und 100% anonym.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200 space-y-1">
+              <div className="font-bold text-[#146C32]">● Jetzt verfügbar (mit Zeitangabe)</div>
+              <p className="text-stone-600 leading-relaxed">
+                Vom Anbieter aktiv in seinem Konto bestätigt (z.B. „Bestätigt vor 6 Min.“). Der Status läuft nach 4 Stunden automatisch ab. Er ist ein Verfügbarkeitssignal, aber noch keine verbindliche Terminzusage.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200 space-y-1">
+              <div className="font-bold text-[#1E4276]">● Online</div>
+              <p className="text-stone-600 leading-relaxed">
+                Zeigt an, dass das betreffende Konto kürzlich auf unserer Plattform aktiv war. Ein blosser Datenimport löst niemals ein Online-Signal aus.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200 space-y-1">
+              <div className="font-bold text-[#8C6B32]">✓ Identität geprüft</div>
+              <p className="text-stone-600 leading-relaxed">
+                Volljährigkeit (18+) und Berechtigung zur Bildnutzung wurden von uns dokumentiert geprüft. Dies ist nicht käuflich und ersetzt nicht die eigene Sorgfalt beim Treffen.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200 space-y-1">
+              <div className="font-bold text-[#141821]">Selbst verwaltet vs. Externe Quelle</div>
+              <p className="text-stone-600 leading-relaxed">
+                „Selbst verwaltet“ bedeutet, dass der Anbieter seine Angaben direkt bei uns pflegt. „Externe Quelle“ verweist auf ein öffentlich erreichbares Drittverzeichnis, dessen Verfügbarkeit uns nicht bekannt ist.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Preise, Dauer & Rahmenbedingungen richtig lesen */}
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-4">
+          <h2 className="text-2xl font-serif font-bold text-[#141821]">
+            2. Veröffentlichte Preise, Dauer und Konditionen richtig einordnen
+          </h2>
+          <ul className="space-y-2.5 text-xs sm:text-sm text-stone-700 leading-relaxed">
+            <li>• <strong>Zeiteinheit prüfen:</strong> Achten Sie darauf, ob sich ein genannter Betrag auf <strong>60 Minuten</strong> oder <strong>30 Minuten</strong> bezieht. In unserer Vergleichsansicht weisen wir die zugehörige Dauer stets mit aus.</li>
+            <li>• <strong>Incall vs. Outcall (Hotel-/Hausbesuch):</strong> Bei Besuchen im Hotel oder zu Hause können Fahrtkosten oder Mindestbuchungsdauern hinzukommen.</li>
+            <li>• <strong>Vorab klären:</strong> Klären Sie gewünschte Dauer, Honorar und Rahmenbedingungen sachlich und respektvoll vor dem Treffen. Leisten Sie keine anonymen Vorauszahlungen per Gutscheinkarte oder Auslandsüberweisung.</li>
+          </ul>
+        </section>
+
+        {/* 3. Einvernehmlichkeit, Datenschutz & Meldewege */}
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-4">
+          <h2 className="text-2xl font-serif font-bold text-[#141821]">
+            3. Respekt, Einvernehmlichkeit und sofortiger Meldeweg
+          </h2>
+          <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+            Jede Vereinbarung zwischen Erwachsenen beruht auf gegenseitigem Respekt, klaren Grenzen und Freiwilligkeit. Wenn Ihnen ein fehlerhafter Eintrag, eine missbräuchliche Bildverwendung oder ein Verstoss auffällt, können Sie diesen jederzeit ohne Registrierung über unser Meldeformular melden.
           </p>
-          <div className="flex flex-wrap justify-center gap-3 pt-2">
-            <Link href="/" className="px-7 py-3.5 rounded-2xl bg-[#C8A97E] text-[#0D1826] font-extrabold text-sm">
-              🔍 Jetzt visuelle Suche starten (7.021+ Profile) →
+          <div className="flex flex-wrap gap-3 pt-2">
+            <Link href="/" className="px-5 py-2.5 rounded-xl bg-[#152839] text-white font-bold text-xs">
+              Zurück zur Profilübersicht →
             </Link>
-            <Link href="/hotels" className="px-6 py-3.5 rounded-2xl bg-white/10 border border-white/15 text-white font-bold text-sm">
-              🏨 Diskrete Day-Use Hotels & Suiten ansehen
+            <Link href="/reviews" className="px-5 py-2.5 rounded-xl bg-[#F3EFE6] border border-[#DFD5C0] text-[#5C4722] font-bold text-xs">
+              Zum Schweizer Portalvergleich →
+            </Link>
+            <Link href="/report" className="px-5 py-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 font-bold text-xs">
+              Eintrag melden oder entfernen lassen →
             </Link>
           </div>
         </section>

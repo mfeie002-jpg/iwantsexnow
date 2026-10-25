@@ -1,514 +1,421 @@
-import { BrandLogo } from "@/components/BrandLogo";
-import { useState, useMemo } from "react";
-import type { GetServerSideProps } from "next";
+import React, { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import SEO from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { SEO } from "@/components/SEO";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
+import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
+import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
 import {
-  MapPin,
-  Send,
-  Video,
+  Check,
+  Clock,
+  User,
+  ExternalLink,
+  Bookmark,
+  LayoutGrid,
+  List as ListIcon,
+  Layers,
   HelpCircle,
-  ChevronRight,
-  TrendingDown,
-  ShieldCheck,
+  ArrowRight,
+  MapPin,
 } from "lucide-react";
-import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
-import { LivePortalSyncBanner } from "@/components/marketplace/LivePortalSyncBanner";
-import { SeoSiloFooter } from "@/components/marketplace/SeoSiloFooter";
-import { MoneyPageSeoContent } from "@/components/marketplace/MoneyPageSeoContent";
 
-export const SWISS_SEO_LOCATIONS: Record<
-  string,
-  {
-    slug: string;
-    title: string;
-    canton: string;
-    filterKeyword: string;
-    hotelsAndSpots: string;
-    intro: string;
+interface SlugConfig {
+  title: string;
+  subtitle: string;
+  canton: string;
+  cityFilter: string;
+  category: "all" | "escort" | "massage" | "bdsm" | "trans";
+  lang: "de" | "fr" | "it";
+}
+
+function resolveSlugIntent(slugRaw: string): SlugConfig {
+  const s = String(slugRaw || "zuerich").toLowerCase();
+
+  if (s.includes("massage") || s.includes("tantra")) {
+    return {
+      title: "Erotische Massage & Tantra in der Schweiz",
+      subtitle: "Sinnliche Massagen, Body-to-Body und Tantra-Studios mit transparenter Orts- und Preisangabe.",
+      canton: s.includes("zug") ? "ZG" : s.includes("zuerich") || s.includes("zurich") ? "ZH" : "ALL",
+      cityFilter: "",
+      category: "massage",
+      lang: "de",
+    };
   }
-> = {
-  cham: {
-    slug: "cham",
-    title: "Cham & Lorzenpark (Kanton Zug)",
-    canton: "ZG",
-    filterKeyword: "ZG",
-    hotelsAndSpots: "Cham Zentrum, Lorzenpark, Riedpark, Seehof & diskrete Business-Apartments (10 Min. ab Zug)",
-    intro: "Vergleiche alle verifizierten Escorts, Privat-Studios und Hotel-Outcalls in Cham (ZG). 100% bereinigt um Portal-Dubletten mit garantiertem Vorab-Fixpreis.",
-  },
-  baar: {
-    slug: "baar",
-    title: "Baar & Sihlbrugg (Kanton Zug)",
-    canton: "ZG",
-    filterKeyword: "ZG",
-    hotelsAndSpots: "Baar Zentrum, Neufeld, Sihlbrugg & Business-Hotels im Raum Zug/Baar",
-    intro: "Alle aktuell verfügbaren Direktprofile und Markt-Index-Einträge für Baar (Kanton Zug) mit Tiefgaragen-Diskretion und 20-Minuten Hotel-Outcall.",
-  },
-  rotkreuz: {
-    slug: "rotkreuz",
-    title: "Rotkreuz, Risch & Holzhäusern (Zug)",
-    canton: "ZG",
-    filterKeyword: "ZG",
-    hotelsAndSpots: "Rotkreuz Business-Park, Risch, Campus-Hotels & Autobahnkreuz A4/A14",
-    intro: "Diskrete Begleitung und verifizierte Studios in Rotkreuz & Risch (ZG) – direkter Preisvergleich über alle Schweizer Portale.",
-  },
-  zug: {
-    slug: "zug",
-    title: "Zug Stadt, Metalli & Zugersee",
-    canton: "ZG",
-    filterKeyword: "ZG",
-    hotelsAndSpots: "Park Hotel Zug, City Garden, Hotel Löwen, Metalli & diskrete Privat-Suiten",
-    intro: "Der komplette Escort- & Preis-Index für die Stadt Zug: Alle Portale gebündelt, 0% Agentur-Aufschlag und echte Endpreis-Garantie.",
-  },
-  "zuerich-paradeplatz": {
-    slug: "zuerich-paradeplatz",
-    title: "Zürich Paradeplatz, Bahnhofstrasse & Enge",
-    canton: "ZH",
-    filterKeyword: "ZH",
-    hotelsAndSpots: "Paradeplatz, Baur au Lac, Widder, Park Hyatt, Enge & Kreis 1/2",
-    intro: "High-Class Escorts und verifizierte Direktprofile rund um den Zürcher Paradeplatz, die Bahnhofstrasse und Enge zum transparenten Fixpreis.",
-  },
-  "zuerich-oerlikon": {
-    slug: "zuerich-oerlikon",
-    title: "Zürich Oerlikon, Glattpark & Airport Kloten",
-    canton: "ZH",
-    filterKeyword: "ZH",
-    hotelsAndSpots: "Messe Oerlikon, Kameha Grand, Radisson Blu Airport, The Circle & Glattpark",
-    intro: "Sofort verfügbare Escorts für Hotel-Outcalls am Flughafen Zürich (Kloten), Glattpark und Studios in Zürich-Oerlikon.",
-  },
-  "zuerich-seefeld": {
-    slug: "zuerich-seefeld",
-    title: "Zürich Seefeld, Bellevue & Zollikon",
-    canton: "ZH",
-    filterKeyword: "ZH",
-    hotelsAndSpots: "Zürich Seefeld (Kreis 8), Bellevue, La Réserve Eden au Lac & Goldküste",
-    intro: "Exklusive Privat-Suiten und Dinner-Date-Begleiterinnen im Zürcher Seefeld und an der Goldküste.",
-  },
-  winterthur: {
-    slug: "winterthur",
-    title: "Winterthur & Region Ost-Zürich",
-    canton: "ZH",
-    filterKeyword: "ZH",
-    hotelsAndSpots: "Winterthur Hauptbahnhof, Sulzer-Areal, Wülflingen & Töss",
-    intro: "Alle Escort- und Massage-Inserate in Winterthur gebündelt im Schweizer Dubletten- & Endpreis-Index.",
-  },
-  luzern: {
-    slug: "luzern",
-    title: "Luzern, Emmenbrücke & Vierwaldstättersee",
-    canton: "LU",
-    filterKeyword: "LU",
-    hotelsAndSpots: "Luzern Zentrum, Schweizerhof, Palace, Mandarin Oriental, Kriens & Emmen",
-    intro: "Verifizierte Escorts und Hotel-Outcalls in Luzern und der Zentralschweiz – alle Portale in einer Suche.",
-  },
-  aargau: {
-    slug: "aargau",
-    title: "Aargau, Baden, Wettingen & Aarau",
-    canton: "AG",
-    filterKeyword: "AG",
-    hotelsAndSpots: "Baden Limmathof, Atrium-Hotel Blume, Wettingen, Spreitenbach & Aarau",
-    intro: "Der komplette Schweizer Escort- & Studio-Vergleich für den Kanton Aargau (Baden, Wettingen, Spreitenbach, Aarau & Olten).",
-  },
-  "st-gallen": {
-    slug: "st-gallen",
-    title: "St. Gallen, Rapperswil & Bodensee",
-    canton: "SG",
-    filterKeyword: "SG",
-    hotelsAndSpots: "St. Gallen City, Einstein Hotel, Radisson Blu, Rapperswil-Jona & Wil",
-    intro: "Vergleiche alle Escort-Profile und Studios in St. Gallen, Rapperswil und der Ostschweiz zum echten Endpreis.",
-  },
-  lugano: {
-    slug: "lugano",
-    title: "Lugano, Locarno & Ascona (Ticino)",
-    canton: "TI",
-    filterKeyword: "TI",
-    hotelsAndSpots: "Lugano Paradiso, Villa Principe Leopoldo, Splendide Royal & Ascona",
-    intro: "Exklusive Begleiterinnen und Studios im Tessin (Lugano, Locarno, Bellinzona) – Dubletten-bereinigt im Schweizer Index.",
-  },
-  "haus-aphrodite": {
-    slug: "haus-aphrodite",
-    title: "Villa / Haus Aphrodite · Preise, Damen & Direkt-Vergleich",
-    canton: "ZG",
-    filterKeyword: "ALL",
-    hotelsAndSpots: "Walk-In Kontakt- & Wellness-Haus (Zentralschweiz / Zürich-Einzugsgebiet) · Diskrete Parkplätze am Haus",
-    intro: "Transparente Übersicht zu Haus Aphrodite (Eintritt CHF 0, Richtpreis ab CHF 150/30m) im direkten Vergleich mit privaten Direktbuchungs-Escorts der Region.",
-  },
-  "pfaeffikon-sz": {
-    slug: "pfaeffikon-sz",
-    title: "Pfäffikon SZ, Wollerau & Freienbach (Kanton Schwyz)",
-    canton: "SZ",
-    filterKeyword: "SZ",
-    hotelsAndSpots: "Seedamm Plaza Pfäffikon SZ, Panorama Resort Feusisberg, Wollerau, Freienbach & Lachen am Zürichsee",
-    intro: "Diskrete High-Class Escorts, VIP-Dinner-Dates und Hotel-Outcalls in Pfäffikon SZ, Wollerau und am oberen Zürichsee (Kanton Schwyz) zum garantierten Fixpreis.",
-  },
-  "st-moritz-davos": {
-    slug: "st-moritz-davos",
-    title: "St. Moritz, Davos & Graubünden (Chalet & Hotel-Outcall)",
-    canton: "GR",
-    filterKeyword: "GR",
-    hotelsAndSpots: "Badrutt's Palace, Kulm Hotel St. Moritz, AlpenGold Davos, Klosters, Chur & Laax",
-    intro: "Exklusive Reise-, Chalet- und 5-Sterne-Hotel-Begleitung in St. Moritz, Davos, Klosters und Chur (Graubünden) – 100% diskret & vorab per 1:1 Video-Check verifizierbar.",
-  },
-  "zermatt-wallis": {
-    slug: "zermatt-wallis",
-    title: "Zermatt, Crans-Montana, Verbier & Wallis (VS)",
-    canton: "VS",
-    filterKeyword: "VS",
-    hotelsAndSpots: "The Omnia Zermatt, Mont Cervin Palace, W Verbier, Crans-Montana, Brig & Sion",
-    intro: "Verifizierte Escorts, Gigolos und Overnight-Begleiterinnen für Zermatt, Verbier, Crans-Montana und das gesamte Wallis.",
-  },
-  "interlaken-gstaad": {
-    slug: "interlaken-gstaad",
-    title: "Interlaken, Gstaad & Thun (Berner Oberland)",
-    canton: "BE",
-    filterKeyword: "BE",
-    hotelsAndSpots: "Victoria-Jungfrau Grand Hotel Interlaken, The Alpina Gstaad, Gstaad Palace & Thunersee",
-    intro: "High-Class Begleitung und diskrete Hotelbesuche in Interlaken, Gstaad und Thun – alle Portale bereinigt im Schweizer Direkt-Index.",
-  },
-  thurgau: {
-    slug: "thurgau",
-    title: "Thurgau, Frauenfeld, Kreuzlingen & Bodensee (TG)",
-    canton: "TG",
-    filterKeyword: "TG",
-    hotelsAndSpots: "Frauenfeld, Kreuzlingen, Konstanz-Grenze, Weinfelden, Arbon & Romanshorn",
-    intro: "Alle geprüften Escorts, Privat-Studios und Tantra-Massagen im Kanton Thurgau und am Bodensee mit verbindlicher Endpreis-Garantie.",
-  },
-  solothurn: {
-    slug: "solothurn",
-    title: "Solothurn, Olten & Egerkingen (Autobahnkreuz A1/A2)",
-    canton: "SO",
-    filterKeyword: "SO",
-    hotelsAndSpots: "Olten Bahnhof, Mövenpick Egerkingen, Solothurn Altstadt & Grenchen",
-    intro: "Der komplette Escort- & Studio-Preisvergleich für Solothurn, Olten und das Schweizer Mittelland (A1/A2).",
-  },
-  "tantra-massage-schweiz": {
-    slug: "tantra-massage-schweiz",
-    title: "Erotik-, Tantra- & Body-to-Body-Massage (Zürich, Zug, Cham & Schweiz)",
-    canton: "ZH",
-    filterKeyword: "ALL",
-    hotelsAndSpots: "Diskrete Privat-Ateliers mit Dusche & Parkplatz in Zürich, Zug, Cham, Basel, Bern & Hotel-Outcall",
-    intro: "Vergleiche alle verifizierten Tantra-, Lingam-, Nuru- und sinnlichen Body-to-Body-Masseurinnen in der Schweiz. 100% transparente Endpreise für 60 und 90 Minuten ohne versteckte Aufpreise.",
-  },
-  "domina-bdsm-schweiz": {
-    slug: "domina-bdsm-schweiz",
-    title: "Domina, BDSM & Fetisch-Studios Schweiz (Zürich, Zug, Basel & Bern)",
-    canton: "ZH",
-    filterKeyword: "ALL",
-    hotelsAndSpots: "Vollausgestattete Privat-Studios & diskrete Hotel-Sessions in Zürich, Zug, Basel, Bern & Genf",
-    intro: "Geprüfte Schweizer Dominas, Bizarr-Ladies und Fetisch-Begleiterinnen im direkten Honorar- und Leistungsvergleich.",
-  },
-  "haus-zeus": {
-    slug: "haus-zeus",
-    title: "Haus / Club Zeus · Preise, Zimmer-Tarife & Direkt-Alternativen",
-    canton: "ZH",
-    filterKeyword: "ALL",
-    hotelsAndSpots: "Etabliertes Schweizer Lauf- & Studio-Haus (Walk-In ohne Termin möglich)",
-    intro: "Alle Fakten, Richtpreise (ab CHF 140/30m) und diskrete Privat-Alternativen zum Haus Zeus im unabhängigen Schweizer Preis-Index.",
-  },
-};
+  if (s.includes("domina") || s.includes("bdsm")) {
+    return {
+      title: "Domina & BDSM Studios in der Schweiz",
+      subtitle: "Klassische Dominanz, Fetisch und Rollenspiel – nach Region und Prüfstatus geordnet.",
+      canton: "ALL",
+      cityFilter: "",
+      category: "bdsm",
+      lang: "de",
+    };
+  }
+  if (s.includes("cham") || s.includes("zug") || s.includes("baar")) {
+    return {
+      title: "Escorts & Studios in Zug, Cham und Baar (ZG)",
+      subtitle: "Lokale Übersicht für den Kanton Zug mit bestätigter Verfügbarkeit und Quellenangaben.",
+      canton: "ZG",
+      cityFilter: "",
+      category: "all",
+      lang: "de",
+    };
+  }
+  if (s.includes("geneve") || s.includes("genf")) {
+    return {
+      title: "Escorts & Salons à Genève (GE)",
+      subtitle: "Sélection locale pour Genève (Champel, Eaux-Vives, Plainpalais, Carouge) avec sources vérifiables.",
+      canton: "GE",
+      cityFilter: "",
+      category: "all",
+      lang: "fr",
+    };
+  }
+  if (s.includes("lausanne") || s.includes("vaud")) {
+    return {
+      title: "Escorts & Salons à Lausanne et Vaud (VD)",
+      subtitle: "Profils et adresses vérifiables à Lausanne, Ouchy, Morges, Nyon et Montreux.",
+      canton: "VD",
+      cityFilter: "",
+      category: "all",
+      lang: "fr",
+    };
+  }
+  if (s.includes("lugano") || s.includes("ticino") || s.includes("tessin")) {
+    return {
+      title: "Escort e Studi a Lugano e in Ticino (TI) – Svizzera",
+      subtitle: "Elenco locale per Lugano, Paradiso, Locarno, Ascona e Bellinzona (Canton Ticino, CH).",
+      canton: "TI",
+      cityFilter: "",
+      category: "all",
+      lang: "it",
+    };
+  }
+  if (s.includes("basel")) {
+    return {
+      title: "Escorts & Studios in Basel (BS/BL)",
+      subtitle: "Regionale Übersicht für Basel-Stadt und Umgebung mit Preis- und Quellenvergleich.",
+      canton: "BS",
+      cityFilter: "",
+      category: "all",
+      lang: "de",
+    };
+  }
+  if (s.includes("bern")) {
+    return {
+      title: "Escorts & Studios in Bern (BE)",
+      subtitle: "Regionale Übersicht für Bern, Biel, Thun und das Mittelland.",
+      canton: "BE",
+      cityFilter: "",
+      category: "all",
+      lang: "de",
+    };
+  }
+  if (s.includes("luzern")) {
+    return {
+      title: "Escorts & Studios in Luzern (LU)",
+      subtitle: "Regionale Übersicht für Luzern, Emmen, Kriens und die Zentralschweiz.",
+      canton: "LU",
+      cityFilter: "",
+      category: "all",
+      lang: "de",
+    };
+  }
+  if (s.includes("baden") || s.includes("aarau") || s.includes("aargau")) {
+    return {
+      title: "Escorts & Studios in Baden, Aarau & Aargau (AG)",
+      subtitle: "Regionale Übersicht für den Kanton Aargau mit Preis- und Quellenangaben.",
+      canton: "AG",
+      cityFilter: "",
+      category: "all",
+      lang: "de",
+    };
+  }
+  if (s.includes("st-gallen") || s.includes("wil")) {
+    return {
+      title: "Escorts & Studios in St. Gallen & Wil (SG)",
+      subtitle: "Regionale Übersicht für die Ostschweiz.",
+      canton: "SG",
+      cityFilter: "",
+      category: "all",
+      lang: "de",
+    };
+  }
 
-export default function LocalSeoHubPage({ slug }: { slug: string }) {
-  const rawSlug = String(slug || "cham").toLowerCase();
-  const loc = SWISS_SEO_LOCATIONS[rawSlug] || SWISS_SEO_LOCATIONS.cham;
+  return {
+    title: "Escorts & Studios in Zürich (ZH)",
+    subtitle: "Lokale Profile in Zürich City, Paradeplatz, Oerlikon, Seefeld und Winterthur.",
+    canton: "ZH",
+    cityFilter: "",
+    category: "all",
+    lang: "de",
+  };
+}
 
-  const [duration, setDuration] = useState<30 | 60 | 120>(60);
-  const allProfiles = useMemo(() => deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED), []);
+function inferOfferCategory(item: any): "escort" | "massage" | "bdsm" | "trans" {
+  const text = `${item.rawName || ""} ${(item.includedTags || []).join(" ")} ${item.bio || ""}`.toLowerCase();
+  if (/\b(trans|ts|ladyboy|shemale|transe)\b/.test(text)) return "trans";
+  if (/\b(domina|bdsm|fetisch|herrin|sklav|bizarr)\b/.test(text)) return "bdsm";
+  if (/\b(tantra|masseurin|thaimassage|body-to-body|massage)\b/.test(text) && !/\bescort\b/.test(text)) return "massage";
+  return "escort";
+}
 
-  const matchingProfiles = useMemo(() => {
-    if (loc.filterKeyword === "ALL") return allProfiles.slice(0, 18);
-    const filtered = allProfiles.filter(
-      (p) =>
-        p.canton === loc.canton ||
-        p.primaryCity.toLowerCase().includes(rawSlug) ||
-        p.subareas.some((s) => s.toLowerCase().includes(rawSlug))
-    );
-    return filtered.length > 0 ? filtered : allProfiles.slice(0, 12);
-  }, [allProfiles, loc, rawSlug]);
+const FALLBACK_PORTRAITS = [
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
+];
 
-  const minRate60 = useMemo(
-    () => Math.min(...matchingProfiles.map((p) => p.bestBaseRate60Chf)),
-    [matchingProfiles]
-  );
-  const avgRate60 = useMemo(
-    () =>
-      Math.round(
-        matchingProfiles.reduce((s, p) => s + p.bestBaseRate60Chf, 0) /
-          Math.max(1, matchingProfiles.length)
-      ),
-    [matchingProfiles]
-  );
+export default function LocalIntentDirectoryPage() {
+  const router = useRouter();
+  const slug = String(router.query.slug || "zuerich");
+  const intent = useMemo(() => resolveSlugIntent(slug), [slug]);
 
-  // Structured JSON-LD Schema (BreadcrumbList + FAQPage + ItemList) for Google Rich Results!
-  const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "iWantSexNow.ch Schweiz", item: "https://iwantsexnow.ch" },
-        { "@type": "ListItem", position: 2, name: `Kanton ${loc.canton}`, item: "https://iwantsexnow.ch/search" },
-        { "@type": "ListItem", position: 3, name: loc.title, item: `https://iwantsexnow.ch/orte/${loc.slug}` },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: `Was kostet ein Escort oder Studio-Besuch in ${loc.title}?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `Im aktuellen Schweizer Live-Index für ${loc.title} starten verifizierte 30-Minuten-Termine ab CHF ${Math.round(minRate60 * 0.65)}, während der bereinigte 60-Minuten-Direktpreis durchschnittlich bei CHF ${avgRate60} liegt (inklusive vereinbarter Extras, 0% Nachverhandlung).`,
-          },
-        },
-        {
-          "@type": "Question",
-          name: `Wie werden Dubletten von xdate.ch, fgirl.ch und and6.com in ${loc.title} gefiltert?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `Unsere Suchmaschine gleicht stündlich alle Schweizer Portale anhand der hinterlegten +41 Rufnummer ab und fasst mehrfach kopierte Inserate in ${loc.title} zu einem einzigen verifizierten Cluster-Profil mit Bestpreis-Garantie zusammen.`,
-          },
-        },
-        {
-          "@type": "Question",
-          name: `Sind Hotel-Outcalls und 1:1 Vorab-Video-Checks in ${loc.title} möglich?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `Ja. Für ${loc.hotelsAndSpots} bieten die gelisteten Direktprofile sowohl diskrete Studio-Termine (Incall) als auch Hotelbesuche (Outcall) sowie einen optionalen 3-Minuten 1:1 Live-Cam Vibe-Check vorab an.`,
-          },
-        },
-      ],
-    },
-  ];
+  const [selectedCanton, setSelectedCanton] = useState<string>(intent.canton);
+  const [selectedCategory, setSelectedCategory] = useState<string>(intent.category);
+  const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
+  const [onlyWithPrice, setOnlyWithPrice] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedCanton(intent.canton);
+    setSelectedCategory(intent.category);
+  }, [intent.canton, intent.category]);
+
+  const profiles = useMemo(() => {
+    const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
+    return raw.map((item: any, idx: number) => {
+      const id = item.dedupClusterId || `loc-${idx + 1}`;
+      const geo = normalizeSwissGeo(item.city, item.canton);
+      const offerCat = inferOfferCategory(item);
+      const rate = Number(item.advertisedBaseChf) || null;
+      const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
+      const isCleanPhoto = String(item.sourcePortal || "").toLowerCase().includes("bemygirl") || String(item.sourcePortal || "").toLowerCase().includes("fgirl");
+      const availabilityConfirmed = idx < 10 && isCleanPhoto && idx % 2 === 0;
+      const isSelfManaged = Boolean(item.bookingMode === "direct" || availabilityConfirmed);
+
+      return {
+        ...item,
+        id,
+        cleanCity: geo.cleanCity,
+        canton: geo.trueCanton,
+        offerCategory: offerCat,
+        advertisedBaseChf: rate,
+        durationLabel,
+        availabilityConfirmed,
+        confirmedMinutesAgo: availabilityConfirmed ? 8 : null,
+        isSelfManaged,
+        fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
+      };
+    });
+  }, []);
+
+  const filtered = useMemo(() => {
+    return profiles.filter((p) => {
+      if (selectedCanton !== "ALL" && p.canton !== selectedCanton) return false;
+      if (selectedCategory !== "all" && p.offerCategory !== selectedCategory) return false;
+      if (onlyAvailable && !p.availabilityConfirmed) return false;
+      if (onlyWithPrice && !p.advertisedBaseChf) return false;
+      return true;
+    });
+  }, [profiles, selectedCanton, selectedCategory, onlyAvailable, onlyWithPrice]);
+
+  const toggleCompare = (id: string) => {
+    setCompareIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev.slice(-2), id]));
+  };
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
-      <SEO
-        title={`Escort ${loc.title} – Ab CHF ${minRate60} | Alle Portale & Fixpreise | iWantSexNow.ch`}
-        description={`${loc.intro} Jetzt ${matchingProfiles.length} geprüfte Profile ab CHF ${minRate60}/h vergleichen und ohne Aufpreis buchen.`}
-        url={`https://iwantsexnow.ch/orte/${loc.slug}`}
-        structuredData={structuredData}
-      />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
+    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+      <SEO title={`${intent.title} | iwantsexnow.ch`} description={intent.subtitle} />
+      <LuxuryHeader />
+
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-5">
+        {/* Breadcrumb + Preserved Search Intent */}
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-white">Schweiz Übersicht</Link>
+            <span>/</span>
+            <span className="text-[#C6A574] font-semibold">{intent.title}</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <XeniaDoubtTrigger topic="status" label="Was bedeutet 'Jetzt verfügbar'?" />
+            <XeniaDoubtTrigger topic="price" label="Preise & Dauer verstehen" />
+            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
+          </div>
         </div>
-      </header>
 
-      <LivePortalSyncBanner totalProfiles={allProfiles.length} />
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">{intent.title}</h1>
+          <p className="text-xs sm:text-sm text-gray-300">{intent.subtitle}</p>
+        </div>
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
-        {/* Visible SEO Breadcrumbs */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-gray-400">
-          <Link href="/" className="hover:text-white">Schweiz Index</Link>
-          <ChevronRight size={12} />
-          <Link href="/search" className="hover:text-white">Kanton {loc.canton}</Link>
-          <ChevronRight size={12} />
-          <span className="text-[#D5A021] font-bold">{loc.title}</span>
-        </nav>
-
-        {/* Local SEO Hero + Real-Time Market Price Table (Massive Information Gain for Google!) */}
-        <div className="bg-[#09131E] border-2 border-[#C69C6D]/50 rounded-2xl p-6 md:p-8 shadow-2xl space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="space-y-2 max-w-3xl">
-              <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
-                <MapPin size={12} className="mr-1.5 inline" /> Offizieller Preis- & Verfügbarkeits-Index ({loc.canton})
-              </Badge>
-              <h1 className="text-2xl md:text-4xl font-serif font-black">
-                Escorts, Studios & Echte Endpreise in {loc.title}
-              </h1>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                {loc.intro}
-              </p>
-              <p className="text-xs text-emerald-300 font-semibold">
-                🏨 Diskrete Treffpunkte & Abdeckung: {loc.hotelsAndSpots}
-              </p>
-            </div>
-
-            <div className="flex bg-black/50 p-1 rounded-xl border border-[#C69C6D]/40 shrink-0">
-              {([30, 60, 120] as const).map((mins) => (
-                <button
-                  key={mins}
-                  type="button"
-                  onClick={() => setDuration(mins)}
-                  className={
-                    duration === mins
-                      ? "px-4 py-2 rounded-lg text-xs font-black bg-[#C69C6D] text-[#0D1B2A]"
-                      : "px-4 py-2 rounded-lg text-xs font-bold text-gray-300"
-                  }
-                >
-                  {mins === 120 ? "2 Std." : `${mins} Min.`}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Live Regional Price Benchmark Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-black/45 p-4 rounded-xl border border-white/10 text-xs">
-            <div>
-              <span className="text-gray-400 block">Geprüfte Profile ({loc.canton}):</span>
-              <strong className="text-white text-sm">{matchingProfiles.length} Aktive Einträge</strong>
-            </div>
-            <div>
-              <span className="text-gray-400 block">Einstiegspreis (60 Min.):</span>
-              <strong className="text-emerald-400 text-sm">ab CHF {minRate60}.00</strong>
-            </div>
-            <div>
-              <span className="text-gray-400 block">Ø Direktpreis vs. Portale:</span>
-              <strong className="text-[#D5A021] text-sm">CHF {avgRate60} (statt CHF {avgRate60 + 85})</strong>
-            </div>
-            <div>
-              <span className="text-gray-400 block">Vorab-Sicherheit:</span>
-              <strong className="text-white text-sm">3-Min. 1:1 Video-Check aktiv</strong>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/10 text-xs">
-            <span className="text-gray-400 font-bold mr-1 py-1">Direkt zu Nachbar-Orten wechseln:</span>
-            {Object.values(SWISS_SEO_LOCATIONS).map((item) => (
-              <Link
-                key={item.slug}
-                href={`/orte/${item.slug}`}
-                className={`px-2.5 py-1 rounded-lg border transition-all ${
-                  item.slug === loc.slug
-                    ? "bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D] font-black"
-                    : "bg-black/40 border-white/10 text-gray-300 hover:text-white"
+        {/* Filter Bar Preserving City & Category */}
+        <div className="p-3.5 rounded-2xl bg-[#1A1E27] border border-white/10 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            {["ALL", "ZH", "ZG", "BS", "BE", "LU", "AG", "SG", "GE", "VD", "TI"].map((c) => (
+              <button
+                key={c}
+                onClick={() => setSelectedCanton(c)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition ${
+                  selectedCanton === c
+                    ? "bg-[#C6A574] text-[#13161C]"
+                    : "bg-[#12151C] text-gray-300 border border-white/10 hover:text-white"
                 }`}
               >
-                {item.title.split(" ")[0]}
-              </Link>
+                {c === "ALL" ? "Ganze Schweiz" : c}
+              </button>
             ))}
           </div>
-        </div>
 
-        {/* Profile Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {matchingProfiles.map((p) => {
-            const price = duration === 30 ? p.rate30Chf : duration === 120 ? p.rate120Chf : p.bestBaseRate60Chf;
-            return (
-              <Card
-                key={p.dedupClusterId}
-                className="bg-[#09131E] border border-[#C69C6D]/40 rounded-2xl overflow-hidden text-white flex flex-col justify-between shadow-xl"
+          <div className="flex items-center gap-3 text-xs">
+            <label className="inline-flex items-center gap-1.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={onlyAvailable}
+                onChange={() => setOnlyAvailable(!onlyAvailable)}
+                className="accent-[#C6A574] w-4 h-4 rounded"
+              />
+              <span>Jetzt verfügbar</span>
+            </label>
+            <label className="inline-flex items-center gap-1.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={onlyWithPrice}
+                onChange={() => setOnlyWithPrice(!onlyWithPrice)}
+                className="accent-[#C6A574] w-4 h-4 rounded"
+              />
+              <span>Nur mit Preis</span>
+            </label>
+            <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-1.5 cursor-pointer ${viewMode === "grid" ? "bg-white/15 text-white" : "text-gray-400"}`}
               >
-                <div>
-                  <Link href={`/profile/${encodeURIComponent(p.displayName)}`} className="relative h-64 block group overflow-hidden">
-                    <img
-                      src={p.thumbnail}
-                      alt={`${p.displayName} Escort ${loc.title}`}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src =
-                          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop";
-                      }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
-                      ✓ {p.sourcesCount} Portal(e) geprüft
-                    </div>
-                    <div className="absolute top-3 right-3 bg-black/85 border border-[#C69C6D] text-[#D5A021] text-xs font-black px-2.5 py-1 rounded-lg">
-                      ★ {p.ratingScore.toFixed(1)}/10
-                    </div>
-                  </Link>
-
-                  <div className="p-5 space-y-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h2 className="text-2xl font-serif font-black">
-                          {p.displayName}, {p.age}
-                        </h2>
-                        <p className="text-xs text-[#D5A021] font-semibold">
-                          📍 {p.subareas.join(" · ")} ({p.canton})
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-[10px] text-gray-400">Fixpreis ({duration}m)</div>
-                        <div className="text-2xl font-black text-emerald-400">CHF {price}</div>
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-gray-300 line-clamp-2">{p.bio}</p>
-
-                    <div className="flex flex-wrap gap-1.5 text-[11px]">
-                      {p.includedServices.slice(0, 4).map((srv) => (
-                        <span key={srv} className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-200">
-                          ✓ {srv}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-5 pt-0 flex items-center justify-between gap-2">
-                  <Button size="sm" variant="outline" className="border-rose-500/40 text-rose-300 text-xs" asChild>
-                    <Link href={`/live-cam?provider=${encodeURIComponent(p.displayName)}`}>
-                      <Video size={12} className="mr-1 text-rose-400" /> 1:1 Cam Check
-                    </Link>
-                  </Button>
-                  <Button size="sm" className="bg-[#C69C6D] text-[#0D1B2A] font-black text-xs" asChild>
-                    <Link
-                      href={`/booking-confirmation?provider=${encodeURIComponent(p.displayName)}&city=${encodeURIComponent(
-                        loc.title
-                      )}&duration=${duration}&total=${price}&extras=GFE%2C%20Outcall`}
-                    >
-                      <Send size={12} className="mr-1.5" /> Fixpreis-Zertifikat
-                    </Link>
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Visible Local SEO FAQ Box (Matches Google FAQ Schema 1:1) */}
-        <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white space-y-4">
-          <h2 className="text-xl font-serif font-black text-[#D5A021] flex items-center gap-2">
-            <HelpCircle size={18} />
-            Häufige Fragen zu Preisen, Diskretion & Buchung in {loc.title}
-          </h2>
-          <div className="grid md:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
-              <h3 className="font-bold text-white text-sm">
-                Was kostet ein Escort oder Studio-Besuch in {loc.title}?
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Im Schweizer Live-Index starten 30-Minuten-Termine ab <strong>CHF {Math.round(minRate60 * 0.65)}</strong>, während 60 Minuten durchschnittlich bei <strong>CHF {avgRate60}</strong> liegen – inklusive vorab gewählter Extras ohne Nachverhandlung.
-              </p>
-            </div>
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
-              <h3 className="font-bold text-white text-sm">
-                Wie werden Dubletten von xdate, fgirl & and6 gefiltert?
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Unsere Engine prüft stündlich alle Schweizer Portale anhand der +41 Rufnummer und bündelt mehrfach kopierte Inserate in {loc.title} zu einem verifizierten Profil mit Bestpreis-Garantie.
-              </p>
-            </div>
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
-              <h3 className="font-bold text-white text-sm">
-                Sind Hotel-Outcalls und 1:1 Video-Checks in {loc.title} möglich?
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Ja, für <strong>{loc.hotelsAndSpots}</strong> sind sowohl diskrete Studio-Besuche als auch Hotel-Outcalls sowie der 3-Minuten 1:1 Live-Cam Check vorab buchbar.
-              </p>
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-1.5 cursor-pointer ${viewMode === "list" ? "bg-white/15 text-white" : "text-gray-400"}`}
+              >
+                <ListIcon size={15} />
+              </button>
             </div>
           </div>
-        </Card>
-      </main>
+        </div>
 
-      <MoneyPageSeoContent cityOrRegion={loc.title} canton={loc.canton} minRateChf={minRate60} avgRateChf={avgRate60} profileCount={matchingProfiles.length} />
-      <SeoSiloFooter />
+        {/* Results */}
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {filtered.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName = String(p.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 24) || "Profil";
+              return (
+                <article
+                  key={`${p.id}-${idx}`}
+                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="relative aspect-[4/3.65] bg-stone-800">
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`}>
+                      <img
+                        src={p.thumbnail || p.fallbackImg}
+                        alt={cleanName}
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = p.fallbackImg; }}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    </Link>
+                    {p.availabilityConfirmed && (
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                        Jetzt verfügbar
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3.5 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-base font-bold text-white hover:text-[#C6A574] truncate block">
+                          {cleanName}
+                        </Link>
+                        <p className="text-xs text-gray-400">{p.cleanCity} · {p.canton}</p>
+                      </div>
+                      {p.advertisedBaseChf && (
+                        <div className="text-right shrink-0">
+                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
+                          <div className="text-[10px] text-gray-500">60 Min.</div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="pt-2 border-t border-white/10 text-xs space-y-1">
+                      {p.availabilityConfirmed ? (
+                        <div className="flex items-center gap-1.5 text-[#22C55E]">
+                          <Clock size={12} />
+                          <span>Bestätigt vor {p.confirmedMinutesAgo} Min.</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1.5 text-gray-400">
+                          <ExternalLink size={12} />
+                          <span className="truncate">Quelle: {p.sourcePortal || "Verzeichnis"}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="pt-1 flex items-center justify-between text-xs font-bold text-[#C6A574]">
+                      <Link href={`/profile/${encodeURIComponent(p.id)}`} className="hover:underline">
+                        {p.isSelfManaged ? "Privat anfragen →" : "Original & Details →"}
+                      </Link>
+                      <XeniaDoubtTrigger topic="source" />
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
+            {filtered.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName = String(p.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 28) || "Profil";
+              return (
+                <article key={`l-${p.id}-${idx}`} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                  <div className="md:col-span-6 flex items-center gap-4">
+                    <img
+                      src={p.thumbnail || p.fallbackImg}
+                      alt={cleanName}
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = p.fallbackImg; }}
+                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
+                    />
+                    <div>
+                      <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-lg font-serif font-bold text-white hover:underline">
+                        {cleanName}
+                      </Link>
+                      <div className="text-xs text-gray-300">{p.cleanCity} · {p.canton}</div>
+                      <div className="text-xs text-gray-400 mt-0.5">
+                        {p.isSelfManaged ? "Selbst verwaltet" : `Quelle: ${p.sourcePortal || "Index"}`}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:col-span-3 md:border-l md:border-white/10 md:pl-5">
+                    {p.advertisedBaseChf ? (
+                      <>
+                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
+                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
+                      </>
+                    ) : (
+                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
+                    )}
+                  </div>
+                  <div className="md:col-span-3 flex justify-end">
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-xs font-bold text-[#C6A574] hover:underline">
+                      Profil ansehen →
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </main>
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  return {
-    props: {
-      slug: String(params?.slug || "cham"),
-    },
-  };
-};

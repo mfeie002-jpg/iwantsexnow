@@ -20,6 +20,7 @@ const CANONICAL_ROUTES = [
   "/escort-bern",
   "/escort-geneva",
   "/escort-lausanne",
+  "/escort-lugano",
   "/hotels",
   "/compare-escorts",
   "/orte/cham",

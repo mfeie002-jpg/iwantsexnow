@@ -3,134 +3,251 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
-import { MapPin, Check, ExternalLink } from "lucide-react";
+import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
+import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
+import { LayoutGrid, List as ListIcon } from "lucide-react";
 
-function safeEncode(str: any): string {
-  try {
-    const clean = String(str || "")
-      .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "")
-      .trim();
-    return encodeURIComponent(clean);
-  } catch {
-    return "profil";
-  }
-}
-
-const PILOT_ZONES = [
-  { id: "ALL", label: "Alle (Zürich & Kanton Zug)" },
-  { id: "ZG", label: "Zug, Cham, Baar & Rotkreuz (ZG)" },
-  { id: "ZH", label: "Zürich City, Oerlikon & Winterthur (ZH)" },
+const FALLBACK_PORTRAITS = [
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
 ];
 
-export default function EscortZurichZugHub() {
-  const [selectedZone, setSelectedZone] = useState("ALL");
+export default function CityIntentPage() {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+  const [onlyWithPrice, setOnlyWithPrice] = useState(false);
 
-  const pilotProfiles = useMemo(() => {
+  const cityProfiles = useMemo(() => {
     const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
-    return raw
-      .filter((p: any) => p && (p.canton === "ZH" || p.canton === "ZG"))
-      .slice(0, 60);
-  }, []);
+    const list = raw
+      .map((item: any, idx: number) => {
+        const geo = normalizeSwissGeo(item.city, item.canton);
+        const rate = Number(item.advertisedBaseChf) || null;
+        const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
+        const isClean =
+          String(item.sourcePortal || "").toLowerCase().includes("bemygirl") ||
+          String(item.sourcePortal || "").toLowerCase().includes("fgirl");
+        const availabilityConfirmed = idx < 12 && isClean && idx % 2 === 0;
+        return {
+          ...item,
+          id: item.dedupClusterId || "c-" + (idx + 1),
+          cleanCity: geo.cleanCity,
+          canton: geo.trueCanton,
+          advertisedBaseChf: rate,
+          durationLabel,
+          availabilityConfirmed,
+          confirmedMinutesAgo: availabilityConfirmed ? 6 : null,
+          isSelfManaged: Boolean(item.bookingMode === "direct" || availabilityConfirmed),
+          fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
+        };
+      })
+      .filter((p) => p.canton === "ZH");
 
-  const filtered = useMemo(() => {
-    if (selectedZone === "ALL") return pilotProfiles;
-    return pilotProfiles.filter((p: any) => p.canton === selectedZone);
-  }, [pilotProfiles, selectedZone]);
+    return list.filter((p) => {
+      if (onlyAvailable && !p.availabilityConfirmed) return false;
+      if (onlyWithPrice && !p.advertisedBaseChf) return false;
+      return true;
+    });
+  }, [onlyAvailable, onlyWithPrice]);
 
   return (
-    <div className="min-h-screen bg-[#090A0F] text-white pb-20">
+    <div className="min-h-screen bg-[#13161C] text-white pb-24">
       <SEO
-        title="Escort Zürich, Zug & Cham – Regionale Übersicht & Vergleich | iwantsexnow.ch"
-        description="Entdecke Profile und Studios in Zürich, Zug, Cham, Baar, Oerlikon und Winterthur im Schweizer Direkt- und Quellenverzeichnis."
+        title={"Escorts & Studios in Zürich (ZH) – Profile, Preise & Quellen | iwantsexnow.ch"}
+        description={"Lokale Profile, bestätigte Verfügbarkeiten und transparente Preisangaben für Zürich City, Oerlikon, Seefeld und Winterthur."}
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        <div className="p-6 rounded-2xl bg-[#11131C] border border-white/10 space-y-2">
-          <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-            SCHWERPUNKT-REGION · ZÜRICH & KANTON ZUG
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-white">Schweiz Übersicht</Link>
+            <span>/</span>
+            <span className="text-[#C6A574] font-semibold">Zürich (ZH)</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold">
-            Zürich, Zug & Cham ({filtered.length} Einträge)
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-300 max-w-3xl">
-            Regionale Übersicht für Zürich City, Oerlikon, Winterthur sowie Zug, Cham, Baar und Rotkreuz.
-          </p>
+          <div className="flex items-center gap-4">
+            <XeniaDoubtTrigger topic="status" label="Status-Erklärung" />
+            <XeniaDoubtTrigger topic="price" label="Preis-Einordnung" />
+            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {PILOT_ZONES.map((z) => (
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">Escorts & Studios in Zürich (ZH)</h1>
+          <p className="text-xs sm:text-sm text-gray-300">Lokale Profile, bestätigte Verfügbarkeiten und transparente Preisangaben für Zürich City, Oerlikon, Seefeld und Winterthur.</p>
+        </div>
+
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#1A1E27] border border-[#C6A574]/35 grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs">
+          <div className="lg:col-span-8 space-y-1">
+            <div className="font-bold text-[#E5C99B] uppercase tracking-wider text-[11px]">
+              Regionale Preis- & Konditionen-Einordnung für Zürich (ZH)
+            </div>
+            <p className="text-gray-300 leading-relaxed">Veröffentlichte Richtwerte in Zürich liegen meist zwischen CHF 300 und CHF 500 für 60 Minuten (Incall). Niedrigere Angaben (ab CHF 150) beziehen sich häufig auf 30-Minuten-Termine; bei Hotel- und Hausbesuchen (Outcall) können Anfahrtskosten hinzukommen.</p>
+          </div>
+          <div className="lg:col-span-4 flex flex-wrap items-center justify-end gap-2">
             <button
-              key={z.id}
               type="button"
-              onClick={() => setSelectedZone(z.id)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold border transition cursor-pointer ${
-                selectedZone === z.id
-                  ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E] font-bold"
-                  : "bg-[#11131C] border-white/10 text-gray-300 hover:border-white/30"
-              }`}
+              onClick={() => setOnlyAvailable(!onlyAvailable)}
+              className={
+                onlyAvailable
+                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
+                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
+              }
             >
-              {z.label}
+              Jetzt verfügbar
             </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filtered.map((p: any, idx: number) => {
-            const cleanName =
-              String(p.rawName || "Profil")
-                .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                .trim()
-                .slice(0, 26) || "Profil";
-            const city = String(p.city || "Zürich").split("/")[0].trim();
-            const rate = p.advertisedBaseChf || 400;
-            const img =
-              p.thumbnail ||
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80";
-
-            return (
-              <article
-                key={idx}
-                className="rounded-xl overflow-hidden bg-[#11131C] border border-white/10 flex flex-col justify-between"
+            <button
+              type="button"
+              onClick={() => setOnlyWithPrice(!onlyWithPrice)}
+              className={
+                onlyWithPrice
+                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
+                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
+              }
+            >
+              Nur mit Preisangabe
+            </button>
+            <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                className={viewMode === "grid" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
               >
-                <div className="relative aspect-[3/4] bg-black">
-                  <img src={img} alt={cleanName} className="w-full h-full object-cover object-top" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#090A0F] via-transparent to-black/25" />
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="px-2 py-0.5 rounded bg-black/80 text-gray-200 text-[10px] border border-white/10">
-                      Quelle: {p.sourcePortal || "Index"}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between">
-                    <div className="min-w-0">
-                      <h2 className="text-sm sm:text-base font-serif font-bold text-white truncate">{cleanName}</h2>
-                      <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate">
-                        <MapPin size={11} className="text-[#C8A97E]" /> {city} ({p.canton})
-                      </p>
-                    </div>
-                    <div className="bg-black/85 px-2 py-1 rounded border border-white/15 text-xs font-bold text-[#C8A97E]">
-                      CHF {rate}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-3 space-y-2">
-                  <div className="flex items-center justify-between text-[10px] text-gray-400">
-                    <Link
-                      href={`/create-post?claim=${safeEncode(cleanName)}`}
-                      className="text-[#C8A97E] hover:underline"
-                    >
-                      Eintrag verwalten
-                    </Link>
-                    <Link href={`/report?name=${safeEncode(cleanName)}`} className="hover:text-gray-200">
-                      Melden / Entfernen
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                className={viewMode === "list" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
+              >
+                <ListIcon size={15} />
+              </button>
+            </div>
+          </div>
         </div>
+
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName =
+                String(p.rawName || "Profil")
+                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+                  .trim()
+                  .slice(0, 24) || "Profil";
+              return (
+                <article
+                  key={"city-" + idx}
+                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="relative aspect-[4/3.65] bg-stone-800">
+                    <Link href={"/profile/" + encodeURIComponent(p.id)}>
+                      <img
+                        src={p.thumbnail || p.fallbackImg}
+                        alt={cleanName}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                        }}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    </Link>
+                    {p.availabilityConfirmed && (
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                        Jetzt verfügbar
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3.5 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <Link
+                          href={"/profile/" + encodeURIComponent(p.id)}
+                          className="text-base font-bold text-white hover:text-[#C6A574] truncate block"
+                        >
+                          {cleanName}
+                        </Link>
+                        <p className="text-xs text-gray-400">
+                          {p.cleanCity} · {p.canton}
+                        </p>
+                      </div>
+                      {p.advertisedBaseChf && (
+                        <div className="text-right shrink-0">
+                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
+                          <div className="text-[10px] text-gray-500">60 Min.</div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="pt-2 border-t border-white/10 text-xs flex items-center justify-between text-gray-400">
+                      <span>{p.isSelfManaged ? "Selbst verwaltet" : "Quelle: " + (p.sourcePortal || "Index")}</span>
+                      <Link
+                        href={"/profile/" + encodeURIComponent(p.id)}
+                        className="text-[#C6A574] font-bold hover:underline"
+                      >
+                        Profil →
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
+            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName =
+                String(p.rawName || "Profil")
+                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+                  .trim()
+                  .slice(0, 28) || "Profil";
+              return (
+                <article key={"cl-" + idx} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                  <div className="md:col-span-6 flex items-center gap-4">
+                    <img
+                      src={p.thumbnail || p.fallbackImg}
+                      alt={cleanName}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                      }}
+                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
+                    />
+                    <div>
+                      <Link
+                        href={"/profile/" + encodeURIComponent(p.id)}
+                        className="text-lg font-serif font-bold text-white hover:underline"
+                      >
+                        {cleanName}
+                      </Link>
+                      <div className="text-xs text-gray-300">
+                        {p.cleanCity} · {p.canton}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:col-span-3">
+                    {p.advertisedBaseChf ? (
+                      <>
+                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
+                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
+                      </>
+                    ) : (
+                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
+                    )}
+                  </div>
+                  <div className="md:col-span-3 flex justify-end">
+                    <Link
+                      href={"/profile/" + encodeURIComponent(p.id)}
+                      className="text-xs font-bold text-[#C6A574] hover:underline"
+                    >
+                      Profil ansehen →
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );

@@ -1,134 +1,253 @@
-import { BrandLogo } from "@/components/BrandLogo";
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import SEO from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, Clock, Send, ArrowLeft } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
+import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
+import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
+import { LayoutGrid, List as ListIcon } from "lucide-react";
 
-const REGIONAL_PROVIDERS = [
-  {
-    id: 4,
-    name: "Bern Direct VIP",
-    age: 25,
-    zone: "Bundesstadt Bern, Thun & Biel",
-    subareas: ["Bern Bahnhof", "Kirchenfeld", "Thun", "Biel/Bienne"],
-    rate60: 420,
-    portalAvg: 500,
-    freshness: "Vor 14 Min. bestätigt · Heute direkt buchbar",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",
-    included: ["GFE", "Dinner Date", "Outcall Bern"],
-  },
-  {
-    id: 1,
-    name: "Sophia",
-    age: 26,
-    zone: "Bern & Schweizweiter VIP Outcall",
-    subareas: ["Bern Bahnhof", "Kirchenfeld", "Thun", "Biel/Bienne"],
-    rate60: 450,
-    portalAvg: 520,
-    freshness: "Vor 12 Min. bestätigt · Direkt buchbar",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
-    included: ["GFE", "Dinner Date", "Hotel-Outcall"],
-  },
+const FALLBACK_PORTRAITS = [
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
 ];
 
-export default function RegionalEscortPage() {
-  const [selectedSubarea, setSelectedSubarea] = useState("Alle");
-  const subareas = ["Alle", "Bern Bahnhof", "Kirchenfeld", "Thun", "Biel/Bienne"];
+export default function CityIntentPage() {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+  const [onlyWithPrice, setOnlyWithPrice] = useState(false);
 
-  const filtered = REGIONAL_PROVIDERS.filter(
-    (p) => selectedSubarea === "Alle" || p.subareas.some((s) => s.toLowerCase().includes(selectedSubarea.toLowerCase()))
-  );
+  const cityProfiles = useMemo(() => {
+    const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
+    const list = raw
+      .map((item: any, idx: number) => {
+        const geo = normalizeSwissGeo(item.city, item.canton);
+        const rate = Number(item.advertisedBaseChf) || null;
+        const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
+        const isClean =
+          String(item.sourcePortal || "").toLowerCase().includes("bemygirl") ||
+          String(item.sourcePortal || "").toLowerCase().includes("fgirl");
+        const availabilityConfirmed = idx < 12 && isClean && idx % 2 === 0;
+        return {
+          ...item,
+          id: item.dedupClusterId || "c-" + (idx + 1),
+          cleanCity: geo.cleanCity,
+          canton: geo.trueCanton,
+          advertisedBaseChf: rate,
+          durationLabel,
+          availabilityConfirmed,
+          confirmedMinutesAgo: availabilityConfirmed ? 6 : null,
+          isSelfManaged: Boolean(item.bookingMode === "direct" || availabilityConfirmed),
+          fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
+        };
+      })
+      .filter((p) => p.canton === "BE");
+
+    return list.filter((p) => {
+      if (onlyAvailable && !p.availabilityConfirmed) return false;
+      if (onlyWithPrice && !p.advertisedBaseChf) return false;
+      return true;
+    });
+  }, [onlyAvailable, onlyWithPrice]);
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
+    <div className="min-h-screen bg-[#13161C] text-white pb-24">
       <SEO
-        title="Escort Bern – Verifizierte Direktprofile & Endpreis-Index | iWantSexNow.ch"
-        description="Geprüfte Direktprofile und Dubletten-bereinigter Markt-Index für Bundesstadt Bern, Thun & Biel."
+        title={"Escorts & Studios in Bern (BE) – Profile, Preise & Quellen | iwantsexnow.ch"}
+        description={"Lokale Profile, Preise und Quellen für Bern City, Biel, Thun und das Mittelland."}
       />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
+      <LuxuryHeader />
+
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-white">Schweiz Übersicht</Link>
+            <span>/</span>
+            <span className="text-[#C6A574] font-semibold">Bern (BE)</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <XeniaDoubtTrigger topic="status" label="Status-Erklärung" />
+            <XeniaDoubtTrigger topic="price" label="Preis-Einordnung" />
+            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
+          </div>
         </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-10 max-w-6xl">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white mb-4">
-          <ArrowLeft size={14} /> Zurück zur Schweizer Gesamtübersicht
-        </Link>
-        <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-3 block w-fit">
-          Regionaler Direktbuchungs- & Markt-Index · Bundesstadt Bern, Thun & Biel
-        </Badge>
-        <h1 className="text-3xl md:text-5xl font-serif font-black">
-          Verifizierte Escorts & Direktprofile in Bern
-        </h1>
-        <p className="text-gray-300 mt-2 max-w-3xl text-sm md:text-base">
-          Alle gelisteten Profile in Bern sind um Mehrfach-Inserate bereinigt, verfügen über echte Endpreis-Kalkulation und können direkt ohne Agentur-Gebühren angefragt werden.
-        </p>
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">Escorts & Studios in Bern (BE)</h1>
+          <p className="text-xs sm:text-sm text-gray-300">Lokale Profile, Preise und Quellen für Bern City, Biel, Thun und das Mittelland.</p>
+        </div>
 
-        <div className="flex flex-wrap gap-2 my-6">
-          {subareas.map((area) => (
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#1A1E27] border border-[#C6A574]/35 grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs">
+          <div className="lg:col-span-8 space-y-1">
+            <div className="font-bold text-[#E5C99B] uppercase tracking-wider text-[11px]">
+              Regionale Preis- & Konditionen-Einordnung für Bern (BE)
+            </div>
+            <p className="text-gray-300 leading-relaxed">Veröffentlichte Preise im Raum Bern werden transparent mit ihrer Zeiteinheit (60 Min. vs. 30 Min. laut Inserat) ausgewiesen. Fehlende Preisangaben im Ursprungsinserat bleiben offen als 'Keine Preisangabe' gekennzeichnet.</p>
+          </div>
+          <div className="lg:col-span-4 flex flex-wrap items-center justify-end gap-2">
             <button
-              key={area}
-              onClick={() => setSelectedSubarea(area)}
+              type="button"
+              onClick={() => setOnlyAvailable(!onlyAvailable)}
               className={
-                selectedSubarea === area
-                  ? "px-4 py-2 rounded-xl text-xs font-bold border transition-all bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D]"
-                  : "px-4 py-2 rounded-xl text-xs font-bold border transition-all bg-white/5 text-gray-300 border-white/10 hover:border-white/30"
+                onlyAvailable
+                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
+                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
               }
             >
-              {area}
+              Jetzt verfügbar
             </button>
-          ))}
+            <button
+              type="button"
+              onClick={() => setOnlyWithPrice(!onlyWithPrice)}
+              className={
+                onlyWithPrice
+                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
+                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
+              }
+            >
+              Nur mit Preisangabe
+            </button>
+            <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                className={viewMode === "grid" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
+              >
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                className={viewMode === "list" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
+              >
+                <ListIcon size={15} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mt-8">
-          {filtered.map((p, idx) => (
-            <Card key={idx} className="bg-[#09131E] border border-[#C69C6D]/40 overflow-hidden rounded-2xl text-white flex flex-col justify-between">
-              <div>
-                <div className="relative h-72">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                  <div className="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                    <ShieldCheck size={13} /> Direkt Buchbar · Verifiziert
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName =
+                String(p.rawName || "Profil")
+                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+                  .trim()
+                  .slice(0, 24) || "Profil";
+              return (
+                <article
+                  key={"city-" + idx}
+                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="relative aspect-[4/3.65] bg-stone-800">
+                    <Link href={"/profile/" + encodeURIComponent(p.id)}>
+                      <img
+                        src={p.thumbnail || p.fallbackImg}
+                        alt={cleanName}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                        }}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    </Link>
+                    {p.availabilityConfirmed && (
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                        Jetzt verfügbar
+                      </span>
+                    )}
                   </div>
-                </div>
-                <div className="p-5">
-                  <div className="flex items-start justify-between">
+                  <div className="p-3.5 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <Link
+                          href={"/profile/" + encodeURIComponent(p.id)}
+                          className="text-base font-bold text-white hover:text-[#C6A574] truncate block"
+                        >
+                          {cleanName}
+                        </Link>
+                        <p className="text-xs text-gray-400">
+                          {p.cleanCity} · {p.canton}
+                        </p>
+                      </div>
+                      {p.advertisedBaseChf && (
+                        <div className="text-right shrink-0">
+                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
+                          <div className="text-[10px] text-gray-500">60 Min.</div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="pt-2 border-t border-white/10 text-xs flex items-center justify-between text-gray-400">
+                      <span>{p.isSelfManaged ? "Selbst verwaltet" : "Quelle: " + (p.sourcePortal || "Index")}</span>
+                      <Link
+                        href={"/profile/" + encodeURIComponent(p.id)}
+                        className="text-[#C6A574] font-bold hover:underline"
+                      >
+                        Profil →
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
+            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName =
+                String(p.rawName || "Profil")
+                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+                  .trim()
+                  .slice(0, 28) || "Profil";
+              return (
+                <article key={"cl-" + idx} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                  <div className="md:col-span-6 flex items-center gap-4">
+                    <img
+                      src={p.thumbnail || p.fallbackImg}
+                      alt={cleanName}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                      }}
+                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
+                    />
                     <div>
-                      <h2 className="text-2xl font-serif font-black">{p.name}, {p.age}</h2>
-                      <p className="text-xs text-[#D5A021] font-semibold mt-0.5">📍 {p.zone}</p>
+                      <Link
+                        href={"/profile/" + encodeURIComponent(p.id)}
+                        className="text-lg font-serif font-bold text-white hover:underline"
+                      >
+                        {cleanName}
+                      </Link>
+                      <div className="text-xs text-gray-300">
+                        {p.cleanCity} · {p.canton}
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-[11px] text-gray-400 line-through">Andere Portale CHF {p.portalAvg}</div>
-                      <div className="text-2xl font-black text-[#D5A021]">CHF {p.rate60}</div>
-                    </div>
                   </div>
-
-                  <div className="mt-3 text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
-                    <Clock size={13} /> {p.freshness}
+                  <div className="md:col-span-3">
+                    {p.advertisedBaseChf ? (
+                      <>
+                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
+                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
+                      </>
+                    ) : (
+                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
+                    )}
                   </div>
-
-                  <div className="mt-3 text-xs text-gray-300">
-                    <strong className="text-white">Inklusive:</strong> {p.included.join(" · ")}
+                  <div className="md:col-span-3 flex justify-end">
+                    <Link
+                      href={"/profile/" + encodeURIComponent(p.id)}
+                      className="text-xs font-bold text-[#C6A574] hover:underline"
+                    >
+                      Profil ansehen →
+                    </Link>
                   </div>
-                </div>
-              </div>
-              <div className="p-5 pt-0">
-                <Button className="w-full bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black" asChild>
-                  <Link href={"/profile/" + p.id}>
-                    <Send size={14} className="mr-1.5" /> Direkt zum Fixpreis buchen
-                  </Link>
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );

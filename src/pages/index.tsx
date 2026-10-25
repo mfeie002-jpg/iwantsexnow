@@ -4,6 +4,7 @@ import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { SWISS_PORTAL_TOP10 } from "@/data/portalReviewsData";
+import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
 import {
   Check,
   Clock,
@@ -1000,7 +1001,7 @@ export default function HomePage() {
 
                   <span className="hidden md:inline-flex items-center gap-1.5 text-xs text-gray-400 border-l border-white/10 pl-3">
                     <Info size={13} />
-                    <span>Verfügbarkeit wird vom Anbieter bestätigt · {filteredProfiles.length} Profile</span>
+                    <span>Verfügbarkeit wird vom Anbieter bestätigt · {filteredProfiles.length} Profile</span> <XeniaDoubtTrigger topic="status" label="Status-Hilfe" /> <XeniaDoubtTrigger topic="price" label="Preis-Hilfe" />
                   </span>
                 </>
               )}

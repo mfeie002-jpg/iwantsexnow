@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { StencilSerifX } from "@/components/BrandLogo";
-import { ChevronDown, Menu, X, Sparkles, SlidersHorizontal, Building2, Scale, UserCheck } from "lucide-react";
+import { ChevronDown, Menu, X, Sparkles, Building2, Scale, UserCheck, Globe } from "lucide-react";
 
 const PROVIDER_MENU = [
   { href: "/advertise", title: "Für Anbieter: Übersicht & Vorteile", sub: "Kostenlose Profilkontrolle, Statistik & Konditionen" },
@@ -12,18 +12,30 @@ const PROVIDER_MENU = [
   { href: "/report", title: "Profil melden oder entfernen", sub: "Kostenloser Widerspruch ohne Registrierungspflicht" },
 ];
 
+const LANGUAGE_HUBS = [
+  { code: "DE", label: "Deutsch (Schweiz)", href: "/" },
+  { code: "FR", label: "Français (Genève & Vaud)", href: "/escort-geneva" },
+  { code: "IT", label: "Italiano (Lugano & Ticino)", href: "/escort-lugano" },
+];
+
 export function LuxuryHeader() {
   const router = useRouter();
   const [providerOpen, setProviderOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (path: string) => router.pathname === path || router.pathname.startsWith(path + "/");
+  const currentLang =
+    router.pathname.includes("geneva") || router.pathname.includes("lausanne") || router.asPath.includes("geneve")
+      ? "FR"
+      : router.pathname.includes("lugano") || router.asPath.includes("lugano")
+      ? "IT"
+      : "DE";
 
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#12151C]/95 backdrop-blur-xl text-white">
         <div className="max-w-[1380px] mx-auto px-6 sm:px-10 h-14 sm:h-16 flex items-center justify-between gap-4">
-          {/* Left: Brand Wordmark with Subtitle "Schweizer Profilverzeichnis" */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group shrink-0">
               <div className="w-9 h-9 rounded-lg bg-[#1A1E29] border border-[#C6A574]/50 flex items-center justify-center">
@@ -41,42 +53,40 @@ export function LuxuryHeader() {
               </div>
             </Link>
 
-            {/* Center/Left Primary Navigation: Profile · Clubs & Studios · Portalvergleich */}
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Hauptnavigation">
               <Link
                 href="/"
-                className={`py-5 border-b-2 transition ${
+                className={
                   router.pathname === "/" || router.pathname === "/search"
-                    ? "border-[#C6A574] text-white font-semibold"
-                    : "border-transparent text-gray-300 hover:text-white"
-                }`}
+                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
+                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
+                }
               >
                 Profile
               </Link>
               <Link
                 href="/rankings"
-                className={`py-5 border-b-2 transition ${
+                className={
                   isActive("/rankings")
-                    ? "border-[#C6A574] text-white font-semibold"
-                    : "border-transparent text-gray-300 hover:text-white"
-                }`}
+                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
+                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
+                }
               >
                 Clubs & Studios
               </Link>
               <Link
                 href="/reviews"
-                className={`py-5 border-b-2 transition ${
+                className={
                   isActive("/reviews")
-                    ? "border-[#C6A574] text-white font-semibold"
-                    : "border-transparent text-gray-300 hover:text-white"
-                }`}
+                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
+                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
+                }
               >
                 Portalvergleich
               </Link>
             </nav>
           </div>
 
-          {/* Right: Für Anbieter · Login · DE */}
           <div className="flex items-center gap-2.5">
             <div
               className="relative hidden sm:block"
@@ -89,7 +99,7 @@ export function LuxuryHeader() {
                 className="px-3.5 py-2 rounded-lg border border-[#C6A574]/50 bg-[#C6A574]/10 hover:bg-[#C6A574]/20 text-[#E5C99B] text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
               >
                 <span>Für Anbieter</span>
-                <ChevronDown size={13} className={`transition-transform ${providerOpen ? "rotate-180" : ""}`} />
+                <ChevronDown size={13} className={providerOpen ? "transition-transform rotate-180" : "transition-transform"} />
               </button>
 
               {providerOpen && (
@@ -118,8 +128,41 @@ export function LuxuryHeader() {
               Login
             </Link>
 
-            <div className="hidden sm:flex items-center px-2.5 py-2 rounded-lg border border-white/15 bg-white/5 text-xs font-semibold text-gray-300">
-              DE
+            <div
+              className="relative hidden sm:block"
+              onMouseEnter={() => setLangOpen(true)}
+              onMouseLeave={() => setLangOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setLangOpen(!langOpen)}
+                className="px-2.5 py-2 rounded-lg border border-white/15 hover:border-white/30 bg-white/5 text-xs font-semibold text-gray-200 flex items-center gap-1 cursor-pointer"
+              >
+                <Globe size={13} className="text-[#C6A574]" />
+                <span>{currentLang}</span>
+                <ChevronDown size={12} />
+              </button>
+
+              {langOpen && (
+                <div className="absolute right-0 top-full pt-1.5 w-56 z-50">
+                  <div className="rounded-xl border border-white/15 bg-[#171A22] p-1.5 shadow-2xl space-y-0.5">
+                    {LANGUAGE_HUBS.map((l) => (
+                      <Link
+                        key={l.code}
+                        href={l.href}
+                        onClick={() => setLangOpen(false)}
+                        className={
+                          currentLang === l.code
+                            ? "block px-3 py-2 rounded-lg text-xs transition bg-[#C6A574] text-[#12151C] font-bold"
+                            : "block px-3 py-2 rounded-lg text-xs font-semibold transition text-gray-200 hover:bg-white/5"
+                        }
+                      >
+                        {l.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <button
@@ -133,12 +176,17 @@ export function LuxuryHeader() {
           </div>
         </div>
 
-        {/* Mobile Drawer */}
         {mobileOpen && (
           <div className="md:hidden border-t border-white/10 bg-[#12151C] px-4 py-4 space-y-3 text-sm">
             <div className="flex flex-col space-y-2">
               <Link href="/" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-white border-b border-white/5">
-                Profile entdecken
+                Profile entdecken (DE)
+              </Link>
+              <Link href="/escort-geneva" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
+                Français · Genève & Vaud (FR)
+              </Link>
+              <Link href="/escort-lugano" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
+                Italiano · Lugano & Ticino (IT)
               </Link>
               <Link href="/rankings" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
                 Clubs & Studios
@@ -146,35 +194,28 @@ export function LuxuryHeader() {
               <Link href="/reviews" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
                 Portalvergleich
               </Link>
-              <Link href="/advertise" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-[#C6A574] border-b border-white/5">
+              <Link href="/advertise" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-[#C6A574]">
                 Für Anbieter (Profil kostenlos verwalten)
-              </Link>
-              <Link href="/create-post" onClick={() => setMobileOpen(false)} className="py-2 text-xs text-gray-300">
-                → Bestehendes Profil übernehmen
-              </Link>
-              <Link href="/report" onClick={() => setMobileOpen(false)} className="py-2 text-xs text-gray-400">
-                → Profil melden oder entfernen
               </Link>
             </div>
           </div>
         )}
       </header>
 
-      {/* Mobile Bottom Bar */}
       <div className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/15 bg-[#12151C]/95 backdrop-blur-xl px-1 pt-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))] grid grid-cols-4 gap-1 text-[10px] font-semibold text-gray-400">
-        <Link href="/" className={`flex flex-col items-center py-1 ${router.pathname === "/" ? "text-[#C6A574] font-bold" : ""}`}>
+        <Link href="/" className={router.pathname === "/" ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
           <Sparkles size={16} />
           <span className="mt-0.5">Profile</span>
         </Link>
-        <Link href="/rankings" className={`flex flex-col items-center py-1 ${isActive("/rankings") ? "text-[#C6A574] font-bold" : ""}`}>
+        <Link href="/rankings" className={isActive("/rankings") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
           <Building2 size={16} />
           <span className="mt-0.5">Clubs</span>
         </Link>
-        <Link href="/reviews" className={`flex flex-col items-center py-1 ${isActive("/reviews") ? "text-[#C6A574] font-bold" : ""}`}>
+        <Link href="/reviews" className={isActive("/reviews") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
           <Scale size={16} />
           <span className="mt-0.5">Vergleich</span>
         </Link>
-        <Link href="/advertise" className={`flex flex-col items-center py-1 ${isActive("/advertise") ? "text-[#C6A574] font-bold" : ""}`}>
+        <Link href="/advertise" className={isActive("/advertise") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
           <UserCheck size={16} />
           <span className="mt-0.5">Für Anbieter</span>
         </Link>
