@@ -103,21 +103,7 @@ export default function HomePage() {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* Compact Theme Switcher */}
-            <div className="hidden sm:flex items-center bg-black/40 border border-white/10 rounded-lg p-0.5">
-              {(["A", "B", "C", "D"] as BrandThemeId[]).map((id) => (
-                <button
-                  key={id}
-                  onClick={() => setBrandTheme(id)}
-                  className={`px-2 py-1 rounded text-[10px] font-bold transition ${
-                    brandTheme === id ? "bg-[#C8A97E] text-[#0D1826]" : "text-gray-400 hover:text-white"
-                  }`}
-                  title={BRAND_THEMES[id].name}
-                >
-                  {id}
-                </button>
-              ))}
-            </div>
+            
 
             <Link
               href="/login"
