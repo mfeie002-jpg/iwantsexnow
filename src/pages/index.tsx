@@ -8,27 +8,23 @@ import indexStats from "@/data/index-stats.json";
 import {
   Check,
   MapPin,
-  ArrowUpRight,
-  ExternalLink,
+  Phone,
+  Search,
+  Sparkles,
   Building2,
   Scale,
   UserCheck,
-  Search,
-  Sparkles,
-  ShieldCheck,
+  ArrowUpRight,
+  ExternalLink,
   Info,
   RotateCcw,
   SlidersHorizontal,
-  Heart,
   Flame,
-  Sun,
-  Moon,
-  Compass,
 } from "lucide-react";
 
-export type WorldId = "A" | "B" | "C" | "D";
+export type FamiliarLayoutId = "1" | "2" | "3" | "4";
 
-// Intelligenter Schweizer Orts-zu-Kanton-Korrektor (Verhindert "Emmen (ZH)" oder "Basel (ZH)"!)
+// 1. Korrekte Schweizer Orts-zu-Kanton-Zuordnung (Kein "Emmen (ZH)" oder "Basel (ZH)" mehr!)
 function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanCity: string; trueCanton: string } {
   const firstPart = String(cityRaw || "Zürich").split("/")[0].split(",")[0].trim();
   const cLow = firstPart.toLowerCase();
@@ -38,12 +34,12 @@ function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanC
     ["basel", "BS"], ["liestal", "BL"], ["pratteln", "BL"],
     ["menziken", "AG"], ["aarau", "AG"], ["baden", "AG"], ["wettingen", "AG"], ["spreitenbach", "AG"], ["oftringen", "AG"], ["riniken", "AG"], ["schafisheim", "AG"], ["wohlen", "AG"], ["lenzburg", "AG"],
     ["zug", "ZG"], ["cham", "ZG"], ["baar", "ZG"], ["rotkreuz", "ZG"],
-    ["bern", "BE"], ["biel", "BE"], ["thun", "BE"], ["interlaken", "BE"], ["niederbipp", "BE"], ["langenthal", "BE"],
+    ["bern", "BE"], ["biel", "BE"], ["thun", "BE"], ["interlaken", "BE"], ["niederbipp", "BE"],
     ["st. gallen", "SG"], ["st gallen", "SG"], ["wil", "SG"], ["buchs", "SG"], ["rapperswil", "SG"], ["bad ragaz", "SG"],
     ["frauenfeld", "TG"], ["weinfelden", "TG"], ["kreuzlingen", "TG"],
-    ["solothurn", "SO"], ["olten", "SO"], ["härkingen", "SO"], ["grenchen", "SO"],
+    ["solothurn", "SO"], ["olten", "SO"], ["härkingen", "SO"],
     ["genève", "GE"], ["geneve", "GE"], ["genf", "GE"], ["carouge", "GE"],
-    ["lausanne", "VD"], ["montreux", "VD"], ["nyon", "VD"], ["vevey", "VD"],
+    ["lausanne", "VD"], ["montreux", "VD"], ["nyon", "VD"],
     ["lugano", "TI"], ["locarno", "TI"], ["bellinzona", "TI"],
     ["chur", "GR"], ["davos", "GR"], ["landquart", "GR"],
     ["altendorf", "SZ"], ["pfäffikon", "SZ"], ["wangen", "SZ"],
@@ -58,64 +54,51 @@ function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanC
   return { cleanCity: firstPart || "Zürich", trueCanton: String(fallbackCanton || "ZH").toUpperCase() };
 }
 
-// Erkennt, ob ein Profil in die Trans/TS-Rubrik gehört (damit wir sauber nach Rubrik filtern können)
-function inferGenderRubric(item: any): "female" | "trans" | "massage" {
+// 2. Vertraute Schweizer Standard-Rubriken (wie auf xdate.ch, and6.com & fgirl.ch)
+function inferFamiliarCategory(item: any): "girls" | "massage" | "bdsm" | "trans" {
   const text = `${item.rawName || ""} ${(item.includedTags || []).join(" ")} ${item.bio || ""}`.toLowerCase();
   if (/\b(trans|ts|ladyboy|shemale|transe)\b/.test(text)) return "trans";
+  if (/\b(domina|bdsm|fetisch|herrin|sklav|bizarr)\b/.test(text)) return "bdsm";
   if (/\b(tantra|masseurin|thaimassage|body-to-body|massage)\b/.test(text) && !/\bescort\b/.test(text)) return "massage";
-  return "female";
+  return "girls";
 }
 
-// Kuratierte, hochwertige Schweizer Städte-Karten mit echten Architektur-/Mood-Bildern
-const SWISS_CITY_HUBS = [
-  {
-    code: "ZH",
-    name: "Zürich & See",
-    sub: "City, Paradeplatz, Oerlikon & Winterthur",
-    image: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "ZG",
-    name: "Zug & Cham",
-    sub: "Baar, Cham, Rotkreuz & Ennetsee",
-    image: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "BS",
-    name: "Basel & Nordwest",
-    sub: "Basel-Stadt, Messe & Liestal",
-    image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "LU",
-    name: "Luzern & Zentral",
-    sub: "Luzern City, Emmen & Vierwaldstättersee",
-    image: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "BE",
-    name: "Bern & Mittelland",
-    sub: "Bern City, Thun, Biel & Interlaken",
-    image: "https://images.unsplash.com/photo-1594394489098-74ac04c0fc2e?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "AG",
-    name: "Aargau & Baden",
-    sub: "Baden, Aarau, Wettingen & Spreitenbach",
-    image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "SG",
-    name: "St. Gallen & Ost",
-    sub: "St. Gallen, Wil, Rapperswil & Bodensee",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    code: "GE",
-    name: "Genève & Lausanne",
-    sub: "Romandie, Lac Léman & Montreux",
-    image: "https://images.unsplash.com/photo-1574867155517-3628058e2f6c?auto=format&fit=crop&w=700&q=80",
-  },
+// Die 6 gelernten Haupt-Tabs, die jeder Schweizer Besucher von Xdate / And6 / Fgirl kennt
+const FAMILIAR_MAIN_TABS = [
+  { id: "girls", label: "Sie sucht Ihn / Escorts", badge: "Hauptkatalog" },
+  { id: "massage", label: "Erotische Massagen & Tantra", badge: "B2B & Nuru" },
+  { id: "bdsm", label: "Domina & BDSM", badge: "Fetisch" },
+  { id: "trans", label: "Transsexuelle / TS", badge: "TS" },
+  { id: "all", label: "Alle Inserate", badge: "Komplett" },
+];
+
+// Vertraute Regionen-Liste mit Schweizer Kantonskürzeln (wie auf and6.com / xdate.ch)
+const SWISS_REGIONS = [
+  { code: "ALL", name: "Alle Regionen (Schweiz)" },
+  { code: "ZH", name: "Zürich (Stadt & Region)" },
+  { code: "ZG", name: "Zug & Cham" },
+  { code: "AG", name: "Aargau (Baden / Aarau)" },
+  { code: "BS", name: "Basel & Nordwestschweiz" },
+  { code: "LU", name: "Luzern & Zentralschweiz" },
+  { code: "BE", name: "Bern & Mittelland" },
+  { code: "SG", name: "St. Gallen & Ostschweiz" },
+  { code: "SO", name: "Solothurn & Olten" },
+  { code: "TG", name: "Thurgau & Bodensee" },
+  { code: "GE", name: "Genève (Romandie)" },
+  { code: "VD", name: "Waadt / Lausanne" },
+];
+
+// Vertraute Schweizer Service-Filter (wie auf and6.com & xdate.ch)
+const FAMILIAR_SERVICES = [
+  { label: "Girlfriend Experience (GFE)", tag: "GFE" },
+  { label: "Haus- & Hotelbesuch (Outcall)", tag: "Outcall" },
+  { label: "Privat & Diskret empfangbar", tag: "Privat" },
+  { label: "Erotische / Tantra Massage", tag: "Massage" },
+  { label: "Zungenküsse & Zärtlichkeit", tag: "Küssen" },
+  { label: "Reife Frauen & MILF", tag: "MILF" },
+  { label: "Vollbusig / Kurvig (XXL)", tag: "XXL" },
+  { label: "Asiatin / Thai", tag: "Asia" },
+  { label: "Latina", tag: "Latina" },
 ];
 
 const FALLBACK_PORTRAITS = [
@@ -126,13 +109,14 @@ const FALLBACK_PORTRAITS = [
 ];
 
 export default function HomePage() {
-  const [world, setWorld] = useState<WorldId>("A");
-  const [activeRubric, setActiveRubric] = useState<"all" | "female" | "massage" | "trans">("female");
+  const [layout, setLayout] = useState<FamiliarLayoutId>("1");
+  const [activeTab, setActiveTab] = useState<"girls" | "massage" | "bdsm" | "trans" | "all">("girls");
   const [activeCanton, setActiveCanton] = useState<string>("ALL");
+  const [activeServiceTag, setActiveServiceTag] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [onlyConfirmedAvailable, setOnlyConfirmedAvailable] = useState<boolean>(false);
-  const [onlySelfManaged, setOnlySelfManaged] = useState<boolean>(false);
-  const [visibleCount, setVisibleCount] = useState<number>(28);
+  const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
+  const [onlyVerified, setOnlyVerified] = useState<boolean>(false);
+  const [visibleCount, setVisibleCount] = useState<number>(32);
   const [selectedIndexProfile, setSelectedIndexProfile] = useState<any>(null);
   const [vaultExtraProfiles, setVaultExtraProfiles] = useState<any[]>([]);
   const [vaultPage, setVaultPage] = useState<number>(1);
@@ -143,7 +127,6 @@ export default function HomePage() {
     states: {},
   });
 
-  const isLightWorld = world === "B";
   const totalClubsCount = Number((indexStats as any)?.totalEstablishmentsInVault) || 162;
   const totalVaultCount = Number((indexStats as any)?.totalRawListingsInVault) || 2838;
 
@@ -159,9 +142,10 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (!searchQuery.trim() && activeCanton === "ALL") return;
+    const qCombined = `${searchQuery} ${activeServiceTag}`.trim();
+    if (!qCombined && activeCanton === "ALL") return;
     const params = new URLSearchParams();
-    if (searchQuery.trim()) params.set("q", searchQuery.trim());
+    if (qCombined) params.set("q", qCombined);
     if (activeCanton !== "ALL") params.set("canton", activeCanton);
     params.set("page", "1");
     params.set("limit", "48");
@@ -174,14 +158,15 @@ export default function HomePage() {
         }
       })
       .catch(() => {});
-  }, [searchQuery, activeCanton]);
+  }, [searchQuery, activeServiceTag, activeCanton]);
 
   const loadMoreFromServerVault = async () => {
     setLoadingVault(true);
     try {
       const nextPage = vaultPage + 1;
+      const qCombined = `${searchQuery} ${activeServiceTag}`.trim();
       const params = new URLSearchParams();
-      if (searchQuery.trim()) params.set("q", searchQuery.trim());
+      if (qCombined) params.set("q", qCombined);
       if (activeCanton !== "ALL") params.set("canton", activeCanton);
       params.set("page", String(nextPage));
       params.set("limit", "48");
@@ -199,7 +184,7 @@ export default function HomePage() {
     setLoadingVault(false);
   };
 
-  // Bereinigte, ästhetisch sortierte Profilliste (Ohne 6navi-Wasserzeichen in Reihe 1 + echte Kantons-Zuordnung!)
+  // Aufbereitete Inserate (Cleane Bilder ohne 6navi-Wasserzeichen zuerst + echte Schweizer Kantons-Zuweisung)
   const enrichedProfiles = useMemo(() => {
     const rawFast = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
     const combined = [...rawFast, ...vaultExtraProfiles];
@@ -221,27 +206,34 @@ export default function HomePage() {
 
       const rawCity = st.city || item.city || "Zürich";
       const { cleanCity, trueCanton } = inferTrueSwissCanton(rawCity, st.canton || item.canton || "ZH");
-      const rubric = inferGenderRubric(item);
+      const category = inferFamiliarCategory(item);
 
       const isSelfManaged = Boolean(st.claimed || item.bookingMode === "direct");
       const isIdentityVerified = Boolean(st.identityVerified);
       const availabilityConfirmed = Boolean(st.availabilityConfirmed);
       const isSponsored = Boolean(st.sponsored);
 
-      // Qualitäts-Score für die Startseiten-Reihenfolge:
-      // Bevorzuge cleane High-Class Porträts (z.B. bemygirl / fgirl / xdate ohne dickes 6navi-Wasserzeichen) für die ersten Reihen!
       const portalLow = String(item.sourcePortal || "").toLowerCase();
       const thumbLow = String(item.thumbnail || "").toLowerCase();
       const hasHeavyWatermark = portalLow.includes("6navi") || thumbLow.includes("6navi") || thumbLow.includes("sexnavi");
-      const isBoutiquePhoto = portalLow.includes("bemygirl") || portalLow.includes("fgirl");
+      const isHighResPortal = portalLow.includes("bemygirl") || portalLow.includes("fgirl") || portalLow.includes("xdate");
 
-      const aestheticScore =
+      const qualityRank =
         (isSponsored ? 200 : 0) +
         (availabilityConfirmed ? 100 : 0) +
         (isIdentityVerified ? 80 : 0) +
         (isSelfManaged ? 60 : 0) +
-        (isBoutiquePhoto ? 40 : 0) +
-        (hasHeavyWatermark ? -35 : 15);
+        (item.rawPhone ? 25 : 0) +
+        (isHighResPortal ? 30 : 0) +
+        (hasHeavyWatermark ? -50 : 10);
+
+      // Kurze, vertraute Inserate-Headline wie auf xdate.ch / and6.com
+      const tagsList = Array.isArray(item.includedTags) && item.includedTags.length > 0
+        ? item.includedTags.slice(0, 3).join(" · ")
+        : "Privat & Diskret · Direktkontakt";
+      const adHeadline = st.bio || item.bio
+        ? String(st.bio || item.bio).slice(0, 68)
+        : `${tagsList} in ${cleanCity}`;
 
       uniqueList.push({
         ...item,
@@ -249,53 +241,68 @@ export default function HomePage() {
         rawName: st.displayName || item.rawName,
         cleanCity,
         canton: trueCanton,
-        rubric,
+        category,
+        adHeadline,
         advertisedBaseChf: st.rate60Chf || item.advertisedBaseChf,
         isSelfManaged,
         isIdentityVerified,
         availabilityConfirmed,
         isSponsored,
-        aestheticScore,
+        qualityRank,
         realViews: mt.views || 0,
         realDetailOpens: mt.detailOpens || 0,
         fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
       });
     }
 
-    uniqueList.sort((a, b) => b.aestheticScore - a.aestheticScore);
+    uniqueList.sort((a, b) => b.qualityRank - a.qualityRank);
     return uniqueList;
   }, [serverData, vaultExtraProfiles]);
 
-  // Zähle echte Treffer pro Kanton für unsere visuellen Regionen-Karten
+  // Exakte Trefferzahlen in Klammern pro Kanton (Genau wie auf and6.com & xdate.ch!)
   const cantonCounts = useMemo(() => {
-    const map: Record<string, number> = { ALL: enrichedProfiles.length };
+    const map: Record<string, number> = { ALL: 0 };
     for (const p of enrichedProfiles) {
+      if (activeTab !== "all" && p.category !== activeTab) continue;
+      map.ALL += 1;
       map[p.canton] = (map[p.canton] || 0) + 1;
     }
     return map;
-  }, [enrichedProfiles]);
+  }, [enrichedProfiles, activeTab]);
+
+  // Exakte Trefferzahlen pro Haupt-Rubrik
+  const tabCounts = useMemo(() => {
+    const map: Record<string, number> = { all: enrichedProfiles.length, girls: 0, massage: 0, bdsm: 0, trans: 0 };
+    for (const p of enrichedProfiles) {
+      if (activeCanton !== "ALL" && p.canton !== activeCanton) continue;
+      map[p.category] = (map[p.category] || 0) + 1;
+    }
+    return map;
+  }, [enrichedProfiles, activeCanton]);
 
   const filteredProfiles = useMemo(() => {
     return enrichedProfiles.filter((p: any) => {
-      if (activeRubric !== "all" && p.rubric !== activeRubric) return false;
+      if (activeTab !== "all" && p.category !== activeTab) return false;
       if (activeCanton !== "ALL" && p.canton !== activeCanton) return false;
-      if (onlyConfirmedAvailable && !p.availabilityConfirmed) return false;
-      if (onlySelfManaged && !p.isSelfManaged) return false;
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        const hay = `${p.rawName || ""} ${p.cleanCity || ""} ${p.canton || ""} ${(p.includedTags || []).join(" ")} ${p.bio || ""}`.toLowerCase();
-        if (!hay.includes(q)) return false;
+      if (onlyAvailable && !p.availabilityConfirmed) return false;
+      if (onlyVerified && !p.isSelfManaged && !p.isIdentityVerified) return false;
+
+      const combinedQuery = `${searchQuery} ${activeServiceTag}`.toLowerCase().trim();
+      if (combinedQuery) {
+        const hay = `${p.rawName || ""} ${p.cleanCity || ""} ${p.canton || ""} ${(p.includedTags || []).join(" ")} ${p.bio || ""} ${p.rawPhone || ""}`.toLowerCase();
+        if (!hay.includes(combinedQuery)) return false;
       }
       return true;
     });
-  }, [enrichedProfiles, activeRubric, activeCanton, onlyConfirmedAvailable, onlySelfManaged, searchQuery]);
+  }, [enrichedProfiles, activeTab, activeCanton, onlyAvailable, onlyVerified, searchQuery, activeServiceTag]);
 
   const resetAll = () => {
     setActiveCanton("ALL");
-    setActiveRubric("female");
+    setActiveTab("girls");
+    setActiveServiceTag("");
     setSearchQuery("");
-    setOnlyConfirmedAvailable(false);
-    setOnlySelfManaged(false);
+    setOnlyAvailable(false);
+    setOnlyVerified(false);
   };
 
   const recordEvent = (profileId: string, action: string) => {
@@ -307,28 +314,30 @@ export default function HomePage() {
   };
 
   // =========================================================================
-  // BORDERLESS BEMYGIRL-STYLE PORTRAIT CARD (No clunky beige box button!)
+  // DIE VERTRAUTE SCHWEIZER INSERATE-KARTE (Wie auf Xdate / And6 / Fgirl:
+  // Grosses Bild + Name/Ort + 1-zeilige Headline + Telefon/Kontakt-Badge!)
   // =========================================================================
-  const renderEditorialPortraitCard = (p: any, idx: number, keyPrefix: string) => {
+  const renderFamiliarAdCard = (p: any, idx: number, keyPrefix: string) => {
     const cleanName =
-      String(p.rawName || "Profil")
+      String(p.rawName || "Inserat")
         .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
         .trim()
-        .slice(0, 22) || "Profil";
+        .slice(0, 24) || "Model";
     const rate = p.advertisedBaseChf || null;
     const img = p.thumbnail || p.fallbackImg;
+    const hasPhone = Boolean(p.rawPhone && String(p.rawPhone).length >= 9);
 
     return (
       <article
         key={`${keyPrefix}-${p.id}-${idx}`}
-        className={`group relative rounded-2xl overflow-hidden transition-all duration-500 ${
-          isLightWorld
-            ? "bg-white border border-stone-200/90 shadow-[0_8px_30px_rgba(20,20,24,0.06)] hover:shadow-[0_16px_40px_rgba(158,123,79,0.18)] hover:-translate-y-1"
-            : "bg-[#12131A] border border-white/10 hover:border-[#C8A97E]/70 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:-translate-y-1"
+        className={`group rounded-xl overflow-hidden bg-[#12141D] border transition-all duration-300 flex flex-col justify-between ${
+          p.isSponsored
+            ? "border-[#C8A97E] shadow-[0_8px_25px_rgba(200,169,126,0.18)]"
+            : "border-white/10 hover:border-[#C8A97E]/60"
         }`}
       >
-        {/* Entire 3:4 Portrait is Clickable (Like BeMyGirl & Fgirl) */}
-        <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-900">
+        {/* 3:4 Portrait Photo (Entire photo opens the ad immediately!) */}
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#07080C]">
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
             onClick={() => recordEvent(p.id, "track_click")}
@@ -340,27 +349,31 @@ export default function HomePage() {
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
               }}
-              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F17] via-transparent to-black/25" />
           </Link>
 
-          {/* Top-Left: Subtle Status or Verified Pill */}
-          <div className="absolute top-3 left-3 flex flex-col gap-1 pointer-events-none">
+          {/* Top-Left: Familiar Status Badges */}
+          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 pointer-events-none">
             {p.availabilityConfirmed ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/95 text-black text-[10px] font-extrabold shadow-md">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500 text-black text-[10px] font-extrabold shadow">
                 <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
-                Verfügbar
+                HEUTE FREI
               </span>
             ) : p.isIdentityVerified ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur border border-[#C8A97E]/60 text-[#E5C99B] text-[10px] font-semibold">
-                <Check size={11} className="text-[#C8A97E]" /> Geprüft
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold shadow">
+                <Check size={10} /> ECHTE FOTOS
               </span>
-            ) : null}
+            ) : (
+              <span className="px-2 py-0.5 rounded bg-black/75 backdrop-blur text-gray-200 text-[10px] font-semibold border border-white/10">
+                📍 {p.cleanCity} ({p.canton})
+              </span>
+            )}
           </div>
 
-          {/* Top-Right: Discreet Info Button (Replaces bottom button clutter) */}
+          {/* Top-Right: Discreet Info / Source Button */}
           <button
             type="button"
             onClick={(e) => {
@@ -368,610 +381,569 @@ export default function HomePage() {
               recordEvent(p.id, "track_click");
               setSelectedIndexProfile(p);
             }}
-            title={`Quelle: ${p.sourcePortal || "Index"} · Details & Verwaltung`}
-            className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/60 hover:bg-[#C8A97E] text-white/80 hover:text-black backdrop-blur flex items-center justify-center transition cursor-pointer border border-white/15"
+            title={`Quelle: ${p.sourcePortal || "Index"}`}
+            className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/65 hover:bg-[#C8A97E] text-gray-300 hover:text-black flex items-center justify-center transition cursor-pointer border border-white/15"
           >
             <Info size={13} />
           </button>
 
-          {/* Bottom Portrait Overlay: Clean Name, Real City/Canton & Rate */}
+          {/* Bottom on Photo: Name + City + Rate */}
           <Link
             href={`/profile/${encodeURIComponent(p.id)}`}
             onClick={() => recordEvent(p.id, "track_click")}
-            className="absolute bottom-0 inset-x-0 p-3.5 flex items-end justify-between gap-2"
+            className="absolute bottom-2 left-2.5 right-2.5 flex items-end justify-between gap-1"
           >
             <div className="min-w-0">
-              <h3 className="text-base sm:text-lg font-serif font-bold text-white leading-tight truncate group-hover:text-[#E5C99B] transition">
+              <h3 className="text-sm sm:text-base font-serif font-bold text-white leading-tight truncate group-hover:text-[#C8A97E] transition">
                 {cleanName}
               </h3>
-              <p className="text-xs text-gray-300 flex items-center gap-1 truncate mt-0.5">
-                <MapPin size={12} className="text-[#C8A97E] shrink-0" />
-                <span className="truncate">
-                  {p.cleanCity} ({p.canton})
-                </span>
+              <p className="text-[11px] text-[#E5C99B] font-medium truncate">
+                {p.cleanCity} ({p.canton})
               </p>
             </div>
-
             {rate && (
-              <div className="shrink-0 text-right">
-                <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur border border-[#C8A97E]/40 text-xs font-bold text-[#E5C99B]">
-                  CHF {rate}
-                </span>
-              </div>
+              <span className="shrink-0 px-2 py-0.5 rounded bg-black/85 border border-[#C8A97E]/40 text-[11px] font-extrabold text-[#C8A97E]">
+                CHF {rate}
+              </span>
             )}
           </Link>
         </div>
+
+        {/* Compact Xdate/And6-Style Ad Footer (1-line headline + direct phone/contact indicator) */}
+        <Link
+          href={`/profile/${encodeURIComponent(p.id)}`}
+          onClick={() => recordEvent(p.id, "track_click")}
+          className="p-2.5 flex flex-col justify-between gap-1.5 hover:bg-white/[0.02] transition"
+        >
+          <p className="text-[11px] text-gray-300 line-clamp-1 leading-snug">
+            {p.adHeadline}
+          </p>
+          <div className="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
+            {hasPhone ? (
+              <span className="text-emerald-400 font-semibold flex items-center gap-1 truncate">
+                <Phone size={11} className="shrink-0" />
+                <span>{String(p.rawPhone).slice(0, 12)}…</span>
+              </span>
+            ) : (
+              <span className="text-gray-400">Direkt-Inserat</span>
+            )}
+            <span className="text-[#C8A97E] font-bold group-hover:translate-x-0.5 transition-transform">
+              Ansehen →
+            </span>
+          </div>
+        </Link>
       </article>
     );
   };
 
   return (
-    <div
-      className={`min-h-screen transition-colors duration-500 pb-24 lg:pb-16 ${
-        isLightWorld ? "bg-[#F7F4EF] text-[#141418]" : world === "A" ? "bg-[#0D0A0E] text-white" : world === "C" ? "bg-[#090B10] text-white" : "bg-[#0A0F1A] text-white"
-      }`}
-    >
+    <div className="min-h-screen bg-[#090A0F] text-white pb-24 lg:pb-16">
       <SEO
-        title="iwantsexnow.ch | Schweizer Escorts, Studios & Plattformvergleich"
-        description="Entdecke geprüfte Schweizer Escorts, Erotik-Massagen und 162+ Clubs in Zürich, Zug, Basel, Bern, Luzern & Genf."
+        title="iwantsexnow.ch | Schweizer Escorts, Erotische Massagen & Sexkontakte"
+        description="Über 2.800+ Schweizer Escort-Inserate, erotische Massagen, Domina-Studios & 162 Clubs in Zürich, Zug, Aargau, Basel, Luzern, Bern & Genf."
       />
 
       {/* ===================================================================== */}
-      {/* TOP LIVE WORLD SWITCHER (4 ECHTE, KOMPLETT UNTERSCHIEDLICHE WELTEN)   */}
+      {/* TOP SWITCHER FOR THE 4 FAMILIAR SWISS TOP-10 PORTAL LAYOUTS           */}
       {/* ===================================================================== */}
-      <div className="bg-[#141218] text-white border-b border-[#C8A97E]/40 py-2 px-3 sticky top-0 z-[60] shadow-xl">
+      <div className="bg-[#141722] border-b border-[#C8A97E]/40 py-1.5 px-3 sticky top-0 z-[60] shadow-xl">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] font-extrabold uppercase text-[10px]">
-              4 Neue Design-Welten:
-            </span>
-          </div>
+          <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] font-extrabold uppercase text-[10px] shrink-0">
+            Top-10 Google Vorbilder:
+          </span>
           <div className="flex items-center gap-1.5 shrink-0">
             {[
-              { id: "A" as WorldId, label: "Welt A: BeMyGirl Luxury Capsule ⭐" },
-              { id: "B" as WorldId, label: "Welt B: Zürich Daylight (Hell & Edel) ☀️" },
-              { id: "C" as WorldId, label: "Welt C: Fgirl / Netflix Streams 🎬" },
-              { id: "D" as WorldId, label: "Welt D: Schweizer Regionen-Finder 🇨🇭" },
-            ].map((w) => (
+              { id: "1" as FamiliarLayoutId, label: "1. Xdate / And6 Klassiker (Sidebar + Sofort-Grid) ⭐" },
+              { id: "2" as FamiliarLayoutId, label: "2. Fgirl.ch Style (Rubrik-Tabs + Story-Bar + 5er-Grid)" },
+              { id: "3" as FamiliarLayoutId, label: "3. Kaufmich / EuroGirls (1-Zeilen Dropdown-Filterbank)" },
+              { id: "4" as FamiliarLayoutId, label: "4. BeMyGirl Luxury (Kantons-Zähler + Randlose Porträts)" },
+            ].map((l) => (
               <button
-                key={w.id}
+                key={l.id}
                 type="button"
-                onClick={() => setWorld(w.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
-                  world === w.id
-                    ? "bg-[#C8A97E] text-[#090A0F] shadow-md scale-[1.02]"
-                    : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
+                onClick={() => setLayout(l.id)}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+                  layout === l.id
+                    ? "bg-[#C8A97E] text-[#090A0F] shadow"
+                    : "bg-black/40 text-gray-300 border border-white/10 hover:text-white"
                 }`}
               >
-                {w.label}
+                {l.label}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Main Navigation Header */}
+      {/* Main Header */}
       <LuxuryHeader />
 
       {/* ===================================================================== */}
-      {/* WELT A: "BEMYGIRL EDITORIAL LUXURY + AIRBNB SEARCH CAPSULE"           */}
+      {/* FAMILIAR TOP RUBRIC BAR (SHARED ACROSS SWISS PORTALS:                 */}
+      {/* Sie sucht Ihn / Escorts | Massagen | Domina | Trans/TS | 162 Clubs)   */}
       {/* ===================================================================== */}
-      {world === "A" && (
-        <section className="relative overflow-hidden border-b border-[#C8A97E]/25 bg-gradient-to-b from-[#170F16] via-[#120C12] to-[#0D0A0E] py-8 sm:py-12 px-4">
-          <div className="pointer-events-none absolute -top-24 left-1/3 w-96 h-96 rounded-full bg-[#C8A97E]/15 blur-[130px]" />
-          <div className="max-w-6xl mx-auto space-y-7 relative z-10">
-            {/* Clear 1-Second Focus Headline */}
-            <div className="text-center max-w-3xl mx-auto space-y-2.5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C8A97E]/10 border border-[#C8A97E]/30 text-[#E5C99B] text-[11px] font-semibold tracking-wider uppercase">
-                <span>SWISS PRIVATE ESCORT & STUDIO DIRECTORY</span>
-              </div>
-              <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
-                Wen möchtest du <span className="italic font-normal text-[#E5C99B]">heute treffen?</span>
-              </h1>
-            </div>
-
-            {/* THE UNIFIED AIRBNB-STYLE SEARCH CAPSULE (100% Obvious Where to Click!) */}
-            <div className="max-w-4xl mx-auto p-2 sm:p-2.5 rounded-2xl sm:rounded-full bg-[#1B141B]/95 backdrop-blur-2xl border-2 border-[#C8A97E]/50 shadow-[0_20px_60px_rgba(0,0,0,0.8)] grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
-              {/* Segment 1: Rubrik (Damen / Massage / TS) */}
-              <div className="sm:col-span-4 flex items-center gap-1 bg-black/40 rounded-xl sm:rounded-full p-1 border border-white/10">
-                {[
-                  { id: "female", label: "Escorts & Girls" },
-                  { id: "massage", label: "Massage" },
-                  { id: "trans", label: "Trans / TS" },
-                ].map((r) => (
-                  <button
-                    key={r.id}
-                    type="button"
-                    onClick={() => setActiveRubric(r.id as any)}
-                    className={`flex-1 py-2 px-2 rounded-lg sm:rounded-full text-xs font-bold transition cursor-pointer ${
-                      activeRubric === r.id
-                        ? "bg-[#C8A97E] text-[#090A0F] shadow"
-                        : "text-gray-300 hover:text-white"
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Segment 2: Stadt / Kanton */}
-              <div className="sm:col-span-4 px-3 py-1.5 border-y sm:border-y-0 sm:border-x border-white/10">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#C8A97E]">
-                  📍 Region / Kanton
-                </label>
-                <select
-                  value={activeCanton}
-                  onChange={(e) => setActiveCanton(e.target.value)}
-                  className="w-full bg-transparent text-sm font-bold text-white focus:outline-none cursor-pointer"
-                >
-                  <option value="ALL" className="bg-[#141218]">Ganze Schweiz ({cantonCounts.ALL || 0})</option>
-                  {SWISS_CITY_HUBS.map((c) => (
-                    <option key={c.code} value={c.code} className="bg-[#141218]">
-                      {c.name} ({cantonCounts[c.code] || 0})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Segment 3: Freitext oder Direkt-Button */}
-              <div className="sm:col-span-4 flex items-center gap-2 pl-2 pr-1">
-                <Search size={16} className="text-[#C8A97E] shrink-0" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Name, Ort, Wunsch..."
-                  className="w-full bg-transparent text-base sm:text-xs text-white placeholder-gray-400 focus:outline-none"
-                />
-                {searchQuery && (
-                  <button onClick={() => setSearchQuery("")} className="text-xs text-gray-400 px-1">✕</button>
-                )}
-              </div>
-            </div>
-
-            {/* 6 Visual Swiss City Quick-Cards with Live Profile Counters */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-              {SWISS_CITY_HUBS.slice(0, 6).map((city) => {
-                const isSelected = activeCanton === city.code;
-                return (
-                  <button
-                    key={city.code}
-                    type="button"
-                    onClick={() => setActiveCanton(isSelected ? "ALL" : city.code)}
-                    className={`group relative h-24 rounded-2xl overflow-hidden border text-left transition cursor-pointer ${
-                      isSelected
-                        ? "border-[#C8A97E] ring-2 ring-[#C8A97E]/50 scale-[1.02]"
-                        : "border-white/15 hover:border-[#C8A97E]/70"
-                    }`}
-                  >
-                    <img src={city.image} alt={city.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
-                    <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-[10px] font-bold text-[#E5C99B] border border-[#C8A97E]/30">
-                      {cantonCounts[city.code] || 12}
-                    </div>
-                    <div className="absolute bottom-2 left-2.5 right-2">
-                      <div className="text-xs font-serif font-bold text-white">{city.name}</div>
-                      <div className="text-[10px] text-gray-300 truncate">{city.sub}</div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ===================================================================== */}
-      {/* WELT B: "ZÜRICH DAYLIGHT & IVORY" (Helles, seriöses Schweizer Design) */}
-      {/* ===================================================================== */}
-      {world === "B" && (
-        <section className="border-b border-stone-300/80 bg-[#EFECE6] py-8 sm:py-10 px-4 text-[#141418]">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#9E7B4F]/15 text-[#7A5C34] text-xs font-bold uppercase tracking-wider">
-                <Sun size={14} />
-                <span>SCHWEIZER VERZEICHNIS & PLATTFORMVERGLEICH</span>
-              </div>
-              <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#141418] leading-[1.12]">
-                Seriöse Orientierung. Geprüfte Profile. Klare Herkunft.
-              </h1>
-              <p className="text-sm sm:text-base text-stone-600 leading-relaxed max-w-2xl">
-                Kein dunkles Hinterzimmer-Chaos: Wähle deine Schweizer Region und deine gewünschte Rubrik oder vergleiche die grossen Portale nach transparenten Kriterien.
-              </p>
-
-              {/* Step 1: Rubric Tabs on Light Surface */}
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { id: "female", label: "💃 Escorts & Privat-Models" },
-                  { id: "massage", label: "💆‍♀️ Erotik- & Tantra-Massage" },
-                  { id: "trans", label: "🏳️‍⚧️ Trans / TS" },
-                  { id: "all", label: "Alle zeigen" },
-                ].map((r) => (
-                  <button
-                    key={r.id}
-                    type="button"
-                    onClick={() => setActiveRubric(r.id as any)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
-                      activeRubric === r.id
-                        ? "bg-[#141418] text-white shadow-md"
-                        : "bg-white text-stone-700 border border-stone-300 hover:border-[#9E7B4F]"
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Step 2: City Pills on Light Surface */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
+      <div className="border-b border-white/10 bg-[#0E1018]">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-1.5 shrink-0">
+            {FAMILIAR_MAIN_TABS.map((tab) => {
+              const active = activeTab === tab.id;
+              const cnt = tabCounts[tab.id] || 0;
+              return (
                 <button
-                  onClick={() => setActiveCanton("ALL")}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer ${
-                    activeCanton === "ALL" ? "bg-[#9E7B4F] text-white" : "bg-white border border-stone-300 text-stone-700"
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shrink-0 ${
+                    active
+                      ? "bg-[#C8A97E] text-[#090A0F] shadow-md"
+                      : "bg-[#151824] text-gray-200 border border-white/10 hover:border-[#C8A97E]/50"
                   }`}
                 >
-                  🇨🇭 Ganze Schweiz
+                  <span>{tab.label}</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-extrabold ${
+                      active ? "bg-black/20 text-[#090A0F]" : "bg-white/10 text-[#C8A97E]"
+                    }`}
+                  >
+                    {cnt}
+                  </span>
                 </button>
-                {SWISS_CITY_HUBS.map((c) => (
-                  <button
-                    key={c.code}
-                    onClick={() => setActiveCanton(c.code)}
-                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
-                      activeCanton === c.code
-                        ? "bg-[#9E7B4F] text-white font-bold"
-                        : "bg-white border border-stone-300 text-stone-700 hover:border-[#141418]"
-                    }`}
-                  >
-                    {c.name} ({cantonCounts[c.code] || 0})
-                  </button>
-                ))}
-              </div>
-            </div>
+              );
+            })}
 
-            {/* Right: 2 Featured Editorial Cards (Guaranteed NOT repeated in the main grid below!) */}
-            <div className="lg:col-span-5 grid grid-cols-2 gap-3.5">
-              {filteredProfiles.slice(0, 2).map((fp: any, i: number) => (
-                <div key={`light-feat-${i}`}>
-                  {renderEditorialPortraitCard(fp, i, "light-hero")}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ===================================================================== */}
-      {/* WELT C: "FGIRL / NETFLIX VISUAL STREAMS" (Kuratierte Themen-Reihen)   */}
-      {/* ===================================================================== */}
-      {world === "C" && (
-        <section className="border-b border-white/10 bg-[#0D1017] py-6 px-4">
-          <div className="max-w-7xl mx-auto space-y-6">
-            {/* Big Top Category Switcher Tabs (Like Fgirl.ch) */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { id: "female", label: "🔥 Escorts & Begleitung" },
-                  { id: "massage", label: "✨ Tantra & Massage" },
-                  { id: "trans", label: "🏳️‍⚧️ Trans & TS" },
-                  { id: "all", label: "Alle Rubriken" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveRubric(tab.id as any)}
-                    className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
-                      activeRubric === tab.id
-                        ? "bg-rose-600 text-white shadow-[0_0_20px_rgba(225,29,72,0.5)]"
-                        : "bg-white/5 text-gray-300 border border-white/10 hover:text-white"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-                <Link
-                  href="/rankings"
-                  className="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white/5 text-[#C8A97E] border border-[#C8A97E]/30 hover:bg-[#C8A97E]/15"
-                >
-                  🏛️ {totalClubsCount} Clubs & Salons →
-                </Link>
-              </div>
-
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-                <button
-                  onClick={() => setActiveCanton("ALL")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer ${
-                    activeCanton === "ALL" ? "bg-[#C8A97E] text-black" : "bg-white/5 text-gray-300"
-                  }`}
-                >
-                  Alle Orte
-                </button>
-                {SWISS_CITY_HUBS.slice(0, 6).map((c) => (
-                  <button
-                    key={c.code}
-                    onClick={() => setActiveCanton(c.code)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${
-                      activeCanton === c.code ? "bg-[#C8A97E] text-black font-bold" : "bg-white/5 text-gray-300"
-                    }`}
-                  >
-                    {c.code}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Stream 1: Highlighted Horizontal Carousel (Indices 0..5, while main grid starts at 6 -> ZERO DUPLICATES!) */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-rose-400 flex items-center gap-2">
-                  <Flame size={16} />
-                  <span>Ausgewählte Highlights ({activeCanton === "ALL" ? "Schweiz" : activeCanton})</span>
-                </h2>
-                <span className="text-xs text-gray-400">Horizontal wischen →</span>
-              </div>
-              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide snap-x">
-                {filteredProfiles.slice(0, 6).map((p: any, idx: number) => (
-                  <div key={`stream-${idx}`} className="snap-start shrink-0 w-56 sm:w-64">
-                    {renderEditorialPortraitCard(p, idx, "stream-top")}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ===================================================================== */}
-      {/* WELT D: "SCHWEIZER REGIONEN- & KANTONS-FINDER" (Geo-First)            */}
-      {/* ===================================================================== */}
-      {world === "D" && (
-        <section className="border-b border-white/10 bg-[#0E1525] py-8 px-4">
-          <div className="max-w-7xl mx-auto space-y-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#C8A97E] flex items-center gap-1.5">
-                  <Compass size={15} />
-                  <span>SCHRITT 1: WÄHLE DEINE SCHWEIZER REGION</span>
-                </div>
-                <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white mt-1">
-                  In welcher Stadt suchst du heute?
-                </h1>
-              </div>
-
-              {/* Rubric Switcher */}
-              <div className="flex gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
-                {[
-                  { id: "female", label: "Escorts & Girls" },
-                  { id: "massage", label: "Massage" },
-                  { id: "trans", label: "Trans / TS" },
-                  { id: "all", label: "Alle" },
-                ].map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => setActiveRubric(r.id as any)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer ${
-                      activeRubric === r.id ? "bg-[#C8A97E] text-black" : "text-gray-300"
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* 8 Large Visual Swiss City Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              {SWISS_CITY_HUBS.map((city) => {
-                const isSelected = activeCanton === city.code;
-                return (
-                  <button
-                    key={city.code}
-                    type="button"
-                    onClick={() => setActiveCanton(isSelected ? "ALL" : city.code)}
-                    className={`group relative h-28 sm:h-32 rounded-2xl overflow-hidden border-2 text-left transition cursor-pointer ${
-                      isSelected
-                        ? "border-[#C8A97E] ring-2 ring-[#C8A97E]/50"
-                        : "border-white/15 hover:border-[#C8A97E]"
-                    }`}
-                  >
-                    <img src={city.image} alt={city.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                    <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold">
-                      {cantonCounts[city.code] || 15} Profile
-                    </div>
-                    <div className="absolute bottom-3 left-3 right-3">
-                      <div className="text-sm sm:text-base font-serif font-bold text-white">{city.name}</div>
-                      <div className="text-[11px] text-gray-300 truncate">{city.sub}</div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ===================================================================== */}
-      {/* HAUPTKATALOG (GARANTIERT OHNE DOPPLUNG DER HERO-BILDER!)              */}
-      {/* ===================================================================== */}
-      <main className="max-w-7xl mx-auto px-3 sm:px-4 pt-6 pb-8">
-        {/* Filter Status Bar */}
-        <div
-          className={`flex flex-wrap items-center justify-between gap-2 mb-5 pb-3 border-b ${
-            isLightWorld ? "border-stone-300" : "border-white/10"
-          }`}
-        >
-          <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-            <StencilSerifX color={isLightWorld ? "#7A5C34" : "#C8A97E"} className="w-4 h-3.5 shrink-0" />
-            <span className="font-bold">
-              {activeRubric === "female"
-                ? "Escorts & Privat-Models"
-                : activeRubric === "massage"
-                ? "Erotik- & Tantra-Massagen"
-                : activeRubric === "trans"
-                ? "Trans & TS Profile"
-                : "Alle Rubriken"}
-            </span>
-            <span className="opacity-50">in</span>
-            <span className={`font-bold ${isLightWorld ? "text-[#7A5C34]" : "text-[#C8A97E]"}`}>
-              {activeCanton === "ALL" ? "der ganzen Schweiz" : `Kanton ${activeCanton}`}
-            </span>
-            <span className="opacity-60 text-xs">({filteredProfiles.length} Treffer)</span>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => setOnlyConfirmedAvailable(!onlyConfirmedAvailable)}
-              className={`px-3 py-1.5 rounded-xl border font-semibold cursor-pointer transition ${
-                onlyConfirmedAvailable
-                  ? "bg-emerald-500 text-black border-emerald-400 font-bold"
-                  : isLightWorld
-                  ? "bg-white border-stone-300 text-stone-700"
-                  : "bg-white/5 border-white/10 text-gray-300"
-              }`}
+            <Link
+              href="/rankings"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#151824] text-gray-200 border border-white/10 hover:border-[#C8A97E] flex items-center gap-1.5 shrink-0"
             >
-              ● Verfügbarkeit bestätigt
-            </button>
-            <button
-              type="button"
-              onClick={() => setOnlySelfManaged(!onlySelfManaged)}
-              className={`px-3 py-1.5 rounded-xl border font-semibold cursor-pointer transition ${
-                onlySelfManaged
-                  ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E] font-bold"
-                  : isLightWorld
-                  ? "bg-white border-stone-300 text-stone-700"
-                  : "bg-white/5 border-white/10 text-gray-300"
-              }`}
-            >
-              ✓ Selbst verwaltet
-            </button>
-            {(activeCanton !== "ALL" || activeRubric !== "female" || searchQuery || onlyConfirmedAvailable || onlySelfManaged) && (
-              <button
-                type="button"
-                onClick={resetAll}
-                className="px-3 py-1.5 rounded-xl bg-rose-500/15 text-rose-400 font-bold cursor-pointer"
-              >
-                Reset
-              </button>
+              <Building2 size={13} className="text-[#C8A97E]" />
+              <span>Clubs & Laufhäuser ({totalClubsCount})</span>
+            </Link>
+          </div>
+
+          {/* Right Quick Search */}
+          <div className="flex items-center bg-[#090A0F] border border-white/15 focus-within:border-[#C8A97E] rounded-xl px-3 py-1.5 w-56 sm:w-64 shrink-0">
+            <Search size={14} className="text-[#C8A97E] shrink-0" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Ort, Name oder +41 Nr..."
+              className="w-full px-2 bg-transparent text-base sm:text-xs text-white placeholder-gray-400 focus:outline-none"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} className="text-xs text-gray-400">✕</button>
             )}
           </div>
         </div>
+      </div>
 
-        {/* Main Grid: Slice offset prevents ANY duplicate from World B (offset 2) or World C (offset 6)! */}
-        {(() => {
-          const offset = world === "B" ? 2 : world === "C" ? 6 : 0;
-          const gridItems = filteredProfiles.slice(offset, offset + visibleCount);
+      {/* ===================================================================== */}
+      {/* LAYOUT 1: XDATE / AND6 KLASSIKER (Linke Regionen-/Service-Sidebar     */}
+      {/*           mit Zahlen in Klammern + Rechts sofort das Inserate-Grid!)  */}
+      {/* ===================================================================== */}
+      {layout === "1" && (
+        <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5">
+          {/* Mobile Horizontal Region Bar (Only visible on mobile where sidebar is hidden) */}
+          <div className="lg:hidden flex items-center gap-1.5 overflow-x-auto pb-3 mb-3 border-b border-white/10 scrollbar-hide">
+            {SWISS_REGIONS.map((reg) => (
+              <button
+                key={reg.code}
+                onClick={() => setActiveCanton(reg.code)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 cursor-pointer ${
+                  activeCanton === reg.code
+                    ? "bg-[#C8A97E] text-[#090A0F]"
+                    : "bg-[#12141D] text-gray-300 border border-white/10"
+                }`}
+              >
+                {reg.code === "ALL" ? "Schweiz" : reg.code} ({cantonCounts[reg.code] || 0})
+              </button>
+            ))}
+          </div>
 
-          if (gridItems.length === 0) {
-            return (
-              <div className="p-10 rounded-2xl border border-white/10 text-center space-y-3">
-                <h3 className="text-lg font-serif font-bold">Keine Einträge für diese Auswahl</h3>
-                <button
-                  onClick={resetAll}
-                  className="px-5 py-2.5 rounded-xl bg-[#C8A97E] text-[#090A0F] font-bold text-xs cursor-pointer"
-                >
-                  Filter zurücksetzen
-                </button>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* LEFT SIDEBAR: Exactly like And6.com & Xdate.ch (Regions with counts + Services) */}
+            <aside className="hidden lg:block lg:col-span-3 space-y-5 sticky top-28">
+              {/* Box 1: Regionen mit exakter Anzahl in Klammern */}
+              <div className="p-4 rounded-2xl bg-[#11131C] border border-white/10 space-y-2.5">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#C8A97E] flex items-center gap-1.5">
+                    <MapPin size={13} />
+                    <span>Regionen (Schweiz)</span>
+                  </h2>
+                  {activeCanton !== "ALL" && (
+                    <button onClick={() => setActiveCanton("ALL")} className="text-[11px] text-rose-300 hover:underline">
+                      Alle
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  {SWISS_REGIONS.map((reg) => {
+                    const isSelected = activeCanton === reg.code;
+                    const count = cantonCounts[reg.code] || 0;
+                    return (
+                      <button
+                        key={reg.code}
+                        type="button"
+                        onClick={() => setActiveCanton(reg.code)}
+                        className={`w-full px-3 py-2 rounded-lg text-xs flex items-center justify-between transition cursor-pointer ${
+                          isSelected
+                            ? "bg-[#C8A97E] text-[#090A0F] font-extrabold"
+                            : "text-gray-300 hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        <span className="truncate">{reg.name}</span>
+                        <span
+                          className={`text-[11px] font-mono ${
+                            isSelected ? "text-[#090A0F] font-black" : "text-gray-500"
+                          }`}
+                        >
+                          ({count})
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            );
-          }
 
-          return (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6">
-              {gridItems.map((p: any, idx: number) => renderEditorialPortraitCard(p, idx, "main-grid"))}
+              {/* Box 2: Beliebte Services (1-Klick wie auf And6 / Xdate) */}
+              <div className="p-4 rounded-2xl bg-[#11131C] border border-white/10 space-y-2.5">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#C8A97E]">
+                    Beliebte Services & Typ
+                  </h2>
+                  {activeServiceTag && (
+                    <button onClick={() => setActiveServiceTag("")} className="text-[11px] text-rose-300 hover:underline">
+                      Reset
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-col gap-1">
+                  {FAMILIAR_SERVICES.map((srv) => {
+                    const active = activeServiceTag === srv.tag;
+                    return (
+                      <button
+                        key={srv.tag}
+                        type="button"
+                        onClick={() => setActiveServiceTag(active ? "" : srv.tag)}
+                        className={`w-full px-2.5 py-1.5 rounded-lg text-xs text-left flex items-center justify-between transition cursor-pointer ${
+                          active
+                            ? "bg-white/15 text-[#C8A97E] font-bold border border-[#C8A97E]/40"
+                            : "text-gray-300 hover:bg-white/5"
+                        }`}
+                      >
+                        <span>{srv.label}</span>
+                        <span className="text-[#C8A97E]">{active ? "✓" : "›"}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Box 3: Portal-Test & Anbieter-Box */}
+              <div className="p-4 rounded-2xl bg-[#11131C] border border-[#C8A97E]/30 space-y-2">
+                <div className="text-[10px] font-bold uppercase text-[#C8A97E]">Markt-Vergleich</div>
+                <Link href="/reviews" className="block text-xs font-bold text-white hover:text-[#C8A97E]">
+                  ⭐ Xdate, Fgirl & And6 im Test →
+                </Link>
+                <Link href="/advertise" className="block text-xs text-gray-400 hover:text-white pt-1 border-t border-white/10">
+                  + Eigenes Inserat kostenlos verwalten →
+                </Link>
+              </div>
+            </aside>
+
+            {/* RIGHT MAIN COLUMN: Immediate Ad Grid! */}
+            <div className="lg:col-span-9 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-white/10">
+                <div className="text-xs sm:text-sm font-bold text-white">
+                  {FAMILIAR_MAIN_TABS.find((t) => t.id === activeTab)?.label} in{" "}
+                  <span className="text-[#C8A97E]">
+                    {SWISS_REGIONS.find((r) => r.code === activeCanton)?.name}
+                  </span>{" "}
+                  <span className="text-gray-400 font-normal">({filteredProfiles.length} Inserate)</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <button
+                    onClick={() => setOnlyAvailable(!onlyAvailable)}
+                    className={`px-3 py-1 rounded-lg border cursor-pointer ${
+                      onlyAvailable ? "bg-emerald-500 text-black font-bold" : "bg-[#12141D] border-white/10 text-gray-300"
+                    }`}
+                  >
+                    ● Heute verfügbar
+                  </button>
+                  <button
+                    onClick={() => setOnlyVerified(!onlyVerified)}
+                    className={`px-3 py-1 rounded-lg border cursor-pointer ${
+                      onlyVerified ? "bg-[#C8A97E] text-black font-bold" : "bg-[#12141D] border-white/10 text-gray-300"
+                    }`}
+                  >
+                    ✓ Geprüft
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
+                {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
+                  renderFamiliarAdCard(p, idx, "l1")
+                )}
+              </div>
             </div>
-          );
-        })()}
+          </div>
+        </main>
+      )}
 
-        <div className="text-center mt-8 flex flex-wrap justify-center gap-3">
+      {/* ===================================================================== */}
+      {/* LAYOUT 2: FGIRL.CH STYLE (Kantons-Zähler-Pills + Hot Stories + 5er Grid) */}
+      {/* ===================================================================== */}
+      {layout === "2" && (
+        <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-5">
+          {/* Canton Pills with exact counts (like Fgirl.ch) */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-hide">
+            {SWISS_REGIONS.map((reg) => {
+              const active = activeCanton === reg.code;
+              return (
+                <button
+                  key={reg.code}
+                  onClick={() => setActiveCanton(reg.code)}
+                  className={`px-3.5 py-2 rounded-full text-xs font-bold shrink-0 cursor-pointer transition ${
+                    active
+                      ? "bg-rose-600 text-white shadow-lg"
+                      : "bg-[#12141D] text-gray-300 border border-white/10 hover:border-rose-500/50"
+                  }`}
+                >
+                  {reg.code === "ALL" ? "🇨🇭 Alle Kantone" : reg.name.split("(")[0].trim()}{" "}
+                  <span className="opacity-75">({cantonCounts[reg.code] || 0})</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Fgirl-Style "Hot Profiles of the Moment" Strip (Indices 0..7, main grid starts at 8 -> NO DUPLICATES!) */}
+          <div className="p-4 rounded-2xl bg-[#11131C] border border-white/10 space-y-2.5">
+            <div className="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+              <Flame size={14} />
+              <span>HOT PROFILES OF THE MOMENT ({activeCanton === "ALL" ? "SCHWEIZ" : activeCanton})</span>
+            </div>
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
+              {filteredProfiles.slice(0, 8).map((hp: any, i: number) => (
+                <Link
+                  key={`fg-hot-${i}`}
+                  href={`/profile/${encodeURIComponent(hp.id)}`}
+                  className="group text-center space-y-1"
+                >
+                  <div className="aspect-square rounded-2xl overflow-hidden border-2 border-rose-500/70 p-0.5 bg-black">
+                    <img
+                      src={hp.thumbnail || hp.fallbackImg}
+                      alt={hp.rawName}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = hp.fallbackImg;
+                      }}
+                      className="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition"
+                    />
+                  </div>
+                  <div className="text-[11px] font-bold text-white truncate">{hp.rawName}</div>
+                  <div className="text-[10px] text-gray-400 truncate">{hp.cleanCity}</div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* 5-Column Dense Gallery Grid (Starting at index 8 so 0% duplicate with Hot Strip above!) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+            {filteredProfiles.slice(8, 8 + visibleCount).map((p: any, idx: number) =>
+              renderFamiliarAdCard(p, idx, "l2")
+            )}
+          </div>
+        </main>
+      )}
+
+      {/* ===================================================================== */}
+      {/* LAYOUT 3: KAUFMICH / EUROGIRLS (1-Zeilen Dropdown-Filterbank + Grid)  */}
+      {/* ===================================================================== */}
+      {layout === "3" && (
+        <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-5">
+          {/* Familiar 4-Column Horizontal Filter Bar */}
+          <div className="p-4 rounded-2xl bg-[#12141D] border border-[#C8A97E]/40 shadow-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div>
+              <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">
+                1. Rubrik wählen
+              </label>
+              <select
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value as any)}
+                className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+              >
+                {FAMILIAR_MAIN_TABS.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.label} ({tabCounts[t.id] || 0})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">
+                2. Kanton / Stadt
+              </label>
+              <select
+                value={activeCanton}
+                onChange={(e) => setActiveCanton(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+              >
+                {SWISS_REGIONS.map((r) => (
+                  <option key={r.code} value={r.code}>
+                    {r.name} ({cantonCounts[r.code] || 0})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold uppercase text-[#C8A97E] mb-1">
+                3. Beliebter Service / Typ
+              </label>
+              <select
+                value={activeServiceTag}
+                onChange={(e) => setActiveServiceTag(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl bg-[#090A0F] border border-white/15 text-xs font-bold text-white"
+              >
+                <option value="">Alle Services & Vorlieben</option>
+                {FAMILIAR_SERVICES.map((s) => (
+                  <option key={s.tag} value={s.tag}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-end gap-2">
+              <button
+                type="button"
+                onClick={() => setOnlyAvailable(!onlyAvailable)}
+                className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-bold cursor-pointer ${
+                  onlyAvailable
+                    ? "bg-emerald-500 text-black border-emerald-400"
+                    : "bg-[#090A0F] border-white/15 text-gray-300"
+                }`}
+              >
+                ● Heute frei
+              </button>
+              <button
+                type="button"
+                onClick={resetAll}
+                className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-[#C8A97E] cursor-pointer"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
+              renderFamiliarAdCard(p, idx, "l3")
+            )}
+          </div>
+        </main>
+      )}
+
+      {/* ===================================================================== */}
+      {/* LAYOUT 4: BEMYGIRL LUXURY (Kantons-Zähler + Randlose 3:4 Porträts)    */}
+      {/* ===================================================================== */}
+      {layout === "4" && (
+        <main className="max-w-7xl mx-auto px-3 sm:px-4 py-5 space-y-5">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#C8A97E]/25">
+            <div className="flex flex-wrap gap-1.5">
+              {SWISS_REGIONS.slice(0, 9).map((reg) => (
+                <button
+                  key={reg.code}
+                  onClick={() => setActiveCanton(reg.code)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition cursor-pointer ${
+                    activeCanton === reg.code
+                      ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E]"
+                      : "bg-[#11131C] text-gray-300 border-white/10 hover:border-[#C8A97E]/50"
+                  }`}
+                >
+                  {reg.code === "ALL" ? "Alle Regionen" : reg.name.split("(")[0].trim()}{" "}
+                  <span className="opacity-70">({cantonCounts[reg.code] || 0})</span>
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-1.5">
+              {FAMILIAR_SERVICES.slice(0, 4).map((s) => (
+                <button
+                  key={s.tag}
+                  onClick={() => setActiveServiceTag(activeServiceTag === s.tag ? "" : s.tag)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border cursor-pointer ${
+                    activeServiceTag === s.tag
+                      ? "bg-white text-black border-white font-bold"
+                      : "bg-white/5 border-white/10 text-gray-300"
+                  }`}
+                >
+                  {s.tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            {filteredProfiles.slice(0, visibleCount).map((p: any, idx: number) =>
+              renderFamiliarAdCard(p, idx, "l4")
+            )}
+          </div>
+        </main>
+      )}
+
+      {/* Load More & Secondary Doors */}
+      <div className="max-w-7xl mx-auto px-4 pt-4">
+        <div className="text-center flex flex-wrap justify-center gap-3">
           <button
             type="button"
             onClick={loadMoreFromServerVault}
             disabled={loadingVault}
             className="px-8 py-3.5 rounded-xl bg-[#C8A97E] hover:bg-[#d8b98e] text-[#090A0F] font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-lg"
           >
-            {loadingVault ? "Lädt..." : "Weitere Profile laden"}
+            {loadingVault ? "Lädt..." : "Weitere Inserate anzeigen"}
           </button>
           <Link
             href="/search"
-            className={`px-6 py-3.5 rounded-xl border text-xs font-bold ${
-              isLightWorld
-                ? "border-stone-300 bg-white text-stone-800"
-                : "border-white/15 bg-white/5 text-gray-200"
-            }`}
+            className="px-6 py-3.5 rounded-xl border border-white/15 bg-white/5 text-xs font-bold text-gray-200"
           >
-            Erweiterte Detail-Suche →
+            Alle Filter öffnen →
           </Link>
         </div>
 
-        {/* Bottom 3 Pillars (Reviews, Clubs, Provider Control) */}
-        <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-4 mt-14 pt-8 border-t ${
-            isLightWorld ? "border-stone-300" : "border-white/10"
-          }`}
-        >
-          <Link
-            href="/reviews"
-            className={`p-5 rounded-2xl border transition group ${
-              isLightWorld ? "bg-white border-stone-200 shadow-sm" : "bg-[#12131A] border-white/10 hover:border-[#C8A97E]"
-            }`}
-          >
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
-              <Scale size={14} />
-              <span>01 · Redaktioneller Vergleich</span>
-            </div>
-            <h3 className="text-base font-serif font-bold mt-1.5 flex items-center justify-between">
-              <span>Xdate, Fgirl & Co. im Test</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12 pt-8 border-t border-white/10">
+          <Link href="/reviews" className="p-5 rounded-2xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E] transition">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">01 · Portal-Test</div>
+            <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
+              <span>Xdate, Fgirl & And6 im Vergleich</span>
               <ArrowUpRight size={16} />
             </h3>
-            <p className="text-xs opacity-70 mt-1">
-              Sachliche Einzelberichte zu Funktionen, Kosten und Prüfverfahren der grossen Schweizer Portale.
-            </p>
+            <p className="text-xs text-gray-400 mt-1">Sachliche Einzelberichte zu Kosten, Reichweite & Funktionen.</p>
           </Link>
 
-          <Link
-            href="/rankings"
-            className={`p-5 rounded-2xl border transition group ${
-              isLightWorld ? "bg-white border-stone-200 shadow-sm" : "bg-[#12131A] border-white/10 hover:border-[#C8A97E]"
-            }`}
-          >
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
-              <Building2 size={14} />
-              <span>02 · Stationäre Adressen</span>
-            </div>
-            <h3 className="text-base font-serif font-bold mt-1.5 flex items-center justify-between">
-              <span>{totalClubsCount} Schweizer Clubs & Studios</span>
+          <Link href="/rankings" className="p-5 rounded-2xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E] transition">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">02 · Etablissements</div>
+            <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
+              <span>{totalClubsCount} Schweizer Clubs & Laufhäuser</span>
               <ArrowUpRight size={16} />
             </h3>
-            <p className="text-xs opacity-70 mt-1">
-              Stationäre Laufhäuser, FKK-Clubs, Kontaktbars und Massagestudios nach Kanton geordnet.
-            </p>
+            <p className="text-xs text-gray-400 mt-1">Alle Kontaktdaten und Standorte nach Kanton geordnet.</p>
           </Link>
 
-          <Link
-            href="/advertise"
-            className={`p-5 rounded-2xl border transition group ${
-              isLightWorld ? "bg-white border-stone-200 shadow-sm" : "bg-[#12131A] border-white/10 hover:border-[#C8A97E]"
-            }`}
-          >
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
-              <UserCheck size={14} />
-              <span>03 · Für Anbieterinnen</span>
-            </div>
-            <h3 className="text-base font-serif font-bold mt-1.5 flex items-center justify-between">
-              <span>Profil kostenlos selbst verwalten</span>
+          <Link href="/advertise" className="p-5 rounded-2xl bg-[#11131C] border border-white/10 hover:border-[#C8A97E] transition">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">03 · Für Anbieterinnen</div>
+            <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
+              <span>Inserat kostenlos selbst verwalten</span>
               <ArrowUpRight size={16} />
             </h3>
-            <p className="text-xs opacity-70 mt-1">
-              Bestehenden Eintrag übernehmen, Angaben korrigieren, Verfügbarkeit bestätigen oder kostenlos entfernen.
-            </p>
+            <p className="text-xs text-gray-400 mt-1">Bestehenden Eintrag übernehmen, korrigieren oder entfernen.</p>
           </Link>
         </div>
-      </main>
+      </div>
 
       {selectedIndexProfile && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 text-white">
-          <div className="max-w-md w-full rounded-2xl bg-[#12131A] border border-[#C8A97E]/50 p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="max-w-md w-full rounded-2xl bg-[#11131C] border border-[#C8A97E]/50 p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
                 Quellenangabe · {selectedIndexProfile.sourcePortal || "Index"}
@@ -981,7 +953,7 @@ export default function HomePage() {
               </button>
             </div>
             <h3 className="text-xl font-serif font-bold text-white">
-              {selectedIndexProfile.rawName} ({selectedIndexProfile.cleanCity || "Schweiz"}, {selectedIndexProfile.canton})
+              {selectedIndexProfile.rawName} ({selectedIndexProfile.cleanCity}, {selectedIndexProfile.canton})
             </h3>
             <p className="text-xs text-gray-300 leading-relaxed">
               Dieser Eintrag stammt aus einer öffentlich erreichbaren Quelle ({selectedIndexProfile.sourcePortal || "Portal-Index"}).
@@ -991,7 +963,7 @@ export default function HomePage() {
                 href={`/profile/${encodeURIComponent(selectedIndexProfile.id)}`}
                 className="py-2.5 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-xs text-center"
               >
-                Vollständige Profilansicht öffnen →
+                Vollständige Inserate-Ansicht öffnen →
               </Link>
               {selectedIndexProfile.sourceUrl && (
                 <a
@@ -1010,7 +982,7 @@ export default function HomePage() {
                   href={`/create-post?claim=${encodeURIComponent(selectedIndexProfile.rawName || "")}&id=${encodeURIComponent(selectedIndexProfile.id)}`}
                   className="py-2 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold text-[11px] text-center"
                 >
-                  Mein Profil? Verwalten
+                  Mein Inserat? Verwalten
                 </Link>
                 <Link
                   href={`/report?name=${encodeURIComponent(selectedIndexProfile.rawName || "")}&id=${encodeURIComponent(selectedIndexProfile.id)}`}
