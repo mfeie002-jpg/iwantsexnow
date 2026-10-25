@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 /**
  * Safe public placeholder until a server-side authentication, age-check

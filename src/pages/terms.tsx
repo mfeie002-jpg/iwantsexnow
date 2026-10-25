@@ -1,6 +1,6 @@
 import { BrandLogo } from "@/components/BrandLogo";
 import Link from "next/link";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { MobileNav } from "@/components/MobileNav";
 import { Card } from "@/components/ui/card";

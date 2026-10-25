@@ -2,7 +2,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { useRouter } from "next/router";
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";

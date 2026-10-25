@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import { MobileNav } from "@/components/MobileNav";
 import { Heart, User, Bell, Shield, CreditCard, History, Settings, Eye, MapPin, Calendar, Star, Trash2, Edit, Save, X } from "lucide-react";
 import Link from "next/link";

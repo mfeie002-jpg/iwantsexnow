@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";

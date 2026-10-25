@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/toaster";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import { AgeVerificationGate } from "@/components/AgeVerificationGate";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
