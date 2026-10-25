@@ -15,12 +15,9 @@ import {
   UserCheck,
   Search,
   Sparkles,
-  SlidersHorizontal,
   ShieldCheck,
-  Compass,
-  Layers,
+  Info,
   RotateCcw,
-  Eye,
 } from "lucide-react";
 
 export type ConceptId = "1" | "2" | "3" | "4" | "5";
@@ -28,8 +25,8 @@ export type ConceptId = "1" | "2" | "3" | "4" | "5";
 interface ConceptConfig {
   id: ConceptId;
   shortTitle: string;
+  mobileTitle: string;
   fullTitle: string;
-  subtitle: string;
   pageBg: string;
   ambientGlowLeft: string;
   ambientGlowRight: string;
@@ -43,8 +40,8 @@ const CONCEPTS: Record<ConceptId, ConceptConfig> = {
   "1": {
     id: "1",
     shortTitle: "1. Katalog-Sofortstart",
+    mobileTitle: "1. Katalog",
     fullTitle: "Option 1: Photos First – Der direkte Schweizer Katalog",
-    subtitle: "Wie Fgirl & Xdate Pro: 1 schlanke Leiste oben, sofort grosse 3:4 Porträts ohne Umwege.",
     pageBg: "bg-[#090A0F]",
     ambientGlowLeft: "bg-[#C8A97E]/10",
     ambientGlowRight: "bg-sky-500/5",
@@ -56,12 +53,12 @@ const CONCEPTS: Record<ConceptId, ConceptConfig> = {
   "2": {
     id: "2",
     shortTitle: "2. 2-Schritte-Concierge",
+    mobileTitle: "2. Concierge",
     fullTitle: "Option 2: Der geführte 2-Schritte-Concierge",
-    subtitle: "Kein Suchstress: Schritt 1 Region anklicken -> Schritt 2 Erlebnis wählen -> Passende Treffer.",
     pageBg: "bg-[#0B0E17]",
     ambientGlowLeft: "bg-[#C8A97E]/15",
     ambientGlowRight: "bg-emerald-500/10",
-    cardStyle: "bg-[#131826]/90 backdrop-blur-xl border-[#C8A97E]/25 hover:border-[#C8A97E] rounded-2xl shadow-xl",
+    cardStyle: "bg-[#131826]/95 border-[#C8A97E]/25 hover:border-[#C8A97E] rounded-2xl shadow-xl",
     accentBadge: "bg-gradient-to-r from-[#C8A97E] to-[#E5C99B] text-[#090A0F]",
     buttonPrimary: "bg-gradient-to-r from-[#C8A97E] to-[#E5C99B] text-[#090A0F]",
     dividerLabel: "PERSONAL SWISS CONCIERGE · VERIFIED DISCOVERY",
@@ -69,8 +66,8 @@ const CONCEPTS: Record<ConceptId, ConceptConfig> = {
   "3": {
     id: "3",
     shortTitle: "3. Die 3 Haupt-Türen",
-    fullTitle: "Option 3: Die 3 klaren Haupt-Türen (Marktplatz & Vergleich)",
-    subtitle: "Jeder Besucher sieht in 1 Sekunde seine Tür: 1. Models finden | 2. 162+ Clubs | 3. Portal-Test.",
+    mobileTitle: "3. 3-Türen",
+    fullTitle: "Option 3: Die 3 klaren Haupt-Türen (Models · Clubs · Test)",
     pageBg: "bg-[#080A0F]",
     ambientGlowLeft: "bg-sky-500/10",
     ambientGlowRight: "bg-[#C8A97E]/12",
@@ -82,12 +79,12 @@ const CONCEPTS: Record<ConceptId, ConceptConfig> = {
   "4": {
     id: "4",
     shortTitle: "4. Editorial Spotlight",
+    mobileTitle: "4. Spotlight",
     fullTitle: "Option 4: Editorial Luxury Magazine (BeMyGirl / Boutique-Stil)",
-    subtitle: "Warmes Penthouse-Licht, grosse Spotlight-Porträts oben und edle Magazin-Ornamente.",
     pageBg: "bg-[#11090E]",
     ambientGlowLeft: "bg-rose-500/15",
     ambientGlowRight: "bg-[#C8A97E]/20",
-    cardStyle: "bg-gradient-to-b from-[#1B1017] to-[#120A0F] border-[#C8A97E]/30 hover:border-[#C8A97E] rounded-2xl shadow-[0_12px_35px_rgba(0,0,0,0.7)]",
+    cardStyle: "bg-gradient-to-b from-[#1B1017] to-[#120A0F] border-[#C8A97E]/30 hover:border-[#C8A97E] rounded-2xl shadow-xl",
     accentBadge: "bg-gradient-to-r from-[#C8A97E] via-[#F1DCA7] to-[#C8A97E] text-[#11090E]",
     buttonPrimary: "bg-gradient-to-r from-[#C8A97E] via-[#E8CE9D] to-[#C8A97E] text-[#11090E]",
     dividerLabel: "EDITION SUISSE · PRIVATE PORTFOLIO",
@@ -95,8 +92,8 @@ const CONCEPTS: Record<ConceptId, ConceptConfig> = {
   "5": {
     id: "5",
     shortTitle: "5. Live-Pulse Radar",
+    mobileTitle: "5. Live-Radar",
     fullTitle: "Option 5: Live-Pulse & Visuelles Entdecker-Radar",
-    subtitle: "Fokus auf Echtzeit-Aktivität, runde Schnell-Porträts oben und visuelle Vorlieben-Filter.",
     pageBg: "bg-[#090D12]",
     ambientGlowLeft: "bg-emerald-500/12",
     ambientGlowRight: "bg-[#C8A97E]/15",
@@ -111,7 +108,7 @@ const CORE_CATEGORIES = [
   {
     id: "all",
     label: "Alle Models",
-    sub: "Komplette Auswahl",
+    sub: "Komplett",
     queryTag: "",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80",
   },
@@ -125,44 +122,44 @@ const CORE_CATEGORIES = [
   {
     id: "massage",
     label: "Erotik-Massage",
-    sub: "Tantra & Body2Body",
+    sub: "Tantra & B2B",
     queryTag: "Massage",
     image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "outcall",
-    label: "Hotel & Hausbesuch",
-    sub: "Diskreter Outcall",
+    label: "Hotel & Outcall",
+    sub: "Diskreter Besuch",
     queryTag: "Outcall",
     image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "latina",
-    label: "Latina & Exotic",
-    sub: "Kurvig & Temperament",
+    label: "Latina & Curves",
+    sub: "Temperament",
     queryTag: "Latina",
     image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: "domina",
-    label: "Domina & Fetisch",
-    sub: "BDSM & Studio",
+    label: "Domina & BDSM",
+    sub: "Fetisch & Studio",
     queryTag: "Domina",
     image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=500&q=80",
   },
 ];
 
 const QUICK_CANTONS = [
-  { code: "ALL", name: "Ganze Schweiz", sub: "Alle Regionen" },
-  { code: "ZH", name: "Zürich", sub: "City, Oerlikon & See" },
-  { code: "ZG", name: "Zug & Cham", sub: "Baar & Zentralschweiz" },
-  { code: "BS", name: "Basel", sub: "Stadt & Baselland" },
-  { code: "BE", name: "Bern", sub: "City & Mittelland" },
-  { code: "LU", name: "Luzern", sub: "Zentralschweiz" },
-  { code: "AG", name: "Aargau", sub: "Baden, Aarau & Olten" },
-  { code: "SG", name: "St. Gallen", sub: "Ostschweiz & Wil" },
-  { code: "GE", name: "Genève", sub: "Romandie & Lac" },
-  { code: "VD", name: "Lausanne", sub: "Vaud & Riviera" },
+  { code: "ALL", name: "🇨🇭 Alle", full: "Ganze Schweiz", sub: "Alle Regionen" },
+  { code: "ZH", name: "Zürich", full: "Zürich", sub: "City & See" },
+  { code: "ZG", name: "Zug & Cham", full: "Zug & Cham", sub: "Baar & ZG" },
+  { code: "BS", name: "Basel", full: "Basel", sub: "BS & BL" },
+  { code: "BE", name: "Bern", full: "Bern", sub: "City & BE" },
+  { code: "LU", name: "Luzern", full: "Luzern", sub: "Zentralschweiz" },
+  { code: "AG", name: "Aargau", full: "Aargau", sub: "Baden & Aarau" },
+  { code: "SG", name: "St. Gallen", full: "St. Gallen", sub: "Ostschweiz" },
+  { code: "GE", name: "Genève", full: "Genève", sub: "Romandie" },
+  { code: "VD", name: "Lausanne", full: "Lausanne", sub: "Vaud" },
 ];
 
 const FALLBACK_PORTRAITS = [
@@ -172,14 +169,15 @@ const FALLBACK_PORTRAITS = [
   "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
 ];
 
-// Wiederkehrendes Designelement: Architektonischer Stencil-X Sektionstrenner
 function ArchitecturalDivider({ label }: { label: string }) {
   return (
-    <div className="my-10 flex items-center gap-4 select-none">
+    <div className="my-7 sm:my-10 flex items-center gap-2 sm:gap-4 select-none">
       <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#C8A97E]/40 to-[#C8A97E]/10" />
-      <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#11131C]/90 border border-[#C8A97E]/30 shadow-lg">
-        <StencilSerifX color="#C8A97E" className="w-4 h-3.5" />
-        <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#C8A97E]">{label}</span>
+      <div className="flex items-center gap-1.5 sm:gap-2.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#11131C]/90 border border-[#C8A97E]/30 shadow-lg shrink-0">
+        <StencilSerifX color="#C8A97E" className="w-3.5 h-3 sm:w-4 sm:h-3.5" />
+        <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.22em] text-[#C8A97E]">
+          {label}
+        </span>
       </div>
       <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#C8A97E]/40 to-[#C8A97E]/10" />
     </div>
@@ -340,6 +338,117 @@ export default function HomePage() {
     }).catch(() => {});
   };
 
+  // Mobile-Perfected Profile Card Component (Used consistently across the grid)
+  const renderProfileCard = (p: any, idx: number, keyPrefix: string) => {
+    const cleanName =
+      String(p.rawName || "Profil")
+        .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+        .trim()
+        .slice(0, 22) || "Profil";
+    const city = String(p.city || "Zürich").split("/")[0].trim();
+    const rate = p.advertisedBaseChf || null;
+    const img = p.thumbnail || p.fallbackImg;
+
+    return (
+      <article
+        key={`${keyPrefix}-${p.id}-${idx}`}
+        className={`group overflow-hidden border transition-all duration-300 flex flex-col justify-between ${cfg.cardStyle}`}
+      >
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#07080C]">
+          <Link
+            href={`/profile/${encodeURIComponent(p.id)}`}
+            onClick={() => recordEvent(p.id, "track_click")}
+          >
+            <img
+              src={img}
+              alt={`${cleanName} – ${city}`}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+              }}
+              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+              loading="lazy"
+            />
+          </Link>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#090A0F] via-transparent to-black/30 pointer-events-none" />
+
+          {concept === "4" && (
+            <div className="pointer-events-none absolute inset-1.5 sm:inset-2 border border-[#C8A97E]/25 rounded-xl" />
+          )}
+
+          {/* Top-Left: Compact Status / Source Badge */}
+          <div className="absolute top-2 left-2 flex flex-col gap-1 max-w-[62%]">
+            {p.availabilityConfirmed ? (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/85 border border-emerald-500/50 text-emerald-300 text-[10px] font-bold truncate">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                Verfügbar
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-black/75 text-gray-300 text-[9px] sm:text-[10px] border border-white/10 truncate">
+                {p.sourcePortal || "Index"}
+              </span>
+            )}
+            {p.isSponsored && (
+              <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase w-fit ${cfg.accentBadge}`}>
+                Anzeige
+              </span>
+            )}
+          </div>
+
+          {/* Top-Right: Rate Pill or Verification Check (Frees up 100% bottom width on mobile!) */}
+          <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
+            {rate && (
+              <span className="px-2 py-0.5 rounded bg-black/85 backdrop-blur border border-[#C8A97E]/40 text-[10px] sm:text-xs font-extrabold text-[#C8A97E]">
+                CHF {rate}
+              </span>
+            )}
+            {p.isIdentityVerified && (
+              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-black/85 border border-[#C8A97E]/60 text-[#E5C99B] text-[9px] font-semibold">
+                <Check size={10} className="text-[#C8A97E]" /> Geprüft
+              </span>
+            )}
+          </div>
+
+          {/* Bottom Photo Overlay: Full 100% width for Name + Location (Never squished on mobile!) */}
+          <div className="absolute bottom-2 left-2.5 right-2.5">
+            <h2 className="text-sm sm:text-base font-serif font-bold text-white leading-tight truncate drop-shadow">
+              {cleanName}
+            </h2>
+            <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate mt-0.5">
+              <MapPin size={11} className="text-[#C8A97E] shrink-0" />
+              <span className="truncate">
+                {city} ({p.canton || "CH"})
+              </span>
+            </p>
+          </div>
+        </div>
+
+        {/* Thumb-Friendly Card Action Footer */}
+        <div className="p-2 sm:p-3 flex items-center gap-1.5">
+          <Link
+            href={`/profile/${encodeURIComponent(p.id)}`}
+            onClick={() => recordEvent(p.id, "track_click")}
+            className={`flex-1 py-2 sm:py-2.5 rounded-lg font-bold text-[11px] sm:text-xs text-center transition ${cfg.buttonPrimary}`}
+          >
+            Profil öffnen
+          </Link>
+          {!p.isSelfManaged && (
+            <button
+              type="button"
+              onClick={() => {
+                recordEvent(p.id, "track_click");
+                setSelectedIndexProfile(p);
+              }}
+              aria-label="Quellenangabe & Info"
+              className="p-2 sm:p-2.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 text-gray-300 cursor-pointer shrink-0"
+            >
+              <Info size={14} />
+            </button>
+          )}
+        </div>
+      </article>
+    );
+  };
+
   return (
     <div className={`min-h-screen ${cfg.pageBg} text-white pb-24 lg:pb-16 relative overflow-x-hidden transition-colors duration-500`}>
       <SEO
@@ -347,62 +456,56 @@ export default function HomePage() {
         description="Entdecke Escorts und Studios in Zürich, Zug, Basel, Bern & Genf ohne Registrierungspflicht. Mit transparenten Quellenangaben und Schweizer Portalvergleich."
       />
 
-      {/* RECURRING DESIGN ELEMENT 1: Ambient Luxury Light Orbs & Subtle Architectural Grid */}
-      <div className={`pointer-events-none fixed top-20 -left-32 w-[500px] h-[500px] rounded-full ${cfg.ambientGlowLeft} blur-[150px] transition-all duration-700`} />
-      <div className={`pointer-events-none fixed bottom-10 -right-32 w-[500px] h-[500px] rounded-full ${cfg.ambientGlowRight} blur-[150px] transition-all duration-700`} />
+      <div className={`pointer-events-none fixed top-20 -left-32 w-[420px] h-[420px] rounded-full ${cfg.ambientGlowLeft} blur-[140px]`} />
+      <div className={`pointer-events-none fixed bottom-10 -right-32 w-[420px] h-[420px] rounded-full ${cfg.ambientGlowRight} blur-[140px]`} />
 
-      {/* LIVE CONCEPT SWITCHER BAR (Top Sticky Preview Switcher so you can test all 5 live!) */}
-      <div className="bg-gradient-to-r from-[#141722] via-[#1B1F2E] to-[#141722] border-b border-[#C8A97E]/40 py-2 px-4 sticky top-0 z-[60] shadow-xl">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-xs">
-            <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] font-extrabold uppercase text-[10px]">
-              Live-Design-Toggler
-            </span>
-            <span className="text-gray-200 font-semibold hidden sm:inline">{cfg.fullTitle}</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5">
+      {/* SINGLE-LINE HORIZONTAL SWIPE CONCEPT SWITCHER (Does NOT block mobile screen height!) */}
+      <div className="bg-[#121521] border-b border-[#C8A97E]/35 py-1.5 px-3">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
+          <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] font-extrabold uppercase text-[9px] shrink-0">
+            Ansicht wählen:
+          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
             {(["1", "2", "3", "4", "5"] as ConceptId[]).map((id) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => setConcept(id)}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                className={`px-2.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition whitespace-nowrap cursor-pointer ${
                   concept === id
-                    ? "bg-[#C8A97E] text-[#090A0F] shadow-[0_0_15px_rgba(200,169,126,0.5)] scale-[1.03]"
-                    : "bg-black/50 text-gray-300 border border-white/10 hover:border-[#C8A97E]/50 hover:text-white"
+                    ? "bg-[#C8A97E] text-[#090A0F] shadow"
+                    : "bg-black/40 text-gray-300 border border-white/10 hover:text-white"
                 }`}
               >
-                {CONCEPTS[id].shortTitle}
+                <span className="sm:hidden">{CONCEPTS[id].mobileTitle}</span>
+                <span className="hidden sm:inline">{CONCEPTS[id].shortTitle}</span>
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Main Header */}
+      {/* Main Sticky Header */}
       <LuxuryHeader />
 
       {/* ===================================================================== */}
-      {/* CONCEPT 1 HERO: "KATALOG-SOFORTSTART" (Fgirl / Xdate Pro Style)       */}
+      {/* CONCEPT 1 HERO: "KATALOG-SOFORTSTART" (Mobile Horizontal Swipe!)      */}
       {/* ===================================================================== */}
       {concept === "1" && (
-        <section className="relative border-b border-white/10 bg-[#0B0D14]/90 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 pt-4 pb-4 space-y-3">
-            <div className="p-2.5 rounded-2xl bg-[#121520] border border-[#C8A97E]/35 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5">
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E] px-2 shrink-0 flex items-center gap-1">
-                  <MapPin size={13} />
-                  <span>1. Region:</span>
-                </span>
+        <section className="border-b border-white/10 bg-[#0B0D14]">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-3 pb-3 space-y-2.5">
+            {/* Row 1: Search Input (16px on mobile to prevent iOS zoom!) + Region Swipe */}
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide snap-x">
                 {QUICK_CANTONS.map((c) => (
                   <button
                     key={c.code}
                     type="button"
                     onClick={() => setActiveCanton(c.code)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition shrink-0 cursor-pointer ${
+                    className={`snap-start px-3 py-1.5 rounded-xl text-xs font-semibold transition shrink-0 cursor-pointer ${
                       activeCanton === c.code
                         ? "bg-[#C8A97E] text-[#090A0F] font-extrabold"
-                        : "bg-white/5 text-gray-300 hover:bg-white/10"
+                        : "bg-[#121520] text-gray-300 border border-white/10"
                     }`}
                   >
                     {c.name}
@@ -410,45 +513,54 @@ export default function HomePage() {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
-                <div className="flex items-center bg-[#090A0F] border border-white/15 rounded-xl px-3 py-1.5 w-full lg:w-64">
-                  <Search size={14} className="text-[#C8A97E]" />
+              <div className="flex items-center gap-1.5 shrink-0">
+                <div className="flex items-center bg-[#121520] border border-white/15 focus-within:border-[#C8A97E] rounded-xl px-3 py-1.5 flex-1 lg:w-64">
+                  <Search size={15} className="text-[#C8A97E] shrink-0" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Name, Ort oder Vorliebe..."
-                    className="w-full px-2 bg-transparent text-xs text-white focus:outline-none"
+                    className="w-full px-2 bg-transparent text-base sm:text-xs text-white placeholder-gray-400 focus:outline-none"
                   />
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery("")} className="text-xs text-gray-400 px-1">
+                      ✕
+                    </button>
+                  )}
                 </div>
                 {(activeCanton !== "ALL" || searchQuery || onlyConfirmedAvailable || onlySelfManaged) && (
                   <button
                     onClick={resetFilters}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 text-xs text-[#C8A97E] font-semibold cursor-pointer"
+                    className="p-2 rounded-xl bg-white/10 text-[#C8A97E] shrink-0"
+                    title="Filter zurücksetzen"
                   >
-                    Reset
+                    <RotateCcw size={15} />
                   </button>
                 )}
               </div>
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {/* Row 2: Horizontal Swipe Category Cards on Mobile, 6-Grid on Desktop */}
+            <div className="flex sm:grid sm:grid-cols-6 gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide snap-x">
               {CORE_CATEGORIES.map((card) => (
                 <button
                   key={card.id}
                   type="button"
                   onClick={() => selectCategory(card.id, card.queryTag)}
-                  className={`group relative h-20 rounded-xl overflow-hidden border text-left transition cursor-pointer ${
+                  className={`snap-start shrink-0 w-28 sm:w-auto relative h-16 sm:h-20 rounded-xl overflow-hidden border text-left transition cursor-pointer ${
                     activeVisualId === card.id
                       ? "border-[#C8A97E] ring-2 ring-[#C8A97E]/40"
                       : "border-white/10 hover:border-[#C8A97E]/60"
                   }`}
                 >
                   <img src={card.image} alt={card.label} className="w-full h-full object-cover object-top" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                  <div className="absolute bottom-2 left-2.5 right-2">
-                    <div className="text-xs font-bold text-white leading-tight">{card.label}</div>
-                    <div className="text-[10px] text-gray-300 truncate hidden sm:block">{card.sub}</div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+                  <div className="absolute bottom-1.5 left-2 right-1.5">
+                    <div className="text-[11px] sm:text-xs font-bold text-white leading-tight truncate">
+                      {card.label}
+                    </div>
+                    <div className="text-[9px] text-gray-300 truncate hidden sm:block">{card.sub}</div>
                   </div>
                 </button>
               ))}
@@ -458,50 +570,50 @@ export default function HomePage() {
       )}
 
       {/* ===================================================================== */}
-      {/* CONCEPT 2 HERO: "DER 2-SCHRITTE-CONCIERGE" (Zero-Overload Assistant)  */}
+      {/* CONCEPT 2 HERO: "DER 2-SCHRITTE-CONCIERGE" (Compact on Mobile)        */}
       {/* ===================================================================== */}
       {concept === "2" && (
-        <section className="relative border-b border-[#C8A97E]/25 py-8 px-4">
-          <div className="max-w-5xl mx-auto rounded-3xl bg-[#131826]/90 backdrop-blur-2xl border border-[#C8A97E]/45 p-6 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.85)] space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
+        <section className="border-b border-[#C8A97E]/25 py-4 sm:py-7 px-3 sm:px-4">
+          <div className="max-w-5xl mx-auto rounded-2xl sm:rounded-3xl bg-[#131826]/95 border border-[#C8A97E]/45 p-4 sm:p-7 shadow-2xl space-y-4 sm:space-y-5">
+            <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A97E]">
-                  SCHWEIZER VIP-CONCIERGE · IN 2 KLICKS ZUM ZIEL
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#C8A97E]">
+                  SCHWEIZER VIP-CONCIERGE
                 </div>
-                <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white mt-1">
-                  Wo und wonach suchst du heute?
+                <h1 className="text-lg sm:text-3xl font-serif font-bold text-white">
+                  In 2 Klicks zur passenden Auswahl
                 </h1>
               </div>
               <button
                 onClick={resetFilters}
-                className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-[#C8A97E] font-semibold cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px] text-[#C8A97E] font-semibold cursor-pointer shrink-0"
               >
-                Auswahl zurücksetzen
+                Reset
               </button>
             </div>
 
-            {/* Step 1: Big Clickable City Cards */}
-            <div className="space-y-2.5">
-              <div className="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-[#C8A97E] text-[#090A0F] font-extrabold inline-flex items-center justify-center text-[11px]">
+            {/* Step 1: Horizontal Swipe on Mobile, 5-Grid on Desktop */}
+            <div className="space-y-2">
+              <div className="text-xs font-bold text-gray-200 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-[#C8A97E] text-[#090A0F] font-extrabold inline-flex items-center justify-center text-[10px]">
                   1
                 </span>
-                <span>Wähle deine Stadt oder Region:</span>
+                <span>Stadt oder Region wählen:</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+              <div className="flex sm:grid sm:grid-cols-5 gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide snap-x">
                 {QUICK_CANTONS.map((c) => (
                   <button
                     key={c.code}
                     type="button"
                     onClick={() => setActiveCanton(c.code)}
-                    className={`p-3 rounded-xl border text-left transition cursor-pointer ${
+                    className={`snap-start shrink-0 w-28 sm:w-auto p-2.5 rounded-xl border text-left transition cursor-pointer ${
                       activeCanton === c.code
-                        ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E] font-bold shadow-lg"
-                        : "bg-[#0B0E17] border-white/10 text-white hover:border-[#C8A97E]/60"
+                        ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E] font-bold"
+                        : "bg-[#0B0E17] border-white/10 text-white"
                     }`}
                   >
-                    <div className="text-xs sm:text-sm font-bold">{c.name}</div>
-                    <div className={`text-[10px] ${activeCanton === c.code ? "text-[#090A0F]/80" : "text-gray-400"}`}>
+                    <div className="text-xs font-bold truncate">{c.full}</div>
+                    <div className={`text-[10px] truncate ${activeCanton === c.code ? "text-[#090A0F]/80" : "text-gray-400"}`}>
                       {c.sub}
                     </div>
                   </button>
@@ -509,31 +621,31 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Step 2: Big Clickable Experience Cards */}
-            <div className="space-y-2.5">
-              <div className="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-[#C8A97E] text-[#090A0F] font-extrabold inline-flex items-center justify-center text-[11px]">
+            {/* Step 2: Horizontal Swipe on Mobile, 6-Grid on Desktop */}
+            <div className="space-y-2">
+              <div className="text-xs font-bold text-gray-200 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-[#C8A97E] text-[#090A0F] font-extrabold inline-flex items-center justify-center text-[10px]">
                   2
                 </span>
-                <span>Wähle deine gewünschte Kategorie (oder tippe einen Wunsch ein):</span>
+                <span>Kategorie antippen:</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5">
+              <div className="flex sm:grid sm:grid-cols-6 gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide snap-x">
                 {CORE_CATEGORIES.map((card) => (
                   <button
                     key={card.id}
                     type="button"
                     onClick={() => selectCategory(card.id, card.queryTag)}
-                    className={`relative h-24 rounded-xl overflow-hidden border text-left transition cursor-pointer ${
+                    className={`snap-start shrink-0 w-28 sm:w-auto relative h-20 rounded-xl overflow-hidden border text-left transition cursor-pointer ${
                       activeVisualId === card.id
                         ? "border-[#C8A97E] ring-2 ring-[#C8A97E]"
-                        : "border-white/15 hover:border-[#C8A97E]/60"
+                        : "border-white/15"
                     }`}
                   >
                     <img src={card.image} alt={card.label} className="w-full h-full object-cover object-top" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
-                    <div className="absolute bottom-2 left-2.5 right-2">
-                      <div className="text-xs font-bold text-white">{card.label}</div>
-                      <div className="text-[10px] text-[#E5C99B]">{card.sub}</div>
+                    <div className="absolute bottom-1.5 left-2 right-1.5">
+                      <div className="text-[11px] font-bold text-white truncate">{card.label}</div>
+                      <div className="text-[9px] text-[#E5C99B] truncate">{card.sub}</div>
                     </div>
                   </button>
                 ))}
@@ -544,139 +656,111 @@ export default function HomePage() {
       )}
 
       {/* ===================================================================== */}
-      {/* CONCEPT 3 HERO: "DIE 3 KLAREN HAUPT-TÜREN" (Comparis / Portal Style)  */}
+      {/* CONCEPT 3 HERO: "DIE 3 HAUPT-TÜREN" (Swipeable Cards on Mobile)       */}
       {/* ===================================================================== */}
       {concept === "3" && (
-        <section className="relative border-b border-white/10 py-7 px-4 bg-[#0B0D14]">
-          <div className="max-w-7xl mx-auto space-y-6">
-            <div className="text-center max-w-3xl mx-auto space-y-2">
-              <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#C8A97E]">
-                SCHWEIZER ENTSCHEIDUNGS- & VERGLEICHSPLATTFORM
-              </div>
-              <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
-                Womit möchtest du starten? Wähle deinen Bereich:
-              </h1>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section className="border-b border-white/10 py-4 sm:py-6 px-3 sm:px-4 bg-[#0B0D14]">
+          <div className="max-w-7xl mx-auto space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {/* Door 1 */}
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-[#161B29] to-[#10131C] border-2 border-[#C8A97E] shadow-xl flex flex-col justify-between space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold uppercase">
-                      Tür 01 · Direkt-Suche
-                    </span>
-                    <Sparkles size={18} className="text-[#C8A97E]" />
-                  </div>
-                  <h2 className="text-xl font-serif font-bold text-white">
-                    Escorts & Privat-Models entdecken
-                  </h2>
-                  <p className="text-xs text-gray-300 leading-relaxed">
-                    Filtere unten direkt nach Zürich, Zug, Basel, Bern oder Genf – ohne Registrierungspflicht.
-                  </p>
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-b from-[#161B29] to-[#10131C] border-2 border-[#C8A97E] space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="px-2 py-0.5 rounded bg-[#C8A97E] text-[#090A0F] text-[10px] font-extrabold uppercase">
+                    01 · Escorts & Models
+                  </span>
+                  <Sparkles size={16} className="text-[#C8A97E]" />
                 </div>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {["ZH", "ZG", "BS", "BE", "LU", "GE"].map((c) => (
+                <h2 className="text-base sm:text-lg font-serif font-bold text-white">
+                  Profile direkt nach Region filtern
+                </h2>
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+                  {["ALL", "ZH", "ZG", "BS", "BE", "LU", "GE"].map((c) => (
                     <button
                       key={c}
                       onClick={() => setActiveCanton(c)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer ${
-                        activeCanton === c ? "bg-[#C8A97E] text-black" : "bg-white/10 text-white hover:bg-white/20"
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 cursor-pointer ${
+                        activeCanton === c ? "bg-[#C8A97E] text-black" : "bg-white/10 text-white"
                       }`}
                     >
-                      {c}
+                      {c === "ALL" ? "Alle" : c}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Door 2 */}
-              <Link
-                href="/rankings"
-                className="p-6 rounded-2xl bg-[#11131C] border border-white/15 hover:border-[#C8A97E] transition flex flex-col justify-between space-y-4 group"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded bg-white/10 text-[#C8A97E] text-[10px] font-bold uppercase">
-                      Tür 02 · Etablissements
+              {/* Door 2 & 3 side-by-side on mobile */}
+              <div className="grid grid-cols-2 md:grid-cols-2 md:col-span-2 gap-3">
+                <Link
+                  href="/rankings"
+                  className="p-4 sm:p-5 rounded-2xl bg-[#11131C] border border-white/15 hover:border-[#C8A97E] transition flex flex-col justify-between group"
+                >
+                  <div className="space-y-1.5">
+                    <span className="px-2 py-0.5 rounded bg-white/10 text-[#C8A97E] text-[9px] sm:text-[10px] font-bold uppercase inline-block">
+                      02 · Clubs ({totalClubsCount})
                     </span>
-                    <Building2 size={18} className="text-[#C8A97E]" />
+                    <h2 className="text-sm sm:text-lg font-serif font-bold text-white group-hover:text-[#C8A97E]">
+                      Schweizer Clubs & Studios
+                    </h2>
+                    <p className="text-[11px] text-gray-400 hidden sm:block">
+                      Laufhäuser, FKK-Clubs & Kontaktbars nach Kanton.
+                    </p>
                   </div>
-                  <h2 className="text-xl font-serif font-bold text-white group-hover:text-[#C8A97E]">
-                    {totalClubsCount} Schweizer Clubs & Laufhäuser
-                  </h2>
-                  <p className="text-xs text-gray-400 leading-relaxed">
-                    Geprüfte Adressliste für Kontaktbars, FKK-Clubs, Saunaclubs und Massagestudios in allen Kantonen.
-                  </p>
-                </div>
-                <div className="text-xs font-bold text-[#C8A97E] flex items-center justify-between pt-2 border-t border-white/10">
-                  <span>Club-Verzeichnis öffnen</span>
-                  <ArrowUpRight size={15} />
-                </div>
-              </Link>
+                  <div className="text-[11px] font-bold text-[#C8A97E] flex items-center justify-between pt-2 mt-2 border-t border-white/10">
+                    <span>Öffnen</span>
+                    <ArrowUpRight size={14} />
+                  </div>
+                </Link>
 
-              {/* Door 3 */}
-              <Link
-                href="/reviews"
-                className="p-6 rounded-2xl bg-[#11131C] border border-white/15 hover:border-[#C8A97E] transition flex flex-col justify-between space-y-4 group"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded bg-white/10 text-emerald-300 text-[10px] font-bold uppercase">
-                      Tür 03 · Unabhängiger Test
+                <Link
+                  href="/reviews"
+                  className="p-4 sm:p-5 rounded-2xl bg-[#11131C] border border-white/15 hover:border-[#C8A97E] transition flex flex-col justify-between group"
+                >
+                  <div className="space-y-1.5">
+                    <span className="px-2 py-0.5 rounded bg-white/10 text-emerald-300 text-[9px] sm:text-[10px] font-bold uppercase inline-block">
+                      03 · Portal-Test
                     </span>
-                    <Scale size={18} className="text-emerald-300" />
+                    <h2 className="text-sm sm:text-lg font-serif font-bold text-white group-hover:text-[#C8A97E]">
+                      Xdate, Fgirl & Co. im Test
+                    </h2>
+                    <p className="text-[11px] text-gray-400 hidden sm:block">
+                      Sachliche Einzelberichte zu Kosten & Funktionen.
+                    </p>
                   </div>
-                  <h2 className="text-xl font-serif font-bold text-white group-hover:text-[#C8A97E]">
-                    Schweizer Portale im Vergleich
-                  </h2>
-                  <p className="text-xs text-gray-400 leading-relaxed">
-                    Xdate.ch, Fgirl.ch, And6.com & Rosalon im sachlichen Test nach Besucher- und Anbieter-Kriterien.
-                  </p>
-                </div>
-                <div className="text-xs font-bold text-emerald-300 flex items-center justify-between pt-2 border-t border-white/10">
-                  <span>Zu den Portal-Testberichten</span>
-                  <ArrowUpRight size={15} />
-                </div>
-              </Link>
+                  <div className="text-[11px] font-bold text-emerald-300 flex items-center justify-between pt-2 mt-2 border-t border-white/10">
+                    <span>Vergleich</span>
+                    <ArrowUpRight size={14} />
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
       )}
 
       {/* ===================================================================== */}
-      {/* CONCEPT 4 HERO: "EDITORIAL VOGUE SPOTLIGHT" (BeMyGirl Luxury Style)   */}
+      {/* CONCEPT 4 HERO: "EDITORIAL VOGUE SPOTLIGHT"                           */}
       {/* ===================================================================== */}
       {concept === "4" && (
-        <section className="relative border-b border-[#C8A97E]/30 overflow-hidden py-8 px-4">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-25 scale-105"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1800&q=80')",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#11090E]/90 via-[#11090E]/80 to-[#11090E]" />
-
-          <div className="relative z-10 max-w-7xl mx-auto space-y-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#C8A97E]/30 pb-5">
+        <section className="relative border-b border-[#C8A97E]/30 overflow-hidden py-5 sm:py-7 px-3 sm:px-4">
+          <div className="relative z-10 max-w-7xl mx-auto space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#C8A97E]/30 pb-3">
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.26em] text-[#C8A97E]">
-                  SWISS HIGH-CLASS PORTFOLIO · CURATED EDITION
+                <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#C8A97E]">
+                  SWISS HIGH-CLASS PORTFOLIO
                 </div>
-                <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white mt-1">
-                  Exklusive Begleitung & <span className="italic font-normal text-[#E8CE9D]">ausgewählte Adressen</span>
+                <h1 className="text-xl sm:text-4xl font-serif font-bold text-white mt-0.5">
+                  Exklusive Begleitung & <span className="italic font-normal text-[#E8CE9D]">Spotlight</span>
                 </h1>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
                 {QUICK_CANTONS.slice(0, 7).map((c) => (
                   <button
                     key={c.code}
                     onClick={() => setActiveCanton(c.code)}
-                    className={`px-3.5 py-2 rounded-full text-xs font-bold border transition cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold border shrink-0 cursor-pointer ${
                       activeCanton === c.code
                         ? "bg-[#C8A97E] text-[#11090E] border-[#C8A97E]"
-                        : "bg-black/50 text-gray-200 border-[#C8A97E]/30 hover:border-[#C8A97E]"
+                        : "bg-black/50 text-gray-200 border-[#C8A97E]/30"
                     }`}
                   >
                     {c.name}
@@ -685,69 +769,62 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* 4 Extra-Large Magazine Cover Spotlight Portraits */}
-            <div>
-              <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8CE9D] mb-3">
-                ★ Spotlight-Auswahl ({activeCanton === "ALL" ? "Schweiz" : activeCanton})
-              </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {filteredProfiles.slice(0, 4).map((sp: any, idx: number) => {
-                  const spName = String(sp.rawName || "Model").slice(0, 22);
-                  const spCity = String(sp.city || "Zürich").split("/")[0].trim();
-                  return (
-                    <Link
-                      key={`spot-${idx}`}
-                      href={`/profile/${encodeURIComponent(sp.id)}`}
-                      className="group relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#C8A97E]/60 shadow-[0_15px_40px_rgba(0,0,0,0.85)]"
-                    >
-                      <img
-                        src={sp.thumbnail || sp.fallbackImg}
-                        alt={spName}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = sp.fallbackImg;
-                        }}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#11090E] via-transparent to-black/30" />
-                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#C8A97E] text-[#11090E] text-[10px] font-extrabold uppercase tracking-wider">
-                        Editorial Pick #{idx + 1}
+            {/* Horizontal Swipe Spotlight on Mobile, 4-Grid on Desktop */}
+            <div className="flex lg:grid lg:grid-cols-4 gap-3 overflow-x-auto pb-1 scrollbar-hide snap-x">
+              {filteredProfiles.slice(0, 4).map((sp: any, idx: number) => {
+                const spName = String(sp.rawName || "Model").slice(0, 20);
+                const spCity = String(sp.city || "Zürich").split("/")[0].trim();
+                return (
+                  <Link
+                    key={`spot-${idx}`}
+                    href={`/profile/${encodeURIComponent(sp.id)}`}
+                    className="snap-start shrink-0 w-56 sm:w-64 lg:w-auto group relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#C8A97E]/60 shadow-2xl"
+                  >
+                    <img
+                      src={sp.thumbnail || sp.fallbackImg}
+                      alt={spName}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = sp.fallbackImg;
+                      }}
+                      className="w-full h-full object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#11090E] via-transparent to-black/30" />
+                    <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-[#C8A97E] text-[#11090E] text-[9px] font-extrabold uppercase">
+                      Spotlight #{idx + 1}
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="text-base font-serif font-bold text-white truncate">{spName}</div>
+                      <div className="text-xs text-[#E8CE9D] flex items-center justify-between mt-0.5">
+                        <span className="truncate">{spCity}</span>
+                        <span className="font-bold shrink-0">CHF {sp.advertisedBaseChf || 400}</span>
                       </div>
-                      <div className="absolute bottom-3.5 left-3.5 right-3.5">
-                        <div className="text-lg font-serif font-bold text-white">{spName}</div>
-                        <div className="text-xs text-[#E8CE9D] flex items-center justify-between mt-0.5">
-                          <span>📍 {spCity}</span>
-                          <span className="font-bold">CHF {sp.advertisedBaseChf || 400}</span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
       {/* ===================================================================== */}
-      {/* CONCEPT 5 HERO: "LIVE-PULSE & VISUELLES RADAR" (Modern App Discovery) */}
+      {/* CONCEPT 5 HERO: "LIVE-PULSE RADAR"                                    */}
       {/* ===================================================================== */}
       {concept === "5" && (
-        <section className="relative border-b border-emerald-500/20 bg-[#0B1017] py-5 px-4">
-          <div className="max-w-7xl mx-auto space-y-5">
-            {/* Horizontal Quick Portrait Radar */}
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
-              <div className="shrink-0 pr-3 border-r border-white/10">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+        <section className="border-b border-emerald-500/20 bg-[#0B1017] py-3.5 px-3 sm:px-4">
+          <div className="max-w-7xl mx-auto space-y-3">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-hide">
+              <div className="shrink-0 pr-2 border-r border-white/10">
+                <div className="text-[10px] font-bold uppercase text-emerald-400 flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span>Schnell-Radar</span>
+                  <span>Radar</span>
                 </div>
-                <div className="text-xs font-bold text-white mt-0.5">Direkt ins Profil</div>
               </div>
               {filteredProfiles.slice(0, 12).map((rp: any, i: number) => (
                 <Link
                   key={`radar-${i}`}
                   href={`/profile/${encodeURIComponent(rp.id)}`}
-                  className="shrink-0 flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-[#111722] border border-white/10 hover:border-[#C8A97E] transition"
+                  className="shrink-0 flex items-center gap-2 p-1 pr-2.5 rounded-full bg-[#111722] border border-white/10 hover:border-[#C8A97E]"
                 >
                   <img
                     src={rp.thumbnail || rp.fallbackImg}
@@ -755,446 +832,192 @@ export default function HomePage() {
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = rp.fallbackImg;
                     }}
-                    className="w-10 h-10 rounded-full object-cover object-top border border-[#C8A97E]"
+                    className="w-8 h-8 rounded-full object-cover object-top border border-[#C8A97E]"
                   />
-                  <div>
-                    <div className="text-xs font-bold text-white max-w-[90px] truncate">{rp.rawName}</div>
-                    <div className="text-[10px] text-[#C8A97E]">{String(rp.city || "ZH").split("/")[0]}</div>
-                  </div>
+                  <div className="text-[11px] font-bold text-white max-w-[75px] truncate">{rp.rawName}</div>
                 </Link>
               ))}
             </div>
 
-            {/* Unified Filter Chips */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/10">
-              <div className="flex flex-wrap gap-1.5">
-                {QUICK_CANTONS.map((c) => (
-                  <button
-                    key={c.code}
-                    onClick={() => setActiveCanton(c.code)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer ${
-                      activeCanton === c.code
-                        ? "bg-emerald-400 text-[#090A0F]"
-                        : "bg-[#111722] text-gray-300 border border-white/10"
-                    }`}
-                  >
-                    {c.name}
-                  </button>
-                ))}
-              </div>
-              <div className="flex gap-2">
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide">
+              {QUICK_CANTONS.map((c) => (
                 <button
-                  onClick={() => setOnlyConfirmedAvailable(!onlyConfirmedAvailable)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border cursor-pointer ${
-                    onlyConfirmedAvailable
-                      ? "bg-emerald-400 text-black border-emerald-300"
-                      : "bg-[#111722] text-emerald-300 border-emerald-500/30"
+                  key={c.code}
+                  onClick={() => setActiveCanton(c.code)}
+                  className={`px-3 py-1 rounded-xl text-xs font-bold shrink-0 cursor-pointer ${
+                    activeCanton === c.code
+                      ? "bg-emerald-400 text-[#090A0F]"
+                      : "bg-[#111722] text-gray-300 border border-white/10"
                   }`}
                 >
-                  ● Verfügbarkeit bestätigt
+                  {c.name}
                 </button>
-                <button
-                  onClick={() => setOnlySelfManaged(!onlySelfManaged)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border cursor-pointer ${
-                    onlySelfManaged
-                      ? "bg-[#C8A97E] text-black border-[#C8A97E]"
-                      : "bg-[#111722] text-[#C8A97E] border-[#C8A97E]/30"
-                  }`}
-                >
-                  ✓ Selbst verwaltet
-                </button>
-              </div>
+              ))}
             </div>
           </div>
         </section>
       )}
 
       {/* ===================================================================== */}
-      {/* MAIN CATALOGUE WITH RECURRING DESIGN ELEMENTS ACROSS THE PAGE         */}
+      {/* MAIN CATALOGUE (Mobile-Optimized 2-Column Grid)                       */}
       {/* ===================================================================== */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 pt-6 pb-8">
-        {/* Status Header Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-5 pb-3 border-b border-white/10">
-          <div className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-300">
-            <StencilSerifX color="#C8A97E" className="w-4 h-3.5 shrink-0" />
+      <main className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 pt-4 pb-8">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3.5 pb-2.5 border-b border-white/10">
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
+            <StencilSerifX color="#C8A97E" className="w-3.5 h-3 shrink-0" />
             <span className="font-bold text-white">
-              {activeCanton === "ALL" ? "Alle Schweizer Regionen" : `Region ${activeCanton}`}
+              {activeCanton === "ALL" ? "Schweiz" : `Region ${activeCanton}`}
             </span>
-            <span className="text-gray-500">|</span>
-            <span className="text-[#C8A97E] font-semibold">
-              {filteredProfiles.length} geladene Profile (aus {totalVaultCount.toLocaleString("de-CH")} Index-Einträgen)
-            </span>
+            <span className="text-xs text-[#C8A97E]">({filteredProfiles.length} Profile)</span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-1.5 text-[11px]">
             <button
               type="button"
               onClick={() => setOnlyConfirmedAvailable(!onlyConfirmedAvailable)}
-              className={`px-3 py-1 rounded-lg border cursor-pointer transition ${
+              className={`px-2.5 py-1 rounded-lg border cursor-pointer transition ${
                 onlyConfirmedAvailable
                   ? "bg-emerald-500 text-black border-emerald-400 font-bold"
-                  : "bg-white/5 border-white/10 text-gray-300 hover:border-white/30"
+                  : "bg-white/5 border-white/10 text-gray-300"
               }`}
             >
-              ● Nur bestätigt verfügbar
+              ● Verfügbar
             </button>
             <button
               type="button"
               onClick={() => setOnlySelfManaged(!onlySelfManaged)}
-              className={`px-3 py-1 rounded-lg border cursor-pointer transition ${
+              className={`px-2.5 py-1 rounded-lg border cursor-pointer transition ${
                 onlySelfManaged
                   ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E] font-bold"
-                  : "bg-white/5 border-white/10 text-gray-300 hover:border-white/30"
+                  : "bg-white/5 border-white/10 text-gray-300"
               }`}
             >
-              ✓ Selbst verwaltet
+              ✓ Geprüft
             </button>
           </div>
         </div>
 
-        {/* FIRST CATALOGUE BLOCK (Profiles 1 to 12) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
-          {filteredProfiles.slice(0, 12).map((p: any, idx: number) => {
-            const cleanName =
-              String(p.rawName || "Eintrag")
-                .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                .trim()
-                .slice(0, 24) || "Profil";
-            const city = String(p.city || "Zürich").split("/")[0].trim();
-            const rate = p.advertisedBaseChf || null;
-            const img = p.thumbnail || p.fallbackImg;
-
-            return (
-              <article
-                key={`${p.id}-${idx}`}
-                className={`group overflow-hidden border transition-all duration-300 flex flex-col justify-between ${cfg.cardStyle}`}
-              >
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#07080C]">
-                  <Link
-                    href={`/profile/${encodeURIComponent(p.id)}`}
-                    onClick={() => recordEvent(p.id, "track_click")}
-                  >
-                    <img
-                      src={img}
-                      alt={`${cleanName} – ${city}`}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
-                      }}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                  </Link>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#090A0F] via-transparent to-black/25 pointer-events-none" />
-
-                  {/* Subtle Corner Design Ornament on Concept 4 */}
-                  {concept === "4" && (
-                    <div className="pointer-events-none absolute inset-2 border border-[#C8A97E]/25 rounded-xl" />
-                  )}
-
-                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
-                    {p.availabilityConfirmed ? (
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/85 border border-emerald-500/50 text-emerald-300 text-[10px] font-semibold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        Verfügbar
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/80 text-gray-300 text-[10px] border border-white/10">
-                        {p.sourcePortal || "Index"}
-                      </span>
-                    )}
-                    {p.isSponsored && (
-                      <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase w-fit ${cfg.accentBadge}`}>
-                        Anzeige
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="absolute top-2.5 right-2.5">
-                    {p.isIdentityVerified ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/85 border border-[#C8A97E]/60 text-[#E5C99B] text-[10px] font-semibold">
-                        <Check size={11} className="text-[#C8A97E]" /> Geprüft
-                      </span>
-                    ) : p.isSelfManaged ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/85 border border-sky-400/40 text-sky-200 text-[10px] font-semibold">
-                        Selbst verwaltet
-                      </span>
-                    ) : null}
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-1">
-                    <div className="min-w-0">
-                      <h2 className="text-sm sm:text-base font-serif font-bold text-white truncate">
-                        {cleanName}
-                      </h2>
-                      <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate">
-                        <MapPin size={11} className="text-[#C8A97E] shrink-0" />
-                        <span>{city} ({p.canton || "CH"})</span>
-                      </p>
-                    </div>
-                    {rate && (
-                      <div className="shrink-0 bg-black/85 px-2 py-1 rounded border border-[#C8A97E]/30 text-right">
-                        <div className="text-[9px] text-gray-400 leading-none">1 Std.</div>
-                        <div className="text-xs font-bold text-[#C8A97E]">CHF {rate}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="p-2.5 sm:p-3 flex items-center justify-between gap-2">
-                  <Link
-                    href={`/profile/${encodeURIComponent(p.id)}`}
-                    onClick={() => recordEvent(p.id, "track_click")}
-                    className={`flex-1 py-2 rounded-lg font-bold text-[11px] text-center transition ${cfg.buttonPrimary}`}
-                  >
-                    Profil öffnen →
-                  </Link>
-                  {!p.isSelfManaged && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        recordEvent(p.id, "track_click");
-                        setSelectedIndexProfile(p);
-                      }}
-                      className="px-2.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-gray-300 cursor-pointer"
-                    >
-                      Info
-                    </button>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+        {/* First 12 Profile Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5">
+          {filteredProfiles.slice(0, 12).map((p: any, idx: number) => renderProfileCard(p, idx, "b1"))}
         </div>
 
-        {/* ================================================================= */}
-        {/* RECURRING DESIGN ELEMENT 2: ARCHITECTURAL STENCIL-X DIVIDER       */}
-        {/* + MID-STREAM INTERACTIVE SWISS PORTAL & CITY RIBBON               */}
-        {/* ================================================================= */}
+        {/* Recurring Design Element: Architectural Divider + Mid-Stream Banner */}
         <ArchitecturalDivider label={cfg.dividerLabel} />
 
-        <div className="my-8 p-6 rounded-2xl bg-gradient-to-r from-[#121521] via-[#171B2B] to-[#121521] border border-[#C8A97E]/35 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          <div className="lg:col-span-7 space-y-2">
-            <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C8A97E]">
-              <ShieldCheck size={14} />
-              <span>SCHWEIZER MARKT-TRANSPARENZ · KEIN WECHSELZWANG</span>
+        <div className="my-6 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-[#121521] via-[#171B2B] to-[#121521] border border-[#C8A97E]/35 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+          <div className="lg:col-span-7 space-y-1.5">
+            <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+              <ShieldCheck size={13} />
+              <span>TRANSPARENTER SCHWEIZER VERGLEICH</span>
             </div>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
-              Quellen verstehen, Portale vergleichen & eigene Profile kostenlos kontrollieren
+            <h3 className="text-base sm:text-xl font-serif font-bold text-white">
+              Portale vergleichen & eigenes Profil kostenlos kontrollieren
             </h3>
             <p className="text-xs text-gray-300 leading-relaxed">
-              Wir trennen klar zwischen externen Quelleneinträgen, selbst verwalteten Anbieterprofilen und dokumentierter Identitätsprüfung. Lies unsere sachlichen Einzelberichte zu Xdate, Fgirl & And6 oder übernimm dein eigenes Profil kostenlos.
+              Lies unsere sachlichen Prüfberichte zu Xdate, Fgirl & And6 oder verwalte deinen eigenen Eintrag kostenlos.
             </p>
           </div>
-          <div className="lg:col-span-5 flex flex-wrap sm:flex-nowrap gap-2.5 justify-end">
+          <div className="lg:col-span-5 grid grid-cols-2 gap-2">
             <Link
               href="/reviews"
-              className="flex-1 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-center text-white"
+              className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-center text-white"
             >
-              ⭐ Portal-Vergleich lesen →
+              Portal-Test →
             </Link>
             <Link
               href="/advertise"
-              className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold text-center ${cfg.buttonPrimary}`}
+              className={`py-2.5 px-3 rounded-xl text-xs font-bold text-center ${cfg.buttonPrimary}`}
             >
-              ✓ Für Models: Gratis-Kontrolle →
+              Für Models →
             </Link>
           </div>
         </div>
 
-        {/* SECOND CATALOGUE BLOCK (Remaining Profiles) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
-          {filteredProfiles.slice(12, visibleCount).map((p: any, idx: number) => {
-            const cleanName =
-              String(p.rawName || "Eintrag")
-                .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                .trim()
-                .slice(0, 24) || "Profil";
-            const city = String(p.city || "Zürich").split("/")[0].trim();
-            const rate = p.advertisedBaseChf || null;
-            const img = p.thumbnail || p.fallbackImg;
-
-            return (
-              <article
-                key={`${p.id}-b2-${idx}`}
-                className={`group overflow-hidden border transition-all duration-300 flex flex-col justify-between ${cfg.cardStyle}`}
-              >
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#07080C]">
-                  <Link
-                    href={`/profile/${encodeURIComponent(p.id)}`}
-                    onClick={() => recordEvent(p.id, "track_click")}
-                  >
-                    <img
-                      src={img}
-                      alt={`${cleanName} – ${city}`}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
-                      }}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                  </Link>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#090A0F] via-transparent to-black/25 pointer-events-none" />
-
-                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
-                    {p.availabilityConfirmed ? (
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/85 border border-emerald-500/50 text-emerald-300 text-[10px] font-semibold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        Verfügbar
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/80 text-gray-300 text-[10px] border border-white/10">
-                        {p.sourcePortal || "Index"}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-1">
-                    <div className="min-w-0">
-                      <h2 className="text-sm sm:text-base font-serif font-bold text-white truncate">
-                        {cleanName}
-                      </h2>
-                      <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate">
-                        <MapPin size={11} className="text-[#C8A97E] shrink-0" />
-                        <span>{city} ({p.canton || "CH"})</span>
-                      </p>
-                    </div>
-                    {rate && (
-                      <div className="shrink-0 bg-black/85 px-2 py-1 rounded border border-[#C8A97E]/30 text-right">
-                        <div className="text-[9px] text-gray-400 leading-none">1 Std.</div>
-                        <div className="text-xs font-bold text-[#C8A97E]">CHF {rate}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="p-2.5 sm:p-3 flex items-center justify-between gap-2">
-                  <Link
-                    href={`/profile/${encodeURIComponent(p.id)}`}
-                    onClick={() => recordEvent(p.id, "track_click")}
-                    className={`flex-1 py-2 rounded-lg font-bold text-[11px] text-center transition ${cfg.buttonPrimary}`}
-                  >
-                    Profil öffnen →
-                  </Link>
-                  {!p.isSelfManaged && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        recordEvent(p.id, "track_click");
-                        setSelectedIndexProfile(p);
-                      }}
-                      className="px-2.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-gray-300 cursor-pointer"
-                    >
-                      Info
-                    </button>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+        {/* Remaining Profile Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5">
+          {filteredProfiles.slice(12, visibleCount).map((p: any, idx: number) => renderProfileCard(p, idx, "b2"))}
         </div>
 
-        <div className="text-center mt-8 flex flex-wrap justify-center gap-3">
+        <div className="text-center mt-7 flex flex-wrap justify-center gap-2.5">
           <button
             type="button"
             onClick={loadMoreFromServerVault}
             disabled={loadingVault}
-            className={`px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-lg ${cfg.buttonPrimary}`}
+            className={`px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-lg ${cfg.buttonPrimary}`}
           >
-            {loadingVault ? "Lade weitere Profile..." : "Weitere Profile laden"}
+            {loadingVault ? "Lädt..." : "Weitere Profile laden"}
           </button>
           <Link
             href="/search"
-            className="px-6 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-200"
+            className="px-5 py-3 rounded-xl border border-white/15 bg-white/5 text-xs font-bold text-gray-200"
           >
-            Erweiterte Suche öffnen →
+            Alle Filter öffnen →
           </Link>
         </div>
 
-        {/* RECURRING DESIGN ELEMENT 3: REGIONAL SWISS CANTON & CLUB MATRIX */}
-        <ArchitecturalDivider label="SCHWEIZER REGIONEN, CLUBS & PORTAL-TESTS" />
+        <ArchitecturalDivider label="REGIONEN, CLUBS & PORTAL-TESTS" />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link
-            href="/reviews"
-            className={`p-5 border transition group ${cfg.cardStyle}`}
-          >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          <Link href="/reviews" className={`p-4 sm:p-5 border transition group ${cfg.cardStyle}`}>
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
               <Scale size={14} />
               <span>01 · Redaktioneller Vergleich</span>
             </div>
-            <h3 className="text-base font-serif font-bold text-white mt-1.5 group-hover:text-[#C8A97E] flex items-center justify-between">
+            <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
               <span>Xdate, Fgirl & Co. im Test</span>
               <ArrowUpRight size={16} />
             </h3>
-            <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-              Sachliche Einzelberichte zu Funktionen, Kosten und Prüfverfahren der grossen Schweizer Portale.
+            <p className="text-xs text-gray-400 mt-1">
+              Einzelberichte zu Funktionen, Kosten und Prüfverfahren.
             </p>
           </Link>
 
-          <Link
-            href="/rankings"
-            className={`p-5 border transition group ${cfg.cardStyle}`}
-          >
+          <Link href="/rankings" className={`p-4 sm:p-5 border transition group ${cfg.cardStyle}`}>
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
               <Building2 size={14} />
               <span>02 · Stationäre Adressen</span>
             </div>
-            <h3 className="text-base font-serif font-bold text-white mt-1.5 group-hover:text-[#C8A97E] flex items-center justify-between">
+            <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
               <span>{totalClubsCount} Schweizer Clubs & Studios</span>
               <ArrowUpRight size={16} />
             </h3>
-            <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-              Stationäre Laufhäuser, FKK-Clubs, Kontaktbars und Massagestudios nach Kanton geordnet.
+            <p className="text-xs text-gray-400 mt-1">
+              Laufhäuser, FKK-Clubs und Studios nach Kanton.
             </p>
           </Link>
 
-          <Link
-            href="/advertise"
-            className={`p-5 border transition group ${cfg.cardStyle}`}
-          >
+          <Link href="/advertise" className={`p-4 sm:p-5 border transition group ${cfg.cardStyle}`}>
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
               <UserCheck size={14} />
               <span>03 · Für Anbieterinnen</span>
             </div>
-            <h3 className="text-base font-serif font-bold text-white mt-1.5 group-hover:text-[#C8A97E] flex items-center justify-between">
-              <span>Profil kostenlos selbst verwalten</span>
+            <h3 className="text-base font-serif font-bold text-white mt-1 flex items-center justify-between">
+              <span>Profil kostenlos verwalten</span>
               <ArrowUpRight size={16} />
             </h3>
-            <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-              Bestehenden Eintrag übernehmen, Angaben korrigieren, Verfügbarkeit bestätigen oder kostenlos entfernen.
+            <p className="text-xs text-gray-400 mt-1">
+              Eintrag übernehmen, korrigieren oder kostenlos entfernen.
             </p>
-          </Link>
-        </div>
-
-        {/* Compact Transparency Footer Strip */}
-        <div className="mt-6 p-4 rounded-xl bg-[#11131C]/70 border border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px] text-gray-400">
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="font-semibold text-gray-300">Kennzeichnungen:</span>
-            <span>● <strong>Verfügbar:</strong> Vom Anbieter für 4 Std. bestätigt</span>
-            <span>✓ <strong>Geprüft / Selbst verwaltet:</strong> Autorisiertes Anbieterkonto</span>
-            <span><strong>Index:</strong> Öffentlicher Quelleneintrag</span>
-          </div>
-          <Link href="/report" className="text-[#C8A97E] hover:underline">
-            Profil melden oder Entfernung beantragen →
           </Link>
         </div>
       </main>
 
       {selectedIndexProfile && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="max-w-md w-full rounded-2xl bg-[#11131C] border border-[#C8A97E]/50 p-6 shadow-2xl space-y-4">
+          <div className="max-w-md w-full rounded-2xl bg-[#11131C] border border-[#C8A97E]/50 p-5 sm:p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
                 Quellenangabe · {selectedIndexProfile.sourcePortal || "Index"}
               </span>
               <button
                 onClick={() => setSelectedIndexProfile(null)}
-                className="text-gray-400 hover:text-white text-sm"
+                className="text-gray-400 hover:text-white text-sm p-1"
               >
                 ✕
               </button>
             </div>
-            <h3 className="text-xl font-serif font-bold text-white">
+            <h3 className="text-lg sm:text-xl font-serif font-bold text-white">
               {selectedIndexProfile.rawName} ({selectedIndexProfile.city || "Schweiz"})
             </h3>
             <p className="text-xs text-gray-300 leading-relaxed">
@@ -1213,7 +1036,7 @@ export default function HomePage() {
                   target="_blank"
                   rel="noreferrer nofollow"
                   onClick={() => recordEvent(selectedIndexProfile.id, "track_source_out")}
-                  className="py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 font-semibold text-xs text-center border border-white/10 flex items-center justify-center gap-1.5"
+                  className="py-2 rounded-lg bg-white/5 text-gray-200 font-semibold text-xs text-center border border-white/10 flex items-center justify-center gap-1.5"
                 >
                   <span>Originalquelle öffnen</span>
                   <ExternalLink size={12} />
