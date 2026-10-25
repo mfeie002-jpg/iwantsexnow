@@ -47,7 +47,7 @@ export function HeroSection({
   const [focused, setFocused] = useState(false);
   const allProfiles = useMemo(() => deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED), []);
 
-  // Google-Style Multi-Token Smart Search (Matches Name, City, Canton, Phone, Service, Bio & Budget like "Zug GFE unter 450")
+  // Instant Multi-Token Smart Search (Matches Name, City, Canton, Phone, Service, Bio & Budget like "Zug GFE unter 450")
   const instantSuggestions = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return [];
@@ -107,7 +107,7 @@ export function HeroSection({
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-black text-white tracking-tight leading-[1.1]">
-            Such wie bei Google.{" "}
+            Such in Echtzeit.{" "}
             <span className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#D5A021] bg-clip-text text-transparent">
               Vergleiche & buche zum Fixpreis.
             </span>
@@ -117,7 +117,7 @@ export function HeroSection({
             Gib einfach einen <strong className="text-white">Namen, Ort (Zürich, Zug, Cham), Wunsch-Service oder eine +41 Rufnummer</strong> ein: Wir bündeln alle Schweizer Portale, streichen Dubletten und garantieren dir den echten Endpreis ohne Nachverhandlung.
           </p>
 
-          {/* Google-Style Instant Search Bar + Dropdown */}
+          {/* Instant Instant Search Bar + Dropdown */}
           <div className="bg-[#09131E]/95 border-2 border-[#C69C6D]/65 rounded-2xl p-4 sm:p-5 shadow-[0_18px_50px_rgba(0,0,0,0.75)] text-left space-y-4 mt-6 relative">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
               <div className="md:col-span-5 relative">
@@ -128,7 +128,7 @@ export function HeroSection({
                   onFocus={() => setFocused(true)}
                   onBlur={() => setTimeout(() => setFocused(false), 220)}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Suche wie bei Google: 'Zug GFE', 'Sophia', '+41 79...' oder 'Cham Outcall'"
+                  placeholder="Suche in Echtzeit: 'Zug GFE', 'Sophia', '+41 79...' oder 'Cham Outcall'"
                   className="w-full rounded-xl bg-black/70 border border-white/25 pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-400 focus:border-[#D5A021] focus:outline-none"
                 />
 
@@ -213,7 +213,7 @@ export function HeroSection({
               </div>
             </div>
 
-            {/* Google-Style Instant Search Suggestions */}
+            {/* Instant Instant Search Suggestions */}
             <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/10 text-xs">
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-gray-400 font-semibold mr-1">Beliebte Suchen:</span>

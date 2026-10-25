@@ -73,7 +73,7 @@ export default function HowItWorksPage() {
             {
               step: "SCHRITT 1",
               icon: Search,
-              title: "Wie bei Google suchen (Freitext oder Nummer)",
+              title: "in Echtzeit suchen (Freitext oder Nummer)",
               desc: "Tippe einfach 'Blond Zug Hotel unter 500', einen Namen oder eine +41 Rufnummer ein. Wir durchsuchen alle grossen Schweizer Portale gleichzeitig.",
               badge: "Alle Portale in 1 Suche",
             },
@@ -190,7 +190,7 @@ export default function HowItWorksPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Button className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black px-8 py-6 text-sm" asChild>
               <Link href="/search">
-                Jetzt Google-Style Meta-Suche starten <ArrowRight size={16} className="ml-2" />
+                Jetzt Instant Meta-Suche starten <ArrowRight size={16} className="ml-2" />
               </Link>
             </Button>
             <Button variant="outline" className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-black px-6 py-6 text-sm" asChild>
