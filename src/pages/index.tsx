@@ -139,7 +139,7 @@ export function BrandLogo({
             <path d="M32 8 L52 15 V29 C52 43 42 51 32 55 C22 51 12 43 12 29 V15 L32 8 Z" fill="none" stroke="url(#shieldGoldA)" strokeWidth="0.9" strokeOpacity="0.6" />
             <path d="M30.5 11 H33.5 V14 H36.5 V17 H33.5 V20 H30.5 V17 H27.5 V14 H30.5 Z" fill="#F6E27A" />
             <text x="32" y="44" textAnchor="middle" fill="url(#shieldGoldA)" fontFamily="Georgia, serif" fontWeight="900" fontSize="24" letterSpacing="-1">
-              iW
+              X
             </text>
           </svg>
         )}
@@ -147,7 +147,7 @@ export function BrandLogo({
           <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(230,185,128,0.35)]">
             <circle cx="32" cy="32" r="27" fill="#1F0B17" stroke="#FAD6A5" strokeWidth="2.5" />
             <polygon points="32,10 36,28 54,32 36,36 32,54 28,36 10,32 28,28" fill="#FAD6A5" fillOpacity="0.25" stroke="#FAD6A5" strokeWidth="1.5" />
-            <text x="32" y="39" textAnchor="middle" fill="#FAD6A5" fontFamily="Georgia, serif" fontWeight="900" fontSize="20">iW</text>
+            <text x="32" y="39" textAnchor="middle" fill="#FAD6A5" fontFamily="Georgia, serif" fontWeight="900" fontSize="20">X</text>
           </svg>
         )}
         {variant === "C" && (
@@ -156,21 +156,21 @@ export function BrandLogo({
             <path d="M24 9 L28 13 L32 7 L36 13 L40 9 L38 15 H26 Z" fill="#E2C275" />
             <rect x="28" y="16" width="8" height="8" rx="1.5" fill="#D92626" />
             <path d="M31 18 H33 V19.5 H34.5 V21 H33 V22.5 H31 V21 H29.5 V19.5 H31 Z" fill="#FFFFFF" />
-            <text x="32" y="45" textAnchor="middle" fill="#E2C275" fontFamily="Georgia, serif" fontWeight="900" fontSize="22">iW</text>
+            <text x="32" y="45" textAnchor="middle" fill="#E2C275" fontFamily="Georgia, serif" fontWeight="900" fontSize="22">X</text>
           </svg>
         )}
         {variant === "D" && (
           <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(56,189,248,0.35)]">
             <circle cx="28" cy="28" r="21" fill="#0D1F3C" stroke="#F3D078" strokeWidth="3.5" />
             <line x1="43" y1="43" x2="57" y2="57" stroke="#F3D078" strokeWidth="6" strokeLinecap="round" />
-            <text x="28" y="35" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="900" fontSize="19">iW</text>
+            <text x="28" y="35" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="900" fontSize="19">X</text>
           </svg>
         )}
       </div>
 
       <div className="flex flex-col">
         <span className={`font-serif font-black tracking-tight leading-none ${compact ? "text-xl" : "text-2xl md:text-3xl"}`}>
-          <span className="text-white">iWant</span>
+          <span className="text-white">Xant</span>
           <span className={variant === "D" ? "text-sky-400" : "bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#D5A021] bg-clip-text text-transparent"}>
             Sex
           </span>
@@ -541,7 +541,7 @@ export default function Home() {
   return (
     <div className={`min-h-screen transition-colors duration-500 ${activeTheme.bgPrimary}`}>
       <SEO
-        title="iWantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
+        title="XantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
         description="Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung."
       />
 
@@ -1152,7 +1152,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} iWantSexNow.ch · Swiss Escort Index & Direct Booking Engine (18+)</p>
+            <p>&copy; {new Date().getFullYear()} XantSexNow.ch · Swiss Escort Index & Direct Booking Engine (18+)</p>
           </div>
         </div>
       </footer>

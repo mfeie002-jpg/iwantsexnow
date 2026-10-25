@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="xGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF0A8"/>
+      <stop offset="45%" stop-color="#D5A021"/>
+      <stop offset="100%" stop-color="#8F6214"/>
+    </linearGradient>
+    <linearGradient id="xCrimson" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF3B5C"/>
+      <stop offset="50%" stop-color="#E11D48"/>
+      <stop offset="100%" stop-color="#9F1239"/>
+    </linearGradient>
+  </defs>
+  <!-- Dark Obsidian Squircle Background -->
+  <rect width="64" height="64" rx="15" fill="#080C14" stroke="url(#xGold)" stroke-width="2.5"/>
+  <!-- Inner subtle octagon/diamond accent -->
+  <polygon points="32,6 58,32 32,58 6,32" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1.2"/>
+  <!-- Blade 1 (Top-Right to Bottom-Left): Swiss Crimson Red -->
+  <polygon points="46,11 54,11 18,53 10,53" fill="url(#xCrimson)"/>
+  <!-- Blade 2 (Top-Left to Bottom-Right): 24k Champagne Gold -->
+  <polygon points="10,11 19,11 54,53 45,53" fill="url(#xGold)"/>
+  <!-- Center Swiss Cross (+) inside the X intersection -->
+  <circle cx="32" cy="32" r="6.2" fill="#080C14" stroke="url(#xGold)" stroke-width="1.2"/>
+  <path d="M31 28.5 H33 V31 H35.5 V33 H33 V35.5 H31 V33 H28.5 V31 H31 Z" fill="#FFFFFF"/>
+</svg>
