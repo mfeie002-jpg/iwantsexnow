@@ -1,24 +1,14 @@
 import Head from "next/head";
 
-export interface SEOProps {
-  title?: string;
-  description?: string;
-  image?: string;
-  url?: string;
-  type?: string;
-  noindex?: boolean;
-  structuredData?: Record<string, any> | Record<string, any>[];
-}
-
 export function SEO({
   title = "iwantsexnow.ch | Schweizer Escort-Index, Live-Status & Direktbuchung",
-  description = "Entdecke über 7.021+ Schweizer Escorts, Studios & Begleiterinnen. Visuelle Schnellwahl ohne Tippen, Live-Online-Status, offizielle Verifizierung und transparente Preise.",
+  description = "Entdecke über 7.021+ Schweizer Escorts, Studios & Begleiterinnen.",
   image = "/og-image.png",
   url = "https://iwantsexnow.ch",
   type = "website",
   noindex = false,
   structuredData,
-}: SEOProps) {
+}: any) {
   return (
     <Head>
       <title>{title}</title>
@@ -31,10 +21,6 @@ export function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
       <meta property="og:url" content={url} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
       {structuredData && (
         <script
           type="application/ld+json"
@@ -44,5 +30,4 @@ export function SEO({
     </Head>
   );
 }
-
 export default SEO;
