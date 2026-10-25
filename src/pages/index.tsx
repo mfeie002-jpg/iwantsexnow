@@ -1228,7 +1228,7 @@ export default function HomePage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setViewMode("grid")}
+                      onClick={() => handleSwitchConcept("dark_gallery")}
                       className={`px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5 cursor-pointer ${
                         viewMode === "grid"
                           ? "bg-[#9E7B47] text-white"
@@ -1734,45 +1734,6 @@ export default function HomePage() {
       )}
 
       {/* ===================================================================== */}
-      {/* FLOATING BOTTOM-RIGHT 4-VIEW SWITCHER (Inkl. Champagner-Liste & Xenia)*/}
-      {/* ===================================================================== */}
-      <div className="fixed bottom-16 md:bottom-4 right-4 z-40 flex items-center gap-1 p-1.5 rounded-full bg-[#0B0D12]/95 backdrop-blur-xl border border-[#C6A574]/55 shadow-2xl text-[11px] text-white">
-        <button
-          onClick={() => handleSwitchConcept("dark_gallery")}
-          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition ${
-            activeConcept === "dark_gallery" ? "bg-[#C6A574] text-[#13161C]" : "text-gray-300 hover:text-white"
-          }`}
-        >
-          1. Dunkle Galerie ⭐
-        </button>
-        <button
-          onClick={() => handleSwitchConcept("champagne_compare")}
-          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition ${
-            activeConcept === "champagne_compare" ? "bg-[#C6A574] text-[#13161C]" : "text-gray-300 hover:text-white"
-          }`}
-        >
-          2. Gold-Vergleichsliste
-        </button>
-        <button
-          onClick={() => handleSwitchConcept("light_sources")}
-          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition ${
-            activeConcept === "light_sources" ? "bg-[#F6F5F1] text-[#152839]" : "text-gray-300 hover:text-white"
-          }`}
-        >
-          3. Hell (Quellen)
-        </button>
-        <button
-          onClick={() => handleSwitchConcept("xenia_assistant")}
-          className={`px-3 py-1 rounded-full font-bold cursor-pointer transition flex items-center gap-1 ${
-            activeConcept === "xenia_assistant"
-              ? "bg-gradient-to-r from-[#E5B869] to-[#C6A574] text-[#0F1218]"
-              : "text-[#E5C99B] hover:text-white"
-          }`}
-        >
-          <span>✨ 4. Xenia Hilfe</span>
-        </button>
-      </div>
-
       {/* ===================================================================== */}
       {/* DUNKLE SCHWEBENDE VERGLEICHSLEISTE MIT GOLDENEM BUTTON (WIE BILD 10!) */}
       {/* ("2 ausgewählt | [Mia x] [Lea x] | Auswahl vergleichen ->")           */}
