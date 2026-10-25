@@ -223,3 +223,4 @@ export function LuxuryHeader() {
     </>
   );
 }
+export default LuxuryHeader;

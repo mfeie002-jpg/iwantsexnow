@@ -129,3 +129,4 @@ export function XeniaDoubtTrigger({
     </span>
   );
 }
+export default XeniaDoubtTrigger;

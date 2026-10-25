@@ -85,3 +85,4 @@ export function StructuredSchema({
     </Head>
   );
 }
+export default StructuredSchema;
