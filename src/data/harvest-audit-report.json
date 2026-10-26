@@ -1,0 +1,210 @@
+{
+  "generatedAt": "2026-10-26T12:42:40.483Z",
+  "rawObservationsScanned": 7131,
+  "syntheticSeedsRemoved": 12,
+  "optOutProfilesBlocked": 0,
+  "uniqueVerifiedClusters": 3875,
+  "cantonBreakdown": {
+    "VD": 310,
+    "GE": 421,
+    "VS": 125,
+    "BE": 248,
+    "AG": 179,
+    "FR": 80,
+    "SG": 357,
+    "NE": 64,
+    "TI": 28,
+    "ZH": 1131,
+    "JU": 6,
+    "ZG": 123,
+    "BS": 321,
+    "LU": 258,
+    "SO": 82,
+    "SZ": 6,
+    "GR": 63,
+    "BL": 13,
+    "TG": 43,
+    "SH": 17
+  },
+  "portalBreakdown": {
+    "fgirl.ch": 1276,
+    "and6.com": 110,
+    "xdate.ch": 3124,
+    "dayuse.com": 7,
+    "reddit.com": 2,
+    "dayrooms.com": 1,
+    "all.accor.com": 1,
+    "us.trip.com": 1,
+    "tripadvisor.com": 2,
+    "booking.com": 2,
+    "apartments-swiss-star-aemtlerstrasse.hotels-zurich.com": 1,
+    "cozycozy.com": 1,
+    "amanthosliving.com": 1,
+    "hoteld-basel.ch": 1,
+    "6navi.ch": 20,
+    "bemygirl.ch": 18,
+    "eurogirlsescort.com": 19,
+    "rotlichtadressen.ch": 4,
+    "kaufmich.com": 5,
+    "quartier-rouge.ch": 4
+  },
+  "configuredTargetPortals": 26,
+  "livePortalProbe": [
+    {
+      "domain": "xdate.ch",
+      "region": "DE",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "and6.com",
+      "region": "DE",
+      "status": 403,
+      "reachable": false
+    },
+    {
+      "domain": "6navi.ch",
+      "region": "DE",
+      "status": 410,
+      "reachable": false
+    },
+    {
+      "domain": "sex4u.ch",
+      "region": "DE",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "erotikmarkt.ch",
+      "region": "DE",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "myservices.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "redlight.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "schweizer-lust.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "erobert.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "stadthexen.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "lusthaus.ch",
+      "region": "DE",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "escortboard.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "fgirl.ch",
+      "region": "FR",
+      "status": 403,
+      "reachable": false
+    },
+    {
+      "domain": "bemygirl.ch",
+      "region": "FR",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "roksa.ch",
+      "region": "FR",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "lolla.ch",
+      "region": "FR",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "sexemodel-geneve.ch",
+      "region": "FR",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "annonces-intimes.ch",
+      "region": "FR",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "bestticino.ch",
+      "region": "IT",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "incontriticino.com",
+      "region": "IT",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "happyticino.ch",
+      "region": "IT",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "ticinoerotico.ch",
+      "region": "IT",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "massage123.ch",
+      "region": "DE",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "tantra.ch",
+      "region": "DE",
+      "status": 200,
+      "reachable": true
+    },
+    {
+      "domain": "domina-guide.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    },
+    {
+      "domain": "club-guide.ch",
+      "region": "DE",
+      "status": "TIMED_OUT_OR_PROTECTED",
+      "reachable": false
+    }
+  ]
+}
