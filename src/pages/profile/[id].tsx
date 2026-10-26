@@ -23,15 +23,15 @@ import {
 } from "lucide-react";
 
 const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=85",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
 ];
 
 export default function ProfileDetailPage() {
   const router = useRouter();
-  const rawId = String(router.query.id || "ch-1");
+  const rawId = String(router.query.id || "");
 
   const [serverData, setServerData] = useState<{ metrics: Record<string, any>; states: Record<string, any> }>({
     metrics: {},
@@ -63,37 +63,19 @@ export default function ProfileDetailPage() {
 
   const profileData = useMemo(() => {
     const rawList = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
-    let foundIdx = rawList.findIndex(
-      (item: any, idx: number) =>
-        (item.dedupClusterId || "ch-" + (idx + 1)) === rawId ||
-        String(item.rawName || "").toLowerCase() === rawId.toLowerCase()
-    );
-    if (foundIdx < 0) {
-      const numMatch = rawId.match(/\d+/);
-      foundIdx = numMatch ? Math.max(0, ( parseInt(numMatch[0], 10) - 1 ) % Math.max(1, rawList.length)) : 0;
-    }
-
-    const baseItem = rawList[foundIdx] || rawList[0] || {};
-    const id = baseItem.dedupClusterId || "ch-" + (foundIdx + 1);
+    const foundIdx = rawList.findIndex((item: any) => item.id === rawId);
+    const baseItem = rawList[foundIdx] || {};
+    const id = baseItem.id || "";
     const st = serverData.states[id] || {};
     const geo = normalizeSwissGeo(st.city || baseItem.city, st.canton || baseItem.canton);
 
     const isCleanPhoto =
       String(baseItem.sourcePortal || "").toLowerCase().includes("bemygirl") ||
       String(baseItem.sourcePortal || "").toLowerCase().includes("fgirl");
-    const isDemoSlot = foundIdx < 12 && isCleanPhoto && st.availabilityConfirmed === undefined;
-
-    const isSelfManaged = Boolean(
-      st.claimed || baseItem.bookingMode === "direct" || (isDemoSlot && foundIdx % 4 !== 3)
-    );
-    const isIdentityVerified = Boolean(st.identityVerified);
-    const availabilityConfirmed = Boolean(
-      st.availabilityConfirmed !== undefined
-        ? st.availabilityConfirmed
-        : isDemoSlot && (foundIdx % 4 === 0 || foundIdx % 4 === 2)
-    );
-    const isOnline = Boolean(st.online !== undefined ? st.online : isDemoSlot && foundIdx % 4 === 1);
-
+    const isSelfManaged = false;
+    const isIdentityVerified = false;
+    const availabilityConfirmed = false;
+    const isOnline = false;
     const cleanKey = String(baseItem.rawName || "").toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
     const matchingSources: Array<{ portal: string; url: string; rate: number | null; city: string }> = [];
 
@@ -423,43 +405,7 @@ export default function ProfileDetailPage() {
                     </a>
                   )}
 
-                  {inquirySent ? (
-                    <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-200 font-semibold">
-                      ✓ Ihre private Anfrage wurde für das Anbieterkonto hinterlegt.
-                    </div>
-                  ) : (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        recordAction("track_contact");
-                        setInquirySent(true);
-                      }}
-                      className="space-y-3 pt-1"
-                    >
-                      <input
-                        type="text"
-                        required
-                        value={inquiryContact}
-                        onChange={(e) => setInquiryContact(e.target.value)}
-                        placeholder="Ihre Rückrufnummer oder Kontaktangabe..."
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-xs text-white"
-                      />
-                      <textarea
-                        rows={2}
-                        required
-                        value={inquiryMessage}
-                        onChange={(e) => setInquiryMessage(e.target.value)}
-                        placeholder="Kurze, respektvolle Anfrage (gewünschter Zeitpunkt, Dauer)..."
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-xs text-white"
-                      />
-                      <button
-                        type="submit"
-                        className="w-full py-3 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-bold text-xs uppercase tracking-wider cursor-pointer"
-                      >
-                        Privat anfragen →
-                      </button>
-                    </form>
-                  )}
+                  <p className="text-sm text-gray-300">Private Nachrichten sind nicht freigeschaltet. Es wird keine Anfrage übermittelt.</p>
                 </>
               ) : (
                 <div className="space-y-3">
@@ -498,4 +444,10 @@ export default function ProfileDetailPage() {
       <CorporateFooter />
     </div>
   );
+}
+
+export async function getServerSideProps(context: { params?: { id?: string } }) {
+  const id = context.params?.id;
+  if (!id || !HARVESTED_SWISS_OFFERS.some(item => item.id === id)) return { notFound: true };
+  return { props: {} };
 }

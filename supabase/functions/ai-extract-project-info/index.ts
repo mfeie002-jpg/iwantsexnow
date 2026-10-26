@@ -1,3 +1,4 @@
+import { requireEdgeAdmin } from "../_shared/admin.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -20,6 +21,8 @@ Analyze this website and extract the following information in JSON format:
 Be concise and factual. If information is unclear, make reasonable inferences based on the content.`;
 
 serve(async (req) => {
+  const denied = await requireEdgeAdmin(req);
+  if (denied) return denied;
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }

@@ -20,7 +20,7 @@ import {
   Check,
 } from "lucide-react";
 
-const FALLBACK_IMG = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85";
+const FALLBACK_IMG = "/profile-placeholder.svg";
 
 export default function HarmonizedSearchPage() {
   const router = useRouter();
@@ -34,6 +34,7 @@ export default function HarmonizedSearchPage() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any[]>([]);
   const [totalMatches, setTotalMatches] = useState(0);
+  const [searchError, setSearchError] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -43,16 +44,19 @@ export default function HarmonizedSearchPage() {
 
   useEffect(() => {
     setLoading(true);
+    setSearchError(false);
+    const controller = new AbortController();
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (canton !== "ALL") params.set("canton", canton);
     if (onlyAvailable) params.set("available", "true");
     if (onlyManaged) params.set("managed", "true");
+    if (onlyWithPrice) params.set("withPrice", "true");
     params.set("page", String(page));
     params.set("limit", "48");
 
-    fetch("/api/vault/search?" + params.toString())
-      .then((r) => r.json())
+    fetch("/api/vault/search?" + params.toString(), { signal: controller.signal })
+      .then((r) => { if (!r.ok) throw new Error("SEARCH_FAILED"); return r.json(); })
       .then((d) => {
         if (d && d.status === "ok") {
           const normalized = (Array.isArray(d.results) ? d.results : []).map((item: any, idx: number) => {
@@ -65,7 +69,7 @@ export default function HarmonizedSearchPage() {
               canton: geo.trueCanton,
               advertisedBaseChf: rate,
               durationLabel,
-              confirmedMinutesAgo: item.availabilityConfirmed ? 6 : null,
+              confirmedMinutesAgo: null,
             };
           });
           setResults(
@@ -74,8 +78,9 @@ export default function HarmonizedSearchPage() {
           setTotalMatches(Number(d.totalMatches) || 0);
         }
       })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .catch(() => { if (!controller.signal.aborted) { setSearchError(true); setResults([]); } })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
   }, [query, canton, onlyAvailable, onlyManaged, onlyWithPrice, page]);
 
   const resetAll = () => {
@@ -112,6 +117,8 @@ export default function HarmonizedSearchPage() {
           </div>
         </div>
 
+        {searchError && <p role="alert">Suche vorübergehend nicht verfügbar. Bitte erneut versuchen.</p>}
+        {!loading && !searchError && results.length === 0 && <p role="status">Noch keine zur Veröffentlichung freigegebenen Einträge.</p>}
         {/* Unified Search Toolbar */}
         <div className="p-4 rounded-2xl bg-[#1A1E27] border border-white/10 space-y-3.5 shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3">

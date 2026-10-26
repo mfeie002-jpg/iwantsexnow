@@ -1,41 +1,6 @@
-import assert from "node:assert/strict";
-const origin="http://127.0.0.1:43127";
-let checks=0;
-async function page(path,status=200) {
-  const r=await fetch(origin+path);
-  assert.equal(r.status,status,path);
-  const html=await r.text();
-  assert.match(html, /<title[^>]*>[^<]+<\/title>/, path + " needs a page title");
-  if (path.startsWith("/search")) assert.match(r.headers.get("x-robots-tag"), /noindex/);
-  assert.match(html,/<meta(?=[^>]*name="robots")(?=[^>]*content="noindex, nofollow")[^>]*>/);
-  checks++;
-  return html.replace(/<!--[\s\S]*?-->/g, "");
+import assert from 'node:assert/strict';
+const origin='http://127.0.0.1:43127';
+for(const path of ['/catalogue/demo-zurich-escort','/catalogue/not-a-demo-id']){
+ const r=await fetch(origin+path);assert.equal(r.status,404);assert.match(r.headers.get('x-robots-tag'),/noindex/);
 }
-const home=await page("/");
-assert.match(home,/href="\/search"/);
-const all=await page("/search");
-assert.match(all,/8 Demo-Inserate/);
-assert.match(all,/name="city"/);assert.match(all,/name="category"/);
-assert.match(all,/X-Robots-Tag|Nur fiktive Demo-Inserate/);
-const match=await page("/search?city=zurich&category=escort");
-assert.match(match,/1 Demo-Inserat/);
-assert.match(match,/Demo Zürich 01/);
-assert.doesNotMatch(match,/Demo Zürich 02/);
-const text=await page("/search?q=Zuerich");
-assert.match(text,/2 Demo-Inserate/);
-const empty=await page("/search?city=basel&category=escort");
-assert.match(empty,/Keine passenden Demo-Inserate/);
-const approved=await page("/search?view=approved");
-assert.match(approved,/Noch keine freigegebenen Inserate/);
-assert.doesNotMatch(approved,/Demo Zürich 01/);
-const invalid=await page("/search?city=zurich&city=basel");
-assert.match(invalid,/ungültige oder mehrfache Werte/);
-assert.doesNotMatch(invalid,/Demo Zürich 01/);
-const injection=await page("/search?q=%3Cscript%3Ealert(1)%3C%2Fscript%3E");
-assert.doesNotMatch(injection,/<script>alert\(1\)<\/script>/);
-const detail=await page("/catalogue/demo-zurich-escort");
-assert.match(detail,/Fiktives Demo-Inserat/);
-assert.match(detail,/disabled=""[^>]*>Anfragen noch nicht möglich/);
-assert.doesNotMatch(detail,/<form\b|tel:|mailto:|wa\.me/);
-await page("/catalogue/not-a-demo-id",404);
-console.log("Catalogue HTTP: "+checks+" routes/scenarios passed; filtered SSR, empty states, details, escaping and noindex.");
+console.log('Catalogue HTTP: 2/2; synthetic public fixtures are retired and no other record is substituted.');

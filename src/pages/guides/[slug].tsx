@@ -372,9 +372,6 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  return {
-    props: {
-      slug: String(params?.slug || "english-tourist-expat-escort-guide-switzerland"),
-    },
-  };
+  const slug = typeof params?.slug === "string" ? params.slug : "";
+  return Object.hasOwn(SWISS_LONG_TAIL_ARTICLES, slug) ? { props: { slug } } : { notFound: true };
 };

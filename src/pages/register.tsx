@@ -1,10 +1,2 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-
-export default function RegisterRedirect() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace("/create-post");
-  }, [router]);
-  return null;
-}
+import PreviewAccess from "@/components/PreviewAccess";
+export default function Page() { return <PreviewAccess feature="Registrierung" />; }

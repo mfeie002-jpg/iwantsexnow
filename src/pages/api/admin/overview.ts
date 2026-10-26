@@ -1,17 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const deduplicated = deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED);
-  return res.status(200).json({
-    status: "ok",
-    metrics: {
-      totalRawScraped: INITIAL_RAW_SWISS_FEED.length,
-      deduplicatedProfiles: deduplicated.length,
-      duplicatesRemoved: INITIAL_RAW_SWISS_FEED.length - deduplicated.length,
-      directVerifiedCount: deduplicated.filter((p) => p.bookingMode === "direct").length,
-      activePilotRegions: ["Zürich (ZH)", "Zug & Cham (ZG)", "Basel (BS)", "Bern (BE)", "Genève (GE)"],
-    },
-    profiles: deduplicated,
-  });
+import { requireServerAdmin } from "@/lib/marketplace/admin-auth";
+export const config = { api: { bodyParser: { sizeLimit: "4kb" } } };
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (!await requireServerAdmin(req, res)) return;
+  // No import or case mutation until the existing backend has been mapped and verified.
+  return res.status(503).json({ ok: false, error: "BACKEND_NOT_VERIFIED" });
 }
