@@ -23,6 +23,8 @@ jobs:
         run: node scripts/check-conflict-markers.cjs
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
+      - name: Reject legacy ownership, private-state and false-report regressions
+        run: node --test tests/legacy-vault-privacy.test.mjs
       - name: Dependency audit
         run: npm audit --package-lock-only --audit-level=low
       - name: PDF export compatibility
