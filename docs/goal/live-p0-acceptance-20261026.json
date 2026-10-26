@@ -1,0 +1,453 @@
+{
+  "dateZurich": "2026-10-26",
+  "origin": "https://iwantsexnow.ch",
+  "sourceCommit": "e08451b5c0ec969df720a00309195978da28eb1b",
+  "sourceTree": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43",
+  "fingerprint": {
+    "buildId": "bZY6C1DvzDlw-5GjkXsxs",
+    "deploymentId": "dpl_77dg9UmDcsN6PssuxaNeBYMyWkqL"
+  },
+  "appBundle": {
+    "path": "/_next/static/chunks/pages/_app-0113de5095c3e39e.js",
+    "sha256": "09cc93111d204f7424c057ebce0dd27684d39e5af814911b590379e6365e57ca",
+    "matchesManagedBuild": true
+  },
+  "checks": 62,
+  "passed": true,
+  "results": [
+    {
+      "path": "/api/vault/metrics",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/search",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/escort-zurich",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/escort-basel",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/orte/cham",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/reviews",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/reviews/xdate-review",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/report",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/privacy",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/contact",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/imprint",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/login",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/creator-dashboard",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/admin-dashboard",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/create-post",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/verify",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/booking-confirmation",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/upload-photos",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/messages",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/premium",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/boost",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/gifts",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/content-feed",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/profile",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/account-settings",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/register",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/forgot-password",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/profile/does-not-exist",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/profile/ch-9999999",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/profile/pilot-zh-1",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/profile/w4-1",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/orte/not-a-place",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/reviews/not-a-report",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/guides/not-a-guide",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/catalogue/demo-zurich-escort",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/catalogue/not-a-demo-id",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/api/admin/overview",
+      "method": "GET",
+      "status": 401,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/indexer/import",
+      "method": "GET",
+      "status": 401,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/vault/search?page=1&limit=48",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/vault/search?page=NaN",
+      "method": "GET",
+      "status": 400,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/vault/search?q=a&q=b",
+      "method": "GET",
+      "status": 400,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/sitemap.xml",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "no-store"
+    },
+    {
+      "path": "/api/vault/metrics",
+      "method": "POST",
+      "status": 400,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/vault/metrics",
+      "method": "POST",
+      "status": 410,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/vault/metrics",
+      "method": "POST",
+      "status": 410,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/vault/metrics",
+      "method": "POST",
+      "status": 410,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/claims/create",
+      "method": "POST",
+      "status": 410,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/enquiries/create",
+      "method": "POST",
+      "status": 410,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/supabase-function",
+      "method": "GET",
+      "status": 405,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "no-store"
+    },
+    {
+      "path": "/api/supabase-function",
+      "method": "POST",
+      "status": 400,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "no-store"
+    },
+    {
+      "path": "/api/supabase-function",
+      "method": "POST",
+      "status": 400,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "no-store"
+    },
+    {
+      "path": "/api/supabase-function",
+      "method": "POST",
+      "status": 401,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "no-store"
+    },
+    {
+      "path": "/api/supabase-function",
+      "method": "POST",
+      "status": 401,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "no-store"
+    },
+    {
+      "path": "/private/provider-draft",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/private/provider-session",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/private/provider-session",
+      "method": "POST",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/private/provider-drafts",
+      "method": "GET",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/private/provider-drafts",
+      "method": "POST",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/api/private/provider-drafts",
+      "method": "PUT",
+      "status": 404,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "private, no-store, max-age=0"
+    },
+    {
+      "path": "/_next/static/chunks/pages/_app-0113de5095c3e39e.js",
+      "method": "GET",
+      "status": 200,
+      "robots": "noindex, nofollow, noarchive",
+      "cache": "public,max-age=31536000,immutable"
+    }
+  ]
+}

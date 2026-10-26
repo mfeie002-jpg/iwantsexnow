@@ -39,69 +39,6 @@ export type ConceptView = "dark_gallery" | "champagne_compare" | "light_sources"
 function XeniaGlowingFairy({ size = "lg" }: { size?: "sm" | "md" | "lg" }) {
   const dim = size === "lg" ? "w-24 h-24" : size === "md" ? "w-14 h-14" : "w-9 h-9";
   return (
-<<<<<<< HEAD
-    <div className="flex items-center gap-3 group select-none">
-      <div className={`relative flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 ${compact ? "w-10 h-10" : "w-12 h-12"}`}>
-        {variant === "A" && (
-          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(213,160,33,0.35)]">
-            <defs>
-              <linearGradient id="shieldGoldA" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#F6E27A" />
-                <stop offset="50%" stopColor="#C69C6D" />
-                <stop offset="100%" stopColor="#9A6F32" />
-              </linearGradient>
-              <linearGradient id="shieldBgA" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#16283E" />
-                <stop offset="100%" stopColor="#07101A" />
-              </linearGradient>
-            </defs>
-            <path d="M32 4 L56 12 V30 C56 46 45 55 32 60 C19 55 8 46 8 30 V12 L32 4 Z" fill="url(#shieldBgA)" stroke="url(#shieldGoldA)" strokeWidth="3" />
-            <path d="M32 8 L52 15 V29 C52 43 42 51 32 55 C22 51 12 43 12 29 V15 L32 8 Z" fill="none" stroke="url(#shieldGoldA)" strokeWidth="0.9" strokeOpacity="0.6" />
-            <path d="M30.5 11 H33.5 V14 H36.5 V17 H33.5 V20 H30.5 V17 H27.5 V14 H30.5 Z" fill="#F6E27A" />
-            <text x="32" y="44" textAnchor="middle" fill="url(#shieldGoldA)" fontFamily="Georgia, serif" fontWeight="900" fontSize="24" letterSpacing="-1">
-              X
-            </text>
-          </svg>
-        )}
-        {variant === "B" && (
-          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(230,185,128,0.35)]">
-            <circle cx="32" cy="32" r="27" fill="#1F0B17" stroke="#FAD6A5" strokeWidth="2.5" />
-            <polygon points="32,10 36,28 54,32 36,36 32,54 28,36 10,32 28,28" fill="#FAD6A5" fillOpacity="0.25" stroke="#FAD6A5" strokeWidth="1.5" />
-            <text x="32" y="39" textAnchor="middle" fill="#FAD6A5" fontFamily="Georgia, serif" fontWeight="900" fontSize="20">X</text>
-          </svg>
-        )}
-        {variant === "C" && (
-          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(226,194,117,0.35)]">
-            <circle cx="32" cy="34" r="25" fill="#0B0D13" stroke="#E2C275" strokeWidth="2.8" />
-            <path d="M24 9 L28 13 L32 7 L36 13 L40 9 L38 15 H26 Z" fill="#E2C275" />
-            <rect x="28" y="16" width="8" height="8" rx="1.5" fill="#D92626" />
-            <path d="M31 18 H33 V19.5 H34.5 V21 H33 V22.5 H31 V21 H29.5 V19.5 H31 Z" fill="#FFFFFF" />
-            <text x="32" y="45" textAnchor="middle" fill="#E2C275" fontFamily="Georgia, serif" fontWeight="900" fontSize="22">X</text>
-          </svg>
-        )}
-        {variant === "D" && (
-          <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-[0_4px_12px_rgba(56,189,248,0.35)]">
-            <circle cx="28" cy="28" r="21" fill="#0D1F3C" stroke="#F3D078" strokeWidth="3.5" />
-            <line x1="43" y1="43" x2="57" y2="57" stroke="#F3D078" strokeWidth="6" strokeLinecap="round" />
-            <text x="28" y="35" textAnchor="middle" fill="#FFFFFF" fontFamily="sans-serif" fontWeight="900" fontSize="19">X</text>
-          </svg>
-        )}
-      </div>
-
-      <div className="flex flex-col">
-        <span className={`font-serif font-black tracking-tight leading-none ${compact ? "text-xl" : "text-2xl md:text-3xl"}`}>
-          <span className="text-white">Xant</span>
-          <span className={variant === "D" ? "text-sky-400" : "bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#D5A021] bg-clip-text text-transparent"}>
-            Sex
-          </span>
-          <span className="text-white">Now</span>
-          <span className="text-[#C69C6D] text-sm font-sans font-bold ml-0.5">.ch</span>
-        </span>
-        <span className="text-[9px] uppercase tracking-[0.2em] text-gray-300 font-sans font-semibold mt-1">
-          {theme.subtitle}
-        </span>
-      </div>
-=======
     <div className={`relative inline-flex items-center justify-center ${dim} select-none shrink-0`}>
       <div className="absolute inset-0 rounded-full bg-[#E5B869]/30 blur-xl animate-pulse" />
       <svg viewBox="0 0 120 120" className="w-full h-full relative z-10 drop-shadow-[0_0_16px_rgba(232,186,106,0.75)]">
@@ -157,7 +94,6 @@ function XeniaGlowingFairy({ size = "lg" }: { size?: "sm" | "md" | "lg" }) {
         <circle cx="96" cy="72" r="1.8" fill="#FFF6D6" />
         <circle cx="60" cy="24" r="1.5" fill="#FFF6D6" />
       </svg>
->>>>>>> e08451b5c0ec969df720a00309195978da28eb1b
     </div>
   );
 }
@@ -864,13 +800,8 @@ export default function HomePage() {
       }`}
     >
       <SEO
-<<<<<<< HEAD
-        title="iwantsexnow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen"
-        description="Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung."
-=======
         title="iwantsexnow.ch | Schweizer Profilverzeichnis & Portalvergleich"
         description="Profile finden, Verfügbarkeit erkennen, Quellen vergleichen oder mit Xenia (Deiner Hilfe) Portale und Einträge prüfen."
->>>>>>> e08451b5c0ec969df720a00309195978da28eb1b
       />
 
       <LuxuryHeader />
@@ -1979,20 +1910,6 @@ export default function HomePage() {
                 Ergebnisse anzeigen ({filteredProfiles.length})
               </button>
             </div>
-<<<<<<< HEAD
-            <div>
-              <h4 className="font-bold text-white mb-4">Vertrauen & B2B</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/faq" className="hover:text-white">Verifizierungs-Prozess</Link></li>
-                <li><Link href="/pricing" className="hover:text-white">B2B Pakete & Direktbuchung</Link></li>
-                <li><Link href="/checkout" className="hover:text-white">B2B Checkout (TWINT / Crypto)</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} iwantsexnow.ch · Swiss Escort Index & Direct Booking Engine (18+)</p>
-=======
->>>>>>> e08451b5c0ec969df720a00309195978da28eb1b
           </div>
         </div>
       )}

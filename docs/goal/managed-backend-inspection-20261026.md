@@ -55,3 +55,7 @@ All 114 current tests pass locally. Production build, lint/type checks, existing
 The prepared P0 candidate remains PR #16. A concrete controlled rollout consists of applying the targeted profiles correction to the mapped existing database, merging the reviewed PR, updating the existing managed source without overwriting concurrent work, and deploying/reading back that exact candidate. Keep the new profile privacy rules on rollback; never restore public profile read. Until actual approved records and working private case/removal operations are accepted, the public projection remains empty and indexing/account/report gates remain closed.
 
 The current read-only authorization has been used in full. It is not presented as approval for these live writes or publication. No new backend, Lovable project, runner or scheduler was created.
+
+## Later authorized production continuation
+
+The user subsequently explicitly approved the concrete SQL/merge/rollout package. It is now complete. The before-state and read-only observations above are historical. See [production receipt](production-p0-receipt-20261026.md) for exact SQL blob, current grants/policies/counts, merged source/tree, deployment fingerprints, 62 live HTTP checks and screenshots. The profiles SQL is applied; PR #16 is merged and deployed; the full Goal remains open. This supersedes the earlier request for production approval without altering its historical evidence.
