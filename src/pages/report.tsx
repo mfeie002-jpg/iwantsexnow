@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { Flag, Check, ArrowLeft, ShieldCheck } from "lucide-react";
 
 export default function ReportOrRemoveProfilePage() {
@@ -76,7 +77,7 @@ export default function ReportOrRemoveProfilePage() {
             <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
               Vielen Dank. Bei einem Lösch- oder Sperrwunsch wird der betreffende Eintrag umgehend aus der öffentlichen Ansicht ausgeblendet und für künftige automatische Aktualisierungen gesperrt.
             </p>
-            <Link href="/" className="inline-block px-5 py-2.5 rounded-xl bg-[#152839] text-white text-xs font-bold">
+            <Link href="/" className="inline-block px-5 py-2.5 rounded-xl bg-[#181614] text-white text-xs font-bold">
               Zurück zur Startseite →
             </Link>
           </div>
@@ -132,13 +133,14 @@ export default function ReportOrRemoveProfilePage() {
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-[#152839] hover:bg-[#1e374d] text-white font-bold text-xs uppercase tracking-wider cursor-pointer shadow"
+              className="w-full py-3.5 rounded-xl bg-[#181614] hover:bg-[#1e374d] text-white font-bold text-xs uppercase tracking-wider cursor-pointer shadow"
             >
               Meldung / Löschwunsch absenden →
             </button>
           </form>
         )}
       </main>
+      <CorporateFooter light />
     </div>
   );
 }

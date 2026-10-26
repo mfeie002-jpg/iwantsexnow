@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { ShieldCheck, Check, Lock, FileCheck, ArrowLeft } from "lucide-react";
 
 export default function IdentityVerificationPage() {
@@ -119,6 +120,7 @@ export default function IdentityVerificationPage() {
           </form>
         )}
       </main>
+      <CorporateFooter />
     </div>
   );
 }

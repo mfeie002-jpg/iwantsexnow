@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
 import { Check, Bookmark, ArrowRight, X } from "lucide-react";
@@ -68,7 +69,7 @@ export default function CompareEscortsPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-6 sm:px-10 py-8 space-y-6">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-6">
         <div>
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#181614]">
             Profile vergleichen
@@ -177,6 +178,7 @@ export default function CompareEscortsPage() {
           })}
         </div>
       </main>
+      <CorporateFooter light />
 
       {comparedList.length > 0 && (
         <div className="fixed bottom-16 md:bottom-4 inset-x-0 px-4 z-50">

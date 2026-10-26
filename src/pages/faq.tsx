@@ -1,52 +1,43 @@
-import { BrandLogo } from "@/components/BrandLogo";
+import React from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, ArrowLeft, PlusCircle, Calculator } from "lucide-react";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 
-export default function InfoPage() {
+export default function CorporateInfoPage() {
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
-      <SEO title="Häufige Fragen zum Schweizer Escort-Index & Endpreis-Rechner | iWantSexNow.ch" description="Wie funktioniert das Google + Booking.com Prinzip?" />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#F7F4EE] text-[#181614] flex flex-col justify-between overflow-x-hidden">
+      <SEO title="Häufige Fragen (FAQ) | iwantsexnow.ch" description="Die wichtigsten Antworten zu Verfügbarkeits-Status, Preisangaben, Quellen-Zusammenführung und kostenloser Profilübernahme." />
+      <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-12 max-w-4xl space-y-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
-          <ArrowLeft size={14} /> Zurück zur Startseite
-        </Link>
-
-        <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-8 rounded-2xl text-white space-y-5 shadow-2xl">
-          <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 w-fit">
-            <ShieldCheck size={13} className="mr-1.5 inline" /> FAQ · So funktioniert iWantSexNow.ch
-          </Badge>
-          <h1 className="text-3xl md:text-4xl font-serif font-black">Wie funktioniert das Google + Booking.com Prinzip?</h1>
-          <p className="text-gray-300 leading-relaxed text-sm md:text-base">
-            1. Warum sehe ich verschiedene Portal-Preise auf einer Karte? Unsere Engine erkennt anhand normalisierter Schweizer Telefonnummern, wenn dieselbe Anbieterin auf mehreren Portalen zu unterschiedlichen Preisen inseriert, und zeigt dir den günstigsten Direkt-Tarif. 2. Wie funktioniert die Direktbuchung? Bei allen mit Direkt Buchbar markierten Profilen wählst du Dauer und Extras im Rechner aus und sendest deinen Terminwunsch zum garantierten Komplettpreis direkt an die Anbieterin.
-          </p>
-          <div className="pt-4 border-t border-white/10 flex flex-wrap gap-3">
-            <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
-              <Link href="/compare-escorts">
-                <Calculator size={15} className="mr-1.5" /> Zum Endpreis-Rechner
-              </Link>
-            </Button>
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10" asChild>
-              <Link href="/create-post">
-                <PlusCircle size={15} className="mr-1.5" /> Profil übernehmen / Inserieren
-              </Link>
-            </Button>
+      <main className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
+        <div className="max-w-3xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
+            <span>ANTWORTEN FÜR BESUCHER & ANBIETERINNEN</span>
           </div>
-        </Card>
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#181614]">Häufige Fragen (FAQ)</h1>
+          <p className="text-sm sm:text-base text-[#5C554B] leading-relaxed">Die wichtigsten Antworten zu Verfügbarkeits-Status, Preisangaben, Quellen-Zusammenführung und kostenloser Profilübernahme.</p>
+        </div>
+
+        <div className="max-w-4xl space-y-5">
+          
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E6DFD3] shadow-xs space-y-3">
+          <h2 className="text-xl font-serif font-bold text-[#181614]">Was bedeutet „Jetzt verfügbar · Bestätigt vor X Min.“?</h2>
+          <div className="space-y-2 text-xs sm:text-sm text-[#3D372E] leading-relaxed">
+            <p>Dieses grüne Merkmal erscheint nur, wenn die Anbieterin ihren Status im Anbieter-Cockpit aktiv für die nächsten 4 Stunden bestätigt hat. Nach Ablauf von 4 Stunden schaltet sich die Anzeige automatisch auf neutral zurück.</p>
+          </div>
+        </section>
+
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E6DFD3] shadow-xs space-y-3">
+          <h2 className="text-xl font-serif font-bold text-[#181614]">Wie kann ich als Anbieterin mein Profil übernehmen oder löschen?</h2>
+          <div className="space-y-2 text-xs sm:text-sm text-[#3D372E] leading-relaxed">
+            <p>Klicken Sie an Ihrem Profil auf „Ist das dein Profil? Bestehendes Profil übernehmen“ oder öffnen Sie direkt <a href='/create-post' className='text-[#7A5824] font-bold underline'>/create-post</a>. Wenn Sie Ihren Eintrag entfernen lassen möchten, können Sie dies jederzeit kostenlos und ohne Login unter <a href='/report' className='text-[#7A5824] font-bold underline'>/report</a> veranlassen.</p>
+          </div>
+        </section>
+        </div>
       </main>
+
+      <CorporateFooter light />
     </div>
   );
 }

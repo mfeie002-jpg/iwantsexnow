@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { SWISS_PORTAL_TOP10 } from "@/data/portalReviewsData";
 import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
@@ -526,7 +527,7 @@ export default function HomePage() {
                   href={`/profile/${encodeURIComponent(p.id)}`}
                   onClick={() => recordEvent(p.id, "track_click")}
                   className={`text-base font-extrabold truncate block ${
-                    isLightMode ? "text-[#141821] hover:text-[#152839]" : "text-white hover:text-[#C6A574]"
+                    isLightMode ? "text-[#141821] hover:text-[#7A5824]" : "text-white hover:text-[#C6A574]"
                   }`}
                 >
                   {cleanName}
@@ -538,7 +539,7 @@ export default function HomePage() {
 
               {p.advertisedBaseChf && (
                 <div className="text-right shrink-0">
-                  <div className={`text-xs font-extrabold ${isLightMode ? "text-[#152839]" : "text-gray-200"}`}>
+                  <div className={`text-xs font-extrabold ${isLightMode ? "text-[#7A5824]" : "text-gray-200"}`}>
                     CHF {p.advertisedBaseChf}
                   </div>
                   <div className={`text-[10px] ${isLightMode ? "text-stone-400" : "text-gray-500"}`}>60 Min.</div>
@@ -589,7 +590,7 @@ export default function HomePage() {
                   setPrivateInquiryProfile(p);
                 }}
                 className={`text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer ${
-                  isLightMode ? "text-[#152839] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
+                  isLightMode ? "text-[#7A5824] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
                 }`}
               >
                 <span>Privat anfragen</span>
@@ -600,7 +601,7 @@ export default function HomePage() {
                 href={`/profile/${encodeURIComponent(p.id)}`}
                 onClick={() => recordEvent(p.id, "track_click")}
                 className={`text-xs font-bold inline-flex items-center gap-1.5 ${
-                  isLightMode ? "text-[#152839] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
+                  isLightMode ? "text-[#7A5824] hover:underline" : "text-[#C6A574] hover:text-[#e0c191]"
                 }`}
               >
                 <span>Original ansehen</span>
@@ -930,7 +931,7 @@ export default function HomePage() {
                 onClick={() => {}}
                 className={`w-full py-2 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow ${
                   activeConcept === "light_sources"
-                    ? "bg-[#152839] hover:bg-[#1d354b] text-white"
+                    ? "bg-[#181614] hover:bg-[#1d354b] text-white"
                     : "bg-[#C6A574] hover:bg-[#d5b687] text-[#13161C]"
                 }`}
               >
@@ -954,7 +955,7 @@ export default function HomePage() {
                         onClick={() => setSelectedCanton(code)}
                         className={`px-3 py-1 rounded-xl text-xs font-bold border cursor-pointer ${
                           active
-                            ? "bg-[#152839] text-white border-[#152839]"
+                            ? "bg-[#181614] text-white border-[#152839]"
                             : "bg-white text-[#141821] border-stone-300"
                         }`}
                       >
@@ -1036,7 +1037,7 @@ export default function HomePage() {
                   className={`p-1.5 cursor-pointer ${
                     viewMode === "grid"
                       ? activeConcept === "light_sources"
-                        ? "bg-[#152839] text-white"
+                        ? "bg-[#181614] text-white"
                         : "bg-white/15 text-white"
                       : "text-gray-400"
                   }`}
@@ -1724,7 +1725,7 @@ export default function HomePage() {
             disabled={loadingVault}
             className={`px-7 py-3 rounded-xl font-bold text-xs uppercase tracking-wider cursor-pointer shadow ${
               activeConcept === "light_sources"
-                ? "bg-[#152839] text-white"
+                ? "bg-[#181614] text-white"
                 : "bg-[#C6A574] text-[#13161C]"
             }`}
           >
@@ -1922,6 +1923,7 @@ export default function HomePage() {
           </div>
         </div>
       )}
+          <CorporateFooter light={String(activeConcept).includes("champagne") || String(activeConcept).includes("light")} />
     </div>
   );
 }

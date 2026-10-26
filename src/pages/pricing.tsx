@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { StructuredSchema } from "@/components/StructuredSchema";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
@@ -42,7 +43,7 @@ export default function SwissPricingCompassPage() {
       <StructuredSchema pageType="city_price" cityName="Zürich & Schweiz" cantonCode="CH" />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-6 sm:px-10 py-10 space-y-12">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-12">
         {/* Hero */}
         <section className="space-y-3 max-w-4xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
@@ -177,6 +178,7 @@ export default function SwissPricingCompassPage() {
           </div>
         </section>
       </main>
+      <CorporateFooter light />
     </div>
   );
 }

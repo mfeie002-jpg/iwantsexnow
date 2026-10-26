@@ -1,52 +1,45 @@
-import { BrandLogo } from "@/components/BrandLogo";
+import React from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, ArrowLeft, PlusCircle, Calculator } from "lucide-react";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 
-export default function InfoPage() {
+export default function CorporateInfoPage() {
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
-      <SEO title="Impressum & Betreiberangaben (CH) | iWantSexNow.ch" description="Impressum & Plattform-Architektur" />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#F7F4EE] text-[#181614] flex flex-col justify-between overflow-x-hidden">
+      <SEO title="Impressum & Betreiberangaben | iwantsexnow.ch" description="Transparente Angaben zum Betrieb des Schweizer Profilverzeichnisses und Portalvergleichs iwantsexnow.ch." />
+      <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-12 max-w-4xl space-y-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
-          <ArrowLeft size={14} /> Zurück zur Startseite
-        </Link>
-
-        <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-8 rounded-2xl text-white space-y-5 shadow-2xl">
-          <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 w-fit">
-            <ShieldCheck size={13} className="mr-1.5 inline" /> Schweizer Transparenz- & Plattformangaben
-          </Badge>
-          <h1 className="text-3xl md:text-4xl font-serif font-black">Impressum & Plattform-Architektur</h1>
-          <p className="text-gray-300 leading-relaxed text-sm md:text-base">
-            iWantSexNow.ch ist eine unabhängige Schweizer Such-, Preisvergleichs- und Direktbuchungs-Technologieplattform (Decision-Marketplace) mit Fokus auf die Pilot-Regionen Zürich, Zug und die gesamte Schweiz. Alle als Direkt Buchbar gekennzeichneten Anbieterinnen handeln als selbstständige Dienstleisterinnen auf eigene Rechnung. Indexierte Markt-Profile werden automatisiert zur Preistransparenz und Dubletten-Bereinigung aus öffentlich zugänglichen Schweizer Verzeichnissen aggregiert.
-          </p>
-          <div className="pt-4 border-t border-white/10 flex flex-wrap gap-3">
-            <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
-              <Link href="/compare-escorts">
-                <Calculator size={15} className="mr-1.5" /> Zum Endpreis-Rechner
-              </Link>
-            </Button>
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10" asChild>
-              <Link href="/create-post">
-                <PlusCircle size={15} className="mr-1.5" /> Profil übernehmen / Inserieren
-              </Link>
-            </Button>
+      <main className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
+        <div className="max-w-3xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
+            <span>RECHTLICHE ANGABEN · SCHWEIZ</span>
           </div>
-        </Card>
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#181614]">Impressum & Betreiberangaben</h1>
+          <p className="text-sm sm:text-base text-[#5C554B] leading-relaxed">Transparente Angaben zum Betrieb des Schweizer Profilverzeichnisses und Portalvergleichs iwantsexnow.ch.</p>
+        </div>
+
+        <div className="max-w-4xl space-y-5">
+          
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E6DFD3] shadow-xs space-y-3">
+          <h2 className="text-xl font-serif font-bold text-[#181614]">1. Funktion der Plattform</h2>
+          <div className="space-y-2 text-xs sm:text-sm text-[#3D372E] leading-relaxed">
+            <p>iwantsexnow.ch ist ein unabhängiges Schweizer Online-Verzeichnis und Vergleichsportal für Erwachsene (18+). Wir sind keine Escort-Agentur, kein Studio-Betreiber und vermitteln keine Dienstleistungen auf eigene Rechnung.</p>
+            <p>Wir stellen technische Werkzeuge zur Verfügung, mit denen Anbieterinnen ihre eigenen Profile kostenlos verwalten und Suchende öffentlich zugängliche Angebote und Portale nach transparenten Kriterien vergleichen können.</p>
+          </div>
+        </section>
+
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E6DFD3] shadow-xs space-y-3">
+          <h2 className="text-xl font-serif font-bold text-[#181614]">2. Kontakt für Redaktion, Behörden & Widersprüche</h2>
+          <div className="space-y-2 text-xs sm:text-sm text-[#3D372E] leading-relaxed">
+            <p>Für Korrekturwünsche, Urheberrechts-Meldungen oder die sofortige Entfernung eines Eintrags ohne Kontopflicht nutzen Sie bitte direkt unser <a href='/report' className='text-[#7A5824] font-bold underline'>Melde- & Löschformular (/report)</a>.</p>
+            <p>E-Mail-Kontakt: compliance@iwantsexnow.ch · Gerichtsstand und anwendbares Recht: Schweiz.</p>
+          </div>
+        </section>
+        </div>
       </main>
+
+      <CorporateFooter light />
     </div>
   );
 }

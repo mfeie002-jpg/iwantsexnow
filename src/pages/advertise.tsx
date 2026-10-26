@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import {
   Check,
   Clock,
@@ -25,7 +26,7 @@ export default function ProviderOverviewPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-6 sm:px-10 py-10 space-y-14">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-14">
         {/* Hero Section */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-4">
@@ -220,6 +221,7 @@ export default function ProviderOverviewPage() {
           </div>
         </section>
       </main>
+      <CorporateFooter />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { StructuredSchema } from "@/components/StructuredSchema";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
@@ -186,7 +187,7 @@ export default function ProfileDetailPage() {
       <StructuredSchema cityName={profileData.cleanCity} cantonCode={profileData.canton} />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 space-y-8">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-8">
         {/* Top Back Navigation + Context Help */}
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400 border-b border-white/10 pb-4">
           <Link href="/" className="inline-flex items-center gap-1.5 font-bold text-white hover:text-[#C6A574]">
@@ -494,6 +495,7 @@ export default function ProfileDetailPage() {
           </div>
         </div>
       </main>
+      <CorporateFooter />
     </div>
   );
 }

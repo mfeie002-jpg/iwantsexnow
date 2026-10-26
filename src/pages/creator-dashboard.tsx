@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import {
   Clock,
   Check,
@@ -124,7 +125,7 @@ export default function CreatorDashboardPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-5xl mx-auto px-6 sm:px-10 py-8 space-y-8">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-8">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5">
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
@@ -305,6 +306,7 @@ export default function CreatorDashboardPage() {
           </div>
         </form>
       </main>
+      <CorporateFooter />
     </div>
   );
 }

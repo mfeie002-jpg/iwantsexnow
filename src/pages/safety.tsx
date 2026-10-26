@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { ShieldCheck, Clock, HelpCircle, Scale, Check, AlertCircle } from "lucide-react";
 
 export default function SafetyAndBeginnerGuidePage() {
@@ -13,7 +14,7 @@ export default function SafetyAndBeginnerGuidePage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-5xl mx-auto px-6 sm:px-10 py-10 space-y-10">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-10">
         <section className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
             <span>ORIENTIERUNG, SICHERHEIT & ETIKETTE</span>
@@ -83,7 +84,7 @@ export default function SafetyAndBeginnerGuidePage() {
             Jede Vereinbarung zwischen Erwachsenen beruht auf gegenseitigem Respekt, klaren Grenzen und Freiwilligkeit. Wenn Ihnen ein fehlerhafter Eintrag, eine missbräuchliche Bildverwendung oder ein Verstoss auffällt, können Sie diesen jederzeit ohne Registrierung über unser Meldeformular melden.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
-            <Link href="/" className="px-5 py-2.5 rounded-xl bg-[#152839] text-white font-bold text-xs">
+            <Link href="/" className="px-5 py-2.5 rounded-xl bg-[#181614] text-white font-bold text-xs">
               Zurück zur Profilübersicht →
             </Link>
             <Link href="/reviews" className="px-5 py-2.5 rounded-xl bg-[#F3EFE6] border border-[#DFD5C0] text-[#5C4722] font-bold text-xs">
@@ -95,6 +96,7 @@ export default function SafetyAndBeginnerGuidePage() {
           </div>
         </section>
       </main>
+      <CorporateFooter light />
     </div>
   );
 }

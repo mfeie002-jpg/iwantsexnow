@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import clubsVault from "@/data/swiss-establishments-vault.json";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
 import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
@@ -152,6 +153,7 @@ export default function HarmonizedClubsDirectoryPage() {
           ))}
         </div>
       </main>
+      <CorporateFooter />
     </div>
   );
 }

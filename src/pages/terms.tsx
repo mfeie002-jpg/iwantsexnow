@@ -1,52 +1,43 @@
-import { BrandLogo } from "@/components/BrandLogo";
+import React from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, ArrowLeft, PlusCircle, Calculator } from "lucide-react";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 
-export default function InfoPage() {
+export default function CorporateInfoPage() {
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
-      <SEO title="Nutzungsbedingungen & Endpreis-Garantie (18+) | iWantSexNow.ch" description="Nutzungsbedingungen für Suchende & B2B-Anbieter" />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#F7F4EE] text-[#181614] flex flex-col justify-between overflow-x-hidden">
+      <SEO title="Nutzungsbedingungen (AGB) | iwantsexnow.ch" description="Grundregeln für die Nutzung des Schweizer Profilverzeichnisses und Portalvergleichs." />
+      <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-12 max-w-4xl space-y-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
-          <ArrowLeft size={14} /> Zurück zur Startseite
-        </Link>
-
-        <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-8 rounded-2xl text-white space-y-5 shadow-2xl">
-          <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 w-fit">
-            <ShieldCheck size={13} className="mr-1.5 inline" /> Allgemeine Nutzungsbedingungen (Schweiz · 18+)
-          </Badge>
-          <h1 className="text-3xl md:text-4xl font-serif font-black">Nutzungsbedingungen für Suchende & B2B-Anbieter</h1>
-          <p className="text-gray-300 leading-relaxed text-sm md:text-base">
-            Der Zugang zu iWantSexNow.ch ist strikt volljährigen Personen (18+) vorbehalten. Verifizierte Direkt-Anbieterinnen verpflichten sich im Rahmen des Swiss-Shield-Kodex, die im Endpreis-Rechner ausgewiesenen Tarife und Inklusiv-Leistungen ohne versteckte Nachverhandlungen vor Ort einzuhalten. Anbieterinnen können ihr indexiertes Profil jederzeit kostenlos beanspruchen, aktualisieren oder aus dem Index entfernen lassen.
-          </p>
-          <div className="pt-4 border-t border-white/10 flex flex-wrap gap-3">
-            <Button className="bg-[#C69C6D] text-[#0D1B2A] font-black" asChild>
-              <Link href="/compare-escorts">
-                <Calculator size={15} className="mr-1.5" /> Zum Endpreis-Rechner
-              </Link>
-            </Button>
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10" asChild>
-              <Link href="/create-post">
-                <PlusCircle size={15} className="mr-1.5" /> Profil übernehmen / Inserieren
-              </Link>
-            </Button>
+      <main className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
+        <div className="max-w-3xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
+            <span>RICHTLINIEN & EINVERNEHMLICHKEIT · 18+</span>
           </div>
-        </Card>
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#181614]">Nutzungsbedingungen (AGB)</h1>
+          <p className="text-sm sm:text-base text-[#5C554B] leading-relaxed">Grundregeln für die Nutzung des Schweizer Profilverzeichnisses und Portalvergleichs.</p>
+        </div>
+
+        <div className="max-w-4xl space-y-5">
+          
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E6DFD3] shadow-xs space-y-3">
+          <h2 className="text-xl font-serif font-bold text-[#181614]">1. Ausschliesslicher Zugang für Volljährige (18+)</h2>
+          <div className="space-y-2 text-xs sm:text-sm text-[#3D372E] leading-relaxed">
+            <p>Der Zugriff auf iwantsexnow.ch sowie das Anlegen oder Übernehmen eines Anbieterprofils ist ausnahmslos volljährigen Personen ab 18 Jahren gestattet.</p>
+          </div>
+        </section>
+
+        <section className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E6DFD3] shadow-xs space-y-3">
+          <h2 className="text-xl font-serif font-bold text-[#181614]">2. Trennung von Plattform und individuellen Vereinbarungen</h2>
+          <div className="space-y-2 text-xs sm:text-sm text-[#3D372E] leading-relaxed">
+            <p>Alle auf Profilkarten genannten Preise, Zeiteinheiten (z.B. 60 Min. vs. 30 Min.) und Verfügbarkeitsangaben stammen aus dem jeweiligen Anbieterprofil oder dem ausgewiesenen Ursprungsinserat. Etwaige Vereinbarungen kommen ausschliesslich direkt zwischen den beteiligten Erwachsenen zustande.</p>
+          </div>
+        </section>
+        </div>
       </main>
+
+      <CorporateFooter light />
     </div>
   );
 }

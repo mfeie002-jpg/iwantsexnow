@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { Check, ArrowRight, ShieldCheck, Flag } from "lucide-react";
 
 const SWISS_CANTONS = ["ZH", "ZG", "BS", "BE", "LU", "AG", "SG", "TG", "SO", "SZ", "GR", "GE", "VD", "VS", "TI"];
@@ -221,6 +222,7 @@ export default function TakeOverOrCreateProfilePage() {
           </Link>
         </div>
       </main>
+      <CorporateFooter />
     </div>
   );
 }

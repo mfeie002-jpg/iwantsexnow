@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
 import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
 import {
@@ -381,6 +382,7 @@ export default function HarmonizedSearchPage() {
           </div>
         )}
       </main>
+      <CorporateFooter />
     </div>
   );
 }

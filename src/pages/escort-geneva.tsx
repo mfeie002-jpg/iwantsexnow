@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
 import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
@@ -249,6 +250,7 @@ export default function CityIntentPage() {
           </div>
         )}
       </main>
+      <CorporateFooter />
     </div>
   );
 }

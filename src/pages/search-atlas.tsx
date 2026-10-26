@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { StructuredSchema } from "@/components/StructuredSchema";
 import { ArrowUpRight } from "lucide-react";
 
@@ -67,7 +68,7 @@ export default function SearchIntentAtlasPage() {
       <StructuredSchema />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-6 sm:px-10 py-10 space-y-10">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-10">
         <div className="space-y-2">
           <div className="text-xs font-bold uppercase tracking-widest text-[#8C6B32]">
             IWANTSEXNOW.CH · PRODUKT- & SUCHINTENTIONS-VALIDIERUNG (STAND OKTOBER 2026)
@@ -146,6 +147,7 @@ export default function SearchIntentAtlasPage() {
           </div>
         </section>
       </main>
+      <CorporateFooter light />
     </div>
   );
 }

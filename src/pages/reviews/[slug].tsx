@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
 import { SWISS_PORTAL_TOP10, OUR_PLATFORM_DISCLOSURE } from "@/data/portalReviewsData";
 import { FileText, Search, HelpCircle, Scale, Check, AlertTriangle, ArrowLeft, ExternalLink } from "lucide-react";
 
@@ -22,7 +23,7 @@ export default function SinglePortalReviewPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-6 sm:px-10 py-8 space-y-10">
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-10">
         {/* Top Breadcrumb */}
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600">
           <Link href="/reviews" className="inline-flex items-center gap-1.5 font-bold text-[#141821] hover:underline">
@@ -205,6 +206,7 @@ export default function SinglePortalReviewPage() {
           </aside>
         </div>
       </main>
+      <CorporateFooter light />
     </div>
   );
 }
