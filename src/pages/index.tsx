@@ -1392,7 +1392,7 @@ export default function HomePage() {
                     <div>
                       <div className="h-40 w-full overflow-hidden bg-stone-800">
                         <img
-                          src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80"
+                          src="/placeholder-profile.svg"
                           alt="Portale vergleichen"
                           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                         />
@@ -1423,7 +1423,7 @@ export default function HomePage() {
                     <div>
                       <div className="h-40 w-full overflow-hidden bg-stone-800">
                         <img
-                          src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80"
+                          src="/placeholder-profile.svg"
                           alt="Sicherheit verstehen"
                           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                         />

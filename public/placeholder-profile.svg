@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="600" height="700">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1E29"/>
+      <stop offset="100%" stop-color="#0E1015"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="700" fill="url(#bg)"/>
+  <rect x="24" y="24" width="552" height="652" rx="20" fill="none" stroke="#C6A574" stroke-opacity="0.22" stroke-width="2"/>
+  <g transform="translate(250, 240)">
+    <path d="M12 10 L46 50 L12 90 L28 90 L54 59 L54 41 L28 10 Z" fill="#C6A574"/>
+    <path d="M88 10 L54 50 L88 90 L72 90 L46 59 L46 41 L72 10 Z" fill="#C6A574" opacity="0.85"/>
+  </g>
+  <text x="300" y="385" text-anchor="middle" fill="#E5C99B" font-family="Georgia, serif" font-size="20" font-weight="bold" letter-spacing="2">IWANTSEXNOW.CH</text>
+  <text x="300" y="418" text-anchor="middle" fill="#9CA3AF" font-family="sans-serif" font-size="14">Originalbilder im Quellinserat</text>
+</svg>
