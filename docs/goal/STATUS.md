@@ -9,6 +9,7 @@ This is the continuing execution record for the supplied Goal and Masterplan, no
 - Audited plan baseline: `4a5250cdf57aa517b88bc0f468d11f113c88e82d`.
 - Current-main baseline verified twice this run: `9f867194061d1b28e4e2efce636e278b46d474d3`. Its only extra commit redirects old template pages; preserved.
 - Tested source commit: `38debd0e99ffeb12e73fa499f7f7f20ad1791d1d` (following documentation-only commits do not change application code).
+- Verified GitHub candidate: `d76b17a6294c4c232dc4809b449d87baf57682ac`, full tree `b42bfc56f9d17ded3ddd0bb80bc6814e89bd5638` matched the local candidate exactly. CLI credentials were unavailable; the connected GitHub Git-data interface transferred the tree.
 - Work branch: `fix/iwsn-p0-foundation-20261026`.
 - Existing open PRs #6 and #15 and their branches were inspected, not merged or overwritten.
 - Public HTML fingerprint: Next build `f0pqs7dFTJsnZkN8JUIXk`, deployment `dpl_GKChaCqmTKg8RiMmhbZhYiY4NSGN`. **Not a verified Git revision.**
@@ -29,7 +30,7 @@ This is the continuing execution record for the supplied Goal and Masterplan, no
 
 ## Validation
 
-See `evidence-20261026.json` and the PR for the exact source commit and current CI result.
+GitHub Actions run [40255365211](https://github.com/mfeie002-jpg/iwantsexnow/actions/runs/40255365211) passed every quality-gate step for candidate `d76b17a`. The following evidence update changes documentation only. See `evidence-20261026.json` and the PR for source/tree details.
 
 - TypeScript and production build passed, with TypeScript and lint build checks enabled.
 - All 105 unit and compiled-handler tests passed, no failures or skips. Includes existing private draft ownership/storage-error tests, new legacy/admin boundary tests, source identities, search validation/redaction, geo counterexamples, canonical policy and Edge role checks.
@@ -38,6 +39,7 @@ See `evidence-20261026.json` and the PR for the exact source commit and current 
 - Loopback P0 HTTP: 47/47 cases, including initial HTML canonicals, genuine unknown-ID/slug 404s, old-token denial, unknown-action rejection, no public case state and invalid search inputs.
 - Retired catalogue HTTP: 2/2. Analyzer denial HTTP: 5/5. Private flow disabled HTTP: 6/6.
 - Existing private flow HTTP acceptance passed using its synthetic backend: session, owner create/read/edit, other-user denial, spoof/CSRF/size rejection and logout. **This is not a live database persistence, concurrent-instance or live RLS test.**
+- Browser bundle check: all 20 previously published owner tokens are absent from all 91 built JavaScript chunks.
 - Lockfile dependency audit: 0 vulnerabilities at this run. Diff whitespace checks passed.
 - Not executed: current live DB/RLS, deployed Edge authorization, production credential rotation outside retired paths, production removal/reimport/restore, full concurrent storage acceptance, Deno runtime typecheck and visual desktop/mobile usability QA.
 

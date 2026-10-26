@@ -22,9 +22,19 @@
     "liveBackendAcceptance": "not executed",
     "DenoRuntimeTypecheck": "not executed",
     "visualDesktopMobileQA": "not executed",
-    "gitHubCI": "pending",
+    "gitHubCI": {
+      "runId": 40255365211,
+      "commit": "d76b17a6294c4c232dc4809b449d87baf57682ac",
+      "conclusion": "success",
+      "allStepsExecuted": true
+    },
     "sourceLint": "passed, zero errors; pre-existing warnings are not promoted to errors",
-    "productionBuildLint": "enabled; zero lint errors, inherited warnings visible"
+    "productionBuildLint": "enabled; zero lint errors, inherited warnings visible",
+    "browserBundleCredentialCheck": {
+      "oldTokensChecked": 20,
+      "javascriptChunksScanned": 91,
+      "matches": 0
+    }
   },
   "inventory": {
     "removedSyntheticRows": 96,
@@ -61,5 +71,10 @@
     "deploymentId": "dpl_GKChaCqmTKg8RiMmhbZhYiY4NSGN",
     "exactGitShaVerified": false
   },
-  "testedSourceCommit": "38debd0e99ffeb12e73fa499f7f7f20ad1791d1d"
+  "testedSourceCommit": "38debd0e99ffeb12e73fa499f7f7f20ad1791d1d",
+  "verifiedRemoteCandidate": {
+    "commit": "d76b17a6294c4c232dc4809b449d87baf57682ac",
+    "tree": "b42bfc56f9d17ded3ddd0bb80bc6814e89bd5638",
+    "matchesCompleteLocalCandidate": true
+  }
 }
