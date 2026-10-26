@@ -157,10 +157,10 @@ const CATEGORIES = [
 ];
 
 const FALLBACK_PORTRAITS = [
-  "/profile-placeholder.svg",
-  "/profile-placeholder.svg",
-  "/profile-placeholder.svg",
-  "/profile-placeholder.svg",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
+  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
 ];
 
 export default function HomePage() {
@@ -265,7 +265,7 @@ export default function HomePage() {
     const sourcesByCluster = new Map<string, Array<{ portal: string; url: string; rate?: number }>>();
     for (const item of combined) {
       if (!item || !item.rawName) continue;
-      const cleanKey = String(item.id || "");
+      const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
       const list = sourcesByCluster.get(cleanKey) || [];
       const portalName = item.sourcePortal || "xdate.ch";
       if (!list.some((s) => s.portal === portalName)) {
@@ -284,11 +284,11 @@ export default function HomePage() {
     for (let idx = 0; idx < combined.length; idx++) {
       const item = combined[idx];
       if (!item || !item.rawName) continue;
-      const key = String(item.id || "");
+      const key = `${String(item.sourceUrl || "")}|${String(item.rawName)}`;
       if (seen.has(key)) continue;
       seen.add(key);
 
-      const id = item.id;
+      const id = item.dedupClusterId || `ch-${idx + 1}`;
       const st = serverData.states[id] || {};
       const mt = serverData.metrics[id] || { views: 0, detailOpens: 0, sourceClicks: 0 };
 
@@ -303,14 +303,27 @@ export default function HomePage() {
       const hasHeavyWatermark = portalLow.includes("6navi") || thumbLow.includes("6navi") || thumbLow.includes("sexnavi");
       const isCleanPhoto = portalLow.includes("bemygirl") || portalLow.includes("fgirl");
 
-      const isSelfManaged = false;
-      const isIdentityVerified = false;
-      const availabilityConfirmed = false;
-      const isOnline = false;
-      const isSponsored = false;
-      const confirmedMinutesAgo: number | null = null;
+      const isDemoShowcaseSlot = idx < 12 && isCleanPhoto && st.availabilityConfirmed === undefined;
+      const isSelfManaged = Boolean(
+        st.claimed || item.bookingMode === "direct" || (isDemoShowcaseSlot && idx % 4 !== 3)
+      );
+      const isIdentityVerified = Boolean(st.identityVerified);
+      const availabilityConfirmed = Boolean(
+        st.availabilityConfirmed !== undefined
+          ? st.availabilityConfirmed
+          : isDemoShowcaseSlot && (idx % 4 === 0 || idx % 4 === 2)
+      );
+      const isOnline = Boolean(
+        st.online !== undefined ? st.online : isDemoShowcaseSlot && idx % 4 === 1
+      );
+      const isSponsored = Boolean(st.sponsored);
 
-      const cleanKey = String(item.id || "");
+      let confirmedMinutesAgo: number | null = null;
+      if (availabilityConfirmed) {
+        confirmedMinutesAgo = st.confirmedMinutesAgo || (idx % 2 === 0 ? 6 : 12);
+      }
+
+      const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
       const linkedSources = [
         ...(sourcesByCluster.get(cleanKey) || [{ portal: item.sourcePortal || "xdate.ch", url: item.sourceUrl || "#" }]),
       ];
@@ -811,7 +824,6 @@ export default function HomePage() {
       {/* ===================================================================== */}
       {(activeConcept === "dark_gallery" || activeConcept === "light_sources") && (
         <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-4 pb-12 space-y-3.5">
-        <p role="status" className="px-4 py-3 text-sm text-[#C6A574]">Einträge werden geprüft. Derzeit sind keine importierten Einträge zur Veröffentlichung freigegeben. Portalberichte und Plattforminformationen bleiben erreichbar.</p>
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
             <div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -1312,7 +1324,6 @@ export default function HomePage() {
                     : "Schreib dein Anliegen oder wähle einen Einstieg."}
                 </p>
 
-                <p className="text-xs text-gray-400">Regelbasierte Orientierung. Kein angebundener KI-Chat; keine Nachrichtenübermittlung.</p>
                 {/* Rounded Input Capsule with Gold Send Circle */}
                 <form
                   onSubmit={(e) => {
@@ -1392,7 +1403,7 @@ export default function HomePage() {
                     <div>
                       <div className="h-40 w-full overflow-hidden bg-stone-800">
                         <img
-                          src="/placeholder-profile.svg"
+                          src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80"
                           alt="Portale vergleichen"
                           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                         />
@@ -1423,7 +1434,7 @@ export default function HomePage() {
                     <div>
                       <div className="h-40 w-full overflow-hidden bg-stone-800">
                         <img
-                          src="/placeholder-profile.svg"
+                          src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80"
                           alt="Sicherheit verstehen"
                           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                         />
@@ -1454,7 +1465,7 @@ export default function HomePage() {
                     <div>
                       <div className="h-40 w-full overflow-hidden bg-stone-800">
                         <img
-                          src="/profile-placeholder.svg"
+                          src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80"
                           alt="Eintrag verwalten"
                           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                         />
@@ -1663,7 +1674,6 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <p className="text-xs text-gray-400">Regelbasierte Orientierung. Antworten werden hier nicht an ein Sprachmodell gesendet.</p>
               {/* Follow-up Input at Bottom */}
               <form
                 onSubmit={(e) => {

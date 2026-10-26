@@ -210,6 +210,3 @@ export default function SinglePortalReviewPage() {
     </div>
   );
 }
-export async function getServerSideProps(context: { params?: { slug?: string } }) {
-  return SWISS_PORTAL_TOP10.some(report => report.slug === context.params?.slug) ? { props: {} } : { notFound: true };
-}
