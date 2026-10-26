@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { VelvetBackdrop } from "@/components/VelvetBackdrop";
 import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
@@ -229,8 +230,9 @@ export default function LocalIntentDirectoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen iwsn-velvet-bg text-white relative pb-24">
       <SEO title={`${intent.title} | iwantsexnow.ch`} description={intent.subtitle} />
+      <VelvetBackdrop />
       <LuxuryHeader />
 
       <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-5">

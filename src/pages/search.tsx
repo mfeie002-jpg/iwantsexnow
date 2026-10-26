@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { VelvetBackdrop } from "@/components/VelvetBackdrop";
 import { CorporateFooter } from "@/components/CorporateFooter";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
 import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
@@ -88,11 +89,12 @@ export default function HarmonizedSearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen iwsn-velvet-bg text-white relative pb-24">
       <SEO
         title="Profile durchsuchen & gezielt filtern | iwantsexnow.ch"
         description="Durchsuchen Sie Schweizer Profile nach Ort, Kategorie, bestätigter Verfügbarkeit und veröffentlichten Preisangaben."
       />
+      <VelvetBackdrop />
       <LuxuryHeader />
 
       <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-7 space-y-6">

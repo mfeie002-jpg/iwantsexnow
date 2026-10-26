@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { VelvetBackdrop } from "@/components/VelvetBackdrop";
 import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { SWISS_PORTAL_TOP10 } from "@/data/portalReviewsData";
@@ -817,6 +818,7 @@ export default function HomePage() {
         description="Profile finden, Verfügbarkeit erkennen, Quellen vergleichen oder mit Xenia (Deiner Hilfe) Portale und Einträge prüfen."
       />
 
+      {!String(activeConcept).includes("champagne") && <VelvetBackdrop />}
       <LuxuryHeader />
 
       {/* ===================================================================== */}

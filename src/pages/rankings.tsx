@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { VelvetBackdrop } from "@/components/VelvetBackdrop";
 import { CorporateFooter } from "@/components/CorporateFooter";
 import clubsVault from "@/data/swiss-establishments-vault.json";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
@@ -39,11 +40,12 @@ export default function HarmonizedClubsDirectoryPage() {
   const cantons = ["ALL", "ZH", "ZG", "AG", "BS", "BE", "LU", "SG", "SO", "TG", "GE", "VD", "TI"];
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen iwsn-velvet-bg text-white relative pb-24">
       <SEO
         title="Schweizer Clubs, Studios & Laufhäuser – Verzeichnis nach Kanton | iwantsexnow.ch"
         description={"Übersicht über " + clubs.length + " stationäre Schweizer Clubs, Kontaktbars, FKK- und Massagestudios mit Quellenangabe und Selbstverwaltung."}
       />
+      <VelvetBackdrop />
       <LuxuryHeader />
 
       <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-6">

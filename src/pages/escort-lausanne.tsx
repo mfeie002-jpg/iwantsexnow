@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { VelvetBackdrop } from "@/components/VelvetBackdrop";
 import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
@@ -54,11 +55,12 @@ export default function CityIntentPage() {
   }, [onlyAvailable, onlyWithPrice]);
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen iwsn-velvet-bg text-white relative pb-24">
       <SEO
         title={"Escorts & Salons à Lausanne et Vaud (VD) – Profile, Preise & Quellen | iwantsexnow.ch"}
         description={"Profils locaux, tarifs et sources vérifiables pour Lausanne, Ouchy, Morges, Nyon et Montreux."}
       />
+      <VelvetBackdrop />
       <LuxuryHeader />
 
       <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-6">
