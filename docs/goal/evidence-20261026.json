@@ -19,12 +19,12 @@
     "privateDisabledHttpCases": 6,
     "privateFlowSyntheticHttp": "passed",
     "npmAuditVulnerabilities": 0,
-    "liveBackendAcceptance": "current metadata/ACL inspection completed; production A/B writes/persistence not executed",
+    "liveBackendAcceptance": "targeted profiles ACL/RLS correction applied and read back; anon SELECT/email denied; own-user RLS predicates confirmed; row counts unchanged. No current live A/B fixture writes/persistence acceptance.",
     "DenoRuntimeTypecheck": "not executed",
-    "visualDesktopMobileQA": "not executed",
+    "visualDesktopMobileQA": "P0 homepage spot-check completed on desktop and mobile: containment notice visible, zero public profiles, mobile client/scroll/body widths all 375px. Full navigation and product usability acceptance remains open.",
     "gitHubCI": {
-      "runId": 40255365211,
-      "commit": "d76b17a6294c4c232dc4809b449d87baf57682ac",
+      "runId": 40292982854,
+      "commit": "e08451b5c0ec969df720a00309195978da28eb1b",
       "conclusion": "success",
       "allStepsExecuted": true
     },
@@ -40,6 +40,20 @@
       "passed": 9,
       "runtime": "PGlite 0.5.11, actual PostgreSQL, synthetic isolated replica",
       "notLiveAcceptance": true
+    },
+    "managedBuild": {
+      "install": "passed",
+      "build": "passed",
+      "builtPageAssertions": 354,
+      "internalLinkAssertions": 1422,
+      "sourceTree": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43"
+    },
+    "liveP0Http": {
+      "passed": 62,
+      "failed": 0,
+      "report": "docs/goal/live-p0-acceptance-20261026.json",
+      "appBundleSha256": "09cc93111d204f7424c057ebce0dd27684d39e5af814911b590379e6365e57ca",
+      "appBundleMatchesManagedBuild": true
     }
   },
   "inventory": {
@@ -64,11 +78,11 @@
     "dataforseo": "no direct tool; provider discovery returned zero matches",
     "softgen": {
       "existingProject": "4d3af0ab-bad5-4906-84f5-bdd09bdb40d6",
-      "currentRead": "completed in authenticated existing Chrome session, read-only",
-      "managedHead": "14b9c417c6c0a4e83a483aec7e9a0673c7934f79",
-      "managedTree": "6661114724dcde20a4e959e81d9296692931e994",
-      "matchesMainTree": "9f867194061d1b28e4e2efce636e278b46d474d3",
-      "worktree": "clean, detached HEAD",
+      "currentRead": "authenticated project, source, DB ACL/RLS and rollout verified after explicit production approval",
+      "managedHead": "6fd6b36dd5855a4c1ea73ac033efe0859ecab9b9",
+      "managedTree": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43",
+      "matchesMainTree": "e08451b5c0ec969df720a00309195978da28eb1b",
+      "worktree": "clean, release/iwsn-p0-20261026; Softgen changed commit metadata after deployment, identical full tree",
       "database": {
         "tables": {
           "marketplace_listing_drafts": {
@@ -81,9 +95,11 @@
           "profiles": {
             "consoleRowCount": 0,
             "rls": true,
-            "publicSelectPolicy": true,
-            "anonymousSelectGranted": true,
-            "excessiveTablePrivileges": true
+            "publicSelectPolicy": false,
+            "ownerPolicies": 3,
+            "anonymousSelectGranted": false,
+            "anonymousEmailSelectGranted": false,
+            "excessiveTablePrivileges": false
           }
         },
         "authCountOnly": 5,
@@ -91,7 +107,7 @@
         "deployedEdgeFunctions": 0
       },
       "deploymentAccount": "Softgen Vercel account",
-      "lastDeploymentUiLabel": "3:37 AM 26 October",
+      "lastDeploymentUiLabel": "9:38 AM 26 October (verbatim UI label; not converted timezone evidence)",
       "exactDeployedGitRevisionVerified": false,
       "environmentPresenceOnly": {
         "supabaseUrl": true,
@@ -99,27 +115,61 @@
         "serviceRoleKey": true,
         "privateDraftFlowFlag": false
       },
-      "privateValuesCopied": false
+      "privateValuesCopied": false,
+      "readOnlyInspectionHead": "14b9c417c6c0a4e83a483aec7e9a0673c7934f79",
+      "readOnlyInspectionTree": "6661114724dcde20a4e959e81d9296692931e994"
     }
   },
-  "productionChanged": false,
-  "productionDatabaseChanged": false,
-  "sqlApplied": false,
+  "productionChanged": true,
+  "productionDatabaseChanged": true,
+  "sqlApplied": true,
   "edgeFunctionsDeployed": false,
   "liveFingerprint": {
-    "nextBuildId": "f0pqs7dFTJsnZkN8JUIXk",
-    "deploymentId": "dpl_GKChaCqmTKg8RiMmhbZhYiY4NSGN",
-    "exactGitShaVerified": false
+    "nextBuildId": "bZY6C1DvzDlw-5GjkXsxs",
+    "deploymentId": "dpl_77dg9UmDcsN6PssuxaNeBYMyWkqL",
+    "exactGitShaVerified": false,
+    "managedAndMergedTreeMatches": true,
+    "appBundleMatchesManagedBuild": true
   },
   "testedSourceCommit": "38debd0e99ffeb12e73fa499f7f7f20ad1791d1d",
   "verifiedRemoteCandidate": {
-    "commit": "d76b17a6294c4c232dc4809b449d87baf57682ac",
-    "tree": "b42bfc56f9d17ded3ddd0bb80bc6814e89bd5638",
-    "matchesCompleteLocalCandidate": true
+    "commit": "756a80e57e85a3eb7f1531e1489619bbbadfcb9e",
+    "tree": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43",
+    "matchesCompleteLocalCandidate": true,
+    "mergedAs": "e08451b5c0ec969df720a00309195978da28eb1b",
+    "pr": 16
   },
   "profilePolicySql": {
     "path": "docs/goal/sql/20261026_harden_existing_profiles.sql",
-    "applied": false,
-    "historicalAnalyzerSqlApplicable": false
+    "applied": true,
+    "historicalAnalyzerSqlApplicable": false,
+    "scope": "same existing managed profiles table only",
+    "readOnlyConsoleRestored": true,
+    "profilesRowsBefore": 0,
+    "profilesRowsAfter": 0,
+    "privateDraftRowsBefore": 2,
+    "privateDraftRowsAfter": 2,
+    "anonymousTableSelect": false,
+    "anonymousEmailSelect": false,
+    "authenticatedEmailSelect": true,
+    "serviceRoleSelect": true,
+    "appliedSqlBlob": "df97072efd65bf7ea3c1b619329354903b206892",
+    "liveCrossUserFixtureAcceptance": false
+  },
+  "applicationDeployed": true,
+  "goalComplete": false,
+  "concurrentMainMerge": {
+    "commit": "22e5c22856744ad73f42848147a5605c497efa5e",
+    "observedAfterProductionAcceptance": true,
+    "affectedFiles": [
+      "public/favicon.svg",
+      "src/components/BrandLogo.tsx",
+      "src/pages/index.tsx"
+    ],
+    "conflictBlocks": 13,
+    "resolution": "choose the reviewed P0 incoming side of each conflict; all three files exactly match approved e08451b blobs",
+    "repairedApplicationTreeBeforeReceipts": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43",
+    "historyPreserved": true,
+    "unsafeMainNotDeployedByThisRun": true
   }
 }
