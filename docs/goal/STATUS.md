@@ -49,7 +49,7 @@ The obsolete smoke assertions described a different starter homepage and 8 publi
 
 | IDs | State in this candidate | Remaining acceptance |
 |---|---|---|
-| 001 | In progress / blocked for current backend read | Read-only Softgen authorization received; current-browser sign-in still blocked; deployment SHA, backend mapping and actual policies remain unverified |
+| 001 | Current managed project/repository/source-tree/schema mapped read-only | Exact candidate deployment/readback and authorized production changes remain |
 | 002 | Implemented and locally checked containment | Deployed routes/Edge and actual grants/RLS; SQL candidate not applied |
 | 003 | Implemented and locally checked rejection of legacy access | Verify production no longer accepts old credentials; inventory any other authenticators |
 | 004 | Checked within current disabled/empty public scope | Real report/verification/owner workflows stay unavailable until their own acceptance |
@@ -76,3 +76,7 @@ Repository evidence identifies existing Softgen project `4d3af0ab-bad5-4906-84f5
 ## Recovery boundary
 
 This tested containment source commit is the source fallback for subsequent work. The old main before this branch is **not** an acceptable safety rollback because it reopens legacy writes and private-state exposure. No live rollback has been exercised. Keep the public data empty, old tokens rejected, importer paused and account/report gates closed during any recovery. The SQL candidate is not a schema rollback and must not be applied blindly; inspect actual policies/history and take an approved backup before a concrete production change. No migration was applied by this run.
+
+## Current continuation — signed-in managed inspection completed
+
+The user reported signed in; the existing local Chrome session now opens the exact project successfully. Read-only authorization and authentication blockers are resolved. [Managed inspection](managed-backend-inspection-20261026.md) supersedes the older connection-blocker paragraphs above for current state. Runtime tree `66611147` matches main `9f86719` exactly; the managed commit ID differs. Only two public tables exist, no buckets and no deployed Edge functions. A real new P0 is confirmed: empty `profiles` has public SELECT including email/full name and excessive anon/authenticated grants. The mapped profiles SQL correction is prepared and passes nine isolated PostgreSQL tests. The historical analyzer SQL is explicitly blocked as inapplicable. Current suite: **114 passed, zero failures/skips**. Managed DB writes and P0 deployment are not authorized by the read-only inspection and have not occurred. PR #16 remains the single candidate; no parallel product copy or runner was created.

@@ -1,3 +1,8 @@
+-- HISTORICAL SOURCE-ONLY CANDIDATE. NOT APPLICABLE to the inspected managed DB:
+-- 26 Oct read-only inventory found only profiles and marketplace_listing_drafts,
+-- zero storage buckets and zero deployed Edge functions. Do not apply this file.
+DO $$ BEGIN RAISE EXCEPTION 'UNMAPPED_ANALYZER_SCHEMA: historical candidate must not be applied'; END $$;
+
 -- PREPARED ONLY. Inspect actual policies and test with anon/A/B/admin in staging
 -- before applying to the mapped existing backend. No DROP TABLE or row deletion.
 BEGIN;

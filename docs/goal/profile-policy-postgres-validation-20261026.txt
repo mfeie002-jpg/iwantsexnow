@@ -1,0 +1,18 @@
+▶ PostgreSQL profile ACL/RLS correction against an isolated replica, never the managed database
+  ✔ reproduces the observed public-read flaw before the patch (6.191702ms)
+  ✔ anonymous table and explicit-column reads and all writes are denied (6.531133ms)
+  ✔ user A reads/edits only A; user B cannot see or alter A (7.866665ms)
+  ✔ ownership, email, audit timestamps and destructive privileges cannot be changed by a user (3.437862ms)
+  ✔ new owner creates their own row; spoofed ownership is denied (3.407736ms)
+  ✔ existing draft owner access and second-user denial survive unchanged (9.093104ms)
+  ✔ trusted backend retains access, rerun is safe, no rows are deleted (11.683619ms)
+  ✔ unexpected future policies abort the entire patch (9.499526ms)
+✔ PostgreSQL profile ACL/RLS correction against an isolated replica, never the managed database (2141.629693ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2339.80227

@@ -69,6 +69,7 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.11",
     "@softgenai/element-tagger": "^0.0.2",
     "@types/node": "^22",
     "@types/react": "^18",

@@ -35,6 +35,8 @@ jobs:
         run: npm run build
       - name: P0 identity, metadata, data and Edge authorization policy
         run: node --experimental-strip-types --test tests/p0-foundation.test.mjs tests/edge-admin.test.mjs
+      - name: Existing managed profile ACL/RLS correction on isolated PostgreSQL
+        run: node --test tests/profiles-rls-postgres.test.mjs
       - name: P0 compiled public/admin handler negative cases
         run: node --test tests/p0-handlers.test.mjs
       - name: Public-preview safety checks
