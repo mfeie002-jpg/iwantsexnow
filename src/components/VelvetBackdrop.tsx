@@ -1,219 +1,284 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface BubbleSpec {
   id: number;
-  left: string;
-  top: number;
+  left: number;
+  initialY: number;
   size: number;
-  speed: number;
+  idleSpeed: number;
+  scrollMultiplier: number;
+  swayAmp: number;
+  swayFreq: number;
   blur: number;
   opacity: number;
   depth: number;
 }
 
 const CHAMPAGNE_BOKEH: BubbleSpec[] = [
-  { id: 1, left: "7%", top: 140, size: 95, speed: 0.38, blur: 18, opacity: 0.22, depth: 1.4 },
-  { id: 2, left: "16%", top: 420, size: 22, speed: 0.62, blur: 2, opacity: 0.48, depth: 2.1 },
-  { id: 3, left: "28%", top: 260, size: 44, speed: 0.48, blur: 6, opacity: 0.30, depth: 1.7 },
-  { id: 4, left: "46%", top: 180, size: 130, speed: 0.24, blur: 28, opacity: 0.16, depth: 0.9 },
-  { id: 5, left: "64%", top: 340, size: 28, speed: 0.58, blur: 3, opacity: 0.42, depth: 2.0 },
-  { id: 6, left: "78%", top: 130, size: 76, speed: 0.34, blur: 14, opacity: 0.25, depth: 1.3 },
-  { id: 7, left: "88%", top: 480, size: 34, speed: 0.66, blur: 4, opacity: 0.40, depth: 2.3 },
-  { id: 8, left: "92%", top: 220, size: 110, speed: 0.29, blur: 22, opacity: 0.19, depth: 1.1 },
-  { id: 9, left: "12%", top: 780, size: 54, speed: 0.52, blur: 8, opacity: 0.28, depth: 1.6 },
-  { id: 10, left: "36%", top: 690, size: 18, speed: 0.72, blur: 1, opacity: 0.52, depth: 2.5 },
-  { id: 11, left: "58%", top: 820, size: 88, speed: 0.36, blur: 16, opacity: 0.22, depth: 1.3 },
-  { id: 12, left: "83%", top: 760, size: 26, speed: 0.64, blur: 2, opacity: 0.45, depth: 2.2 },
-  { id: 13, left: "22%", top: 1120, size: 70, speed: 0.42, blur: 12, opacity: 0.24, depth: 1.5 },
-  { id: 14, left: "72%", top: 1080, size: 32, speed: 0.59, blur: 3, opacity: 0.38, depth: 1.9 },
+  { id: 1, left: 6, initialY: 120, size: 105, idleSpeed: 22, scrollMultiplier: 0.45, swayAmp: 18, swayFreq: 0.7, blur: 14, opacity: 0.34, depth: 1.4 },
+  { id: 2, left: 14, initialY: 420, size: 20, idleSpeed: 46, scrollMultiplier: 0.85, swayAmp: 12, swayFreq: 1.3, blur: 1, opacity: 0.72, depth: 2.2 },
+  { id: 3, left: 24, initialY: 260, size: 46, idleSpeed: 34, scrollMultiplier: 0.62, swayAmp: 15, swayFreq: 0.9, blur: 4, opacity: 0.48, depth: 1.7 },
+  { id: 4, left: 35, initialY: 680, size: 16, idleSpeed: 54, scrollMultiplier: 0.95, swayAmp: 10, swayFreq: 1.5, blur: 0, opacity: 0.78, depth: 2.5 },
+  { id: 5, left: 46, initialY: 190, size: 135, idleSpeed: 18, scrollMultiplier: 0.32, swayAmp: 24, swayFreq: 0.5, blur: 22, opacity: 0.28, depth: 1.0 },
+  { id: 6, left: 57, initialY: 540, size: 28, idleSpeed: 42, scrollMultiplier: 0.76, swayAmp: 14, swayFreq: 1.1, blur: 2, opacity: 0.64, depth: 2.0 },
+  { id: 7, left: 66, initialY: 310, size: 64, idleSpeed: 28, scrollMultiplier: 0.54, swayAmp: 18, swayFreq: 0.8, blur: 8, opacity: 0.40, depth: 1.5 },
+  { id: 8, left: 76, initialY: 140, size: 82, idleSpeed: 25, scrollMultiplier: 0.48, swayAmp: 20, swayFreq: 0.6, blur: 12, opacity: 0.36, depth: 1.3 },
+  { id: 9, left: 84, initialY: 490, size: 24, idleSpeed: 48, scrollMultiplier: 0.88, swayAmp: 12, swayFreq: 1.4, blur: 1, opacity: 0.70, depth: 2.3 },
+  { id: 10, left: 92, initialY: 240, size: 96, idleSpeed: 21, scrollMultiplier: 0.40, swayAmp: 16, swayFreq: 0.7, blur: 14, opacity: 0.32, depth: 1.2 },
+  { id: 11, left: 11, initialY: 860, size: 52, idleSpeed: 32, scrollMultiplier: 0.65, swayAmp: 16, swayFreq: 1.0, blur: 5, opacity: 0.46, depth: 1.6 },
+  { id: 12, left: 42, initialY: 940, size: 22, idleSpeed: 50, scrollMultiplier: 0.90, swayAmp: 11, swayFreq: 1.3, blur: 1, opacity: 0.68, depth: 2.2 },
+  { id: 13, left: 62, initialY: 880, size: 78, idleSpeed: 26, scrollMultiplier: 0.52, swayAmp: 19, swayFreq: 0.75, blur: 10, opacity: 0.38, depth: 1.4 },
+  { id: 14, left: 88, initialY: 820, size: 30, idleSpeed: 44, scrollMultiplier: 0.80, swayAmp: 13, swayFreq: 1.2, blur: 2, opacity: 0.62, depth: 2.0 },
+  { id: 15, left: 29, initialY: 1090, size: 38, idleSpeed: 38, scrollMultiplier: 0.70, swayAmp: 14, swayFreq: 1.1, blur: 3, opacity: 0.54, depth: 1.8 },
+  { id: 16, left: 73, initialY: 1060, size: 18, idleSpeed: 56, scrollMultiplier: 0.96, swayAmp: 9, swayFreq: 1.6, blur: 0, opacity: 0.76, depth: 2.4 },
 ];
 
 export function VelvetBackdrop() {
-  const [scrollY, setScrollY] = useState(0);
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const farLayerRef = useRef<HTMLDivElement>(null);
+  const archLayerRef = useRef<HTMLDivElement>(null);
+  const bubbleRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     let rafId = 0;
+    let currentScroll = window.scrollY || 0;
+    let targetScroll = currentScroll;
+    let ptrX = 0;
+    let ptrY = 0;
+    let targetPtrX = 0;
+    let targetPtrY = 0;
+    const startTime = performance.now();
+
+    const checkViewport = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkViewport();
 
     const onScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        setScrollY(window.scrollY || 0);
-      });
+      targetScroll = window.scrollY || 0;
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      const nx = (e.clientX / Math.max(1, window.innerWidth) - 0.5) * 2;
-      const ny = (e.clientY / Math.max(1, window.innerHeight) - 0.5) * 2;
-      setPointer({ x: nx, y: ny });
+      targetPtrX = (e.clientX / Math.max(1, window.innerWidth) - 0.5) * 2;
+      targetPtrY = (e.clientY / Math.max(1, window.innerHeight) - 0.5) * 2;
     };
 
+    window.addEventListener("resize", checkViewport, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile, { passive: true });
-    if (window.innerWidth >= 768) {
-      window.addEventListener("mousemove", onMouseMove, { passive: true });
-    }
-    onScroll();
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+
+    const animate = (now: number) => {
+      const elapsedSec = (now - startTime) / 1000;
+
+      // Sanfte Interpolation (Butterweiches Nachgleiten beim Scrollen & Bewegen)
+      currentScroll += (targetScroll - currentScroll) * 0.12;
+      ptrX += (targetPtrX - ptrX) * 0.08;
+      ptrY += (targetPtrY - ptrY) * 0.08;
+
+      // Permanente 3D-Eigenbewegung (Idle Camera Drift), auch wenn niemand scrollt!
+      const idleDriftX = Math.sin(elapsedSec * 0.55) * 18;
+      const idleDriftY = Math.cos(elapsedSec * 0.42) * 14;
+      const idleTiltX = Math.cos(elapsedSec * 0.48) * 2.4;
+      const idleTiltY = Math.sin(elapsedSec * 0.52) * 3.2;
+
+      if (farLayerRef.current) {
+        const fy = -((currentScroll * 0.14) % 900) + idleDriftY * 0.7 + ptrY * -12;
+        const fx = idleDriftX * 0.8 + ptrX * -16;
+        farLayerRef.current.style.transform = `translate3d(${fx.toFixed(1)}px, ${fy.toFixed(1)}px, -90px) scale(1.14)`;
+      }
+
+      if (archLayerRef.current) {
+        const ay = -((currentScroll * 0.28) % 950) + idleDriftY + ptrY * -20;
+        const ax = idleDriftX + ptrX * -28;
+        const rx = idleTiltX + ptrY * -5.5;
+        const ry = idleTiltY + ptrX * 6.5;
+        archLayerRef.current.style.transform = `translate3d(${ax.toFixed(1)}px, ${ay.toFixed(1)}px, 0px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      }
+
+      // Jede Champagner-Perle steigt kontinuierlich von selbst auf + beschleunigt stark beim Scrollen!
+      const wrapHeight = 1280;
+      for (let i = 0; i < CHAMPAGNE_BOKEH.length; i++) {
+        const el = bubbleRefs.current[i];
+        if (!el) continue;
+        const b = CHAMPAGNE_BOKEH[i];
+
+        const totalRise = elapsedSec * b.idleSpeed + currentScroll * b.scrollMultiplier;
+        const yPos = (((b.initialY - totalRise) % wrapHeight) + wrapHeight) % wrapHeight - 110;
+        const swayX = Math.sin(elapsedSec * b.swayFreq + b.id) * b.swayAmp + ptrX * 22 * b.depth;
+
+        el.style.transform = `translate3d(${swayX.toFixed(1)}px, ${yPos.toFixed(1)}px, 0px)`;
+      }
+
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", checkViewport);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("mousemove", onMouseMove);
     };
   }, []);
 
-  // Sanfte 3D-Verschiebungen je nach Tiefen-Ebene
-  const farSkylineY = -(scrollY * 0.11);
-  const midArchY = -(scrollY * 0.22);
-  const nearGlowY = -(scrollY * 0.34);
-
-  const tiltX = pointer.y * -4.5;
-  const tiltY = pointer.x * 5.5;
+  const visibleBubbles = isMobile ? CHAMPAGNE_BOKEH.slice(0, 10) : CHAMPAGNE_BOKEH;
 
   return (
     <div
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
-      style={{ perspective: "1200px" }}
+      style={{ perspective: "1100px" }}
       aria-hidden="true"
     >
       {/* ================================================================= */}
-      {/* EBENE 1 (FERNE): PENTHOUSE NIGHT SKYLINE & WARM LOUNGE AMBIENCE    */}
+      {/* EBENE 1 (FERNE): LEUCHTENDE PENTHOUSE-LOUNGE & SKYLINE-HORIZONT    */}
       {/* ================================================================= */}
-      <div
-        className="absolute -inset-16 will-change-transform transition-transform duration-150 ease-out"
-        style={{
-          transform: `translate3d(${pointer.x * -14}px, ${farSkylineY + pointer.y * -10}px, -120px) scale(1.12)`,
-        }}
-      >
-        {/* Warm Golden Penthouse Lounge Glow Left */}
+      <div ref={farLayerRef} className="absolute -inset-24 will-change-transform">
+        {/* Kräftiges Champagner-Gold Penthouse-Spotlight Oben Links */}
         <div
-          className="absolute top-[-8%] left-[4%] w-[640px] h-[520px] rounded-full opacity-40 blur-[130px]"
+          className="absolute top-[-4%] left-[2%] w-[680px] h-[580px] rounded-full blur-[110px] iwsn-living-spotlight"
           style={{
-            background: "radial-gradient(circle, rgba(218,178,118,0.55) 0%, rgba(142,88,36,0.22) 52%, transparent 75%)",
+            background:
+              "radial-gradient(circle, rgba(235, 198, 138, 0.62) 0%, rgba(182, 128, 56, 0.28) 48%, transparent 74%)",
           }}
         />
-        {/* Sensual Velvet-Wine Chandelier Glow Right */}
+        {/* Sinnliches Velvet-Rose / Bordeaux Chandelier-Licht Rechts */}
         <div
-          className="absolute top-[6%] right-[2%] w-[580px] h-[540px] rounded-full opacity-35 blur-[140px]"
+          className="absolute top-[8%] right-[-2%] w-[640px] h-[600px] rounded-full blur-[120px] iwsn-living-spotlight"
           style={{
-            background: "radial-gradient(circle, rgba(164,42,82,0.5) 0%, rgba(74,18,40,0.22) 58%, transparent 78%)",
+            animationDelay: "-4.5s",
+            background:
+              "radial-gradient(circle, rgba(190, 48, 92, 0.56) 0%, rgba(96, 20, 48, 0.26) 54%, transparent 76%)",
+          }}
+        />
+        {/* Warmer Goldener Penthouse-Boden-Schein Unten Mitte */}
+        <div
+          className="absolute bottom-[-8%] left-[22%] w-[760px] h-[460px] rounded-full blur-[125px] iwsn-living-spotlight"
+          style={{
+            animationDelay: "-7s",
+            background:
+              "radial-gradient(circle, rgba(212, 175, 122, 0.42) 0%, rgba(140, 96, 42, 0.16) 55%, transparent 78%)",
           }}
         />
 
-        {/* Distant Penthouse Horizon City Lights (Bokeh Skyline Band) */}
+        {/* Warmer Skyline-Lichtstreifen am Horizont */}
         <div
-          className="absolute top-[34%] inset-x-0 h-[240px] opacity-30"
+          className="absolute top-[36%] inset-x-0 h-[260px]"
           style={{
             background:
-              "radial-gradient(ellipse 65% 50% at 50% 50%, rgba(229, 201, 155, 0.20) 0%, rgba(198, 165, 116, 0.06) 55%, transparent 80%)",
+              "radial-gradient(ellipse 75% 50% at 50% 50%, rgba(243, 227, 195, 0.26) 0%, rgba(198, 165, 116, 0.10) 58%, transparent 85%)",
           }}
         />
       </div>
 
       {/* ================================================================= */}
-      {/* EBENE 2 (MITTE): 3D PENTHOUSE ARCHITEKTUR-FENSTER & STENCIL-X     */}
+      {/* EBENE 2 (MITTE): 3D PENTHOUSE-BOGENFENSTER, KRONLEUCHTER & X      */}
+      {/* Deutlich sichtbarer (opacity 0.34) + kontinuierlicher 3D-Drift!   */}
       {/* ================================================================= */}
       <div
-        className="absolute inset-0 will-change-transform transition-transform duration-150 ease-out"
-        style={{
-          transform: `translate3d(${pointer.x * -24}px, ${midArchY + pointer.y * -16}px, 0px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
-          transformStyle: "preserve-3d",
-        }}
+        ref={archLayerRef}
+        className="absolute inset-0 will-change-transform"
+        style={{ transformStyle: "preserve-3d" }}
       >
-        {/* Architectural Penthouse Floor-to-Ceiling Window Mullions & Arches */}
         <svg
-          viewBox="0 0 1600 1000"
-          className="w-full h-[125vh] opacity-[0.14]"
+          viewBox="0 0 1600 1200"
+          className="w-full h-[145vh] opacity-[0.34]"
           preserveAspectRatio="xMidYMin slice"
           fill="none"
         >
           <defs>
-            <linearGradient id="goldArch" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#F3E3C3" stopOpacity="0.65" />
-              <stop offset="50%" stopColor="#C6A574" stopOpacity="0.28" />
+            <linearGradient id="goldArchBright" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#FFF6E5" stopOpacity="0.95" />
+              <stop offset="45%" stopColor="#D8B784" stopOpacity="0.58" />
+              <stop offset="100%" stopColor="#C6A574" stopOpacity="0.08" />
+            </linearGradient>
+            <linearGradient id="terraceLine" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#C6A574" stopOpacity="0.0" />
+              <stop offset="25%" stopColor="#E5C99B" stopOpacity="0.55" />
+              <stop offset="50%" stopColor="#FFF6E5" stopOpacity="0.85" />
+              <stop offset="75%" stopColor="#E5C99B" stopOpacity="0.55" />
               <stop offset="100%" stopColor="#C6A574" stopOpacity="0.0" />
             </linearGradient>
-            <linearGradient id="floorGrid" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#C6A574" stopOpacity="0" />
-              <stop offset="50%" stopColor="#C6A574" stopOpacity="0.4" />
+            <radialGradient id="chandelierGlow" cx="50%" cy="30%" r="50%">
+              <stop offset="0%" stopColor="#FFFDF9" stopOpacity="0.85" />
+              <stop offset="45%" stopColor="#E5C99B" stopOpacity="0.32" />
               <stop offset="100%" stopColor="#C6A574" stopOpacity="0" />
-            </linearGradient>
+            </radialGradient>
           </defs>
 
-          {/* 3 Tall Penthouse Window Arches in Perspective */}
-          <path d="M 140,950 L 140,260 A 210,210 0 0,1 560,260 L 560,950" stroke="url(#goldArch)" strokeWidth="1.6" />
-          <path d="M 590,950 L 590,220 A 210,210 0 0,1 1010,220 L 1010,950" stroke="url(#goldArch)" strokeWidth="2.2" />
-          <path d="M 1040,950 L 1040,260 A 210,210 0 0,1 1460,260 L 1460,950" stroke="url(#goldArch)" strokeWidth="1.6" />
+          {/* Penthouse Chandelier Warm Halo in the Center Arch */}
+          <circle cx="800" cy="240" r="220" fill="url(#chandelierGlow)" />
 
-          {/* Subtle Horizontal Penthouse Terrace Balustrade Lines */}
-          <line x1="80" y1="540" x2="1520" y2="540" stroke="url(#floorGrid)" strokeWidth="1" />
-          <line x1="160" y1="680" x2="1440" y2="680" stroke="url(#floorGrid)" strokeWidth="0.8" />
+          {/* 3 Große 3D-Penthouse-Panoramabögen (Doppelrahmen für echten Architektur-Look) */}
+          <path d="M 110,1150 L 110,270 A 220,220 0 0,1 550,270 L 550,1150" stroke="url(#goldArchBright)" strokeWidth="2.4" />
+          <path d="M 130,1150 L 130,278 A 200,200 0 0,1 530,278 L 530,1150" stroke="url(#goldArchBright)" strokeWidth="1.0" strokeDasharray="6 6" />
 
-          {/* 3D Perspective Ceiling & Terrace Rays */}
-          <line x1="800" y1="-120" x2="120" y2="980" stroke="url(#goldArch)" strokeWidth="0.8" />
-          <line x1="800" y1="-120" x2="460" y2="980" stroke="url(#goldArch)" strokeWidth="0.8" />
-          <line x1="800" y1="-120" x2="1140" y2="980" stroke="url(#goldArch)" strokeWidth="0.8" />
-          <line x1="800" y1="-120" x2="1480" y2="980" stroke="url(#goldArch)" strokeWidth="0.8" />
+          <path d="M 580,1150 L 580,210 A 220,220 0 0,1 1020,210 L 1020,1150" stroke="url(#goldArchBright)" strokeWidth="3.2" />
+          <path d="M 602,1150 L 602,220 A 198,198 0 0,1 998,220 L 998,1150" stroke="url(#goldArchBright)" strokeWidth="1.2" />
+
+          <path d="M 1050,1150 L 1050,270 A 220,220 0 0,1 1490,270 L 1490,1150" stroke="url(#goldArchBright)" strokeWidth="2.4" />
+          <path d="M 1070,1150 L 1070,278 A 200,200 0 0,1 1470,278 L 1470,1150" stroke="url(#goldArchBright)" strokeWidth="1.0" strokeDasharray="6 6" />
+
+          {/* Horizontale Penthouse-Galerie-Balustraden */}
+          <line x1="60" y1="490" x2="1540" y2="490" stroke="url(#terraceLine)" strokeWidth="1.6" />
+          <line x1="120" y1="660" x2="1480" y2="660" stroke="url(#terraceLine)" strokeWidth="1.3" />
+          <line x1="180" y1="830" x2="1420" y2="830" stroke="url(#terraceLine)" strokeWidth="1.0" />
+
+          {/* 3D-Perspektiv-Strahlen (Decke & Marmorboden) */}
+          <line x1="800" y1="-140" x2="80" y2="1150" stroke="url(#goldArchBright)" strokeWidth="1.2" />
+          <line x1="800" y1="-140" x2="420" y2="1150" stroke="url(#goldArchBright)" strokeWidth="1.2" />
+          <line x1="800" y1="-140" x2="800" y2="1150" stroke="url(#goldArchBright)" strokeWidth="1.4" />
+          <line x1="800" y1="-140" x2="1180" y2="1150" stroke="url(#goldArchBright)" strokeWidth="1.2" />
+          <line x1="800" y1="-140" x2="1520" y2="1150" stroke="url(#goldArchBright)" strokeWidth="1.2" />
         </svg>
 
-        {/* Floating 3D Golden Stencil-X Emblem in the Penthouse Center-Right */}
+        {/* Schwebendes 3D Stencil-X Emblem im Penthouse-Raum */}
         <svg
           viewBox="0 0 200 200"
-          className="hidden md:block absolute top-20 right-[7%] w-[420px] h-[420px] opacity-[0.075] drop-shadow-[0_0_40px_rgba(198,165,116,0.4)]"
+          className="absolute top-16 right-[4%] sm:right-[7%] w-[260px] h-[260px] sm:w-[440px] sm:h-[440px] iwsn-living-stencil drop-shadow-[0_0_55px_rgba(229,201,155,0.55)]"
           fill="none"
         >
-          <path d="M24 20 L92 100 L24 180 L56 180 L108 118 L108 82 L56 20 Z" fill="#E5C99B" />
+          <path d="M24 20 L92 100 L24 180 L56 180 L108 118 L108 82 L56 20 Z" fill="#FFF3D6" />
           <path d="M176 20 L108 100 L176 180 L144 180 L92 118 L92 82 L144 20 Z" fill="#C6A574" />
         </svg>
       </div>
 
       {/* ================================================================= */}
-      {/* EBENE 3 (NAH): SCHWEBENDE 3D CHAMPAGNER-PERLEN & GOLDEN BOKEH     */}
-      {/* Gleiten beim Scrollen unterschiedlich schnell nach oben!          */}
+      {/* EBENE 3 (VORDERGRUND-BOKEH): PERMANENT AUFSTEIGENDE CHAMPAGNER-   */}
+      {/* PERLEN (Bewegen sich im Stillstand UND beschleunigen beim Scroll) */}
       {/* ================================================================= */}
       <div className="absolute inset-0">
-        {(isMobile ? CHAMPAGNE_BOKEH.slice(0, 6) : CHAMPAGNE_BOKEH).map((b) => {
-          const yOffset = ((b.top - scrollY * b.speed) % 1250 + 1250) % 1250 - 120;
-          const xOffset = pointer.x * 18 * b.depth;
-          return (
-            <div
-              key={b.id}
-              className="absolute rounded-full will-change-transform"
-              style={{
-                left: b.left,
-                top: 0,
-                width: `${b.size}px`,
-                height: `${b.size}px`,
-                opacity: b.opacity,
-                filter: `blur(${b.blur}px)`,
-                transform: `translate3d(${xOffset}px, ${yOffset}px, 0px)`,
-                background:
-                  "radial-gradient(circle at 35% 35%, #FFFDF9 0%, #F3E3C3 32%, #C6A574 68%, rgba(198,165,116,0) 100%)",
-                boxShadow: "0 0 24px rgba(229, 201, 155, 0.35)",
-              }}
-            />
-          );
-        })}
+        {visibleBubbles.map((b, idx) => (
+          <div
+            key={b.id}
+            ref={(el) => {
+              bubbleRefs.current[idx] = el;
+            }}
+            className="absolute rounded-full will-change-transform"
+            style={{
+              left: `${b.left}%`,
+              top: 0,
+              width: `${b.size}px`,
+              height: `${b.size}px`,
+              opacity: b.opacity,
+              filter: b.blur > 0 ? `blur(${b.blur}px)` : undefined,
+              background:
+                "radial-gradient(circle at 32% 32%, #FFFFFF 0%, #FFF3D6 35%, #D8B784 68%, rgba(198,165,116,0) 100%)",
+              boxShadow: "0 0 28px rgba(243, 227, 195, 0.55)",
+            }}
+          />
+        ))}
       </div>
 
       {/* ================================================================= */}
-      {/* EBENE 4: SAMT-VIGNETTE FÜR PERFEKTE LESBARKEIT IM VORDERGRUND      */}
+      {/* EBENE 4: SANFTE KONTRAST-VIGNETTE (Lässt das Penthouse-Licht       */}
+      {/* klar durchscheinen, schützt aber die weisse Schrift zu 100%!)     */}
       {/* ================================================================= */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle at 50% 28%, rgba(11, 13, 19, 0.15) 0%, rgba(11, 13, 19, 0.68) 72%, rgba(9, 11, 16, 0.92) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 h-44"
-        style={{
-          background: `linear-gradient(to top, #0B0D13 10%, transparent 100%)`,
-          transform: `translate3d(0, ${nearGlowY * 0.05}px, 0)`,
+            "radial-gradient(circle at 50% 24%, rgba(11, 13, 19, 0.04) 0%, rgba(11, 13, 19, 0.42) 68%, rgba(9, 11, 16, 0.78) 100%)",
         }}
       />
     </div>

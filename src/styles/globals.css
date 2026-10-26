@@ -146,3 +146,57 @@ h1, h2, h3, h4, h5, h6 {
 .pb-safe-bottom {
   padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
 }
+
+
+/* === LIVING 3D PENTHOUSE & CONTINUOUS CHAMPAGNE MOTION === */
+@keyframes iwsnPenthouseBreathe {
+  0% {
+    transform: translate3d(0px, 0px, 0px) scale(1) rotateX(0deg) rotateY(0deg);
+  }
+  33% {
+    transform: translate3d(-14px, -18px, 18px) scale(1.035) rotateX(1.8deg) rotateY(-2.2deg);
+  }
+  66% {
+    transform: translate3d(14px, -9px, 10px) scale(1.02) rotateX(-1.4deg) rotateY(2.2deg);
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px) scale(1) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@keyframes iwsnSpotlightPulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1) translate3d(0px, 0px, 0px);
+  }
+  50% {
+    opacity: 0.82;
+    transform: scale(1.12) translate3d(22px, -16px, 0px);
+  }
+}
+
+@keyframes iwsnStencilFloat {
+  0%, 100% {
+    transform: translate3d(0px, 0px, 0px) rotate(-1.5deg) scale(1);
+    opacity: 0.16;
+  }
+  50% {
+    transform: translate3d(-16px, -22px, 24px) rotate(2deg) scale(1.05);
+    opacity: 0.24;
+  }
+}
+
+.iwsn-living-arch {
+  animation: iwsnPenthouseBreathe 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.iwsn-living-spotlight {
+  animation: iwsnSpotlightPulse 11s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.iwsn-living-stencil {
+  animation: iwsnStencilFloat 14s ease-in-out infinite;
+  will-change: transform, opacity;
+}
