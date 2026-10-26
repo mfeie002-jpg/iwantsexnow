@@ -27,10 +27,16 @@ jobs:
         run: node --test tests/pdf-export.test.mjs
       - name: Image and CSS dependency compatibility
         run: node --test tests/dependency-runtime.test.mjs tests/css-selector-compatibility.test.mjs
+      - name: Source lint (errors fail; existing warnings remain visible)
+        run: npm run lint -- --quiet
       - name: TypeScript
         run: npx tsc --noEmit
       - name: Production build
         run: npm run build
+      - name: P0 identity, metadata, data and Edge authorization policy
+        run: node --experimental-strip-types --test tests/p0-foundation.test.mjs tests/edge-admin.test.mjs
+      - name: P0 compiled public/admin handler negative cases
+        run: node --test tests/p0-handlers.test.mjs
       - name: Public-preview safety checks
         run: node scripts/preview-smoke.cjs
       - name: Preview copy, contact and internal-link integrity

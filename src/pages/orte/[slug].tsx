@@ -163,10 +163,10 @@ function inferOfferCategory(item: any): "escort" | "massage" | "bdsm" | "trans" 
 }
 
 const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
 ];
 
 export default function LocalIntentDirectoryPage() {
@@ -189,14 +189,14 @@ export default function LocalIntentDirectoryPage() {
   const profiles = useMemo(() => {
     const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
     return raw.map((item: any, idx: number) => {
-      const id = item.dedupClusterId || `loc-${idx + 1}`;
+      const id = item.id;
       const geo = normalizeSwissGeo(item.city, item.canton);
       const offerCat = inferOfferCategory(item);
       const rate = Number(item.advertisedBaseChf) || null;
       const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
       const isCleanPhoto = String(item.sourcePortal || "").toLowerCase().includes("bemygirl") || String(item.sourcePortal || "").toLowerCase().includes("fgirl");
-      const availabilityConfirmed = idx < 10 && isCleanPhoto && idx % 2 === 0;
-      const isSelfManaged = Boolean(item.bookingMode === "direct" || availabilityConfirmed);
+      const availabilityConfirmed = false;
+      const isSelfManaged = false;
 
       return {
         ...item,
@@ -420,4 +420,8 @@ export default function LocalIntentDirectoryPage() {
       <CorporateFooter />
     </div>
   );
+}
+const supportedSlugs = new Set(["cham", "zug", "baar", "zuerich", "zuerich-paradeplatz", "zuerich-oerlikon", "winterthur", "baden", "luzern", "basel-city", "bern-city", "st-gallen", "geneve", "lausanne", "lugano", "massage", "tantra", "bdsm", "domina"]);
+export async function getServerSideProps(context: { params?: { slug?: string } }) {
+  return context.params?.slug && supportedSlugs.has(context.params.slug) ? { props: {} } : { notFound: true };
 }

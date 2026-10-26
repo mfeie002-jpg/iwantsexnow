@@ -9,10 +9,10 @@ import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
 import { LayoutGrid, List as ListIcon } from "lucide-react";
 
 const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
 ];
 
 export default function CityIntentPage() {
@@ -30,17 +30,17 @@ export default function CityIntentPage() {
         const isClean =
           String(item.sourcePortal || "").toLowerCase().includes("bemygirl") ||
           String(item.sourcePortal || "").toLowerCase().includes("fgirl");
-        const availabilityConfirmed = idx < 12 && isClean && idx % 2 === 0;
+        const availabilityConfirmed = false;
         return {
           ...item,
-          id: item.dedupClusterId || "c-" + (idx + 1),
+          id: item.id,
           cleanCity: geo.cleanCity,
           canton: geo.trueCanton,
           advertisedBaseChf: rate,
           durationLabel,
           availabilityConfirmed,
           confirmedMinutesAgo: availabilityConfirmed ? 6 : null,
-          isSelfManaged: Boolean(item.bookingMode === "direct" || availabilityConfirmed),
+          isSelfManaged: false,
           fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
         };
       })

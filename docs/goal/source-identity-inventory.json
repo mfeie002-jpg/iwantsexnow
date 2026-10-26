@@ -1,0 +1,9 @@
+{
+  "unit": "source listing, not person",
+  "archivedRows": 650,
+  "validDistinctSourceIds": 646,
+  "invalidSourceUrls": 0,
+  "repeatedSourceIds": 4,
+  "ambiguousLegacyAliases": "refused; not redirected to a different listing",
+  "publicApprovedRows": 0
+}

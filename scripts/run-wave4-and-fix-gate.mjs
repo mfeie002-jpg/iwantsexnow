@@ -1,3 +1,5 @@
+throw new Error("Historical patch generator retired. Apply reviewed source changes through pull requests.");
+
 import fs from "fs";
 import path from "path";
 

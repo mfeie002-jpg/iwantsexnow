@@ -61,146 +61,8 @@ export interface DemoListing {
   directEnquiryEnabled?: boolean;
 }
 
-export const demoListings: readonly DemoListing[] = [
-  {
-    id: "demo-zurich-escort",
-    title: "Sophia",
-    age: 26,
-    city: "zurich",
-    serviceAreas: ["zurich", "zug", "winterthur"],
-    category: "escort",
-    description: "Verifiziertes Direktprofil für Zürich, Zug & Winterthur. Transparente Konditionen ohne Agentur-Aufpreis.",
-    demo: true,
-    verifiedIdentity: true,
-    freshnessMinutesAgo: 14,
-    availableToday: true,
-    baseRatesChf: { minutes30: 300, minutes60: 450, minutes120: 800 },
-    includedServices: ["gfe", "dinner", "outcall"],
-    extraServicePricesChf: { wellness: 100, overnight: 900 },
-    portalSources: [
-      { portalName: "Direktbuchung (iWantSexNow.ch)", listedPriceChf: 450, verifiedMatch: true, lastSeenHoursAgo: 0 },
-      { portalName: "xdate.ch (Index-Fund)", listedPriceChf: 500, verifiedMatch: true, lastSeenHoursAgo: 6 },
-      { portalName: "fgirl.ch (Index-Fund)", listedPriceChf: 520, verifiedMatch: true, lastSeenHoursAgo: 12 },
-    ],
-    rating: 4.9,
-    reviewCount: 28,
-    directEnquiryEnabled: true,
-  },
-  {
-    id: "demo-zug-escort",
-    title: "Elena",
-    age: 24,
-    city: "zug",
-    serviceAreas: ["zug", "zurich", "luzern"],
-    category: "escort",
-    description: "Exklusive Begleitung im Raum Zug, Cham & Zürichsee. 100% bestätigte Originalfotos und Echtzeit-Verfügbarkeit.",
-    demo: true,
-    verifiedIdentity: true,
-    freshnessMinutesAgo: 8,
-    availableToday: true,
-    baseRatesChf: { minutes30: 250, minutes60: 400, minutes120: 750 },
-    includedServices: ["gfe", "outcall", "wellness"],
-    extraServicePricesChf: { dinner: 50, overnight: 800 },
-    portalSources: [
-      { portalName: "Direktbuchung (iWantSexNow.ch)", listedPriceChf: 400, verifiedMatch: true, lastSeenHoursAgo: 0 },
-      { portalName: "and6.com (Index-Fund)", listedPriceChf: 460, verifiedMatch: true, lastSeenHoursAgo: 19 },
-    ],
-    rating: 5.0,
-    reviewCount: 19,
-    directEnquiryEnabled: true,
-  },
-  {
-    id: "demo-zurich-begleitung",
-    title: "Camilla",
-    age: 28,
-    city: "zurich",
-    serviceAreas: ["zurich", "zug"],
-    category: "companionship",
-    description: "Stilvolle Begleitung für Business-Dinner, Events und private Stunden in Zürich und Zug.",
-    demo: true,
-    verifiedIdentity: true,
-    freshnessMinutesAgo: 32,
-    availableToday: true,
-    baseRatesChf: { minutes30: 250, minutes60: 380, minutes120: 700 },
-    includedServices: ["dinner", "gfe"],
-    extraServicePricesChf: { outcall: 50, wellness: 80, overnight: 750 },
-    portalSources: [
-      { portalName: "Direktbuchung (iWantSexNow.ch)", listedPriceChf: 380, verifiedMatch: true, lastSeenHoursAgo: 1 },
-      { portalName: "xdate.ch (Index-Fund)", listedPriceChf: 450, verifiedMatch: true, lastSeenHoursAgo: 24 },
-    ],
-    rating: 4.8,
-    reviewCount: 14,
-    directEnquiryEnabled: true,
-  },
-  {
-    id: "demo-basel-massage",
-    title: "Alina",
-    age: 25,
-    city: "basel",
-    serviceAreas: ["basel", "zurich"],
-    category: "massage",
-    description: "Sinnliche Tantra- und Wellness-Massage im privaten Studio in Basel.",
-    demo: true,
-    verifiedIdentity: true,
-    freshnessMinutesAgo: 45,
-    availableToday: true,
-    baseRatesChf: { minutes30: 180, minutes60: 280, minutes120: 500 },
-    includedServices: ["wellness"],
-    extraServicePricesChf: { gfe: 70, outcall: 60 },
-    portalSources: [
-      { portalName: "Direktbuchung (iWantSexNow.ch)", listedPriceChf: 280, verifiedMatch: true, lastSeenHoursAgo: 1 },
-      { portalName: "and6.com (Index-Fund)", listedPriceChf: 340, verifiedMatch: true, lastSeenHoursAgo: 14 },
-    ],
-    rating: 4.9,
-    reviewCount: 22,
-    directEnquiryEnabled: true,
-  },
-  {
-    id: "demo-bern-escort",
-    title: "Victoria",
-    age: 27,
-    city: "bern",
-    serviceAreas: ["bern", "zurich"],
-    category: "escort",
-    description: "Diskreter High-Class Service in Bern mit transparentem Gesamtpreis-Versprechen.",
-    demo: true,
-    verifiedIdentity: true,
-    freshnessMinutesAgo: 60,
-    availableToday: false,
-    baseRatesChf: { minutes30: 240, minutes60: 360, minutes120: 680 },
-    includedServices: ["gfe", "dinner"],
-    extraServicePricesChf: { outcall: 40, wellness: 80 },
-    portalSources: [
-      { portalName: "Direktbuchung (iWantSexNow.ch)", listedPriceChf: 360, verifiedMatch: true, lastSeenHoursAgo: 1 },
-    ],
-    rating: 4.7,
-    reviewCount: 11,
-    directEnquiryEnabled: true,
-  },
-  {
-    id: "demo-luzern-begleitung",
-    title: "Noemi",
-    age: 23,
-    city: "luzern",
-    serviceAreas: ["luzern", "zug"],
-    category: "companionship",
-    description: "Charmante Schweizer Begleitung für Luzern, Zug und Zentralschweiz.",
-    demo: true,
-    verifiedIdentity: true,
-    freshnessMinutesAgo: 21,
-    availableToday: true,
-    baseRatesChf: { minutes30: 220, minutes60: 350, minutes120: 650 },
-    includedServices: ["gfe", "dinner", "outcall"],
-    extraServicePricesChf: { wellness: 60 },
-    portalSources: [
-      { portalName: "Direktbuchung (iWantSexNow.ch)", listedPriceChf: 350, verifiedMatch: true, lastSeenHoursAgo: 0 },
-      { portalName: "xdate.ch (Index-Fund)", listedPriceChf: 400, verifiedMatch: true, lastSeenHoursAgo: 9 },
-    ],
-    rating: 4.9,
-    reviewCount: 16,
-    directEnquiryEnabled: true,
-  },
-];
+// Public fixtures are empty; neutral synthetic test records live in tests only.
+export const demoListings: readonly DemoListing[] = [];
 
 export function calculateTransparentTotalCost(
   listing: DemoListing,
@@ -275,13 +137,13 @@ export function parseCatalogueFilters(query: Query): CatalogueFilters {
   };
 }
 
-export function filterCatalogue(filters: CatalogueFilters): readonly DemoListing[] {
-  if (filters.invalid) return [];
+export function filterCatalogue(filters: CatalogueFilters, inventory: readonly DemoListing[] = demoListings): readonly DemoListing[] {
+  if (filters.invalid || filters.view !== "demo") return [];
   const terms = normalizeCatalogueText(filters.q).split(" ").filter(Boolean);
-  return demoListings.filter(item => {
-    const areaLabels = (item.serviceAreas ?? [item.city]).map(c => cityLabel(c)).join(" ");
+  return inventory.filter(item => {
+    const areaLabels = "";
     const text = normalizeCatalogueText([item.title, cityLabel(item.city), areaLabels, categoryLabel(item.category), item.description].join(" "));
-    const matchesCity = !filters.city || filters.city === item.city || (item.serviceAreas ?? []).includes(filters.city);
+    const matchesCity = !filters.city || filters.city === item.city;
     const matchesCategory = !filters.category || filters.category === item.category;
     return matchesCity && matchesCategory && terms.every(term => text.includes(term));
   });

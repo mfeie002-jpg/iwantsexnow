@@ -158,36 +158,22 @@ export function normalizeSwissGeo(cityRaw: any, cantonRaw?: any): NormalizedSwis
   const firstSegment = rawText.split("/")[0].split(",")[0].replace(/\(.*?\)/g, "").trim();
   const searchHay = `${rawText} ${firstSegment}`.toLowerCase();
 
-  for (const entry of SWISS_GEO_DICTIONARY) {
-    for (const kw of entry.matches) {
-      if (searchHay.includes(kw)) {
-        // Behalte den spezifischen Ortsnamen (z.B. "Champel" -> "Genève (Champel)" oder "Emmen" -> "Emmen")
-        const displayCity =
-          firstSegment.toLowerCase() === "geneva"
-            ? "Genève"
-            : firstSegment.toLowerCase() === "zurich"
-            ? "Zürich"
-            : firstSegment.toLowerCase() === "champel"
-            ? "Genève (Champel)"
-            : firstSegment || entry.cleanCity;
-
-        return {
-          cleanCity: displayCity,
-          trueCanton: entry.canton,
-          languageRegion: entry.lang,
-        };
-      }
-    }
+  const explicitCanton = String(cantonRaw || "").toUpperCase().trim();
+  const matches = SWISS_GEO_DICTIONARY.flatMap(entry => entry.matches.map(keyword => ({ entry, keyword: keyword.trim().toLowerCase() })))
+    .filter(({ keyword }) => {
+      const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return new RegExp("(?:^|[^\\p{L}\\p{N}])" + escaped + "(?=$|[^\\p{L}\\p{N}])", "u").test(searchHay);
+    }).sort((a, b) => b.keyword.length - a.keyword.length);
+  if (matches.length) {
+    const entry = matches[0].entry;
+    const canton = entry.canton === "BS" && explicitCanton === "BL" ? "BL" : entry.canton;
+    return { cleanCity: firstSegment || entry.cleanCity, trueCanton: canton, languageRegion: entry.lang };
   }
-
-  const fallbackC = String(cantonRaw || "ZH").toUpperCase().trim();
-  const validCanton = ["ZH", "ZG", "BS", "BL", "BE", "LU", "AG", "SG", "TG", "SO", "SZ", "GR", "SH", "GE", "VD", "VS", "FR", "NE", "TI"].includes(fallbackC)
-    ? fallbackC
-    : "ZH";
-
+  const valid = new Set("ZH BE LU UR SZ OW NW GL ZG FR SO BS BL SH AR AI SG GR AG TG TI VD VS NE GE JU".split(" "));
+  const canton = valid.has(explicitCanton) ? explicitCanton : "";
   return {
-    cleanCity: firstSegment && firstSegment.toLowerCase() !== "unknown" ? firstSegment : "Zürich",
-    trueCanton: validCanton,
-    languageRegion: ["GE", "VD", "VS", "FR", "NE"].includes(validCanton) ? "fr" : validCanton === "TI" ? "it" : "de",
+    cleanCity: firstSegment && !/^(unknown|unbekannt)$/i.test(firstSegment) ? firstSegment : "Ort unbekannt",
+    trueCanton: canton,
+    languageRegion: ["GE", "VD", "VS", "FR", "NE", "JU"].includes(canton) ? "fr" : canton === "TI" ? "it" : "de",
   };
 }

@@ -1,11 +1,18 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseCatalogueFilters as parse, filterCatalogue as filter, demoListings, catalogueHref, normalizeCatalogueText } from "../src/lib/marketplace/catalogue.ts";
+import { parseCatalogueFilters as parse, filterCatalogue as productionFilter, demoListings, catalogueHref, normalizeCatalogueText } from "../src/lib/marketplace/catalogue.ts";
+
+const fixtures = [
+ ["zurich","escort"],["zurich","companionship"],["st-gallen","escort"],["bern","escort"],
+ ["luzern","companionship"],["geneva","companionship"],["lausanne","massage"],["lugano","massage"],
+].map(([city,category],i)=>({ id:`demo-${city}-${category}`,title:`Synthetic fixture ${i+1}`,city,category,description:"Neutral test record",demo:true }));
+const filter = f => productionFilter(f, fixtures);
 
 test("demo inventory is explicit and all fixture IDs are unique", () => {
   assert.equal(filter(parse({})).length, 8);
-  assert(demoListings.every(item => item.demo === true && item.id.startsWith("demo-")));
-  assert.equal(new Set(demoListings.map(item => item.id)).size, demoListings.length);
+  assert.deepEqual(demoListings, []);
+  assert(fixtures.every(item => item.demo === true && item.id.startsWith("demo-")));
+  assert.equal(new Set(fixtures.map(item => item.id)).size, fixtures.length);
 });
 test("city and category combine with AND", () => {
   assert.deepEqual(filter(parse({city:"zurich",category:"escort"})).map(x=>x.id), ["demo-zurich-escort"]);

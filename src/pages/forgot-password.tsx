@@ -1,5 +1,2 @@
 import PreviewAccess from "@/components/PreviewAccess";
-
-export default function ForgotPassword() {
-  return <PreviewAccess feature="Passwort zurücksetzen" />;
-}
+export default function Page() { return <PreviewAccess feature="Passwort zurücksetzen" />; }

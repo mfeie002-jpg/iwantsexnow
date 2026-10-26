@@ -1,0 +1,65 @@
+{
+  "baseCommit": "9f867194061d1b28e4e2efce636e278b46d474d3",
+  "auditedPlanCommit": "4a5250cdf57aa517b88bc0f468d11f113c88e82d",
+  "dateZurich": "2026-10-26",
+  "validation": {
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "unitAndCompiledTests": {
+      "passed": 105,
+      "failed": 0,
+      "skipped": 0
+    },
+    "builtSafetyAssertions": 354,
+    "builtPages": 62,
+    "internalLinks": 1422,
+    "p0HttpCases": 47,
+    "catalogueHttpCases": 2,
+    "analyzerHttpCases": 5,
+    "privateDisabledHttpCases": 6,
+    "privateFlowSyntheticHttp": "passed",
+    "npmAuditVulnerabilities": 0,
+    "liveBackendAcceptance": "not executed",
+    "DenoRuntimeTypecheck": "not executed",
+    "visualDesktopMobileQA": "not executed",
+    "gitHubCI": "pending",
+    "sourceLint": "passed, zero errors; pre-existing warnings are not promoted to errors",
+    "productionBuildLint": "enabled; zero lint errors, inherited warnings visible"
+  },
+  "inventory": {
+    "removedSyntheticRows": 96,
+    "archivedRows": 650,
+    "publicApprovedRows": 0
+  },
+  "connections": {
+    "github": "read/write repository permission verified; isolated branch",
+    "lovable": "two targeted project searches empty; repository binding unverified",
+    "gscWizard": {
+      "property": "sc-domain:iwantsexnow.ch",
+      "type": "web",
+      "startDate": "2026-09-26",
+      "endDate": "2026-10-23",
+      "clicks": 1,
+      "impressions": 16,
+      "scope": "entire property",
+      "notCurrentReleaseMeasurement": true
+    },
+    "firecrawl": "live public HTML and deployment fingerprint retrieved",
+    "dataforseo": "no direct tool; provider discovery returned zero matches",
+    "softgen": {
+      "existingProject": "4d3af0ab-bad5-4906-84f5-bdd09bdb40d6",
+      "historicalManagedAcceptance": "docs/marketplace/private-draft-storage-acceptance-20261023.md",
+      "currentRead": "blocked by automatic origin approval review; explicit Softgen authorization required"
+    }
+  },
+  "productionChanged": false,
+  "productionDatabaseChanged": false,
+  "sqlApplied": false,
+  "edgeFunctionsDeployed": false,
+  "liveFingerprint": {
+    "nextBuildId": "f0pqs7dFTJsnZkN8JUIXk",
+    "deploymentId": "dpl_GKChaCqmTKg8RiMmhbZhYiY4NSGN",
+    "exactGitShaVerified": false
+  },
+  "testedSourceCommit": "38debd0e99ffeb12e73fa499f7f7f20ad1791d1d"
+}

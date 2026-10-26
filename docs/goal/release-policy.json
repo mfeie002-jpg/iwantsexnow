@@ -1,0 +1,25 @@
+{
+  "phase": "P0 containment candidate",
+  "indexingApproved": false,
+  "publicImportsApproved": false,
+  "gatedRoutes": [
+    "login",
+    "creator-dashboard",
+    "admin-dashboard",
+    "create-post",
+    "verify",
+    "booking-confirmation",
+    "upload-photos",
+    "messages",
+    "premium",
+    "boost",
+    "gifts",
+    "content-feed",
+    "profile",
+    "account-settings",
+    "register",
+    "forgot-password"
+  ],
+  "publicReportCollectionEnabled": false,
+  "liveDeploymentVerified": false
+}

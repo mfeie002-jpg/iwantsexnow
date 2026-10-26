@@ -1,40 +1,11 @@
-name: Hourly Swiss Portal Sync (Firecrawl Engine)
-
+name: Source inventory (imports paused)
 on:
-  schedule:
-    # Runs automatically every 6 hours in the cloud
-    - cron: "0 */6 * * *"
-  workflow_dispatch: # Allows manual 1-click trigger in GitHub Actions tab
-
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
-  sync-swiss-portals:
+  inventory:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Run Firecrawl Swiss Portal Harvester & Merger
-        env:
-          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
-        run: |
-          if [ -n "$FIRECRAWL_API_KEY" ]; then
-            node scripts/mega-swiss-harvester.mjs
-            node scripts/merge-all-batches.mjs
-          else
-            echo "FIRECRAWL_API_KEY secret not set yet in GitHub Settings -> skipping external scrape."
-          fi
-
-      - name: Commit and push updated Swiss profile index
-        run: |
-          git config --global user.name "iWantSexNow Auto-Sync Bot"
-          git config --global user.email "bot@iwantsexnow.ch"
-          git add src/data/harvestedOffers.ts src/data/harvested-offers.json
-          git diff --staged --quiet || git commit -m "Automated Cloud Sync: Update Swiss Escort Index"
-          git push
+      - uses: actions/checkout@v4
+      - run: node -e 'console.log("Imports paused pending publication rights, stable IDs and removal verification")'

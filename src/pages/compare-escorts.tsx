@@ -8,22 +8,22 @@ import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
 import { Check, Bookmark, ArrowRight, X } from "lucide-react";
 
 const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
 ];
 
 export default function CompareEscortsPage() {
   const [selectedCanton, setSelectedCanton] = useState("ALL");
   const [onlyWithPrice, setOnlyWithPrice] = useState(false);
-  const [compareIds, setCompareIds] = useState<string[]>(["ch-1", "ch-2"]);
+  const [compareIds, setCompareIds] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
   const profiles = useMemo(() => {
     const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
     return raw.slice(0, 60).map((item: any, idx: number) => {
-      const id = item.dedupClusterId || "ch-" + (idx + 1);
+      const id = item.id;
       const geo = normalizeSwissGeo(item.city, item.canton);
       const rate = Number(item.advertisedBaseChf) || null;
       const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
