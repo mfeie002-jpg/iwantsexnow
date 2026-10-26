@@ -49,7 +49,7 @@ The obsolete smoke assertions described a different starter homepage and 8 publi
 
 | IDs | State in this candidate | Remaining acceptance |
 |---|---|---|
-| 001 | In progress / blocked for current backend read | Softgen origin authorization; current deployment SHA, backend mapping and actual policies |
+| 001 | In progress / blocked for current backend read | Read-only Softgen authorization received; current-browser sign-in still blocked; deployment SHA, backend mapping and actual policies remain unverified |
 | 002 | Implemented and locally checked containment | Deployed routes/Edge and actual grants/RLS; SQL candidate not applied |
 | 003 | Implemented and locally checked rejection of legacy access | Verify production no longer accepts old credentials; inventory any other authenticators |
 | 004 | Checked within current disabled/empty public scope | Real report/verification/owner workflows stay unavailable until their own acceptance |
@@ -69,7 +69,9 @@ GitHub is readable/writable; GSC and Firecrawl work. GSC Web property `sc-domain
 
 Repository evidence identifies existing Softgen project `4d3af0ab-bad5-4906-84f5-bdd09bdb40d6` and records real managed draft/RLS acceptance on 23 October. That is useful historical evidence, not a current verification. Opening that exact existing project for read-only confirmation was rejected by **automatic approval review** because the current named-tool authorization did not include the Softgen origin. No alternative route was used to access its private content.
 
-**Required next input:** explicit authorization for a read-only inspection of that existing Softgen project and its managed database/hosting configuration. No secrets or separate Supabase account are requested. After that read, continue with the existing backend and the same branch/Goal. Do not create a replacement backend or a Lovable copy.
+**Resume, 26 October 2026:** The user explicitly approved the requested read-only Softgen inspection ("Ja freigegeben"). That authorization remains valid. The local Browser connector is no longer exposed; the permitted cloud browser opened the existing project URL but was redirected to Softgen's public homepage, then reached its Kinde sign-in page. No signed-in project or database configuration was available to inspect. The secure browser-auth method/credential request was rejected by automatic approval review: read-only inspection did not explicitly authorize authentication, which may transmit an email or OAuth choice. No sign-in method was selected, credentials submitted, backend changes made or alternate private-access route attempted. Main remains `9f86719`; PR #16 remains the candidate and its `68fb0f9` CI run 40255558375 is successful.
+
+**Required next input:** authorize the secure Softgen sign-in flow, where the user chooses their existing method and authenticates through the secure browser interface. Do not request passwords or codes in chat. After sign-in, inspect the same existing project/database read-only and continue this Goal; no replacement resource or Lovable copy.
 
 ## Recovery boundary
 
