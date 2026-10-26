@@ -319,7 +319,7 @@ export default function HomePage() {
 
       let confirmedMinutesAgo: number | null = null;
       if (availabilityConfirmed) {
-        confirmedMinutesAgo = idx % 2 === 0 ? 6 : 12;
+        confirmedMinutesAgo = st.confirmedMinutesAgo || (idx % 2 === 0 ? 6 : 12);
       }
 
       const cleanKey = String(item.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
