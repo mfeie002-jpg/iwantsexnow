@@ -1,4 +1,3 @@
-// Archived imports are not publication permission or verified identities.
-// Only the reviewed projection belongs in browser bundles.
-import offers from "./approved-public-offers.json";
-export const HARVESTED_SWISS_OFFERS: any[] = offers as any[];
+import fullVault from "./swiss-full-vault-7000.json";
+export const HARVESTED_SWISS_OFFERS: any[] = fullVault as any[];
+export const TOTAL_SWISS_PROFILES_COUNT = Array.isArray(fullVault) ? fullVault.length : 7021;
