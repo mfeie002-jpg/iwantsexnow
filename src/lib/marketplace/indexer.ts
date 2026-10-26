@@ -394,4 +394,4 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
 ];
 
 const harvestedTyped = Array.isArray(HARVESTED_SWISS_OFFERS) ? (HARVESTED_SWISS_OFFERS as RawScrapedOffer[]) : [];
-export const INITIAL_RAW_SWISS_FEED: RawScrapedOffer[] = [...CORE_SEED_OFFERS, ...harvestedTyped];
+export const INITIAL_RAW_SWISS_FEED: RawScrapedOffer[] = [...harvestedTyped];

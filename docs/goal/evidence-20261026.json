@@ -1,0 +1,125 @@
+{
+  "baseCommit": "9f867194061d1b28e4e2efce636e278b46d474d3",
+  "auditedPlanCommit": "4a5250cdf57aa517b88bc0f468d11f113c88e82d",
+  "dateZurich": "2026-10-26",
+  "validation": {
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "unitAndCompiledTests": {
+      "passed": 114,
+      "failed": 0,
+      "skipped": 0
+    },
+    "builtSafetyAssertions": 354,
+    "builtPages": 62,
+    "internalLinks": 1422,
+    "p0HttpCases": 47,
+    "catalogueHttpCases": 2,
+    "analyzerHttpCases": 5,
+    "privateDisabledHttpCases": 6,
+    "privateFlowSyntheticHttp": "passed",
+    "npmAuditVulnerabilities": 0,
+    "liveBackendAcceptance": "current metadata/ACL inspection completed; production A/B writes/persistence not executed",
+    "DenoRuntimeTypecheck": "not executed",
+    "visualDesktopMobileQA": "not executed",
+    "gitHubCI": {
+      "runId": 40255365211,
+      "commit": "d76b17a6294c4c232dc4809b449d87baf57682ac",
+      "conclusion": "success",
+      "allStepsExecuted": true
+    },
+    "sourceLint": "passed, zero errors; pre-existing warnings are not promoted to errors",
+    "productionBuildLint": "enabled; zero lint errors, inherited warnings visible",
+    "browserBundleCredentialCheck": {
+      "oldTokensChecked": 20,
+      "javascriptChunksScanned": 91,
+      "matches": 0
+    },
+    "profilePolicyIsolatedPostgres": {
+      "tests": 9,
+      "passed": 9,
+      "runtime": "PGlite 0.5.11, actual PostgreSQL, synthetic isolated replica",
+      "notLiveAcceptance": true
+    }
+  },
+  "inventory": {
+    "removedSyntheticRows": 96,
+    "archivedRows": 650,
+    "publicApprovedRows": 0
+  },
+  "connections": {
+    "github": "read/write repository permission verified; isolated branch",
+    "lovable": "two targeted project searches empty; repository binding unverified",
+    "gscWizard": {
+      "property": "sc-domain:iwantsexnow.ch",
+      "type": "web",
+      "startDate": "2026-09-26",
+      "endDate": "2026-10-23",
+      "clicks": 1,
+      "impressions": 16,
+      "scope": "entire property",
+      "notCurrentReleaseMeasurement": true
+    },
+    "firecrawl": "live public HTML and deployment fingerprint retrieved",
+    "dataforseo": "no direct tool; provider discovery returned zero matches",
+    "softgen": {
+      "existingProject": "4d3af0ab-bad5-4906-84f5-bdd09bdb40d6",
+      "currentRead": "completed in authenticated existing Chrome session, read-only",
+      "managedHead": "14b9c417c6c0a4e83a483aec7e9a0673c7934f79",
+      "managedTree": "6661114724dcde20a4e959e81d9296692931e994",
+      "matchesMainTree": "9f867194061d1b28e4e2efce636e278b46d474d3",
+      "worktree": "clean, detached HEAD",
+      "database": {
+        "tables": {
+          "marketplace_listing_drafts": {
+            "consoleRowCount": 2,
+            "rls": true,
+            "ownerPolicies": 3,
+            "anonymousColumnRead": false,
+            "authenticatedColumnRead": true
+          },
+          "profiles": {
+            "consoleRowCount": 0,
+            "rls": true,
+            "publicSelectPolicy": true,
+            "anonymousSelectGranted": true,
+            "excessiveTablePrivileges": true
+          }
+        },
+        "authCountOnly": 5,
+        "storageBuckets": 0,
+        "deployedEdgeFunctions": 0
+      },
+      "deploymentAccount": "Softgen Vercel account",
+      "lastDeploymentUiLabel": "3:37 AM 26 October",
+      "exactDeployedGitRevisionVerified": false,
+      "environmentPresenceOnly": {
+        "supabaseUrl": true,
+        "publicKey": true,
+        "serviceRoleKey": true,
+        "privateDraftFlowFlag": false
+      },
+      "privateValuesCopied": false
+    }
+  },
+  "productionChanged": false,
+  "productionDatabaseChanged": false,
+  "sqlApplied": false,
+  "edgeFunctionsDeployed": false,
+  "liveFingerprint": {
+    "nextBuildId": "f0pqs7dFTJsnZkN8JUIXk",
+    "deploymentId": "dpl_GKChaCqmTKg8RiMmhbZhYiY4NSGN",
+    "exactGitShaVerified": false
+  },
+  "testedSourceCommit": "38debd0e99ffeb12e73fa499f7f7f20ad1791d1d",
+  "verifiedRemoteCandidate": {
+    "commit": "d76b17a6294c4c232dc4809b449d87baf57682ac",
+    "tree": "b42bfc56f9d17ded3ddd0bb80bc6814e89bd5638",
+    "matchesCompleteLocalCandidate": true
+  },
+  "profilePolicySql": {
+    "path": "docs/goal/sql/20261026_harden_existing_profiles.sql",
+    "applied": false,
+    "historicalAnalyzerSqlApplicable": false
+  }
+}

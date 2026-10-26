@@ -49,18 +49,18 @@ enabled = false
 # Configuration for edge functions
 enabled = true
 
-# Public functions (no auth required)
+# All functions require gateway JWT verification plus handler admin verification
 [edge_functions.fetch-html]
-verify_jwt = false
+verify_jwt = true
 
 [edge_functions.capture-rendered-html]
-verify_jwt = false
+verify_jwt = true
 
 [edge_functions.firecrawl-map]
-verify_jwt = false
+verify_jwt = true
 
 [edge_functions.lighthouse]
-verify_jwt = false
+verify_jwt = true
 
 # Protected functions (auth required)
 [edge_functions.capture-screenshot]
@@ -73,4 +73,35 @@ verify_jwt = true
 verify_jwt = true
 
 [edge_functions.scheduled-screenshots]
+verify_jwt = true
+
+[functions.scheduled-screenshots]
+verify_jwt = true
+
+
+[functions.capture-rendered-html]
+verify_jwt = true
+
+
+[functions.firecrawl-map]
+verify_jwt = true
+
+
+[functions.lighthouse]
+verify_jwt = true
+
+
+[functions.capture-screenshot]
+verify_jwt = true
+
+
+[functions.fetch-html]
+verify_jwt = true
+
+
+[functions.ai-extract-project-info]
+verify_jwt = true
+
+
+[functions.ai-website-analyze]
 verify_jwt = true

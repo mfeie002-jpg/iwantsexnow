@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 /**
  * Safe public placeholder until a server-side authentication, age-check
@@ -8,7 +8,7 @@ import SEO from "@/components/SEO";
  */
 export default function PreviewAccess({ feature }: { feature: string }) {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-slate-900 to-purple-950 px-4 py-20 text-white">
+    <main className="min-h-screen bg-[#13161C] px-4 py-20 text-white">
       <SEO
         title={feature + " | iWantSexNow.ch – Vorschau"}
         description="Diese Funktion ist in Vorbereitung. Die bisherigen Benutzerkonten waren nur eine lokale Demofunktion."
@@ -23,11 +23,11 @@ export default function PreviewAccess({ feature }: { feature: string }) {
         </p>
         <p className="mb-7 rounded-lg border border-white/20 bg-black/20 p-3 text-sm text-amber-100">
           Bitte keine persönlichen Daten, Passwörter oder Zahlungsinformationen eingeben.
-          Alle dargestellten Profile und Kennzahlen sind fiktive Demoinhalte.
+          Importierte Einträge werden erst nach dokumentierter Freigabe veröffentlicht.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/demo-accounts" className="rounded-lg bg-amber-400 px-5 py-3 font-bold text-slate-950 hover:bg-amber-300">
-            Design-Demo ansehen
+          <Link href="/reviews" className="rounded-lg bg-[#C6A574] px-5 py-3 font-bold text-slate-950 hover:bg-amber-300">
+            Portalberichte ansehen
           </Link>
           <Link href="/" className="rounded-lg border border-white/40 px-5 py-3 font-semibold text-white hover:bg-white/10">
             Zur Startseite

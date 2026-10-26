@@ -1,0 +1,174 @@
+Tested source commit: 38debd0e99ffeb12e73fa499f7f7f20ad1791d1d
+Production build/typecheck/lint passed; original full logs inspected in execution workspace.
+
+iwsn-all-tests.log
+✔ expired Supabase JWT prevents any Edge action (5.691733ms)
+✔ non-admin JWT is verified then denied, without any Edge call (1.810716ms)
+✔ authorized admin gets only an allowlisted Edge function with USER bearer (1.94099ms)
+(node:36) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/lib/marketplace/analyzer-proxy-policy.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ only narrowly allowed internal analyzer functions can be invoked (1.579385ms)
+✔ rejects no input (0.133417ms)
+✔ rejects empty body (0.073108ms)
+✔ rejects malformed name (0.07469ms)
+✔ rejects unknown function (0.073609ms)
+✔ rejects path injection (0.117153ms)
+✔ rejects array payload (0.081661ms)
+✔ rejects null payload (0.092957ms)
+✔ rejects huge payload (4.34318ms)
+✔ payload can be omitted and becomes an empty object (0.362706ms)
+✔ missing or malformed Authorization is never interpreted as a bearer (1.240994ms)
+✔ long bearer token is parsed without trimming or expansion (0.115781ms)
+(node:37) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/lib/marketplace/catalogue.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ demo inventory is explicit and all fixture IDs are unique (1.949892ms)
+✔ city and category combine with AND (0.438107ms)
+✔ category spans cities while city includes several categories (0.272823ms)
+✔ text query actually filters and combines with city/category (0.339011ms)
+✔ Swiss city spellings, accents and whitespace are normalized (1.367691ms)
+✔ all text tokens must match (0.321726ms)
+✔ unknown and duplicated filters fail closed rather than showing everything (0.156812ms)
+✔ approved inventory never falls back to demo data (0.170552ms)
+✔ filter links round-trip with safe query encoding (2.140605ms)
+✔ Tailwind and nested CSS resolve the patched selector parser (1.605333ms)
+✔ Tailwind retains responsive, hover, group, peer and arbitrary-value utilities (259.440953ms)
+✔ flat repeated-class selectors parse intact (18.28603ms)
+✔ Next image dependency resizes and encodes WebP and AVIF (67.770317ms)
+✔ Next resolves patched PostCSS and preserves CSS processing (12.979525ms)
+(node:50) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/supabase/functions/_shared/admin.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Edge calls deny missing/old short tokens before network and configuration access (6.046197ms)
+✔ Edge user and role verified with user bearer; anonymous key alone never grants admin (5.40564ms)
+✔ all eight Edge entrypoints call guard before work and require JWT verification (2.97ms)
+(node:56) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/integrations/supabase/client.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ integration import is safe on a build server without runtime configuration (87.084417ms)
+✔ browser auth fails closed when managed configuration is absent (0.404248ms)
+(node:95) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/lib/marketplace/drafts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ verified owner creates, reads and edits a private draft (4.102725ms)
+✔ anonymous actor cannot read or write (0.779993ms)
+✔ another user cannot read or modify a draft (1.559035ms)
+✔ reject client-controlled ownerId (0.302898ms)
+✔ reject client-controlled id (0.328215ms)
+✔ reject client-controlled state (0.246234ms)
+✔ reject client-controlled proof (0.251492ms)
+✔ reject client-controlled moderation (0.204242ms)
+✔ reject client-controlled consentVersion (0.225923ms)
+✔ reject client-controlled consentAt (0.354334ms)
+✔ reject client-controlled is_live (0.221868ms)
+✔ cannot overwrite submitted listing (0.328435ms)
+✔ cannot overwrite approved listing (0.22317ms)
+✔ cannot overwrite rejected listing (0.169421ms)
+✔ invalid input never reaches storage (0.431247ms)
+✔ storage errors expose no secrets or record contents (0.308946ms)
+✔ faulty storage cannot leak foreign rows or internal columns (0.349307ms)
+✔ session verification failures fail closed (0.20271ms)
+(node:99) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/lib/marketplace/publication.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ reject no policy (1.426849ms)
+✔ reject empty policy (0.141669ms)
+✔ reject not an object (0.111805ms)
+✔ reject raw imported profile (0.144574ms)
+✔ reject fake demo profile (0.156201ms)
+✔ reject draft (1.497403ms)
+✔ reject submitted (1.070832ms)
+✔ reject no media rights (0.115311ms)
+✔ reject owner self-approved (0.835986ms)
+✔ reject missing moderation (2.431424ms)
+✔ reject missing evidence (0.154929ms)
+✔ reject expired proof (0.301145ms)
+✔ reject future proof (0.132516ms)
+✔ reject old review (0.106257ms)
+✔ reject wrong consent policy (0.116662ms)
+✔ reject missing public alias (0.667186ms)
+✔ reject empty description (0.08154ms)
+✔ approved first-party record requires named legal version (0.125546ms)
+✔ projection never leaks personal records (0.949804ms)
+(node:110) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/lib/marketplace/source-identity.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source identity survives reorder, tracking changes and query order; distinct listing queries remain distinct (2.138751ms)
+✔ search has one contract, applies filters before pagination and never projects secrets (1.146014ms)
+✔ search rejects malformed and repeated values rather than returning a false empty success (1.801853ms)
+✔ canonicals use the actual path and never carry query, fragment, cross-origin URLs or wrong language cities (0.20985ms)
+✔ Swiss geography does not turn unknown places into Zürich or substring wil into SG (150.451056ms)
+✔ public build input excludes unapproved raw imports and all public pilot credentials (7.301634ms)
+✔ public states never hydrate old owner keys or reports, including after module/instance reload (128.763141ms)
+✔ every legacy write, old published token and unknown action is rejected without an upstream write (3.741901ms)
+✔ anonymous, short token and PIN cannot read admin/import data (0.94015ms)
+✔ server verifies session and role; provider and unconfirmed identities cannot escalate; admin import stays disabled (5.790249ms)
+✔ search handler enforces GET, one contract, finite pagination and no private fields (1.175497ms)
+✔ project brief PDF export retains text, wrapping and Blob output (7.784376ms)
+✔ disabled or incomplete configuration returns 404 before any backend access (3.089987ms)
+✔ sign-in uses the existing auth backend and returns only a secure server cookie (13.668225ms)
+✔ wrong credentials, unconfirmed and non-allowlisted accounts cannot sign in (9.936288ms)
+✔ missing, expired and non-allowlisted sessions cannot access drafts (3.967134ms)
+✔ owner creates, reloads and edits a private draft through the compiled API (11.773864ms)
+✔ foreign, missing and locked drafts share the same not-found response (9.889609ms)
+✔ ownership/state injection, invalid IDs, arrays and extra fields are rejected (11.172496ms)
+✔ cross-origin and unsupported requests fail before backend access (0.660627ms)
+✔ storage failures are sanitized and never reported as saved (2.200954ms)
+✔ logout clears the cookie and invokes only local session sign-out (1.64407ms)
+✔ public-key validation refuses service credentials and headers cannot replace the cookie (0.725713ms)
+✔ session errors, logout failure and text payloads never expose secrets or saved status (1.230499ms)
+✔ login attempt backstop stops outbound requests when exhausted (10.266946ms)
+(node:146) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/de156fa31409/repo/src/lib/marketplace/supabase-drafts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/de156fa31409/repo/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ storage cannot be used before server verification (6.741285ms)
+✔ invalid session never reaches the database (4.898802ms)
+✔ create maps fields and forwards verified user JWT, never approval fields (4.953792ms)
+✔ read is constrained by id, verified owner and draft state (1.747092ms)
+✔ update atomically checks owner and draft state without pre-read (1.348182ms)
+✔ missing or inaccessible records have the same response (1.618913ms)
+✔ foreign storage records are rejected even if RLS is misconfigured (0.896546ms)
+✔ database refusal fails closed (0.821565ms)
+✔ reject service credentials and unsafe backend URLs (0.584995ms)
+ℹ tests 105
+ℹ suites 0
+ℹ pass 105
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 524.941834
+
+iwsn-safety.log
+Release safety: 354/354 assertions, 62 built pages; policy P0 containment candidate.
+
+iwsn-integrity.log
+Release integrity: 1422/1422 internal route/asset destinations exist.
+
+iwsn-http.log
+P0 HTTP acceptance: 47/47 cases; SSR metadata, private boundaries, invalid identities, retired tokens, honest errors and quarantined inventory.
+Catalogue HTTP: 2/2; synthetic public fixtures are retired and no other record is substituted.
+PASS GET blocked 405
+PASS invalid function rejected 400
+PASS arbitrary function rejected 400
+PASS valid function without JWT rejected 401
+PASS valid function with malformed bearer rejected 401
+API HTTP smoke 5/5
+Private flow disabled HTTP: 6/6; no editor or API activation.
+
+iwsn-private-http.log
+PASS private flow HTTP: gated page, sessions, owner create/read/edit, second-user denial, spoof/CSRF/size rejection, logout; synthetic backend only.
+
+iwsn-dependency-audit.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+found 0 vulnerabilities
+

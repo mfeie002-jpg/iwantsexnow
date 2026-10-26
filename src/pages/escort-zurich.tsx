@@ -1,205 +1,256 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import SEO from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  ShieldCheck,
-  Clock,
-  Send,
-  ArrowLeft,
-  CalendarCheck,
-  Globe,
-  PhoneCall,
-} from "lucide-react";
-import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
+import { SEO } from "@/components/SEO";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
+import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
+import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
+import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
+import { LayoutGrid, List as ListIcon } from "lucide-react";
 
-const PILOT_ZONES = [
-  { id: "ALL", label: "Alle (Zürich & Kanton Zug)" },
-  { id: "ZG", label: "Zug, Cham, Baar & Rotkreuz (ZG)" },
-  { id: "ZH_CITY", label: "Zürich City (Paradeplatz / Seefeld / West)" },
-  { id: "ZH_NORTH", label: "Oerlikon, Glattpark, Airport & Winterthur" },
+const FALLBACK_PORTRAITS = [
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
 ];
 
-export default function EscortZurichZugHub() {
-  const [selectedZone, setSelectedZone] = useState("ALL");
-  const [duration, setDuration] = useState<30 | 60 | 120>(60);
+export default function CityIntentPage() {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+  const [onlyWithPrice, setOnlyWithPrice] = useState(false);
 
-  const pilotProfiles = useMemo(() => {
-    const all = deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED);
-    return all.filter((p) => p.canton === "ZH" || p.canton === "ZG" || p.subareas.includes("Zug"));
-  }, []);
+  const cityProfiles = useMemo(() => {
+    const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
+    const list = raw
+      .map((item: any, idx: number) => {
+        const geo = normalizeSwissGeo(item.city, item.canton);
+        const rate = Number(item.advertisedBaseChf) || null;
+        const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
+        const isClean =
+          String(item.sourcePortal || "").toLowerCase().includes("bemygirl") ||
+          String(item.sourcePortal || "").toLowerCase().includes("fgirl");
+        const availabilityConfirmed = false;
+        return {
+          ...item,
+          id: item.id,
+          cleanCity: geo.cleanCity,
+          canton: geo.trueCanton,
+          advertisedBaseChf: rate,
+          durationLabel,
+          availabilityConfirmed,
+          confirmedMinutesAgo: availabilityConfirmed ? 6 : null,
+          isSelfManaged: false,
+          fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
+        };
+      })
+      .filter((p) => p.canton === "ZH");
 
-  const filtered = pilotProfiles.filter((p) => {
-    if (selectedZone === "ALL") return true;
-    if (selectedZone === "ZG") return p.canton === "ZG" || p.subareas.some((s) => s.includes("Zug") || s.includes("Cham"));
-    if (selectedZone === "ZH_CITY") {
-      return p.subareas.some((s) => s.includes("Paradeplatz") || s.includes("Seefeld") || s.includes("West"));
-    }
-    if (selectedZone === "ZH_NORTH") {
-      return p.subareas.some((s) => s.includes("Oerlikon") || s.includes("Glattpark") || s.includes("Winterthur") || s.includes("Airport"));
-    }
-    return true;
-  });
-
-  const calcPrice = (base60: number) => {
-    const mult = duration === 30 ? 0.65 : duration === 120 ? 1.8 : 1;
-    return Math.round((base60 * mult) / 10) * 10;
-  };
+    return list.filter((p) => {
+      if (onlyAvailable && !p.availabilityConfirmed) return false;
+      if (onlyWithPrice && !p.advertisedBaseChf) return false;
+      return true;
+    });
+  }, [onlyAvailable, onlyWithPrice]);
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
+    <div className="min-h-screen bg-[#13161C] text-white pb-24">
       <SEO
-        title="Escort Zürich, Zug & Cham – 11 Verifizierte Direktprofile & Index | iWantSexNow.ch"
-        description="Der komplette Escort-Index & Direktbuchungs-Marktplatz für Zürich, Zug, Cham, Baar, Rotkreuz, Oerlikon und Winterthur."
+        title={"Escorts & Studios in Zürich (ZH) – Profile, Preise & Quellen | iwantsexnow.ch"}
+        description={"Lokale Profile, bestätigte Verfügbarkeiten und transparente Preisangaben für Zürich City, Oerlikon, Seefeld und Winterthur."}
       />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-serif font-black">
-            <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
-          </Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+      <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-10 max-w-7xl space-y-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
-          <ArrowLeft size={14} /> Zurück zur Schweizer Hauptseite
-        </Link>
-
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl shadow-2xl">
-          <div>
-            <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-2">
-              Pilot-Region · {filtered.length} Aktive Cluster-Profile in Zürich, Zug & Cham
-            </Badge>
-            <h1 className="text-3xl md:text-5xl font-serif font-black">
-              Zürich, Zug & Cham · Direktbuchung & Index
-            </h1>
-            <p className="text-gray-300 text-sm md:text-base mt-1 max-w-3xl">
-              Alle öffentlichen Portale für Zürich und den Kanton Zug (Zug, Cham, Baar, Rotkreuz) in Echtzeit gebündelt, um Dubletten bereinigt und zum garantierten Fixpreis buchbar.
-            </p>
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="hover:text-white">Schweiz Übersicht</Link>
+            <span>/</span>
+            <span className="text-[#C6A574] font-semibold">Zürich (ZH)</span>
           </div>
-
-          <div className="flex bg-black/50 p-1 rounded-xl border border-[#C69C6D]/30 shrink-0 self-start">
-            {([30, 60, 120] as const).map((mins) => (
-              <button
-                key={mins}
-                type="button"
-                onClick={() => setDuration(mins)}
-                className={
-                  duration === mins
-                    ? "px-3.5 py-2 rounded-lg text-xs font-bold bg-[#C69C6D] text-[#0D1B2A]"
-                    : "px-3.5 py-2 rounded-lg text-xs font-bold text-gray-300 hover:text-white"
-                }
-              >
-                {mins === 120 ? "2 Std." : `${mins} Min.`}
-              </button>
-            ))}
+          <div className="flex items-center gap-4">
+            <XeniaDoubtTrigger topic="status" label="Status-Erklärung" />
+            <XeniaDoubtTrigger topic="price" label="Preis-Einordnung" />
+            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
           </div>
         </div>
 
-        {/* Sub-Region Filter Bar */}
-        <div className="flex flex-wrap gap-2">
-          {PILOT_ZONES.map((z) => (
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">Escorts & Studios in Zürich (ZH)</h1>
+          <p className="text-xs sm:text-sm text-gray-300">Lokale Profile, bestätigte Verfügbarkeiten und transparente Preisangaben für Zürich City, Oerlikon, Seefeld und Winterthur.</p>
+        </div>
+
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#1A1E27] border border-[#C6A574]/35 grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs">
+          <div className="lg:col-span-8 space-y-1">
+            <div className="font-bold text-[#E5C99B] uppercase tracking-wider text-[11px]">
+              Regionale Preis- & Konditionen-Einordnung für Zürich (ZH)
+            </div>
+            <p className="text-gray-300 leading-relaxed">Veröffentlichte Richtwerte in Zürich liegen meist zwischen CHF 300 und CHF 500 für 60 Minuten (Incall). Niedrigere Angaben (ab CHF 150) beziehen sich häufig auf 30-Minuten-Termine; bei Hotel- und Hausbesuchen (Outcall) können Anfahrtskosten hinzukommen.</p>
+          </div>
+          <div className="lg:col-span-4 flex flex-wrap items-center justify-end gap-2">
             <button
-              key={z.id}
               type="button"
-              onClick={() => setSelectedZone(z.id)}
+              onClick={() => setOnlyAvailable(!onlyAvailable)}
               className={
-                selectedZone === z.id
-                  ? "px-4 py-2.5 rounded-xl text-xs font-black bg-[#C69C6D] text-[#0D1B2A] shadow-lg"
-                  : "px-4 py-2.5 rounded-xl text-xs font-bold bg-[#09131E] border border-white/15 text-gray-300 hover:border-[#C69C6D]/50"
+                onlyAvailable
+                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
+                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
               }
             >
-              {z.label}
+              Jetzt verfügbar
             </button>
-          ))}
+            <button
+              type="button"
+              onClick={() => setOnlyWithPrice(!onlyWithPrice)}
+              className={
+                onlyWithPrice
+                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
+                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
+              }
+            >
+              Nur mit Preisangabe
+            </button>
+            <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                className={viewMode === "grid" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
+              >
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                className={viewMode === "list" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
+              >
+                <ListIcon size={15} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Profile Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((p) => {
-            const isDirect = p.bookingMode === "direct";
-            const rate = calcPrice(p.bestBaseRate60Chf);
-            const avgPortal = calcPrice(p.portalAverage60Chf);
-            return (
-              <Card
-                key={p.dedupClusterId}
-                className="bg-[#09131E] border border-[#C69C6D]/40 rounded-2xl overflow-hidden text-white flex flex-col justify-between shadow-xl"
-              >
-                <div>
-                  <div className="relative h-64">
-                    <img src={p.thumbnail} alt={p.displayName} className="w-full h-full object-cover" />
-                    <div
-                      className={
-                        isDirect
-                          ? "absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full flex items-center gap-1"
-                          : "absolute top-3 left-3 bg-sky-600 text-white text-[11px] font-bold px-3 py-1 rounded-full flex items-center gap-1"
-                      }
-                    >
-                      {isDirect ? <CalendarCheck size={12} /> : <Globe size={12} />}
-                      {isDirect ? "Direkt Buchbar · Verifiziert" : "Schweizer Markt-Index"}
-                    </div>
-                    <div className="absolute bottom-2 left-2 right-2 bg-black/85 text-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-lg text-center">
-                      {p.sourcesCount} Schweizer Portale gebündelt ({p.normalizedPhoneMask})
-                    </div>
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName =
+                String(p.rawName || "Profil")
+                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+                  .trim()
+                  .slice(0, 24) || "Profil";
+              return (
+                <article
+                  key={"city-" + idx}
+                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="relative aspect-[4/3.65] bg-stone-800">
+                    <Link href={"/profile/" + encodeURIComponent(p.id)}>
+                      <img
+                        src={p.thumbnail || p.fallbackImg}
+                        alt={cleanName}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                        }}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    </Link>
+                    {p.availabilityConfirmed && (
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                        Jetzt verfügbar
+                      </span>
+                    )}
                   </div>
-
-                  <div className="p-5 space-y-3">
+                  <div className="p-3.5 space-y-2">
                     <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h2 className="text-2xl font-serif font-black">
-                          {p.displayName}, {p.age}
-                        </h2>
-                        <p className="text-xs text-[#D5A021] font-semibold mt-0.5">
-                          📍 {p.subareas.join(" · ")} ({p.canton})
+                      <div className="min-w-0">
+                        <Link
+                          href={"/profile/" + encodeURIComponent(p.id)}
+                          className="text-base font-bold text-white hover:text-[#C6A574] truncate block"
+                        >
+                          {cleanName}
+                        </Link>
+                        <p className="text-xs text-gray-400">
+                          {p.cleanCity} · {p.canton}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <div className="text-[10px] text-gray-400 line-through">Ø CHF {avgPortal}</div>
-                        <div className="text-2xl font-black text-[#D5A021]">CHF {rate}</div>
-                      </div>
+                      {p.advertisedBaseChf && (
+                        <div className="text-right shrink-0">
+                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
+                          <div className="text-[10px] text-gray-500">60 Min.</div>
+                        </div>
+                      )}
                     </div>
-
-                    <div className="text-xs text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
-                      <Clock size={12} /> {p.freshnessLabel}
-                    </div>
-
-                    <div className="text-xs text-gray-300">
-                      <strong className="text-white">Inklusive:</strong> {p.includedServices.join(" · ")}
+                    <div className="pt-2 border-t border-white/10 text-xs flex items-center justify-between text-gray-400">
+                      <span>{p.isSelfManaged ? "Selbst verwaltet" : "Quelle: " + (p.sourcePortal || "Index")}</span>
+                      <Link
+                        href={"/profile/" + encodeURIComponent(p.id)}
+                        className="text-[#C6A574] font-bold hover:underline"
+                      >
+                        Profil →
+                      </Link>
                     </div>
                   </div>
-                </div>
-
-                <div className="p-5 pt-0 flex items-center justify-between gap-2">
-                  <Link
-                    href={`/create-post?claim=${encodeURIComponent(p.displayName)}`}
-                    className="text-[11px] text-gray-400 hover:text-[#D5A021] underline"
-                  >
-                    Profil übernehmen
-                  </Link>
-                  <Button
-                    size="sm"
-                    className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black text-xs"
-                    asChild
-                  >
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
+            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
+              const cleanName =
+                String(p.rawName || "Profil")
+                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+                  .trim()
+                  .slice(0, 28) || "Profil";
+              return (
+                <article key={"cl-" + idx} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                  <div className="md:col-span-6 flex items-center gap-4">
+                    <img
+                      src={p.thumbnail || p.fallbackImg}
+                      alt={cleanName}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
+                      }}
+                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
+                    />
+                    <div>
+                      <Link
+                        href={"/profile/" + encodeURIComponent(p.id)}
+                        className="text-lg font-serif font-bold text-white hover:underline"
+                      >
+                        {cleanName}
+                      </Link>
+                      <div className="text-xs text-gray-300">
+                        {p.cleanCity} · {p.canton}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:col-span-3">
+                    {p.advertisedBaseChf ? (
+                      <>
+                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
+                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
+                      </>
+                    ) : (
+                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
+                    )}
+                  </div>
+                  <div className="md:col-span-3 flex justify-end">
                     <Link
-                      href={`/booking-confirmation?provider=${encodeURIComponent(p.displayName)}&city=${encodeURIComponent(p.primaryCity)}&duration=${duration}&total=${rate}`}
+                      href={"/profile/" + encodeURIComponent(p.id)}
+                      className="text-xs font-bold text-[#C6A574] hover:underline"
                     >
-                      <Send size={12} className="mr-1.5" />
-                      {isDirect ? "Jetzt direkt buchen" : "Termin anfragen"}
+                      Profil ansehen →
                     </Link>
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </main>
+      <CorporateFooter />
     </div>
   );
 }

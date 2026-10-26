@@ -1,20 +1,7 @@
 import type { GetServerSideProps } from "next";
-
-export default function RobotsTxt() {
-  return null;
-}
-
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const content = [
-    "User-agent: *",
-    "Allow: /",
-    "Disallow: /admin-dashboard",
-    "Disallow: /api/",
-    "Sitemap: https://iwantsexnow.ch/sitemap.xml",
-  ].join("\n");
-
-  res.setHeader("Content-Type", "text/plain");
-  res.write(content);
-  res.end();
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.end("User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /private/\n");
   return { props: {} };
 };
+export default function Robots() { return null; }

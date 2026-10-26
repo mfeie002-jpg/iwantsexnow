@@ -1,742 +1,453 @@
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import SEO from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { MobileNav } from "@/components/MobileNav";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+import { SEO } from "@/components/SEO";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { CorporateFooter } from "@/components/CorporateFooter";
+import { StructuredSchema } from "@/components/StructuredSchema";
+import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
+import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
+import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
 import {
-  ShieldCheck,
-  Clock,
-  MapPin,
-  CheckCircle,
-  Send,
   ArrowLeft,
-  Calculator,
-  PhoneCall,
-  Lock,
-  Unlock,
-  Play,
-  Star,
-  X,
-  Eye,
-  Sparkles,
-  MessageSquareQuote,
-  Globe,
-  UserCheck,
+  Check,
+  Clock,
+  ExternalLink,
+  HelpCircle,
+  Layers,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  User,
+  Flag,
 } from "lucide-react";
-import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
 
-const EXTRA_CATALOG = [
-  { id: "GFE", label: "Girlfriend Experience (GFE)", defaultPrice: 80 },
-  { id: "Dinner Dates", label: "Dinner Date Begleitung", defaultPrice: 90 },
-  { id: "Outcall", label: "Hotel- & Hausbesuch (Outcall)", defaultPrice: 60 },
-  { id: "Massage", label: "Sinnliche Tantra- & Wellness-Massage", defaultPrice: 60 },
-  { id: "Overnight", label: "Overnight Upgrade (+6 Std.)", defaultPrice: 550 },
+const FALLBACK_PORTRAITS = [
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
+  "/profile-placeholder.svg",
 ];
 
-export default function UniversalProfileDetailPage() {
+export default function ProfileDetailPage() {
   const router = useRouter();
-  const { toast } = useToast();
-  const rawId = String(router.query.id || "1");
+  const rawId = String(router.query.id || "");
 
-  const allProfiles = useMemo(() => deduplicateScrapedOffers(INITIAL_RAW_SWISS_FEED), []);
-
-  const profile = useMemo(() => {
-    const byCluster = allProfiles.find(
-      (p) =>
-        p.dedupClusterId.toLowerCase() === rawId.toLowerCase() ||
-        p.displayName.toLowerCase() === rawId.toLowerCase()
-    );
-    if (byCluster) return byCluster;
-    const numericIdx = Math.max(0, (parseInt(rawId, 10) || 1) - 1);
-    return allProfiles[numericIdx % allProfiles.length] || allProfiles[0];
-  }, [allProfiles, rawId]);
-
-  const [activePhoto, setActivePhoto] = useState<string>(profile.thumbnail);
-  const [duration, setDuration] = useState<30 | 60 | 120>(60);
-  const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
-  const [meetingPlace, setMeetingPlace] = useState(`${profile.primaryCity} (${profile.subareas[0] || profile.canton})`);
-  const [meetingTime, setMeetingTime] = useState("Heute, 20:30 Uhr");
-  const [contactInfo, setContactInfo] = useState("");
-  const [notes, setNotes] = useState("");
-  const [submittedRef, setSubmittedRef] = useState<string | null>(null);
-
-  const [unlockedMediaIds, setUnlockedMediaIds] = useState<string[]>([]);
-  const [activeViewerItem, setActiveViewerItem] = useState<any | null>(null);
-  const [customVaultItems, setCustomVaultItems] = useState<any[]>([]);
-  const [userRating, setUserRating] = useState<number>(10);
-  const [userComment, setUserComment] = useState<string>("");
-  const [localReviews, setLocalReviews] = useState<any[]>([]);
+  const [serverData, setServerData] = useState<{ metrics: Record<string, any>; states: Record<string, any> }>({
+    metrics: {},
+    states: {},
+  });
+  const [inquirySent, setInquirySent] = useState(false);
+  const [inquiryMessage, setInquiryMessage] = useState("");
+  const [inquiryContact, setInquiryContact] = useState("");
 
   useEffect(() => {
-    setActivePhoto(profile.thumbnail);
-    setMeetingPlace(`${profile.primaryCity} (${profile.subareas[0] || profile.canton})`);
-    const saved = localStorage.getItem(`unlockedMedia_${profile.dedupClusterId}`);
-    if (saved) {
-      try {
-        setUnlockedMediaIds(JSON.parse(saved));
-      } catch {}
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d && d.ok) {
+          setServerData({ metrics: d.metrics || {}, states: d.states || {} });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!router.isReady || !rawId) return;
+    fetch("/api/vault/metrics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "track_view", profileId: rawId }),
+    }).catch(() => {});
+  }, [router.isReady, rawId]);
+
+  const profileData = useMemo(() => {
+    const rawList = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
+    const foundIdx = rawList.findIndex((item: any) => item.id === rawId);
+    const baseItem = rawList[foundIdx] || {};
+    const id = baseItem.id || "";
+    const st = serverData.states[id] || {};
+    const geo = normalizeSwissGeo(st.city || baseItem.city, st.canton || baseItem.canton);
+
+    const isCleanPhoto =
+      String(baseItem.sourcePortal || "").toLowerCase().includes("bemygirl") ||
+      String(baseItem.sourcePortal || "").toLowerCase().includes("fgirl");
+    const isSelfManaged = false;
+    const isIdentityVerified = false;
+    const availabilityConfirmed = false;
+    const isOnline = false;
+    const cleanKey = String(baseItem.rawName || "").toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
+    const matchingSources: Array<{ portal: string; url: string; rate: number | null; city: string }> = [];
+
+    for (const candidate of rawList) {
+      if (!candidate || !candidate.rawName) continue;
+      const cKey = String(candidate.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
+      if (cKey && cKey === cleanKey) {
+        const pName = candidate.sourcePortal || "xdate.ch";
+        if (!matchingSources.some((m) => m.portal === pName)) {
+          const cGeo = normalizeSwissGeo(candidate.city, candidate.canton);
+          matchingSources.push({
+            portal: pName,
+            url: candidate.sourceUrl || "#",
+            rate: Number(candidate.advertisedBaseChf) || null,
+            city: cGeo.cleanCity + " · " + cGeo.trueCanton,
+          });
+        }
+      }
     }
-    const creatorCustom = localStorage.getItem("providerVaultItems");
-    if (creatorCustom) {
-      try {
-        setCustomVaultItems(JSON.parse(creatorCustom));
-      } catch {}
+
+    if (matchingSources.length === 0) {
+      matchingSources.push({
+        portal: baseItem.sourcePortal || "Portal-Index",
+        url: baseItem.sourceUrl || "#",
+        rate: Number(baseItem.advertisedBaseChf) || null,
+        city: geo.cleanCity + " · " + geo.trueCanton,
+      });
     }
-  }, [profile]);
 
-  const defaultVaultItems = [
-    {
-      id: "vid-1",
-      type: "video" as const,
-      title: `Unzensiertes 4K Vorab-Verifizierungsvideo von ${profile.displayName}`,
-      durationOrCount: "01:45 Min. · 4K Originalaufnahme + Stimm-Gruss",
-      priceChf: 19,
-      previewImg: profile.thumbnail,
-      unlockedCaption: "✓ 4K Originalvideo freigeschaltet · 100% echte Person bestätigt!",
-    },
-    {
-      id: "set-2",
-      type: "photos" as const,
-      title: `Exklusives Uncensored Lingerie & Private Hotel Set (12 Bilder)`,
-      durationOrCount: "12 hochauflösende Privat-Fotos (Unzensiert)",
-      priceChf: 29,
-      previewImg: profile.thumbnail,
-      unlockedCaption: "✓ Alle 12 privaten High-Res Aufnahmen freigeschaltet!",
-    },
-    {
-      id: "vid-3",
-      type: "bundle" as const,
-      title: `VIP Vorab-Check Bundle (Alle Videos + Privat-Galerie + CHF 20 Buchungs-Gutschein)`,
-      durationOrCount: "Komplett-Tresor + CHF 20 Anrechnung bei Buchung heute",
-      priceChf: 39,
-      previewImg: profile.thumbnail,
-      unlockedCaption: "✓ Komplett-Tresor aktiv + CHF 20 Gutschein für deine Buchung hinterlegt!",
-    },
-  ];
-
-  const lockedVaultItems = useMemo(() => {
-    const extras = customVaultItems
-      .filter((c) => !["vid-1", "set-2", "vid-3"].includes(c.id))
-      .map((c) => ({
-        id: c.id,
-        type: (c.type || "video") as "video" | "photos" | "bundle",
-        title: c.title,
-        durationOrCount: "Exklusiver Creator-Upload · Direkt verifiziert",
-        priceChf: Number(c.priceChf) || 25,
-        previewImg: profile.thumbnail,
-        unlockedCaption: "✓ Creator-Upload freigeschaltet!",
-      }));
-    return [...extras, ...defaultVaultItems];
-  }, [customVaultItems, profile.thumbnail, profile.displayName]);
-
-  const handleUnlockMedia = async (item: typeof lockedVaultItems[0]) => {
-    const next = Array.from(new Set([...unlockedMediaIds, item.id]));
-    setUnlockedMediaIds(next);
-    localStorage.setItem(`unlockedMedia_${profile.dedupClusterId}`, JSON.stringify(next));
-
-    try {
-      await fetch("/api/vault/unlock", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          providerName: profile.displayName,
-          itemId: item.id,
-          itemTitle: item.title,
-          priceChf: item.priceChf,
-        }),
+    if (isSelfManaged && !matchingSources.some((m) => m.portal === "Direktprofil (IWSN)")) {
+      matchingSources.unshift({
+        portal: "Direktprofil (IWSN)",
+        url: "/profile/" + encodeURIComponent(id),
+        rate: Number(st.rate60Chf || baseItem.advertisedBaseChf) || null,
+        city: geo.cleanCity + " · " + geo.trueCanton,
       });
-    } catch {}
-
-    setActiveViewerItem(item);
-    toast({
-      title: `"${item.title}" sofort freigeschaltet!`,
-      description: `CHF ${item.priceChf} verbucht. Der VIP-Player ist jetzt geöffnet.`,
-    });
-  };
-
-  const rate30 = profile.rate30Chf;
-  const rate60 = profile.bestBaseRate60Chf;
-  const rate120 = profile.rate120Chf;
-  const baseCost = duration === 30 ? rate30 : duration === 120 ? rate120 : rate60;
-
-  const optionalExtras = EXTRA_CATALOG.filter((e) => !profile.includedServices.includes(e.id)).map((e) => ({
-    ...e,
-    price: profile.extraPricesChf[e.id] ?? e.defaultPrice,
-  }));
-
-  const extrasCost = optionalExtras
-    .filter((e) => selectedExtraIds.includes(e.id))
-    .reduce((sum, e) => sum + e.price, 0);
-
-  const bundleDiscount = unlockedMediaIds.includes("vid-3") ? 20 : 0;
-  const totalCost = Math.max(150, baseCost + extrasCost - bundleDiscount);
-  const thirdPartyComparison =
-    (duration === 30
-      ? Math.round(profile.portalAverage60Chf * 0.65)
-      : duration === 120
-      ? Math.round(profile.portalAverage60Chf * 1.8)
-      : profile.portalAverage60Chf) +
-    extrasCost +
-    selectedExtraIds.length * 20;
-
-  const toggleExtra = (id: string) => {
-    setSelectedExtraIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
-  };
-
-  const handleAddReview = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userComment.trim()) return;
-    setLocalReviews((prev) => [
-      {
-        author: "Verifizierter Buchungskunde",
-        rating: userRating,
-        date: "Gerade eben",
-        comment: userComment.trim(),
-        sourcePortal: "iWantSexNow.ch Direkt",
-      },
-      ...prev,
-    ]);
-    setUserComment("");
-    toast({
-      title: "Erfahrungsbericht veröffentlicht!",
-      description: "Deine Bewertung wurde dem Profil und dem Schweizer Ranking hinzugefügt.",
-    });
-  };
-
-  const handleBookingSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/enquiries/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          providerName: profile.displayName,
-          duration,
-          extras: [...profile.includedServices, ...selectedExtraIds],
-          guaranteedTotalChf: totalCost,
-          requestedTime: meetingTime,
-          city: meetingPlace,
-          contact: contactInfo,
-          notes,
-        }),
-      });
-      const data = await res.json();
-      const ref = data.referenceCode || `IW-${Math.floor(100000 + Math.random() * 900000)}`;
-      setSubmittedRef(ref);
-      toast({
-        title: `Direkt-Anfrage (${ref}) an ${profile.displayName} übermittelt`,
-        description: `Garantierter Fixpreis CHF ${totalCost} (${duration} Min.) wurde zugestellt.`,
-      });
-    } catch {
-      setSubmittedRef(`IW-${Math.floor(100000 + Math.random() * 900000)}`);
     }
-  };
 
-  const allReviews = [...localReviews, ...profile.reviews];
+    const rate = st.rate60Chf !== undefined ? Number(st.rate60Chf) : Number(baseItem.advertisedBaseChf) || null;
+    const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
+    const cleanName =
+      String(st.displayName || baseItem.rawName || "Profil")
+        .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+        .trim()
+        .slice(0, 32) || "Profil";
+
+    return {
+      ...baseItem,
+      id,
+      cleanName,
+      cleanCity: geo.cleanCity,
+      canton: geo.trueCanton,
+      rate,
+      durationLabel,
+      isSelfManaged,
+      isIdentityVerified,
+      availabilityConfirmed,
+      confirmedMinutesAgo: availabilityConfirmed ? 6 : null,
+      isOnline,
+      matchingSources,
+      tags:
+        Array.isArray(baseItem.includedTags) && baseItem.includedTags.length > 0
+          ? baseItem.includedTags
+          : ["Begleitung", "Diskret", "Privat"],
+      bioText:
+        st.bio ||
+        baseItem.bio ||
+        "Profil in " +
+          geo.cleanCity +
+          " (Kanton " +
+          geo.trueCanton +
+          "). Alle veröffentlichten Angaben zu Status, Preisbasis und Herkunft sind unten transparent aufgeschlüsselt.",
+      fallbackImg: FALLBACK_PORTRAITS[foundIdx % FALLBACK_PORTRAITS.length],
+    };
+  }, [rawId, serverData]);
+
+  const recordAction = (action: string) => {
+    fetch("/api/vault/metrics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, profileId: profileData.id }),
+    }).catch(() => {});
+  };
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
+    <div className="min-h-screen bg-[#13161C] text-white pb-24">
       <SEO
-        title={`${profile.displayName} (${profile.age}) Escort ${profile.primaryCity} (${profile.canton}) – Fixpreis CHF ${profile.bestBaseRate60Chf} ★ ${profile.ratingScore.toFixed(1)}`}
-        description={`✓ +41 Nummer & Fotos geprüft (${profile.sourcesCount} Portale verglichen, spare CHF ${profile.savingsPerHourChf}/h). ${profile.displayName} in ${profile.subareas.join(", ")}: Inkl. ${profile.includedServices.slice(0, 4).join(", ")}. Jetzt 3-Min. 1:1 Live-Cam Check oder Fixpreis buchen!`}
-        image={profile.thumbnail}
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Schweiz Escort-Index", item: "https://iwantsexnow.ch" },
-            { "@type": "ListItem", position: 2, name: `Escort ${profile.primaryCity} (${profile.canton})`, item: `https://iwantsexnow.ch/search?q=${encodeURIComponent(profile.primaryCity)}` },
-            { "@type": "ListItem", position: 3, name: `${profile.displayName} (${profile.age})`, item: `https://iwantsexnow.ch/profile/${encodeURIComponent(profile.displayName)}` }
-          ]
-        }}
+        title={profileData.cleanName + " in " + profileData.cleanCity + " (" + profileData.canton + ") – Status, Preis & Quellen | iwantsexnow.ch"}
+        description={"Profil von " + profileData.cleanName + " in " + profileData.cleanCity + " (" + profileData.canton + "). Prüfe Verfügbarkeit, veröffentlichte Preise und zugeordnete Quellen."}
       />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-serif font-black">
-            <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
-          </Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+      <StructuredSchema cityName={profileData.cleanCity} cantonCode={profileData.canton} />
+      <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
-          <Link href="/search" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white">
-            <ArrowLeft size={14} /> Zurück zur Schweizer Meta-Suche
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-8">
+        {/* Top Back Navigation + Context Help */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400 border-b border-white/10 pb-4">
+          <Link href="/" className="inline-flex items-center gap-1.5 font-bold text-white hover:text-[#C6A574]">
+            <ArrowLeft size={15} />
+            <span>Zurück zur Profilübersicht</span>
           </Link>
-          <Link href="/rankings" className="inline-flex items-center gap-1.5 text-xs text-[#D5A021] font-bold hover:underline">
-            <Star size={13} className="fill-[#D5A021]" /> ★ {profile.ratingScore.toFixed(1)}/10 ({allReviews.length} Erfahrungsberichte) →
-          </Link>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <XeniaDoubtTrigger topic="status" label="Status-Erklärung" />
+            <XeniaDoubtTrigger topic="price" label="Preis-Einordnung" />
+            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-7 space-y-6">
-            {/* Main Image + Multi-Photo Gallery Thumbnails */}
-            <div className="space-y-3">
-              <div className="relative rounded-2xl overflow-hidden border border-[#C69C6D]/40 bg-black/40 h-[460px] shadow-2xl">
-                <img src={activePhoto || profile.thumbnail} alt={profile.displayName} onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"; }} className="w-full h-full object-cover" />
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  <Badge className="bg-emerald-600 text-white border-0 px-3 py-1 text-xs font-bold flex items-center gap-1.5">
-                    <ShieldCheck size={14} /> ID & Rufnummer verifiziert
-                  </Badge>
-                  <Badge className="bg-[#0D1B2A]/90 border border-[#C69C6D] text-[#D5A021] px-3 py-1 text-xs font-bold flex items-center gap-1.5">
-                    <Star size={13} className="fill-[#D5A021]" /> {profile.ratingScore.toFixed(1)}/10 ({profile.reviewCount} Ratings)
-                  </Badge>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 bg-black/85 backdrop-blur-md border border-white/15 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
-                  <span className="text-emerald-300 font-semibold flex items-center gap-1.5">
-                    <Clock size={14} /> {profile.freshnessLabel}
+        {/* Main 2-Column Profile Dossier */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left 5 Columns: Portrait & Quick Trust Summary */}
+          <div className="lg:col-span-5 space-y-4">
+            <div className="relative aspect-[4/4.6] w-full rounded-2xl overflow-hidden bg-stone-900 border border-white/15 shadow-2xl">
+              <img
+                src={profileData.thumbnail || profileData.fallbackImg}
+                alt={profileData.cleanName + " – " + profileData.cleanCity}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = profileData.fallbackImg;
+                }}
+                className="w-full h-full object-cover object-top"
+              />
+
+              <div className="absolute top-4 left-4 flex flex-col gap-2">
+                {profileData.availabilityConfirmed ? (
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-bold shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                    Jetzt verfügbar
                   </span>
-                  <span className="text-amber-300 font-mono">
-                    <PhoneCall size={12} className="inline mr-1" />
-                    {profile.normalizedPhoneMask}
+                ) : profileData.isOnline ? (
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#253958] text-[#BFDBFE] border border-sky-400/40 text-xs font-bold shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-[#60A5FA]" />
+                    Online
                   </span>
-                </div>
+                ) : null}
               </div>
-
-              {profile.gallery.length > 1 && (
-                <div className="flex gap-2.5 overflow-x-auto pb-1">
-                  {profile.gallery.map((imgUrl, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setActivePhoto(imgUrl)}
-                      className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
-                        activePhoto === imgUrl ? "border-[#C69C6D] scale-105" : "border-white/15 opacity-70 hover:opacity-100"
-                      }`}
-                    >
-                      <img src={imgUrl} alt={`${profile.displayName} ${idx + 1}`} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
 
-            {/* Structured Profile Bio, Body Specs & Services */}
-            <Card className="bg-[#09131E] border border-white/15 p-6 rounded-2xl text-white space-y-5">
-              <div className="flex flex-wrap items-center justify-between gap-2">
+            {/* Provider Self-Service & Takedown Box (Section 4A & 7: "Ist das dein Profil?") */}
+            <div className="p-4 rounded-2xl bg-[#1A1E27] border border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-300">
+              <span>Ist das dein Profil?</span>
+              <div className="flex items-center gap-3 font-semibold">
+                <Link
+                  href={"/create-post?claim=" + encodeURIComponent(profileData.cleanName) + "&id=" + encodeURIComponent(profileData.id)}
+                  className="text-[#C6A574] hover:underline"
+                >
+                  Bestehendes Profil übernehmen →
+                </Link>
+                <span className="text-gray-600">|</span>
+                <Link
+                  href={"/report?name=" + encodeURIComponent(profileData.cleanName) + "&id=" + encodeURIComponent(profileData.id)}
+                  className="text-gray-400 hover:text-white inline-flex items-center gap-1"
+                >
+                  <Flag size={11} />
+                  <span>Melden / Entfernen</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Right 7 Columns: Evidence, Pricing, Sources & Contact Action */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Title, Location & Status Semantics */}
+            <div className="p-6 rounded-2xl bg-[#1C2029] border border-white/10 space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h1 className="text-3xl font-serif font-black">
-                    {profile.displayName}, {profile.age}
-                  </h1>
-                  <p className="text-sm text-[#D5A021] font-semibold mt-1 flex items-center gap-1.5">
-                    <MapPin size={15} /> {profile.subareas.join(" · ")} ({profile.canton})
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
+                      {profileData.cleanName}
+                    </h1>
+                    {profileData.isIdentityVerified && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#C6A574]/20 border border-[#C6A574]/50 text-[#E5C99B] text-xs font-bold">
+                        <Check size={12} /> Identität geprüft
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-300 flex items-center gap-1.5 mt-1">
+                    <MapPin size={15} className="text-[#C6A574]" />
+                    <span>
+                      {profileData.cleanCity} · Kanton {profileData.canton}
+                    </span>
                   </p>
                 </div>
-                <div className="text-xs text-gray-300 bg-black/40 px-3 py-2 rounded-xl border border-white/10">
-                  Treffpunkt: <strong>{profile.incall && profile.outcall ? "Incall & Hotel-Outcall" : "Hotel-Outcall"}</strong>
+
+                {profileData.rate ? (
+                  <div className="p-3 rounded-xl bg-[#13161C] border border-white/10 text-right">
+                    <div className="text-xl font-extrabold text-[#C6A574]">CHF {profileData.rate}</div>
+                    <div className="text-[11px] text-gray-400">{profileData.durationLabel}</div>
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-[#13161C] border border-white/10 text-right">
+                    <div className="text-sm font-bold text-gray-300">Keine Preisangabe</div>
+                    <div className="text-[11px] text-gray-500">Im Inserat nicht genannt</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Explicit Evidence Status Block (Matches Bild 1: Availability at a Glance) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10 text-xs">
+                <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/5 space-y-1">
+                  <div className="text-gray-400 flex items-center justify-between">
+                    <span>Verfügbarkeits-Status:</span>
+                    <XeniaDoubtTrigger topic="status" />
+                  </div>
+                  {profileData.availabilityConfirmed ? (
+                    <div className="font-bold text-[#22C55E] flex items-center gap-1.5">
+                      <Clock size={13} />
+                      <span>Bestätigt vor {profileData.confirmedMinutesAgo} Min. (aktiv für 4 Std.)</span>
+                    </div>
+                  ) : (
+                    <div className="font-semibold text-gray-300 flex items-center gap-1.5">
+                      <HelpCircle size={13} className="text-gray-400" />
+                      <span>Verfügbarkeit unbekannt (keine aktive Bestätigung)</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/5 space-y-1">
+                  <div className="text-gray-400 flex items-center justify-between">
+                    <span>Profil-Verwaltung & Herkunft:</span>
+                    <XeniaDoubtTrigger topic="source" />
+                  </div>
+                  {profileData.isSelfManaged ? (
+                    <div className="font-bold text-white flex items-center gap-1.5">
+                      <User size={13} className="text-[#C6A574]" />
+                      <span>Selbst verwaltetes Anbieterprofil</span>
+                    </div>
+                  ) : (
+                    <div className="font-semibold text-gray-300 flex items-center gap-1.5">
+                      <ExternalLink size={13} className="text-gray-400" />
+                      <span>Externe Quelle · {profileData.sourcePortal || "Portal-Index"}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Structured Attributes Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-black/40 p-3.5 rounded-xl border border-white/10 text-xs">
-                <div>
-                  <span className="text-gray-400 block">Grösse:</span>
-                  <strong className="text-white">{profile.height}</strong>
+              {/* Description & Tags */}
+              <div className="space-y-2.5 pt-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                  Angaben & Kategorien laut Profil
                 </div>
-                <div>
-                  <span className="text-gray-400 block">Oberweite:</span>
-                  <strong className="text-white">{profile.bust}</strong>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Sprachen:</span>
-                  <strong className="text-[#D5A021]">{profile.languages.join(", ")}</strong>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Quellen-Cluster:</span>
-                  <strong className="text-emerald-400">{profile.sourcesCount} Portal(e)</strong>
-                </div>
-              </div>
-
-              <div>
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#D5A021] mb-1.5">
-                  Über {profile.displayName} (Original-Beschreibung & Service-Profil):
-                </h2>
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed whitespace-pre-line">
-                  {profile.bio}
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-white/10">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2.5">
-                  ✓ Im Grundtarif garantiert inklusive & angebotene Services:
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {profile.includedServices.map((srv) => (
-                    <Badge key={srv} className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 text-xs px-3 py-1">
-                      ✓ {srv}
-                    </Badge>
+                <div className="flex flex-wrap gap-1.5">
+                  {profileData.tags.map((t: string, i: number) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 rounded-lg bg-[#13161C] border border-white/10 text-xs text-gray-200"
+                    >
+                      {t}
+                    </span>
                   ))}
                 </div>
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed pt-1">
+                  {profileData.bioText}
+                </p>
               </div>
-            </Card>
+            </div>
 
-            {/* LOCKED VIP CONTENT VAULT + 1:1 LIVE-CAM */}
-            <Card className="bg-gradient-to-br from-[#131F31] to-[#09131E] border-2 border-[#C69C6D]/60 p-6 rounded-2xl text-white space-y-4 shadow-2xl">
-              <div>
-                <Badge className="bg-[#C69C6D] text-[#0D1B2A] font-black mb-1.5">
-                  <Lock size={12} className="mr-1 inline" /> VIP Vorab-Tresor · Locked Content & 1:1 Live-Cam
-                </Badge>
-                <h2 className="text-xl font-serif font-black">
-                  Unzensierte Videos, Fotos & 1:1 Live-Cam vorab freischalten
-                </h2>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-wrap items-center justify-between gap-3">
-                <div className="text-xs">
-                  <span className="font-black text-rose-300 uppercase block">● LIVE · 3-Minuten 1:1 Video-Vibe-Check verfügbar</span>
-                  <span className="text-gray-300">Sieh {profile.displayName} jetzt live im privaten 1:1 Browser-Call (CHF 29 inkl. CHF 20 Buchungs-Gutschein)</span>
+            {/* MULTI-SOURCE COMPARISON BOX (Matches Bild 5 & Bild 10: "Ein Profil · mehrere Quellen") */}
+            <div className="p-6 rounded-2xl bg-[#1C2029] border border-white/10 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Layers size={16} className="text-[#C6A574]" />
+                  <h2 className="text-base sm:text-lg font-bold text-white">
+                    Zugeordnete Quellen & veröffentlichte Preise ({profileData.matchingSources.length})
+                  </h2>
                 </div>
-                <Button size="sm" className="bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shrink-0" asChild>
-                  <Link href={`/live-cam?provider=${encodeURIComponent(profile.displayName)}`}>🔴 1:1 Live-Cam starten</Link>
-                </Button>
+                <XeniaDoubtTrigger topic="price" label="Preise verstehen" />
               </div>
 
-              <div className="space-y-3">
-                {lockedVaultItems.map((item) => {
-                  const isUnlocked = unlockedMediaIds.includes(item.id);
-                  return (
-                    <div
-                      key={item.id}
-                      className={`p-4 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-                        isUnlocked
-                          ? "bg-emerald-950/50 border-emerald-400/60"
-                          : "bg-black/45 border-white/15 hover:border-[#C69C6D]/60"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div
-                          onClick={() => isUnlocked && setActiveViewerItem(item)}
-                          className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white/20 cursor-pointer"
-                        >
-                          <img
-                            src={item.previewImg}
-                            alt={item.title}
-                            className={`w-full h-full object-cover transition-all duration-500 ${
-                              isUnlocked ? "blur-0 scale-100" : "blur-md scale-110 brightness-75"
-                            }`}
-                          />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                            {isUnlocked ? (
-                              <Play size={22} className="text-emerald-400 fill-emerald-400" />
-                            ) : (
-                              <Lock size={20} className="text-[#D5A021]" />
-                            )}
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="font-bold text-sm text-white">{item.title}</div>
-                          <div className="text-xs text-gray-400 mt-0.5">{item.durationOrCount}</div>
-                          {isUnlocked && (
-                            <div className="text-xs text-emerald-300 font-bold mt-1">{item.unlockedCaption}</div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="shrink-0 flex sm:flex-col items-end justify-between gap-2">
-                        {isUnlocked ? (
-                          <Button
-                            size="sm"
-                            onClick={() => setActiveViewerItem(item)}
-                            className="bg-emerald-500 hover:bg-emerald-600 text-[#0D1B2A] font-black text-xs px-4"
-                          >
-                            <Eye size={13} className="mr-1.5" />
-                            Jetzt ansehen
-                          </Button>
+              <div className="divide-y divide-white/10 border border-white/10 rounded-xl overflow-hidden bg-[#13161C] text-xs">
+                {profileData.matchingSources.map((src: any, idx: number) => (
+                  <div key={idx} className="p-3.5 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <div className="font-bold text-white">{src.portal}</div>
+                      <div className="text-gray-400">{src.city}</div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        {src.rate ? (
+                          <span className="font-bold text-[#C6A574]">CHF {src.rate}</span>
                         ) : (
-                          <Button
-                            size="sm"
-                            onClick={() => handleUnlockMedia(item)}
-                            className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs px-4"
-                          >
-                            <Unlock size={13} className="mr-1.5" />
-                            Für CHF {item.priceChf} freischalten
-                          </Button>
+                          <span className="text-gray-500">Keine Preisangabe</span>
                         )}
                       </div>
+                      {src.url && src.url.startsWith("http") ? (
+                        <a
+                          href={src.url}
+                          target="_blank"
+                          rel="noreferrer nofollow"
+                          onClick={() => recordAction("track_source_out")}
+                          className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-[#C6A574] text-white hover:text-[#13161C] font-bold inline-flex items-center gap-1.5 transition"
+                        >
+                          <span>Original öffnen</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      ) : (
+                        <span className="px-3 py-1.5 rounded-lg bg-[#C6A574]/15 text-[#E5C99B] font-semibold">
+                          Aktuelle Ansicht
+                        </span>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-            </Card>
-
-            {/* Aggregated Cross-Portal Reviews & Rating History */}
-            <Card className="bg-[#09131E] border border-[#C69C6D]/40 p-6 rounded-2xl text-white space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-lg font-serif font-black text-[#D5A021] flex items-center gap-2">
-                  <MessageSquareQuote size={18} />
-                  Übernommene Bewertungen & Erfahrungsberichte ({allReviews.length})
-                </h2>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                  ★ {profile.ratingScore.toFixed(1)} / 10 Gesamtwertung
-                </Badge>
-              </div>
-
-              <div className="space-y-3">
-                {allReviews.map((rev, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-1.5 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white flex items-center gap-1.5">
-                        <UserCheck size={13} className="text-emerald-400" />
-                        {rev.author}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-white/10 text-gray-300 text-[10px]">
-                          Quelle: {rev.sourcePortal}
-                        </Badge>
-                        <span className="font-black text-[#D5A021]">★ {rev.rating}/10</span>
-                      </div>
-                    </div>
-                    <p className="text-gray-300 leading-relaxed">{rev.comment}</p>
-                    <div className="text-[10px] text-gray-500">{rev.date}</div>
                   </div>
                 ))}
               </div>
+            </div>
 
-              <form onSubmit={handleAddReview} className="pt-3 border-t border-white/10 space-y-2.5 text-xs">
-                <div className="font-bold text-[#D5A021]">Eigenen Erfahrungsbericht zu {profile.displayName} ergänzen:</div>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Dein Kommentar zu Foto-Echtheit, Service & Preis-Treue..."
-                    value={userComment}
-                    onChange={(e) => setUserComment(e.target.value)}
-                    required
-                    className="flex-1 rounded-xl bg-black/50 border border-white/20 px-3 py-2 text-xs text-white"
-                  />
-                  <select
-                    value={userRating}
-                    onChange={(e) => setUserRating(Number(e.target.value))}
-                    className="rounded-xl bg-black/50 border border-white/20 px-2.5 py-2 text-xs text-[#D5A021] font-bold"
-                  >
-                    <option value={10}>10/10</option>
-                    <option value={9}>9/10</option>
-                    <option value={8}>8/10</option>
-                  </select>
-                  <Button type="submit" size="sm" className="bg-[#C69C6D] text-[#0D1B2A] font-black text-xs">
-                    Posten
-                  </Button>
-                </div>
-              </form>
-            </Card>
-          </div>
+            {/* PRIMARY ACTION BOX: "Privat anfragen" (Self-Managed) vs. "Original ansehen" (External) */}
+            <div className="p-6 rounded-2xl bg-[#1C2029] border border-[#C6A574]/40 space-y-4">
+              {profileData.isSelfManaged ? (
+                <>
+                  <div className="space-y-1">
+                    <h2 className="text-lg font-serif font-bold text-white">
+                      Direktkontakt & Private Anfrage
+                    </h2>
+                    <p className="text-xs text-gray-300">
+                      Dieses Profil wird selbst verwaltet. Sie können direkt telefonisch Kontakt aufnehmen oder eine private Nachricht hinterlassen.
+                    </p>
+                  </div>
 
-          {/* Right 5 Columns: Sticky Calculator */}
-          <div className="lg:col-span-5">
-            <Card className="bg-[#09131E] border-2 border-[#C69C6D]/60 p-6 rounded-2xl text-white sticky top-24 shadow-2xl">
-              <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-2">
-                <Calculator size={13} className="mr-1 inline" /> Endpreis-Rechner & Sofort-Anfrage
-              </Badge>
-              <h2 className="text-2xl font-serif font-black">
-                {profile.displayName} zum Fixpreis buchen
-              </h2>
-
-              <div className="mt-4">
-                <label className="text-xs text-gray-300 font-bold block mb-2">1. Gewünschte Dauer wählen:</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {([
-                    { mins: 30 as const, label: "30 Min.", price: rate30 },
-                    { mins: 60 as const, label: "60 Min.", price: rate60 },
-                    { mins: 120 as const, label: "2 Stunden", price: rate120 },
-                  ]).map((d) => (
-                    <button
-                      key={d.mins}
-                      type="button"
-                      onClick={() => setDuration(d.mins)}
-                      className={`p-2.5 rounded-xl border text-center transition-all ${
-                        duration === d.mins
-                          ? "bg-[#C69C6D] text-[#0D1B2A] border-[#C69C6D] font-black"
-                          : "bg-white/5 border-white/15 text-gray-300 hover:border-white/30"
-                      }`}
+                  {profileData.rawPhone && (
+                    <a
+                      href={"tel:" + profileData.rawPhone}
+                      onClick={() => recordAction("track_contact")}
+                      className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#0F1218] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition"
                     >
-                      <div className="text-xs">{d.label}</div>
-                      <div className="text-sm font-black">CHF {d.price}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
+                      <Phone size={15} />
+                      <span>Direkt anrufen: {profileData.rawPhone}</span>
+                    </a>
+                  )}
 
-              <div className="mt-4">
-                <label className="text-xs text-gray-300 font-bold block mb-2">2. Optionale Zusatzwünsche:</label>
-                <div className="space-y-2">
-                  {optionalExtras.map((ext) => {
-                    const active = selectedExtraIds.includes(ext.id);
-                    return (
-                      <button
-                        key={ext.id}
-                        type="button"
-                        onClick={() => toggleExtra(ext.id)}
-                        className={`w-full p-2.5 rounded-xl border text-xs flex items-center justify-between transition-all ${
-                          active
-                            ? "bg-emerald-500/20 border-emerald-400 text-white"
-                            : "bg-white/5 border-white/10 text-gray-300"
-                        }`}
-                      >
-                        <span className="flex items-center gap-2 font-medium">
-                          <CheckCircle size={14} className={active ? "text-emerald-400" : "text-gray-500"} />
-                          {ext.label}
-                        </span>
-                        <span className="font-bold text-[#D5A021]">+CHF {ext.price}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-5 p-4 rounded-xl bg-white/5 border border-[#C69C6D]/30 space-y-1.5">
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Vergleichspreis auf Drittportalen:</span>
-                  <span className="line-through">CHF {thirdPartyComparison}</span>
-                </div>
-                {bundleDiscount > 0 && (
-                  <div className="flex justify-between text-xs text-emerald-400 font-bold">
-                    <span>VIP Media / Live-Cam Gutschein:</span>
-                    <span>-CHF {bundleDiscount}</span>
-                  </div>
-                )}
-                <div className="flex justify-between items-baseline">
-                  <span className="text-sm font-bold">Garantierter Komplettpreis:</span>
-                  <span className="text-3xl font-black text-[#D5A021]">CHF {totalCost}</span>
-                </div>
-              </div>
-
-              {submittedRef ? (
-                <div className="mt-5 p-4 rounded-xl bg-emerald-950/70 border border-emerald-400 text-center space-y-2">
-                  <CheckCircle size={28} className="text-emerald-400 mx-auto" />
-                  <div className="text-xs font-mono text-emerald-300">Referenz: {submittedRef}</div>
-                  <div className="font-black text-base">Buchungsanfrage verschlüsselt zugestellt!</div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSubmittedRef(null)}
-                    className="border-white/20 text-white mt-2"
-                  >
-                    Weitere Anfrage senden
-                  </Button>
-                </div>
+                  <p className="text-sm text-gray-300">Private Nachrichten sind nicht freigeschaltet. Es wird keine Anfrage übermittelt.</p>
+                </>
               ) : (
-                <form onSubmit={handleBookingSubmit} className="mt-4 space-y-3">
-                  <div>
-                    <label className="text-xs text-gray-300 block mb-1">Treffpunkt (Ort / Hotel / Studio)</label>
-                    <input
-                      type="text"
-                      value={meetingPlace}
-                      onChange={(e) => setMeetingPlace(e.target.value)}
-                      required
-                      className="w-full rounded-lg bg-black/40 border border-white/20 px-3 py-2 text-sm text-white"
-                    />
+                <div className="space-y-3">
+                  <h2 className="text-lg font-serif font-bold text-white">
+                    Externer Quelleneintrag ({profileData.sourcePortal || "Verzeichnis"})
+                  </h2>
+                  <p className="text-xs text-gray-300 leading-relaxed">
+                    Dieser Eintrag wurde noch nicht vom Anbieter selbst übernommen. Die Kontaktaufnahme erfolgt deshalb direkt über das ursprüngliche Inserat.
+                  </p>
+                  <div className="flex flex-wrap gap-3 pt-1">
+                    {profileData.sourceUrl && (
+                      <a
+                        href={profileData.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer nofollow"
+                        onClick={() => recordAction("track_source_out")}
+                        className="px-6 py-3 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-bold text-xs inline-flex items-center gap-2 shadow"
+                      >
+                        <span>Original ansehen ({profileData.sourcePortal || "Quelle"})</span>
+                        <ExternalLink size={14} />
+                      </a>
+                    )}
+                    <Link
+                      href={"/create-post?claim=" + encodeURIComponent(profileData.cleanName) + "&id=" + encodeURIComponent(profileData.id)}
+                      className="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold text-gray-200"
+                    >
+                      Mein Profil? Kostenlos übernehmen →
+                    </Link>
                   </div>
-                  <div>
-                    <label className="text-xs text-gray-300 block mb-1">Wunschzeitpunkt</label>
-                    <input
-                      type="text"
-                      value={meetingTime}
-                      onChange={(e) => setMeetingTime(e.target.value)}
-                      required
-                      className="w-full rounded-lg bg-black/40 border border-white/20 px-3 py-2 text-sm text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-gray-300 block mb-1">Kontakt für Rückbestätigung (WhatsApp / Signal / SMS / Threema)</label>
-                    <input
-                      type="text"
-                      placeholder="+41 79 ... oder Threema-ID"
-                      value={contactInfo}
-                      onChange={(e) => setContactInfo(e.target.value)}
-                      required
-                      className="w-full rounded-lg bg-black/40 border border-white/20 px-3 py-2 text-sm text-white"
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6 text-base shadow-xl"
-                  >
-                    <Send size={16} className="mr-2" />
-                    Jetzt zum Fixpreis (CHF {totalCost}) anfragen
-                  </Button>
-                </form>
+                </div>
               )}
-            </Card>
+            </div>
           </div>
         </div>
       </main>
-
-      {/* MOBILE STICKY BOTTOM ACTION BAR (80% Mobile Conversion Booster) */}
-      <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-[#07101A]/95 backdrop-blur-xl border-t-2 border-[#C69C6D] px-4 py-3 flex items-center justify-between gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
-        <div>
-          <div className="text-[10px] text-gray-300 uppercase font-bold">
-            Fixpreis ({duration} Min. inkl. Extras)
-          </div>
-          <div className="text-xl font-black text-[#D5A021] leading-none mt-0.5">
-            CHF {totalCost}{" "}
-            <span className="text-[11px] text-emerald-400 font-bold ml-1">✓ 0% Aufpreis</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button size="sm" className="bg-rose-600 hover:bg-rose-700 text-white font-black text-xs px-3 h-10" asChild>
-            <Link href={`/live-cam?provider=${encodeURIComponent(profile.displayName)}`}>
-              🔴 Cam
-            </Link>
-          </Button>
-          <Button
-            size="sm"
-            className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs px-4 h-10 shadow-lg"
-            asChild
-          >
-            <Link
-              href={`/booking-confirmation?provider=${encodeURIComponent(
-                profile.displayName
-              )}&city=${encodeURIComponent(profile.primaryCity)}&duration=${duration}&total=${totalCost}&extras=${encodeURIComponent(
-                [...profile.includedServices, ...selectedExtraIds].slice(0, 4).join(", ")
-              )}`}
-            >
-              Jetzt buchen →
-            </Link>
-          </Button>
-        </div>
-      </div>
-
-      {activeViewerItem && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="bg-[#09131E] border-2 border-[#C69C6D] rounded-2xl max-w-3xl w-full p-6 text-white space-y-5 shadow-2xl relative">
-            <button
-              type="button"
-              onClick={() => setActiveViewerItem(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
-              <X size={22} />
-            </button>
-            <div className="flex items-center gap-2">
-              <Badge className="bg-emerald-500 text-[#0D1B2A] font-black">✓ VIP MEDIA UNLOCKED</Badge>
-              <span className="text-xs text-[#D5A021] font-bold">Originalaufnahme von {profile.displayName}</span>
-            </div>
-            <h3 className="text-xl font-serif font-black">{activeViewerItem.title}</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="relative h-72 rounded-xl overflow-hidden border border-[#C69C6D]/40">
-                <img src={profile.thumbnail} alt={profile.displayName} className="w-full h-full object-cover" />
-                <div className="absolute bottom-3 left-3 bg-black/80 px-3 py-1 rounded-full text-xs text-emerald-300 font-bold flex items-center gap-1.5">
-                  <Sparkles size={13} /> 4K Original-Auflösung
-                </div>
-              </div>
-              <div className="flex flex-col justify-between bg-black/40 p-4 rounded-xl border border-white/10 text-xs space-y-3">
-                <p className="text-gray-300 leading-relaxed">
-                  Dieses Medium wurde von <strong>{profile.displayName}</strong> verifiziert.
-                </p>
-                <Button onClick={() => setActiveViewerItem(null)} className="w-full bg-[#C69C6D] text-[#0D1B2A] font-black">
-                  Schliessen & zum Fixpreis buchen
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <CorporateFooter />
     </div>
   );
+}
+
+export async function getServerSideProps(context: { params?: { id?: string } }) {
+  const id = context.params?.id;
+  if (!id || !HARVESTED_SWISS_OFFERS.some(item => item.id === id)) return { notFound: true };
+  return { props: {} };
 }

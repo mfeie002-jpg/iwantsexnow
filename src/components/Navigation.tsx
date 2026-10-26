@@ -1,106 +1,33 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import {
-  Search,
-  SlidersHorizontal,
-  MapPin,
-  PlusCircle,
-  Trophy,
-  KeyRound,
-  Video,
-  HelpCircle,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronDown, PlusCircle } from "lucide-react";
 
 export function Navigation() {
-  const router = useRouter();
-  const isActive = (path: string) =>
-    router.pathname === path || router.pathname.startsWith(path + "/");
-
-  const getLinkClass = (path: string) => {
-    const base = "px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ";
-    return base + (isActive(path) ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-200 hover:bg-white/10");
-  };
-
   return (
-    <nav className="flex items-center gap-1.5 xl:gap-2">
-      <Link href="/search" className={getLinkClass("/search")}>
-        <Search size={14} className={isActive("/search") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
-        <span>Suche</span>
+    <nav className="hidden lg:flex items-center gap-4 text-xs font-semibold text-gray-200">
+      <Link href="/search" className="px-3 py-1.5 rounded-lg hover:bg-white/5 hover:text-[#C8A97E] transition">
+        Escorts & Filter
       </Link>
-
-      <Link href="/compare-escorts" className={getLinkClass("/compare-escorts")}>
-        <SlidersHorizontal size={14} className={isActive("/compare-escorts") ? "text-[#0D1B2A]" : "text-emerald-400"} />
-        <span>Endpreis-Matrix</span>
+      <Link href="/escort-zurich" className="px-3 py-1.5 rounded-lg hover:bg-white/5 hover:text-[#C8A97E] transition">
+        Zürich & Zug
       </Link>
-
+      <Link href="/rankings" className="px-3 py-1.5 rounded-lg hover:bg-white/5 hover:text-[#C8A97E] transition">
+        Clubs & Studios
+      </Link>
+      <Link href="/reviews" className="px-3 py-1.5 rounded-lg hover:bg-white/5 hover:text-[#C8A97E] transition">
+        Portal-Reviews
+      </Link>
+      <Link href="/live-cam" className="px-3 py-1.5 rounded-lg text-rose-300 hover:bg-rose-500/10 transition">
+        1:1 Live-Cam
+      </Link>
+      <Link href="/advertise" className="px-3 py-1.5 rounded-lg text-[#C8A97E] hover:underline transition">
+        Für Models (1. Monat Gratis)
+      </Link>
       <Link
-        href="/live-cam"
-        className={
-          isActive("/live-cam")
-            ? "px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-rose-600 text-white"
-            : "px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all text-gray-200 hover:bg-white/10"
-        }
+        href="/create-post"
+        className="inline-flex items-center gap-1.5 rounded-lg bg-[#C8A97E] px-3.5 py-2 text-xs font-bold text-[#090A0F]"
       >
-        <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
-        <Video size={14} className="text-rose-400" />
-        <span>1:1 Live-Cam</span>
+        <PlusCircle size={14} /> Inserat / Claim
       </Link>
-
-      <Link href="/rankings" className={getLinkClass("/rankings")}>
-        <Trophy size={14} className={isActive("/rankings") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
-        <span>Bestenliste</span>
-      </Link>
-
-      <Link href="/guides" className={getLinkClass("/guides")}>
-        <HelpCircle size={14} className={isActive("/guides") ? "text-[#0D1B2A]" : "text-emerald-400"} />
-        <span>Guides & Hilfe</span>
-      </Link>
-
-      <Link href="/hotels" className={getLinkClass("/hotels")}>
-        <MapPin size={14} className={isActive("/hotels") ? "text-[#0D1B2A]" : "text-emerald-400"} />
-        <span>Hotels & Day-Use</span>
-      </Link>
-
-      <Link href="/escort-zurich" className={getLinkClass("/escort-zurich")}>
-        <MapPin size={14} className={isActive("/escort-zurich") ? "text-[#0D1B2A]" : "text-[#D5A021]"} />
-        <span>Zürich & Zug</span>
-      </Link>
-
-      <Link
-        href="/login"
-        className="px-2.5 py-2 rounded-xl text-xs font-bold text-gray-200 hover:bg-white/10 flex items-center gap-1.5 border border-white/15"
-      >
-        <KeyRound size={13} className="text-[#D5A021]" />
-        <span>Login</span>
-      </Link>
-
-      <Button
-        size="sm"
-        className="bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs px-3 h-9 shadow-lg"
-        asChild
-      >
-        <Link href="/create-post">
-          <PlusCircle size={14} className="mr-1" />
-          Claim
-        </Link>
-      </Button>
-
-      <Link
-        href="/guides/english-tourist-expat-escort-guide-switzerland"
-        title="English Guide for Tourists & Expats in Switzerland"
-        className="px-2 py-1.5 rounded-lg text-[10px] font-black bg-[#C69C6D]/15 hover:bg-[#C69C6D] text-[#D5A021] hover:text-[#0D1B2A] border border-[#C69C6D]/40 transition-all"
-      >
-        🇬🇧 EN
-      </Link>
-
-      <a
-        href="https://www.sbb.ch"
-        title="Diskreter Quick-Exit (Sofort zu SBB.ch wechseln)"
-        className="px-2 py-1.5 rounded-lg text-[10px] font-black bg-white/5 hover:bg-rose-600/80 text-gray-400 hover:text-white border border-white/10 transition-all"
-      >
-        ESC
-      </a>
     </nav>
   );
 }

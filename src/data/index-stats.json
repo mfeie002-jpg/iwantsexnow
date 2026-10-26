@@ -1,8 +1,9 @@
 {
-  "updatedAt": "2026-10-25T07:12:18.351Z",
+  "updatedAt": "2026-10-25T20:07:14.326Z",
   "portalsIndexed": 27,
-  "totalRawListingsInVault": 7021,
-  "totalEstablishmentsInVault": 216,
+  "totalRawListingsInVault": 5576,
+  "totalEstablishmentsInVault": 162,
   "uniqueFrontendProfiles": 650,
-  "unlockedRealPhones": 568
+  "unlockedRealPhones": 706,
+  "mobileWhatsappReadyPhones": 689
 }

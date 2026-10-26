@@ -1,6 +1,7 @@
+import { BrandLogo } from "@/components/BrandLogo";
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
@@ -43,9 +44,7 @@ export default function FavoritesShortlistPage() {
       />
       <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-serif font-black">
-            <span>iWant</span><span className="text-[#D5A021]">Sex</span><span>Now</span><span className="text-[#C69C6D] text-sm font-sans">.ch</span>
-          </Link>
+          <Link href="/"><BrandLogo compact /></Link>
           <div className="hidden lg:block"><Navigation /></div>
           <MobileNav />
         </div>
