@@ -152,6 +152,27 @@ export default function ProfileDetailPage() {
     };
   }, [rawId, serverData]);
 
+  if (!profileData || profileData.hidden || profileData.paused) {
+    return (
+      <div className="min-h-screen bg-[#13161C] text-white flex flex-col justify-between">
+        <SEO title="Profil nicht gefunden | iwantsexnow.ch" noindex />
+        <LuxuryHeader />
+        <main className="max-w-xl mx-auto px-6 py-20 text-center space-y-4">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+            Dieser Eintrag ist nicht (mehr) verfügbar
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+            Unter der angefragten Kennung wurde kein aktives öffentliches Profil gefunden. Es wird aus Sicherheitsgründen kein Ersatzprofil angezeigt.
+          </p>
+          <Link href="/" className="inline-block px-6 py-3 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs uppercase tracking-wider">
+            Zurück zur Übersicht →
+          </Link>
+        </main>
+        <CorporateFooter />
+      </div>
+    );
+  }
+
   const recordAction = (action: string) => {
     fetch("/api/vault/metrics", {
       method: "POST",

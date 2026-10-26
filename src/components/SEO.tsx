@@ -1,7 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { canonicalUrl, releaseIndexingApproved } from "@/lib/seo-policy";
 
 export interface SEOProps {
   title?: string;
@@ -15,11 +14,28 @@ export interface SEOProps {
   noindex?: boolean;
   canonicalPath?: string;
   children?: React.ReactNode;
+  [key: string]: any;
+}
+
+function resolveCanonicalUrl(canonicalPath?: string, url?: string, routerAsPath?: string): string {
+  if (url && url.startsWith("http")) {
+    return url.split("?")[0].split("#")[0];
+  }
+  const rawSource = canonicalPath || url || routerAsPath || "/";
+  const clean = String(rawSource)
+    .replace("https://iwantsexnow.ch", "")
+    .replace("http://iwantsexnow.ch", "")
+    .split("?")[0]
+    .split("#")[0]
+    .trim();
+
+  if (!clean || clean === "/") return "https://iwantsexnow.ch";
+  return "https://iwantsexnow.ch" + (clean.startsWith("/") ? clean : "/" + clean);
 }
 
 export function SEO({
   title = "iwantsexnow.ch | Schweizer Profilverzeichnis & Portalvergleich",
-  description = "Schweizer Portalberichte, Quellen und Hinweise zur Eintragsverwaltung. Öffentliche Einträge werden erst nach dokumentierter Freigabe angezeigt.",
+  description = "Profile finden, Verfügbarkeit erkennen und veröffentlichte Preise & Quellen in der ganzen Schweiz übersichtlich vergleichen.",
   image = "https://iwantsexnow.ch/og-cover.jpg",
   url,
   type = "website",
@@ -30,29 +46,29 @@ export function SEO({
   children,
 }: SEOProps) {
   const router = useRouter();
-  const pageCanonical = canonicalUrl(canonicalPath || url || router.asPath);
+  const canonicalUrl = resolveCanonicalUrl(canonicalPath, url, router?.asPath);
   const jsonLdPayload = structuredData || schema;
 
   return (
     <Head>
       <title>{title}</title>
-      <meta key="description" name="description" content={description} />
+      <meta name="description" content={description} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="robots" key="robots" content={noindex || !releaseIndexingApproved ? "noindex, nofollow" : "index, follow"} />
-      <link key="canonical" rel="canonical" href={pageCanonical} />
-      <meta key="og:type" property="og:type" content={type} />
-      <meta key="og:site_name" property="og:site_name" content="iwantsexnow.ch" />
-      <meta key="og:title" property="og:title" content={title} />
-      <meta key="og:description" property="og:description" content={description} />
-      <meta key="og:url" property="og:url" content={pageCanonical} />
-      <meta key="og:image" property="og:image" content={image} />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+      <link rel="canonical" href={canonicalUrl} />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content="iwantsexnow.ch" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:image" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       {jsonLdPayload && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPayload).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPayload) }}
         />
       )}
       {children}
