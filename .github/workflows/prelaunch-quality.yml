@@ -19,6 +19,8 @@ jobs:
         with:
           node-version: "22"
           cache: npm
+      - name: Reject committed merge conflict markers
+        run: node scripts/check-conflict-markers.cjs
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
       - name: Dependency audit

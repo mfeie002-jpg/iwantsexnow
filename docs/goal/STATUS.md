@@ -66,7 +66,7 @@ GitHub read/write, GSC and Firecrawl work. GSC Web property `sc-domain:iwantsexn
 
 ## Concurrent writer reconciliation
 
-After P0 production acceptance, a parallel merge `22e5c228…` put 13 unresolved conflict blocks into favicon, BrandLogo and homepage on main. The follow-up repair keeps only the already reviewed P0 side of those conflict blocks: the complete source tree before receipt additions matches `a646abac…` exactly. Historical design commits are retained in Git; no conflicting main was deployed by this run. See the [receipt](production-p0-receipt-20261026.md#concurrent-merge-repair). The same existing CI verifies the repair before merge.
+After P0 production acceptance, a parallel merge `22e5c228…` put 13 unresolved conflict blocks into favicon, BrandLogo and homepage on main. The follow-up repair keeps only the already reviewed P0 side of those conflict blocks: the complete source tree before receipt additions matches `a646abac…` exactly. Historical design commits are retained in Git; no conflicting main was deployed by this run. See the [receipt](production-p0-receipt-20261026.md#concurrent-merge-repair). The existing CI verifies the repair before merge. A dependency-free tracked-source/asset guard now rejects unresolved merge markers before installation/compilation; it prints filenames only.
 
 ## Recovery boundary
 

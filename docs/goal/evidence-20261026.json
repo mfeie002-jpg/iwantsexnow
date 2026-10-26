@@ -170,6 +170,7 @@
     "resolution": "choose the reviewed P0 incoming side of each conflict; all three files exactly match approved e08451b blobs",
     "repairedApplicationTreeBeforeReceipts": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43",
     "historyPreserved": true,
-    "unsafeMainNotDeployedByThisRun": true
+    "unsafeMainNotDeployedByThisRun": true,
+    "futureGuard": "scripts/check-conflict-markers.cjs, before install/build; tracked source/assets; filenames-only output"
   }
 }
