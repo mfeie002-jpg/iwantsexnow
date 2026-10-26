@@ -31,6 +31,7 @@ const CHAMPAGNE_BOKEH: BubbleSpec[] = [
 export function VelvetBackdrop() {
   const [scrollY, setScrollY] = useState(0);
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     let rafId = 0;
@@ -49,7 +50,12 @@ export function VelvetBackdrop() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    if (window.innerWidth >= 768) {
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
+    }
     onScroll();
 
     return () => {
@@ -169,7 +175,7 @@ export function VelvetBackdrop() {
       {/* Gleiten beim Scrollen unterschiedlich schnell nach oben!          */}
       {/* ================================================================= */}
       <div className="absolute inset-0">
-        {CHAMPAGNE_BOKEH.map((b) => {
+        {(isMobile ? CHAMPAGNE_BOKEH.slice(0, 6) : CHAMPAGNE_BOKEH).map((b) => {
           const yOffset = ((b.top - scrollY * b.speed) % 1250 + 1250) % 1250 - 120;
           const xOffset = pointer.x * 18 * b.depth;
           return (

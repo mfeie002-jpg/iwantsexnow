@@ -34,7 +34,8 @@ export function LuxuryHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#12151C]/95 backdrop-blur-xl text-white">
+      <>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#12151C]/95 backdrop-blur-xl text-white">
         <div className="max-w-[1380px] mx-auto px-6 sm:px-10 h-14 sm:h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group shrink-0">
@@ -201,6 +202,45 @@ export function LuxuryHeader() {
           </div>
         )}
       </header>
+
+      {/* Fixed Mobile Thumb Navigation Bar (Only < md) */}
+      <nav
+        aria-label="Mobile Schnellnavigation"
+        className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-[#0E1017]/95 backdrop-blur-xl border-t border-[#C6A574]/30 px-2 pt-1.5 pb-[calc(0.4rem+env(safe-area-inset-bottom,0px))] shadow-[0_-10px_30px_rgba(0,0,0,0.75)]"
+      >
+        <div className="grid grid-cols-4 gap-1 max-w-md mx-auto">
+          <Link
+            href="/"
+            className="min-h-[44px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-[#F3E3C3] hover:bg-white/5 active:scale-95 transition"
+          >
+            <span className="text-[#C6A574] text-xs">✦</span>
+            <span>Profile</span>
+          </Link>
+          <Link
+            href="/compare-escorts"
+            className="min-h-[44px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-gray-300 hover:text-white hover:bg-white/5 active:scale-95 transition"
+          >
+            <span className="text-[#C6A574] text-xs">⇄</span>
+            <span>Vergleich</span>
+          </Link>
+          <Link
+            href="/reviews"
+            className="min-h-[44px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-gray-300 hover:text-white hover:bg-white/5 active:scale-95 transition"
+          >
+            <span className="text-[#C6A574] text-xs">◎</span>
+            <span>Portale</span>
+          </Link>
+          <Link
+            href="/creator-dashboard"
+            className="min-h-[44px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-[#13161C] bg-[#C6A574] active:scale-95 transition shadow-md"
+          >
+            <span className="text-xs font-extrabold">●</span>
+            <span>Cockpit</span>
+          </Link>
+        </div>
+      </nav>
+
+    </>
 
       <div className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/15 bg-[#12151C]/95 backdrop-blur-xl px-1 pt-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))] grid grid-cols-4 gap-1 text-[10px] font-semibold text-gray-400">
         <Link href="/" className={router.pathname === "/" ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>

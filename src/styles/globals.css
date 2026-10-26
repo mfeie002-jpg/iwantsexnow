@@ -120,3 +120,29 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+
+/* === MOBILE UX, SAFE-AREA & TOUCH PERFECTION === */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (max-width: 767px) {
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Verhindert iOS Safari Auto-Zoom beim Antippen */
+  }
+}
+
+.pb-safe-bottom {
+  padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+}
