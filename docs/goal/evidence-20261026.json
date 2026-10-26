@@ -171,6 +171,15 @@
     "repairedApplicationTreeBeforeReceipts": "a646abac25f6c3b17c6cddb269ccb89dca3e1f43",
     "historyPreserved": true,
     "unsafeMainNotDeployedByThisRun": true,
-    "futureGuard": "scripts/check-conflict-markers.cjs, before install/build; tracked source/assets; filenames-only output"
+    "futureGuard": "scripts/check-conflict-markers.cjs, before install/build; tracked source/assets; filenames-only output",
+    "repairPr": 17,
+    "repairMergedAs": "f7b220f6b69a867d1ebae48b4164d8e77b163075",
+    "repairCI": {
+      "runId": 40295466920,
+      "head": "128dec739f2b9c80d7a536868e710a3a122efacb",
+      "stepsSucceeded": 27,
+      "conclusion": "success"
+    },
+    "finalApplicationDiffFromDeployedSource": "none; docs/CI/guard only"
   }
 }
