@@ -2,6 +2,8 @@
 
 26 October 2026 · Europe/Zurich · canonical repository `mfeie002-jpg/iwantsexnow`.
 
+**Later source continuation:** main advanced to `e40e0a149e5328904cf42855041fc12ae8710048` through another writer. The earlier P0 production receipt below is historical and is not acceptance of that later source. A separate security candidate restores the legacy metrics boundary and repairs a missing lockfile peer entry; 63 targeted security/storage tests, lint and TypeScript pass locally. See [source regression evidence](security-regression-20261026.md). No production rollout or completion of Phase B is claimed.
+
 **Current result: the approved P0 production package is applied, merged and live. The full Goal is not complete.** The supplied Goal and Masterplan remain the work order.
 
 ## Verified delivery

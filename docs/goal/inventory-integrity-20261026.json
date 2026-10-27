@@ -1,0 +1,44 @@
+{
+  "auditedSourceCommit": "e40e0a149e5328904cf42855041fc12ae8710048",
+  "countingUnit": "source observations; never verified people or independently verified establishments",
+  "liveSourceAvailabilityChecked": false,
+  "imageRightsOrCurrentImageAvailabilityChecked": false,
+  "inventories": [
+    {
+      "file": "harvested-offers.json",
+      "rows": 650,
+      "distinctSourceUrlStrings": 646,
+      "rowsWithoutHttpSourceUrl": 0,
+      "exampleHostRows": 1,
+      "missingThumbnailRows": 150,
+      "gitBlob": "8f18ab3a8feddab9df0f71debc28aba1255ba417"
+    },
+    {
+      "file": "swiss-establishments-vault.json",
+      "rows": 162,
+      "distinctSourceUrlStrings": 162,
+      "rowsWithoutHttpSourceUrl": 0,
+      "exampleHostRows": 0,
+      "missingThumbnailRows": null,
+      "gitBlob": "194938391790b2529ec2aa31534aae76db4d3539"
+    },
+    {
+      "file": "approved-public-offers.json",
+      "rows": 0,
+      "distinctSourceUrlStrings": 0,
+      "rowsWithoutHttpSourceUrl": 0,
+      "exampleHostRows": 0,
+      "missingThumbnailRows": null,
+      "gitBlob": "fe51488c7066f6687ef680d6bfaa4f7768ef205c"
+    },
+    {
+      "file": "rosalon-scale-vault.jsonl",
+      "rows": 5576,
+      "distinctSourceUrlStrings": 3367,
+      "rowsWithoutHttpSourceUrl": 0,
+      "exampleHostRows": 10,
+      "missingThumbnailRows": 1033,
+      "gitBlob": "8c2974d7175b4997b7911b6fc096d4746fabd00f"
+    }
+  ]
+}
