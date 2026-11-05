@@ -21,7 +21,13 @@ export default function AdminDashboardPage() {
 
   const [copiedSlot, setCopiedSlot] = useState<number | null>(null);
   const [filterCanton, setFilterCanton] = useState<"ALL" | "ZG" | "ZH">("ALL");
-  const [adminTab, setAdminTab] = useState<"pilots" | "verifications" | "leads" | "takedowns">("pilots");
+  const [adminTab, setAdminTab] = useState<"pilots" | "verifications" | "leads" | "takedowns" | "scraper">("pilots");
+  const [scrapeUrl, setScrapeUrl] = useState("");
+  const [scrapeCanton, setScrapeCanton] = useState("ZG");
+  const [scrapePhone, setScrapePhone] = useState("");
+  const [scrapeRate60, setScrapeRate60] = useState("");
+  const [scrapeLoading, setScrapeLoading] = useState(false);
+  const [scrapedResult, setScrapedResult] = useState<any>(null);
   const [toast, setToast] = useState<string | null>(null);
 
   const fetchAdminState = async (pinToUse: string) => {
@@ -130,6 +136,111 @@ export default function AdminDashboardPage() {
               Steuerpult entsperren →
             </button>
           </form>
+          {adminTab === "scraper" && (
+            <div className="bg-[#121722] border border-emerald-500/40 rounded-2xl p-6 space-y-5">
+              <div>
+                <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">
+                  DIREKTER SCHWEIZER LIVE-HARVESTER · MIT 5-STUFEN QUALITY-GATE (100–1200 CHF & OPT-OUT-SCHUTZ)
+                </div>
+                <h2 className="text-xl font-serif font-bold text-white mt-1">
+                  Einzel-Inserat oder Studio-URL live scrapen & in den Index aufnehmen
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <input
+                  type="url"
+                  value={scrapeUrl}
+                  onChange={(e) => setScrapeUrl(e.target.value)}
+                  placeholder="https://... (Schweizer Inserate- oder Studio-URL)"
+                  className="sm:col-span-2 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-xs text-white"
+                />
+                <select
+                  value={scrapeCanton}
+                  onChange={(e) => setScrapeCanton(e.target.value)}
+                  className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-3 text-xs text-white"
+                >
+                  {["ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
+                    <option key={c} value={c}>Fallback-Kanton: {c}</option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  disabled={scrapeLoading || !scrapeUrl}
+                  onClick={async () => {
+                    setScrapeLoading(true);
+                    setScrapedResult(null);
+                    try {
+                      const r = await fetch("/api/indexer/import", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "x-admin-pin": activePin },
+                        body: JSON.stringify({
+                          action: "scrape_url",
+                          url: scrapeUrl,
+                          canton: scrapeCanton,
+                          customPhone: scrapePhone || undefined,
+                          customRate60: scrapeRate60 ? Number(scrapeRate60) : undefined,
+                        }),
+                      });
+                      const d = await r.json();
+                      if (d?.ok) {
+                        setScrapedResult(d.profile);
+                        setToast(`✓ Profil "${d.profile.rawName}" (${d.profile.city}, ${d.profile.canton}) erfolgreich gescrapt & indexiert!`);
+                        await fetchAdminState(activePin);
+                      } else {
+                        setToast(`⚠️ ${d?.error || "Scraping-Fehler"}`);
+                      }
+                    } catch {
+                      setToast("⚠️ Netzwerkfehler beim URL-Scraping.");
+                    }
+                    setScrapeLoading(false);
+                  }}
+                  className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
+                >
+                  {scrapeLoading ? "Scrape läuft..." : "🕷️ Jetzt live scrapen →"}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  value={scrapePhone}
+                  onChange={(e) => setScrapePhone(e.target.value)}
+                  placeholder="Optional: +41 79 ... manuell vorgeben (falls nicht im HTML)"
+                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                />
+                <input
+                  type="number"
+                  value={scrapeRate60}
+                  onChange={(e) => setScrapeRate60(e.target.value)}
+                  placeholder="Optional: 60-Min.-Preis in CHF (100–1200)"
+                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                />
+              </div>
+
+              {scrapedResult && (
+                <div className="p-4 rounded-xl bg-[#0D111A] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4 text-xs">
+                  <div className="space-y-1">
+                    <div className="font-bold text-white text-sm">
+                      ✓ Neu im Index: {scrapedResult.rawName} ({scrapedResult.city}, {scrapedResult.canton})
+                    </div>
+                    <div className="text-gray-300">
+                      ID: <code>{scrapedResult.id}</code> · Telefon: <strong className="text-emerald-400">{scrapedResult.rawPhone || "k.A."}</strong> · Preis: <strong className="text-[#C8A97E]">{scrapedResult.priceLabel}</strong>
+                    </div>
+                    <div className="text-gray-400">
+                      Attribute: {scrapedResult.age} J. · {scrapedResult.heightCm} cm · Cup {scrapedResult.cupSize} · Rubrik: {scrapedResult.rubric}
+                    </div>
+                  </div>
+                  <Link
+                    href={`/profile/${encodeURIComponent(scrapedResult.id)}`}
+                    className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold"
+                  >
+                    Live-Profil öffnen ↗
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </main>
       ) : (
         <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
@@ -188,11 +299,12 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#121722] p-2 rounded-2xl border border-white/10">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-[#121722] p-2 rounded-2xl border border-white/10">
             <button type="button" onClick={() => setAdminTab("pilots")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "pilots" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>1. Pilot-20 & Live-Schalter (ZG/ZH)</button>
             <button type="button" onClick={() => setAdminTab("verifications")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "verifications" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>2. Identitäts-Prüfungen ({verificationRequests.length})</button>
             <button type="button" onClick={() => setAdminTab("leads")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "leads" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>3. Kunden-Anfragen / Leads ({enquiries.length})</button>
-            <button type="button" onClick={() => setAdminTab("takedowns")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "takedowns" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>4. Opt-Outs & Meldungen ({takedowns.length})</button>
+            <button type="button" onClick={() => setAdminTab("takedowns")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "takedowns" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>4. Opt-Outs ({takedowns.length})</button>
+            <button type="button" onClick={() => setAdminTab("scraper")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "scraper" ? "bg-emerald-500 text-[#07120B]" : "text-emerald-300 hover:bg-white/5"}`}>5. 🕷️ Live-URL Scraper</button>
           </div>
 
           {adminTab === "pilots" && (
@@ -314,6 +426,111 @@ export default function AdminDashboardPage() {
                       <span className="px-3 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold">{t.status}</span>
                     </div>
                   ))}
+                </div>
+              )}
+            </div>
+          )}
+          {adminTab === "scraper" && (
+            <div className="bg-[#121722] border border-emerald-500/40 rounded-2xl p-6 space-y-5">
+              <div>
+                <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">
+                  DIREKTER SCHWEIZER LIVE-HARVESTER · MIT 5-STUFEN QUALITY-GATE (100–1200 CHF & OPT-OUT-SCHUTZ)
+                </div>
+                <h2 className="text-xl font-serif font-bold text-white mt-1">
+                  Einzel-Inserat oder Studio-URL live scrapen & in den Index aufnehmen
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <input
+                  type="url"
+                  value={scrapeUrl}
+                  onChange={(e) => setScrapeUrl(e.target.value)}
+                  placeholder="https://... (Schweizer Inserate- oder Studio-URL)"
+                  className="sm:col-span-2 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-xs text-white"
+                />
+                <select
+                  value={scrapeCanton}
+                  onChange={(e) => setScrapeCanton(e.target.value)}
+                  className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-3 text-xs text-white"
+                >
+                  {["ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
+                    <option key={c} value={c}>Fallback-Kanton: {c}</option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  disabled={scrapeLoading || !scrapeUrl}
+                  onClick={async () => {
+                    setScrapeLoading(true);
+                    setScrapedResult(null);
+                    try {
+                      const r = await fetch("/api/indexer/import", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "x-admin-pin": activePin },
+                        body: JSON.stringify({
+                          action: "scrape_url",
+                          url: scrapeUrl,
+                          canton: scrapeCanton,
+                          customPhone: scrapePhone || undefined,
+                          customRate60: scrapeRate60 ? Number(scrapeRate60) : undefined,
+                        }),
+                      });
+                      const d = await r.json();
+                      if (d?.ok) {
+                        setScrapedResult(d.profile);
+                        setToast(`✓ Profil "${d.profile.rawName}" (${d.profile.city}, ${d.profile.canton}) erfolgreich gescrapt & indexiert!`);
+                        await fetchAdminState(activePin);
+                      } else {
+                        setToast(`⚠️ ${d?.error || "Scraping-Fehler"}`);
+                      }
+                    } catch {
+                      setToast("⚠️ Netzwerkfehler beim URL-Scraping.");
+                    }
+                    setScrapeLoading(false);
+                  }}
+                  className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
+                >
+                  {scrapeLoading ? "Scrape läuft..." : "🕷️ Jetzt live scrapen →"}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  value={scrapePhone}
+                  onChange={(e) => setScrapePhone(e.target.value)}
+                  placeholder="Optional: +41 79 ... manuell vorgeben (falls nicht im HTML)"
+                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                />
+                <input
+                  type="number"
+                  value={scrapeRate60}
+                  onChange={(e) => setScrapeRate60(e.target.value)}
+                  placeholder="Optional: 60-Min.-Preis in CHF (100–1200)"
+                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                />
+              </div>
+
+              {scrapedResult && (
+                <div className="p-4 rounded-xl bg-[#0D111A] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4 text-xs">
+                  <div className="space-y-1">
+                    <div className="font-bold text-white text-sm">
+                      ✓ Neu im Index: {scrapedResult.rawName} ({scrapedResult.city}, {scrapedResult.canton})
+                    </div>
+                    <div className="text-gray-300">
+                      ID: <code>{scrapedResult.id}</code> · Telefon: <strong className="text-emerald-400">{scrapedResult.rawPhone || "k.A."}</strong> · Preis: <strong className="text-[#C8A97E]">{scrapedResult.priceLabel}</strong>
+                    </div>
+                    <div className="text-gray-400">
+                      Attribute: {scrapedResult.age} J. · {scrapedResult.heightCm} cm · Cup {scrapedResult.cupSize} · Rubrik: {scrapedResult.rubric}
+                    </div>
+                  </div>
+                  <Link
+                    href={`/profile/${encodeURIComponent(scrapedResult.id)}`}
+                    className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold"
+                  >
+                    Live-Profil öffnen ↗
+                  </Link>
                 </div>
               )}
             </div>
