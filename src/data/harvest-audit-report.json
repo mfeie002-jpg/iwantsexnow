@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-05T11:32:35.802Z",
+  "generatedAt": "2026-11-05T11:46:46.367Z",
   "wave": "Overnight Autopilot (Full Vault Subpage Unlocks + Club Rosters + Deep Catalogs)",
-  "deduplicatedProfiles": 2469,
+  "deduplicatedProfiles": 2526,
   "establishmentsCount": 305,
-  "uniqueVerifiedPhones": 1060,
+  "uniqueVerifiedPhones": 1077,
   "cantonDistribution": {
-    "LU": 132,
-    "BS": 119,
-    "AG": 98,
-    "GE": 459,
-    "ZH": 516,
+    "LU": 134,
+    "BS": 121,
+    "AG": 116,
+    "GE": 465,
+    "ZH": 541,
     "VD": 319,
-    "BE": 143,
+    "BE": 147,
     "SG": 130,
     "ZG": 185,
     "SZ": 4,
@@ -79,6 +79,6 @@
     "targetescorts.com": 1,
     "rotlichtadressen.ch": 6,
     "kaufmich.com": 5,
-    "club-roster": 127
+    "club-roster": 184
   }
 }
