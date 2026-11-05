@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import clubsVault from "@/data/swiss-establishments-vault.json";
 import { CorporateFooter } from "@/components/CorporateFooter";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
 import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
@@ -416,6 +417,42 @@ export default function LocalIntentDirectoryPage() {
             })}
           </div>
         )}
+        {/* Kantonale Clubs, FKK-Saunaclubs & Studios + 2D Service-Hubs */}
+        <section className="mt-12 pt-8 border-t border-white/10 space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
+                STATIONÄRE ETABLISSEMENTS & 2D-SERVICE-VERZEICHNIS
+              </div>
+              <h2 className="text-xl font-serif font-bold text-white mt-1">
+                Geprüfte Clubs, Studios & Spezial-Rubriken in der Region
+              </h2>
+            </div>
+            <Link href="/clubs" className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#C8A97E]">
+              Alle 108 Schweizer Clubs ansehen →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {((clubsVault as any[]) || []).slice(0, 6).map((cl: any) => (
+              <div key={cl.id} className="p-4 rounded-2xl bg-[#121722] border border-white/10 flex flex-col justify-between gap-2 text-xs">
+                <div>
+                  <span className="px-2 py-0.5 rounded bg-[#C8A97E]/20 text-[#C8A97E] font-bold text-[10px]">
+                    {cl.canton} · {cl.city}
+                  </span>
+                  <h3 className="text-sm font-bold text-white mt-1.5">{cl.name}</h3>
+                  <p className="text-gray-400 text-[11px] mt-0.5">{cl.categoryLabel || "Erotik-Studio & Club"}</p>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[11px]">
+                  <span className="text-emerald-400 font-semibold">{cl.phoneDisplay || "Direktkontakt"}</span>
+                  <Link href="/clubs" className="text-[#C8A97E] font-bold hover:underline">
+                    Details →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
       <CorporateFooter />
     </div>

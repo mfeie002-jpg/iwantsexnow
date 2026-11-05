@@ -28,6 +28,7 @@ export default function AdminDashboardPage() {
   const [scrapeRate60, setScrapeRate60] = useState("");
   const [scrapeLoading, setScrapeLoading] = useState(false);
   const [scrapedResult, setScrapedResult] = useState<any>(null);
+  const [batchResults, setBatchResults] = useState<any[]>([]);
   const [toast, setToast] = useState<string | null>(null);
 
   const fetchAdminState = async (pinToUse: string) => {
@@ -197,9 +198,75 @@ export default function AdminDashboardPage() {
                   }}
                   className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
                 >
-                  {scrapeLoading ? "Scrape läuft..." : "🕷️ Jetzt live scrapen →"}
+                  {scrapeLoading ? "Scrape läuft..." : "🕷️ Einzel-URL scrapen →"}
                 </button>
               </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[#0D111A] border border-emerald-500/30">
+                <div className="text-xs text-gray-300">
+                  <strong className="text-emerald-400">🕸️ Multi-Profile Kategorieseiten-Crawler:</strong> Extrahiert automatisch bis zu 12 Profil-Unterseiten von einer Studio-/Team- oder Kantons-Übersichtsseite.
+                </div>
+                <button
+                  type="button"
+                  disabled={scrapeLoading || !scrapeUrl}
+                  onClick={async () => {
+                    setScrapeLoading(true);
+                    setScrapedResult(null);
+                    setBatchResults([]);
+                    try {
+                      const r = await fetch("/api/indexer/import", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "x-admin-pin": activePin },
+                        body: JSON.stringify({
+                          action: "crawl_directory",
+                          url: scrapeUrl,
+                          canton: scrapeCanton,
+                          customPhone: scrapePhone || undefined,
+                          customRate60: scrapeRate60 ? Number(scrapeRate60) : undefined,
+                          limit: 12,
+                        }),
+                      });
+                      const d = await r.json();
+                      if (d?.ok) {
+                        setBatchResults(d.harvestedProfiles || []);
+                        setToast(`✓ Batch-Crawl fertig: ${d.batchCount} Profile von ${d.scannedUrls} Unterseiten importiert!`);
+                        await fetchAdminState(activePin);
+                      } else {
+                        setToast(`⚠️ ${d?.error || "Batch-Crawl Fehler"}`);
+                      }
+                    } catch {
+                      setToast("⚠️ Netzwerkfehler beim Batch-Crawl.");
+                    }
+                    setScrapeLoading(false);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  {scrapeLoading ? "Crawlt Unterseiten..." : "🕸️ Ganze Übersichtsseite crawlen (bis 12 Profile) →"}
+                </button>
+              </div>
+
+              {batchResults.length > 0 && (
+                <div className="p-4 rounded-xl bg-[#0D111A] border border-[#C8A97E]/40 space-y-2 text-xs">
+                  <div className="font-bold text-[#C8A97E]">
+                    ✓ {batchResults.length} Profile per Batch-Crawl neu in den Live-Index aufgenommen:
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {batchResults.map((bp: any) => (
+                      <Link
+                        key={bp.id}
+                        href={`/profile/${encodeURIComponent(bp.id)}`}
+                        className="p-2.5 rounded-lg bg-[#121722] border border-white/10 hover:border-[#C8A97E] flex items-center justify-between gap-2"
+                      >
+                        <div>
+                          <div className="font-bold text-white truncate max-w-[180px]">{bp.rawName}</div>
+                          <div className="text-[10px] text-gray-400">{bp.city} ({bp.canton}) · CHF {bp.advertisedBaseChf}.–</div>
+                        </div>
+                        <span className="text-[#C8A97E] font-bold">↗</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
@@ -491,9 +558,75 @@ export default function AdminDashboardPage() {
                   }}
                   className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
                 >
-                  {scrapeLoading ? "Scrape läuft..." : "🕷️ Jetzt live scrapen →"}
+                  {scrapeLoading ? "Scrape läuft..." : "🕷️ Einzel-URL scrapen →"}
                 </button>
               </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[#0D111A] border border-emerald-500/30">
+                <div className="text-xs text-gray-300">
+                  <strong className="text-emerald-400">🕸️ Multi-Profile Kategorieseiten-Crawler:</strong> Extrahiert automatisch bis zu 12 Profil-Unterseiten von einer Studio-/Team- oder Kantons-Übersichtsseite.
+                </div>
+                <button
+                  type="button"
+                  disabled={scrapeLoading || !scrapeUrl}
+                  onClick={async () => {
+                    setScrapeLoading(true);
+                    setScrapedResult(null);
+                    setBatchResults([]);
+                    try {
+                      const r = await fetch("/api/indexer/import", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "x-admin-pin": activePin },
+                        body: JSON.stringify({
+                          action: "crawl_directory",
+                          url: scrapeUrl,
+                          canton: scrapeCanton,
+                          customPhone: scrapePhone || undefined,
+                          customRate60: scrapeRate60 ? Number(scrapeRate60) : undefined,
+                          limit: 12,
+                        }),
+                      });
+                      const d = await r.json();
+                      if (d?.ok) {
+                        setBatchResults(d.harvestedProfiles || []);
+                        setToast(`✓ Batch-Crawl fertig: ${d.batchCount} Profile von ${d.scannedUrls} Unterseiten importiert!`);
+                        await fetchAdminState(activePin);
+                      } else {
+                        setToast(`⚠️ ${d?.error || "Batch-Crawl Fehler"}`);
+                      }
+                    } catch {
+                      setToast("⚠️ Netzwerkfehler beim Batch-Crawl.");
+                    }
+                    setScrapeLoading(false);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  {scrapeLoading ? "Crawlt Unterseiten..." : "🕸️ Ganze Übersichtsseite crawlen (bis 12 Profile) →"}
+                </button>
+              </div>
+
+              {batchResults.length > 0 && (
+                <div className="p-4 rounded-xl bg-[#0D111A] border border-[#C8A97E]/40 space-y-2 text-xs">
+                  <div className="font-bold text-[#C8A97E]">
+                    ✓ {batchResults.length} Profile per Batch-Crawl neu in den Live-Index aufgenommen:
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {batchResults.map((bp: any) => (
+                      <Link
+                        key={bp.id}
+                        href={`/profile/${encodeURIComponent(bp.id)}`}
+                        className="p-2.5 rounded-lg bg-[#121722] border border-white/10 hover:border-[#C8A97E] flex items-center justify-between gap-2"
+                      >
+                        <div>
+                          <div className="font-bold text-white truncate max-w-[180px]">{bp.rawName}</div>
+                          <div className="text-[10px] text-gray-400">{bp.city} ({bp.canton}) · CHF {bp.advertisedBaseChf}.–</div>
+                        </div>
+                        <span className="text-[#C8A97E] font-bold">↗</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
