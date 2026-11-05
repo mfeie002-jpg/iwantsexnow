@@ -1,207 +1,484 @@
-import React from "react";
-import { GetServerSideProps } from "next";
+import React, { useState, useEffect, useMemo } from "react";
+import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { StructuredSchema } from "@/components/StructuredSchema";
 import offersData from "@/data/harvested-offers.json";
-import { MapPin, Phone, Check, ArrowLeft, Sparkles, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, ArrowUpDown, CheckCircle2, Phone, Sparkles, MapPin, RotateCcw } from "lucide-react";
 
-const CITY_META: Record<string, { label: string; canton: string; lang: "de" | "fr" | "it" }> = {
-  "zuerich": { label: "Zürich", canton: "ZH", lang: "de" },
-  "zug": { label: "Zug", canton: "ZG", lang: "de" },
-  "cham": { label: "Cham & Baar", canton: "ZG", lang: "de" },
-  "basel": { label: "Basel", canton: "BS", lang: "de" },
-  "bern": { label: "Bern", canton: "BE", lang: "de" },
-  "luzern": { label: "Luzern", canton: "LU", lang: "de" },
+const CITY_CONFIG: Record<string, { label: string; canton: string; lang: "de" | "fr" | "it" }> = {
+  zuerich: { label: "Zürich", canton: "ZH", lang: "de" },
+  zurich: { label: "Zürich", canton: "ZH", lang: "de" },
+  zug: { label: "Zug", canton: "ZG", lang: "de" },
+  luzern: { label: "Luzern", canton: "LU", lang: "de" },
+  basel: { label: "Basel", canton: "BS", lang: "de" },
+  bern: { label: "Bern", canton: "BE", lang: "de" },
+  baden: { label: "Baden & Aargau", canton: "AG", lang: "de" },
   "st-gallen": { label: "St. Gallen", canton: "SG", lang: "de" },
-  "baden": { label: "Baden & Aargau", canton: "AG", lang: "de" },
-  "winterthur": { label: "Winterthur", canton: "ZH", lang: "de" },
-  "geneve": { label: "Genève", canton: "GE", lang: "fr" },
-  "lausanne": { label: "Lausanne", canton: "VD", lang: "fr" },
-  "lugano": { label: "Lugano", canton: "TI", lang: "it" },
+  winterthur: { label: "Winterthur", canton: "ZH", lang: "de" },
+  geneve: { label: "Genève", canton: "GE", lang: "fr" },
+  lausanne: { label: "Lausanne", canton: "VD", lang: "fr" },
+  lugano: { label: "Lugano", canton: "TI", lang: "it" },
 };
 
-const SERVICE_META: Record<string, { de: string; fr: string; it: string; matchRegex: string; rubric?: string }> = {
+const SERVICE_CONFIG: Record<string, { de: string; fr: string; it: string; rubricMatch?: string; keywordMatch: string[] }> = {
   "girlfriend-experience": {
-    de: "Girlfriend Experience (GFE) & Begleitung",
-    fr: "Escort Girlfriend Experience (GFE)",
-    it: "Escort Girlfriend Experience (GFE)",
-    matchRegex: "gfe|girlfriend|schmusen|küssen|begleitung",
-    rubric: "female",
-  },
-  "erotische-massage": {
-    de: "Erotische Massage & Body-to-Body",
-    fr: "Massage Érotique & Sensuel",
-    it: "Massaggio Erotico & Sensuale",
-    matchRegex: "massage|body|ölmassage|thai",
+    de: "Girlfriend Experience (GFE)",
+    fr: "Girlfriend Experience (GFE)",
+    it: "Girlfriend Experience (GFE)",
+    rubricMatch: "female",
+    keywordMatch: ["gfe", "girlfriend", "begleitung", "küssen", "zärtlich"],
   },
   "tantra-massage": {
-    de: "Tantra-Massage & Ganzkörper-Ritual",
-    fr: "Massage Tantrique & Relaxant",
-    it: "Massaggio Tantrico",
-    matchRegex: "tantra|massage|ritual",
+    de: "Tantra & Erotische Massage",
+    fr: "Massage Tantra & Érotique",
+    it: "Massaggio Tantra & Erotico",
+    rubricMatch: "massage",
+    keywordMatch: ["tantra", "massage", "body to body", "nuru", "entspannung"],
   },
-  "hotelbesuch-outcall": {
-    de: "Hotelbesuch & Outcall Escort",
-    fr: "Escort Hôtel & Déplacement (Outcall)",
-    it: "Escort Hotel & Outcall",
-    matchRegex: "outcall|hotel|hausbesuch",
-  },
-  "privatempfang-incall": {
-    de: "Diskreter Privatempfang & Studio (Incall)",
-    fr: "Réception Privée & Appartement (Incall)",
-    it: "Ricevimento Privato (Incall)",
-    matchRegex: "incall|privat|studio|apartment",
+  "haus-und-hotelbesuche": {
+    de: "Haus- & Hotelbesuche (Outcall)",
+    fr: "Escort Hôtel & Domicile (Outcall)",
+    it: "Escort Hotel & Domicilio (Outcall)",
+    keywordMatch: ["hotel", "outcall", "hausbesuch", "begleitung"],
   },
   "domina-bdsm": {
-    de: "Domina, BDSM & Fetisch Studio",
-    fr: "Domina, BDSM & Fétichisme",
+    de: "Domina, BDSM & Fetisch",
+    fr: "Domina, BDSM & Fétiche",
     it: "Domina, BDSM & Fetish",
-    matchRegex: "domina|bdsm|fetisch|herrin|mistress",
-    rubric: "bdsm",
+    rubricMatch: "bdsm",
+    keywordMatch: ["domina", "bdsm", "fetisch", "herrin", "bizarr"],
   },
-  "trans-ts": {
-    de: "Trans Escorts & TS Models",
+  "dinner-date": {
+    de: "High-Class Dinner Date & Begleitung",
+    fr: "High-Class Dinner Date & Accompagnement",
+    it: "High-Class Dinner Date & Accompagnamento",
+    keywordMatch: ["dinner", "high class", "vip", "begleitung", "gfe"],
+  },
+  "trans-escort": {
+    de: "Trans & TS Escort",
     fr: "Escort Trans & TS",
-    it: "Escort Trans & TS",
-    matchRegex: "trans|ts|shemale|ladyboy",
-    rubric: "trans",
+    it: "Trans & TS Escort",
+    rubricMatch: "trans",
+    keywordMatch: ["trans", "ts", "shemale", "ladyboy"],
+  },
+  "paare-und-bisex": {
+    de: "Bisexuell & Begleitung für Paare",
+    fr: "Bisexuel & Couples",
+    it: "Bisessuale & Coppie",
+    keywordMatch: ["paar", "couples", "bisex", "duo"],
   },
 };
 
-export default function CityServiceProgrammaticPage({
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const citySlug = String(ctx.params?.city || "zug").toLowerCase();
+  const serviceSlug = String(ctx.params?.service || "girlfriend-experience").toLowerCase();
+
+  const cityMeta = CITY_CONFIG[citySlug] || {
+    label: citySlug.charAt(0).toUpperCase() + citySlug.slice(1),
+    canton: "ZH",
+    lang: "de",
+  };
+  const serviceMeta = SERVICE_CONFIG[serviceSlug] || SERVICE_CONFIG["girlfriend-experience"];
+
+  const rawOffers = (offersData as any[]) || [];
+  const cantonMatches = rawOffers.filter((o) => String(o.canton || "").toUpperCase() === cityMeta.canton);
+  const pool = cantonMatches.length >= 6 ? cantonMatches : rawOffers.slice(0, 80);
+
+  const sanitizedPool = pool.slice(0, 60).map((o) => {
+    const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
+    const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+    return {
+      id: o.id || o.dedupClusterId,
+      rawName: o.rawName || "Verifiziertes Profil",
+      city: o.city || cityMeta.label,
+      canton: o.canton || cityMeta.canton,
+      rawPhone: o.rawPhone || null,
+      rate60Chf: r60,
+      rate30Chf: r30,
+      thumbnail: o.thumbnail || "/images/escort-portrait-1.jpg",
+      age: Number(o.age) || 25,
+      heightCm: Number(o.heightCm) || 168,
+      cupSize: o.cupSize || "C",
+      hairColor: o.hairColor || "Brünett",
+      rubric: o.rubric || "female",
+      languages: Array.isArray(o.languages) ? o.languages : ["Deutsch", "Englisch"],
+      includedTags: Array.isArray(o.includedTags) ? o.includedTags.slice(0, 5) : ["Direktkontakt"],
+      curationScore: Number(o.curationScore) || 80,
+    };
+  });
+
+  return {
+    props: {
+      citySlug,
+      serviceSlug,
+      cityMeta,
+      serviceTitle: serviceMeta[cityMeta.lang] || serviceMeta.de,
+      initialProfiles: sanitizedPool,
+    },
+  };
+};
+
+export default function Category2DPage({
   citySlug,
   serviceSlug,
-  cityLabel,
-  canton,
-  lang,
+  cityMeta,
   serviceTitle,
-  profiles,
-  avgRate30,
-  avgRate60,
+  initialProfiles,
 }: any) {
-  const seoTitle =
-    lang === "fr"
-      ? `${serviceTitle} à ${cityLabel} (${canton}) – ${profiles.length} Profils Vérifiés & Tarifs CHF | iwantsexnow.ch`
-      : lang === "it"
-      ? `${serviceTitle} a ${cityLabel} (${canton}) – ${profiles.length} Profili & Tariffe CHF | iwantsexnow.ch`
-      : `${serviceTitle} in ${cityLabel} (${canton}) – ${profiles.length} Profile, CHF-Preise & Direktkontakt | iwantsexnow.ch`;
+  const [serverStates, setServerStates] = useState<Record<string, any>>({});
+  const [blockedIds, setBlockedIds] = useState<string[]>([]);
 
-  const seoDesc =
-    lang === "fr"
-      ? `Comparez ${profiles.length} profils pour ${serviceTitle} à ${cityLabel} (${canton}). Tarif indicatif Ø CHF ${avgRate30} (30m) / CHF ${avgRate60} (60m). Contact direct +41 sans commission.`
-      : lang === "it"
-      ? `Confronta ${profiles.length} profili per ${serviceTitle} a ${cityLabel} (${canton}). Tariffa media Ø CHF ${avgRate30} (30m) / CHF ${avgRate60} (60m). Contatto diretto +41.`
-      : `Vergleiche ${profiles.length} geprüfte Schweizer Profile für ${serviceTitle} in ${cityLabel} (Kanton ${canton}). Ø Richtpreis: CHF ${avgRate30} (30 Min.) / CHF ${avgRate60} (60 Min.) mit +41 Direktkontakt.`;
+  // Filter & Sortier States
+  const [sortBy, setSortBy] = useState<"recommended" | "available" | "price_asc" | "price_desc" | "age_asc">("recommended");
+  const [onlyAvailable4h, setOnlyAvailable4h] = useState(false);
+  const [onlyVerified, setOnlyVerified] = useState(false);
+  const [onlyWithPhone, setOnlyWithPhone] = useState(false);
+  const [maxRate60, setMaxRate60] = useState<number>(1200);
+  const [cupFilter, setCupFilter] = useState<string>("ALL");
+  const [hairFilter, setHairFilter] = useState<string>("ALL");
+  const [ageGroup, setAgeGroup] = useState<"ALL" | "18-24" | "25-30" | "31+">("ALL");
+
+  useEffect(() => {
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.states) setServerStates(d.states);
+        if (Array.isArray(d?.blockedIds)) setBlockedIds(d.blockedIds);
+      })
+      .catch(() => {});
+  }, []);
+
+  const filteredAndSorted = useMemo(() => {
+    const blocked = new Set(blockedIds);
+    const list: any[] = [];
+
+    for (const p of initialProfiles || []) {
+      if (!p.id || blocked.has(p.id)) continue;
+      const st = serverStates[p.id] || {};
+      if (st.paused || st.hidden) continue;
+
+      const isAvail = Boolean(st.availabilityConfirmed);
+      const isVerif = Boolean(st.identityVerified);
+      const hasPhone = Boolean(p.rawPhone);
+      const r60 = Math.max(100, Math.min(1200, Number(p.rate60Chf) || 350));
+
+      if (onlyAvailable4h && !isAvail) continue;
+      if (onlyVerified && !isVerif) continue;
+      if (onlyWithPhone && !hasPhone) continue;
+      if (r60 > maxRate60) continue;
+
+      if (cupFilter !== "ALL") {
+        if (cupFilter === "AB" && !["A", "B"].includes(p.cupSize)) continue;
+        if (cupFilter === "C" && p.cupSize !== "C") continue;
+        if (cupFilter === "D+" && !["D", "DD", "E"].includes(p.cupSize)) continue;
+      }
+
+      if (hairFilter !== "ALL" && String(p.hairColor || "").toLowerCase() !== hairFilter.toLowerCase()) continue;
+
+      if (ageGroup !== "ALL") {
+        const a = Number(p.age) || 25;
+        if (ageGroup === "18-24" && (a < 18 || a > 24)) continue;
+        if (ageGroup === "25-30" && (a < 25 || a > 30)) continue;
+        if (ageGroup === "31+" && a < 31) continue;
+      }
+
+      list.push({
+        ...p,
+        rate60Chf: r60,
+        availabilityConfirmed: isAvail,
+        identityVerified: isVerif,
+      });
+    }
+
+    list.sort((a, b) => {
+      if (sortBy === "available") {
+        if (a.availabilityConfirmed !== b.availabilityConfirmed) return a.availabilityConfirmed ? -1 : 1;
+        return a.rate60Chf - b.rate60Chf;
+      }
+      if (sortBy === "price_asc") return a.rate60Chf - b.rate60Chf;
+      if (sortBy === "price_desc") return b.rate60Chf - a.rate60Chf;
+      if (sortBy === "age_asc") return (a.age || 25) - (b.age || 25);
+
+      // Default: "recommended" (4h verfügbar -> Geprüft -> +41 Nummer -> Kurations-Score)
+      const scoreA = (a.availabilityConfirmed ? 500 : 0) + (a.identityVerified ? 250 : 0) + (a.rawPhone ? 100 : 0) + (a.curationScore || 0);
+      const scoreB = (b.availabilityConfirmed ? 500 : 0) + (b.identityVerified ? 250 : 0) + (b.rawPhone ? 100 : 0) + (b.curationScore || 0);
+      return scoreB - scoreA;
+    });
+
+    return list;
+  }, [initialProfiles, serverStates, blockedIds, sortBy, onlyAvailable4h, onlyVerified, onlyWithPhone, maxRate60, cupFilter, hairFilter, ageGroup]);
+
+  const avgChf = useMemo(() => {
+    if (filteredAndSorted.length === 0) return 320;
+    const sum = filteredAndSorted.reduce((acc, item) => acc + Number(item.rate60Chf || 350), 0);
+    return Math.round(sum / filteredAndSorted.length / 10) * 10;
+  }, [filteredAndSorted]);
+
+  const resetFilters = () => {
+    setSortBy("recommended");
+    setOnlyAvailable4h(false);
+    setOnlyVerified(false);
+    setOnlyWithPhone(false);
+    setMaxRate60(1200);
+    setCupFilter("ALL");
+    setHairFilter("ALL");
+    setAgeGroup("ALL");
+  };
 
   return (
     <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
-      <SEO title={seoTitle} description={seoDesc} />
-      <StructuredSchema cityName={cityLabel} cantonCode={canton} />
+      <SEO
+        title={`${serviceTitle} in ${cityMeta.label} (${cityMeta.canton}) – Direktkontakt & CHF-Tarife | iwantsexnow.ch`}
+        description={`${filteredAndSorted.length} geprüfte Profile für ${serviceTitle} in ${cityMeta.label} (${cityMeta.canton}). Ø Honorar CHF ${avgChf}.– / 60 Min. Echtzeit-Filter nach Verfügbarkeit, Preis, Alter & Körbchengrösse.`}
+        url={`https://iwantsexnow.ch/kategorie/${citySlug}/${serviceSlug}`}
+      />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400 border-b border-white/10 pb-4">
-          <Link href="/" className="inline-flex items-center gap-1.5 font-bold text-white hover:text-[#C8A97E]">
-            <ArrowLeft size={14} /> Zurück zum Schweizer Gesamtverzeichnis
-          </Link>
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(SERVICE_META).map(([slug, meta]) => (
-              <Link
-                key={slug}
-                href={`/kategorie/${citySlug}/${slug}`}
-                className={`px-2.5 py-1 rounded-lg border transition ${
-                  slug === serviceSlug
-                    ? "bg-[#C8A97E] text-[#0D111A] border-[#C8A97E] font-extrabold"
-                    : "bg-[#121722] border-white/10 text-gray-300 hover:text-white"
-                }`}
-              >
-                {meta[lang as "de" | "fr" | "it"] || meta.de}
-              </Link>
-            ))}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        {/* Kopfzeile mit Live-KPIs */}
+        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+              <MapPin size={13} /> KANTON {cityMeta.canton} · 2D-KATEGORIE & ECHTZEIT-FILTER
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
+              {serviceTitle} in {cityMeta.label}
+            </h1>
+            <p className="text-xs text-gray-300 mt-1">
+              <strong>{filteredAndSorted.length} aktive Profile</strong> im aktuellen Filter · Ø Richtpreis 60 Min.:{" "}
+              <strong className="text-[#C8A97E]">CHF {avgChf}.–</strong> · Direkter +41 Kontakt ohne Provision
+            </p>
           </div>
-        </div>
-
-        {/* SEO Hero mit echten Schweizer Preis-Durchschnitten */}
-        <section className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 space-y-4">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-1.5 max-w-3xl">
-              <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-                SCHWEIZER DIREKTVERGLEICH · {cityLabel.toUpperCase()} ({canton})
-              </div>
-              <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
-                {serviceTitle} in {cityLabel} ({canton})
-              </h1>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">{seoDesc}</p>
-            </div>
-            <div className="flex gap-3">
-              <div className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10 text-right">
-                <div className="text-[10px] text-gray-400 uppercase">Ø 30 Min. ({cityLabel})</div>
-                <div className="text-lg font-extrabold text-white">CHF {avgRate30}</div>
-              </div>
-              <div className="p-3.5 rounded-xl bg-[#0D111A] border border-[#C8A97E]/40 text-right">
-                <div className="text-[10px] text-gray-400 uppercase">Ø 60 Min. ({cityLabel})</div>
-                <div className="text-xl font-extrabold text-[#C8A97E]">CHF {avgRate60}</div>
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-2">
+            <Link href={`/orte/${citySlug}`} className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white">
+              Alle in {cityMeta.label} →
+            </Link>
+            <Link href="/compare-escorts" className="px-3.5 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+              4-Profil Direktvergleich →
+            </Link>
           </div>
         </section>
 
-        {/* Profil-Karten mit den neuen Deep-Attributen (Alter, Haarfarbe, Körbchengrösse, Sprachen) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {profiles.map((p: any, idx: number) => (
-            <article
-              key={`${p.id}-${idx}`}
-              className="rounded-2xl overflow-hidden bg-[#121722] border border-white/10 hover:border-[#C8A97E] transition flex flex-col justify-between"
-            >
-              <Link href={`/profile/${encodeURIComponent(p.id)}`} className="relative aspect-[3/4] block bg-black">
-                <img
-                  src={p.thumbnail || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=80"}
-                  alt={`${p.cleanName} – ${cityLabel}`}
-                  className="w-full h-full object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1">
-                  <span className="px-2 py-0.5 rounded bg-black/80 text-[#C8A97E] text-[10px] font-bold border border-[#C8A97E]/40">
-                    {p.age} J. · {p.cupSize} · {p.hairColor}
-                  </span>
-                </div>
-                <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2">
-                  <div className="min-w-0">
-                    <h2 className="text-base font-serif font-bold text-white truncate">{p.cleanName}</h2>
-                    <p className="text-xs text-gray-300 flex items-center gap-1 truncate">
-                      <MapPin size={11} className="text-[#C8A97E]" /> {p.city} ({p.canton})
-                    </p>
-                  </div>
-                  <span className="px-2.5 py-1 rounded-lg bg-black/85 border border-[#C8A97E]/40 text-xs font-extrabold text-[#C8A97E] shrink-0">
-                    CHF {p.rate60}
-                  </span>
-                </div>
-              </Link>
-              <div className="p-3 flex items-center justify-between text-[11px] text-gray-300 border-t border-white/10">
-                <span className="truncate">{(p.languages || ["DE", "EN"]).join(" · ")}</span>
-                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-[#C8A97E] font-bold hover:underline shrink-0">
-                  Profil & +41 →
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+        {/* Interaktive Filter- & Sortier-Konsole */}
+        <section className="p-5 rounded-2xl bg-[#121722] border border-white/10 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+              <SlidersHorizontal size={15} className="text-[#C8A97E]" />
+              <span>Sofort-Filter & Sortierung ({filteredAndSorted.length} Treffer)</span>
+            </div>
 
-        {/* Interne SEO-Verlinkung auf alle anderen Schweizer Städte */}
-        <section className="p-6 rounded-2xl bg-[#121722] border border-white/10 space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#C8A97E]">
-            {serviceTitle} in weiteren Schweizer Städten vergleichen
-          </h2>
-          <div className="flex flex-wrap gap-2 text-xs">
-            {Object.entries(CITY_META).map(([cSlug, cMeta]) => (
-              <Link
-                key={cSlug}
-                href={`/kategorie/${cSlug}/${serviceSlug}`}
-                className="px-3 py-1.5 rounded-xl bg-[#0D111A] border border-white/10 hover:border-[#C8A97E] text-gray-200"
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1.5 bg-[#0D111A] border border-white/15 rounded-xl px-3 py-1.5">
+                <ArrowUpDown size={13} className="text-[#C8A97E]" />
+                <span className="text-[11px] text-gray-400">Sortieren:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="bg-transparent text-xs font-bold text-white outline-none cursor-pointer"
+                >
+                  <option value="recommended" className="bg-[#121722]">Empfohlen & Kuratiert</option>
+                  <option value="available" className="bg-[#121722]">● Jetzt 4h verfügbar zuerst</option>
+                  <option value="price_asc" className="bg-[#121722]">CHF-Honorar: Günstigste zuerst</option>
+                  <option value="price_desc" className="bg-[#121722]">CHF-Honorar: Exklusiv zuerst</option>
+                  <option value="age_asc" className="bg-[#121722]">Alter: Jüngste zuerst</option>
+                </select>
+              </div>
+
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] font-bold text-gray-300 inline-flex items-center gap-1 cursor-pointer"
               >
-                {serviceTitle} {cMeta.label} ({cMeta.canton})
+                <RotateCcw size={12} /> Zurücksetzen
+              </button>
+            </div>
+          </div>
+
+          {/* Zeile 1: Quick-Status-Toggles & Preis-Limit */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setOnlyAvailable4h(!onlyAvailable4h)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer transition ${
+                onlyAvailable4h ? "bg-emerald-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+              }`}
+            >
+              ● Nur jetzt 4h verfügbar
+            </button>
+            <button
+              type="button"
+              onClick={() => setOnlyVerified(!onlyVerified)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer transition ${
+                onlyVerified ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+              }`}
+            >
+              ✓ Nur geprüfte Identität
+            </button>
+            <button
+              type="button"
+              onClick={() => setOnlyWithPhone(!onlyWithPhone)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer transition ${
+                onlyWithPhone ? "bg-sky-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+              }`}
+            >
+              📞 Nur mit +41 Nummer
+            </button>
+
+            <div className="flex items-center gap-1 ml-auto">
+              {[
+                { label: "Alle CHF", val: 1200 },
+                { label: "≤ CHF 250", val: 250 },
+                { label: "≤ CHF 350", val: 350 },
+                { label: "≤ CHF 500", val: 500 },
+              ].map((p) => (
+                <button
+                  key={p.val}
+                  type="button"
+                  onClick={() => setMaxRate60(p.val)}
+                  className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold cursor-pointer ${
+                    maxRate60 === p.val ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] border border-white/10 text-gray-400"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Zeile 2: Physische Deep-Filter (Alter, Körbchengrösse, Haarfarbe) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+            <select
+              value={ageGroup}
+              onChange={(e) => setAgeGroup(e.target.value as any)}
+              className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white"
+            >
+              <option value="ALL">Altersgruppe: Alle (18–45+)</option>
+              <option value="18-24">18 – 24 Jahre</option>
+              <option value="25-30">25 – 30 Jahre</option>
+              <option value="31+">31+ Jahre (Erfahren / Lady)</option>
+            </select>
+
+            <select
+              value={cupFilter}
+              onChange={(e) => setCupFilter(e.target.value)}
+              className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white"
+            >
+              <option value="ALL">Körbchengrösse: Alle (A – DD)</option>
+              <option value="AB">Cup A / B (Zierlich / Natürlich)</option>
+              <option value="C">Cup C</option>
+              <option value="D+">Cup D / DD (Kurvig)</option>
+            </select>
+
+            <select
+              value={hairFilter}
+              onChange={(e) => setHairFilter(e.target.value)}
+              className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white"
+            >
+              <option value="ALL">Haarfarbe: Alle</option>
+              <option value="Blond">Blond</option>
+              <option value="Brünett">Brünett</option>
+              <option value="Schwarz">Schwarz</option>
+              <option value="Dunkelblond">Dunkelblond</option>
+            </select>
+          </div>
+        </section>
+
+        {/* Profil-Karten-Grid */}
+        {filteredAndSorted.length === 0 ? (
+          <div className="p-12 rounded-2xl bg-[#121722] border border-white/10 text-center space-y-3">
+            <p className="text-sm text-gray-300 font-semibold">Keine Profile entsprechen genau dieser Filterkombination.</p>
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="px-4 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold cursor-pointer"
+            >
+              Alle Filter zurücksetzen →
+            </button>
+          </div>
+        ) : (
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredAndSorted.map((p: any) => (
+              <div
+                key={p.id}
+                className="rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/60 overflow-hidden flex flex-col justify-between transition group"
+              >
+                <div>
+                  <div className="relative h-64 bg-[#0D111A] overflow-hidden">
+                    <img
+                      src={p.thumbnail || "/images/escort-portrait-1.jpg"}
+                      alt={p.rawName}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";
+                      }}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
+                    />
+                    <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                      {p.availabilityConfirmed && (
+                        <span className="px-2.5 py-1 rounded-full bg-emerald-500 text-[#07120B] text-[10px] font-extrabold shadow">
+                          ● Jetzt 4h verfügbar
+                        </span>
+                      )}
+                      {p.identityVerified && (
+                        <span className="px-2.5 py-1 rounded-full bg-[#C8A97E] text-[#0D111A] text-[10px] font-extrabold shadow">
+                          ✓ Geprüft
+                        </span>
+                      )}
+                    </div>
+                    <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 backdrop-blur border border-white/15 text-xs font-extrabold text-[#C8A97E]">
+                      CHF {p.rate60Chf}.– <span className="text-[10px] text-gray-400 font-normal">/ 60m</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[11px] font-bold text-[#C8A97E]">
+                        {p.canton} · {p.city}
+                      </span>
+                      <span className="text-[11px] text-gray-400">
+                        30 Min.: CHF {p.rate30Chf}.–
+                      </span>
+                    </div>
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-white hover:text-[#C8A97E] truncate">
+                      {p.rawName}
+                    </Link>
+                    <div className="text-xs text-gray-300 font-medium">
+                      {p.age} J. · {p.heightCm} cm · Cup {p.cupSize} · {p.hairColor}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 pt-0 flex items-center gap-2">
+                  <Link
+                    href={`/profile/${encodeURIComponent(p.id)}`}
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs text-center"
+                  >
+                    Profil & Kontakt öffnen →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* Querverlinkung zu den weiteren 2D-Services in dieser Stadt */}
+        <section className="p-5 rounded-2xl bg-[#121722] border border-white/10 space-y-3">
+          <h2 className="text-sm font-serif font-bold text-white">
+            Weitere Spezial-Rubriken in {cityMeta.label} ({cityMeta.canton})
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(SERVICE_CONFIG).map(([sKey, sVal]) => (
+              <Link
+                key={sKey}
+                href={`/kategorie/${citySlug}/${sKey}`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold border ${
+                  sKey === serviceSlug
+                    ? "bg-[#C8A97E] text-[#0D111A] border-[#C8A97E]"
+                    : "bg-[#0D111A] text-gray-300 border-white/10 hover:border-[#C8A97E]/50"
+                }`}
+              >
+                {sVal[cityMeta.lang] || sVal.de}
               </Link>
             ))}
           </div>
@@ -210,64 +487,3 @@ export default function CityServiceProgrammaticPage({
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const citySlug = String(ctx.params?.city || "zuerich").toLowerCase();
-  const serviceSlug = String(ctx.params?.service || "girlfriend-experience").toLowerCase();
-
-  const cityInfo = CITY_META[citySlug] || { label: citySlug.charAt(0).toUpperCase() + citySlug.slice(1), canton: "ZH", lang: "de" };
-  const srvInfo = SERVICE_META[serviceSlug] || SERVICE_META["girlfriend-experience"];
-  const rx = new RegExp(srvInfo.matchRegex, "i");
-
-  const allOffers = (offersData as any[]) || [];
-  let matched = allOffers.filter((o) => {
-    const inCantonOrCity =
-      String(o.canton || "").toUpperCase() === cityInfo.canton ||
-      String(o.city || "").toLowerCase().includes(citySlug.replace("-", " "));
-    if (!inCantonOrCity) return false;
-    if (srvInfo.rubric && o.rubric && o.rubric !== srvInfo.rubric) return false;
-    const hay = `${o.rawName || ""} ${o.bio || ""} ${(o.includedTags || []).join(" ")}`;
-    return rx.test(hay) || !srvInfo.rubric;
-  });
-
-  if (matched.length < 8) {
-    matched = allOffers.filter((o) => String(o.canton || "").toUpperCase() === cityInfo.canton).slice(0, 24);
-  }
-
-  const profiles = matched.slice(0, 32).map((o) => ({
-    id: o.id || o.dedupClusterId,
-    cleanName: String(o.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 28) || "Profil",
-    city: o.city || cityInfo.label,
-    canton: o.canton || cityInfo.canton,
-    rate30: Number(o.rate30Chf) || 200,
-    rate60: Number(o.advertisedBaseChf) || 350,
-    age: o.age || 24,
-    cupSize: o.cupSize || "75C",
-    hairColor: o.hairColor || "Brünett",
-    languages: o.languages || ["Deutsch", "Englisch"],
-    thumbnail: o.thumbnail || "",
-  }));
-
-  const avgRate60 =
-    profiles.length > 0
-      ? Math.round(profiles.reduce((acc, p) => acc + p.rate60, 0) / profiles.length / 10) * 10
-      : 350;
-  const avgRate30 =
-    profiles.length > 0
-      ? Math.round(profiles.reduce((acc, p) => acc + p.rate30, 0) / profiles.length / 10) * 10
-      : 200;
-
-  return {
-    props: {
-      citySlug,
-      serviceSlug,
-      cityLabel: cityInfo.label,
-      canton: cityInfo.canton,
-      lang: cityInfo.lang,
-      serviceTitle: srvInfo[cityInfo.lang] || srvInfo.de,
-      profiles,
-      avgRate30,
-      avgRate60,
-    },
-  };
-};
