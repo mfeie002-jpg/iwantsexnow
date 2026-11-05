@@ -969,7 +969,7 @@
     "age": 33,
     "rawPhone": "+41 78 351 63 00",
     "city": "Härkingen",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Härkingen/SO",
       "Zürich"
@@ -1022,7 +1022,7 @@
     "age": 45,
     "rawPhone": "+41 76 535 91 90",
     "city": "Niederbipp",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Niederbipp/BE,NW/OW,SO",
       "Zürich"
@@ -1226,7 +1226,7 @@
     "age": 25,
     "rawPhone": "+41 79 380 64 31",
     "city": "Zürich",
-    "canton": "ZH",
+    "canton": "BS",
     "subareas": [
       "Zürich/ZH Stadt,ZH",
       "Zürich"
@@ -1479,7 +1479,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 996 96 88",
-    "city": "AG,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,ZG,ZH Stadt,ZH",
@@ -1736,7 +1736,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 890 12 34",
-    "city": "LU,ZG",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "LU,ZG",
@@ -2078,7 +2078,7 @@
     "age": 25,
     "rawPhone": "+41 78 405 33 89",
     "city": "St. Gallen",
-    "canton": "SG",
+    "canton": "AG",
     "subareas": [
       "Waltenschwil",
       "Zürich"
@@ -2321,7 +2321,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 78 901 23 45",
-    "city": "AG",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG",
@@ -3093,7 +3093,7 @@
     "age": 30,
     "rawPhone": "+41 78 000 00 04",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich"
@@ -3187,7 +3187,7 @@
     "age": 27,
     "rawPhone": "+41 77 904 71 23",
     "city": "Prilly",
-    "canton": "VD",
+    "canton": "SO",
     "subareas": [
       "Grenchen",
       "Zürich / Schweiz"
@@ -3282,7 +3282,7 @@
     "age": 24,
     "rawPhone": "+41 78 999 88 77",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG,BE,LU,SO,ZH",
       "Zürich"
@@ -3390,7 +3390,7 @@
     "age": 25,
     "rawPhone": "+41 76 629 36 63",
     "city": "Eaux-vives",
-    "canton": "GE",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -3549,7 +3549,7 @@
     "age": 22,
     "rawPhone": "+41 76 757 33 99",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE",
       "Zürich"
@@ -3651,7 +3651,7 @@
     "age": 22,
     "rawPhone": "+41 77 958 36 09",
     "city": "Herzogenbuchsee",
-    "canton": "SG",
+    "canton": "BE",
     "subareas": [
       "Herzogenbuchsee/BE",
       "Zürich"
@@ -4216,7 +4216,7 @@
     "age": 30,
     "rawPhone": "+41 77 944 05 87",
     "city": "Liestal",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Liestal",
       "Zug / Cham"
@@ -4362,7 +4362,7 @@
     "age": 20,
     "rawPhone": "+41 77 948 00 43",
     "city": "Kradolf",
-    "canton": "ZG",
+    "canton": "TG",
     "subareas": [
       "Kradolf/TG,SG,SH",
       "Zug / Cham"
@@ -4411,7 +4411,7 @@
     "age": 25,
     "rawPhone": "+41 76 521 99 49",
     "city": "Landquart",
-    "canton": "ZG",
+    "canton": "GR",
     "subareas": [
       "Landquart/GR",
       "Zug / Cham"
@@ -4508,7 +4508,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 76 477 30 90",
-    "city": "AG,LU,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,ZG,ZH Stadt,ZH",
@@ -4797,7 +4797,7 @@
     "age": 25,
     "rawPhone": "+41 76 456 13 47",
     "city": "Plainpalais",
-    "canton": "GE",
+    "canton": "AG",
     "subareas": [
       "Aarau/AG",
       "Winterthur"
@@ -4902,7 +4902,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Romanshorn",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Romanshorn/TG",
       "Zürich"
@@ -5046,7 +5046,7 @@
     "age": 26,
     "rawPhone": "+41 76 368 88 52",
     "city": "Bad Ragaz",
-    "canton": "ZG",
+    "canton": "SG",
     "subareas": [
       "Bad Ragaz/SG",
       "Winterthur"
@@ -5309,7 +5309,7 @@
     "age": 25,
     "rawPhone": "+41 76 123 45 70",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,LU,ZG,ZH Stadt,ZH",
       "Winterthur"
@@ -5566,7 +5566,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 78 625 38 87",
-    "city": "SG,LI,AI",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "SG,LI,AI / AR",
@@ -5616,7 +5616,7 @@
     "age": 25,
     "rawPhone": "+41 79 947 64 66",
     "city": "Glarus",
-    "canton": "ZH",
+    "canton": "GL",
     "subareas": [
       "Glarus/GL",
       "Winterthur"
@@ -5717,7 +5717,7 @@
     "age": 30,
     "rawPhone": "+41 77 951 42 38",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE",
       "Winterthur"
@@ -5767,7 +5767,7 @@
     "age": 21,
     "rawPhone": "+41 79 315 74 08",
     "city": "Schaffhausen",
-    "canton": "ZH",
+    "canton": "SH",
     "subareas": [
       "Winterthur/ZH,SH,ZH Stadt",
       "Winterthur"
@@ -5846,7 +5846,7 @@
     "age": 29,
     "rawPhone": "+41 79 663 34 03",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "GR",
     "subareas": [
       "Chur/GR,LI",
       "Winterthur"
@@ -6102,7 +6102,7 @@
     "age": 19,
     "rawPhone": "+41 79 333 44 44",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "BE",
     "subareas": [
       "Bienne/BE",
       "Winterthur"
@@ -6406,7 +6406,7 @@
     "age": 35,
     "rawPhone": "+41 77 923 18 39",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "AG",
     "subareas": [
       "Rupperswil",
       "Winterthur"
@@ -6705,7 +6705,7 @@
     "age": 22,
     "rawPhone": "+41 76 716 65 84",
     "city": "Olten",
-    "canton": "SO",
+    "canton": "SZ",
     "subareas": [
       "Olten/SO",
       "Zürich / Schweiz"
@@ -6864,7 +6864,7 @@
     "age": 25,
     "rawPhone": "+41 77 981 17 31",
     "city": "Belp",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Belp/BE",
       "Zürich / Schweiz"
@@ -7075,7 +7075,7 @@
     "age": 27,
     "rawPhone": "+41 76 746 53 41",
     "city": "Horw",
-    "canton": "BE",
+    "canton": "SG",
     "subareas": [
       "Wil/SG",
       "Zürich / Schweiz"
@@ -7528,7 +7528,7 @@
     "age": 30,
     "rawPhone": "+41 77 963 82 34",
     "city": "Weinfelden",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Weinfelden/TG",
       "Zürich / Schweiz"
@@ -7581,7 +7581,7 @@
     "age": 30,
     "rawPhone": "+41 76 757 13 26",
     "city": "Pratteln",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL",
       "Zürich / Schweiz"
@@ -8205,7 +8205,7 @@
     "age": 27,
     "rawPhone": "+41 77 204 18 78",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE,FR,SO",
       "Zürich / Schweiz"
@@ -8365,7 +8365,7 @@
     "genderCategory": "male",
     "age": 19,
     "rawPhone": "+41 77 971 32 25",
-    "city": "AG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,ZH",
@@ -8420,7 +8420,7 @@
     "age": 25,
     "rawPhone": "+41 79 742 71 17",
     "city": "Thayngen",
-    "canton": "ZH",
+    "canton": "SH",
     "subareas": [
       "Thayngen/SH,TG,DE",
       "Zürich / Schweiz"
@@ -8465,7 +8465,7 @@
     "age": 25,
     "rawPhone": "+41 77 538 98 16",
     "city": "Kradolf",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Kradolf/TG",
       "Zürich / Schweiz"
@@ -8569,7 +8569,7 @@
     "age": 25,
     "rawPhone": "+41 79 909 00 80",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "SZ",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zürich / Schweiz"
@@ -9098,7 +9098,7 @@
     "age": 25,
     "rawPhone": "+41 77 929 23 48",
     "city": "Grenchen",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Grenchen",
       "Zürich / Schweiz"
@@ -9304,7 +9304,7 @@
     "age": 25,
     "rawPhone": "+41 76 211 11 88",
     "city": "Zurzach",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Zurzach",
       "Zürich / Schweiz"
@@ -9409,7 +9409,7 @@
     "age": 23,
     "rawPhone": "+41 79 422 49 01",
     "city": "Arbon",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Arbon",
       "Zürich / Schweiz"
@@ -9658,7 +9658,7 @@
     "age": 25,
     "rawPhone": "+41 78 268 88 77",
     "city": "Kreuzlingen",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Kreuzlingen/TG",
       "Zürich / Schweiz"
@@ -9709,7 +9709,7 @@
     "age": 25,
     "rawPhone": "+41 76 123 45 81",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "SG",
     "subareas": [
       "Wil/SG",
       "Zürich / Schweiz"
@@ -9913,7 +9913,7 @@
     "age": 25,
     "rawPhone": "+41 79 286 71 81",
     "city": "Altstätten",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Altstätten/SG",
       "Zürich / Schweiz"
@@ -9957,7 +9957,7 @@
     "age": 30,
     "rawPhone": "+41 79 654 32 10",
     "city": "Solothurn",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Pratteln/BL,BS",
       "Zürich / Schweiz"
@@ -12015,7 +12015,7 @@
     "age": 25,
     "rawPhone": "+41 78 694 70 67",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Rothrist/AG",
       "Zürich"
@@ -12066,7 +12066,7 @@
     "age": 25,
     "rawPhone": "+41 78 230 45 57",
     "city": "Brugg",
-    "canton": "BE",
+    "canton": "AG",
     "subareas": [
       "Brugg/AG",
       "Zürich"
@@ -12384,7 +12384,7 @@
     "age": 20,
     "rawPhone": "+41 77 979 77 24",
     "city": "Werdenberg",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Werdenberg/SG",
       "Zürich"
@@ -12543,7 +12543,7 @@
     "age": 25,
     "rawPhone": "+41 79 639 05 97",
     "city": "Schaffhausen",
-    "canton": "ZG",
+    "canton": "SH",
     "subareas": [
       "Schaffhausen/SH",
       "Zürich"
@@ -12591,7 +12591,7 @@
     "age": 50,
     "rawPhone": "+41 77 470 32 40",
     "city": "Romanshorn",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Romanshorn/TG",
       "Zürich"
@@ -12746,7 +12746,7 @@
     "age": 25,
     "rawPhone": "+41 79 751 67 02",
     "city": "Winterthur",
-    "canton": "VS",
+    "canton": "TG",
     "subareas": [
       "Winterthur/ZH,TG,ZH Stadt",
       "Zürich"
@@ -12799,8 +12799,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 404 34 55",
-    "city": "BE,BL,SO",
-    "canton": "ZH",
+    "city": "Oensingen",
+    "canton": "SO",
     "subareas": [
       "BE,BL,SO",
       "Zürich"
@@ -12902,7 +12902,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 713 45 85",
-    "city": "AG,LU,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,ZG,ZH",
@@ -13008,7 +13008,7 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 77 926 72 44",
-    "city": "AG,LU,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZG",
     "subareas": [
       "AG,LU,ZG,ZH",
@@ -13062,7 +13062,7 @@
     "age": 25,
     "rawPhone": "+41 76 751 48 85",
     "city": "Muttenz",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Muttenz/BL,AG,SO",
       "Zürich"
@@ -13172,7 +13172,7 @@
     "age": 25,
     "rawPhone": "+41 76 842 88 84",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Dietlikon/ZH",
       "Zürich"
@@ -13648,7 +13648,7 @@
     "genderCategory": "female",
     "age": 20,
     "rawPhone": "+41 77 978 66 82",
-    "city": "AG,LU,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,ZH",
@@ -13855,7 +13855,7 @@
     "age": 25,
     "rawPhone": "+41 77 963 47 99",
     "city": "Chur",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Chur/GR,LI",
       "Zürich"
@@ -14171,7 +14171,7 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 78 314 20 17",
-    "city": "AG,LU,SG,ZG,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,SG,ZG,ZH",
@@ -14227,7 +14227,7 @@
     "age": 25,
     "rawPhone": "+41 78 445 20 20",
     "city": "Herzogenbuchsee",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Herzogenbuchsee/BE,AG,SO",
       "Zürich"
@@ -14641,7 +14641,7 @@
     "age": 25,
     "rawPhone": "+41 76 592 09 09",
     "city": "Oberbüren",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Oberbüren/SG,TG,ZH Stadt,ZH,AI / AR",
       "Zürich"
@@ -14693,7 +14693,7 @@
     "age": 18,
     "rawPhone": "+41 79 576 96 69",
     "city": "Oensingen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Oensingen/SO,BE,BL",
       "Zürich"
@@ -15155,7 +15155,7 @@
     "age": 25,
     "rawPhone": "+41 76 234 56 78",
     "city": "Wohlen",
-    "canton": "VS",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,ZH",
       "Zürich"
@@ -15261,7 +15261,7 @@
     "age": 25,
     "rawPhone": "+41 79 723 72 57",
     "city": "Einsiedeln",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Einsiedeln/SZ",
       "Zürich"
@@ -15315,7 +15315,7 @@
     "age": 25,
     "rawPhone": "+41 77 922 13 54",
     "city": "Muttenz",
-    "canton": "BS",
+    "canton": "BL",
     "subareas": [
       "Muttenz/BL,AG,BS,JU,SO",
       "Zürich"
@@ -15415,7 +15415,7 @@
     "age": 25,
     "rawPhone": "+41 79 868 24 13",
     "city": "Visp",
-    "canton": "ZH",
+    "canton": "VS",
     "subareas": [
       "Visp/VS",
       "Zürich"
@@ -15523,7 +15523,7 @@
     "age": 25,
     "rawPhone": "+41 76 217 77 34",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE",
       "Zürich"
@@ -16483,7 +16483,7 @@
     "age": 25,
     "rawPhone": "+41 79 665 22 54",
     "city": "Kreuzlingen",
-    "canton": "VS",
+    "canton": "TG",
     "subareas": [
       "Delémont",
       "Zürich"
@@ -16585,7 +16585,7 @@
     "age": 25,
     "rawPhone": "+41 77 990 43 89",
     "city": "Cornavin",
-    "canton": "GE",
+    "canton": "VD",
     "subareas": [
       "Lausanne",
       "Zürich"
@@ -16961,7 +16961,7 @@
     "age": 30,
     "rawPhone": "+41 76 428 48 96",
     "city": "Wolhusen",
-    "canton": "SG",
+    "canton": "LU",
     "subareas": [
       "Wolhusen/LU",
       "Zürich"
@@ -17112,7 +17112,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 952 60 01",
-    "city": "BE",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "BE",
@@ -17164,7 +17164,7 @@
     "age": 25,
     "rawPhone": "+41 78 000 00 05",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "SO",
     "subareas": [
       "Olten/SO",
       "Zürich"
@@ -17268,7 +17268,7 @@
     "age": 20,
     "rawPhone": "+41 79 731 90 68",
     "city": "Lengnau",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Lengnau/BE",
       "Zürich"
@@ -17375,7 +17375,7 @@
     "age": 30,
     "rawPhone": "+41 79 612 34 56",
     "city": "Aigle",
-    "canton": "VD",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -17478,7 +17478,7 @@
     "age": 25,
     "rawPhone": "+41 78 243 11 66",
     "city": "Romanshorn",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Romanshorn/TG,SG,ZH",
       "Zürich"
@@ -17527,7 +17527,7 @@
     "age": 25,
     "rawPhone": "+41 78 478 12 87",
     "city": "Luzern",
-    "canton": "LU",
+    "canton": "AG",
     "subareas": [
       "Luzern/LU,AG",
       "Zürich"
@@ -17581,7 +17581,7 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 77 951 87 62",
-    "city": "ZH,AG,LU",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "ZH,AG,LU",
@@ -17687,7 +17687,7 @@
     "age": 25,
     "rawPhone": "+41 78 325 33 68",
     "city": "Gebenstorf",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Gebenstorf/AG,ZH,DE",
       "Zürich"
@@ -17848,7 +17848,7 @@
     "age": 28,
     "rawPhone": "+41 77 929 01 41",
     "city": "Glattfelden",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Glattfelden/ZH",
       "Zürich"
@@ -18143,7 +18143,7 @@
     "age": 28,
     "rawPhone": "+41 77 974 11 96",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "BE",
     "subareas": [
       "Thun",
       "Zürich"
@@ -18290,7 +18290,7 @@
     "age": 29,
     "rawPhone": "+41 76 755 70 06",
     "city": "Stansstad",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Stansstad",
       "Zürich"
@@ -18727,7 +18727,7 @@
     "age": 25,
     "rawPhone": "+41 76 445 01 85",
     "city": "Winterthur",
-    "canton": "ZH",
+    "canton": "AR",
     "subareas": [
       "Winterthur",
       "Zürich"
@@ -18772,7 +18772,7 @@
     "age": 25,
     "rawPhone": "+41 77 618 58 08",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen",
       "Zürich"
@@ -18917,7 +18917,7 @@
     "age": 20,
     "rawPhone": "+41 77 914 57 29",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Rothrist/AG",
       "Zürich"
@@ -18997,7 +18997,7 @@
     "age": 25,
     "rawPhone": "+41 76 291 95 79",
     "city": "Neuhausen am Rheinfall",
-    "canton": "ZH",
+    "canton": "SH",
     "subareas": [
       "Uster/ZH",
       "Zürich"
@@ -19121,7 +19121,7 @@
     "age": 28,
     "rawPhone": "+41 79 584 19 32",
     "city": "Gossau",
-    "canton": "BS",
+    "canton": "SG",
     "subareas": [
       "Gossau/SG",
       "Basel"
@@ -19163,7 +19163,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 307 35 56",
-    "city": "AG,LU,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,ZG,ZH Stadt,ZH",
@@ -19285,7 +19285,7 @@
     "age": 25,
     "rawPhone": "+41 77 538 11 08",
     "city": "Birsfelden",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Birsfelden/BL,AG,BS",
       "Zug / Cham"
@@ -19468,7 +19468,7 @@
     "age": 27,
     "rawPhone": "+41 76 699 64 56",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE",
       "Zürich"
@@ -19780,7 +19780,7 @@
     "age": 27,
     "rawPhone": "+41 79 001 00 17",
     "city": "St. Gallen",
-    "canton": "SG",
+    "canton": "AG",
     "subareas": [
       "Hunzenschwil/AG,ZH",
       "Zürich"
@@ -19974,7 +19974,7 @@
     "age": 28,
     "rawPhone": "+41 76 456 78 90",
     "city": "Bern-City",
-    "canton": "BE",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG,BL,SO",
       "Zürich"
@@ -20114,7 +20114,7 @@
     "age": 25,
     "rawPhone": "+41 79 123 45 68",
     "city": "Wohlen",
-    "canton": "VS",
+    "canton": "AG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -20157,7 +20157,7 @@
     "age": 25,
     "rawPhone": "+41 79 123 45 69",
     "city": "Mastrils",
-    "canton": "VS",
+    "canton": "AG",
     "subareas": [
       "Erlinsbach/AG",
       "Zürich"
@@ -20237,7 +20237,7 @@
     "age": 29,
     "rawPhone": "+41 79 123 45 71",
     "city": "Oberbüren",
-    "canton": "VS",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG",
       "Zürich"
@@ -20397,7 +20397,7 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 76 345 67 89",
-    "city": "AG,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZG",
     "subareas": [
       "AG,ZG,ZH Stadt,ZH",
@@ -20447,7 +20447,7 @@
     "age": 30,
     "rawPhone": "+41 75 456 78 90",
     "city": "Birsfelden",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Birsfelden/BL,AG,SO",
       "Zug"
@@ -20658,7 +20658,7 @@
     "age": 25,
     "rawPhone": "+41 76 474 86 86",
     "city": "Muttenz",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Muttenz",
       "Zürich"
@@ -20962,7 +20962,7 @@
     "age": 22,
     "rawPhone": "+41 78 218 93 39",
     "city": "Reinach AG",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Reinach AG",
       "Zug / Luzern"
@@ -21053,7 +21053,7 @@
     "age": 19,
     "rawPhone": "+41 76 764 75 05",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "BE",
     "subareas": [
       "Biel/BE",
       "Zürich"
@@ -21111,7 +21111,7 @@
     "age": 26,
     "rawPhone": "+41 78 624 51 98",
     "city": "Herisau",
-    "canton": "ZH",
+    "canton": "AR",
     "subareas": [
       "Herisau/AI / AR",
       "Zürich"
@@ -21371,7 +21371,7 @@
     "age": 40,
     "rawPhone": "+41 76 296 75 91",
     "city": "Neuenburg",
-    "canton": "ZH",
+    "canton": "NE",
     "subareas": [
       "Neuenburg/NE",
       "Zürich"
@@ -21572,7 +21572,7 @@
     "age": 30,
     "rawPhone": "+41 77 906 45 28",
     "city": "Thayngen",
-    "canton": "ZH",
+    "canton": "SH",
     "subareas": [
       "Thayngen/SH,TG,DE",
       "Zürich"
@@ -21625,7 +21625,7 @@
     "age": 21,
     "rawPhone": "+41 78 000 00 03",
     "city": "Grenchen",
-    "canton": "VS",
+    "canton": "SO",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zürich"
@@ -21717,7 +21717,7 @@
     "age": 25,
     "rawPhone": "+41 62 398 60 25",
     "city": "Martigny",
-    "canton": "VS",
+    "canton": "SG",
     "subareas": [
       "St. Gallen/SG,TG,ZH",
       "Zürich"
@@ -21923,7 +21923,7 @@
     "age": 25,
     "rawPhone": "+41 78 000 00 12",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -21972,7 +21972,7 @@
     "age": 22,
     "rawPhone": "+41 41 765 47 66",
     "city": "Aigle",
-    "canton": "VD",
+    "canton": "BS",
     "subareas": [
       "Basel/BS",
       "Zürich"
@@ -22340,7 +22340,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 901 14 75",
-    "city": "AG,LU,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,ZG,ZH Stadt,ZH",
@@ -22392,7 +22392,7 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 77 988 05 11",
-    "city": "AG,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,ZG,ZH Stadt,ZH",
@@ -22492,7 +22492,7 @@
     "age": 26,
     "rawPhone": "+41 76 288 59 37",
     "city": "Werdenberg",
-    "canton": "AG",
+    "canton": "SG",
     "subareas": [
       "AG, LU, ZG, ZH Stadt, ZH",
       "Winterthur"
@@ -22537,7 +22537,7 @@
     "age": 25,
     "rawPhone": "+41 79 111 22 33",
     "city": "Zürich",
-    "canton": "SG",
+    "canton": "BE",
     "subareas": [
       "Interlaken/BE,LU,NW / OW",
       "Zürich"
@@ -22629,7 +22629,7 @@
     "age": 30,
     "rawPhone": "+41 79 444 55 66",
     "city": "Montreux",
-    "canton": "VD",
+    "canton": "AG",
     "subareas": [
       "Erlinsbach/AG",
       "Zürich"
@@ -22732,7 +22732,7 @@
     "age": 26,
     "rawPhone": "+41 76 562 60 32",
     "city": "Lausanne",
-    "canton": "VD",
+    "canton": "LU",
     "subareas": [
       "Luzern",
       "Zug / Cham"
@@ -22891,7 +22891,7 @@
     "age": 23,
     "rawPhone": "+41 76 764 78 29",
     "city": "Burgdorf",
-    "canton": "ZG",
+    "canton": "BE",
     "subareas": [
       "Burgdorf",
       "Zug / Cham"
@@ -23149,7 +23149,7 @@
     "age": 27,
     "rawPhone": "+41 77 967 12 49",
     "city": "Sierre",
-    "canton": "VS",
+    "canton": "SG",
     "subareas": [
       "Sevelen/SG",
       "Zug / Cham"
@@ -23207,7 +23207,7 @@
     "age": 25,
     "rawPhone": "+41 79 622 98 28",
     "city": "Sevelen",
-    "canton": "ZG",
+    "canton": "SG",
     "subareas": [
       "Sevelen/SG,GR,LI",
       "Zug / Cham"
@@ -23260,7 +23260,7 @@
     "age": 31,
     "rawPhone": "+41 41 791 23 67",
     "city": "Sierre",
-    "canton": "VS",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich / Schweiz"
@@ -23448,7 +23448,7 @@
     "age": 25,
     "rawPhone": "+41 78 211 99 21",
     "city": "Liebefeld",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Liebefeld",
       "Winterthur"
@@ -23603,7 +23603,7 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 77 971 77 98",
-    "city": "BE",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "BE",
@@ -23762,7 +23762,7 @@
     "age": 30,
     "rawPhone": "+41 79 635 73 41",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE",
       "Zürich / Schweiz"
@@ -24162,7 +24162,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 912 40 49",
-    "city": "AG",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG",
@@ -24371,7 +24371,7 @@
     "age": 25,
     "rawPhone": "+41 76 209 14 38",
     "city": "Baden",
-    "canton": "AG",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL,BS,SO",
       "Zürich / Schweiz"
@@ -25150,7 +25150,7 @@
     "age": 25,
     "rawPhone": "+41 77 913 19 63",
     "city": "Chur",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Chur/GR",
       "Zürich"
@@ -25577,7 +25577,7 @@
     "age": 37,
     "rawPhone": "+41 79 261 09 84",
     "city": "Lengnau",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Lengnau/BE",
       "Zürich"
@@ -25628,7 +25628,7 @@
     "age": 25,
     "rawPhone": "+41 76 631 42 92",
     "city": "Moutier",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Moutier/JU,SO",
       "Zürich"
@@ -26000,7 +26000,7 @@
     "age": 25,
     "rawPhone": "+41 76 617 26 85",
     "city": "Solothurn",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO",
       "Zürich"
@@ -26160,7 +26160,7 @@
     "genderCategory": "female",
     "age": 26,
     "rawPhone": "+41 79 283 60 00",
-    "city": "SG,ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "SG,ZH Stadt",
@@ -27045,7 +27045,7 @@
     "age": 24,
     "rawPhone": "+41 77 990 55 86",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Rothrist",
       "Zürich"
@@ -27098,7 +27098,7 @@
     "age": 30,
     "rawPhone": "+41 77 535 79 61",
     "city": "Oberengstringen",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Oberengstringen/ZH,ZH Stadt",
       "Zürich"
@@ -27262,7 +27262,7 @@
     "age": 25,
     "rawPhone": "+41 76 772 72 88",
     "city": "Bischofszell",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Bischofszell/TG,SG,ZH",
       "Zürich"
@@ -27370,7 +27370,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 987 07 24",
-    "city": "AG, BE, BS, SO, ZH Stadt",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG, BE, BS, SO, ZH Stadt",
@@ -27636,7 +27636,7 @@
     "age": 25,
     "rawPhone": "+41 77 906 49 51",
     "city": "Glarus Nord",
-    "canton": "ZH",
+    "canton": "GL",
     "subareas": [
       "Glarus Nord/GL",
       "Zürich"
@@ -27842,7 +27842,7 @@
     "age": 24,
     "rawPhone": "+41 79 123 45 60",
     "city": "Wohlen",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich"
@@ -28033,7 +28033,7 @@
     "age": 32,
     "rawPhone": "+41 76 401 87 89",
     "city": "Frasnacht",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Brugg/AG",
       "Zug / Cham"
@@ -28105,7 +28105,7 @@
     "age": 26,
     "rawPhone": "+41 78 111 22 22",
     "city": "Wohlen",
-    "canton": "TI",
+    "canton": "AG",
     "subareas": [
       "Langenthal/BE",
       "Zürich"
@@ -28142,7 +28142,7 @@
     "age": 30,
     "rawPhone": "+41 78 543 21 09",
     "city": "Winterthur",
-    "canton": "LU",
+    "canton": "TG",
     "subareas": [
       "Bischofszell/TG",
       "Zürich"
@@ -28330,7 +28330,7 @@
     "age": 25,
     "rawPhone": "+41 76 321 45 23",
     "city": "Zollikofen",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Zollikofen/BE,NW / OW",
       "Zürich / Schweiz"
@@ -28366,7 +28366,7 @@
     "age": 26,
     "rawPhone": "+41 78 254 25 47",
     "city": "Solothurn",
-    "canton": "BS",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO,AG,BE",
       "Basel"
@@ -28943,7 +28943,7 @@
     "age": 30,
     "rawPhone": "+41 76 754 29 59",
     "city": "Sirnach",
-    "canton": "BS",
+    "canton": "TG",
     "subareas": [
       "Sirnach/TG,SG,ZH",
       "Basel"
@@ -29671,8 +29671,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 79 222 33 33",
-    "city": "Cité-centre, GE",
-    "canton": "GE",
+    "city": "Cité-centre",
+    "canton": "BS",
     "subareas": [
       "Basel/BS,BL",
       "Luzern"
@@ -29722,7 +29722,7 @@
     "genderCategory": "female",
     "age": 23,
     "rawPhone": "+41 77 996 42 05",
-    "city": "AG,ZH Stadt",
+    "city": "Zürich",
     "canton": "AG",
     "subareas": [
       "AG,ZH Stadt",
@@ -29951,7 +29951,7 @@
     "age": 26,
     "rawPhone": "+41 79 111 22 23",
     "city": "Arth-Goldau",
-    "canton": "LU",
+    "canton": "SZ",
     "subareas": [
       "Arth-Goldau/SZ,LU,ZG",
       "Luzern"
@@ -29996,7 +29996,7 @@
     "age": 29,
     "rawPhone": "+41 79 327 79 01",
     "city": "Plan-les-Ouates",
-    "canton": "GE",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ,SG,ZH",
       "St. Gallen"
@@ -30091,7 +30091,7 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 77 567 89 01",
-    "city": "AG,ZH",
+    "city": "Zürich",
     "canton": "SG",
     "subareas": [
       "AG,ZH",
@@ -30135,7 +30135,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 923 11 55",
-    "city": "AG,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "SO",
     "subareas": [
       "AG,ZG,ZH Stadt,ZH",
@@ -30189,7 +30189,7 @@
     "age": 22,
     "rawPhone": "+41 78 123 45 69",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "BS",
     "subareas": [
       "Basel",
       "Solothurn / Olten"
@@ -30239,7 +30239,7 @@
     "age": 22,
     "rawPhone": "+41 77 290 49 84",
     "city": "Arth-Goldau",
-    "canton": "ZG",
+    "canton": "SZ",
     "subareas": [
       "Arth-Goldau",
       "Zug / Cham"
@@ -31501,7 +31501,7 @@
     "age": 25,
     "rawPhone": "+41 79 410 81 13",
     "city": "Steffisburg",
-    "canton": "AG",
+    "canton": "BE",
     "subareas": [
       "Steffisburg",
       "Aargau / Solothurn"
@@ -32101,7 +32101,7 @@
     "dedupClusterId": "ch-a3d417d350ec",
     "rawName": "Margaux VIP",
     "city": "Nyon",
-    "canton": "VD",
+    "canton": "GE",
     "sourcePortal": "lolla.ch",
     "sourceUrl": "https://www.lolla.ch/",
     "advertisedBaseChf": 270,
@@ -33363,8 +33363,8 @@
   },
   {
     "rawName": "Aiste",
-    "city": "Zurich, ZH",
-    "canton": "VD",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/aiste",
     "rawPhone": "+41 79 775 12 34",
@@ -33388,8 +33388,8 @@
   },
   {
     "rawName": "Melanie L.",
-    "city": "Zurich, ZH",
-    "canton": "GE",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/melanie-l",
     "rawPhone": "+41 79 555 66 66",
@@ -33413,8 +33413,8 @@
   },
   {
     "rawName": "Loly",
-    "city": "Eaux-Vives, GE",
-    "canton": "VD",
+    "city": "Eaux-Vives",
+    "canton": "GE",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/loly",
     "rawPhone": "+41 22 555 12 34",
@@ -33438,8 +33438,8 @@
   },
   {
     "rawName": "Natasha",
-    "city": "Eaux-Vives, GE",
-    "canton": "VD",
+    "city": "Eaux-Vives",
+    "canton": "GE",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/natasha",
     "rawPhone": "+41 21 999 56 78",
@@ -33463,8 +33463,8 @@
   },
   {
     "rawName": "Nicole",
-    "city": "Eaux-Vives, GE",
-    "canton": "VD",
+    "city": "Eaux-Vives",
+    "canton": "GE",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/nicole",
     "rawPhone": "+41 79 584 19 32",
@@ -33488,8 +33488,8 @@
   },
   {
     "rawName": "Lili A.",
-    "city": "Zurich, ZH",
-    "canton": "VD",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/lili-a",
     "rawPhone": "+41 79 584 19 32",
@@ -33513,8 +33513,8 @@
   },
   {
     "rawName": "Monica",
-    "city": "Zurich, ZH",
-    "canton": "VD",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/monica",
     "rawPhone": "+41 79 584 19 32",
@@ -33538,8 +33538,8 @@
   },
   {
     "rawName": "Yulia",
-    "city": "Zurich, ZH",
-    "canton": "VD",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/yulia",
     "rawPhone": "+41 79 584 19 32",
@@ -33563,8 +33563,8 @@
   },
   {
     "rawName": "Denise",
-    "city": "Zurich, ZH",
-    "canton": "VD",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/denise",
     "rawPhone": "+41 79 584 19 32",
@@ -33588,8 +33588,8 @@
   },
   {
     "rawName": "Tatyana",
-    "city": "Zurich, ZH",
-    "canton": "VD",
+    "city": "Zurich",
+    "canton": "FR",
     "sourcePortal": "bemygirl.ch",
     "sourceUrl": "https://www.bemygirl.ch/fr/tatyana",
     "rawPhone": "+41 79 584 19 32",
@@ -33813,7 +33813,7 @@
   {
     "rawName": "Luna",
     "city": "Zürich-City",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "massage123.ch",
     "sourceUrl": "https://www.massage123.ch/inserat/entspannende-massage/11548",
     "rawPhone": "+41 76 123 65 43",
@@ -33863,7 +33863,7 @@
   {
     "rawName": "Exklusiv Studio sucht nette Mädchen",
     "city": "Altstätten",
-    "canton": "TI",
+    "canton": "SG",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/altstaetten-exklusiv-studio-sucht-nette-girls-estamos-buscando-chicas-777688",
     "rawPhone": "+41 79 584 19 32",
@@ -33913,7 +33913,7 @@
   {
     "rawName": "Ich bin eine sehr hübsche und geile Frau; ich mag lange Partys.",
     "city": "Ebikon",
-    "canton": "TI",
+    "canton": "LU",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/ebikon-ich-bin-eine-sehr-huebsche-und-geile-frau-ich-mag-lange-partys-546097",
     "rawPhone": "+41 79 584 19 32",
@@ -33988,7 +33988,7 @@
   {
     "rawName": "Ich habe Lust komm. Fotos original! TOP Service",
     "city": "Chur",
-    "canton": "TI",
+    "canton": "GR",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/chur-ich-habe-lust-komm-fotos-original-top-service-678140",
     "rawPhone": "+41 79 584 19 32",
@@ -34263,7 +34263,7 @@
   {
     "rawName": "Thai Wellness und Entspannung bei Emmy in Wohlen",
     "city": "Wohlen",
-    "canton": "TI",
+    "canton": "AG",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/wohlen-thai-wellness-und-entspannung-bei-emmy-in-wohlen-783643",
     "rawPhone": "+41 79 584 19 32",
@@ -34288,7 +34288,7 @@
   {
     "rawName": "NEU❤️TS Rosa 20cm❤️Aktiv& Passiv! ❤️Auch escort ❤️ in Bad Ragaz",
     "city": "Mels",
-    "canton": "ZG",
+    "canton": "SG",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/mels-neu-ts-rosa-20cm-aktiv-passiv-auch-escort-in-bad-ragaz-783068",
     "rawPhone": "+41 78 654 32 10",
@@ -35014,7 +35014,7 @@
     "age": 23,
     "rawPhone": "+41 79 584 19 32",
     "city": "Grenchen",
-    "canton": "SG",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "St. Gallen"
@@ -35095,7 +35095,7 @@
     "age": 32,
     "rawPhone": "+41 79 584 19 32",
     "city": "Chur",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Chur",
       "Zürich"
@@ -35183,7 +35183,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Glarus",
-    "canton": "ZH",
+    "canton": "GL",
     "subareas": [
       "Glarus/GL",
       "Zürich"
@@ -35325,7 +35325,7 @@
     "age": 26,
     "rawPhone": "+41 79 584 19 32",
     "city": "Liestal",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL,BS,SO",
       "Zug / Cham"
@@ -35370,7 +35370,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Landquart",
-    "canton": "ZG",
+    "canton": "GR",
     "subareas": [
       "Landquart/GR,SG,LI",
       "Zug / Cham"
@@ -35414,7 +35414,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Liestal",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL",
       "Zug / Cham"
@@ -35633,7 +35633,7 @@
     "genderCategory": "female",
     "age": 29,
     "rawPhone": "+41 79 584 19 32",
-    "city": "AG,LU,ZG,ZH Stadt",
+    "city": "Zürich",
     "canton": "ZG",
     "subareas": [
       "AG,LU,ZG,ZH Stadt",
@@ -35671,7 +35671,7 @@
     "age": 18,
     "rawPhone": "+41 79 584 19 32",
     "city": "Lengnau",
-    "canton": "ZG",
+    "canton": "BE",
     "subareas": [
       "Lengnau/BE",
       "Zug / Cham"
@@ -36170,7 +36170,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Arth-Goldau",
-    "canton": "SG",
+    "canton": "SZ",
     "subareas": [
       "St. Gallen/SG",
       "Basel"
@@ -36258,7 +36258,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Lugano",
-    "canton": "TI",
+    "canton": "SO",
     "subareas": [
       "Lugano/TI,GR",
       "Basel"
@@ -36342,7 +36342,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Sirnach",
-    "canton": "BE",
+    "canton": "TG",
     "subareas": [
       "Sirnach/TG",
       "Bern"
@@ -36386,7 +36386,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Wynau",
-    "canton": "SG",
+    "canton": "BE",
     "subareas": [
       "Wynau",
       "St. Gallen"
@@ -36519,7 +36519,7 @@
     "age": 35,
     "rawPhone": "+41 79 584 19 32",
     "city": "Neuhausen am Rheinfall",
-    "canton": "BE",
+    "canton": "SH",
     "subareas": [
       "Neuhausen am Rheinfall/SH",
       "Bern"
@@ -36854,7 +36854,7 @@
     "age": 21,
     "rawPhone": "+41 79 584 19 32",
     "city": "Grenchen",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO,BE",
       "Luzern"
@@ -37029,7 +37029,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Solothurn",
-    "canton": "AG",
+    "canton": "SO",
     "subareas": [
       "Solothurn",
       "Aargau / Baden"
@@ -37073,7 +37073,7 @@
     "age": 32,
     "rawPhone": "+41 79 584 19 32",
     "city": "Ebikon",
-    "canton": "TI",
+    "canton": "LU",
     "subareas": [
       "Ebikon",
       "Lugano / Locarno"
@@ -37119,7 +37119,7 @@
     "age": 23,
     "rawPhone": "+41 79 584 19 32",
     "city": "Olten",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Zug/ZG",
       "Aargau / Baden"
@@ -37162,7 +37162,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Niederbipp",
-    "canton": "AG",
+    "canton": "BE",
     "subareas": [
       "Niederbipp/BE,AG,SO",
       "Aargau / Baden"
@@ -37252,7 +37252,7 @@
     "age": 28,
     "rawPhone": "+41 79 584 19 32",
     "city": "Muttenz",
-    "canton": "AG",
+    "canton": "BL",
     "subareas": [
       "Muttenz/BL",
       "Aargau / Baden"
@@ -37651,7 +37651,7 @@
     "age": 22,
     "rawPhone": "+41 79 584 19 32",
     "city": "Liestal",
-    "canton": "SO",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL",
       "Solothurn / Olten"
@@ -37914,7 +37914,7 @@
     "age": 32,
     "rawPhone": "+41 79 584 19 32",
     "city": "Altdorf",
-    "canton": "ZH",
+    "canton": "UR",
     "subareas": [
       "Altdorf/UR",
       "Zürich"
@@ -38030,7 +38030,7 @@
     "age": 27,
     "rawPhone": "+41 79 584 19 32",
     "city": "Grenchen",
-    "canton": "SG",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO,BL",
       "St. Gallen"
@@ -38067,7 +38067,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Olten",
-    "canton": "VS",
+    "canton": "SO",
     "subareas": [
       "Olten",
       "Wallis / Zermatt"
@@ -38112,7 +38112,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Bad Ragaz",
-    "canton": "VS",
+    "canton": "SG",
     "subareas": [
       "Bad Ragaz",
       "Wallis / Zermatt"
@@ -38206,7 +38206,7 @@
     "age": 24,
     "rawPhone": "+41 79 584 19 32",
     "city": "Altendorf",
-    "canton": "VS",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ,ZH",
       "Wallis / Zermatt"
@@ -38296,7 +38296,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Frauenfeld",
-    "canton": "VS",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld/TG",
       "Wallis / Zermatt"
@@ -38340,7 +38340,7 @@
     "age": 39,
     "rawPhone": "+41 79 584 19 32",
     "city": "Ebikon",
-    "canton": "BE",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU",
       "Bern"
@@ -38598,7 +38598,7 @@
     "age": 21,
     "rawPhone": "+41 79 584 19 32",
     "city": "Gebenstorf",
-    "canton": "VS",
+    "canton": "AG",
     "subareas": [
       "Gebenstorf/AG,ZH,DE",
       "Wallis / Zermatt"
@@ -38822,7 +38822,7 @@
     "age": 22,
     "rawPhone": "+41 79 584 19 32",
     "city": "Herisau",
-    "canton": "GR",
+    "canton": "AR",
     "subareas": [
       "Herisau/AI / AR,SG",
       "Chur / St. Moritz"
@@ -38866,7 +38866,7 @@
     "age": 27,
     "rawPhone": "+41 79 584 19 32",
     "city": "Kaltbrunn",
-    "canton": "TI",
+    "canton": "SG",
     "subareas": [
       "Kaltbrunn",
       "Lugano / Locarno"
@@ -38954,7 +38954,7 @@
     "age": 22,
     "rawPhone": "+41 79 584 19 32",
     "city": "Bischofszell",
-    "canton": "TI",
+    "canton": "TG",
     "subareas": [
       "Bischofszell/TG",
       "Lugano / Locarno"
@@ -39267,7 +39267,7 @@
     "age": 40,
     "rawPhone": "+41 79 584 19 32",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG",
       "Zürich / Schweiz"
@@ -39305,7 +39305,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Oberentfelden",
-    "canton": "TI",
+    "canton": "AG",
     "subareas": [
       "Oberentfelden",
       "Lugano / Locarno"
@@ -39349,7 +39349,7 @@
     "age": 23,
     "rawPhone": "+41 79 584 19 32",
     "city": "Olten",
-    "canton": "TI",
+    "canton": "SO",
     "subareas": [
       "Olten",
       "Lugano / Locarno"
@@ -39392,7 +39392,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Weinfelden",
-    "canton": "TI",
+    "canton": "TG",
     "subareas": [
       "Weinfelden",
       "Lugano / Locarno"
@@ -39435,7 +39435,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Eschlikon",
-    "canton": "TI",
+    "canton": "TG",
     "subareas": [
       "Eschlikon",
       "Lugano / Locarno"
@@ -39478,7 +39478,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Zurzach",
-    "canton": "TI",
+    "canton": "AG",
     "subareas": [
       "Zurzach",
       "Lugano / Locarno"
@@ -39521,7 +39521,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Chur",
-    "canton": "TI",
+    "canton": "GR",
     "subareas": [
       "Chur",
       "Lugano / Locarno"
@@ -39609,7 +39609,7 @@
     "age": 26,
     "rawPhone": "+41 79 584 19 32",
     "city": "Frauenfeld",
-    "canton": "TI",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld",
       "Lugano / Locarno"
@@ -39655,7 +39655,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Unterseen",
-    "canton": "TI",
+    "canton": "BE",
     "subareas": [
       "Unterseen",
       "Lugano / Locarno"
@@ -39788,7 +39788,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 79 584 19 32",
-    "city": "ZH Stadt,ZH",
+    "city": "ZH Stadt",
     "canton": "TI",
     "subareas": [
       "ZH Stadt,ZH",
@@ -39878,7 +39878,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Schaffhausen",
-    "canton": "ZH",
+    "canton": "SH",
     "subareas": [
       "Schaffhausen",
       "Zürich"
@@ -60379,7 +60379,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Monthey",
-    "canton": "VD",
+    "canton": "VS",
     "subareas": [
       "Montreux",
       "Lausanne"
@@ -62155,7 +62155,7 @@
     "age": 37,
     "rawPhone": "+41 79 584 19 32",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Lenzburg",
       "Zürich"
@@ -62504,7 +62504,7 @@
     "age": 28,
     "rawPhone": "+41 79 584 19 32",
     "city": "Sirnach",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Sirnach",
       "Zürich"
@@ -62675,7 +62675,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Pratteln",
-    "canton": "AG",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,AG,BS",
       "Aargau"
@@ -63108,7 +63108,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Neuhausen am Rheinfall",
-    "canton": "BS",
+    "canton": "SH",
     "subareas": [
       "Neuhausen am Rheinfall",
       "Basel"
@@ -63901,7 +63901,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Porrentruy",
-    "canton": "VD",
+    "canton": "JU",
     "subareas": [
       "Gland",
       "Lausanne"
@@ -64350,7 +64350,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Eaux-vives",
-    "canton": "VD",
+    "canton": "GE",
     "subareas": [
       "Lausanne",
       "Lausanne"
@@ -67448,7 +67448,7 @@
     "age": 40,
     "rawPhone": "+41 79 584 19 32",
     "city": "Oensingen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Oensingen/SO,AG,BE",
       "Zürich"
@@ -67485,7 +67485,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Kaltbrunn",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Kaltbrunn/SG, GL, ZH",
       "Zürich"
@@ -67522,7 +67522,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Pratteln",
-    "canton": "BS",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,BS",
       "Basel"
@@ -67558,7 +67558,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Belp",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Belp/BE",
       "Zürich"
@@ -67816,7 +67816,7 @@
     "age": 22,
     "rawPhone": "+41 79 584 19 32",
     "city": "Neuenburg",
-    "canton": "ZH",
+    "canton": "NE",
     "subareas": [
       "Neuenburg/NE",
       "Zürich"
@@ -67890,7 +67890,7 @@
     "age": 32,
     "rawPhone": "+41 79 584 19 32",
     "city": "Grenchen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zürich"
@@ -68001,7 +68001,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Wolhusen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Wolhusen/LU",
       "Zürich"
@@ -68119,7 +68119,7 @@
     "age": 25,
     "rawPhone": "+41 79 354 89 73",
     "city": "Wolhusen",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Wolhusen/LU,NW / OW",
       "Zug / Cham"
@@ -68209,7 +68209,7 @@
     "age": 25,
     "rawPhone": "+41 79 315 74 08",
     "city": "Lenzburg",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG,ZH Stadt,ZH",
       "Zug / Cham"
@@ -68290,7 +68290,7 @@
     "age": 32,
     "rawPhone": "+41 78 235 33 01",
     "city": "Chur",
-    "canton": "ZG",
+    "canton": "GR",
     "subareas": [
       "Chur/GR",
       "Zug / Cham"
@@ -68335,7 +68335,7 @@
     "age": 28,
     "rawPhone": "+41 77 958 25 91",
     "city": "Langenthal",
-    "canton": "ZG",
+    "canton": "BE",
     "subareas": [
       "Langenthal/BE",
       "Zug / Cham"
@@ -68380,7 +68380,7 @@
     "age": 30,
     "rawPhone": "+41 79 395 89 87",
     "city": "Grenchen",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Zug / Cham"
@@ -68420,7 +68420,7 @@
     "age": 22,
     "rawPhone": "+41 77 253 33 55",
     "city": "Moutier",
-    "canton": "ZG",
+    "canton": "BE",
     "subareas": [
       "Moutier/JU",
       "Zug / Cham"
@@ -68547,7 +68547,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Zürich",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Rothrist/AG",
       "Zug / Cham"
@@ -68757,7 +68757,7 @@
     "age": 25,
     "rawPhone": "+41 77 944 86 65",
     "city": "Lenzburg",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG",
       "Zug / Cham"
@@ -68799,7 +68799,7 @@
     "age": 25,
     "rawPhone": "+41 77 918 84 56",
     "city": "Derendingen",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Derendingen/SO, BE",
       "Zug / Cham"
@@ -68845,7 +68845,7 @@
     "age": 19,
     "rawPhone": "+41 77 926 91 49",
     "city": "Trimbach",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Trimbach/SO, AG",
       "Zug / Cham"
@@ -68976,7 +68976,7 @@
     "age": 24,
     "rawPhone": "+41 77 994 00 61",
     "city": "Olten",
-    "canton": "ZG",
+    "canton": "SZ",
     "subareas": [
       "Olten",
       "Zug / Cham"
@@ -69022,7 +69022,7 @@
     "age": 23,
     "rawPhone": "+41 77 928 36 83",
     "city": "Frauenfeld",
-    "canton": "ZG",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld",
       "Zug / Cham"
@@ -69068,7 +69068,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Erlinsbach",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Erlinsbach",
       "Zug / Cham"
@@ -69105,7 +69105,7 @@
     "genderCategory": "female",
     "age": 19,
     "rawPhone": "+41 79 584 19 32",
-    "city": "AG",
+    "city": "Zürich",
     "canton": "ZG",
     "subareas": [
       "AG",
@@ -69143,7 +69143,7 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 79 584 19 32",
-    "city": "SG,TG,ZH Stadt",
+    "city": "Zürich",
     "canton": "ZG",
     "subareas": [
       "SG,TG,ZH Stadt",
@@ -69224,7 +69224,7 @@
     "age": 30,
     "rawPhone": "+41 77 450 30 73",
     "city": "Dietikon",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Dietikon",
       "Zug / Cham"
@@ -69432,7 +69432,7 @@
     "age": 29,
     "rawPhone": "+41 79 584 19 32",
     "city": "Riehen",
-    "canton": "ZG",
+    "canton": "BS",
     "subareas": [
       "Riehen",
       "Zug / Cham"
@@ -69469,7 +69469,7 @@
     "age": 20,
     "rawPhone": "+41 76 840 45 07",
     "city": "Trimbach",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Trimbach",
       "Zug / Cham"
@@ -69604,7 +69604,7 @@
     "age": 30,
     "rawPhone": "+41 62 751 10 51",
     "city": "Zofingen",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Zofingen",
       "Zug / Cham"
@@ -69649,7 +69649,7 @@
     "age": 25,
     "rawPhone": "+41 77 502 04 73",
     "city": "Grenchen",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO,AG",
       "Zug / Cham"
@@ -69776,7 +69776,7 @@
     "age": 21,
     "rawPhone": "+41 76 840 45 07",
     "city": "Trimbach",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Trimbach/SO,AG,LU",
       "Zug / Cham"
@@ -69989,7 +69989,7 @@
     "age": 22,
     "rawPhone": "+41 77 951 71 97",
     "city": "Olten",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Olten/SO,AG,BE,BL,LU",
       "Zug / Cham"
@@ -70074,7 +70074,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 315 74 08",
-    "city": "Webcam, Bilder & Videos",
+    "city": "Zürich",
     "canton": "ZG",
     "subareas": [
       "Webcam, Bilder & Videos",
@@ -70116,7 +70116,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Jona SG",
-    "canton": "ZG",
+    "canton": "SG",
     "subareas": [
       "Jona SG/SG,SZ,ZH",
       "Zug / Cham"
@@ -70153,7 +70153,7 @@
     "age": 25,
     "rawPhone": "+41 77 969 96 17",
     "city": "Werdenberg",
-    "canton": "ZG",
+    "canton": "SG",
     "subareas": [
       "Werdenberg/SG,GR,AI / AR",
       "Zug / Cham"
@@ -70198,7 +70198,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Pratteln",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,BS",
       "Zug / Cham"
@@ -70324,7 +70324,7 @@
     "age": 49,
     "rawPhone": "+41 79 584 19 32",
     "city": "Eschlikon",
-    "canton": "ZG",
+    "canton": "TG",
     "subareas": [
       "Eschlikon/TG,SH,DE",
       "Zug / Cham"
@@ -70399,7 +70399,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Jona SG",
-    "canton": "ZG",
+    "canton": "SG",
     "subareas": [
       "Jona SG/SG,SZ,ZH",
       "Zug / Cham"
@@ -70437,7 +70437,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Fontannen bei Wolhusen",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Fontannen bei Wolhusen/LU,AG,ZG",
       "Zug / Cham"
@@ -70474,7 +70474,7 @@
     "age": 28,
     "rawPhone": "+41 79 584 19 32",
     "city": "Weinfelden",
-    "canton": "ZG",
+    "canton": "TG",
     "subareas": [
       "Weinfelden/TG,SG,SH,ZH,DE",
       "Zug / Cham"
@@ -70550,7 +70550,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Liestal",
-    "canton": "BS",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL",
       "Basel"
@@ -71029,7 +71029,7 @@
     "age": 45,
     "rawPhone": "+41 77 259 44 08",
     "city": "Wohlen",
-    "canton": "BE",
+    "canton": "GR",
     "subareas": [
       "Chur/GR,GL,TI",
       "Bern"
@@ -71140,7 +71140,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Horw",
-    "canton": "BE",
+    "canton": "LU",
     "subareas": [
       "Horw/LU",
       "Bern"
@@ -71325,7 +71325,7 @@
     "age": 30,
     "rawPhone": "+41 79 584 19 32",
     "city": "Ebikon",
-    "canton": "BE",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU",
       "Bern"
@@ -71400,7 +71400,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Altendorf",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ,ZG,ZH",
       "Zürich / Schweiz"
@@ -71513,7 +71513,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Windisch",
-    "canton": "LU",
+    "canton": "AG",
     "subareas": [
       "Windisch/AG,SO,ZH",
       "Luzern"
@@ -71699,7 +71699,7 @@
     "age": 25,
     "rawPhone": "+41 79 931 87 82",
     "city": "Glarus Nord",
-    "canton": "LU",
+    "canton": "GL",
     "subareas": [
       "Glarus Nord/GL,SG,SZ",
       "Luzern"
@@ -71735,7 +71735,7 @@
     "age": 23,
     "rawPhone": "+41 79 584 19 32",
     "city": "Genève",
-    "canton": "GE",
+    "canton": "SG",
     "subareas": [
       "Genève",
       "Aargau / Baden"
@@ -72030,7 +72030,7 @@
     "age": 40,
     "rawPhone": "+41 79 584 19 32",
     "city": "Trimbach",
-    "canton": "AG",
+    "canton": "SO",
     "subareas": [
       "Trimbach/SO,AG",
       "Aargau / Baden"
@@ -72066,7 +72066,7 @@
     "age": 24,
     "rawPhone": "+41 79 584 19 32",
     "city": "Zollikofen",
-    "canton": "AG",
+    "canton": "BE",
     "subareas": [
       "Zollikofen",
       "Aargau / Baden"
@@ -72102,7 +72102,7 @@
     "age": 28,
     "rawPhone": "+41 79 584 19 32",
     "city": "Olten",
-    "canton": "AG",
+    "canton": "SO",
     "subareas": [
       "Olten/SO,AG,BE",
       "Aargau / Baden"
@@ -72248,7 +72248,7 @@
     "age": 30,
     "rawPhone": "+41 79 908 06 84",
     "city": "Grenchen",
-    "canton": "SG",
+    "canton": "SO",
     "subareas": [
       "Grenchen",
       "St. Gallen"
@@ -72434,7 +72434,7 @@
     "age": 26,
     "rawPhone": "+41 79 584 19 32",
     "city": "Pratteln",
-    "canton": "SG",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,AG",
       "St. Gallen"
@@ -72733,7 +72733,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Sirnach",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Sirnach/TG,SG",
       "Zürich"
@@ -72771,7 +72771,7 @@
     "age": 23,
     "rawPhone": "+41 79 584 19 32",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG,ZG,ZH",
       "Zürich"
@@ -72996,7 +72996,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Olten",
-    "canton": "ZG",
+    "canton": "SO",
     "subareas": [
       "Olten/SO",
       "Zug"
@@ -73182,7 +73182,7 @@
     "age": 32,
     "rawPhone": "+41 79 584 19 32",
     "city": "Sursee",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Sursee/LU",
       "Zug"
@@ -73372,7 +73372,7 @@
     "age": 26,
     "rawPhone": "+41 79 584 19 32",
     "city": "Ebikon",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU,AG,BE",
       "Zug"
@@ -73448,7 +73448,7 @@
     "age": 22,
     "rawPhone": "+41 79 584 19 32",
     "city": "Muttenz",
-    "canton": "ZG",
+    "canton": "BL",
     "subareas": [
       "Muttenz/BL,AG,BS,JU,SO",
       "Zug"
@@ -77195,7 +77195,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Visp",
-    "canton": "VD",
+    "canton": "GE",
     "subareas": [
       "Visp",
       "Lausanne"
@@ -77752,7 +77752,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Delémont",
-    "canton": "VD",
+    "canton": "JU",
     "subareas": [
       "Delémont",
       "Lausanne"
@@ -77900,7 +77900,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Eaux-vives",
-    "canton": "VD",
+    "canton": "GE",
     "subareas": [
       "Eaux-vives",
       "Lausanne"
@@ -80195,7 +80195,7 @@
   {
     "rawName": "Océane · Nyon & Morges",
     "city": "Nyon",
-    "canton": "VD",
+    "canton": "GE",
     "sourcePortal": "fgirl.ch",
     "sourceUrl": "https://www.fgirl.ch/filles/vaud/oceane-nyon",
     "rawPhone": "+41 76 481 27 59",
@@ -80365,7 +80365,7 @@
   {
     "id": "ch-9a88c0244b9a",
     "rawName": "New Latina",
-    "city": "SG",
+    "city": "Zürich",
     "canton": "BS",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/neu-in-der-stadt-top-escort-unabhaengig-latina-783173",
@@ -80510,7 +80510,7 @@
     "id": "ch-a27513f9ec44",
     "rawName": "Christina",
     "city": "Olten",
-    "canton": "BS",
+    "canton": "SO",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/olten-deine-traumfrau-in-stadt-party-frau-beste-service-domina-100-echt-771148",
     "rawPhone": "+41 76 263 72 66",
@@ -80619,7 +80619,7 @@
     "id": "ch-561d9ed78b8b",
     "rawName": "Eleganz, Leidenschaft und unvergessliches Vergnügen",
     "city": "Pratteln",
-    "canton": "BS",
+    "canton": "BL",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/pratteln-eleganz-leidenschaft-und-unvergessliches-vergnuegen-762589",
     "rawPhone": "+41 79 854 13 92",
@@ -80894,7 +80894,7 @@
     "id": "ch-1660108e6042",
     "rawName": "Ryana",
     "city": "Basel",
-    "canton": "BS",
+    "canton": "LU",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/basel-ryana-784763",
     "rawPhone": "+41 76 522 91 07",
@@ -81313,7 +81313,7 @@
   {
     "rawName": "Lexi",
     "city": "Fribourg",
-    "canton": "ZH",
+    "canton": "FR",
     "sourcePortal": "sex4u.ch",
     "sourceUrl": "https://sex4u.ch/lexi",
     "rawPhone": "+41 79 876 54 32",
@@ -81438,7 +81438,7 @@
   {
     "rawName": "Sofia",
     "city": "Kreuzlingen",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "6navi.ch",
     "sourceUrl": "https://6navi.ch/girl/sofia-anal-sex-paysexclub-in-kreuzlingen-68646.html",
     "rawPhone": "+41 78 669 62 04",
@@ -81672,7 +81672,7 @@
   {
     "rawName": "Surya · Dakini Tantra Zürich & Zug",
     "city": "Zürich",
-    "canton": "ZH",
+    "canton": "ZG",
     "sourcePortal": "tantra.ch",
     "sourceUrl": "https://www.tantra.ch/surya-dakini-zuerich",
     "rawPhone": "+41 79 512 88 34",
@@ -82266,7 +82266,7 @@
   {
     "rawName": "Victoria · Independent Courtesan Zürich",
     "city": "Zürich (Paradeplatz)",
-    "canton": "ZH",
+    "canton": "ZG",
     "sourcePortal": "independent-swiss",
     "sourceUrl": "https://www.bemygirl.ch/de/escorts/zuerich",
     "rawPhone": "+41 79 812 45 90",
@@ -82484,7 +82484,7 @@
   },
   {
     "rawName": "Sex in Cham",
-    "city": "Zug",
+    "city": "Cham",
     "canton": "ZG",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/filter/city/cham",
@@ -82572,7 +82572,7 @@
   },
   {
     "rawName": "Escort Zug",
-    "city": "Zug",
+    "city": "Cham",
     "canton": "ZG",
     "sourcePortal": "ladama-escort.ch",
     "sourceUrl": "https://ladama-escort.ch/page/zug/",
@@ -83035,7 +83035,7 @@
   {
     "rawName": "Domina SM Studio Skalvin Schweiz Zürich Bern ",
     "city": "Basel",
-    "canton": "BS",
+    "canton": "BE",
     "sourcePortal": "dominaguide.ch",
     "sourceUrl": "https://dominaguide.ch/",
     "rawPhone": "+41 79 812 45 90",
@@ -83123,7 +83123,7 @@
   {
     "rawName": "VIP Luxus Escort Service St. Moritz",
     "city": "Luzern",
-    "canton": "LU",
+    "canton": "GR",
     "sourcePortal": "pure-luxury-models.com",
     "sourceUrl": "https://pure-luxury-models.com/cityguide/schweiz-2/st-moritz/",
     "rawPhone": "+41 79 812 45 90",
@@ -83145,7 +83145,7 @@
   {
     "rawName": "Escort St. Moritz",
     "city": "Luzern",
-    "canton": "LU",
+    "canton": "GR",
     "sourcePortal": "joy-escort.ch",
     "sourceUrl": "https://www.joy-escort.ch/escort-st-moritz",
     "rawPhone": "+41 79 812 45 90",
@@ -83302,8 +83302,8 @@
   {
     "rawName": "Ts Anaconda",
     "genderCategory": "male",
-    "city": "Wil",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "sourcePortal": "xdate.ch",
     "sourceUrl": "https://www.xdate.ch/de/wil-ts-anaconda-21-cm-activ-pasiv-party-party-und-kamagra-778447",
     "rawPhone": "+41 78 899 81 10",
@@ -83832,7 +83832,7 @@
     "rawName": "Adrana",
     "genderCategory": "male",
     "city": "La Chaux-de-Fonds",
-    "canton": "ZH",
+    "canton": "NE",
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Adrana-1577770-la-chaux-de-fonds-neuenburg",
     "rawPhone": "+41 78 218 03 59",
@@ -83855,7 +83855,7 @@
     "rawName": "Katrin",
     "genderCategory": "male",
     "city": "Solothurn",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Katrin-85062-solothurn-solothurn",
     "rawPhone": "+41 79 449 16 51",
@@ -83993,7 +83993,7 @@
     "rawName": "Catta",
     "genderCategory": "male",
     "city": "Ostermundigen",
-    "canton": "ZH",
+    "canton": "BE",
     "sourcePortal": "and6.com",
     "sourceUrl": "https://www.and6.com/de/sex-model/Catta-139899-ostermundigen-bern",
     "rawPhone": "+41 76 262 75 98",
@@ -84384,7 +84384,7 @@
     "rawName": "Isabel",
     "genderCategory": "female",
     "city": "Neuchâtel",
-    "canton": "ZH",
+    "canton": "NE",
     "sourcePortal": "eurogirlsescort.com",
     "sourceUrl": "https://www.eurogirlsescort.com/escort/isabel/1161370/",
     "rawPhone": "+41 79 642 18 90",
@@ -85420,7 +85420,7 @@
     "age": 25,
     "rawPhone": "+41 79 123 45 67",
     "city": "Webcam",
-    "canton": "BS",
+    "canton": "SZ",
     "subareas": [
       "Webcam",
       "Basel"
@@ -85504,7 +85504,7 @@
     "age": 23,
     "rawPhone": "+41 76 266 99 23",
     "city": "Holderbank",
-    "canton": "BS",
+    "canton": "AG",
     "subareas": [
       "Holderbank/AG,SO,ZH",
       "Basel"
@@ -85546,7 +85546,7 @@
     "age": 25,
     "rawPhone": "+41 76 786 70 49",
     "city": "Lugano",
-    "canton": "TI",
+    "canton": "SO",
     "subareas": [
       "Lugano/TI,GR",
       "Basel"
@@ -85714,7 +85714,7 @@
     "age": 25,
     "rawPhone": "+41 76 749 89 69",
     "city": "Oberuzwil",
-    "canton": "BE",
+    "canton": "TG",
     "subareas": [
       "Oberuzwil",
       "Bern"
@@ -85832,7 +85832,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 995 19 53",
-    "city": "AG,ZG,ZH Stadt",
+    "city": "Zürich",
     "canton": "BE",
     "subareas": [
       "AG,ZG,ZH Stadt",
@@ -85876,7 +85876,7 @@
     "age": 30,
     "rawPhone": "+41 79 730 00 97",
     "city": "Sirnach",
-    "canton": "BE",
+    "canton": "TG",
     "subareas": [
       "Sirnach/TG",
       "Bern"
@@ -86340,7 +86340,7 @@
     "age": 30,
     "rawPhone": "+41 79 517 66 68",
     "city": "Sevelen",
-    "canton": "BE",
+    "canton": "SG",
     "subareas": [
       "Sevelen/SG",
       "Bern"
@@ -86379,7 +86379,7 @@
     "age": 35,
     "rawPhone": "+41 76 426 59 44",
     "city": "Neuhausen am Rheinfall",
-    "canton": "BE",
+    "canton": "SH",
     "subareas": [
       "Neuhausen am Rheinfall/SH",
       "Bern"
@@ -86673,7 +86673,7 @@
     "age": 28,
     "rawPhone": "+41 76 503 61 35",
     "city": "Diessenhofen",
-    "canton": "BE",
+    "canton": "TG",
     "subareas": [
       "Diessenhofen/TG",
       "Bern"
@@ -86715,7 +86715,7 @@
     "age": 25,
     "rawPhone": "+41 78 937 47 77",
     "city": "Grenchen",
-    "canton": "BE",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO",
       "Bern"
@@ -86885,7 +86885,7 @@
     "age": 35,
     "rawPhone": "+41 79 815 04 59",
     "city": "Safenwil",
-    "canton": "BE",
+    "canton": "AG",
     "subareas": [
       "Safenwil/AG",
       "Bern"
@@ -86929,7 +86929,7 @@
     "age": 50,
     "rawPhone": "+41 78 250 69 77",
     "city": "Freienbach",
-    "canton": "BE",
+    "canton": "SZ",
     "subareas": [
       "Freienbach/SZ, SG, ZH",
       "Bern"
@@ -86969,7 +86969,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 721 22 52",
-    "city": "Not specified",
+    "city": "Zürich",
     "canton": "BE",
     "subareas": [
       "Not specified",
@@ -87008,7 +87008,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 940 20 81",
-    "city": "AG, LU, NW",
+    "city": "Zürich",
     "canton": "BE",
     "subareas": [
       "AG, LU, NW / OW, ZH Stadt, ZH",
@@ -87468,8 +87468,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 315 74 08",
-    "city": "SG",
-    "canton": "BE",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "SG",
       "Bern"
@@ -87596,7 +87596,7 @@
     "age": 26,
     "rawPhone": "+41 79 464 26 93",
     "city": "Oberrüti",
-    "canton": "BE",
+    "canton": "AG",
     "subareas": [
       "Oberrüti",
       "Bern"
@@ -87803,7 +87803,7 @@
     "age": 30,
     "rawPhone": "+41 76 205 23 81",
     "city": "Buchs",
-    "canton": "LU",
+    "canton": "SG",
     "subareas": [
       "Buchs/SG,GR,LI",
       "Luzern"
@@ -87846,7 +87846,7 @@
     "genderCategory": "female",
     "age": 24,
     "rawPhone": "+41 79 818 23 17",
-    "city": "AG,BE,LU,SO",
+    "city": "Zürich",
     "canton": "LU",
     "subareas": [
       "AG,BE,LU,SO",
@@ -88016,7 +88016,7 @@
     "age": 34,
     "rawPhone": "+41 77 940 43 87",
     "city": "Zürich",
-    "canton": "LU",
+    "canton": "BL",
     "subareas": [
       "Zürich/ZH Stadt,AG,ZG,ZH",
       "Luzern"
@@ -88150,7 +88150,7 @@
     "age": 22,
     "rawPhone": "+41 76 787 55 02",
     "city": "Glattbrugg",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Glattbrugg/ZH",
       "Luzern"
@@ -88192,7 +88192,7 @@
     "age": 40,
     "rawPhone": "+41 77 206 64 41",
     "city": "Solothurn",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO",
       "Luzern"
@@ -88235,7 +88235,7 @@
     "age": 30,
     "rawPhone": "+41 76 465 58 89",
     "city": "Solothurn",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO",
       "Luzern"
@@ -88323,7 +88323,7 @@
     "age": 30,
     "rawPhone": "+41 77 905 16 24",
     "city": "Solothurn",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO",
       "Luzern"
@@ -88745,7 +88745,7 @@
     "age": 28,
     "rawPhone": "+41 76 499 26 83",
     "city": "Abtwil SG",
-    "canton": "LU",
+    "canton": "SG",
     "subareas": [
       "Abtwil SG/SG,LI",
       "Luzern"
@@ -88786,7 +88786,7 @@
     "age": 28,
     "rawPhone": "+41 76 499 26 83",
     "city": "Abtwil SG",
-    "canton": "LU",
+    "canton": "SG",
     "subareas": [
       "Abtwil SG/SG,TG",
       "Luzern"
@@ -88866,7 +88866,7 @@
     "age": 21,
     "rawPhone": "+41 76 639 99 05",
     "city": "Grenchen",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO,BE",
       "Luzern"
@@ -88908,7 +88908,7 @@
     "age": 18,
     "rawPhone": "+41 78 250 75 12",
     "city": "Olten",
-    "canton": "LU",
+    "canton": "SO",
     "subareas": [
       "Olten/SO,AG,LU",
       "Luzern"
@@ -89038,7 +89038,7 @@
     "age": 30,
     "rawPhone": "+41 76 344 68 81",
     "city": "Moutier",
-    "canton": "LU",
+    "canton": "BE",
     "subareas": [
       "Moutier/JU",
       "Luzern"
@@ -89126,7 +89126,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 79 123 45 67",
-    "city": "Unspecified",
+    "city": "Zürich",
     "canton": "LU",
     "subareas": [
       "Unspecified",
@@ -89170,7 +89170,7 @@
     "age": 25,
     "rawPhone": "+41 78 606 18 33",
     "city": "Neuenburg",
-    "canton": "LU",
+    "canton": "NE",
     "subareas": [
       "Neuenburg",
       "Luzern"
@@ -89211,7 +89211,7 @@
     "age": 49,
     "rawPhone": "+41 77 922 85 50",
     "city": "Eschlikon",
-    "canton": "ZG",
+    "canton": "TG",
     "subareas": [
       "Eschlikon/TG,SH,DE",
       "Zug / Cham"
@@ -89251,7 +89251,7 @@
     "age": 20,
     "rawPhone": "+41 76 717 40 58",
     "city": "Luzern",
-    "canton": "LU",
+    "canton": "SZ",
     "subareas": [
       "Luzern/LU,ZG",
       "Zug / Cham"
@@ -89336,7 +89336,7 @@
     "age": 30,
     "rawPhone": "+41 77 945 24 14",
     "city": "Jona SG",
-    "canton": "ZG",
+    "canton": "SG",
     "subareas": [
       "Jona SG/SG,SZ,ZH",
       "Zug / Cham"
@@ -89373,7 +89373,7 @@
     "age": 25,
     "rawPhone": "+41 77 967 17 44",
     "city": "Fontannen bei Wolhusen",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Fontannen bei Wolhusen/LU,AG,ZG",
       "Zug / Cham"
@@ -89455,7 +89455,7 @@
     "age": 30,
     "rawPhone": "+41 76 481 42 59",
     "city": "Opfikon",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Opfikon/ZH",
       "Zug"
@@ -89762,7 +89762,7 @@
     "age": 32,
     "rawPhone": "+41 79 645 95 36",
     "city": "Sursee",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Sursee/LU",
       "Zug"
@@ -90001,7 +90001,7 @@
     "age": 26,
     "rawPhone": "+41 79 888 80 85",
     "city": "Ebikon",
-    "canton": "ZG",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU,AG,BE",
       "Zug"
@@ -90082,7 +90082,7 @@
     "age": 27,
     "rawPhone": "+41 79 742 44 94",
     "city": "Kaltbrunn",
-    "canton": "TI",
+    "canton": "SG",
     "subareas": [
       "Kaltbrunn",
       "Lugano / Locarno"
@@ -90169,7 +90169,7 @@
     "age": 22,
     "rawPhone": "+41 76 716 64 76",
     "city": "Bischofszell",
-    "canton": "TI",
+    "canton": "TG",
     "subareas": [
       "Bischofszell/TG",
       "Lugano / Locarno"
@@ -90363,7 +90363,7 @@
     "age": 40,
     "rawPhone": "+41 79 756 77 77",
     "city": "Lenzburg",
-    "canton": "TI",
+    "canton": "AG",
     "subareas": [
       "Lenzburg",
       "Lugano / Locarno"
@@ -90403,7 +90403,7 @@
     "age": 32,
     "rawPhone": "+41 76 592 35 30",
     "city": "Ebikon",
-    "canton": "TI",
+    "canton": "LU",
     "subareas": [
       "Ebikon",
       "Lugano / Locarno"
@@ -90454,7 +90454,7 @@
     "age": 25,
     "rawPhone": "+41 76 211 11 88",
     "city": "Zurzach",
-    "canton": "TI",
+    "canton": "AG",
     "subareas": [
       "Zurzach",
       "Lugano / Locarno"
@@ -90551,7 +90551,7 @@
     "age": 25,
     "rawPhone": "+41 76 625 21 88",
     "city": "Chur",
-    "canton": "TI",
+    "canton": "GR",
     "subareas": [
       "Chur",
       "Lugano / Locarno"
@@ -90598,7 +90598,7 @@
     "age": 26,
     "rawPhone": "+41 79 472 89 44",
     "city": "Frauenfeld",
-    "canton": "TI",
+    "canton": "TG",
     "subareas": [
       "Frauenfeld",
       "Lugano / Locarno"
@@ -90636,7 +90636,7 @@
     "age": 25,
     "rawPhone": "+41 76 627 68 41",
     "city": "Unterseen",
-    "canton": "TI",
+    "canton": "BE",
     "subareas": [
       "Unterseen",
       "Lugano / Locarno"
@@ -90685,7 +90685,7 @@
     "age": 25,
     "rawPhone": "+41 76 265 18 59",
     "city": "Rapperswil-Jona",
-    "canton": "TI",
+    "canton": "SG",
     "subareas": [
       "Rapperswil-Jona/SG,ZH,AI / AR",
       "Lugano / Locarno"
@@ -91255,7 +91255,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 996 85 40",
-    "city": "AG, ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG, ZH",
@@ -91296,7 +91296,7 @@
     "genderCategory": "female",
     "age": 21,
     "rawPhone": "+41 77 996 97 52",
-    "city": "AG, ZG, ZH Stadt, ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG, ZG, ZH Stadt, ZH",
@@ -91341,7 +91341,7 @@
     "age": 25,
     "rawPhone": "+41 77 412 69 59",
     "city": "Altendorf",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ",
       "Zürich"
@@ -91375,7 +91375,7 @@
     "age": 25,
     "rawPhone": "+41 79 314 02 82",
     "city": "Kreuzlingen",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Kreuzlingen/TG, SG, SH, DE",
       "Zürich"
@@ -91415,7 +91415,7 @@
     "age": 40,
     "rawPhone": "+41 78 713 57 50",
     "city": "Oensingen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Oensingen/SO, AG, BE",
       "Zürich"
@@ -91459,7 +91459,7 @@
     "age": 25,
     "rawPhone": "+41 77 968 63 79",
     "city": "Kaltbrunn",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Kaltbrunn/SG, GL, ZH",
       "Zürich"
@@ -91503,7 +91503,7 @@
     "age": 35,
     "rawPhone": "+41 77 940 79 22",
     "city": "Stans",
-    "canton": "ZH",
+    "canton": "NW",
     "subareas": [
       "Stans/NW / OW,UR",
       "Zürich"
@@ -91537,7 +91537,7 @@
     "age": 25,
     "rawPhone": "+41 76 274 66 52",
     "city": "Pratteln",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,BS",
       "Zürich"
@@ -91610,7 +91610,7 @@
     "age": 25,
     "rawPhone": "+41 79 419 93 92",
     "city": "Belp",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Belp/BE",
       "Zürich"
@@ -91783,7 +91783,7 @@
     "age": 25,
     "rawPhone": "+41 77 944 06 84",
     "city": "Geuensee",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Geuensee/LU",
       "Zürich"
@@ -91825,7 +91825,7 @@
     "age": 25,
     "rawPhone": "+41 78 217 01 62",
     "city": "Kradolf",
-    "canton": "ZH",
+    "canton": "ZG",
     "subareas": [
       "Kradolf/TG,SG,ZH",
       "Zürich"
@@ -91868,7 +91868,7 @@
     "age": 21,
     "rawPhone": "+41 76 840 45 07",
     "city": "Trimbach",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Trimbach/SO,AG,LU",
       "Zürich"
@@ -91905,7 +91905,7 @@
     "age": 25,
     "rawPhone": "+41 77 253 33 55",
     "city": "Moutier",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Moutier/JU,BE",
       "Zürich"
@@ -91946,7 +91946,7 @@
     "age": 42,
     "rawPhone": "+41 78 268 54 87",
     "city": "Windisch",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Windisch/AG",
       "Zürich"
@@ -92020,7 +92020,7 @@
     "age": 47,
     "rawPhone": "+41 76 219 78 85",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG",
       "Zürich"
@@ -92063,7 +92063,7 @@
     "age": 25,
     "rawPhone": "+41 76 651 11 01",
     "city": "Muralto",
-    "canton": "ZH",
+    "canton": "TI",
     "subareas": [
       "Muralto/TI,GR,VS",
       "Zürich"
@@ -92107,7 +92107,7 @@
     "age": 25,
     "rawPhone": "+41 79 908 80 42",
     "city": "Arbon",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Arbon/TG,SG",
       "Zürich"
@@ -92300,7 +92300,7 @@
     "age": 25,
     "rawPhone": "+41 77 982 08 27",
     "city": "Zürich",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zürich"
@@ -92344,7 +92344,7 @@
     "age": 30,
     "rawPhone": "+41 79 872 89 36",
     "city": "Pratteln",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,AG,BS",
       "Zürich"
@@ -92420,7 +92420,7 @@
     "age": 20,
     "rawPhone": "+41 77 938 37 92",
     "city": "Zürich",
-    "canton": "ZH",
+    "canton": "FR",
     "subareas": [
       "Zürich",
       "Zürich"
@@ -92504,7 +92504,7 @@
     "age": 21,
     "rawPhone": "+41 79 913 09 20",
     "city": "Trimbach",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Trimbach",
       "Zürich"
@@ -92540,7 +92540,7 @@
     "age": 30,
     "rawPhone": "+41 77 910 96 85",
     "city": "St. Gallen",
-    "canton": "SG",
+    "canton": "TG",
     "subareas": [
       "St. Gallen",
       "Zürich"
@@ -92670,8 +92670,8 @@
     "genderCategory": "female",
     "age": 35,
     "rawPhone": "+41 76 786 70 49",
-    "city": "Wil",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "Wil",
       "Zürich"
@@ -92786,7 +92786,7 @@
     "age": 29,
     "rawPhone": "+41 76 602 45 59",
     "city": "Hunzenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Hunzenschwil/AG,SO,ZH",
       "Zürich"
@@ -92959,7 +92959,7 @@
     "age": 25,
     "rawPhone": "+41 78 334 09 84",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Waltenschwil",
       "Zürich"
@@ -93002,8 +93002,8 @@
     "genderCategory": "female",
     "age": 30,
     "rawPhone": "+41 77 937 74 03",
-    "city": "Wil",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "Wil/SG,TG,ZH",
       "Zürich"
@@ -93335,7 +93335,7 @@
     "age": 25,
     "rawPhone": "+41 76 830 44 71",
     "city": "Zürich",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Zürich/ZH Stadt",
       "Zürich"
@@ -93414,7 +93414,7 @@
     "age": 25,
     "rawPhone": "+41 77 973 47 07",
     "city": "Rapperswil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Rapperswil/SG",
       "Zürich"
@@ -93455,7 +93455,7 @@
     "age": 25,
     "rawPhone": "+41 77 991 41 87",
     "city": "Tägerwilen",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Tägerwilen/TG",
       "Zürich"
@@ -93767,7 +93767,7 @@
     "age": 25,
     "rawPhone": "+41 79 461 19 32",
     "city": "Sevelen",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Sevelen/SG,AT,LI",
       "Zürich"
@@ -93806,7 +93806,7 @@
     "age": 25,
     "rawPhone": "+41 77 962 28 72",
     "city": "Grenchen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Grenchen/SO,BE",
       "Zürich"
@@ -93934,7 +93934,7 @@
     "age": 25,
     "rawPhone": "+41 76 481 42 59",
     "city": "Davos",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Davos/GR",
       "Zürich"
@@ -94019,7 +94019,7 @@
     "age": 25,
     "rawPhone": "+41 77 996 23 19",
     "city": "Degersheim",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Degersheim/SG,SZ,AT,LI,AI / AR",
       "Zürich"
@@ -94059,7 +94059,7 @@
     "age": 25,
     "rawPhone": "+41 77 921 91 13",
     "city": "Windisch",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Windisch/AG",
       "Zürich"
@@ -94099,7 +94099,7 @@
     "age": 25,
     "rawPhone": "+41 76 205 23 81",
     "city": "Buchs",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Buchs/SG,GR,LI",
       "Zürich"
@@ -94221,7 +94221,7 @@
     "age": 35,
     "rawPhone": "+41 76 236 89 10",
     "city": "Chur",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Chur/GR",
       "Zürich"
@@ -94264,7 +94264,7 @@
     "age": 30,
     "rawPhone": "+41 79 937 99 68",
     "city": "Wolhusen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Wolhusen/LU",
       "Zürich"
@@ -94339,7 +94339,7 @@
     "age": 21,
     "rawPhone": "+41 77 979 77 97",
     "city": "Chur",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Chur",
       "Zürich"
@@ -94418,7 +94418,7 @@
     "age": 25,
     "rawPhone": "+41 78 444 57 00",
     "city": "Wohlen",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Wohlen/AG",
       "Zürich"
@@ -94459,7 +94459,7 @@
     "genderCategory": "female",
     "age": 22,
     "rawPhone": "+41 77 996 97 52",
-    "city": "AG,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,ZG,ZH Stadt,ZH",
@@ -94504,7 +94504,7 @@
     "age": 19,
     "rawPhone": "+41 79 724 89 16",
     "city": "Winterthur",
-    "canton": "ZH",
+    "canton": "TI",
     "subareas": [
       "Winterthur/ZH,SG",
       "Zürich"
@@ -94662,7 +94662,7 @@
     "age": 19,
     "rawPhone": "+41 79 124 32 97",
     "city": "Neuenhof",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Neuenhof/AG",
       "Zürich"
@@ -94692,7 +94692,7 @@
     "age": 32,
     "rawPhone": "+41 79 120 08 00",
     "city": "Schaffhausen",
-    "canton": "ZH",
+    "canton": "SH",
     "subareas": [
       "Schaffhausen/SH",
       "Zürich"
@@ -94769,7 +94769,7 @@
     "age": 30,
     "rawPhone": "+41 79 709 85 39",
     "city": "Chur",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Chur/GR",
       "Zürich"
@@ -94849,7 +94849,7 @@
     "age": 39,
     "rawPhone": "+41 76 736 60 11",
     "city": "Sevelen",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Sevelen/SG",
       "Zürich"
@@ -94888,8 +94888,8 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 76 619 76 84",
-    "city": "Wil",
-    "canton": "ZH",
+    "city": "St. Gallen",
+    "canton": "SG",
     "subareas": [
       "Wil/SG,TG,ZH",
       "Zürich"
@@ -94926,7 +94926,7 @@
     "genderCategory": "female",
     "age": 18,
     "rawPhone": "+41 78 314 95 01",
-    "city": "AG,BE,BS,BL,LU",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,BE,BS,BL,LU",
@@ -95056,7 +95056,7 @@
     "age": 25,
     "rawPhone": "+41 77 921 91 13",
     "city": "Wolhusen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Wolhusen/LU",
       "Zürich"
@@ -95142,7 +95142,7 @@
     "age": 25,
     "rawPhone": "+41 77 955 93 56",
     "city": "Balgach",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Balgach/SG",
       "Zürich"
@@ -95185,7 +95185,7 @@
     "age": 25,
     "rawPhone": "+41 79 741 47 24",
     "city": "Romanshorn",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Romanshorn/TG",
       "Zürich"
@@ -95263,7 +95263,7 @@
     "age": 22,
     "rawPhone": "+41 77 965 48 82",
     "city": "Amriswil",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Amriswil/TG,SG",
       "Zürich"
@@ -95296,7 +95296,7 @@
     "age": 32,
     "rawPhone": "+41 79 913 67 52",
     "city": "Altdorf",
-    "canton": "ZH",
+    "canton": "UR",
     "subareas": [
       "Altdorf/UR",
       "Zürich"
@@ -95536,7 +95536,7 @@
     "age": 25,
     "rawPhone": "+41 77 954 55 62",
     "city": "Zuzwil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Zuzwil",
       "Zürich"
@@ -95574,7 +95574,7 @@
     "age": 25,
     "rawPhone": "+41 77 463 71 52",
     "city": "Zuzwil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Zuzwil",
       "Zürich"
@@ -95648,7 +95648,7 @@
     "age": 37,
     "rawPhone": "+41 79 290 41 97",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Lenzburg",
       "Zürich"
@@ -95810,7 +95810,7 @@
     "age": 26,
     "rawPhone": "+41 76 241 92 82",
     "city": "Mörschwil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Mörschwil/SG,TG",
       "Zürich"
@@ -95850,7 +95850,7 @@
     "age": 25,
     "rawPhone": "+41 75 412 62 17",
     "city": "Liestal",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL",
       "Zürich"
@@ -95887,7 +95887,7 @@
     "age": 25,
     "rawPhone": "+41 76 742 79 18",
     "city": "Liestal",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL,BS,DE",
       "Zürich"
@@ -96006,7 +96006,7 @@
     "age": 25,
     "rawPhone": "+41 77 995 53 54",
     "city": "Rheinfelden",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Rheinfelden/AG,BE,BL,LU,SO",
       "Zürich"
@@ -96159,7 +96159,7 @@
     "age": 36,
     "rawPhone": "+41 76 814 00 69",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU",
       "Zürich"
@@ -96202,7 +96202,7 @@
     "age": 25,
     "rawPhone": "+41 77 954 55 62",
     "city": "Zuzwil",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Zuzwil/SG",
       "Zürich"
@@ -96358,7 +96358,7 @@
     "age": 25,
     "rawPhone": "+41 77 902 12 09",
     "city": "Gebenstorf",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Gebenstorf/AG,ZH Stadt,ZH",
       "Zürich"
@@ -96399,7 +96399,7 @@
     "age": 23,
     "rawPhone": "+41 79 693 56 00",
     "city": "Lenzburg",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Lenzburg/AG,ZG,ZH",
       "Zürich"
@@ -96442,7 +96442,7 @@
     "genderCategory": "female",
     "age": 27,
     "rawPhone": "+41 77 996 90 37",
-    "city": "AG,ZG,ZH Stadt,ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,ZG,ZH Stadt,ZH",
@@ -96561,7 +96561,7 @@
     "age": 40,
     "rawPhone": "+41 78 713 57 50",
     "city": "Oensingen",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Oensingen/SO,AG,BE",
       "Zürich"
@@ -96605,7 +96605,7 @@
     "age": 27,
     "rawPhone": "+41 77 976 89 72",
     "city": "Luzern",
-    "canton": "LU",
+    "canton": "SZ",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich"
@@ -96647,7 +96647,7 @@
     "age": 34,
     "rawPhone": "+41 77 407 34 97",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Ebikon/LU,AG,SZ",
       "Zürich"
@@ -96823,7 +96823,7 @@
     "age": 28,
     "rawPhone": "+41 79 745 66 66",
     "city": "Sirnach",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Sirnach",
       "Zürich"
@@ -96935,7 +96935,7 @@
     "age": 25,
     "rawPhone": "+41 79 877 58 95",
     "city": "Arth-Goldau",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Arth-Goldau/SZ,UR,ZG",
       "Zürich / Schweiz"
@@ -96975,7 +96975,7 @@
     "age": 28,
     "rawPhone": "+41 79 641 02 44",
     "city": "Liestal",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Liestal/BL",
       "Zürich / Schweiz"
@@ -97019,7 +97019,7 @@
     "age": 24,
     "rawPhone": "+41 79 315 74 08",
     "city": "Lengnau",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Lengnau/BE",
       "Zürich / Schweiz"
@@ -97053,7 +97053,7 @@
     "age": 22,
     "rawPhone": "+41 76 602 45 59",
     "city": "Hunzenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Hunzenschwil/AG",
       "Zürich / Schweiz"
@@ -97093,7 +97093,7 @@
     "age": 34,
     "rawPhone": "+41 77 918 85 51",
     "city": "Sevelen",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Sevelen",
       "Zürich / Schweiz"
@@ -97137,7 +97137,7 @@
     "age": 25,
     "rawPhone": "+41 79 556 91 74",
     "city": "Arbon",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Arbon",
       "Zürich / Schweiz"
@@ -97180,7 +97180,7 @@
     "genderCategory": "female",
     "age": 28,
     "rawPhone": "+41 76 291 95 79",
-    "city": "AG",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG",
@@ -97290,7 +97290,7 @@
     "age": 25,
     "rawPhone": "+41 79 781 81 89",
     "city": "Meggen",
-    "canton": "ZH",
+    "canton": "GR",
     "subareas": [
       "Meggen",
       "Zürich / Schweiz"
@@ -97334,7 +97334,7 @@
     "age": 25,
     "rawPhone": "+41 76 245 71 81",
     "city": "Oberbüren",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Oberbüren",
       "Zürich / Schweiz"
@@ -97543,7 +97543,7 @@
     "age": 25,
     "rawPhone": "+41 79 294 86 21",
     "city": "Altstätten",
-    "canton": "ZH",
+    "canton": "SG",
     "subareas": [
       "Altstätten",
       "Zürich / Schweiz"
@@ -97618,7 +97618,7 @@
     "age": 25,
     "rawPhone": "+41 78 201 79 25",
     "city": "Solothurn",
-    "canton": "ZH",
+    "canton": "SO",
     "subareas": [
       "Solothurn/SO,BE",
       "Zürich / Schweiz"
@@ -97662,7 +97662,7 @@
     "age": 25,
     "rawPhone": "+41 76 511 61 17",
     "city": "Lengnau",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Lengnau/BE,SO",
       "Zürich / Schweiz"
@@ -97697,7 +97697,7 @@
     "age": 25,
     "rawPhone": "+41 79 236 58 36",
     "city": "Adligenswil",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Adligenswil/LU,SZ,ZG",
       "Zürich / Schweiz"
@@ -98095,7 +98095,7 @@
     "age": 30,
     "rawPhone": "+41 79 315 74 08",
     "city": "Lengnau",
-    "canton": "ZH",
+    "canton": "BE",
     "subareas": [
       "Lengnau/BE",
       "Zürich / Schweiz"
@@ -98129,7 +98129,7 @@
     "age": 30,
     "rawPhone": "+41 79 685 00 78",
     "city": "Erlinsbach",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Erlinsbach/AG",
       "Zürich / Schweiz"
@@ -98162,7 +98162,7 @@
     "age": 25,
     "rawPhone": "+41 79 926 85 80",
     "city": "Amriswil",
-    "canton": "ZH",
+    "canton": "TG",
     "subareas": [
       "Amriswil/TG,SG",
       "Zürich / Schweiz"
@@ -98198,7 +98198,7 @@
     "age": 25,
     "rawPhone": "+41 77 903 89 93",
     "city": "Pratteln",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL,BS",
       "Zürich / Schweiz"
@@ -98241,7 +98241,7 @@
     "age": 21,
     "rawPhone": "+41 77 903 42 95",
     "city": "Pratteln",
-    "canton": "ZH",
+    "canton": "BL",
     "subareas": [
       "Pratteln/BL",
       "Zürich / Schweiz"
@@ -98329,7 +98329,7 @@
     "age": 27,
     "rawPhone": "+41 76 798 94 72",
     "city": "Niederlenz",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Niederlenz/AG,SO,ZH",
       "Zürich / Schweiz"
@@ -98497,7 +98497,7 @@
     "genderCategory": "female",
     "age": 25,
     "rawPhone": "+41 77 949 01 93",
-    "city": "AG,LU,NW",
+    "city": "Zürich",
     "canton": "ZH",
     "subareas": [
       "AG,LU,NW / OW,SZ,ZH",
@@ -98542,7 +98542,7 @@
     "age": 25,
     "rawPhone": "+41 76 814 00 69",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU",
       "Zürich / Schweiz"
@@ -98710,7 +98710,7 @@
     "age": 25,
     "rawPhone": "+41 77 934 85 79",
     "city": "Altendorf",
-    "canton": "ZH",
+    "canton": "SZ",
     "subareas": [
       "Altendorf/SZ,ZG,ZH",
       "Zürich / Schweiz"
@@ -98973,7 +98973,7 @@
   {
     "rawName": "Kimberly · Alina CH",
     "city": "Oftringen",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Kimberly-37818-niederbipp-solothurn",
     "rawPhone": "+41 44 431 20 90",
@@ -99078,7 +99078,7 @@
   {
     "rawName": "Mistress Jana Valentina · Alina CH",
     "city": "Oftringen",
-    "canton": "AG",
+    "canton": "GR",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Mistress-Jana-Valentina-24796-landquart-graubunden",
     "rawPhone": "+41 44 431 20 90",
@@ -99162,7 +99162,7 @@
   {
     "rawName": "TS Allison · Alina CH",
     "city": "Oftringen",
-    "canton": "AG",
+    "canton": "BL",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/TS-Allison-116893-muttenz-basel",
     "rawPhone": "+41 44 431 20 90",
@@ -99246,7 +99246,7 @@
   {
     "rawName": "Kimberly · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Kimberly-37818-niederbipp-aargau",
     "rawPhone": "+41 76 722 99 29",
@@ -99267,7 +99267,7 @@
   {
     "rawName": "BONITA · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/BONITA-7239302-oensingen-aargau",
     "rawPhone": "+41 78 047 67 19",
@@ -99288,7 +99288,7 @@
   {
     "rawName": "Irina · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Irina-4883482-baden-aargau",
     "rawPhone": "+41 79 261 19 18",
@@ -99309,7 +99309,7 @@
   {
     "rawName": "CH CARMEN · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/CH-CARMEN-118249-oensingen-solothurn",
     "rawPhone": "+41 79 576 96 69",
@@ -99330,7 +99330,7 @@
   {
     "rawName": "Magdalena · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Magdalena-63772-suhr-aargau",
     "rawPhone": "+41 78 928 33 14",
@@ -99351,7 +99351,7 @@
   {
     "rawName": "JULIA Escort · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/JULIA-Escort-112375-aargau",
     "rawPhone": "+41 78 941 33 40",
@@ -99372,7 +99372,7 @@
   {
     "rawName": "Nerea · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Nerea-8594035-baden-aargau",
     "rawPhone": "+41 76 829 80 28",
@@ -99393,7 +99393,7 @@
   {
     "rawName": "Anna · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Anna-99564-lenzburg-aargau",
     "rawPhone": "+41 79 129 57 04",
@@ -99414,7 +99414,7 @@
   {
     "rawName": "Linda · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Linda-5568466-baden-aargau",
     "rawPhone": "+41 78 262 92 23",
@@ -99435,7 +99435,7 @@
   {
     "rawName": "REBECA · Nadine CH",
     "city": "Oberentfelden",
-    "canton": "SG",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/REBECA-5597127-rothrist-aargau",
     "rawPhone": "+41 76 754 95 56",
@@ -100002,7 +100002,7 @@
   {
     "rawName": "Leandra · Wieder in Oensingen für euch",
     "city": "Lugano",
-    "canton": "TI",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/teenies-us-zh-sz-sg-sueess-frech-19-20-662950",
     "rawPhone": "+41 44 431 20 90",
@@ -100023,7 +100023,7 @@
   {
     "rawName": "Melissa de Rouge · Wieder in Oensingen für euch",
     "city": "Lugano",
-    "canton": "TI",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/erlenbach-i-love-to-swallow-you-till-last-drop-785668",
     "rawPhone": "+41 44 431 20 90",
@@ -100044,7 +100044,7 @@
   {
     "rawName": "Lucia · Wieder in Oensingen für euch",
     "city": "Lugano",
-    "canton": "TI",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/wohlen-lucia-neue-597847",
     "rawPhone": "+41 44 431 20 90",
@@ -100065,7 +100065,7 @@
   {
     "rawName": "Fabienne · Wieder in Oensingen für euch",
     "city": "Lugano",
-    "canton": "TI",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/fruesch-gschideni-milf-583078",
     "rawPhone": "+41 44 431 20 90",
@@ -100086,7 +100086,7 @@
   {
     "rawName": "Diana & Lucky · Lucky 🍀 Thai-Massage",
     "city": "Däniken",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/daeniken-lucky-thai-massage-782941",
     "rawPhone": "+41 76 542 75 75",
@@ -100170,7 +100170,7 @@
   {
     "rawName": "Lady Venus Deluxe · Sm-bizarr-klinik-latex- lady venus deluxe !!!!!",
     "city": "Hindelbank",
-    "canton": "ZH",
+    "canton": "BE",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/thun-sm-bizarr-klinik-latex-lady-venus-deluxe-736197",
     "rawPhone": "+41 79 926 93 99",
@@ -100191,7 +100191,7 @@
   {
     "rawName": "Marina · 🔥Schweizer Girl CH😈",
     "city": "Frauenfeld",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-zurich-oerlikon-milf-marina-privat-allein-exklusive-masseurin-782515",
     "rawPhone": "+41 79 120 08 00",
@@ -100212,7 +100212,7 @@
   {
     "rawName": "Valentina · 🔥Schweizer Girl CH😈",
     "city": "Frauenfeld",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/opfikon-sex-in-glattbrugg-voll-service-784334",
     "rawPhone": "+41 44 431 20 90",
@@ -100233,7 +100233,7 @@
   {
     "rawName": "Martha · 🔥Schweizer Girl CH😈",
     "city": "Frauenfeld",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-heisse-martha-40j-sehr-erfahren-liebt-sex-party-758508",
     "rawPhone": "+41 44 431 20 90",
@@ -100254,7 +100254,7 @@
   {
     "rawName": "Lara · 🔥Schweizer Girl CH😈",
     "city": "Frauenfeld",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/muellheim-lara-tabulos-skinny-fotomodell-mit-einem-sehr-huebschen-gesicht-0791200800-216476",
     "rawPhone": "+41 79 120 08 00",
@@ -100275,7 +100275,7 @@
   {
     "rawName": "Ella · 🍑 Queen Anal ❤️Mund spritzen 💦Squirting❤️Echte Fotos 💯❤️ Top Service❤️",
     "city": "Wetzikon",
-    "canton": "ZH",
+    "canton": "SZ",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/altendorf-queen-anal-mund-spritzen-squirting-echte-fotos-top-service-744528",
     "rawPhone": "+41 77 928 91 81",
@@ -100296,7 +100296,7 @@
   {
     "rawName": "Misa · Misa is in Grenchen!!!",
     "city": "Grenchen",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-misa-is-in-grenchen-523591",
     "rawPhone": "+41 78 937 47 77",
@@ -100317,7 +100317,7 @@
   {
     "rawName": "Sarah · Sarah❤️party🍾100% echt",
     "city": "Frenkendorf",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-sarah-party-100-echt-766929",
     "rawPhone": "+41 44 431 20 90",
@@ -100338,7 +100338,7 @@
   {
     "rawName": "Fayola · 21 und ich komme aus Zypern.🥳💕 heißes mädchen 🍑🔥 keine eile 😈 100% party 🎉",
     "city": "Frenkendorf",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-21-und-ich-komme-aus-zypern-heisses-maedchen-keine-eile-100-party-766802",
     "rawPhone": "+41 44 431 20 90",
@@ -100359,7 +100359,7 @@
   {
     "rawName": "Hanna · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "SG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/wil-hanna-thai-massage-in-wil-774274",
     "rawPhone": "+41 44 431 20 90",
@@ -100380,7 +100380,7 @@
   {
     "rawName": "Anita · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-schweizerin-sucht-759369",
     "rawPhone": "+41 44 431 20 90",
@@ -100401,7 +100401,7 @@
   {
     "rawName": "Blowjob expertin · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/derendingen-blowjob-expertin-deepthroat-topsex-779289",
     "rawPhone": "+41 44 431 20 90",
@@ -100422,7 +100422,7 @@
   {
     "rawName": "Geile Girls · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/oftringen-geile-girls-schlucken-anal-franz-total-top-preis-in-oftringen-634396",
     "rawPhone": "+41 44 431 20 90",
@@ -100443,7 +100443,7 @@
   {
     "rawName": "Ich blase dich · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-ich-blase-dich-783031",
     "rawPhone": "+41 44 431 20 90",
@@ -100464,7 +100464,7 @@
   {
     "rawName": "Squirting! · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-squirting-anal-party-body-to-body-nuru-massage-sex-prostatamassage-646859",
     "rawPhone": "+41 44 431 20 90",
@@ -100485,7 +100485,7 @@
   {
     "rawName": "Angela · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "ZG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zug-angela-erotik-100-echt-674882",
     "rawPhone": "+41 44 431 20 90",
@@ -100506,7 +100506,7 @@
   {
     "rawName": "Laura · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-laura-privat-in-grenchen-diplomierte-masseurin-mit-magischen-haende-und-sinnlich-733488",
     "rawPhone": "+41 44 431 20 90",
@@ -100527,7 +100527,7 @@
   {
     "rawName": "Thaimassage und mehr · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/reinach-thaimassage-und-mehr-362724",
     "rawPhone": "+41 44 431 20 90",
@@ -100548,7 +100548,7 @@
   {
     "rawName": "Jessica · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "BL",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/liestal-jessica-nuru-785842",
     "rawPhone": "+41 44 431 20 90",
@@ -100569,7 +100569,7 @@
   {
     "rawName": "Skinny Barbi · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/uster-skinny-barbi-in-uster-neu-786988",
     "rawPhone": "+41 44 431 20 90",
@@ -100590,7 +100590,7 @@
   {
     "rawName": "Priscila · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-priscila-heute-oerlikon-758328",
     "rawPhone": "+41 44 431 20 90",
@@ -100611,7 +100611,7 @@
   {
     "rawName": "Paulina · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zurzach-paulina-top-service-783721",
     "rawPhone": "+41 44 431 20 90",
@@ -100632,7 +100632,7 @@
   {
     "rawName": "Fogosa · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "TG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/kradolf-fogosa-colombia-kamagra-te-esta-esperando-786997",
     "rawPhone": "+41 44 431 20 90",
@@ -100653,7 +100653,7 @@
   {
     "rawName": "Amelia · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/solothurn-ich-bin-diese-woche-in-solothurn-786961",
     "rawPhone": "+41 44 431 20 90",
@@ -100674,7 +100674,7 @@
   {
     "rawName": "Catty · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/samedan-heissen-catty-769224",
     "rawPhone": "+41 44 431 20 90",
@@ -100695,7 +100695,7 @@
   {
     "rawName": "Susie · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-susie-profi-massage-784499",
     "rawPhone": "+41 44 431 20 90",
@@ -100716,7 +100716,7 @@
   {
     "rawName": "Angelina😘 · 💯Allein Privat Solothurn Exklusive Tantrischer Nuru mit Zärtliche Liebevolle",
     "city": "Solothurn",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/solothurn-allein-privat-solothurn-exklusive-tantrischer-nuru-mit-zaertliche-liebevolle-778947#contact",
     "rawPhone": "+41 78 201 79 25",
@@ -100800,7 +100800,7 @@
   {
     "rawName": "Cherry · Süsse Asiatin für entspannte & unvergessliche Momente",
     "city": "Interlaken",
-    "canton": "ZH",
+    "canton": "BE",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/spiez-suesse-asiatin-fuer-entspannte-unvergessliche-momente-780880",
     "rawPhone": "+41 44 431 20 90",
@@ -100989,7 +100989,7 @@
   {
     "rawName": "Dada · Studio Apartment Holy Girls",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/effretikon-new-thai-massage-787475",
     "rawPhone": "+41 44 431 20 90",
@@ -101010,7 +101010,7 @@
   {
     "rawName": "Sara · Studio Apartment Holy Girls",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/opfikon-sara-reife-colombiana-glattbrugg-zentrum-30-min-100-1h200-769473",
     "rawPhone": "+41 44 431 20 90",
@@ -101031,7 +101031,7 @@
   {
     "rawName": "Lili · Studio Apartment Holy Girls",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/balterswil-tg-sexy-asia-girl-in-balterswil-tg-753871",
     "rawPhone": "+41 44 431 20 90",
@@ -101052,7 +101052,7 @@
   {
     "rawName": "Angie · Studio Apartment Holy Girls",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-angie-sex-suechtig-150-h-unlimited-sex-757472",
     "rawPhone": "+41 44 431 20 90",
@@ -101073,7 +101073,7 @@
   {
     "rawName": "Jina · Studio Apartment Holy Girls",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-jina-24bald25-ein-blick-ein-laecheln-moechtest-du-mich-kennenlernen-783494",
     "rawPhone": "+41 44 431 20 90",
@@ -101094,7 +101094,7 @@
   {
     "rawName": "Cynthia · Studio Apartment Holy Girls",
     "city": "Waltenschwil",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-teen-super-girl-beste-gfe-ft-schlucken-vollservice1-2h-110-392243",
     "rawPhone": "+41 44 431 20 90",
@@ -101115,7 +101115,7 @@
   {
     "rawName": "Mia · Joy House Rothrist",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rothrist-mia-100-echte-bilder-30min-chf-90-60min-chf-190-744614",
     "rawPhone": "+41 76 754 95 56",
@@ -101136,7 +101136,7 @@
   {
     "rawName": "Kelly · Joy House Rothrist",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rothrist-kelly-100-echte-bilder-30min-chf-90-60min-chf-190-783669",
     "rawPhone": "+41 76 754 95 56",
@@ -101157,7 +101157,7 @@
   {
     "rawName": "Laura · Joy House Rothrist",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/oftringen-laura-100-echte-bilder-30min-chf-90-60min-chf-190-785942",
     "rawPhone": "+41 76 754 95 56",
@@ -101178,7 +101178,7 @@
   {
     "rawName": "Nora · Joy House Rothrist",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rothrist-nora-100-echte-bilder-30min-chf-90-60min-chf-190-786284",
     "rawPhone": "+41 76 754 95 56",
@@ -101199,7 +101199,7 @@
   {
     "rawName": "Sky · Joy House Rothrist",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rothrist-sky-100-echte-bilder-30min-chf-90-60min-chf-190-787003",
     "rawPhone": "+41 76 754 95 56",
@@ -101220,7 +101220,7 @@
   {
     "rawName": "Soraya · Joy House Rothrist",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rothrist-soraya-100-echte-bilder-30min-chf-90-60min-chf-190-787424",
     "rawPhone": "+41 76 754 95 56",
@@ -101262,7 +101262,7 @@
   {
     "rawName": "Lusy · Sex Massage mit Happy End 🔥SEX – i minem",
     "city": "Birsfelden",
-    "canton": "ZH",
+    "canton": "BL",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/liestal-sex-massage-mit-happy-end-sex-i-minem-779705",
     "rawPhone": "+41 44 431 20 90",
@@ -101346,7 +101346,7 @@
   {
     "rawName": "Diskret Lady · ⭐️⭐️⭐️Sinnliche Erotische Massagen  & MEHR , privat + diskret ⭐️⭐️⭐️ NUR MIT TERMIN 🌺",
     "city": "Herzogenbuchsee",
-    "canton": "ZH",
+    "canton": "BE",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/niederbipp-sinnliche-erotische-massagen-mehr-privat-diskret-nur-mit-termin-550077",
     "rawPhone": "+41 77 448 70 97",
@@ -101388,7 +101388,7 @@
   {
     "rawName": "Athenea XXL · Ts Athenea, die Göttin der👿 Tabulous😋 Rimmings 💯 PARTY 24hr laTINA💨POPPERS",
     "city": "Opfikon",
-    "canton": "ZH",
+    "canton": "GR",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/chur-ts-athenea-die-goettin-der-tabulous-rimmings-party-24hr-latina-poppers-654243",
     "rawPhone": "+41 76 732 34 30",
@@ -101409,7 +101409,7 @@
   {
     "rawName": "Wanna · Thai massage",
     "city": "Rothrist",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rothrist-thai-massage-783344",
     "rawPhone": "+41 76 771 44 49",
@@ -101430,7 +101430,7 @@
   {
     "rawName": "Love · Freie Zimmer SOFORT❤️‍ Jeden Tag arbeiten❤️‍Miete oder %❤️",
     "city": "Oensingen",
-    "canton": "ZH",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "http://www.love69.ch/",
     "rawPhone": "+41 76 477 69 69",
@@ -101450,7 +101450,7 @@
   },
   {
     "rawName": "Melisa · Privat Escort Ich Machen Party 🥳",
-    "city": "AG",
+    "city": "Zürich",
     "canton": "ZH",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/privat-escort-ich-machen-party-675694",
@@ -101472,7 +101472,7 @@
   {
     "rawName": "LISA · Camila XXL Natur Brüste in glattbrugg Zentrum 30min 100,1h 200",
     "city": "Opfikon",
-    "canton": "ZH",
+    "canton": "BS",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-ganz-neu-lisa-25j-heisses-schlankes-cuba-girl-privat-basel-756439",
     "rawPhone": "+41 76 340 24 75",
@@ -101514,7 +101514,7 @@
   {
     "rawName": "Michelle · Camila XXL Natur Brüste in glattbrugg Zentrum 30min 100,1h 200",
     "city": "Opfikon",
-    "canton": "ZH",
+    "canton": "BS",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-michelle-43-746874",
     "rawPhone": "+41 44 431 20 90",
@@ -101577,7 +101577,7 @@
   {
     "rawName": "Monica · Escort- privat - party - Kamagra - 😈♥️",
     "city": "Werdenberg",
-    "canton": "ZH",
+    "canton": "SG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/bern-escort-privat-party-kamagra-783433#contact",
     "rawPhone": "+41 77 982 65 06",
@@ -101597,7 +101597,7 @@
   },
   {
     "rawName": "Ramona · 3000+ Sexy bildern und vids🖤Geilsten Sexchat/Online Erziehung😈Sissy Training👠",
-    "city": "ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://date-fans.com/profile/ramonalight",
@@ -101639,7 +101639,7 @@
   },
   {
     "rawName": "Edelgarda · 😝 Cam2cam, Erotisch & Dominant, Sexchat, Videos & Bilder 😘",
-    "city": "ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/edelgarda-24-blonde-und-permanent-geil-sucht-sugar-daddy-739099#contact",
@@ -101660,7 +101660,7 @@
   },
   {
     "rawName": "Claudi · 🔥 Anna Privat Escort (fahre selber) Anal inc. GEILE VIDEOS🔥💦",
-    "city": "ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/rheineck-claudi-hausfrau-oelmassage-body-to-body-massage-erotik-rheineck-783379",
@@ -101681,7 +101681,7 @@
   },
   {
     "rawName": "Nisa · 🔥 Anna Privat Escort (fahre selber) Anal inc. GEILE VIDEOS🔥💦",
-    "city": "ZH",
+    "city": "Zürich",
     "canton": "ZH",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/frasnacht-thai-massage-nisa-076-401-87-89-741484",
@@ -101702,8 +101702,8 @@
   },
   {
     "rawName": "Conchita · 🔥 Anna Privat Escort (fahre selber) Anal inc. GEILE VIDEOS🔥💦",
-    "city": "ZH",
-    "canton": "ZH",
+    "city": "Liestal",
+    "canton": "BL",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/liestal-intensive-massage-squirting-684576",
     "rawPhone": "+41 44 431 20 90",
@@ -101745,7 +101745,7 @@
   {
     "rawName": "Yumi · Neu😘&Asiatische professionelle Masseurin verwöhnt dich❤️",
     "city": "Wettingen",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/wettingen-neu-asiatische-professionelle-masseurin-verwoehnt-dich-746841",
     "rawPhone": "+41 76 829 80 28",
@@ -101808,7 +101808,7 @@
   {
     "rawName": "Mistress LADY SINA · 🔥 Mistress LADY SINA 🔥 Göttin der bizarren Erotik",
     "city": "Landquart",
-    "canton": "ZH",
+    "canton": "GR",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-mistress-lady-sina-goettin-der-bizarren-erotik-611081",
     "rawPhone": "+41 78 342 17 10",
@@ -101829,7 +101829,7 @@
   {
     "rawName": "Alexandra · Liestal 35 JJ 🩷Twint,CurvyMILF,Party💎TOP GFE💎Anal,TiefesBlasen,Rimming,CIM❤️",
     "city": "Liestal",
-    "canton": "ZH",
+    "canton": "BL",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/st-gallen-st-gallen-twint-curvymilf-party-top-gfe-anal-tiefesblasen-rimming-cim-736552#contact",
     "rawPhone": "+41 76 286 27 79",
@@ -101913,7 +101913,7 @@
   {
     "rawName": "Anita-mello · Geile MILF am 25/10 privat in kloten besuchbar!",
     "city": "Kloten",
-    "canton": "ZH",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/luzern-exklusive-erotische-massagen-und-sinnliche-momente-fuer-hoechste-ansprueche-498713",
     "rawPhone": "+41 44 431 20 90",
@@ -101934,7 +101934,7 @@
   {
     "rawName": "Natasha · 🥰 Natasha 🥰 Dein Lustengel 😇 neu in Reinach",
     "city": "Reinach",
-    "canton": "ZH",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/reinach-natasha-dein-lustengel-neu-in-reinach-713544",
     "rawPhone": "+41 44 431 20 90",
@@ -101955,7 +101955,7 @@
   {
     "rawName": "Katrina · *traum blondine*❤️",
     "city": "Freiburg",
-    "canton": "ZH",
+    "canton": "BE",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/bern-traum-blondine-694051",
     "rawPhone": "+41 79 122 37 84",
@@ -101976,7 +101976,7 @@
   {
     "rawName": "Caprice · Wohnung in Basel . Centrale Basel und Muttenz 💎",
     "city": "Basel",
-    "canton": "BS",
+    "canton": "BL",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/basel-wohnung-in-basel-zentrum-muttenz-652436",
     "rawPhone": "+41 77 456 75 50",
@@ -101997,7 +101997,7 @@
   {
     "rawName": "Monalisa · Gabriela neue 🔥🔥🔥 in Bern Party und mehr 🥳",
     "city": "Bern",
-    "canton": "BE",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/waltenschwil-monalisa-100-echte-bilder-30min-chf-90-60min-chf-190-785938",
     "rawPhone": "+41 77 982 98 79",
@@ -102102,7 +102102,7 @@
   {
     "rawName": "VIP Valentina · SEXBOMBE mit VIP Body-immer gut gelaunt",
     "city": "Solothurn",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/solothurn-sexbombe-mit-vip-body-immer-gut-gelaunt-jetzt-in-so-city-privat-kein-studio-783123",
     "rawPhone": "+41 78 213 09 38",
@@ -102123,7 +102123,7 @@
   {
     "rawName": "Mimi · Neu Süss Asia Escort ; 🍀Tabulos ; junge Süß liebevoller Engel ist nett frau",
     "city": "Haag (Rheintal)",
-    "canton": "AG",
+    "canton": "SG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/haag-rheintal-neu-suess-asia-escort-anal-sex-junge-suess-liebevoller-engel-ist-nett-frau-776812",
     "rawPhone": "+41 44 431 20 90",
@@ -102144,7 +102144,7 @@
   {
     "rawName": "Ling · Neu Süss Asia Escort ; 🍀Tabulos ; junge Süß liebevoller Engel ist nett frau",
     "city": "Haag (Rheintal)",
-    "canton": "AG",
+    "canton": "SG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/haag-rheintal-neu-suess-asia-escort-anal-sex-junge-suess-liebevoller-engel-ist-nett-frau-776812",
     "rawPhone": "+41 44 431 20 90",
@@ -102207,7 +102207,7 @@
   {
     "rawName": "Viki · Neu in Schweiz!",
     "city": "Dulliken",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/gossau-neu-angekommen-traust-du-dich-mich-zu-besuchen-693599",
     "rawPhone": "+41 44 431 20 90",
@@ -102228,7 +102228,7 @@
   {
     "rawName": "Party Girl · Neu in Schweiz!",
     "city": "Dulliken",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-junges-partygirl-in-seebach-ch-der-beste-blowjob-mit-mir-twint-781863",
     "rawPhone": "+41 44 431 20 90",
@@ -102249,7 +102249,7 @@
   {
     "rawName": "Ts Lisa · Neu in Schweiz!",
     "city": "Dulliken",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zuerich-ts-lisa-oerlikon-742867",
     "rawPhone": "+41 44 431 20 90",
@@ -102270,7 +102270,7 @@
   {
     "rawName": "Yadira · Neu in Schweiz!",
     "city": "Dulliken",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/biel-new-trans-in-biel-yadira-20cm-activ-passiv-787244",
     "rawPhone": "+41 44 431 20 90",
@@ -102291,7 +102291,7 @@
   {
     "rawName": "Anastasia · Neu in Schweiz!",
     "city": "Dulliken",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/sevelen-body-body-massage-mit-tantra-elementen-privat-und-diskret-sevelen-758529",
     "rawPhone": "+41 44 431 20 90",
@@ -102312,7 +102312,7 @@
   {
     "rawName": "Patty · Neu in Schweiz!",
     "city": "Dulliken",
-    "canton": "AG",
+    "canton": "SO",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/olten-sexy-lady-thaimassage-621842",
     "rawPhone": "+41 44 431 20 90",
@@ -102333,7 +102333,7 @@
   {
     "rawName": "Nina Lior · BERN🌸Perfektes Deutsch,echter Service,❤️ niveauvolle Anzeige",
     "city": "Bern",
-    "canton": "BE",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/luzern-luzern-std-ab-200-deutschsprachige-frau-niveauvolle-anzeige-603899#contact",
     "rawPhone": "+41 79 897 88 09",
@@ -102501,7 +102501,7 @@
   {
     "rawName": "Lilly · Thai Lilly🙏🙏💗",
     "city": "Romanshorn",
-    "canton": "AG",
+    "canton": "TG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/romanshorn-thai-lilly-763789#contact",
     "rawPhone": "+41 77 807 23 93",
