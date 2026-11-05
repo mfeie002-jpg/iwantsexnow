@@ -37,3 +37,6 @@ next-env.d.ts
 
 # firebase
 firebase-service-account.json
+
+PRIVATE-PILOT-20-LINKS.txt
+.env.local

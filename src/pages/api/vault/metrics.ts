@@ -67,6 +67,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (isAdmin) {
+      const pilotsPath = path.join(dataDir, "pilot-20-cohort.json");
+      const pilots = readJson(pilotsPath, []);
+      const pilotCockpitLinks: Record<string, string> = {};
+      for (const p of pilots) {
+        const tok = makeOwnerToken(p.profileId);
+        if (tok) {
+          pilotCockpitLinks[p.profileId] = `/creator-dashboard?id=${encodeURIComponent(p.profileId)}&token=${encodeURIComponent(tok)}`;
+        }
+      }
       return res.status(200).json({
         ok: true,
         isAdmin: true,
@@ -75,6 +84,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         enquiries,
         takedowns,
         blockedIds: dniList,
+        pilotCockpitLinks,
       });
     }
 
