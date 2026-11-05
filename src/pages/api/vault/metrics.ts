@@ -158,6 +158,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
+  if (action === "request_verification" && profileId) {
+    states[profileId] = {
+      ...(states[profileId] || { profileId }),
+      identityRequested: true,
+      verificationNote: String(body.verificationNote || "Selfie-Prüfung im Cockpit angefordert").trim().slice(0, 300),
+      updatedAt: new Date().toISOString(),
+    };
+    writeJson(statesPath, states);
+    return res.status(200).json({ ok: true, state: states[profileId] });
+  }
+
   if (action === "confirm_availability_4h" && profileId) {
     const until = new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString();
     states[profileId] = {
