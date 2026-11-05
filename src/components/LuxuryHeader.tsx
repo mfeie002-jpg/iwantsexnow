@@ -65,7 +65,7 @@ export function LuxuryHeader() {
                 Profile
               </Link>
               <Link
-                href="/rankings"
+                href="/clubs"
                 className={
                   isActive("/rankings")
                     ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
@@ -188,7 +188,7 @@ export function LuxuryHeader() {
               <Link href="/escort-lugano" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
                 Italiano · Lugano & Ticino (IT)
               </Link>
-              <Link href="/rankings" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
+              <Link href="/clubs" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
                 Clubs & Studios
               </Link>
               <Link href="/reviews" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
@@ -207,7 +207,7 @@ export function LuxuryHeader() {
           <Sparkles size={16} />
           <span className="mt-0.5">Profile</span>
         </Link>
-        <Link href="/rankings" className={isActive("/rankings") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
+        <Link href="/clubs" className={isActive("/rankings") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
           <Building2 size={16} />
           <span className="mt-0.5">Clubs</span>
         </Link>

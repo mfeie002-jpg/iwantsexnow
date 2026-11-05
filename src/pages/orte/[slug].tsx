@@ -421,3 +421,10 @@ export default function LocalIntentDirectoryPage() {
     </div>
   );
 }
+export async function getServerSideProps(context: any) {
+  return {
+    props: {
+      initialSlug: String(context.params?.slug || "zuerich"),
+    },
+  };
+}
