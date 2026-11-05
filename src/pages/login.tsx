@@ -3,92 +3,114 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import { StencilSerifX } from "@/components/BrandLogo";
-import { Lock, ArrowRight, UserCheck, ShieldCheck } from "lucide-react";
+import { KeyRound, ArrowRight, Sparkles, Lock } from "lucide-react";
 
-export default function CorporateLoginPage() {
+export default function LoginPage() {
   const router = useRouter();
-  const [profileId, setProfileId] = useState("");
-  const [ownerToken, setOwnerToken] = useState("");
+  const [mode, setMode] = useState<"provider" | "admin">("provider");
+  const [query, setQuery] = useState("");
+  const [adminPin, setAdminPin] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleProviderLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const targetId = profileId.trim() || "ch-1";
-    if (typeof window !== "undefined" && ownerToken.trim()) {
-      localStorage.setItem("iwsn_owner_token_" + targetId, ownerToken.trim());
-      localStorage.setItem("iwsn_last_profile_id", targetId);
+    if (!query.trim()) return;
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const res = await fetch("/api/vault/metrics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "login_or_claim", query: query.trim() }),
+      });
+      const data = await res.json();
+      if (data?.ok && data.profileId && data.ownerToken) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            "iwsn_creator_session",
+            JSON.stringify({ profileId: data.profileId, token: data.ownerToken, name: data.state?.displayName || query })
+          );
+        }
+        router.push(data.cockpitUrl);
+      } else {
+        setErrorMsg("Profil konnte nicht geladen werden. Bitte prüfe deine +41 Nummer oder Profil-ID.");
+      }
+    } catch {
+      setErrorMsg("Verbindungsfehler zum Server.");
+    } finally {
+      setLoading(false);
     }
-    router.push("/creator-dashboard?id=" + encodeURIComponent(targetId));
+  };
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminPin.trim() === "SWISS-BOSS-2026") {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("iwsn_admin_pin", "SWISS-BOSS-2026");
+      }
+      router.push("/admin-dashboard");
+    } else {
+      setErrorMsg("Ungültiger Admin-PIN.");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white flex flex-col justify-between overflow-x-hidden">
-      <SEO
-        title="Anbieter-Login & Profilzugang | iwantsexnow.ch"
-        description="Direkter Zugang zu Ihrem selbst verwalteten Anbieter-Cockpit auf iwantsexnow.ch."
-      />
+    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+      <SEO title="Anbieter- & Admin-Login | iWantSexNow.ch" description="Direkter Zugang zu deinem Schweizer Anbieter-Cockpit oder zur Plattform-Administration." />
       <LuxuryHeader />
-
-      <main className="max-w-md w-full mx-auto px-6 py-12 space-y-6">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-[#1C2029] border border-[#C6A574]/50 flex items-center justify-center mx-auto">
-            <StencilSerifX color="#C6A574" className="w-6 h-5" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
-            Anbieter-Login
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-400">
-            Öffne dein Anbieter-Cockpit, um deine 4-Stunden-Verfügbarkeit zu bestätigen oder deine Angaben zu bearbeiten.
-          </p>
-        </div>
-
-        <form onSubmit={handleLogin} className="p-6 sm:p-7 rounded-2xl bg-[#1C2029] border border-white/15 shadow-2xl space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-gray-300 mb-1.5">
-              Profil-ID oder Anzeigename *
-            </label>
-            <input
-              type="text"
-              required
-              value={profileId}
-              onChange={(e) => setProfileId(e.target.value)}
-              placeholder="z.B. ch-1 oder dein Profilname..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#12151C] border border-white/15 text-sm text-white focus:outline-none focus:border-[#C6A574]"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-300 mb-1.5">
-              Persönlicher Zugangs-Schlüssel (optional bei gespeicherter Sitzung)
-            </label>
-            <input
-              type="password"
-              value={ownerToken}
-              onChange={(e) => setOwnerToken(e.target.value)}
-              placeholder="iwsn_..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#12151C] border border-white/15 text-sm text-white focus:outline-none focus:border-[#C6A574]"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3.5 rounded-xl bg-[#C6A574] hover:bg-[#d5b687] text-[#13161C] font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg"
-          >
-            <span>Cockpit öffnen</span>
-            <ArrowRight size={15} />
+      <main className="max-w-md mx-auto px-6 py-12 space-y-6">
+        <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#121722] border border-white/10">
+          <button type="button" onClick={() => { setMode("provider"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${mode === "provider" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-400 hover:text-white"}`}>
+            Anbieterinnen-Cockpit
           </button>
-        </form>
-
-        <div className="p-4 rounded-2xl bg-[#1A1E27] border border-white/10 text-center space-y-2 text-xs">
-          <div className="text-gray-300 font-semibold">Noch keinen Zugangsschlüssel?</div>
-          <Link href="/create-post" className="text-[#C6A574] hover:underline font-bold block">
-            Bestehendes Profil kostenlos übernehmen oder neu anlegen →
-          </Link>
+          <button type="button" onClick={() => { setMode("admin"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${mode === "admin" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-400 hover:text-white"}`}>
+            Betreiber / Admin
+          </button>
         </div>
-      </main>
 
-      <CorporateFooter />
+        {errorMsg && (
+          <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-200 text-xs font-semibold">{errorMsg}</div>
+        )}
+
+        {mode === "provider" ? (
+          <form onSubmit={handleProviderLogin} className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-white/10 space-y-5">
+            <div>
+              <span className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">SOFORT-ZUGANG OHNE PASSWORT-HÜRDE</span>
+              <h1 className="text-2xl font-serif font-bold text-white mt-1">In dein Anbieter-Cockpit einloggen</h1>
+              <p className="text-xs text-gray-400 mt-1">Gib deine Schweizer Mobilnummer (+41 79 / 078 / 076...), deinen Anzeigenamen oder deine Profil-ID (z.B. ch-a720e283e85f) ein.</p>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-300 mb-1.5">Deine +41 Telefonnummer, Name oder Profil-ID</label>
+              <input type="text" required value={query} onChange={(e) => setQuery(e.target.value)} placeholder="z.B. +41 78 807 34 79 oder ch-a720e283e85f" className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none" />
+            </div>
+            <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+              <span>{loading ? "Öffne Cockpit..." : "Mein Anbieter-Cockpit öffnen"}</span>
+              <ArrowRight size={15} />
+            </button>
+            <div className="pt-4 border-t border-white/10 text-center space-y-2">
+              <div className="text-xs text-gray-400">Noch gar nicht im Schweizer Verzeichnis gelistet?</div>
+              <Link href="/create-post" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C8A97E] hover:underline">
+                <Sparkles size={13} /> Jetzt kostenlos neues Direktprofil erstellen →
+              </Link>
+            </div>
+          </form>
+        ) : (
+          <form onSubmit={handleAdminLogin} className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 space-y-5">
+            <div>
+              <span className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5"><Lock size={12} /> GESCHÜTZTE PLATTFORM-STEUERUNG</span>
+              <h1 className="text-2xl font-serif font-bold text-white mt-1">Master-Steuerpult (Admin)</h1>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-300 mb-1.5">Admin-PIN</label>
+              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} placeholder="SWISS-BOSS-2026" className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none" />
+            </div>
+            <button type="submit" className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer">
+              <KeyRound size={15} /> Master-Steuerpult entsperren →
+            </button>
+          </form>
+        )}
+      </main>
     </div>
   );
 }

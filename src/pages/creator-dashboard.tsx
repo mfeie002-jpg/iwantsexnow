@@ -36,8 +36,22 @@ interface PaidVaultItem {
 
 export default function CreatorDashboardPage() {
   const router = useRouter();
-  const profileId = String(router.query.id || router.query.profileId || "").trim();
-  const token = String(router.query.token || "").trim();
+  const [sessionAuth, setSessionAuth] = useState<{ profileId: string; token: string }>({ profileId: "", token: "" });
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = JSON.parse(localStorage.getItem("iwsn_creator_session") || "{}");
+        if (saved.profileId) setSessionAuth({ profileId: saved.profileId, token: saved.token || "" });
+      } catch {}
+    }
+  }, []);
+  const profileId = String(router.query.id || router.query.profileId || sessionAuth.profileId || "ch-a720e283e85f").trim();
+  const token = String(router.query.token || sessionAuth.token || "").trim();
+  useEffect(() => {
+    if (typeof window !== "undefined" && router.query.id && router.query.token) {
+      localStorage.setItem("iwsn_creator_session", JSON.stringify({ profileId: String(router.query.id), token: String(router.query.token) }));
+    }
+  }, [router.query.id, router.query.token]);
 
   const [activeTab, setActiveTab] = useState<"profile" | "media" | "paid" | "boost">("profile");
 
@@ -110,7 +124,7 @@ export default function CreatorDashboardPage() {
   const [saving, setSaving] = useState(false);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
 
-  // 1. Aus harvested-offers.json vorbefüllen
+  // 1. Aus harvested-offers.json vorbefÃ¼llen
   useEffect(() => {
     if (!baseOffer) return;
     const cleanTitle = String(baseOffer.rawName || baseOffer.name || baseOffer.displayName || "")
@@ -124,7 +138,7 @@ export default function CreatorDashboardPage() {
     setRate60Chf(Number(baseOffer.advertisedBaseChf || baseOffer.rate60Chf) || 350);
     setBio(
       baseOffer.bio ||
-        `${cleanTitle} in ${baseOffer.city || "Zug"} (${baseOffer.canton || "ZG"}) – Direktkontakt ohne Agentur-Aufschlag.`
+        `${cleanTitle} in ${baseOffer.city || "Zug"} (${baseOffer.canton || "ZG"}) â€“ Direktkontakt ohne Agentur-Aufschlag.`
     );
     if (Array.isArray(baseOffer.includedTags) && baseOffer.includedTags.length > 0) {
       setTags(baseOffer.includedTags);
@@ -211,7 +225,7 @@ export default function CreatorDashboardPage() {
       });
       setStatusMsg(successNote);
     } catch {
-      setStatusMsg("Änderung lokal gespeichert.");
+      setStatusMsg("Ã„nderung lokal gespeichert.");
     } finally {
       setSaving(false);
     }
@@ -233,9 +247,9 @@ export default function CreatorDashboardPage() {
           availabilityConfirmed: true,
         }),
       });
-      setStatusMsg("✓ Status „Jetzt verfügbar“ für die nächsten 4 Stunden live geschaltet!");
+      setStatusMsg("âœ“ Status â€žJetzt verfÃ¼gbarâ€œ fÃ¼r die nÃ¤chsten 4 Stunden live geschaltet!");
     } catch {
-      setStatusMsg("✓ 4h-Verfügbarkeit aktiviert!");
+      setStatusMsg("âœ“ 4h-VerfÃ¼gbarkeit aktiviert!");
     } finally {
       setSaving(false);
     }
@@ -247,8 +261,8 @@ export default function CreatorDashboardPage() {
     updateServerState(
       { paused: nextPaused, hidden: nextPaused },
       nextPaused
-        ? "⏸ Dein Profil ist jetzt vorübergehend im öffentlichen Verzeichnis ausgeblendet."
-        : "▶ Dein Profil ist wieder öffentlich sichtbar!"
+        ? "â¸ Dein Profil ist jetzt vorÃ¼bergehend im Ã¶ffentlichen Verzeichnis ausgeblendet."
+        : "â–¶ Dein Profil ist wieder Ã¶ffentlich sichtbar!"
     );
   };
 
@@ -259,12 +273,12 @@ export default function CreatorDashboardPage() {
     setGallery(nextGal);
     if (!thumbnail) setThumbnail(url);
     setNewPhotoUrl("");
-    updateServerState({ gallery: nextGal, thumbnail: thumbnail || url }, "✓ Neues Foto zur Galerie hinzugefügt!");
+    updateServerState({ gallery: nextGal, thumbnail: thumbnail || url }, "âœ“ Neues Foto zur Galerie hinzugefÃ¼gt!");
   };
 
   const handleSetMainPhoto = (url: string) => {
     setThumbnail(url);
-    updateServerState({ thumbnail: url }, "✓ Haupt-Profilbild aktualisiert!");
+    updateServerState({ thumbnail: url }, "âœ“ Haupt-Profilbild aktualisiert!");
   };
 
   const handleRemovePhoto = (url: string) => {
@@ -272,7 +286,7 @@ export default function CreatorDashboardPage() {
     setGallery(nextGal);
     const nextMain = thumbnail === url ? nextGal[0] || "" : thumbnail;
     setThumbnail(nextMain);
-    updateServerState({ gallery: nextGal, thumbnail: nextMain }, "✓ Bild aus Galerie entfernt.");
+    updateServerState({ gallery: nextGal, thumbnail: nextMain }, "âœ“ Bild aus Galerie entfernt.");
   };
 
   const handleAddPaidItem = () => {
@@ -289,19 +303,19 @@ export default function CreatorDashboardPage() {
     const next = [item, ...paidItems];
     setPaidItems(next);
     setNewVaultTitle("");
-    updateServerState({ paidItems: next }, `✓ Paid-Content-Paket „${item.title}“ (CHF ${item.priceChf}) veröffentlicht!`);
+    updateServerState({ paidItems: next }, `âœ“ Paid-Content-Paket â€ž${item.title}â€œ (CHF ${item.priceChf}) verÃ¶ffentlicht!`);
   };
 
   const handleTogglePaidItem = (id: string) => {
     const next = paidItems.map((it) => (it.id === id ? { ...it, active: !it.active } : it));
     setPaidItems(next);
-    updateServerState({ paidItems: next }, "✓ Paid-Content-Status aktualisiert.");
+    updateServerState({ paidItems: next }, "âœ“ Paid-Content-Status aktualisiert.");
   };
 
   const handleDeletePaidItem = (id: string) => {
     const next = paidItems.filter((it) => it.id !== id);
     setPaidItems(next);
-    updateServerState({ paidItems: next }, "✓ Paid-Content-Paket gelöscht.");
+    updateServerState({ paidItems: next }, "âœ“ Paid-Content-Paket gelÃ¶scht.");
   };
 
   const isCurrentlyAvailable = useMemo(() => {
@@ -315,7 +329,7 @@ export default function CreatorDashboardPage() {
     "Girlfriend Experience (GFE)",
     "Erotische Massage / Body2Body",
     "Tantra",
-    "Französisch / Deepthroat",
+    "FranzÃ¶sisch / Deepthroat",
     "Anal",
     "Domina / BDSM",
     "Fetisch / Fussfetisch",
@@ -333,7 +347,7 @@ export default function CreatorDashboardPage() {
     <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] py-8 px-4 pb-24">
       <SEO
         title={`Anbieter-Cockpit: ${displayName || profileId || "Profil verwalten"} | iWantSexNow.ch`}
-        description="Selbstverwaltetes Schweizer Anbieter-Cockpit für Fotos, 4K-Videos, 80/20 Paid Content, Echtzeit-Verfügbarkeit und Top-Spot Bidding."
+        description="Selbstverwaltetes Schweizer Anbieter-Cockpit fÃ¼r Fotos, 4K-Videos, 80/20 Paid Content, Echtzeit-VerfÃ¼gbarkeit und Top-Spot Bidding."
       />
 
       <div className="max-w-6xl mx-auto space-y-6">
@@ -351,7 +365,7 @@ export default function CreatorDashboardPage() {
             />
             <div>
               <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-semibold">
-                SELBSTVERWALTETES PROFIL · ANBIETER-COCKPIT {sourcePortal ? `· QUELLE: ${sourcePortal.toUpperCase()}` : ""}
+                SELBSTVERWALTETES PROFIL Â· ANBIETER-COCKPIT {sourcePortal ? `Â· QUELLE: ${sourcePortal.toUpperCase()}` : ""}
               </div>
               <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-0.5">
                 {displayName ? `${displayName} (${city}, ${canton})` : `Dein Anbieter-Cockpit (${profileId || "Neu"})`}
@@ -364,10 +378,10 @@ export default function CreatorDashboardPage() {
                   </span>
                 )}
                 <span className="text-[#C8A97E] font-semibold">
-                  CHF {rate30Chf} (30m) · CHF {rate60Chf} (60m)
+                  CHF {rate30Chf} (30m) Â· CHF {rate60Chf} (60m)
                 </span>
                 <span className="text-sky-300 font-semibold">
-                  📸 {gallery.length} Fotos · 🔒 {paidItems.filter((i) => i.active).length} Paid-Pakete
+                  ðŸ“¸ {gallery.length} Fotos Â· ðŸ”’ {paidItems.filter((i) => i.active).length} Paid-Pakete
                 </span>
               </div>
             </div>
@@ -378,13 +392,13 @@ export default function CreatorDashboardPage() {
               href={`/profile/${encodeURIComponent(profileId || "ch-1")}`}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] text-xs font-extrabold transition"
             >
-              Vollständiges Direktprofil ansehen <ExternalLink size={13} />
+              VollstÃ¤ndiges Direktprofil ansehen <ExternalLink size={13} />
             </Link>
             <Link
               href={`/?q=${encodeURIComponent(displayName || city)}`}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold text-white transition"
             >
-              Öffentliche Karte ↗
+              Ã–ffentliche Karte â†—
             </Link>
           </div>
         </div>
@@ -396,23 +410,23 @@ export default function CreatorDashboardPage() {
           </div>
         )}
 
-        {/* Top 2 Sofort-Schalter (Immer sichtbar): 1. 4h Verfügbarkeit & 2. Pause */}
+        {/* Top 2 Sofort-Schalter (Immer sichtbar): 1. 4h VerfÃ¼gbarkeit & 2. Pause */}
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-5">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
-                  1. ECHTZEIT-VERFÜGBARKEIT (4H-FENSTER)
+                  1. ECHTZEIT-VERFÃœGBARKEIT (4H-FENSTER)
                 </span>
                 {isCurrentlyAvailable && (
                   <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold">
-                    ● Aktiv bis {new Date(availableUntil!).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" })} Uhr
+                    â— Aktiv bis {new Date(availableUntil!).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" })} Uhr
                   </span>
                 )}
               </div>
-              <h2 className="text-lg font-bold text-white">Status „Jetzt verfügbar“ bestätigen</h2>
+              <h2 className="text-lg font-bold text-white">Status â€žJetzt verfÃ¼gbarâ€œ bestÃ¤tigen</h2>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Sobald aktiviert, zeigt deine Karte für <strong>{displayName || "dein Profil"}</strong> in <strong>{city} ({canton})</strong> das grüne Label „Jetzt verfügbar“ samt exaktem Zeitstempel. Nach 4 Stunden läuft der Status automatisch ab.
+                Sobald aktiviert, zeigt deine Karte fÃ¼r <strong>{displayName || "dein Profil"}</strong> in <strong>{city} ({canton})</strong> das grÃ¼ne Label â€žJetzt verfÃ¼gbarâ€œ samt exaktem Zeitstempel. Nach 4 Stunden lÃ¤uft der Status automatisch ab.
               </p>
             </div>
 
@@ -422,7 +436,7 @@ export default function CreatorDashboardPage() {
               disabled={saving}
               className="w-full py-3.5 px-4 rounded-xl bg-[#22C55E] hover:bg-[#16A34A] text-[#07120B] font-extrabold text-xs uppercase tracking-wider transition shadow-lg cursor-pointer"
             >
-              ● {isCurrentlyAvailable ? "4-STUNDEN-FENSTER JETZT ERNEUERN" : "JETZT FÜR 4 STUNDEN ALS VERFÜGBAR BESTÄTIGEN"}
+              â— {isCurrentlyAvailable ? "4-STUNDEN-FENSTER JETZT ERNEUERN" : "JETZT FÃœR 4 STUNDEN ALS VERFÃœGBAR BESTÃ„TIGEN"}
             </button>
           </div>
 
@@ -439,12 +453,12 @@ export default function CreatorDashboardPage() {
                       : "bg-white/10 text-gray-200 border border-white/15"
                   }`}
                 >
-                  {paused ? "Pausiert (Ausgeblendet)" : "Öffentlich sichtbar"}
+                  {paused ? "Pausiert (Ausgeblendet)" : "Ã–ffentlich sichtbar"}
                 </span>
               </div>
-              <h2 className="text-lg font-bold text-white">Profil vorübergehend pausieren</h2>
+              <h2 className="text-lg font-bold text-white">Profil vorÃ¼bergehend pausieren</h2>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Du kannst deinen Eintrag jederzeit mit einem Klick aus dem öffentlichen Verzeichnis ausblenden (z.B. bei Urlaub oder Abwesenheit) und später wieder aktivieren.
+                Du kannst deinen Eintrag jederzeit mit einem Klick aus dem Ã¶ffentlichen Verzeichnis ausblenden (z.B. bei Urlaub oder Abwesenheit) und spÃ¤ter wieder aktivieren.
               </p>
             </div>
 
@@ -455,12 +469,12 @@ export default function CreatorDashboardPage() {
               className="w-full py-3.5 px-4 rounded-xl bg-[#0D111A] hover:bg-white/5 border border-white/15 text-xs font-bold text-white flex items-center justify-center gap-2 transition cursor-pointer"
             >
               {paused ? <Eye size={14} /> : <EyeOff size={14} />}
-              {paused ? "Profil jetzt wieder öffentlich schalten" : "Profil jetzt pausieren / ausblenden"}
+              {paused ? "Profil jetzt wieder Ã¶ffentlich schalten" : "Profil jetzt pausieren / ausblenden"}
             </button>
           </div>
         </div>
 
-        {/* 4-Tab-Navigation für alle Funktionen */}
+        {/* 4-Tab-Navigation fÃ¼r alle Funktionen */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#121722] p-2 rounded-2xl border border-white/10">
           <button
             type="button"
@@ -505,16 +519,16 @@ export default function CreatorDashboardPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              updateServerState({}, "✓ Deine veröffentlichten Angaben, Services und CHF-Richtpreise wurden gespeichert!");
+              updateServerState({}, "âœ“ Deine verÃ¶ffentlichten Angaben, Services und CHF-Richtpreise wurden gespeichert!");
             }}
             className="bg-[#121722] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg sm:text-xl font-serif font-bold text-white">
-                Veröffentlichte Angaben, Services & Richtpreis bearbeiten
+                VerÃ¶ffentlichte Angaben, Services & Richtpreis bearbeiten
               </h2>
               <span className="text-[11px] text-emerald-400 font-medium">
-                ✓ Automatisch vorbefüllt aus deinem verifizierten Schweizer Profil
+                âœ“ Automatisch vorbefÃ¼llt aus deinem verifizierten Schweizer Profil
               </span>
             </div>
 
@@ -599,7 +613,7 @@ export default function CreatorDashboardPage() {
                           : "bg-[#0D111A] border-white/10 text-gray-400 hover:text-white"
                       }`}
                     >
-                      {active ? "✓ " : "+ "}{tag}
+                      {active ? "âœ“ " : "+ "}{tag}
                     </button>
                   );
                 })}
@@ -624,12 +638,12 @@ export default function CreatorDashboardPage() {
                   type="button"
                   onClick={() => {
                     setIdentityRequested(true);
-                    updateServerState({ identityRequested: true }, "✓ Dokumentierte Identitätsprüfung (✓) wurde für dein Profil vorgemerkt.");
+                    updateServerState({ identityRequested: true }, "âœ“ Dokumentierte IdentitÃ¤tsprÃ¼fung (âœ“) wurde fÃ¼r dein Profil vorgemerkt.");
                   }}
                   className="text-[#C8A97E] hover:underline font-semibold inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <ShieldCheck size={14} />
-                  {identityRequested ? "Identitätsprüfung (✓) angefragt" : "Dokumentierte Identitätsprüfung (✓) beantragen →"}
+                  {identityRequested ? "IdentitÃ¤tsprÃ¼fung (âœ“) angefragt" : "Dokumentierte IdentitÃ¤tsprÃ¼fung (âœ“) beantragen â†’"}
                 </button>
                 <Link href={`/report?profileId=${encodeURIComponent(profileId)}`} className="text-gray-400 hover:text-rose-400 inline-flex items-center gap-1">
                   <Trash2 size={13} /> Eintrag komplett entfernen (Opt-out)
@@ -653,22 +667,22 @@ export default function CreatorDashboardPage() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <h2 className="text-lg sm:text-xl font-serif font-bold text-white">
-                  Öffentliche Profilbilder & 4K-Vorstellungsvideo verwalten
+                  Ã–ffentliche Profilbilder & 4K-Vorstellungsvideo verwalten
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Wähle dein Hauptbild für die Startseite, füge neue Fotos hinzu oder hinterlege ein kurzes Vorstellungsvideo.
+                  WÃ¤hle dein Hauptbild fÃ¼r die Startseite, fÃ¼ge neue Fotos hinzu oder hinterlege ein kurzes Vorstellungsvideo.
                 </p>
               </div>
               <span className="text-xs font-bold text-[#C8A97E]">{gallery.length} aktive Fotos</span>
             </div>
 
-            {/* Neues Foto hinzufügen */}
+            {/* Neues Foto hinzufÃ¼gen */}
             <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="url"
                 value={newPhotoUrl}
                 onChange={(e) => setNewPhotoUrl(e.target.value)}
-                placeholder="Neue Foto-URL einfügen (https://... .jpg / .webp)"
+                placeholder="Neue Foto-URL einfÃ¼gen (https://... .jpg / .webp)"
                 className="flex-1 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none"
               />
               <button
@@ -676,7 +690,7 @@ export default function CreatorDashboardPage() {
                 onClick={handleAddPhoto}
                 className="px-5 py-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Plus size={15} /> Foto zur Galerie hinzufügen
+                <Plus size={15} /> Foto zur Galerie hinzufÃ¼gen
               </button>
             </div>
 
@@ -698,7 +712,7 @@ export default function CreatorDashboardPage() {
                     />
                     {isMain && (
                       <span className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-[#C8A97E] text-[#0D111A] text-[10px] font-extrabold uppercase">
-                        ★ Hauptbild
+                        â˜… Hauptbild
                       </span>
                     )}
                     <div className="p-2.5 bg-[#0D111A]/95 flex items-center justify-between gap-2 text-[11px]">
@@ -718,7 +732,7 @@ export default function CreatorDashboardPage() {
                         onClick={() => handleRemovePhoto(imgUrl)}
                         className="text-gray-400 hover:text-rose-400 cursor-pointer"
                       >
-                        Löschen
+                        LÃ¶schen
                       </button>
                     </div>
                   </div>
@@ -730,19 +744,19 @@ export default function CreatorDashboardPage() {
             <div className="pt-4 border-t border-white/10 space-y-3">
               <label className="block text-xs text-gray-300 font-semibold flex items-center gap-2">
                 <Video size={15} className="text-[#C8A97E]" />
-                <span>Öffentliches 4K-Teaser-Video / Vorstellungsvideo (MP4- oder Stream-URL)</span>
+                <span>Ã–ffentliches 4K-Teaser-Video / Vorstellungsvideo (MP4- oder Stream-URL)</span>
               </label>
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="url"
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
-                  placeholder="https://... (Optionales kurzes Begrüssungsvideo auf deiner Karte)"
+                  placeholder="https://... (Optionales kurzes BegrÃ¼ssungsvideo auf deiner Karte)"
                   className="flex-1 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none"
                 />
                 <button
                   type="button"
-                  onClick={() => updateServerState({ videoUrl }, "✓ 4K-Vorstellungsvideo auf deinem Profil gespeichert!")}
+                  onClick={() => updateServerState({ videoUrl }, "âœ“ 4K-Vorstellungsvideo auf deinem Profil gespeichert!")}
                   className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs cursor-pointer"
                 >
                   Video speichern
@@ -758,13 +772,13 @@ export default function CreatorDashboardPage() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
-                  ZUSATZ-EINNAHMEN OHNE TREFFEN · 80 % DIREKT-ANTEIL FÜR DICH
+                  ZUSATZ-EINNAHMEN OHNE TREFFEN Â· 80 % DIREKT-ANTEIL FÃœR DICH
                 </span>
                 <h2 className="text-lg sm:text-xl font-serif font-bold text-white mt-0.5">
                   Paid Content & Exklusive VIP-Medien verkaufen (Pay-per-View)
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Verkaufe unzensierte Foto-Sets oder 4K-Videos direkt auf deiner Profilseite. Du behältst 80 % jedes Kaufs (Auszahlung per Twint, IBAN oder USDT).
+                  Verkaufe unzensierte Foto-Sets oder 4K-Videos direkt auf deiner Profilseite. Du behÃ¤ltst 80 % jedes Kaufs (Auszahlung per Twint, IBAN oder USDT).
                 </p>
               </div>
               <div className="px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-right">
@@ -824,7 +838,7 @@ export default function CreatorDashboardPage() {
                   onClick={handleAddPaidItem}
                   className="px-5 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 cursor-pointer"
                 >
-                  <Lock size={13} /> Paid-Paket auf Profil veröffentlichen
+                  <Lock size={13} /> Paid-Paket auf Profil verÃ¶ffentlichen
                 </button>
               </div>
             </div>
@@ -843,7 +857,7 @@ export default function CreatorDashboardPage() {
                     <div>
                       <div className="text-sm font-bold text-white">{item.title}</div>
                       <div className="text-xs text-gray-400">
-                        {item.mediaCount} · Kundenpreis: <strong className="text-[#C8A97E]">CHF {item.priceChf}</strong> · Dein Anteil:{" "}
+                        {item.mediaCount} Â· Kundenpreis: <strong className="text-[#C8A97E]">CHF {item.priceChf}</strong> Â· Dein Anteil:{" "}
                         <strong className="text-emerald-400">CHF {(item.priceChf * 0.8).toFixed(2)}</strong>
                       </div>
                     </div>
@@ -856,14 +870,14 @@ export default function CreatorDashboardPage() {
                         item.active ? "bg-emerald-500/20 text-emerald-300" : "bg-white/10 text-gray-400"
                       }`}
                     >
-                      {item.active ? "● Aktiv im Profil" : "Pausiert"}
+                      {item.active ? "â— Aktiv im Profil" : "Pausiert"}
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeletePaidItem(item.id)}
                       className="px-2.5 py-1.5 rounded-lg bg-rose-500/15 text-rose-300 hover:bg-rose-500/25 cursor-pointer"
                     >
-                      Löschen
+                      LÃ¶schen
                     </button>
                   </div>
                 </div>
@@ -880,9 +894,9 @@ export default function CreatorDashboardPage() {
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-serif font-bold text-white flex items-center gap-2">
                   <BarChart3 size={18} className="text-[#C8A97E]" />
-                  <span>Echte Profil-Statistiken (Keine geschätzten Fake-Zähler)</span>
+                  <span>Echte Profil-Statistiken (Keine geschÃ¤tzten Fake-ZÃ¤hler)</span>
                 </h2>
-                <span className="text-[11px] text-emerald-400 font-semibold">● Live-Messung aktiv</span>
+                <span className="text-[11px] text-emerald-400 font-semibold">â— Live-Messung aktiv</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10">
@@ -915,7 +929,7 @@ export default function CreatorDashboardPage() {
                 </div>
                 <h3 className="text-lg font-bold text-white">Spontane 1:1 Video-Calls anbieten</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Schalte dich für diskrete 1:1 Live-Cam-Sessions frei. Besucher sehen auf deiner Karte das rote „Live-Cam verfügbar“-Signal.
+                  Schalte dich fÃ¼r diskrete 1:1 Live-Cam-Sessions frei. Besucher sehen auf deiner Karte das rote â€žLive-Cam verfÃ¼gbarâ€œ-Signal.
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
@@ -934,14 +948,14 @@ export default function CreatorDashboardPage() {
                       setLiveCamActive(next);
                       updateServerState(
                         { liveCamActive: next, liveCamChfPerMin },
-                        next ? `✓ 1:1 Live-Cam (CHF ${liveCamChfPerMin}/Min.) aktiviert!` : "⏸ 1:1 Live-Cam deaktiviert."
+                        next ? `âœ“ 1:1 Live-Cam (CHF ${liveCamChfPerMin}/Min.) aktiviert!` : "â¸ 1:1 Live-Cam deaktiviert."
                       );
                     }}
                     className={`mt-5 px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase cursor-pointer ${
                       liveCamActive ? "bg-rose-500 text-white" : "bg-[#C8A97E] text-[#0D111A]"
                     }`}
                   >
-                    {liveCamActive ? "🔴 Live-Cam ist AN (Ausschalten)" : "1:1 Live-Cam einschalten"}
+                    {liveCamActive ? "ðŸ”´ Live-Cam ist AN (Ausschalten)" : "1:1 Live-Cam einschalten"}
                   </button>
                 </div>
               </div>
@@ -952,12 +966,12 @@ export default function CreatorDashboardPage() {
                     <Star size={14} /> TOP-SPOT PLATZIERUNG ({city.toUpperCase()} / {canton})
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-[#C8A97E]/20 text-[#C8A97E] text-[11px] font-bold">
-                    🎁 1. Monat Pilot-Bonus: CHF 0
+                    ðŸŽ 1. Monat Pilot-Bonus: CHF 0
                   </span>
                 </div>
                 <h3 className="text-lg font-bold text-white">Gesponserte Top-Platzierung in {city}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Während der 30-tägigen Pilotphase kannst du dein Profil kostenlos für die oberen Plätze in {city} ({canton}) vormerken.
+                  WÃ¤hrend der 30-tÃ¤gigen Pilotphase kannst du dein Profil kostenlos fÃ¼r die oberen PlÃ¤tze in {city} ({canton}) vormerken.
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
@@ -974,7 +988,7 @@ export default function CreatorDashboardPage() {
                     onClick={() =>
                       updateServerState(
                         { sponsored: true, topSpotBidChf },
-                        `✓ Gratis-Pilot-Boost für ${city} (${canton}) aktiviert!`
+                        `âœ“ Gratis-Pilot-Boost fÃ¼r ${city} (${canton}) aktiviert!`
                       )
                     }
                     className="mt-5 px-5 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase cursor-pointer"
