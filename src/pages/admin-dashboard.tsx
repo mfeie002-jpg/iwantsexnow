@@ -8,7 +8,7 @@ import clubsData from "@/data/swiss-establishments-vault.json";
 import { ExternalLink, Copy, CheckCircle2, Phone, Building2, Users, Inbox } from "lucide-react";
 
 export default function AdminDashboardPage() {
-  const [adminPin] = useState("SWISS-BOSS-2026");
+  const [adminPin] = useState("");
   const [serverStates, setServerStates] = useState<Record<string, any>>({});
   const [serverMetrics, setServerMetrics] = useState<Record<string, any>>({});
   const [enquiries, setEnquiries] = useState<any[]>([]);

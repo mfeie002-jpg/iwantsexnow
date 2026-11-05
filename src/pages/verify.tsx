@@ -44,7 +44,7 @@ export default function VerifyIdentityPage() {
           action: "update_profile_state",
           profileId: targetId,
           token,
-          adminPin: "SWISS-BOSS-2026",
+          
           updates: {
             identityRequested: true,
             displayName: displayName.trim() || undefined,

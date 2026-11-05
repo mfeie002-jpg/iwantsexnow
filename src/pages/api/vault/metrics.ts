@@ -121,7 +121,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json({ ok: true, enquiry: newLead });
   }
 
-  if (action === "login_or_claim" || action === "register_new_profile") {
+    if (action === "login_or_claim") {
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        ok: false,
+        error: "Zugriff verweigert: Bestehende Profile können nur mit gültigem persönlichem Magic-Link oder nach SMS-/Admin-Freigabe geöffnet werden.",
+      });
+    }
+  }
+  if (action === "register_new_profile") {
     const offers = readJson(offersPath, []);
     const rawQuery = String(body.query || body.phone || body.displayName || profileId || "").trim();
     const cleanDigits = rawQuery.replace(/\D/g, "").replace(/^0041/, "41").replace(/^0/, "41");
