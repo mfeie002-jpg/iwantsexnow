@@ -1,9 +1,27 @@
 {
-  "updatedAt": "2026-10-25T20:07:14.326Z",
-  "portalsIndexed": 27,
+  "updatedAt": "2026-11-05T01:27:46.925Z",
+  "portalsIndexed": 13,
   "totalRawListingsInVault": 5576,
   "totalEstablishmentsInVault": 162,
-  "uniqueFrontendProfiles": 650,
-  "unlockedRealPhones": 706,
-  "mobileWhatsappReadyPhones": 689
+  "uniqueFrontendProfiles": 1981,
+  "unlockedRealPhones": 1981,
+  "cantonBreakdown": {
+    "LU": 84,
+    "BS": 83,
+    "AG": 61,
+    "GE": 424,
+    "ZH": 267,
+    "VD": 319,
+    "BE": 84,
+    "SG": 103,
+    "ZG": 169,
+    "SZ": 4,
+    "SO": 17,
+    "GR": 7,
+    "TI": 109,
+    "FR": 67,
+    "TG": 7,
+    "VS": 115,
+    "NE": 61
+  }
 }
