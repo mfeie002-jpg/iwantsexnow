@@ -45,7 +45,7 @@ export default function CreatorDashboardPage() {
       } catch {}
     }
   }, []);
-  const profileId = String(router.query.id || router.query.profileId || sessionAuth.profileId || "ch-a720e283e85f").trim();
+  const profileId = String(router.query.id || router.query.profileId || sessionAuth.profileId || "").trim();
   const token = String(router.query.token || sessionAuth.token || "").trim();
   useEffect(() => {
     if (typeof window !== "undefined" && router.query.id && router.query.token) {
