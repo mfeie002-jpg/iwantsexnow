@@ -36,8 +36,8 @@ function saveStore(store: VaultStore) {
   } catch {}
 }
 
-// Prüft bei jedem Abruf, ob eine 4h-Verfügbarkeits-Bestätigung abgelaufen ist,
-// und berechnet live die verstrichenen Minuten ("Bestätigt vor X Min.")
+// PrÃ¼ft bei jedem Abruf, ob eine 4h-VerfÃ¼gbarkeits-BestÃ¤tigung abgelaufen ist,
+// und berechnet live die verstrichenen Minuten ("BestÃ¤tigt vor X Min.")
 function applyFourHourExpiry(states: Record<string, any>): Record<string, any> {
   const now = Date.now();
   const cleaned: Record<string, any> = {};
@@ -121,7 +121,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (st.ownerToken && body.ownerToken && st.ownerToken !== body.ownerToken) {
         return res.status(403).json({
           ok: false,
-          error: "Dieses Profil wird bereits von einem bestätigten Konto verwaltet.",
+          error: "Dieses Profil wird bereits von einem bestÃ¤tigten Konto verwaltet.",
         });
       }
       const token = st.ownerToken || "iwsn_" + crypto.randomBytes(12).toString("hex");
@@ -157,6 +157,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (body.canton !== undefined) st.canton = String(body.canton).trim().toUpperCase();
       if (body.rate60Chf !== undefined) st.rate60Chf = Number(body.rate60Chf);
       if (body.bio !== undefined) st.bio = String(body.bio).trim();
+      if (body.phoneDisplay !== undefined) st.phoneDisplay = String(body.phoneDisplay).trim();
+      if (body.rate30Chf !== undefined) st.rate30Chf = Number(body.rate30Chf);
+      if (body.thumbnail !== undefined) st.thumbnail = String(body.thumbnail).trim();
+      if (Array.isArray(body.gallery)) st.gallery = body.gallery;
+      if (body.videoUrl !== undefined) st.videoUrl = String(body.videoUrl).trim();
+      if (Array.isArray(body.paidItems)) st.paidItems = body.paidItems;
+      if (Array.isArray(body.tags)) st.tags = body.tags;
+      if (body.liveCamActive !== undefined) st.liveCamActive = Boolean(body.liveCamActive);
+      if (body.liveCamChfPerMin !== undefined) st.liveCamChfPerMin = Number(body.liveCamChfPerMin);
+      if (body.topSpotBidChf !== undefined) st.topSpotBidChf = Number(body.topSpotBidChf);
+      if (body.sponsored !== undefined) st.sponsored = Boolean(body.sponsored);
       if (body.paused !== undefined) st.paused = Boolean(body.paused);
       if (body.identityVerified !== undefined) st.identityVerified = Boolean(body.identityVerified);
       st.claimed = true;
