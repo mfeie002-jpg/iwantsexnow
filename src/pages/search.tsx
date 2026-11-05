@@ -1,388 +1,244 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
-import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
-import {
-  Search,
-  Clock,
-  User,
-  ExternalLink,
-  HelpCircle,
-  Bookmark,
-  LayoutGrid,
-  List as ListIcon,
-  RotateCcw,
-  ArrowRight,
-  Check,
-} from "lucide-react";
+import offersData from "@/data/harvested-offers.json";
+import { Search, MapPin, RotateCcw, SlidersHorizontal, Sparkles } from "lucide-react";
 
 const FALLBACK_IMG = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85";
 
-export default function HarmonizedSearchPage() {
+export default function DeepAttributeSearchPage() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [canton, setCanton] = useState("ALL");
-  const [onlyAvailable, setOnlyAvailable] = useState(false);
-  const [onlyManaged, setOnlyManaged] = useState(false);
-  const [onlyWithPrice, setOnlyWithPrice] = useState(false);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [rubric, setRubric] = useState("ALL");
+  const [ageGroup, setAgeGroup] = useState("ALL");
+  const [hairColor, setHairColor] = useState("ALL");
+  const [maxPrice60, setMaxPrice60] = useState<number>(1000);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<any[]>([]);
-  const [totalMatches, setTotalMatches] = useState(0);
 
   useEffect(() => {
     if (!router.isReady) return;
     if (router.query.q) setQuery(String(router.query.q));
     if (router.query.canton) setCanton(String(router.query.canton).toUpperCase());
+    if (router.query.rubric) setRubric(String(router.query.rubric));
   }, [router.isReady, router.query]);
 
-  useEffect(() => {
-    setLoading(true);
-    const params = new URLSearchParams();
-    if (query.trim()) params.set("q", query.trim());
-    if (canton !== "ALL") params.set("canton", canton);
-    if (onlyAvailable) params.set("available", "true");
-    if (onlyManaged) params.set("managed", "true");
-    params.set("page", String(page));
-    params.set("limit", "48");
+  const filtered = useMemo(() => {
+    const all = (offersData as any[]) || [];
+    return all.filter((p) => {
+      if (canton !== "ALL" && String(p.canton || "").toUpperCase() !== canton) return false;
+      if (rubric !== "ALL" && (p.rubric || "female") !== rubric) return false;
+      if (hairColor !== "ALL" && String(p.hairColor || "") !== hairColor) return false;
+      if (Number(p.advertisedBaseChf || 350) > maxPrice60) return false;
 
-    fetch("/api/vault/search?" + params.toString())
-      .then((r) => r.json())
-      .then((d) => {
-        if (d && d.status === "ok") {
-          const normalized = (Array.isArray(d.results) ? d.results : []).map((item: any, idx: number) => {
-            const geo = normalizeSwissGeo(item.city, item.canton);
-            const rate = Number(item.advertisedBaseChf) || null;
-            const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
-            return {
-              ...item,
-              cleanCity: geo.cleanCity,
-              canton: geo.trueCanton,
-              advertisedBaseChf: rate,
-              durationLabel,
-              confirmedMinutesAgo: item.availabilityConfirmed ? 6 : null,
-            };
-          });
-          setResults(
-            onlyWithPrice ? normalized.filter((x: any) => Boolean(x.advertisedBaseChf)) : normalized
-          );
-          setTotalMatches(Number(d.totalMatches) || 0);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [query, canton, onlyAvailable, onlyManaged, onlyWithPrice, page]);
+      const age = Number(p.age) || 25;
+      if (ageGroup === "18-24" && (age < 18 || age > 24)) return false;
+      if (ageGroup === "25-30" && (age < 25 || age > 30)) return false;
+      if (ageGroup === "31+" && age < 31) return false;
+
+      if (query.trim()) {
+        const q = query.toLowerCase().trim();
+        const hay = `${p.rawName || ""} ${p.city || ""} ${p.canton || ""} ${(p.includedTags || []).join(" ")} ${p.bio || ""} ${p.rawPhone || ""}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [query, canton, rubric, ageGroup, hairColor, maxPrice60]);
+
+  const pageItems = useMemo(() => filtered.slice((page - 1) * 48, page * 48), [filtered, page]);
 
   const resetAll = () => {
     setQuery("");
     setCanton("ALL");
-    setOnlyAvailable(false);
-    setOnlyManaged(false);
-    setOnlyWithPrice(false);
+    setRubric("ALL");
+    setAgeGroup("ALL");
+    setHairColor("ALL");
+    setMaxPrice60(1000);
     setPage(1);
   };
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
       <SEO
-        title="Profile durchsuchen & gezielt filtern | iwantsexnow.ch"
-        description="Durchsuchen Sie Schweizer Profile nach Ort, Kategorie, bestätigter Verfügbarkeit und veröffentlichten Preisangaben."
+        title="Schweizer Escort-Suche mit Deep-Filter (Kanton, Alter, Haare, Körbchen, CHF-Tarif) | iwantsexnow.ch"
+        description="Durchsuche alle 2.526 Schweizer Escort-, Tantra-, Massage- und BDSM-Profile nach Kanton, Rubrik, Alter, Haarfarbe, Körbchengrösse und 30m/60m CHF-Richtpreis."
       />
       <LuxuryHeader />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-7 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Erweiterte Profilsuche ({totalMatches.toLocaleString("de-CH")} Ergebnisse)
-            </h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
-              Filtere nach Kanton, Stichwort, bestätigter Verfügbarkeit oder Preisangabe.
-            </p>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        <div className="p-6 rounded-2xl bg-[#121722] border border-white/10 space-y-5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
+                SCHWEIZER DEEP-FILTER & ATTRIBUT-SUCHE (24 KANTONE)
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-0.5">
+                {filtered.length.toLocaleString("de-CH")} passende Schweizer Profile
+              </h1>
+            </div>
+            <button
+              type="button"
+              onClick={resetAll}
+              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+            >
+              <RotateCcw size={13} /> Alle Filter zurücksetzen
+            </button>
           </div>
-          <div className="flex items-center gap-4 text-xs">
-            <XeniaDoubtTrigger topic="status" label="Status-Hilfe" />
-            <XeniaDoubtTrigger topic="price" label="Preis-Hilfe" />
-            <XeniaDoubtTrigger topic="source" label="Quellen-Hilfe" />
-          </div>
-        </div>
 
-        {/* Unified Search Toolbar */}
-        <div className="p-4 rounded-2xl bg-[#1A1E27] border border-white/10 space-y-3.5 shadow-xl">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-            <div className="md:col-span-6 flex items-center bg-[#12151C] border border-white/15 rounded-xl px-3.5">
-              <Search size={16} className="text-[#C6A574] shrink-0" />
+          {/* 6-Spalten Power-Filter (wie xdate/and6, aber moderner & schneller) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+            <div className="lg:col-span-2 flex items-center bg-[#0D111A] border border-white/15 rounded-xl px-3.5">
+              <Search size={15} className="text-[#C8A97E] shrink-0" />
               <input
                 type="text"
                 value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setPage(1);
-                }}
-                placeholder="Name, Stadt, Kategorie (z.B. Massage, GFE) oder +41 Nummer..."
-                className="w-full py-2.5 px-2.5 bg-transparent text-xs sm:text-sm text-white focus:outline-none"
+                onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+                placeholder="Name, Ort, Service (GFE, Tantra, Duo) oder +41..."
+                className="w-full py-2.5 px-2.5 bg-transparent text-xs text-white focus:outline-none"
               />
             </div>
 
-            <div className="md:col-span-3">
-              <select
-                value={canton}
-                onChange={(e) => {
-                  setCanton(e.target.value);
-                  setPage(1);
-                }}
-                className="w-full h-full px-3.5 py-2.5 rounded-xl bg-[#12151C] border border-white/15 text-xs sm:text-sm font-semibold text-white"
-              >
-                <option value="ALL">Ganze Schweiz (Alle Kantone)</option>
-                {["ZH", "ZG", "BS", "BE", "LU", "AG", "SG", "GE", "VD", "TI", "SZ", "SO", "TG"].map((c) => (
-                  <option key={c} value={c}>
-                    Kanton {c}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              value={rubric}
+              onChange={(e) => { setRubric(e.target.value); setPage(1); }}
+              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+            >
+              <option value="ALL">Alle Rubriken (2.526)</option>
+              <option value="female">💃 Escort Girls & Privat</option>
+              <option value="massage">💆‍♀️ Tantra & Erotik-Massage</option>
+              <option value="bdsm">⛓️ Domina & BDSM</option>
+              <option value="trans">🏳️‍⚧️ Trans / TS</option>
+            </select>
 
-            <div className="md:col-span-3 flex items-center justify-end gap-2">
-              {(query || canton !== "ALL" || onlyAvailable || onlyManaged || onlyWithPrice) && (
-                <button
-                  type="button"
-                  onClick={resetAll}
-                  className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
-                >
-                  <RotateCcw size={13} />
-                  <span>Zurücksetzen</span>
-                </button>
-              )}
-              <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
-                <button
-                  type="button"
-                  onClick={() => setViewMode("grid")}
-                  className={viewMode === "grid" ? "p-2.5 bg-white/15 text-white cursor-pointer" : "p-2.5 text-gray-400 cursor-pointer"}
-                >
-                  <LayoutGrid size={15} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("list")}
-                  className={viewMode === "list" ? "p-2.5 bg-white/15 text-white cursor-pointer" : "p-2.5 text-gray-400 cursor-pointer"}
-                >
-                  <ListIcon size={15} />
-                </button>
-              </div>
-            </div>
+            <select
+              value={canton}
+              onChange={(e) => { setCanton(e.target.value); setPage(1); }}
+              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+            >
+              <option value="ALL">🇨🇭 Alle 24 Kantone</option>
+              {["ZG","ZH","GE","VD","BS","BL","BE","LU","AG","SG","SO","TI","VS","FR","NE","TG","SZ","GR","SH"].map((c) => (
+                <option key={c} value={c}>Kanton {c}</option>
+              ))}
+            </select>
+
+            <select
+              value={ageGroup}
+              onChange={(e) => { setAgeGroup(e.target.value); setPage(1); }}
+              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+            >
+              <option value="ALL">Jedes Alter (18+)</option>
+              <option value="18-24">18 – 24 Jahre</option>
+              <option value="25-30">25 – 30 Jahre</option>
+              <option value="31+">31+ Jahre (MILF / Lady)</option>
+            </select>
+
+            <select
+              value={hairColor}
+              onChange={(e) => { setHairColor(e.target.value); setPage(1); }}
+              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+            >
+              <option value="ALL">Alle Haarfarben</option>
+              <option value="Blond">Blond</option>
+              <option value="Brünett">Brünett</option>
+              <option value="Schwarz">Schwarz</option>
+              <option value="Braun">Braun</option>
+              <option value="Rot">Rot</option>
+            </select>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-gray-200">
-            <label className="inline-flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyAvailable}
-                onChange={() => {
-                  setOnlyAvailable(!onlyAvailable);
-                  setPage(1);
-                }}
-                className="accent-[#C6A574] w-4 h-4 rounded"
-              />
-              <span>Jetzt verfügbar (aktiv bestätigt)</span>
-            </label>
-
-            <label className="inline-flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyManaged}
-                onChange={() => {
-                  setOnlyManaged(!onlyManaged);
-                  setPage(1);
-                }}
-                className="accent-[#C6A574] w-4 h-4 rounded"
-              />
-              <span>Direkt anfragbar (selbst verwaltet)</span>
-            </label>
-
-            <label className="inline-flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyWithPrice}
-                onChange={() => setOnlyWithPrice(!onlyWithPrice)}
-                className="accent-[#C6A574] w-4 h-4 rounded"
-              />
-              <span>Nur mit veröffentlichter Preisangabe</span>
-            </label>
+          {/* 2D SEO Quick-Links (Stadt x Service) */}
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10 text-[11px]">
+            <span className="text-[#C8A97E] font-bold">Beliebte Schweizer Direkt-Kombinationen:</span>
+            {[
+              { label: "GFE Escort Zug", href: "/kategorie/zug/girlfriend-experience" },
+              { label: "GFE Escort Zürich", href: "/kategorie/zuerich/girlfriend-experience" },
+              { label: "Erotische Massage Zürich", href: "/kategorie/zuerich/erotische-massage" },
+              { label: "Tantra Massage Zug", href: "/kategorie/zug/tantra-massage" },
+              { label: "Hotel Outcall Zürich", href: "/kategorie/zuerich/hotelbesuch-outcall" },
+              { label: "Domina & BDSM Zürich", href: "/kategorie/zuerich/domina-bdsm" },
+              { label: "Escort Genève (FR)", href: "/kategorie/geneve/girlfriend-experience" },
+              { label: "Escort Lugano (IT)", href: "/kategorie/lugano/girlfriend-experience" },
+            ].map((lnk) => (
+              <Link
+                key={lnk.href}
+                href={lnk.href}
+                className="px-2.5 py-1 rounded-lg bg-[#0D111A] border border-white/10 hover:border-[#C8A97E] text-gray-300 hover:text-white"
+              >
+                {lnk.label} →
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* Results */}
-        {loading ? (
-          <div className="p-12 text-center text-sm text-gray-400">Lade passende Schweizer Profile...</div>
-        ) : results.length === 0 ? (
-          <div className="p-10 rounded-2xl bg-[#1C2029] border border-white/10 text-center space-y-3">
-            <h2 className="text-lg font-bold">Keine Profile für diese Filterauswahl</h2>
-            <button
-              onClick={resetAll}
-              className="px-5 py-2.5 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs cursor-pointer"
-            >
-              Filter zurücksetzen
-            </button>
-          </div>
-        ) : viewMode === "grid" ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-            {results.map((p: any, idx: number) => {
-              const cleanName =
-                String(p.rawName || "Profil")
-                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                  .trim()
-                  .slice(0, 24) || "Profil";
-              return (
-                <article
-                  key={p.id + "-" + idx}
-                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
-                >
-                  <div className="relative aspect-[4/3.65] bg-stone-800">
-                    <Link href={"/profile/" + encodeURIComponent(p.id)}>
-                      <img
-                        src={p.thumbnail || FALLBACK_IMG}
-                        alt={cleanName}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
-                        }}
-                        className="w-full h-full object-cover object-top"
-                        loading="lazy"
-                      />
-                    </Link>
-                    {p.availabilityConfirmed && (
-                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-                        Jetzt verfügbar
-                      </span>
-                    )}
+        {/* Ergebnis-Raster */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {pageItems.map((p: any, idx: number) => {
+            const cleanName = String(p.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 26) || "Profil";
+            const img = p.thumbnail || FALLBACK_IMG;
+            return (
+              <article
+                key={`${p.id}-${idx}`}
+                className="rounded-2xl overflow-hidden bg-[#121722] border border-white/10 hover:border-[#C8A97E] transition flex flex-col justify-between"
+              >
+                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="relative aspect-[3/4] block bg-black">
+                  <img
+                    src={img}
+                    alt={cleanName}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG; }}
+                    className="w-full h-full object-cover object-top"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/25" />
+                  <div className="absolute top-2.5 left-2.5 flex gap-1">
+                    <span className="px-2 py-0.5 rounded bg-black/80 border border-[#C8A97E]/40 text-[#C8A97E] text-[10px] font-bold">
+                      {p.age || 24} J. · {p.cupSize || "75C"} · {p.hairColor || "Brünett"}
+                    </span>
                   </div>
-
-                  <div className="p-3.5 space-y-2.5">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <Link
-                          href={"/profile/" + encodeURIComponent(p.id)}
-                          className="text-base font-bold text-white hover:text-[#C6A574] truncate block"
-                        >
-                          {cleanName}
-                        </Link>
-                        <p className="text-xs text-gray-400">
-                          {p.cleanCity} · {p.canton}
-                        </p>
-                      </div>
-                      {p.advertisedBaseChf && (
-                        <div className="text-right shrink-0">
-                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
-                          <div className="text-[10px] text-gray-500">60 Min.</div>
-                        </div>
-                      )}
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-2">
+                    <div className="min-w-0">
+                      <h2 className="text-sm sm:text-base font-serif font-bold text-white truncate">{cleanName}</h2>
+                      <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate">
+                        <MapPin size={11} className="text-[#C8A97E]" /> {p.city} ({p.canton})
+                      </p>
                     </div>
-
-                    <div className="pt-2 border-t border-white/10 space-y-1 text-xs">
-                      {p.availabilityConfirmed ? (
-                        <div className="flex items-center gap-1.5 text-[#22C55E]">
-                          <Clock size={12} />
-                          <span>Bestätigt vor {p.confirmedMinutesAgo || 6} Min.</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1.5 text-gray-400">
-                          <ExternalLink size={12} />
-                          <span className="truncate">Externe Quelle · {p.sourcePortal || "Index"}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="pt-0.5 flex items-center justify-between text-xs font-bold text-[#C6A574]">
-                      <Link href={"/profile/" + encodeURIComponent(p.id)} className="hover:underline inline-flex items-center gap-1">
-                        <span>{p.isSelfManaged ? "Privat anfragen" : "Original & Details"}</span>
-                        <ArrowRight size={12} />
-                      </Link>
+                    <div className="bg-black/85 px-2.5 py-1 rounded-lg border border-[#C8A97E]/40 text-xs font-extrabold text-[#C8A97E] shrink-0">
+                      CHF {p.advertisedBaseChf || 350}
                     </div>
                   </div>
-                </article>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
-            {results.map((p: any, idx: number) => {
-              const cleanName =
-                String(p.rawName || "Profil")
-                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                  .trim()
-                  .slice(0, 28) || "Profil";
-              return (
-                <article key={"sl-" + idx} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                  <div className="md:col-span-6 flex items-center gap-4">
-                    <img
-                      src={p.thumbnail || FALLBACK_IMG}
-                      alt={cleanName}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
-                      }}
-                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
-                    />
-                    <div>
-                      <Link href={"/profile/" + encodeURIComponent(p.id)} className="text-lg font-serif font-bold text-white hover:underline">
-                        {cleanName}
-                      </Link>
-                      <div className="text-xs text-gray-300">
-                        {p.cleanCity} · {p.canton}
-                      </div>
-                      <div className="text-xs text-gray-400 mt-0.5">
-                        {p.isSelfManaged ? "Selbst verwaltet" : "Quelle: " + (p.sourcePortal || "Index")}
-                      </div>
-                    </div>
-                  </div>
+                </Link>
+                <div className="p-3 flex items-center justify-between text-[11px] text-gray-400 border-t border-white/10">
+                  <span className="truncate">{(p.includedTags || ["Incall", "Outcall"]).slice(0, 2).join(" · ")}</span>
+                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-white font-bold hover:text-[#C8A97E] shrink-0">
+                    Details →
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
+        </div>
 
-                  <div className="md:col-span-3 md:border-l md:border-white/10 md:pl-5">
-                    {p.advertisedBaseChf ? (
-                      <>
-                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
-                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
-                      </>
-                    ) : (
-                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
-                    )}
-                  </div>
-
-                  <div className="md:col-span-3 flex justify-end">
-                    <Link href={"/profile/" + encodeURIComponent(p.id)} className="text-xs font-bold text-[#C6A574] hover:underline">
-                      Profil ansehen →
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-
-        {totalMatches > 48 && (
+        {filtered.length > 48 && (
           <div className="flex items-center justify-center gap-3 pt-4">
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="px-4 py-2 rounded-xl bg-[#1C2029] border border-white/15 text-xs disabled:opacity-40 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#121722] border border-white/15 text-xs disabled:opacity-40 cursor-pointer"
             >
-              ← Vorherige Seite
+              ← Vorherige 48
             </button>
-            <span className="text-xs text-gray-400">Seite {page}</span>
+            <span className="text-xs text-gray-400">Seite {page} von {Math.ceil(filtered.length / 48)}</span>
             <button
-              disabled={page * 48 >= totalMatches}
+              disabled={page * 48 >= filtered.length}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs disabled:opacity-40 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs disabled:opacity-40 cursor-pointer"
             >
-              Nächste Seite →
+              Nächste 48 →
             </button>
           </div>
         )}
       </main>
-      <CorporateFooter />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
@@ -33,9 +34,9 @@ const FALLBACK_PORTRAITS = [
   "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=85",
 ];
 
-export default function ProfileDetailPage() {
+export default function ProfileDetailPage({ initialProfileId }: { initialProfileId?: string }) {
   const router = useRouter();
-  const rawId = String(router.query.id || "ch-1");
+  const rawId = String(router.query.id || initialProfileId || "ch-a720e283e85f");
 
   const [serverData, setServerData] = useState<{ metrics: Record<string, any>; states: Record<string, any> }>({
     metrics: {},
@@ -59,14 +60,14 @@ export default function ProfileDetailPage() {
   }, []);
 
   useEffect(() => {
-    if (!router.isReady || !rawId) return;
+    if (!rawId) return;
     setActivePhotoIdx(0);
     fetch("/api/vault/metrics", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "track_view", profileId: rawId }),
     }).catch(() => {});
-  }, [router.isReady, rawId]);
+  }, [rawId]);
 
   const profileData = useMemo(() => {
     const rawList = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
@@ -91,7 +92,6 @@ export default function ProfileDetailPage() {
     const availabilityConfirmed = Boolean(
       st.availabilityConfirmed || (st.availableUntil && new Date(st.availableUntil).getTime() > Date.now())
     );
-    const isOnline = Boolean(st.online || availabilityConfirmed);
 
     const cleanKey = String(baseItem.rawName || "").toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
     const matchingSources: Array<{ portal: string; url: string; rate: number | null; city: string }> = [];
@@ -122,24 +122,16 @@ export default function ProfileDetailPage() {
       });
     }
 
-    if (isSelfManaged && !matchingSources.some((m) => m.portal === "Direktprofil (IWSN)")) {
-      matchingSources.unshift({
-        portal: "Direktprofil (IWSN)",
-        url: "/profile/" + encodeURIComponent(id),
-        rate: Number(st.rate60Chf || baseItem.advertisedBaseChf) || null,
-        city: geo.cleanCity + " · " + geo.trueCanton,
-      });
-    }
-
     const rate60 = st.rate60Chf !== undefined ? Number(st.rate60Chf) : Number(baseItem.advertisedBaseChf) || 350;
     const rate30 = st.rate30Chf !== undefined ? Number(st.rate30Chf) : Number(baseItem.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10;
     const phone = st.phoneDisplay || baseItem.rawPhone || "";
 
-    const rawGal = Array.isArray(st.gallery) && st.gallery.length > 0
-      ? st.gallery
-      : Array.isArray(baseItem.gallery) && baseItem.gallery.length > 0
-      ? baseItem.gallery
-      : [];
+    const rawGal =
+      Array.isArray(st.gallery) && st.gallery.length > 0
+        ? st.gallery
+        : Array.isArray(baseItem.gallery) && baseItem.gallery.length > 0
+        ? baseItem.gallery
+        : [];
     const mainThumb = st.thumbnail || baseItem.thumbnail || FALLBACK_PORTRAITS[foundIdx % FALLBACK_PORTRAITS.length];
     const gallery = Array.from(new Set([mainThumb, ...rawGal])).filter((u) => String(u).startsWith("http"));
 
@@ -180,6 +172,11 @@ export default function ProfileDetailPage() {
       rate30,
       rate60,
       phone,
+      age: baseItem.age || 24,
+      heightCm: baseItem.heightCm || 168,
+      cupSize: baseItem.cupSize || "75C",
+      hairColor: baseItem.hairColor || "Brünett",
+      languages: Array.isArray(baseItem.languages) ? baseItem.languages : ["Deutsch", "Englisch"],
       gallery: gallery.length > 0 ? gallery : [FALLBACK_PORTRAITS[foundIdx % FALLBACK_PORTRAITS.length]],
       videoUrl: st.videoUrl || "",
       paidItems,
@@ -188,8 +185,6 @@ export default function ProfileDetailPage() {
       isSelfManaged,
       isIdentityVerified,
       availabilityConfirmed,
-      confirmedMinutesAgo: availabilityConfirmed ? 4 : null,
-      isOnline,
       matchingSources,
       tags:
         Array.isArray(st.tags) && st.tags.length > 0
@@ -218,8 +213,8 @@ export default function ProfileDetailPage() {
   return (
     <div className="min-h-screen bg-[#13161C] text-white pb-24">
       <SEO
-        title={`${profileData.cleanName} in ${profileData.cleanCity} (${profileData.canton}) – Fotos, Preise & Direktkontakt | iwantsexnow.ch`}
-        description={`Profil von ${profileData.cleanName} in ${profileData.cleanCity} (${profileData.canton}). CHF ${profileData.rate30} (30m) / CHF ${profileData.rate60} (60m), Foto-Galerie, VIP Paid Content & Direktkontakt.`}
+        title={`${profileData.cleanName} (${profileData.age}) in ${profileData.cleanCity} (${profileData.canton}) – CHF ${profileData.rate30}/${profileData.rate60} & +41 Direktkontakt | iwantsexnow.ch`}
+        description={`Profil von ${profileData.cleanName} (${profileData.age} J., ${profileData.cupSize}, ${profileData.hairColor}) in ${profileData.cleanCity} (${profileData.canton}). CHF ${profileData.rate30} (30m) / CHF ${profileData.rate60} (60m), Foto-Galerie, VIP Paid Content & Direktkontakt.`}
       />
       <StructuredSchema cityName={profileData.cleanCity} cantonCode={profileData.canton} />
       <LuxuryHeader />
@@ -238,7 +233,7 @@ export default function ProfileDetailPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Linke Spalte: Interaktive Foto-Galerie, 4K-Video & Cockpit-Zugang */}
+          {/* Linke Spalte: Foto-Galerie & 4K-Video */}
           <div className="lg:col-span-5 space-y-4">
             <div className="relative aspect-[4/4.6] w-full rounded-2xl overflow-hidden bg-stone-900 border border-white/15 shadow-2xl">
               <img
@@ -271,7 +266,6 @@ export default function ProfileDetailPage() {
               </div>
             </div>
 
-            {/* Thumbnail-Leiste zum Durchklicken aller Galeriebilder */}
             {profileData.gallery.length > 1 && (
               <div className="grid grid-cols-5 gap-2">
                 {profileData.gallery.map((imgUrl: string, i: number) => (
@@ -289,28 +283,19 @@ export default function ProfileDetailPage() {
               </div>
             )}
 
-            {/* Optionales 4K-Vorstellungsvideo */}
             {profileData.videoUrl && (
               <div className="p-4 rounded-2xl bg-[#1C2029] border border-[#C6A574]/40 space-y-2">
                 <div className="text-xs font-bold text-[#C6A574] flex items-center gap-1.5">
                   <Video size={14} /> 4K-Vorstellungsvideo von {profileData.cleanName}
                 </div>
-                <video
-                  src={profileData.videoUrl}
-                  controls
-                  className="w-full rounded-xl bg-black max-h-64"
-                />
+                <video src={profileData.videoUrl} controls className="w-full rounded-xl bg-black max-h-64" />
               </div>
             )}
 
-            {/* Selbstverwaltungs-Link ("Ist das dein Profil?") */}
             <div className="p-4 rounded-2xl bg-[#1A1E27] border border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-300">
               <span>Ist das dein Profil?</span>
               <div className="flex items-center gap-3 font-semibold">
-                <Link
-                  href={`/creator-dashboard?id=${encodeURIComponent(profileData.id)}`}
-                  className="text-[#C6A574] hover:underline"
-                >
+                <Link href={`/creator-dashboard?id=${encodeURIComponent(profileData.id)}`} className="text-[#C6A574] hover:underline">
                   Im Anbieter-Cockpit bearbeiten →
                 </Link>
                 <span className="text-gray-600">|</span>
@@ -325,7 +310,7 @@ export default function ProfileDetailPage() {
             </div>
           </div>
 
-          {/* Rechte Spalte: Preise, Direktkontakt, Paid-Content-Vault & Quellen */}
+          {/* Rechte Spalte: Preise, Deep-Attribute, Direktkontakt & Paid-Vault */}
           <div className="lg:col-span-7 space-y-6">
             <div className="p-6 rounded-2xl bg-[#1C2029] border border-white/10 space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -358,41 +343,23 @@ export default function ProfileDetailPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10 text-xs">
-                <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/5 space-y-1">
-                  <div className="text-gray-400 flex items-center justify-between">
-                    <span>Verfügbarkeits-Status:</span>
-                    <XeniaDoubtTrigger topic="status" />
-                  </div>
-                  {profileData.availabilityConfirmed ? (
-                    <div className="font-bold text-[#22C55E] flex items-center gap-1.5">
-                      <Clock size={13} />
-                      <span>Jetzt verfügbar · Bestätigt für 4 Stunden</span>
-                    </div>
-                  ) : (
-                    <div className="font-semibold text-gray-300 flex items-center gap-1.5">
-                      <HelpCircle size={13} className="text-gray-400" />
-                      <span>Auf Anfrage (direkt per Telefon/WhatsApp)</span>
-                    </div>
-                  )}
+              {/* Deep Physical & Language Attributes */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 text-xs">
+                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
+                  <div className="text-[10px] text-gray-400">Alter & Grösse</div>
+                  <div className="font-bold text-white">{profileData.age} Jahre · {profileData.heightCm} cm</div>
                 </div>
-
-                <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/5 space-y-1">
-                  <div className="text-gray-400 flex items-center justify-between">
-                    <span>Profil-Verwaltung & Herkunft:</span>
-                    <XeniaDoubtTrigger topic="source" />
-                  </div>
-                  {profileData.isSelfManaged ? (
-                    <div className="font-bold text-white flex items-center gap-1.5">
-                      <User size={13} className="text-[#C6A574]" />
-                      <span>Selbst verwaltetes Anbieterprofil</span>
-                    </div>
-                  ) : (
-                    <div className="font-semibold text-gray-300 flex items-center gap-1.5">
-                      <ExternalLink size={13} className="text-gray-400" />
-                      <span>Quelle · {profileData.sourcePortal || "Portal-Index"}</span>
-                    </div>
-                  )}
+                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
+                  <div className="text-[10px] text-gray-400">Oberweite</div>
+                  <div className="font-bold text-[#C6A574]">Körbchen {profileData.cupSize}</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
+                  <div className="text-[10px] text-gray-400">Haarfarbe</div>
+                  <div className="font-bold text-white">{profileData.hairColor}</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
+                  <div className="text-[10px] text-gray-400">Sprachen</div>
+                  <div className="font-bold text-white truncate">{profileData.languages.join(", ")}</div>
                 </div>
               </div>
 
@@ -402,10 +369,7 @@ export default function ProfileDetailPage() {
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {profileData.tags.map((t: string, i: number) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 rounded-lg bg-[#13161C] border border-white/10 text-xs text-gray-200"
-                    >
+                    <span key={i} className="px-3 py-1 rounded-lg bg-[#13161C] border border-white/10 text-xs text-gray-200">
                       ✓ {t}
                     </span>
                   ))}
@@ -416,7 +380,7 @@ export default function ProfileDetailPage() {
               </div>
             </div>
 
-            {/* DIREKTKONTAKT (+41 Telefon / WhatsApp / Anfrage) */}
+            {/* DIREKTKONTAKT */}
             <div className="p-6 rounded-2xl bg-[#1C2029] border border-[#C6A574]/50 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -463,13 +427,23 @@ export default function ProfileDetailPage() {
 
               {inquirySent ? (
                 <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-200 font-semibold">
-                  ✓ Deine private Rückruf-Anfrage wurde für {profileData.cleanName} hinterlegt.
+                  ✓ Deine private Rückruf-Anfrage wurde im Posteingang von {profileData.cleanName} hinterlegt!
                 </div>
               ) : (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    recordAction("track_contact");
+                    fetch("/api/vault/metrics", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        action: "create_enquiry",
+                        profileId: profileData.id,
+                        providerName: profileData.cleanName,
+                        clientContact: inquiryContact,
+                        desiredTime: inquiryMessage,
+                      }),
+                    }).catch(() => {});
                     setInquirySent(true);
                   }}
                   className="grid sm:grid-cols-3 gap-2.5 pt-1"
@@ -500,7 +474,7 @@ export default function ProfileDetailPage() {
               )}
             </div>
 
-            {/* PAID CONTENT / VIP-TRESOR (80% ANBIETERIN / 20% PLATTFORM) */}
+            {/* PAID CONTENT / VIP-TRESOR */}
             {profileData.paidItems.length > 0 && (
               <div className="p-6 rounded-2xl bg-[#1C2029] border border-[#C6A574]/40 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -543,22 +517,14 @@ export default function ProfileDetailPage() {
                           </div>
                         </div>
 
-                        {isUnlocked ? (
-                          <span className="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
-                            ✓ Freigeschaltet · Medien offen
-                          </span>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              recordAction("track_contact");
-                              setUnlockedVaultIds((prev) => [...prev, item.id]);
-                            }}
-                            className="px-4 py-2.5 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
-                          >
-                            Für CHF {item.priceChf} freischalten →
-                          </button>
-                        )}
+                        <Link
+                          href={`/checkout?profileId=${encodeURIComponent(profileData.id)}&provider=${encodeURIComponent(
+                            profileData.cleanName
+                          )}&title=${encodeURIComponent(item.title)}&amount=${item.priceChf}`}
+                          className="px-4 py-2.5 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-extrabold text-xs uppercase tracking-wider"
+                        >
+                          Für CHF {item.priceChf} freischalten →
+                        </Link>
                       </div>
                     );
                   })}
@@ -620,3 +586,11 @@ export default function ProfileDetailPage() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      initialProfileId: String(context.params?.id || "ch-a720e283e85f"),
+    },
+  };
+};

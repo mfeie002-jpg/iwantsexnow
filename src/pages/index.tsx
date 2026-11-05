@@ -35,7 +35,7 @@ import {
 
 export type ConceptView = "dark_gallery" | "champagne_compare" | "light_sources" | "xenia_assistant";
 
-// Leuchtend goldene "Xenia"-Fee (SVG mit sanftem Gold-Glow & Flügeln exakt wie in 9c65a5f9 & 919ed897)
+// Leuchtend goldene "Xenia"-Fee (SVG mit sanftem Gold-Glow & FlÃ¼geln exakt wie in 9c65a5f9 & 919ed897)
 function XeniaGlowingFairy({ size = "lg" }: { size?: "sm" | "md" | "lg" }) {
   const dim = size === "lg" ? "w-24 h-24" : size === "md" ? "w-14 h-14" : "w-9 h-9";
   return (
@@ -99,7 +99,7 @@ function XeniaGlowingFairy({ size = "lg" }: { size?: "sm" | "md" | "lg" }) {
 }
 
 function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanCity: string; trueCanton: string } {
-  const firstPart = String(cityRaw || "Zürich").split("/")[0].split(",")[0].trim();
+  const firstPart = String(cityRaw || "ZÃ¼rich").split("/")[0].split(",")[0].trim();
   const cLow = firstPart.toLowerCase();
 
   const cityMap: Array<[string, string]> = [
@@ -110,13 +110,13 @@ function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanC
     ["bern", "BE"], ["biel", "BE"], ["thun", "BE"], ["interlaken", "BE"], ["niederbipp", "BE"],
     ["st. gallen", "SG"], ["st gallen", "SG"], ["wil", "SG"], ["buchs", "SG"], ["rapperswil", "SG"], ["bad ragaz", "SG"],
     ["frauenfeld", "TG"], ["weinfelden", "TG"], ["kreuzlingen", "TG"],
-    ["solothurn", "SO"], ["olten", "SO"], ["härkingen", "SO"],
-    ["geneva", "GE"], ["genève", "GE"], ["geneve", "GE"], ["genf", "GE"], ["champel", "GE"], ["carouge", "GE"], ["servette", "GE"], ["plainpalais", "GE"], ["eaux-vives", "GE"], ["paquis", "GE"], ["florissant", "GE"], ["meyrin", "GE"],
+    ["solothurn", "SO"], ["olten", "SO"], ["hÃ¤rkingen", "SO"],
+    ["geneva", "GE"], ["genÃ¨ve", "GE"], ["geneve", "GE"], ["genf", "GE"], ["champel", "GE"], ["carouge", "GE"], ["servette", "GE"], ["plainpalais", "GE"], ["eaux-vives", "GE"], ["paquis", "GE"], ["florissant", "GE"], ["meyrin", "GE"],
     ["lausanne", "VD"], ["ouchy", "VD"], ["flon", "VD"], ["renens", "VD"], ["montreux", "VD"], ["nyon", "VD"], ["vevey", "VD"],
     ["lugano", "TI"], ["locarno", "TI"], ["bellinzona", "TI"],
     ["chur", "GR"], ["davos", "GR"], ["landquart", "GR"],
-    ["altendorf", "SZ"], ["pfäffikon", "SZ"], ["wangen", "SZ"],
-    ["zürich", "ZH"], ["zurich", "ZH"], ["winterthur", "ZH"], ["oerlikon", "ZH"], ["kloten", "ZH"], ["schlieren", "ZH"], ["dietikon", "ZH"], ["horgen", "ZH"], ["wädenswil", "ZH"], ["wetzikon", "ZH"], ["bülach", "ZH"], ["rüti", "ZH"], ["unterengstringen", "ZH"], ["oberengstringen", "ZH"],
+    ["altendorf", "SZ"], ["pfÃ¤ffikon", "SZ"], ["wangen", "SZ"],
+    ["zÃ¼rich", "ZH"], ["zurich", "ZH"], ["winterthur", "ZH"], ["oerlikon", "ZH"], ["kloten", "ZH"], ["schlieren", "ZH"], ["dietikon", "ZH"], ["horgen", "ZH"], ["wÃ¤denswil", "ZH"], ["wetzikon", "ZH"], ["bÃ¼lach", "ZH"], ["rÃ¼ti", "ZH"], ["unterengstringen", "ZH"], ["oberengstringen", "ZH"],
   ];
 
   for (const [needle, cantonCode] of cityMap) {
@@ -124,7 +124,7 @@ function inferTrueSwissCanton(cityRaw: string, fallbackCanton: string): { cleanC
       return { cleanCity: firstPart, trueCanton: cantonCode };
     }
   }
-  return { cleanCity: firstPart || "Zürich", trueCanton: String(fallbackCanton || "ZH").toUpperCase() };
+  return { cleanCity: firstPart || "ZÃ¼rich", trueCanton: String(fallbackCanton || "ZH").toUpperCase() };
 }
 
 function inferOfferCategory(item: any): "escort" | "massage" | "bdsm" | "trans" {
@@ -137,7 +137,7 @@ function inferOfferCategory(item: any): "escort" | "massage" | "bdsm" | "trans" 
 
 const SWISS_LOCATIONS = [
   { code: "ALL", label: "Ganze Schweiz", pill: "Alle Orte" },
-  { code: "ZH", label: "Zürich", pill: "Zürich" },
+  { code: "ZH", label: "ZÃ¼rich", pill: "ZÃ¼rich" },
   { code: "ZG", label: "Zug", pill: "Zug" },
   { code: "BS", label: "Basel", pill: "Basel" },
   { code: "BE", label: "Bern", pill: "Bern" },
@@ -172,9 +172,9 @@ export default function HomePage() {
   const [xeniaVariant, setXeniaVariant] = useState<"cards" | "minimal">("cards");
   const [xeniaTopic, setXeniaTopic] = useState<"Funktionen" | "Kostenmodell" | "Datenschutz" | "Kontoverwaltung">("Datenschutz");
   const [xeniaInput, setXeniaInput] = useState<string>("");
-  const [xeniaUserPrompt, setXeniaUserPrompt] = useState<string>("Ich möchte Portale vergleichen.");
+  const [xeniaUserPrompt, setXeniaUserPrompt] = useState<string>("Ich mÃ¶chte Portale vergleichen.");
 
-  // Filterzustände
+  // FilterzustÃ¤nde
   const [selectedCanton, setSelectedCanton] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("escort");
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
@@ -294,7 +294,7 @@ export default function HomePage() {
 
       if (st.hidden || st.paused) continue;
 
-      const rawCity = st.city || item.city || "Zürich";
+      const rawCity = st.city || item.city || "ZÃ¼rich";
       const { cleanCity, trueCanton } = inferTrueSwissCanton(rawCity, st.canton || item.canton || "ZH");
       const offerCategory = inferOfferCategory(item);
 
@@ -339,7 +339,7 @@ export default function HomePage() {
         (hasHeavyWatermark ? -80 : 10);
 
       const rawRate = st.rate60Chf !== undefined ? Number(st.rate60Chf) : Number(item.advertisedBaseChf) || null;
-      const durationLabel = rawRate && rawRate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
+      const durationLabel = rawRate && rawRate < 180 ? "30 Min. Â· laut Inserat" : "60 Min. Â· laut Inserat";
 
       uniqueList.push({
         ...item,
@@ -440,7 +440,7 @@ export default function HomePage() {
   const renderUnifiedCard = (p: any, idx: number, isLightMode: boolean) => {
     const cleanName =
       String(p.rawName || "Profil")
-        .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+        .replace(/[^\w\sÃ¤Ã¶Ã¼Ã„Ã–ÃœÃ©Ã¨Ã -]/g, "")
         .trim()
         .slice(0, 24) || "Profil";
     const img = p.thumbnail || p.fallbackImg;
@@ -465,7 +465,7 @@ export default function HomePage() {
           >
             <img
               src={img}
-              alt={`${cleanName} – ${p.cleanCity}`}
+              alt={`${cleanName} â€“ ${p.cleanCity}`}
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
               }}
@@ -484,7 +484,7 @@ export default function HomePage() {
                 }`}
               >
                 <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-                Jetzt verfügbar
+                Jetzt verfÃ¼gbar
               </span>
             ) : p.isOnline ? (
               <span
@@ -506,7 +506,7 @@ export default function HomePage() {
               e.preventDefault();
               toggleCompare(p.id);
             }}
-            title="Zum Vergleich auswählen"
+            title="Zum Vergleich auswÃ¤hlen"
             className={`absolute top-3 right-3 w-8 h-8 rounded-lg flex items-center justify-center transition cursor-pointer shadow ${
               isCompared
                 ? "bg-[#C6A574] text-[#13161C]"
@@ -533,7 +533,7 @@ export default function HomePage() {
                   {cleanName}
                 </Link>
                 <p className={`text-xs mt-0.5 ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
-                  {p.cleanCity} · {p.canton}
+                  {p.cleanCity} Â· {p.canton}
                 </p>
               </div>
 
@@ -555,7 +555,7 @@ export default function HomePage() {
               {p.availabilityConfirmed ? (
                 <div className="flex items-center gap-2 text-[#22C55E] font-medium">
                   <Clock size={13} className="shrink-0" />
-                  <span>Bestätigt vor {p.confirmedMinutesAgo || 6} Min.</span>
+                  <span>BestÃ¤tigt vor {p.confirmedMinutesAgo || 6} Min.</span>
                 </div>
               ) : null}
 
@@ -568,12 +568,12 @@ export default function HomePage() {
                 <>
                   <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-600" : "text-gray-300"}`}>
                     <ExternalLink size={13} className="shrink-0 text-gray-400" />
-                    <span className="truncate">Externe Quelle · {p.sourcePortal || "Portal A"}</span>
+                    <span className="truncate">Externe Quelle Â· {p.sourcePortal || "Portal A"}</span>
                   </div>
                   {!p.availabilityConfirmed && (
                     <div className={`flex items-center gap-2 ${isLightMode ? "text-stone-500" : "text-gray-400"}`}>
                       <HelpCircle size={13} className="shrink-0 text-gray-500" />
-                      <span>Verfügbarkeit unbekannt</span>
+                      <span>VerfÃ¼gbarkeit unbekannt</span>
                     </div>
                   )}
                 </>
@@ -619,7 +619,7 @@ export default function HomePage() {
               }`}
             >
               <Layers size={11} />
-              <span>{sourceCount > 1 ? `${sourceCount} Quellen ansehen →` : "1 Quelle"}</span>
+              <span>{sourceCount > 1 ? `${sourceCount} Quellen ansehen â†’` : "1 Quelle"}</span>
             </button>
 
             {sourcesOpen && (
@@ -632,10 +632,10 @@ export default function HomePage() {
               >
                 <div className="flex items-center justify-between font-bold">
                   <span>
-                    Ein Profil · {sourceCount} {sourceCount === 1 ? "Quelle" : "Quellen"}
+                    Ein Profil Â· {sourceCount} {sourceCount === 1 ? "Quelle" : "Quellen"}
                   </span>
                   <button onClick={() => setOpenSourcesProfileId(null)} className="text-gray-400 hover:text-white">
-                    ✕
+                    âœ•
                   </button>
                 </div>
                 <div className="divide-y divide-white/10">
@@ -657,7 +657,7 @@ export default function HomePage() {
                   href={`/profile/${encodeURIComponent(p.id)}`}
                   className="block pt-1 text-[11px] font-bold text-[#C6A574] hover:underline"
                 >
-                  Quellen vergleichen →
+                  Quellen vergleichen â†’
                 </Link>
               </div>
             )}
@@ -673,7 +673,7 @@ export default function HomePage() {
   const renderChampagneGoldListRow = (p: any, idx: number, isDarkSurface: boolean) => {
     const cleanName =
       String(p.rawName || "Profil")
-        .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
+        .replace(/[^\w\sÃ¤Ã¶Ã¼Ã„Ã–ÃœÃ©Ã¨Ã -]/g, "")
         .trim()
         .slice(0, 28) || "Profil";
     const img = p.thumbnail || p.fallbackImg;
@@ -720,7 +720,7 @@ export default function HomePage() {
               {cleanName}
             </Link>
             <div className={`text-xs sm:text-sm ${isDarkSurface ? "text-gray-300" : "text-[#5C554B]"}`}>
-              {p.cleanCity} · {p.canton}
+              {p.cleanCity} Â· {p.canton}
             </div>
             <div className="pt-0.5">
               {sourceCount > 1 ? (
@@ -730,7 +730,7 @@ export default function HomePage() {
                   className="text-xs font-semibold text-[#8A642B] hover:underline cursor-pointer inline-flex items-center gap-1"
                 >
                   <span>{sourceCount} Quellen ansehen</span>
-                  <span>→</span>
+                  <span>â†’</span>
                 </button>
               ) : p.isSelfManaged ? (
                 <span className={`text-xs ${isDarkSurface ? "text-gray-400" : "text-[#6E665B]"}`}>
@@ -745,7 +745,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Center: Preis + Dauer ("CHF 240 / 60 Min. · laut Inserat" vs. "Keine Preisangabe") */}
+        {/* Center: Preis + Dauer ("CHF 240 / 60 Min. Â· laut Inserat" vs. "Keine Preisangabe") */}
         <div
           className={`md:col-span-3 md:border-l md:pl-6 ${
             isDarkSurface ? "border-white/10" : "border-[#E6DFD3]"
@@ -761,12 +761,12 @@ export default function HomePage() {
           ) : (
             <div>
               <div className="text-sm sm:text-base font-extrabold">Keine Preisangabe</div>
-              <div className="text-xs text-stone-400">–</div>
+              <div className="text-xs text-stone-400">â€“</div>
             </div>
           )}
         </div>
 
-        {/* Right: Goldene Checkbox "☑ Vergleichen" + "🔖 Profil ansehen ->" (Exakt wie in Bild 10!) */}
+        {/* Right: Goldene Checkbox "â˜‘ Vergleichen" + "ðŸ”– Profil ansehen ->" (Exakt wie in Bild 10!) */}
         <div className="md:col-span-3 flex sm:flex-col items-end justify-between md:justify-center gap-2.5">
           <button
             type="button"
@@ -795,7 +795,7 @@ export default function HomePage() {
             }`}
           >
             <Bookmark size={14} className={isDarkSurface ? "text-[#C6A574]" : "text-[#181614]"} />
-            <span>Profil ansehen →</span>
+            <span>Profil ansehen â†’</span>
           </Link>
         </div>
       </article>
@@ -814,7 +814,7 @@ export default function HomePage() {
     >
       <SEO
         title="iwantsexnow.ch | Schweizer Profilverzeichnis & Portalvergleich"
-        description="Profile finden, Verfügbarkeit erkennen, Quellen vergleichen oder mit Xenia (Deiner Hilfe) Portale und Einträge prüfen."
+        description="Profile finden, VerfÃ¼gbarkeit erkennen, Quellen vergleichen oder mit Xenia (Deiner Hilfe) Portale und EintrÃ¤ge prÃ¼fen."
       />
 
       <LuxuryHeader />
@@ -828,8 +828,8 @@ export default function HomePage() {
             <div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                 {activeConcept === "dark_gallery"
-                  ? "Profile finden. Verfügbarkeit erkennen."
-                  : "Eine Suche. Mehr Überblick."}
+                  ? "Profile finden. VerfÃ¼gbarkeit erkennen."
+                  : "Eine Suche. Mehr Ãœberblick."}
               </h1>
               <p
                 className={`text-xs sm:text-sm mt-0.5 ${
@@ -837,7 +837,7 @@ export default function HomePage() {
                 }`}
               >
                 {activeConcept === "dark_gallery"
-                  ? "Sieh direkt, wann ein Status bestätigt wurde."
+                  ? "Sieh direkt, wann ein Status bestÃ¤tigt wurde."
                   : "Profile aus mehreren Portalen an einem Ort entdecken."}
               </p>
             </div>
@@ -852,7 +852,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1C2029] border border-[#C6A574]/50 text-[#E5C99B] text-xs font-semibold hover:bg-[#252A36] transition cursor-pointer self-start sm:self-auto shadow"
             >
               <XeniaGlowingFairy size="sm" />
-              <span>Frage an Xenia · Deine Hilfe →</span>
+              <span>Frage an Xenia Â· Deine Hilfe â†’</span>
             </button>
           </div>
 
@@ -936,7 +936,7 @@ export default function HomePage() {
                 }`}
               >
                 <Search size={14} />
-                <span>Profile finden →</span>
+                <span>Profile finden â†’</span>
               </button>
             </div>
           </div>
@@ -980,7 +980,7 @@ export default function HomePage() {
                     >
                       {onlyAvailable && <Check size={12} strokeWidth={3} />}
                     </span>
-                    <span>Jetzt verfügbar</span>
+                    <span>Jetzt verfÃ¼gbar</span>
                   </button>
 
                   <button
@@ -1002,7 +1002,7 @@ export default function HomePage() {
 
                   <span className="hidden md:inline-flex items-center gap-1.5 text-xs text-gray-400 border-l border-white/10 pl-3">
                     <Info size={13} />
-                    <span>Verfügbarkeit wird vom Anbieter bestätigt · {filteredProfiles.length} Profile</span> <XeniaDoubtTrigger topic="status" label="Status-Hilfe" /> <XeniaDoubtTrigger topic="price" label="Preis-Hilfe" />
+                    <span>VerfÃ¼gbarkeit wird vom Anbieter bestÃ¤tigt Â· {filteredProfiles.length} Profile</span> <XeniaDoubtTrigger topic="status" label="Status-Hilfe" /> <XeniaDoubtTrigger topic="price" label="Preis-Hilfe" />
                   </span>
                 </>
               )}
@@ -1047,7 +1047,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => handleSwitchConcept("champagne_compare")}
-                  title="Champagner-Gold Vergleichsliste öffnen"
+                  title="Champagner-Gold Vergleichsliste Ã¶ffnen"
                   className="p-1.5 cursor-pointer text-gray-400 hover:text-[#C6A574]"
                 >
                   <ListIcon size={15} />
@@ -1069,12 +1069,58 @@ export default function HomePage() {
               )}
             </div>
           )}
-        </main>
+          {/* 2D Programmatic SEO Matrix (Stadt x Service in DE / FR / IT für Google.ch) */}
+        <section className="mt-12 p-6 rounded-2xl bg-[#11131C] border border-white/10 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+                SCHWEIZER DIREKTSUCHE NACH STADT & RUBRIK (DE / FR / IT)
+              </div>
+              <h2 className="text-base sm:text-lg font-serif font-bold text-white mt-0.5">
+                Beliebte Schweizer Kombinationen mit 30m/60m CHF-Richtpreisen
+              </h2>
+            </div>
+            <Link href="/clubs" className="text-xs font-bold text-[#C8A97E] hover:underline">
+              Alle 305 Schweizer Clubs & Laufhäuser ansehen →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 text-[11px]">
+            {[
+              { label: "GFE Escort Zürich", href: "/kategorie/zuerich/girlfriend-experience" },
+              { label: "GFE Escort Zug & Cham", href: "/kategorie/zug/girlfriend-experience" },
+              { label: "Erotik-Massage Zürich", href: "/kategorie/zuerich/erotische-massage" },
+              { label: "Tantra-Massage Zug", href: "/kategorie/zug/tantra-massage" },
+              { label: "Hotel-Outcall Zürich", href: "/kategorie/zuerich/hotelbesuch-outcall" },
+              { label: "Hotel-Outcall Zug", href: "/kategorie/zug/hotelbesuch-outcall" },
+              { label: "Privatempfang Zürich", href: "/kategorie/zuerich/privatempfang-incall" },
+              { label: "Domina & BDSM Zürich", href: "/kategorie/zuerich/domina-bdsm" },
+              { label: "Escort Basel (BS)", href: "/kategorie/basel/girlfriend-experience" },
+              { label: "Escort Bern (BE)", href: "/kategorie/bern/girlfriend-experience" },
+              { label: "Escort Luzern (LU)", href: "/kategorie/luzern/girlfriend-experience" },
+              { label: "Escort Baden & Aargau", href: "/kategorie/baden/girlfriend-experience" },
+              { label: "Escort St. Gallen (SG)", href: "/kategorie/st-gallen/girlfriend-experience" },
+              { label: "Escort Winterthur (ZH)", href: "/kategorie/winterthur/girlfriend-experience" },
+              { label: "Escort Genève (FR)", href: "/kategorie/geneve/girlfriend-experience" },
+              { label: "Massage Genève (FR)", href: "/kategorie/geneve/erotische-massage" },
+              { label: "Escort Lausanne (FR)", href: "/kategorie/lausanne/girlfriend-experience" },
+              { label: "Escort Lugano (IT)", href: "/kategorie/lugano/girlfriend-experience" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-3 py-2 rounded-xl bg-[#090A0F] border border-white/10 hover:border-[#C8A97E] text-gray-300 hover:text-white truncate transition"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
       )}
 
       {/* ===================================================================== */}
       {/* ANSICHT 2: CHAMPAGNER-GOLD VERGLEICHSLISTE (EXAKT NACH BILD 10!)      */}
-      {/* ("Profile vergleichen – Quellen, Preise und Angaben gegenüberstellen")*/}
+      {/* ("Profile vergleichen â€“ Quellen, Preise und Angaben gegenÃ¼berstellen")*/}
       {/* ===================================================================== */}
       {activeConcept === "champagne_compare" && (
         <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-6 pb-12 space-y-5">
@@ -1083,7 +1129,7 @@ export default function HomePage() {
               Profile vergleichen
             </h1>
             <p className="text-sm sm:text-base text-[#5C554B]">
-              Quellen, Preise und Angaben übersichtlich gegenüberstellen.
+              Quellen, Preise und Angaben Ã¼bersichtlich gegenÃ¼berstellen.
             </p>
           </div>
 
@@ -1151,7 +1197,7 @@ export default function HomePage() {
                       onChange={() => setOnlyAvailable(!onlyAvailable)}
                       className="accent-[#9E7B47] w-4 h-4 rounded"
                     />
-                    <span>Jetzt verfügbar</span>
+                    <span>Jetzt verfÃ¼gbar</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -1172,7 +1218,7 @@ export default function HomePage() {
                   className="w-full flex items-center justify-between text-xs font-bold text-[#181614] py-1 cursor-pointer"
                 >
                   <span>Weitere Filter</span>
-                  <span>▾</span>
+                  <span>â–¾</span>
                 </button>
               </div>
 
@@ -1189,7 +1235,7 @@ export default function HomePage() {
                   onClick={resetAllFilters}
                   className="block text-xs text-[#8A642B] underline font-medium cursor-pointer"
                 >
-                  Zurücksetzen
+                  ZurÃ¼cksetzen
                 </button>
               </div>
             </aside>
@@ -1258,16 +1304,62 @@ export default function HomePage() {
               )}
             </div>
           </div>
-        </main>
+          {/* 2D Programmatic SEO Matrix (Stadt x Service in DE / FR / IT für Google.ch) */}
+        <section className="mt-12 p-6 rounded-2xl bg-[#11131C] border border-white/10 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+                SCHWEIZER DIREKTSUCHE NACH STADT & RUBRIK (DE / FR / IT)
+              </div>
+              <h2 className="text-base sm:text-lg font-serif font-bold text-white mt-0.5">
+                Beliebte Schweizer Kombinationen mit 30m/60m CHF-Richtpreisen
+              </h2>
+            </div>
+            <Link href="/clubs" className="text-xs font-bold text-[#C8A97E] hover:underline">
+              Alle 305 Schweizer Clubs & Laufhäuser ansehen →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 text-[11px]">
+            {[
+              { label: "GFE Escort Zürich", href: "/kategorie/zuerich/girlfriend-experience" },
+              { label: "GFE Escort Zug & Cham", href: "/kategorie/zug/girlfriend-experience" },
+              { label: "Erotik-Massage Zürich", href: "/kategorie/zuerich/erotische-massage" },
+              { label: "Tantra-Massage Zug", href: "/kategorie/zug/tantra-massage" },
+              { label: "Hotel-Outcall Zürich", href: "/kategorie/zuerich/hotelbesuch-outcall" },
+              { label: "Hotel-Outcall Zug", href: "/kategorie/zug/hotelbesuch-outcall" },
+              { label: "Privatempfang Zürich", href: "/kategorie/zuerich/privatempfang-incall" },
+              { label: "Domina & BDSM Zürich", href: "/kategorie/zuerich/domina-bdsm" },
+              { label: "Escort Basel (BS)", href: "/kategorie/basel/girlfriend-experience" },
+              { label: "Escort Bern (BE)", href: "/kategorie/bern/girlfriend-experience" },
+              { label: "Escort Luzern (LU)", href: "/kategorie/luzern/girlfriend-experience" },
+              { label: "Escort Baden & Aargau", href: "/kategorie/baden/girlfriend-experience" },
+              { label: "Escort St. Gallen (SG)", href: "/kategorie/st-gallen/girlfriend-experience" },
+              { label: "Escort Winterthur (ZH)", href: "/kategorie/winterthur/girlfriend-experience" },
+              { label: "Escort Genève (FR)", href: "/kategorie/geneve/girlfriend-experience" },
+              { label: "Massage Genève (FR)", href: "/kategorie/geneve/erotische-massage" },
+              { label: "Escort Lausanne (FR)", href: "/kategorie/lausanne/girlfriend-experience" },
+              { label: "Escort Lugano (IT)", href: "/kategorie/lugano/girlfriend-experience" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-3 py-2 rounded-xl bg-[#090A0F] border border-white/10 hover:border-[#C8A97E] text-gray-300 hover:text-white truncate transition"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
       )}
 
       {/* ===================================================================== */}
-      {/* ANSICHT 4 (NEU): "XENIA · DEINE HILFE" (EXAKT NACH 9c65a5f9 & 919ed897)*/}
-      {/* Umschaltbar zwischen "Start" (mit/ohne 3 Karten) & "Im Gespräch"!     */}
+      {/* ANSICHT 4 (NEU): "XENIA Â· DEINE HILFE" (EXAKT NACH 9c65a5f9 & 919ed897)*/}
+      {/* Umschaltbar zwischen "Start" (mit/ohne 3 Karten) & "Im GesprÃ¤ch"!     */}
       {/* ===================================================================== */}
       {activeConcept === "xenia_assistant" && (
         <main className="max-w-4xl mx-auto px-6 py-6 space-y-8">
-          {/* Sub-Top Bar: Assistent | Übersicht  ---  Direkt zur Übersicht -> */}
+          {/* Sub-Top Bar: Assistent | Ãœbersicht  ---  Direkt zur Ãœbersicht -> */}
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
               <button
@@ -1282,7 +1374,7 @@ export default function HomePage() {
                 onClick={() => handleSwitchConcept("dark_gallery")}
                 className="px-4 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-semibold cursor-pointer"
               >
-                Übersicht
+                Ãœbersicht
               </button>
             </div>
 
@@ -1299,29 +1391,29 @@ export default function HomePage() {
                 onClick={() => handleSwitchConcept("dark_gallery")}
                 className="text-[#C6A574] hover:underline font-semibold inline-flex items-center gap-1.5 cursor-pointer"
               >
-                <span>Direkt zur Übersicht →</span>
+                <span>Direkt zur Ãœbersicht â†’</span>
               </button>
             </div>
           </div>
 
-          {/* ZUSTAND A: START ("Was möchtest du wissen?" / "Wobei können wir dir helfen?") */}
+          {/* ZUSTAND A: START ("Was mÃ¶chtest du wissen?" / "Wobei kÃ¶nnen wir dir helfen?") */}
           {xeniaStep === "start" ? (
             <div className="py-6 space-y-8">
               <div className="text-center max-w-xl mx-auto space-y-3">
                 <div className="flex flex-col items-center justify-center gap-1.5">
                   <XeniaGlowingFairy size="lg" />
                   <div className="text-xs font-medium text-[#E5C99B] flex items-center gap-2">
-                    <span>Xenia · Deine Hilfe</span>
+                    <span>Xenia Â· Deine Hilfe</span>
                   </div>
                 </div>
 
                 <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight pt-1">
-                  {xeniaVariant === "minimal" ? "Was möchtest du wissen?" : "Wobei können wir dir helfen?"}
+                  {xeniaVariant === "minimal" ? "Was mÃ¶chtest du wissen?" : "Wobei kÃ¶nnen wir dir helfen?"}
                 </h1>
                 <p className="text-sm sm:text-base text-gray-400">
                   {xeniaVariant === "minimal"
                     ? "Frag zu Portalen, Datenschutz oder deinem Eintrag."
-                    : "Schreib dein Anliegen oder wähle einen Einstieg."}
+                    : "Schreib dein Anliegen oder wÃ¤hle einen Einstieg."}
                 </p>
 
                 {/* Rounded Input Capsule with Gold Send Circle */}
@@ -1356,8 +1448,8 @@ export default function HomePage() {
                 {/* Quick Pills (Bild 1: 9c65a5f9) */}
                 <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
                   {[
-                    { label: "Portale vergleichen", prompt: "Ich möchte Portale vergleichen.", topic: "Datenschutz" as const },
-                    { label: "Prüfungen verstehen", prompt: "Wie funktionieren eure Prüfungen und Kennzeichnungen?", topic: "Funktionen" as const },
+                    { label: "Portale vergleichen", prompt: "Ich mÃ¶chte Portale vergleichen.", topic: "Datenschutz" as const },
+                    { label: "PrÃ¼fungen verstehen", prompt: "Wie funktionieren eure PrÃ¼fungen und Kennzeichnungen?", topic: "Funktionen" as const },
                     { label: "Eintrag verwalten", prompt: "Wie kann ich meinen eigenen Eintrag verwalten oder entfernen?", topic: "Kontoverwaltung" as const },
                   ].map((pill) => (
                     <button
@@ -1376,13 +1468,13 @@ export default function HomePage() {
                 </div>
 
                 <p className="text-xs text-gray-400 pt-1">
-                  Quellen und Prüfkriterien bleiben nachvollziehbar. Du kannst auch direkt{" "}
+                  Quellen und PrÃ¼fkriterien bleiben nachvollziehbar. Du kannst auch direkt{" "}
                   <button
                     type="button"
                     onClick={() => handleSwitchConcept("dark_gallery")}
                     className="text-[#C6A574] underline font-semibold cursor-pointer"
                   >
-                    zur Übersicht
+                    zur Ãœbersicht
                   </button>{" "}
                   wechseln.
                 </p>
@@ -1394,7 +1486,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setXeniaUserPrompt("Ich möchte Portale vergleichen.");
+                      setXeniaUserPrompt("Ich mÃ¶chte Portale vergleichen.");
                       setXeniaTopic("Funktionen");
                       setXeniaStep("conversation");
                     }}
@@ -1425,7 +1517,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setXeniaUserPrompt("Ich möchte Sicherheit und Datenschutz verstehen.");
+                      setXeniaUserPrompt("Ich mÃ¶chte Sicherheit und Datenschutz verstehen.");
                       setXeniaTopic("Datenschutz");
                       setXeniaStep("conversation");
                     }}
@@ -1475,7 +1567,7 @@ export default function HomePage() {
                           Eintrag verwalten
                         </h3>
                         <p className="text-xs text-gray-400 leading-relaxed">
-                          Einstellungen, Daten und Optionen für deinen Eintrag im Überblick.
+                          Einstellungen, Daten und Optionen fÃ¼r deinen Eintrag im Ãœberblick.
                         </p>
                       </div>
                     </div>
@@ -1487,7 +1579,7 @@ export default function HomePage() {
               )}
             </div>
           ) : (
-            /* ZUSTAND B: IM GESPRÄCH / NACH DEINER AUSWAHL (Rechte Seite deiner Xenia-Bilder!) */
+            /* ZUSTAND B: IM GESPRÃ„CH / NACH DEINER AUSWAHL (Rechte Seite deiner Xenia-Bilder!) */
             <div className="space-y-6">
               <div className="flex items-center gap-4 text-xs text-gray-400">
                 <button
@@ -1496,7 +1588,7 @@ export default function HomePage() {
                   className="inline-flex items-center gap-1.5 hover:text-white cursor-pointer"
                 >
                   <ArrowLeft size={14} />
-                  <span>Zurück</span>
+                  <span>ZurÃ¼ck</span>
                 </button>
                 <span>|</span>
                 <button
@@ -1552,7 +1644,7 @@ export default function HomePage() {
                           <span>{item.id}</span>
                           {active && (
                             <span className="w-4 h-4 rounded-full bg-[#D8B06A] text-[#0F1218] flex items-center justify-center text-[10px] font-bold">
-                              ✓
+                              âœ“
                             </span>
                           )}
                         </button>
@@ -1574,14 +1666,14 @@ export default function HomePage() {
                 <XeniaGlowingFairy size="md" />
                 <div className="space-y-4 flex-1">
                   <div className="inline-block px-4 py-2.5 rounded-2xl bg-[#161B24] border border-white/10 text-xs sm:text-sm text-white">
-                    Wir können die Berichte zum Thema <strong>{xeniaTopic}</strong> nach denselben Kriterien gegenüberstellen:
+                    Wir kÃ¶nnen die Berichte zum Thema <strong>{xeniaTopic}</strong> nach denselben Kriterien gegenÃ¼berstellen:
                   </div>
 
                   {/* Comparison Matrix Card (Exakt wie in 9c65a5f9 Rechts!) */}
                   <div className="p-5 rounded-2xl bg-[#141821] border border-white/10 space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm sm:text-base font-bold text-white">
-                        Kriterienvergleich · Fokus: {xeniaTopic}
+                        Kriterienvergleich Â· Fokus: {xeniaTopic}
                       </h3>
                       <span className="text-[11px] text-gray-400">Stand: 25. Oktober 2026</span>
                     </div>
@@ -1599,15 +1691,15 @@ export default function HomePage() {
                         <tbody className="divide-y divide-white/10 text-gray-200">
                           <tr>
                             <td className="py-3 pr-4 font-medium">Datenschutz & Quellenhinweise</td>
-                            <td className="py-3 px-4">Im Bericht prüfen (8.3/10)</td>
-                            <td className="py-3 px-4">Im Bericht prüfen (8.4/10)</td>
+                            <td className="py-3 px-4">Im Bericht prÃ¼fen (8.3/10)</td>
+                            <td className="py-3 px-4">Im Bericht prÃ¼fen (8.4/10)</td>
                             <td className="py-3 pl-4 text-emerald-300">Offengelegte Herkunft je Feld</td>
                           </tr>
                           <tr>
-                            <td className="py-3 pr-4 font-medium">Kontrolle über eigene Daten</td>
+                            <td className="py-3 pr-4 font-medium">Kontrolle Ã¼ber eigene Daten</td>
                             <td className="py-3 px-4">Konto erforderlich</td>
-                            <td className="py-3 px-4">Über Studio-/Anbieter-Login</td>
-                            <td className="py-3 pl-4 text-emerald-300">Kostenlose Übernahme & Pause</td>
+                            <td className="py-3 px-4">Ãœber Studio-/Anbieter-Login</td>
+                            <td className="py-3 pl-4 text-emerald-300">Kostenlose Ãœbernahme & Pause</td>
                           </tr>
                           <tr>
                             <td className="py-3 pr-4 font-medium">Eintrag entfernen / Widerspruch</td>
@@ -1622,11 +1714,11 @@ export default function HomePage() {
                     <div className="flex flex-wrap items-center gap-5 pt-2 text-xs text-[#D8B06A] font-semibold">
                       <Link href="/reviews" className="inline-flex items-center gap-1.5 hover:underline">
                         <FileText size={14} />
-                        <span>Quellen ansehen →</span>
+                        <span>Quellen ansehen â†’</span>
                       </Link>
                       <Link href="/for-clients" className="inline-flex items-center gap-1.5 hover:underline">
                         <Scale size={14} />
-                        <span>Prüfkriterien öffnen →</span>
+                        <span>PrÃ¼fkriterien Ã¶ffnen â†’</span>
                       </Link>
                     </div>
                   </div>
@@ -1640,10 +1732,10 @@ export default function HomePage() {
                       >
                         <div className="space-y-1.5">
                           <span className="text-[10px] uppercase tracking-wider text-gray-400">
-                            Einzelbericht · {rep.lastAudited}
+                            Einzelbericht Â· {rep.lastAudited}
                           </span>
                           <h4 className="text-base font-serif font-bold text-white">
-                            {rep.name} im Überblick
+                            {rep.name} im Ãœberblick
                           </h4>
                           <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
                             {rep.summary}
@@ -1651,24 +1743,24 @@ export default function HomePage() {
                         </div>
                         <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs font-semibold text-[#D8B06A]">
                           <Link href={`/reviews/${rep.slug}`} className="hover:underline">
-                            Bericht lesen →
+                            Bericht lesen â†’
                           </Link>
                           <Link href="/reviews" className="hover:underline text-gray-400">
-                            Quellen ansehen →
+                            Quellen ansehen â†’
                           </Link>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Gold Action Bar ("Berichte öffnen ->" / "Unterschiede zeigen ->") */}
+                  {/* Gold Action Bar ("Berichte Ã¶ffnen ->" / "Unterschiede zeigen ->") */}
                   <div className="flex flex-wrap justify-center gap-3 pt-1">
                     <Link
                       href="/reviews"
                       className="w-full sm:w-auto px-8 py-3 rounded-xl bg-[#D8B06A] hover:bg-[#e3be7c] text-[#0F1218] font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-lg"
                     >
                       <Scale size={16} />
-                      <span>Alle Berichte & Unterschiede öffnen →</span>
+                      <span>Alle Berichte & Unterschiede Ã¶ffnen â†’</span>
                     </Link>
                   </div>
                 </div>
@@ -1710,10 +1802,56 @@ export default function HomePage() {
               className="text-xs text-gray-400 hover:text-white inline-flex items-center gap-1.5 cursor-pointer"
             >
               <EyeOff size={13} />
-              <span>Hilfe ausblenden (Zurück zum Profilverzeichnis)</span>
+              <span>Hilfe ausblenden (ZurÃ¼ck zum Profilverzeichnis)</span>
             </button>
           </div>
-        </main>
+          {/* 2D Programmatic SEO Matrix (Stadt x Service in DE / FR / IT für Google.ch) */}
+        <section className="mt-12 p-6 rounded-2xl bg-[#11131C] border border-white/10 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#C8A97E]">
+                SCHWEIZER DIREKTSUCHE NACH STADT & RUBRIK (DE / FR / IT)
+              </div>
+              <h2 className="text-base sm:text-lg font-serif font-bold text-white mt-0.5">
+                Beliebte Schweizer Kombinationen mit 30m/60m CHF-Richtpreisen
+              </h2>
+            </div>
+            <Link href="/clubs" className="text-xs font-bold text-[#C8A97E] hover:underline">
+              Alle 305 Schweizer Clubs & Laufhäuser ansehen →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 text-[11px]">
+            {[
+              { label: "GFE Escort Zürich", href: "/kategorie/zuerich/girlfriend-experience" },
+              { label: "GFE Escort Zug & Cham", href: "/kategorie/zug/girlfriend-experience" },
+              { label: "Erotik-Massage Zürich", href: "/kategorie/zuerich/erotische-massage" },
+              { label: "Tantra-Massage Zug", href: "/kategorie/zug/tantra-massage" },
+              { label: "Hotel-Outcall Zürich", href: "/kategorie/zuerich/hotelbesuch-outcall" },
+              { label: "Hotel-Outcall Zug", href: "/kategorie/zug/hotelbesuch-outcall" },
+              { label: "Privatempfang Zürich", href: "/kategorie/zuerich/privatempfang-incall" },
+              { label: "Domina & BDSM Zürich", href: "/kategorie/zuerich/domina-bdsm" },
+              { label: "Escort Basel (BS)", href: "/kategorie/basel/girlfriend-experience" },
+              { label: "Escort Bern (BE)", href: "/kategorie/bern/girlfriend-experience" },
+              { label: "Escort Luzern (LU)", href: "/kategorie/luzern/girlfriend-experience" },
+              { label: "Escort Baden & Aargau", href: "/kategorie/baden/girlfriend-experience" },
+              { label: "Escort St. Gallen (SG)", href: "/kategorie/st-gallen/girlfriend-experience" },
+              { label: "Escort Winterthur (ZH)", href: "/kategorie/winterthur/girlfriend-experience" },
+              { label: "Escort Genève (FR)", href: "/kategorie/geneve/girlfriend-experience" },
+              { label: "Massage Genève (FR)", href: "/kategorie/geneve/erotische-massage" },
+              { label: "Escort Lausanne (FR)", href: "/kategorie/lausanne/girlfriend-experience" },
+              { label: "Escort Lugano (IT)", href: "/kategorie/lugano/girlfriend-experience" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-3 py-2 rounded-xl bg-[#090A0F] border border-white/10 hover:border-[#C8A97E] text-gray-300 hover:text-white truncate transition"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
       )}
 
       {/* Load More on Directory Views */}
@@ -1729,7 +1867,7 @@ export default function HomePage() {
                 : "bg-[#C6A574] text-[#13161C]"
             }`}
           >
-            {loadingVault ? "Lädt..." : "Weitere Profile laden"}
+            {loadingVault ? "LÃ¤dt..." : "Weitere Profile laden"}
           </button>
         </div>
       )}
@@ -1737,14 +1875,14 @@ export default function HomePage() {
       {/* ===================================================================== */}
       {/* ===================================================================== */}
       {/* DUNKLE SCHWEBENDE VERGLEICHSLEISTE MIT GOLDENEM BUTTON (WIE BILD 10!) */}
-      {/* ("2 ausgewählt | [Mia x] [Lea x] | Auswahl vergleichen ->")           */}
+      {/* ("2 ausgewÃ¤hlt | [Mia x] [Lea x] | Auswahl vergleichen ->")           */}
       {/* ===================================================================== */}
       {comparedProfiles.length > 0 && activeConcept !== "xenia_assistant" && (
         <div className="fixed bottom-16 md:bottom-4 left-4 right-4 md:right-auto md:w-[660px] z-50">
           <div className="p-3.5 rounded-2xl bg-[#14171F]/95 backdrop-blur-xl border border-[#C6A574]/60 shadow-2xl flex flex-wrap items-center justify-between gap-3 text-white">
             <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
               <strong className="pr-2.5 border-r border-white/15 font-serif text-base">
-                {comparedProfiles.length} ausgewählt
+                {comparedProfiles.length} ausgewÃ¤hlt
               </strong>
               {comparedProfiles.map((cp: any) => (
                 <span
@@ -1753,7 +1891,7 @@ export default function HomePage() {
                 >
                   <span className="truncate max-w-[110px]">{cp.rawName}</span>
                   <button onClick={() => toggleCompare(cp.id)} className="text-gray-400 hover:text-white cursor-pointer">
-                    ✕
+                    âœ•
                   </button>
                 </span>
               ))}
@@ -1776,7 +1914,7 @@ export default function HomePage() {
         <div className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 text-white">
           <div className="max-w-4xl w-full rounded-2xl bg-[#1C2029] border border-[#C6A574] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-lg font-serif font-bold">Ausgewählte Profile im direkten Vergleich</h3>
+              <h3 className="text-lg font-serif font-bold">AusgewÃ¤hlte Profile im direkten Vergleich</h3>
               <button onClick={() => setCompareModalOpen(false)} className="p-1.5 rounded-lg bg-white/10">
                 <X size={16} />
               </button>
@@ -1794,9 +1932,9 @@ export default function HomePage() {
                   />
                   <div className="text-base font-serif font-bold text-white">{cp.rawName}</div>
                   <div className="space-y-1.5 text-gray-300 border-t border-white/10 pt-2">
-                    <div>• <strong>Ort:</strong> {cp.cleanCity} · {cp.canton}</div>
+                    <div>â€¢ <strong>Ort:</strong> {cp.cleanCity} Â· {cp.canton}</div>
                     <div>
-                      • <strong>Veröffentlichter Preis:</strong>{" "}
+                      â€¢ <strong>VerÃ¶ffentlichter Preis:</strong>{" "}
                       {cp.advertisedBaseChf ? (
                         <span className="text-[#C6A574] font-bold">
                           CHF {cp.advertisedBaseChf} ({cp.durationLabel})
@@ -1806,13 +1944,13 @@ export default function HomePage() {
                       )}
                     </div>
                     <div>
-                      • <strong>Verfügbarkeit:</strong>{" "}
+                      â€¢ <strong>VerfÃ¼gbarkeit:</strong>{" "}
                       {cp.availabilityConfirmed
-                        ? `Bestätigt vor ${cp.confirmedMinutesAgo || 6} Min.`
-                        : "Verfügbarkeit unbekannt"}
+                        ? `BestÃ¤tigt vor ${cp.confirmedMinutesAgo || 6} Min.`
+                        : "VerfÃ¼gbarkeit unbekannt"}
                     </div>
                     <div>
-                      • <strong>Erfasste Quellen:</strong>{" "}
+                      â€¢ <strong>Erfasste Quellen:</strong>{" "}
                       {cp.linkedSources?.map((s: any) => s.portal).join(", ")}
                     </div>
                   </div>
@@ -1820,7 +1958,7 @@ export default function HomePage() {
                     href={`/profile/${encodeURIComponent(cp.id)}`}
                     className="w-full py-2.5 rounded-lg bg-[#C6A574] text-[#13161C] font-bold text-center block"
                   >
-                    Profil ansehen →
+                    Profil ansehen â†’
                   </Link>
                 </div>
               ))}
@@ -1835,15 +1973,15 @@ export default function HomePage() {
           <div className="max-w-md w-full rounded-2xl bg-[#1C2029] border border-white/20 p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#C6A574]">
-                {privateInquiryProfile.isSelfManaged ? "Privat anfragen · Selbst verwaltetes Profil" : "Quellenübersicht"}
+                {privateInquiryProfile.isSelfManaged ? "Privat anfragen Â· Selbst verwaltetes Profil" : "QuellenÃ¼bersicht"}
               </span>
               <button onClick={() => setPrivateInquiryProfile(null)} className="text-gray-400 hover:text-white">
-                ✕
+                âœ•
               </button>
             </div>
             <h3 className="text-xl font-serif font-bold">{privateInquiryProfile.rawName}</h3>
             <p className="text-xs text-gray-300">
-              {privateInquiryProfile.cleanCity} · Kanton {privateInquiryProfile.canton}
+              {privateInquiryProfile.cleanCity} Â· Kanton {privateInquiryProfile.canton}
             </p>
             <div className="p-3.5 rounded-xl bg-[#13161C] border border-white/10 space-y-2 text-xs">
               <div className="font-bold text-gray-200">Erfasste Quellen & Kontaktwege:</div>
@@ -1864,7 +2002,7 @@ export default function HomePage() {
               href={`/profile/${encodeURIComponent(privateInquiryProfile.id)}`}
               className="w-full py-3 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs block text-center"
             >
-              Vollständiges Profil öffnen →
+              VollstÃ¤ndiges Profil Ã¶ffnen â†’
             </Link>
           </div>
         </div>
@@ -1888,7 +2026,7 @@ export default function HomePage() {
                   onChange={() => setOnlyAvailable(!onlyAvailable)}
                   className="w-4 h-4 accent-[#C6A574]"
                 />
-                <span>Nur aktuell bestätigte Verfügbarkeit</span>
+                <span>Nur aktuell bestÃ¤tigte VerfÃ¼gbarkeit</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -1906,12 +2044,12 @@ export default function HomePage() {
                   onChange={() => setOnlyWithPrice(!onlyWithPrice)}
                   className="w-4 h-4 accent-[#C6A574]"
                 />
-                <span>Nur Einträge mit veröffentlichter Preisangabe</span>
+                <span>Nur EintrÃ¤ge mit verÃ¶ffentlichter Preisangabe</span>
               </label>
             </div>
             <div className="flex justify-between pt-3 border-t border-white/10">
               <button onClick={resetAllFilters} className="text-xs text-gray-400 underline">
-                Zurücksetzen
+                ZurÃ¼cksetzen
               </button>
               <button
                 onClick={() => setFilterModalOpen(false)}
