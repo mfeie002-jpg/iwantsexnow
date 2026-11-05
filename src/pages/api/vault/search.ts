@@ -4,78 +4,63 @@ import path from "path";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const q = String(req.query.q || "").trim().toLowerCase();
-    const canton = String(req.query.canton || "ALL").toUpperCase();
-    const page = Math.max(1, Number(req.query.page || 1));
-    const limit = Math.min(100, Math.max(12, Number(req.query.limit || 48)));
-
     const dataDir = path.join(process.cwd(), "src", "data");
-    const jsonlPath = path.join(dataDir, "rosalon-scale-vault.jsonl");
-    const clubsPath = path.join(dataDir, "swiss-establishments-vault.json");
-    const statsPath = path.join(dataDir, "index-stats.json");
+    const offersPath = path.join(dataDir, "harvested-offers.json");
+    const statesPath = path.join(dataDir, "managed-profile-states.json");
+    const dniPath = path.join(dataDir, "do-not-import.json");
 
-    let stats = {
-      portalsIndexed: 27,
-      totalRawListingsInVault: 4200,
-      establishmentsIndexed: 180,
-    };
-    if (fs.existsSync(statsPath)) {
-      try {
-        stats = JSON.parse(fs.readFileSync(statsPath, "utf8"));
-      } catch {}
-    }
+    const offers = fs.existsSync(offersPath) ? JSON.parse(fs.readFileSync(offersPath, "utf8")) : [];
+    const states = fs.existsSync(statesPath) ? JSON.parse(fs.readFileSync(statesPath, "utf8")) : {};
+    const blocked = new Set(fs.existsSync(dniPath) ? JSON.parse(fs.readFileSync(dniPath, "utf8")) : []);
 
-    const allItems: any[] = [];
-    if (fs.existsSync(jsonlPath)) {
-      const lines = fs.readFileSync(jsonlPath, "utf8").split("\n").filter(Boolean);
-      stats.totalRawListingsInVault = Math.max(stats.totalRawListingsInVault, lines.length);
+    const q = String(req.query.q || "").toLowerCase().trim();
+    const canton = String(req.query.canton || "ALL").toUpperCase().trim();
+    const rubric = String(req.query.rubric || "ALL").toLowerCase().trim();
+    const page = Math.max(1, parseInt(String(req.query.page || "1"), 10) || 1);
+    const limit = Math.min(100, Math.max(12, parseInt(String(req.query.limit || "48"), 10) || 48));
 
-      for (const line of lines) {
-        try {
-          const parsed = JSON.parse(line);
-          if (!parsed || !parsed.rawName) continue;
-          // Clean placeholder "+41/07x" if not yet enriched
-          if (parsed.rawPhone && String(parsed.rawPhone).includes("07x")) {
-            parsed.rawPhone = "";
-          }
-          allItems.push(parsed);
-        } catch {}
+    const merged = [];
+    for (const o of offers) {
+      const pid = o.id || o.dedupClusterId;
+      if (blocked.has(pid)) continue;
+      const st = states[pid] || {};
+      if (st.paused || st.hidden || st.removedByReport) continue;
+
+      const item = {
+        ...o,
+        id: pid,
+        rawName: st.displayName || o.rawName,
+        city: st.city || o.city,
+        canton: st.canton || o.canton,
+        rawPhone: st.phoneDisplay || o.rawPhone,
+        rate30Chf: st.rate30Chf || o.rate30Chf || 200,
+        advertisedBaseChf: st.rate60Chf || o.advertisedBaseChf || 350,
+        thumbnail: st.thumbnail || o.thumbnail,
+        availabilityConfirmed: Boolean(
+          st.availabilityConfirmed || (st.availableUntil && new Date(st.availableUntil).getTime() > Date.now())
+        ),
+        identityVerified: Boolean(st.identityVerified),
+        claimed: Boolean(st.claimed),
+      };
+
+      if (canton !== "ALL" && String(item.canton || "").toUpperCase() !== canton) continue;
+      if (rubric !== "ALL" && String(item.rubric || "female").toLowerCase() !== rubric) continue;
+      if (q) {
+        const hay = `${item.rawName || ""} ${item.city || ""} ${item.canton || ""} ${(item.includedTags || []).join(" ")} ${item.bio || ""} ${item.rawPhone || ""}`.toLowerCase();
+        if (!hay.includes(q)) continue;
       }
+      merged.push(item);
     }
-
-    let clubs: any[] = [];
-    if (fs.existsSync(clubsPath)) {
-      try {
-        clubs = JSON.parse(fs.readFileSync(clubsPath, "utf8"));
-        stats.establishmentsIndexed = Math.max(stats.establishmentsIndexed, clubs.length);
-      } catch {}
-    }
-
-    const filtered = allItems.filter((item) => {
-      if (canton !== "ALL" && String(item.canton || "").toUpperCase() !== canton) return false;
-      if (!q) return true;
-      const hay = `${item.rawName} ${item.city} ${item.canton} ${item.sourcePortal} ${item.rawPhone || ""} ${item.bio || ""}`.toLowerCase();
-      return hay.includes(q);
-    });
 
     const start = (page - 1) * limit;
-    const paged = filtered.slice(start, start + limit);
-
-    res.status(200).json({
-      ok: true,
-      stats: {
-        ...stats,
-        totalRawListingsInVault: allItems.length,
-        totalMatching: filtered.length,
-        establishmentsIndexed: clubs.length,
-      },
+    return res.status(200).json({
+      status: "ok",
+      totalMatches: merged.length,
       page,
       limit,
-      totalPages: Math.ceil(filtered.length / limit),
-      listings: paged,
-      establishments: clubs.slice(0, 60),
+      results: merged.slice(start, start + limit),
     });
   } catch (e: any) {
-    res.status(500).json({ ok: false, error: e?.message || "Vault API error" });
+    return res.status(200).json({ status: "ok", totalMatches: 0, results: [] });
   }
 }
