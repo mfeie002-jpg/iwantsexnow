@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-05T01:27:46.925Z",
+  "generatedAt": "2026-11-05T01:37:36.522Z",
   "wave": "Wave 4 (Regional TI/GE/VD + Massage123 + Subpage CHF Price Normalization)",
   "totalRawObservationsInVault": 5576,
   "deduplicatedProfiles": 1981,
-  "establishmentsCount": 162,
+  "establishmentsCount": 305,
   "withPublishedChfPrice": 1981,
   "priceCoveragePercent": 100,
   "withVerifiedSwissPhone": 1981,
