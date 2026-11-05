@@ -20,7 +20,6 @@ const states = readJson(statesPath, {});
 const offers = readJson(offersPath, []);
 const claims = readJson(claimsPath, []);
 
-// Schweizer Orts- & PLZ-Erkennung für präzises Kantons-Mapping
 const CITY_TO_CANTON = {
   zug: { city: "Zug", canton: "ZG" },
   baar: { city: "Baar", canton: "ZG" },
@@ -32,7 +31,7 @@ const CITY_TO_CANTON = {
   zuerich: { city: "Zürich", canton: "ZH" },
   winterthur: { city: "Winterthur", canton: "ZH" },
   kloten: { city: "Kloten", canton: "ZH" },
-  opFIkon: { city: "Opfikon", canton: "ZH" },
+  opfikon: { city: "Opfikon", canton: "ZH" },
   dietikon: { city: "Dietikon", canton: "ZH" },
   schlieren: { city: "Schlieren", canton: "ZH" },
   uster: { city: "Uster", canton: "ZH" },
@@ -71,7 +70,6 @@ function resolveCityCanton(rawCity = "", rawCanton = "", text = "") {
   for (const [key, val] of Object.entries(CITY_TO_CANTON)) {
     if (combined.includes(key)) return val;
   }
-  // PLZ-Fallback (z.B. 63xx = ZG, 80xx = ZH, 60xx = LU, 54xx/50xx = AG, 40xx = BS, 30xx = BE)
   const plzMatch = combined.match(/\b([1-9]\d{3})\b/);
   if (plzMatch) {
     const plz = Number(plzMatch[1]);
@@ -111,11 +109,10 @@ function normalizeSwissPhone(raw) {
 function safeRate60(val) {
   const n = Number(val);
   if (!Number.isFinite(n) || n < 100 || n > 1200) return 350;
-  if (n >= 1000 && n % 100 === 0) return 350; // PLZ-Schutz
+  if (n >= 1000 && n % 100 === 0) return 350;
   return Math.round(n / 10) * 10;
 }
 
-// 1. Telefonnummern aus ready-whatsapp-claims.json mit bestehenden Profilen abgleichen
 const phoneByProfileId = new Map();
 for (const c of claims) {
   const clean = normalizeSwissPhone(c.phoneE164 || c.phoneDisplay || c.rawPhone);
@@ -155,7 +152,6 @@ for (const o of offers) {
   });
 }
 
-// 2. Falls in rosalon-scale-vault.jsonl weitere Profile für ZG/ZH/LU/AG/BS/BE/GE/TI liegen -> einspeisen
 let vaultAdded = 0;
 if (fs.existsSync(vaultJsonlPath)) {
   const lines = fs.readFileSync(vaultJsonlPath, "utf8").split(/\r?\n/).filter(Boolean);
@@ -204,7 +200,6 @@ fs.writeFileSync(
   "utf8"
 );
 
-// Kantons-Verteilung berechnen
 const cantonCounts = {};
 for (const o of finalOffers) {
   cantonCounts[o.canton] = (cantonCounts[o.canton] || 0) + 1;
@@ -217,14 +212,14 @@ stats.lastCantonHarvestAt = new Date().toISOString();
 fs.writeFileSync(statsPath, JSON.stringify(stats, null, 2), "utf8");
 
 console.log("\n===============================================================================");
-console.log("   🇨🇭 SCHWEIZER KANTONS-HARVESTER & ORTS-DISAMBIGUIERUNG ABGESCHLOSSEN");
+console.log("   SCHWEIZER KANTONS-HARVESTER & ORTS-DISAMBIGUIERUNG ABGESCHLOSSEN");
 console.log("===============================================================================");
-console.log(`✅ Gesamt-Profile im Index:            ${finalOffers.length}`);
-console.log(`✅ Präzisierte Orts-/Kantons-Zuordn.:  ${enrichedLocations}`);
-console.log(`✅ Neu verknüpfte +41 Rufnummern:      ${linkedPhones}`);
-console.log(`✅ Neu aus Vault freigeschaltet:       ${vaultAdded}`);
+console.log(`Gesamt-Profile im Index:            ${finalOffers.length}`);
+console.log(`Präzisierte Orts-/Kantons-Zuordn.:  ${enrichedLocations}`);
+console.log(`Neu verknüpfte +41 Rufnummern:      ${linkedPhones}`);
+console.log(`Neu aus Vault freigeschaltet:       ${vaultAdded}`);
 console.log("-------------------------------------------------------------------------------");
-console.log("📊 AKTUELLE VERTEILUNG TOP-KANTONE:");
+console.log("AKTUELLE VERTEILUNG TOP-KANTONE:");
 console.log(
   Object.entries(cantonCounts)
     .sort((a, b) => b[1] - a[1])

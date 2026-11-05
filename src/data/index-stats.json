@@ -7,17 +7,17 @@
   "unlockedRealPhones": 995,
   "mobileWhatsappReadyPhones": 974,
   "cantonBreakdown": {
-    "ZH": 516,
-    "SG": 232,
+    "ZH": 523,
+    "SG": 227,
     "ZG": 108,
-    "BE": 127,
     "AG": 130,
+    "BE": 126,
     "VD": 290,
     "GE": 455,
     "SZ": 15,
     "BS": 94,
     "SO": 65,
-    "LU": 113,
+    "LU": 112,
     "TG": 36,
     "GR": 16,
     "BL": 24,
@@ -33,5 +33,5 @@
     "NW": 1
   },
   "lastDeltaScrapeAt": "2026-11-05T23:41:36.027Z",
-  "lastCantonHarvestAt": "2026-11-05T23:42:42.797Z"
+  "lastCantonHarvestAt": "2026-11-05T23:51:23.672Z"
 }
