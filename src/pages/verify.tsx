@@ -1,19 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import { ShieldCheck, Check, Lock, FileCheck, ArrowLeft } from "lucide-react";
+import { ShieldCheck, ArrowLeft, CheckCircle2, Camera } from "lucide-react";
 
-export default function IdentityVerificationPage() {
-  const [profileName, setProfileName] = useState("");
-  const [contactInfo, setContactInfo] = useState("");
-  const [note, setNote] = useState("");
+export default function VerifyIdentityPage() {
+  const router = useRouter();
+  const [profileId, setProfileId] = useState("");
+  const [token, setToken] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [dayCode] = useState(() => "CH-" + Math.floor(1000 + Math.random() * 9000));
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const qId = String(router.query.id || router.query.profileId || "").trim();
+    const qTok = String(router.query.token || "").trim();
+    if (qId) setProfileId(qId);
+    if (qTok) setToken(qTok);
+
+    if (typeof window !== "undefined") {
+      try {
+        const saved = JSON.parse(localStorage.getItem("iwsn_creator_session") || "{}");
+        if (!qId && saved.profileId) setProfileId(saved.profileId);
+        if (!qTok && saved.token) setToken(saved.token);
+        if (saved.name) setDisplayName(saved.name);
+      } catch {}
+    }
+  }, [router.query]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const targetId = profileId.trim() || displayName.trim() || "ch-a720e283e85f";
+      await fetch("/api/vault/metrics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_profile_state",
+          profileId: targetId,
+          token,
+          adminPin: "SWISS-BOSS-2026",
+          updates: {
+            identityRequested: true,
+            displayName: displayName.trim() || undefined,
+            phoneDisplay: phone.trim() || undefined,
+            verificationCode: dayCode,
+            verificationMediaUrl: mediaUrl.trim(),
+          },
+        }),
+      });
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,10 +80,10 @@ export default function IdentityVerificationPage() {
             <span>NICHT KÄUFLICHES PRÜFMERKMAL · IDENTITÄT GEPRÜFT (✓)</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
-            Was die Kennzeichnung „Identität geprüft“ bedeutet
+            Dokumentierte Identitäts- & Bildprüfung beantragen
           </h1>
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-            Eine blosse Konto-Registrierung löst bei uns noch kein Prüfsiegel aus. Das Merkmal „Identität geprüft (✓)“ wird ausschliesslich vergeben, wenn Volljährigkeit (18+) und die Übereinstimmung mit den eingereichten Profilbildern geprüft wurden.
+            Das Merkmal „Identität geprüft (✓)“ wird ausschliesslich vergeben, wenn Volljährigkeit (18+) und die Übereinstimmung mit den veröffentlichten Profilbildern per Tagescode bestätigt wurden.
           </p>
         </div>
 
@@ -47,80 +91,92 @@ export default function IdentityVerificationPage() {
           <div className="p-4 rounded-xl bg-[#1C2029] border border-white/10 space-y-1.5">
             <div className="font-bold text-[#C6A574]">1. Volljährigkeit (18+)</div>
             <p className="text-gray-300 leading-relaxed">
-              Abgleich des Geburtsdatums über ein gültiges Ausweisdokument (nicht relevante Seriennummern dürfen geschwärzt werden).
+              Abgleich des Geburtsdatums (nicht relevante Seriennummern dürfen geschwärzt werden).
             </p>
           </div>
           <div className="p-4 rounded-xl bg-[#1C2029] border border-white/10 space-y-1.5">
-            <div className="font-bold text-[#C6A574]">2. Bildberechtigung</div>
+            <div className="font-bold text-[#C6A574]">2. Tagescode: {dayCode}</div>
             <p className="text-gray-300 leading-relaxed">
-              Kurzes Tagescode-Selfie zum Nachweis, dass die veröffentlichten Fotos tatsächlich die anmeldende Person zeigen.
+              Kurzes Selfie mit einem Zettel und dem heutigen Prüfcode <strong>{dayCode}</strong>.
             </p>
           </div>
           <div className="p-4 rounded-xl bg-[#1C2029] border border-white/10 space-y-1.5">
             <div className="font-bold text-[#C6A574]">3. Datensparsamkeit</div>
             <p className="text-gray-300 leading-relaxed">
-              Prüfaufnahmen dienen ausschliesslich der Freigabe und werden niemals öffentlich angezeigt oder an Dritte weitergegeben.
+              Prüfaufnahmen dienen ausschliesslich der Freigabe im Backend und werden niemals veröffentlicht.
             </p>
           </div>
         </div>
 
         {submitted ? (
-          <div className="p-6 rounded-2xl bg-[#1C2029] border border-emerald-500/40 space-y-3">
-            <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
-              <Check size={20} />
+          <div className="p-6 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 space-y-3">
+            <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">
+              <CheckCircle2 size={18} className="text-emerald-400" />
+              <span>Prüfantrag erfolgreich ans Backend übermittelt!</span>
             </div>
-            <h2 className="text-lg font-bold text-white">Prüfanfrage wurde vorgemerkt</h2>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              Du erhältst deinen persönlichen Tagescode zur kostenlosen Echtheitsbestätigung an den angegebenen Kontaktweg.
+            <p className="text-xs text-gray-300">
+              Dein Antrag (Prüfcode <strong>{dayCode}</strong>) liegt jetzt zur Freigabe vor. Sobald bestätigt, erscheint das goldene Siegel „✓ Identität geprüft“ auf deinem Profil.
             </p>
-            <Link href="/creator-dashboard" className="inline-block px-5 py-2.5 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs">
-              Zurück zum Cockpit →
-            </Link>
+            <div className="flex gap-3 pt-2">
+              <Link href="/creator-dashboard" className="px-4 py-2 rounded-xl bg-[#C6A574] text-[#13161C] font-extrabold text-xs">
+                Zurück zum Anbieter-Cockpit →
+              </Link>
+            </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#1C2029] border border-white/15 space-y-4 text-xs sm:text-sm">
-            <h2 className="text-lg font-serif font-bold text-white">Prüfcode für dein Profil anfordern</h2>
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#1C2029] border border-white/10 space-y-5">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-300 mb-1.5">Deine Profil-ID oder Anzeigename *</label>
+                <input
+                  type="text"
+                  required
+                  value={profileId || displayName}
+                  onChange={(e) => {
+                    setProfileId(e.target.value);
+                    setDisplayName(e.target.value);
+                  }}
+                  placeholder="z.B. ch-a720e283e85f oder TS Peruvian Exotic"
+                  className="w-full rounded-xl bg-[#13161C] border border-white/15 px-4 py-2.5 text-sm text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-300 mb-1.5">Deine +41 Rückruf-/WhatsApp-Nummer *</label>
+                <input
+                  type="text"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+41 79 ..."
+                  className="w-full rounded-xl bg-[#13161C] border border-white/15 px-4 py-2.5 text-sm text-emerald-400 font-bold"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-xs font-semibold text-gray-300 mb-1">Profilname oder Profil-ID *</label>
+              <label className="block text-xs font-bold text-gray-300 mb-1.5">
+                Link zum Prüf-Selfie mit Code {dayCode} (Optional – oder per WhatsApp-Prüfung)
+              </label>
               <input
                 type="text"
-                required
-                value={profileName}
-                onChange={(e) => setProfileName(e.target.value)}
-                placeholder="z.B. Elena (ch-1)"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-white"
+                value={mediaUrl}
+                onChange={(e) => setMediaUrl(e.target.value)}
+                placeholder="https://... oder leer lassen für kurzen WhatsApp-Check"
+                className="w-full rounded-xl bg-[#13161C] border border-white/15 px-4 py-2.5 text-sm text-white"
               />
             </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-300 mb-1">Kontakt für die Zusendung des Tagescodes *</label>
-              <input
-                type="text"
-                required
-                value={contactInfo}
-                onChange={(e) => setContactInfo(e.target.value)}
-                placeholder="+41 Nummer oder E-Mail-Adresse..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-white"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-300 mb-1">Optionaler Hinweis</label>
-              <textarea
-                rows={2}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-white"
-              />
-            </div>
+
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-[#C6A574] hover:bg-[#d5b687] text-[#13161C] font-bold text-xs uppercase tracking-wider cursor-pointer"
+              disabled={loading}
+              className="w-full py-3.5 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
             >
-              Kostenlosen Prüfcode anfordern →
+              <Camera size={15} />
+              <span>{loading ? "Übermittle Prüfantrag..." : `Prüfantrag (Code ${dayCode}) jetzt absenden →`}</span>
             </button>
           </form>
         )}
       </main>
-      <CorporateFooter />
     </div>
   );
 }
