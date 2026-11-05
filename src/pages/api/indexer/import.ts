@@ -1,80 +1,57 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  deduplicateScrapedOffers,
-  INITIAL_RAW_SWISS_FEED,
-  RawScrapedOffer,
-  normalizeSwissPhone,
-} from "@/lib/marketplace/indexer";
+import fs from "fs";
+import path from "path";
 
-// In-memory runtime store so newly scraped batches stay active immediately even before Supabase is connected
-let runtimeScrapedOffers: RawScrapedOffer[] = [...INITIAL_RAW_SWISS_FEED];
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const adminPin = process.env.ADMIN_PIN || "";
+  const providedPin = String(req.headers["x-admin-pin"] || req.body?.adminPin || "").trim();
 
-async function upsertProfilesToSupabase(offers: RawScrapedOffer[]) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!supabaseUrl || !supabaseKey) return false;
-
-  const deduplicated = deduplicateScrapedOffers(offers);
-
-  for (const p of deduplicated) {
-    try {
-      await fetch(`${supabaseUrl.replace(/\/$/, "")}/rest/v1/provider_profiles`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-          Prefer: "resolution=merge-duplicates",
-        },
-        body: JSON.stringify({
-          dedup_cluster_id: p.dedupClusterId,
-          normalized_phone: p.normalizedPhoneMask,
-          display_name: p.displayName,
-          age: p.age,
-          primary_city: p.primaryCity,
-          canton: p.canton,
-          subareas: p.subareas,
-          booking_mode: p.bookingMode,
-          rate_60_chf: p.bestBaseRate60Chf,
-          portal_avg_60_chf: p.portalAverage60Chf,
-          included_services: p.includedServices,
-          extra_prices_chf: p.extraPricesChf,
-          incall: p.incall,
-          outcall: p.outcall,
-        }),
-      });
-    } catch {
-      // continue on individual row error
-    }
-  }
-  return true;
-}
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    const incoming = Array.isArray(req.body?.offers) ? (req.body.offers as RawScrapedOffer[]) : [];
-    if (incoming.length > 0) {
-      runtimeScrapedOffers = [...incoming, ...runtimeScrapedOffers];
-    }
-    const syncedToDb = await upsertProfilesToSupabase(runtimeScrapedOffers);
-    const deduplicated = deduplicateScrapedOffers(runtimeScrapedOffers);
-
-    return res.status(200).json({
-      status: "ok",
-      syncedToSupabase: syncedToDb,
-      rawCount: runtimeScrapedOffers.length,
-      deduplicatedCount: deduplicated.length,
-      duplicatesEliminated: runtimeScrapedOffers.length - deduplicated.length,
-      profiles: deduplicated,
+  if (!adminPin || adminPin.length < 10 || providedPin !== adminPin) {
+    return res.status(403).json({
+      ok: false,
+      error: "Zugriff verweigert: Der Scraping-Import-Endpunkt erfordert einen gültigen Server-Admin-PIN.",
     });
   }
 
-  const deduplicated = deduplicateScrapedOffers(runtimeScrapedOffers);
-  return res.status(200).json({
-    status: "ok",
-    rawCount: runtimeScrapedOffers.length,
-    deduplicatedCount: deduplicated.length,
-    duplicatesEliminated: runtimeScrapedOffers.length - deduplicated.length,
-    profiles: deduplicated,
-  });
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
+  }
+
+  try {
+    const dataDir = path.join(process.cwd(), "src", "data");
+    const offersPath = path.join(dataDir, "harvested-offers.json");
+    const dniPath = path.join(dataDir, "do-not-import.json");
+
+    const offers = fs.existsSync(offersPath) ? JSON.parse(fs.readFileSync(offersPath, "utf8")) : [];
+    const blocked = new Set(fs.existsSync(dniPath) ? JSON.parse(fs.readFileSync(dniPath, "utf8")) : []);
+
+    const incoming = Array.isArray(req.body?.items) ? req.body.items : [];
+    const existingIds = new Set(offers.map((o: any) => o.id || o.dedupClusterId));
+    let added = 0;
+
+    for (const raw of incoming) {
+      const pid = String(raw.id || "").trim();
+      if (!pid || blocked.has(pid) || existingIds.has(pid)) continue;
+      const r60 = Math.max(100, Math.min(1200, Number(raw.advertisedBaseChf) || 350));
+      const r30 = Math.max(80, Math.min(800, Number(raw.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+
+      offers.push({
+        ...raw,
+        id: pid,
+        advertisedBaseChf: r60,
+        rate30Chf: r30,
+        priceLabel: `CHF ${r60} / 60 Min. (CHF ${r30} / 30 Min.)`,
+      });
+      existingIds.add(pid);
+      added++;
+    }
+
+    if (added > 0) {
+      fs.writeFileSync(offersPath, JSON.stringify(offers, null, 2), "utf8");
+    }
+
+    return res.status(200).json({ ok: true, added, total: offers.length });
+  } catch (e: any) {
+    return res.status(500).json({ ok: false, error: e?.message || "Import error" });
+  }
 }

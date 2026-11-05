@@ -3,7 +3,7 @@
   "portalsIndexed": 56,
   "totalRawListingsInVault": 5576,
   "totalEstablishmentsInVault": 305,
-  "uniqueFrontendProfiles": 2526,
+  "uniqueFrontendProfiles": 2515,
   "unlockedRealPhones": 995,
   "mobileWhatsappReadyPhones": 974,
   "cantonBreakdown": {
@@ -31,5 +31,6 @@
     "UR": 2,
     "JU": 2,
     "NW": 1
-  }
+  },
+  "lastDeltaScrapeAt": "2026-11-05T23:41:36.027Z"
 }
