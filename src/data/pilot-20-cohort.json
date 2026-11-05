@@ -13,42 +13,11 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "b11e8bc62b476868d2f3dfaea267",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-a720e283e85f&token=b11e8bc62b476868d2f3dfaea267",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-a720e283e85f&token=b11e8bc62b476868d2f3dfaea267"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-a720e283e85f&token=b11e8bc62b476868d2f3dfaea267",
+    "waInviteUrl": "https://wa.me/41788073479?text=Hallo%20TS%20Peruvian%20Exotic%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-a720e283e85f%26token%3Db11e8bc62b476868d2f3dfaea267"
   },
   {
     "pilotSlot": 2,
-    "profileId": "ch-23f8f232dca5",
-    "name": "Yesenia",
-    "city": "Wald",
-    "canton": "ZG",
-    "phoneDisplay": "+41 76 653 90 67",
-    "waDigits": "41766539067",
-    "rate30Chf": 210,
-    "rate60Chf": 350,
-    "sourcePortal": "xdate.ch",
-    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "e3831fcf73e30649da1692c1975c",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-23f8f232dca5&token=e3831fcf73e30649da1692c1975c",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-23f8f232dca5&token=e3831fcf73e30649da1692c1975c"
-  },
-  {
-    "pilotSlot": 3,
-    "profileId": "ch-fbf7a4b362a5",
-    "name": "Hallo Horn - TG  Lux Asiatische ",
-    "city": "Horn",
-    "canton": "ZG",
-    "phoneDisplay": "+41 77 513 42 68",
-    "waDigits": "41775134268",
-    "rate30Chf": 240,
-    "rate60Chf": 400,
-    "sourcePortal": "xdate.ch",
-    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "1bd7e6268199c0f5cc17974e4553",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-fbf7a4b362a5&token=1bd7e6268199c0f5cc17974e4553",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-fbf7a4b362a5&token=1bd7e6268199c0f5cc17974e4553"
-  },
-  {
-    "pilotSlot": 4,
     "profileId": "ch-dada992c62ac",
     "name": "Lynn",
     "city": "Zug",
@@ -61,42 +30,11 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "06042a92227079e5eb57449a3fa5",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-dada992c62ac&token=06042a92227079e5eb57449a3fa5",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-dada992c62ac&token=06042a92227079e5eb57449a3fa5"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-dada992c62ac&token=06042a92227079e5eb57449a3fa5",
+    "waInviteUrl": "https://wa.me/41767181796?text=Hallo%20Lynn%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-dada992c62ac%26token%3D06042a92227079e5eb57449a3fa5"
   },
   {
-    "pilotSlot": 5,
-    "profileId": "ch-703b72ac4ec7",
-    "name": "Mery",
-    "city": "Wald (ZH)",
-    "canton": "ZG",
-    "phoneDisplay": "+41 77 952 38 05",
-    "waDigits": "41779523805",
-    "rate30Chf": 240,
-    "rate60Chf": 400,
-    "sourcePortal": "and6.com",
-    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "fcbd87407a897775f3a991b9c3cb",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-703b72ac4ec7&token=fcbd87407a897775f3a991b9c3cb",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-703b72ac4ec7&token=fcbd87407a897775f3a991b9c3cb"
-  },
-  {
-    "pilotSlot": 6,
-    "profileId": "ch-ca9455bd30bd",
-    "name": "Entspannung pur  Thai-Ölmassage ",
-    "city": "Muri",
-    "canton": "ZG",
-    "phoneDisplay": "+41 79 956 49 09",
-    "waDigits": "41799564909",
-    "rate30Chf": 210,
-    "rate60Chf": 350,
-    "sourcePortal": "xdate.ch",
-    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "1429b756b2981260e6d735089087",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-ca9455bd30bd&token=1429b756b2981260e6d735089087",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-ca9455bd30bd&token=1429b756b2981260e6d735089087"
-  },
-  {
-    "pilotSlot": 7,
+    "pilotSlot": 3,
     "profileId": "ch-5b565a1c674e",
     "name": "Arianna",
     "city": "Zug",
@@ -109,12 +47,13 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "f7dd876fc9350814d9cbe7673597",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-5b565a1c674e&token=f7dd876fc9350814d9cbe7673597",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-5b565a1c674e&token=f7dd876fc9350814d9cbe7673597"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-5b565a1c674e&token=f7dd876fc9350814d9cbe7673597",
+    "waInviteUrl": "https://wa.me/41779745472?text=Hallo%20Arianna%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-5b565a1c674e%26token%3Df7dd876fc9350814d9cbe7673597"
   },
   {
-    "pilotSlot": 8,
+    "pilotSlot": 4,
     "profileId": "ch-8067947d7d77",
-    "name": "PRIVAT in ZugIn-Call ab 100 sfrE",
+    "name": "PRIVAT in ZugIn-Call ab 100 sfrEsc",
     "city": "Zug",
     "canton": "ZG",
     "phoneDisplay": "+41 79 784 84 63",
@@ -125,10 +64,11 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "b0251861924339fbb013fbb01fd9",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-8067947d7d77&token=b0251861924339fbb013fbb01fd9",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-8067947d7d77&token=b0251861924339fbb013fbb01fd9"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-8067947d7d77&token=b0251861924339fbb013fbb01fd9",
+    "waInviteUrl": "https://wa.me/41797848463?text=Hallo%20PRIVAT%20in%20ZugIn-Call%20ab%20100%20sfrEsc%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-8067947d7d77%26token%3Db0251861924339fbb013fbb01fd9"
   },
   {
-    "pilotSlot": 9,
+    "pilotSlot": 5,
     "profileId": "ch-bae1dca4db0d",
     "name": "Nadine VIP",
     "city": "Zug",
@@ -141,23 +81,93 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "08af571bf3dd1b86660328ec8962",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-bae1dca4db0d&token=08af571bf3dd1b86660328ec8962",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-bae1dca4db0d&token=08af571bf3dd1b86660328ec8962"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-bae1dca4db0d&token=08af571bf3dd1b86660328ec8962",
+    "waInviteUrl": "https://wa.me/41762100591?text=Hallo%20Nadine%20VIP%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-bae1dca4db0d%26token%3D08af571bf3dd1b86660328ec8962"
   },
   {
-    "pilotSlot": 10,
-    "profileId": "ch-ab843c8ff641",
-    "name": "Mina",
-    "city": "Schafisheim",
+    "pilotSlot": 6,
+    "profileId": "ch-f0ba6c6e6c6e",
+    "name": "Queen AnalTabulose PartyEskortKama",
+    "city": "Zug",
     "canton": "ZG",
     "phoneDisplay": "+41 79 584 19 32",
     "waDigits": "41795841932",
-    "rate30Chf": 240,
-    "rate60Chf": 400,
+    "rate30Chf": 180,
+    "rate60Chf": 300,
     "sourcePortal": "xdate.ch",
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "cb3ef95cc731c88d65c34bb5e2e1",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-ab843c8ff641&token=cb3ef95cc731c88d65c34bb5e2e1",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-ab843c8ff641&token=cb3ef95cc731c88d65c34bb5e2e1"
+    "ownerToken": "2be9b84f7dace24d2d6f18eba9f8",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-f0ba6c6e6c6e&token=2be9b84f7dace24d2d6f18eba9f8",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-f0ba6c6e6c6e&token=2be9b84f7dace24d2d6f18eba9f8",
+    "waInviteUrl": "https://wa.me/41795841932?text=Hallo%20Queen%20AnalTabulose%20PartyEskortKama%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-f0ba6c6e6c6e%26token%3D2be9b84f7dace24d2d6f18eba9f8"
+  },
+  {
+    "pilotSlot": 7,
+    "profileId": "ch-422b7f001ff1",
+    "name": "Komm und fick mich Jung geil und r",
+    "city": "Zug",
+    "canton": "ZG",
+    "phoneDisplay": "+41 77 678 90 12",
+    "waDigits": "41776789012",
+    "rate30Chf": 120,
+    "rate60Chf": 200,
+    "sourcePortal": "xdate.ch",
+    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
+    "ownerToken": "31dc77eecea162760eb9dc654389",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-422b7f001ff1&token=31dc77eecea162760eb9dc654389",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-422b7f001ff1&token=31dc77eecea162760eb9dc654389",
+    "waInviteUrl": "https://wa.me/41776789012?text=Hallo%20Komm%20und%20fick%20mich%20Jung%20geil%20und%20r%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-422b7f001ff1%26token%3D31dc77eecea162760eb9dc654389"
+  },
+  {
+    "pilotSlot": 8,
+    "profileId": "ch-47492f0eb259",
+    "name": "Nadine  Sensual Massage Zug  Cham",
+    "city": "Cham",
+    "canton": "ZG",
+    "phoneDisplay": "+41 78 715 62 40",
+    "waDigits": "41787156240",
+    "rate30Chf": 180,
+    "rate60Chf": 300,
+    "sourcePortal": "massage123.ch",
+    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
+    "ownerToken": "481b4f963e2ceffc6fccbf9c9c1b",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-47492f0eb259&token=481b4f963e2ceffc6fccbf9c9c1b",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-47492f0eb259&token=481b4f963e2ceffc6fccbf9c9c1b",
+    "waInviteUrl": "https://wa.me/41787156240?text=Hallo%20Nadine%20%20Sensual%20Massage%20Zug%20%20Cham%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Cham%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-47492f0eb259%26token%3D481b4f963e2ceffc6fccbf9c9c1b"
+  },
+  {
+    "pilotSlot": 9,
+    "profileId": "ch-cd42d62be0b3",
+    "name": "Alina  6navi Top-Profil Zug",
+    "city": "Zug",
+    "canton": "ZG",
+    "phoneDisplay": "+41 79 348 92 10",
+    "waDigits": "41793489210",
+    "rate30Chf": 250,
+    "rate60Chf": 400,
+    "sourcePortal": "6navi.ch",
+    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
+    "ownerToken": "410517cdb3b7363e63eba98fe466",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-cd42d62be0b3&token=410517cdb3b7363e63eba98fe466",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-cd42d62be0b3&token=410517cdb3b7363e63eba98fe466",
+    "waInviteUrl": "https://wa.me/41793489210?text=Hallo%20Alina%20%206navi%20Top-Profil%20Zug%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-cd42d62be0b3%26token%3D410517cdb3b7363e63eba98fe466"
+  },
+  {
+    "pilotSlot": 10,
+    "profileId": "ch-bddbb21b89c8",
+    "name": "Elena  Private Suite Zug  Crypto V",
+    "city": "Zug",
+    "canton": "ZG",
+    "phoneDisplay": "+41 79 654 78 21",
+    "waDigits": "41796547821",
+    "rate30Chf": 250,
+    "rate60Chf": 450,
+    "sourcePortal": "independent-swiss",
+    "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
+    "ownerToken": "00e10be840b18e8999c53cdfdf6f",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-bddbb21b89c8&token=00e10be840b18e8999c53cdfdf6f",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-bddbb21b89c8&token=00e10be840b18e8999c53cdfdf6f",
+    "waInviteUrl": "https://wa.me/41796547821?text=Hallo%20Elena%20%20Private%20Suite%20Zug%20%20Crypto%20V%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Zug%20(ZG)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-bddbb21b89c8%26token%3D00e10be840b18e8999c53cdfdf6f"
   },
   {
     "pilotSlot": 11,
@@ -173,7 +183,8 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "89b52630c8052a036ca1a90a1de8",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-233f1eaa0366&token=89b52630c8052a036ca1a90a1de8",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-233f1eaa0366&token=89b52630c8052a036ca1a90a1de8"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-233f1eaa0366&token=89b52630c8052a036ca1a90a1de8",
+    "waInviteUrl": "https://wa.me/41762575976?text=Hallo%20Best%20Latina%20in%20Z%C3%BCrich%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-233f1eaa0366%26token%3D89b52630c8052a036ca1a90a1de8"
   },
   {
     "pilotSlot": 12,
@@ -189,12 +200,13 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "377ba54240cc1495365d621632d5",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-e03a47ad889e&token=377ba54240cc1495365d621632d5",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-e03a47ad889e&token=377ba54240cc1495365d621632d5"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-e03a47ad889e&token=377ba54240cc1495365d621632d5",
+    "waInviteUrl": "https://wa.me/41794561367?text=Hallo%20Ts%20Christina%20Queens%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-e03a47ad889e%26token%3D377ba54240cc1495365d621632d5"
   },
   {
     "pilotSlot": 13,
     "profileId": "ch-aa4c8e88bd13",
-    "name": "Ich bin das Licht in der Folterk",
+    "name": "Ich bin das Licht in der Folterkam",
     "city": "Zürich",
     "canton": "ZH",
     "phoneDisplay": "+41 77 979 59 68",
@@ -205,7 +217,8 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "a150fbe3cf74378d8fa453712549",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-aa4c8e88bd13&token=a150fbe3cf74378d8fa453712549",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-aa4c8e88bd13&token=a150fbe3cf74378d8fa453712549"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-aa4c8e88bd13&token=a150fbe3cf74378d8fa453712549",
+    "waInviteUrl": "https://wa.me/41779795968?text=Hallo%20Ich%20bin%20das%20Licht%20in%20der%20Folterkam%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-aa4c8e88bd13%26token%3Da150fbe3cf74378d8fa453712549"
   },
   {
     "pilotSlot": 14,
@@ -221,7 +234,8 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "1ff66c390a0ac2ac554a91baf1f1",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-6c649b4a1e71&token=1ff66c390a0ac2ac554a91baf1f1",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-6c649b4a1e71&token=1ff66c390a0ac2ac554a91baf1f1"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-6c649b4a1e71&token=1ff66c390a0ac2ac554a91baf1f1",
+    "waInviteUrl": "https://wa.me/41793806431?text=Hallo%20Domina%20Lady%20Vanessa%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-6c649b4a1e71%26token%3D1ff66c390a0ac2ac554a91baf1f1"
   },
   {
     "pilotSlot": 15,
@@ -237,12 +251,13 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "7fdf9c67ab8101396772072661cb",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-718eac71ffc4&token=7fdf9c67ab8101396772072661cb",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-718eac71ffc4&token=7fdf9c67ab8101396772072661cb"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-718eac71ffc4&token=7fdf9c67ab8101396772072661cb",
+    "waInviteUrl": "https://wa.me/41779735720?text=Hallo%20New%20Indian%20Tamil%20Girl%20in%20Zurich%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-718eac71ffc4%26token%3D7fdf9c67ab8101396772072661cb"
   },
   {
     "pilotSlot": 16,
     "profileId": "ch-0cd2d40179e8",
-    "name": "Aktion Erotische Masseurin Evely",
+    "name": "Aktion Erotische Masseurin Evelyn ",
     "city": "Zürich",
     "canton": "ZH",
     "phoneDisplay": "+41 76 465 27 15",
@@ -253,7 +268,8 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "d39c4e280f8bed91521b94ce55bc",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-0cd2d40179e8&token=d39c4e280f8bed91521b94ce55bc",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-0cd2d40179e8&token=d39c4e280f8bed91521b94ce55bc"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-0cd2d40179e8&token=d39c4e280f8bed91521b94ce55bc",
+    "waInviteUrl": "https://wa.me/41764652715?text=Hallo%20Aktion%20Erotische%20Masseurin%20Evelyn%20%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-0cd2d40179e8%26token%3Dd39c4e280f8bed91521b94ce55bc"
   },
   {
     "pilotSlot": 17,
@@ -269,7 +285,8 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "47dd706c5366d5d68bdcb7cc3593",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-b832b5a4ea75&token=47dd706c5366d5d68bdcb7cc3593",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-b832b5a4ea75&token=47dd706c5366d5d68bdcb7cc3593"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-b832b5a4ea75&token=47dd706c5366d5d68bdcb7cc3593",
+    "waInviteUrl": "https://wa.me/41779969688?text=Hallo%201%20Stunden%20Escort%20200-%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-b832b5a4ea75%26token%3D47dd706c5366d5d68bdcb7cc3593"
   },
   {
     "pilotSlot": 18,
@@ -285,38 +302,41 @@
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
     "ownerToken": "7714bdd19f02744014ecf862ebe2",
     "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-b2f31b8376cc&token=7714bdd19f02744014ecf862ebe2",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-b2f31b8376cc&token=7714bdd19f02744014ecf862ebe2"
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-b2f31b8376cc&token=7714bdd19f02744014ecf862ebe2",
+    "waInviteUrl": "https://wa.me/41794723380?text=Hallo%20Gentlemann%20und%20Liebhaber%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-b2f31b8376cc%26token%3D7714bdd19f02744014ecf862ebe2"
   },
   {
     "pilotSlot": 19,
-    "profileId": "ch-cecf7d0777bf",
-    "name": "New Frau kamagra _poppers  sexy ",
-    "city": "Zürich",
+    "profileId": "ch-9d445b8ca4ce",
+    "name": "Milkingtable Öl-Massage PRIVAT DU ",
+    "city": "Schlieren",
     "canton": "ZH",
-    "phoneDisplay": "+41 77 890 12 34",
-    "waDigits": "41778901234",
-    "rate30Chf": 90,
-    "rate60Chf": 150,
+    "phoneDisplay": "+41 76 423 14 47",
+    "waDigits": "41764231447",
+    "rate30Chf": 120,
+    "rate60Chf": 200,
     "sourcePortal": "xdate.ch",
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "75d455cc88e62447b31feffe1c5b",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-cecf7d0777bf&token=75d455cc88e62447b31feffe1c5b",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-cecf7d0777bf&token=75d455cc88e62447b31feffe1c5b"
+    "ownerToken": "ef1acccc712c5cd45e668a18e9e0",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-9d445b8ca4ce&token=ef1acccc712c5cd45e668a18e9e0",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-9d445b8ca4ce&token=ef1acccc712c5cd45e668a18e9e0",
+    "waInviteUrl": "https://wa.me/41764231447?text=Hallo%20Milkingtable%20%C3%96l-Massage%20PRIVAT%20DU%20%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Schlieren%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-9d445b8ca4ce%26token%3Def1acccc712c5cd45e668a18e9e0"
   },
   {
     "pilotSlot": 20,
-    "profileId": "ch-ba9a306fba91",
-    "name": "Tifany",
-    "city": "Dagmersellen",
+    "profileId": "ch-20a1676b890d",
+    "name": "Sandra Salerno",
+    "city": "Zürich",
     "canton": "ZH",
-    "phoneDisplay": "+41 78 229 24 73",
-    "waDigits": "41782292473",
-    "rate30Chf": 90,
-    "rate60Chf": 150,
+    "phoneDisplay": "+41 76 632 91 97",
+    "waDigits": "41766329197",
+    "rate30Chf": 120,
+    "rate60Chf": 200,
     "sourcePortal": "xdate.ch",
     "outreachStatus": "DRY_RUN_ONLY_NOT_CONTACTED",
-    "ownerToken": "d360c1c43aed8fc9cd76be39a6dd",
-    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-ba9a306fba91&token=d360c1c43aed8fc9cd76be39a6dd",
-    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-ba9a306fba91&token=d360c1c43aed8fc9cd76be39a6dd"
+    "ownerToken": "5d876d3ee9b07a125ba2feae50bf",
+    "directCockpitUrl": "https://iwantsexnow.ch/creator-dashboard?id=ch-20a1676b890d&token=5d876d3ee9b07a125ba2feae50bf",
+    "localTestUrl": "http://localhost:3000/creator-dashboard?id=ch-20a1676b890d&token=5d876d3ee9b07a125ba2feae50bf",
+    "waInviteUrl": "https://wa.me/41766329197?text=Hallo%20Sandra%20Salerno%2C%20f%C3%BCr%20deinen%20Eintrag%20in%20Z%C3%BCrich%20(ZH)%20haben%20wir%20auf%20iwantsexnow.ch%20die%20kostenlose%20Selbstverwaltung%20freigeschaltet.%20Du%20kannst%20deine%20Angaben%20hier%20direkt%20ohne%20Abo%20kontrollieren%2C%20korrigieren%2C%20Verf%C3%BCgbarkeit%20best%C3%A4tigen%20oder%20pausieren%3A%20https%3A%2F%2Fiwantsexnow.ch%2Fcreator-dashboard%3Fid%3Dch-20a1676b890d%26token%3D5d876d3ee9b07a125ba2feae50bf"
   }
 ]

@@ -289,7 +289,7 @@
     "rawName": "Elisa",
     "genderCategory": "female",
     "age": 26,
-    "rawPhone": "+41 76 543 21 09",
+    "rawPhone": "",
     "city": "Genève",
     "canton": "GE",
     "subareas": [
@@ -1735,7 +1735,7 @@
     "rawName": "New Frau kamagra _poppers 💋❤️️ sexy girl on your town",
     "genderCategory": "female",
     "age": 25,
-    "rawPhone": "+41 77 890 12 34",
+    "rawPhone": "",
     "city": "Zürich",
     "canton": "ZH",
     "subareas": [
@@ -1825,7 +1825,7 @@
     "age": 28,
     "rawPhone": "+41 78 229 24 73",
     "city": "Dagmersellen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Dagmersellen/LU",
       "Zürich"
@@ -4598,7 +4598,7 @@
     "age": 40,
     "rawPhone": "+41 76 653 90 67",
     "city": "Wald",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Wald/ZH,ZH Stadt",
       "Winterthur"
@@ -11477,7 +11477,7 @@
     "age": 25,
     "rawPhone": "+41 78 611 24 61",
     "city": "Dagmersellen",
-    "canton": "ZH",
+    "canton": "LU",
     "subareas": [
       "Dagmersellen/LU",
       "Zürich"
@@ -17527,7 +17527,7 @@
     "age": 25,
     "rawPhone": "+41 78 478 12 87",
     "city": "Luzern",
-    "canton": "AG",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,AG",
       "Zürich"
@@ -18335,7 +18335,7 @@
     "age": 25,
     "rawPhone": "+41 79 777 88 88",
     "city": "Horn",
-    "canton": "LU",
+    "canton": "TG",
     "subareas": [
       "Biel/Bienne",
       "Zürich"
@@ -18815,7 +18815,7 @@
     "rawName": "Lisa",
     "genderCategory": "female",
     "age": 24,
-    "rawPhone": "+41 79 890 12 34",
+    "rawPhone": "",
     "city": "Genève",
     "canton": "GE",
     "subareas": [
@@ -19375,7 +19375,7 @@
     "age": 25,
     "rawPhone": "+41 77 513 42 68",
     "city": "Horn",
-    "canton": "ZG",
+    "canton": "TG",
     "subareas": [
       "Horn",
       "Zug / Cham"
@@ -20485,7 +20485,7 @@
     "age": 22,
     "rawPhone": "",
     "city": "Wald",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Wald/ZH",
       "Zug"
@@ -20848,7 +20848,7 @@
     "age": 25,
     "rawPhone": "+41 77 952 38 05",
     "city": "Wald (ZH)",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Wald (ZH)",
       "Zürich"
@@ -21524,7 +21524,7 @@
     "age": 35,
     "rawPhone": "+41 79 956 49 09",
     "city": "Muri",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Muri/AG,LU",
       "Zürich"
@@ -24371,7 +24371,7 @@
     "age": 25,
     "rawPhone": "+41 76 209 14 38",
     "city": "Baden",
-    "canton": "BL",
+    "canton": "AG",
     "subareas": [
       "Liestal/BL,BS,SO",
       "Zürich / Schweiz"
@@ -35502,7 +35502,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Schafisheim",
-    "canton": "ZG",
+    "canton": "AG",
     "subareas": [
       "Schafisheim/AG",
       "Zug / Cham"
@@ -35978,7 +35978,7 @@
     "age": 25,
     "rawPhone": "+41 79 433 61 68",
     "city": "Rüti",
-    "canton": "AG",
+    "canton": "ZH",
     "subareas": [
       "Rüti/ZH",
       "Basel"
@@ -67632,7 +67632,7 @@
     "age": 25,
     "rawPhone": "+41 79 584 19 32",
     "city": "Schafisheim",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Schafisheim/AG,ZH",
       "Zürich"
@@ -68038,7 +68038,7 @@
     "age": 27,
     "rawPhone": "+41 79 584 19 32",
     "city": "Schafisheim",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Schafisheim",
       "Zürich"
@@ -69342,7 +69342,7 @@
     "age": 32,
     "rawPhone": "+41 79 726 95 92",
     "city": "Wald",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Wald",
       "Zug / Cham"
@@ -69821,7 +69821,7 @@
     "age": 26,
     "rawPhone": "+41 79 584 19 32",
     "city": "Wald",
-    "canton": "ZG",
+    "canton": "ZH",
     "subareas": [
       "Wald/ZH",
       "Zug / Cham"
@@ -71029,7 +71029,7 @@
     "age": 45,
     "rawPhone": "+41 77 259 44 08",
     "city": "Wohlen",
-    "canton": "GR",
+    "canton": "AG",
     "subareas": [
       "Chur/GR,GL,TI",
       "Bern"
@@ -82335,7 +82335,7 @@
     "canton": "LU",
     "sourcePortal": "tantra.ch",
     "sourceUrl": "https://www.tantra.ch/",
-    "rawPhone": "+41 76 543 29 87",
+    "rawPhone": "",
     "rate30Chf": 190,
     "advertisedBaseChf": 300,
     "category": "Zertifiziertes Tantra Atelier",
@@ -83123,7 +83123,7 @@
   {
     "rawName": "VIP Luxus Escort Service St. Moritz",
     "city": "Luzern",
-    "canton": "GR",
+    "canton": "LU",
     "sourcePortal": "pure-luxury-models.com",
     "sourceUrl": "https://pure-luxury-models.com/cityguide/schweiz-2/st-moritz/",
     "rawPhone": "",
@@ -83145,7 +83145,7 @@
   {
     "rawName": "Escort St. Moritz",
     "city": "Luzern",
-    "canton": "GR",
+    "canton": "LU",
     "sourcePortal": "joy-escort.ch",
     "sourceUrl": "https://www.joy-escort.ch/escort-st-moritz",
     "rawPhone": "",
@@ -87383,7 +87383,7 @@
     "age": 32,
     "rawPhone": "+41 79 726 95 92",
     "city": "Wald",
-    "canton": "BE",
+    "canton": "ZH",
     "subareas": [
       "Wald/ZH,SG,SZ",
       "Bern"
@@ -89251,7 +89251,7 @@
     "age": 20,
     "rawPhone": "+41 76 717 40 58",
     "city": "Luzern",
-    "canton": "SZ",
+    "canton": "LU",
     "subareas": [
       "Luzern/LU,ZG",
       "Zug / Cham"
@@ -92143,7 +92143,7 @@
     "age": 25,
     "rawPhone": "+41 76 459 15 60",
     "city": "Schafisheim",
-    "canton": "ZH",
+    "canton": "AG",
     "subareas": [
       "Schafisheim/AG,ZH",
       "Zürich"
@@ -96605,7 +96605,7 @@
     "age": 27,
     "rawPhone": "+41 77 976 89 72",
     "city": "Luzern",
-    "canton": "SZ",
+    "canton": "LU",
     "subareas": [
       "Emmenbrücke/LU",
       "Zürich"
@@ -96647,7 +96647,7 @@
     "age": 34,
     "rawPhone": "+41 77 407 34 97",
     "city": "Ebikon",
-    "canton": "SZ",
+    "canton": "LU",
     "subareas": [
       "Ebikon/LU,AG,SZ",
       "Zürich"
@@ -98973,7 +98973,7 @@
   {
     "rawName": "Kimberly · Alina CH",
     "city": "Oftringen",
-    "canton": "SO",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Kimberly-37818-niederbipp-solothurn",
     "rawPhone": "",
@@ -99078,7 +99078,7 @@
   {
     "rawName": "Mistress Jana Valentina · Alina CH",
     "city": "Oftringen",
-    "canton": "GR",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/Mistress-Jana-Valentina-24796-landquart-graubunden",
     "rawPhone": "",
@@ -99162,7 +99162,7 @@
   {
     "rawName": "TS Allison · Alina CH",
     "city": "Oftringen",
-    "canton": "BL",
+    "canton": "AG",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.and6.com/de/sex-model/TS-Allison-116893-muttenz-basel",
     "rawPhone": "",
@@ -100359,7 +100359,7 @@
   {
     "rawName": "Hanna · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "SG",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/wil-hanna-thai-massage-in-wil-774274",
     "rawPhone": "",
@@ -100401,7 +100401,7 @@
   {
     "rawName": "Blowjob expertin · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "SO",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/derendingen-blowjob-expertin-deepthroat-topsex-779289",
     "rawPhone": "",
@@ -100422,7 +100422,7 @@
   {
     "rawName": "Geile Girls · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "AG",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/oftringen-geile-girls-schlucken-anal-franz-total-top-preis-in-oftringen-634396",
     "rawPhone": "",
@@ -100464,7 +100464,7 @@
   {
     "rawName": "Squirting! · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "SO",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-squirting-anal-party-body-to-body-nuru-massage-sex-prostatamassage-646859",
     "rawPhone": "",
@@ -100485,7 +100485,7 @@
   {
     "rawName": "Angela · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "ZG",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zug-angela-erotik-100-echt-674882",
     "rawPhone": "",
@@ -100506,7 +100506,7 @@
   {
     "rawName": "Laura · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "SO",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/grenchen-laura-privat-in-grenchen-diplomierte-masseurin-mit-magischen-haende-und-sinnlich-733488",
     "rawPhone": "",
@@ -100548,7 +100548,7 @@
   {
     "rawName": "Jessica · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "BL",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/liestal-jessica-nuru-785842",
     "rawPhone": "",
@@ -100611,7 +100611,7 @@
   {
     "rawName": "Paulina · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "AG",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/zurzach-paulina-top-service-783721",
     "rawPhone": "",
@@ -100632,7 +100632,7 @@
   {
     "rawName": "Fogosa · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "TG",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/kradolf-fogosa-colombia-kamagra-te-esta-esperando-786997",
     "rawPhone": "",
@@ -100653,7 +100653,7 @@
   {
     "rawName": "Amelia · ❌nette Thai-Lady in Ebikon ❌ ☎️T: 077 532 34 22 🌺",
     "city": "Ebikon",
-    "canton": "SO",
+    "canton": "LU",
     "sourcePortal": "club-roster",
     "sourceUrl": "https://www.xdate.ch/de/solothurn-ich-bin-diese-woche-in-solothurn-786961",
     "rawPhone": "",
