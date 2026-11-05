@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-05T20:34:51.000Z",
+  "updatedAt": "2026-11-05T20:43:32.857Z",
   "portalsIndexed": 56,
   "totalRawListingsInVault": 5576,
   "totalEstablishmentsInVault": 305,
   "uniqueFrontendProfiles": 2526,
-  "unlockedRealPhones": 1077,
-  "mobileWhatsappReadyPhones": 1051,
+  "unlockedRealPhones": 998,
+  "mobileWhatsappReadyPhones": 977,
   "cantonBreakdown": {
     "GE": 459,
     "ZH": 325,
