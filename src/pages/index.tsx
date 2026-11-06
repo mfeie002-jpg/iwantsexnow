@@ -15,12 +15,10 @@ import {
   ShieldCheck,
   Heart,
   ArrowUpDown,
-  MapPin,
-  Phone,
   Lock,
-  ArrowRight,
   RotateCcw,
   KeyRound,
+  MapPin,
 } from "lucide-react";
 
 const FEATURE_MODULES = [
@@ -34,17 +32,29 @@ const FEATURE_MODULES = [
   { href: "/hotels", title: "Outcall-Hotels", sub: "Self-Check-in & Diskretion", icon: KeyRound, color: "text-[#C8A97E]" },
 ];
 
+const SWISS_HOTSPOT_PILLS = [
+  { label: "6300 Zug & Baar", canton: "ZG", q: "" },
+  { label: "8001/8004 Zürich", canton: "ZH", q: "Zürich" },
+  { label: "6003 Luzern", canton: "LU", q: "" },
+  { label: "5400 Baden / AG", canton: "AG", q: "" },
+  { label: "4051 Basel", canton: "BS", q: "" },
+  { label: "3011 Bern", canton: "BE", q: "" },
+  { label: "9000 St. Gallen", canton: "SG", q: "" },
+  { label: "1201 Genève", canton: "GE", q: "" },
+  { label: "6900 Lugano", canton: "TI", q: "" },
+];
+
 export default function HomePage() {
   const [serverStates, setServerStates] = useState<Record<string, any>>({});
   const [blockedIds, setBlockedIds] = useState<string[]>([]);
   const [favIds, setFavIds] = useState<string[]>([]);
 
-  // Filter- & Sortier-States
   const [cantonFilter, setCantonFilter] = useState<string>("ALL");
   const [rubricFilter, setRubricFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [onlyAvailable4h, setOnlyAvailable4h] = useState<boolean>(false);
   const [onlyVerified, setOnlyVerified] = useState<boolean>(false);
+  const [onlyWithWhatsApp, setOnlyWithWhatsApp] = useState<boolean>(false);
   const [maxRate60, setMaxRate60] = useState<number>(1200);
   const [sortBy, setSortBy] = useState<"recommended" | "available" | "price_asc" | "price_desc" | "age_asc">("recommended");
   const [visibleLimit, setVisibleLimit] = useState<number>(24);
@@ -89,16 +99,18 @@ export default function HomePage() {
       const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
       const isVerif = Boolean(st.identityVerified || o.identityVerified);
       const isFeatured = Boolean(st.featured);
+      const hasPhone = Boolean(o.rawPhone && String(o.rawPhone).startsWith("+41"));
 
       if (cantonFilter !== "ALL" && String(o.canton || "").toUpperCase() !== cantonFilter) continue;
       if (rubricFilter !== "ALL" && (o.rubric || "female") !== rubricFilter) continue;
       if (onlyAvailable4h && !isAvail) continue;
       if (onlyVerified && !isVerif) continue;
+      if (onlyWithWhatsApp && !hasPhone) continue;
       if (r60 > maxRate60) continue;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const hay = `${o.rawName || ""} ${o.city || ""} ${o.canton || ""} ${(o.includedTags || []).join(" ")}`.toLowerCase();
+        const hay = `${o.rawName || ""} ${o.city || ""} ${o.canton || ""} ${o.postalCode || ""} ${(o.includedTags || []).join(" ")}`.toLowerCase();
         if (!hay.includes(q)) continue;
       }
 
@@ -110,6 +122,7 @@ export default function HomePage() {
         isAvail,
         isVerif,
         isFeatured,
+        hasPhone,
       });
     }
 
@@ -122,13 +135,34 @@ export default function HomePage() {
       if (sortBy === "price_desc") return b.rate60Chf - a.rate60Chf;
       if (sortBy === "age_asc") return (a.age || 25) - (b.age || 25);
 
-      const scoreA = (a.isFeatured ? 800 : 0) + (a.isAvail ? 450 : 0) + (a.isVerif ? 250 : 0) + (a.rawPhone ? 100 : 0) + Number(a.curationScore || 75);
-      const scoreB = (b.isFeatured ? 800 : 0) + (b.isAvail ? 450 : 0) + (b.isVerif ? 250 : 0) + (b.rawPhone ? 100 : 0) + Number(b.curationScore || 75);
+      const scoreA =
+        (a.isFeatured ? 800 : 0) +
+        (a.isAvail ? 450 : 0) +
+        (a.isVerif ? 250 : 0) +
+        (a.hasPhone ? 120 : 0) +
+        Number(a.curationScore || 75);
+      const scoreB =
+        (b.isFeatured ? 800 : 0) +
+        (b.isAvail ? 450 : 0) +
+        (b.isVerif ? 250 : 0) +
+        (b.hasPhone ? 120 : 0) +
+        Number(b.curationScore || 75);
       return scoreB - scoreA;
     });
 
     return list;
-  }, [serverStates, blockedIds, cantonFilter, rubricFilter, searchQuery, onlyAvailable4h, onlyVerified, maxRate60, sortBy]);
+  }, [
+    serverStates,
+    blockedIds,
+    cantonFilter,
+    rubricFilter,
+    searchQuery,
+    onlyAvailable4h,
+    onlyVerified,
+    onlyWithWhatsApp,
+    maxRate60,
+    sortBy,
+  ]);
 
   const resetAll = () => {
     setCantonFilter("ALL");
@@ -136,6 +170,7 @@ export default function HomePage() {
     setSearchQuery("");
     setOnlyAvailable4h(false);
     setOnlyVerified(false);
+    setOnlyWithWhatsApp(false);
     setMaxRate60(1200);
     setSortBy("recommended");
   };
@@ -149,32 +184,29 @@ export default function HomePage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-8">
-        {/* Hero-Kommandozentrale */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-7">
+        {/* Hero-Kommandozentrale mit PLZ-Hotspot-Pills */}
         <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#141A29] via-[#121722] to-[#0D111A] border border-[#C8A97E]/40 space-y-5 shadow-2xl">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-extrabold">
-              <span>● ECHTZEIT-INDEX AKTIV</span>
-              <span>· {activeOffers.length} Profile im aktuellen Filter</span>
-              <span>· {((clubsData as any[]) || []).length} geprüfte Clubs</span>
+              <span>● LIVE SCHWEIZER INDEX</span>
+              <span>· {activeOffers.length} Profile aktiv</span>
+              <span>· {((clubsData as any[]) || []).length} Clubs</span>
             </div>
-            <div className="flex items-center gap-2 text-xs">
-              <Link href="/register" className="text-[#C8A97E] font-extrabold hover:underline">
-                + Eigenes Profil in 60s kostenlos eintragen (0% Provision) →
-              </Link>
-            </div>
+            <Link href="/register" className="text-xs text-[#C8A97E] font-extrabold hover:underline">
+              + Eigenes Profil kostenlos eintragen (0% Provision) →
+            </Link>
           </div>
 
           <div className="space-y-2 max-w-4xl">
             <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white leading-tight">
-              Das Schweizer Direktverzeichnis für unabhängige Begleitung, Tantra & geprüfte Studios.
+              Schweizer Escort-, Tantra- & Studio-Direktverzeichnis mit +41 Sofortkontakt.
             </h1>
             <p className="text-xs sm:text-sm text-gray-300">
-              Transparente <strong>30m/60m CHF-Honorare</strong>, echte <strong>+41 Direktnummern</strong> ohne Agentur-Umweg und <strong>80 % Sofort-Ausschüttung</strong> für Anbieterinnen im privaten Paid-Vault.
+              Geprüfte <strong>30m/60m CHF-Honorare</strong>, direkter <strong>1-Klick WhatsApp- & Telefonkontakt</strong> ohne Agentur-Aufschlag und <strong>80 % Direkt-Ausschüttung</strong> im privaten Creator-Vault.
             </p>
           </div>
 
-          {/* Schnell-Such- & Kantons-Leiste im Hero */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-1">
             <div className="sm:col-span-2 relative">
               <Search size={15} className="absolute left-3.5 top-3.5 text-[#C8A97E]" />
@@ -182,7 +214,7 @@ export default function HomePage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Name, Stadt (z.B. Zug, Baar, Zürich, Luzern) oder Service suchen..."
+                placeholder="PLZ (z.B. 6300, 8004), Stadt, Name oder Service eingeben..."
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white focus:border-[#C8A97E] outline-none"
               />
             </div>
@@ -217,6 +249,33 @@ export default function HomePage() {
               <option value="trans">Trans & TS Escort</option>
             </select>
           </div>
+
+          {/* PLZ- & Hotspot-Schnellauswahl */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
+            <span className="text-[11px] text-gray-400 font-bold shrink-0 flex items-center gap-1 mr-1">
+              <MapPin size={12} className="text-[#C8A97E]" /> Hotspots:
+            </span>
+            {SWISS_HOTSPOT_PILLS.map((h) => {
+              const isAct = cantonFilter === h.canton;
+              return (
+                <button
+                  key={h.label}
+                  type="button"
+                  onClick={() => {
+                    setCantonFilter(isAct ? "ALL" : h.canton);
+                    setSearchQuery(isAct ? "" : h.q);
+                  }}
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold shrink-0 cursor-pointer transition ${
+                    isAct
+                      ? "bg-[#C8A97E] text-[#0D111A]"
+                      : "bg-[#0D111A]/90 border border-white/10 text-gray-300 hover:border-[#C8A97E]"
+                  }`}
+                >
+                  {h.label}
+                </button>
+              );
+            })}
+          </div>
         </section>
 
         {/* 8-Modul Schnellzugriff-Grid */}
@@ -250,6 +309,15 @@ export default function HomePage() {
               }`}
             >
               ● Jetzt 4h verfügbar
+            </button>
+            <button
+              type="button"
+              onClick={() => setOnlyWithWhatsApp(!onlyWithWhatsApp)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer transition ${
+                onlyWithWhatsApp ? "bg-emerald-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+              }`}
+            >
+              💬 Mit +41 WhatsApp
             </button>
             <button
               type="button"
@@ -306,10 +374,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Haupt-Profil-Grid */}
+        {/* Haupt-Profil-Grid mit 1-Klick WhatsApp & Vault */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {activeOffers.slice(0, visibleLimit).map((p: any) => {
             const isFav = favIds.includes(p.id);
+            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
             return (
               <div
                 key={p.id}
@@ -378,13 +447,26 @@ export default function HomePage() {
                 </div>
 
                 <div className="p-4 pt-0 grid grid-cols-3 gap-1.5">
-                  <Link
-                    href={`/checkout?profileId=${encodeURIComponent(p.id)}`}
-                    className="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/10 border border-[#C8A97E]/30 text-[#C8A97E] font-bold text-[11px] text-center inline-flex items-center justify-center gap-1"
-                    title="Privaten 80/20 Paid-Vault freischalten"
-                  >
-                    <Lock size={11} /> Vault
-                  </Link>
+                  {cleanDigits ? (
+                    <a
+                      href={`https://wa.me/${cleanDigits}?text=${encodeURIComponent(
+                        `Hallo ${p.rawName}, ich habe dein Profil auf iwantsexnow.ch (${p.city}) gesehen.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-2 px-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-300 hover:text-[#07120B] border border-emerald-500/30 font-extrabold text-[11px] text-center transition"
+                      title="Direkter WhatsApp-Chat"
+                    >
+                      💬 WhatsApp
+                    </a>
+                  ) : (
+                    <Link
+                      href={`/checkout?profileId=${encodeURIComponent(p.id)}`}
+                      className="py-2 px-2 rounded-xl bg-white/5 hover:bg-white/10 border border-[#C8A97E]/30 text-[#C8A97E] font-bold text-[11px] text-center inline-flex items-center justify-center gap-1"
+                    >
+                      <Lock size={11} /> Vault
+                    </Link>
+                  )}
                   <Link
                     href={`/profile/${encodeURIComponent(p.id)}`}
                     className="col-span-2 py-2 px-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-[11px] text-center"
@@ -408,48 +490,6 @@ export default function HomePage() {
             </button>
           </div>
         )}
-
-        {/* SEO- & 2D-Kategorie-Matrix im Footer-Bereich der Startseite */}
-        <section className="p-6 rounded-2xl bg-[#121722] border border-white/10 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-                DIREKTEINSTIEG NACH STADT & SPEZIAL-RUBRIK (2D-INDEX)
-              </div>
-              <h2 className="text-lg font-serif font-bold text-white mt-0.5">
-                Verifizierte Schweizer Regionen & Services im Direktzugriff
-              </h2>
-            </div>
-            <Link href="/search-atlas" className="text-xs font-bold text-[#C8A97E] hover:underline">
-              Kompletter Schweizer Such-Atlas →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
-            {[
-              { href: "/kategorie/zug/girlfriend-experience", label: "GFE Escort Zug (ZG)" },
-              { href: "/kategorie/zug/tantra-massage", label: "Tantra Massage Zug (ZG)" },
-              { href: "/kategorie/zug/haus-und-hotelbesuche", label: "Hotel-Outcall Zug (ZG)" },
-              { href: "/kategorie/zuerich/girlfriend-experience", label: "GFE Escort Zürich (ZH)" },
-              { href: "/kategorie/zuerich/tantra-massage", label: "Tantra Massage Zürich (ZH)" },
-              { href: "/kategorie/zuerich/domina-bdsm", label: "Domina & BDSM Zürich (ZH)" },
-              { href: "/kategorie/luzern/girlfriend-experience", label: "Escort Luzern (LU)" },
-              { href: "/kategorie/baden/tantra-massage", label: "Massage Baden / Aargau (AG)" },
-              { href: "/kategorie/basel/girlfriend-experience", label: "Escort Basel (BS)" },
-              { href: "/kategorie/bern/girlfriend-experience", label: "Escort Bern (BE)" },
-              { href: "/kategorie/geneve/girlfriend-experience", label: "Escort Genève (GE)" },
-              { href: "/kategorie/lugano/girlfriend-experience", label: "Escort Lugano (TI)" },
-            ].map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="p-2.5 rounded-xl bg-[#0D111A] border border-white/10 hover:border-[#C8A97E] text-gray-300 hover:text-white font-semibold truncate"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </section>
       </main>
     </div>
   );

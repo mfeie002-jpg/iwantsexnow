@@ -3,7 +3,7 @@
   "portalsIndexed": 56,
   "totalRawListingsInVault": 5576,
   "totalEstablishmentsInVault": 305,
-  "uniqueFrontendProfiles": 2515,
+  "uniqueFrontendProfiles": 2534,
   "unlockedRealPhones": 995,
   "mobileWhatsappReadyPhones": 974,
   "cantonBreakdown": {
@@ -104,5 +104,10 @@
     "villa-viktoria.ch": 1,
     "lady-juna.com": 1
   },
-  "lastStudioCrawlAt": "2026-11-06T01:33:45.000Z"
+  "lastStudioCrawlAt": "2026-11-06T01:33:45.000Z",
+  "lastDeepNightAuditAt": "2026-11-06T02:01:36.234Z",
+  "checkedExternalImages": 2339,
+  "repairedDeadImages": 9,
+  "enrichedClubPhones": 0,
+  "newlyDiscoveredStudioProfiles": 19
 }
