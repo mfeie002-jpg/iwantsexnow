@@ -24,7 +24,9 @@ jobs:
         run: node scripts/run-delta-scraper.mjs
 
       - name: Run Swiss Canton & PLZ Disambiguator
-        run: node scripts/scrape-swiss-cantons.mjs
+        run: |
+          node scripts/scrape-swiss-cantons.mjs
+          node scripts/crawl-swiss-studios-live.mjs
 
       - name: Commit & Push updated Swiss index if changed
         run: |
