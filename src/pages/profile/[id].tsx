@@ -4,20 +4,7 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import offersData from "@/data/harvested-offers.json";
-import {
-  MapPin,
-  Phone,
-  ShieldCheck,
-  CheckCircle2,
-  Lock,
-  Heart,
-  Scale,
-  Sparkles,
-  MessageSquare,
-  AlertTriangle,
-  ArrowLeft,
-  ExternalLink,
-} from "lucide-react";
+import { MapPin, Lock, Heart, Scale, ArrowLeft } from "lucide-react";
 
 function normalizeSwissPhone(raw: any): string | null {
   const digits = String(raw || "").replace(/\D/g, "");
@@ -60,7 +47,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       rate60Chf: Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350)),
       thumbnail: o.thumbnail || "/images/escort-portrait-1.jpg",
       age: Number(o.age) || 25,
-      cupSize: o.cupSize || "C",
     }));
 
   return {
@@ -79,7 +65,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         heightCm: Number(found.heightCm) || 168,
         cupSize: found.cupSize || "C",
         hairColor: found.hairColor || "Brünett",
-        languages: Array.isArray(found.languages) ? found.languages : ["Deutsch", "Englisch"],
         includedTags: Array.isArray(found.includedTags)
           ? found.includedTags
           : ["Direktkontakt", "Diskreter Empfang", "Girlfriend Experience"],
@@ -93,8 +78,6 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
   const [liveState, setLiveState] = useState<any>({});
   const [isFav, setIsFav] = useState(false);
   const [vaultUnlocked, setVaultUnlocked] = useState(false);
-  const [claimContact, setClaimContact] = useState("");
-  const [claimSent, setClaimSent] = useState(false);
 
   useEffect(() => {
     fetch("/api/vault/metrics")
@@ -125,24 +108,6 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
     } catch {}
   };
 
-  const handleClaimRequest = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!claimContact.trim()) return;
-    try {
-      const r = await fetch("/api/claims/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          profileId: profile.id,
-          contact: claimContact,
-          note: `Schnell-Übernahme angefordert auf /profile/${profile.id}`,
-        }),
-      });
-      const d = await r.json();
-      if (d?.ok) setClaimSent(true);
-    } catch {}
-  };
-
   const rate60 = Math.max(100, Math.min(1200, Number(liveState.rate60Chf || profile.rate60Chf) || 350));
   const rate30 = Math.max(80, Math.min(800, Number(liveState.rate30Chf || profile.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10));
   const rate120 = Math.round((rate60 * 1.85) / 10) * 10;
@@ -162,33 +127,17 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
     return Array.from(new Set(base.filter(Boolean))).slice(0, 6);
   }, [profile.thumbnail, liveState.customPhotos]);
 
-  const personSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: `${profile.rawName} — Escort & Begleitung in ${profile.city} (${profile.canton})`,
-    description: profile.bio || `Verifiziertes Schweizer Profil in ${profile.city} (${profile.canton}).`,
-    areaServed: { "@type": "City", name: profile.city },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "CHF",
-      price: String(rate60),
-      availability: isAvailable4h ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
-    },
-  };
-
   return (
     <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-36">
       <SEO
-        title={`${profile.rawName} in ${profile.city} (${profile.canton}) · CHF ${rate60}.– / 60m & +41 Direktkontakt | iwantsexnow.ch`}
-        description={`${profile.rawName} (${profile.age} J., ${profile.heightCm} cm, Cup ${profile.cupSize}) in ${profile.city} (${profile.canton}). Honorar: CHF ${rate60}.– / 60 Min. (CHF ${rate30}.– / 30 Min.). Direkter +41 Kontakt ohne Provision.`}
+        title={`${profile.rawName} in ${profile.city} (${profile.canton}) · CHF ${rate60}.– / 60m | iwantsexnow.ch`}
+        description={`${profile.rawName} (${profile.age} J., ${profile.heightCm} cm, Cup ${profile.cupSize}) in ${profile.city} (${profile.canton}). Honorar: CHF ${rate60}.– / 60 Min.`}
         url={`https://iwantsexnow.ch/profile/${encodeURIComponent(profile.id)}`}
         image={profile.thumbnail}
-        schemaJson={personSchema}
       />
       <LuxuryHeader />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8">
-        {/* Top Breadcrumb & Quick Actions */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-gray-400">
             <Link href="/search" className="hover:text-white inline-flex items-center gap-1">
@@ -205,26 +154,24 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
               type="button"
               onClick={toggleFav}
               className={`px-3.5 py-2 rounded-xl border text-xs font-extrabold inline-flex items-center gap-1.5 cursor-pointer transition ${
-                isFav ? "bg-rose-500/20 border-rose-500 text-rose-300" : "bg-[#121722] border-white/15 text-gray-200 hover:border-[#C8A97E]"
+                isFav ? "bg-rose-500/20 border-rose-500 text-rose-300" : "bg-[#121722] border-white/15 text-gray-200"
               }`}
             >
               <Heart size={13} className={isFav ? "fill-rose-400 text-rose-400" : ""} />
-              <span>{isFav ? "Auf deiner Merkliste" : "Merken"}</span>
+              <span>{isFav ? "Gespeichert" : "Merken"}</span>
             </button>
             <Link
               href="/compare-escorts"
-              className="px-3.5 py-2 rounded-xl bg-[#121722] border border-white/15 hover:border-[#C8A97E] text-xs font-bold text-gray-200 inline-flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl bg-[#121722] border border-white/15 text-xs font-bold text-gray-200 inline-flex items-center gap-1.5"
             >
               <Scale size={13} className="text-[#C8A97E]" /> Vergleichen
             </Link>
           </div>
         </div>
 
-        {/* Haupt-Profil-Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Linke Spalte: Porträt & Foto-Galerie */}
           <div className="lg:col-span-5 space-y-3">
-            <div className="relative rounded-2xl overflow-hidden bg-[#121722] border border-[#C8A97E]/40 h-96 sm:h-[460px]">
+            <div className="relative rounded-2xl overflow-hidden bg-[#121722] border border-[#C8A97E]/40 h-96 sm:h-[440px]">
               <img
                 src={galleryPhotos[0]}
                 alt={profile.rawName}
@@ -241,32 +188,16 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                 )}
                 {isVerified && (
                   <span className="px-3 py-1 rounded-full bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold shadow">
-                    ✓ Geprüfte Originalfotos
+                    ✓ Geprüft
                   </span>
                 )}
               </div>
               <div className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl bg-black/85 border border-white/15 text-sm font-extrabold text-[#C8A97E]">
-                CHF {rate60}.– <span className="text-[11px] text-gray-300 font-normal">/ 60 Min.</span>
+                CHF {rate60}.– / 60m
               </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2.5">
-              {galleryPhotos.slice(1, 4).map((imgUrl, idx) => (
-                <div key={idx} className="h-28 rounded-xl overflow-hidden bg-[#121722] border border-white/10">
-                  <img
-                    src={imgUrl}
-                    alt={`${profile.rawName} Foto ${idx + 2}`}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";
-                    }}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-              ))}
             </div>
           </div>
 
-          {/* Rechte Spalte: Details, CHF-Tarife, +41 Kontakt & 80/20 Paid-Vault */}
           <div className="lg:col-span-7 space-y-5">
             <div className="p-6 rounded-2xl bg-[#121722] border border-white/10 space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -283,13 +214,6 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                 </span>
               </div>
 
-              {liveState.statusMessage && (
-                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-200 font-medium">
-                  <strong>Aktueller Live-Status:</strong> „{liveState.statusMessage}“
-                </div>
-              )}
-
-              {/* Transparente Schweizer CHF-Honorar-Matrix */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10">
                   <div className="text-[10px] text-gray-400 uppercase font-bold">30 Min. Express</div>
@@ -305,7 +229,6 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                 </div>
               </div>
 
-              {/* Physische Attribute & Sprachen */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
                 <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
                   <span className="text-gray-400 block text-[10px]">Alter</span>
@@ -316,7 +239,7 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                   <strong className="text-white">{profile.heightCm} cm</strong>
                 </div>
                 <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
-                  <span className="text-gray-400 block text-[10px]">Körbchengrösse</span>
+                  <span className="text-gray-400 block text-[10px]">Körbchen</span>
                   <strong className="text-white">Cup {profile.cupSize}</strong>
                 </div>
                 <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
@@ -325,22 +248,13 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                 </div>
               </div>
 
-              {/* Direkter +41 Kontakt-Block */}
               <div className="p-4 rounded-2xl bg-[#0D111A] border border-emerald-500/40 space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <div className="text-[10px] uppercase tracking-wider text-emerald-400 font-extrabold">
-                      DIREKTER SCHWEIZER +41 KONTAKT (0 % VERMITTLUNGSPROVISION)
-                    </div>
-                    <div className="text-base font-extrabold text-white mt-0.5">
-                      {cleanPhone || "Diskrete Termin-Anfrage über Direkt-Messenger"}
-                    </div>
-                  </div>
-                  <span className="px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300 text-[10px] font-bold">
-                    Bar / TWINT vor Ort
-                  </span>
+                <div className="text-[10px] uppercase tracking-wider text-emerald-400 font-extrabold">
+                  DIREKTER SCHWEIZER +41 KONTAKT (0 % PROVISION)
                 </div>
-
+                <div className="text-base font-extrabold text-white">
+                  {cleanPhone || "Diskrete Termin-Anfrage über Direkt-Messenger"}
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {cleanPhone ? (
                     <>
@@ -351,14 +265,12 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                         📞 Direkt anrufen ({cleanPhone})
                       </a>
                       <a
-                        href={`https://wa.me/${cleanPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
-                          `Hallo ${profile.rawName}, ich habe dein Profil auf iwantsexnow.ch (${profile.city}) gesehen und möchte gerne einen Termin anfragen.`
-                        )}`}
+                        href={`https://wa.me/${cleanPhone.replace(/\D/g, "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs text-center shadow"
                       >
-                        💬 WhatsApp Direkt-Chat starten →
+                        💬 WhatsApp Direkt-Chat →
                       </a>
                     </>
                   ) : (
@@ -372,131 +284,33 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                 </div>
               </div>
 
-              {/* Beschreibung & Inklusiv-Tags */}
-              <div className="space-y-2 pt-1">
-                <h2 className="text-sm font-serif font-bold text-white">Über {profile.rawName} & Service-Details</h2>
-                <p className="text-xs text-gray-300 leading-relaxed whitespace-pre-line">
-                  {liveState.bioOverride ||
-                    profile.bio ||
-                    `Willkommen auf meinem unabhängigen Schweizer Profil in ${profile.city} (${profile.canton}). Ich empfange dich diskret nach Terminvereinbarung (30 Min. CHF ${rate30}.– / 60 Min. CHF ${rate60}.–) oder besuche dich im Hotel (Outcall).`}
-                </p>
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {(profile.includedTags || []).map((t: string, i: number) => (
-                    <span key={i} className="px-2.5 py-1 rounded-lg bg-[#0D111A] border border-white/10 text-[11px] text-[#C8A97E] font-semibold">
-                      ✓ {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <p className="text-xs text-gray-300 leading-relaxed">
+                {profile.bio ||
+                  `Unabhängiges Schweizer Profil in ${profile.city} (${profile.canton}). Diskreter Empfang nach Vereinbarung (30 Min. CHF ${rate30}.– / 60 Min. CHF ${rate60}.–) oder Hotelbesuch (Outcall).`}
+              </p>
             </div>
 
-            {/* 80/20 Paid-Vault Tresor-Modul */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#171E2E] to-[#121722] border border-[#C8A97E]/50 space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-[#C8A97E] font-extrabold flex items-center gap-1.5">
-                    <Lock size={13} /> PRIVATER FOTO- & VIDEO-TRESOR (80 % DIREKT AN {profile.rawName.toUpperCase()})
-                  </div>
-                  <h2 className="text-lg font-serif font-bold text-white mt-0.5">
-                    {vaultUnlocked
-                      ? `✓ Tresor von ${profile.rawName} ist auf deinem Gerät freigeschaltet`
-                      : `Exklusive unzensierte Galerie & Clips von ${profile.rawName} freischalten`}
-                  </h2>
-                </div>
-                <span className="text-xl font-extrabold text-[#C8A97E]">CHF {vaultPriceChf}.–</span>
-              </div>
-
-              {vaultUnlocked ? (
-                <div className="grid grid-cols-3 gap-3 pt-1">
-                  {galleryPhotos.map((u, idx) => (
-                    <div key={idx} className="h-32 rounded-xl overflow-hidden border border-emerald-500/40">
-                      <img src={u} alt="Vault Unlocked" className="w-full h-full object-cover object-top" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-                  <p className="text-xs text-gray-300 max-w-md">
-                    Einmalige Freischaltung ohne Abo via TWINT, Karte oder Krypto. <strong>CHF {(vaultPriceChf * 0.8).toFixed(2)} (80 %)</strong> gehen direkt an {profile.rawName}.
-                  </p>
-                  <Link
-                    href={`/checkout?profileId=${encodeURIComponent(profile.id)}&amount=${vaultPriceChf}`}
-                    className="px-5 py-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider"
-                  >
-                    🔓 Tresor für CHF {vaultPriceChf}.– öffnen →
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Selbstverwaltungs-Claim & Sofort-Opt-Out */}
-            <div className="p-4 rounded-2xl bg-[#121722] border border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="p-6 rounded-2xl bg-[#171E2E] border border-[#C8A97E]/50 flex flex-wrap items-center justify-between gap-4">
               <div>
-                <strong className="text-white">Bist du {profile.rawName}?</strong>{" "}
-                <span className="text-gray-400">Übernimm dein Profil kostenlos (Preise, Fotos & 80% Vault selbst steuern):</span>
+                <div className="text-[10px] uppercase tracking-widest text-[#C8A97E] font-extrabold flex items-center gap-1.5">
+                  <Lock size={13} /> PRIVATER FOTO- & VIDEO-TRESOR (80 % AN {profile.rawName.toUpperCase()})
+                </div>
+                <h2 className="text-base font-serif font-bold text-white mt-0.5">
+                  {vaultUnlocked ? "✓ Tresor auf diesem Gerät freigeschaltet" : `Exklusive Galerie für CHF ${vaultPriceChf}.– freischalten`}
+                </h2>
               </div>
-              {claimSent ? (
-                <span className="text-emerald-400 font-bold">✓ Anfrage im Admin-Cockpit hinterlegt!</span>
-              ) : (
-                <form onSubmit={handleClaimRequest} className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={claimContact}
-                    onChange={(e) => setClaimContact(e.target.value)}
-                    placeholder="Deine +41 WhatsApp-Nr."
-                    className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-1.5 text-xs text-white"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-[#C8A97E] font-bold cursor-pointer"
-                  >
-                    Profil übernehmen
-                  </button>
-                </form>
-              )}
-              <Link href={`/report?profileId=${encodeURIComponent(profile.id)}`} className="text-rose-400/80 hover:text-rose-300 underline ml-auto">
-                1-Klick Opt-Out / Melden
+              <Link
+                href={`/checkout?profileId=${encodeURIComponent(profile.id)}&amount=${vaultPriceChf}`}
+                className="px-5 py-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider"
+              >
+                🔓 Tresor öffnen (CHF {vaultPriceChf}.–) →
               </Link>
             </div>
           </div>
         </section>
-
-        {/* Ähnliche Profile im selben Kanton */}
-        {Array.isArray(relatedProfiles) && relatedProfiles.length > 0 && (
-          <section className="space-y-4 pt-6 border-t border-white/10">
-            <h2 className="text-lg font-serif font-bold text-white">
-              Weitere geprüfte Profile im Kanton {profile.canton}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {relatedProfiles.map((rp: any) => (
-                <Link
-                  key={rp.id}
-                  href={`/profile/${encodeURIComponent(rp.id)}`}
-                  className="p-3.5 rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E] flex items-center gap-3 transition"
-                >
-                  <img
-                    src={rp.thumbnail || "/images/escort-portrait-1.jpg"}
-                    alt={rp.rawName}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";
-                    }}
-                    className="w-14 h-14 rounded-xl object-cover object-top shrink-0"
-                  />
-                  <div className="min-w-0">
-                    <div className="text-sm font-bold text-white truncate">{rp.rawName}</div>
-                    <div className="text-[11px] text-gray-400">
-                      {rp.city} ({rp.canton}) · {rp.age} J.
-                    </div>
-                    <div className="text-xs font-extrabold text-[#C8A97E]">CHF {rp.rate60Chf}.– / 60m</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
       </main>
 
-      {/* mobile-sticky-cta-bar: Fester Daumen-Kontaktbalken für +41 Anruf, WhatsApp & Paid-Vault */}
+      {/* mobile-sticky-cta-bar */}
       <div className="fixed bottom-[58px] lg:bottom-0 inset-x-0 z-40 bg-[#121722]/95 backdrop-blur-md border-t border-[#C8A97E]/40 px-3 py-2.5 shadow-2xl">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
           <div className="hidden sm:block min-w-0">
@@ -513,19 +327,17 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
               <>
                 <a
                   href={`tel:${cleanPhone.replace(/\s+/g, "")}`}
-                  className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-extrabold text-xs text-center"
+                  className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white font-extrabold text-xs text-center"
                 >
                   📞 Anrufen
                 </a>
                 <a
-                  href={`https://wa.me/${cleanPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
-                    `Hallo ${profile.rawName}, ich habe dein Profil auf iwantsexnow.ch (${profile.city}) gesehen und möchte gerne einen Termin anfragen.`
-                  )}`}
+                  href={`https://wa.me/${cleanPhone.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs text-center shadow"
+                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-500 text-[#07120B] font-extrabold text-xs text-center shadow"
                 >
-                  💬 WhatsApp Direkt
+                  💬 WhatsApp
                 </a>
               </>
             ) : (
@@ -533,13 +345,12 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
                 href={`/messages?profileId=${encodeURIComponent(profile.id)}`}
                 className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-500 text-[#07120B] font-extrabold text-xs text-center"
               >
-                📨 Termin anfragen
+                📨 Anfrage
               </Link>
             )}
-
             <Link
               href={`/checkout?profileId=${encodeURIComponent(profile.id)}&amount=${vaultPriceChf}`}
-              className="px-3.5 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs text-center shrink-0"
+              className="px-3.5 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs text-center shrink-0"
             >
               🔓 Vault (80%)
             </Link>

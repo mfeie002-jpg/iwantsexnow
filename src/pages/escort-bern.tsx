@@ -1,256 +1,174 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
-import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
-import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
-import { LayoutGrid, List as ListIcon } from "lucide-react";
+import offersData from "@/data/harvested-offers.json";
+import { MapPin, ArrowUpDown } from "lucide-react";
 
-const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
-];
+const TARGET_CANTON = "BE";
+const CITY_NAME = "Bern";
+const CITY_SLUG = "bern";
+const ROUTE_NAME = "escort-bern";
 
-export default function CityIntentPage() {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [onlyAvailable, setOnlyAvailable] = useState(false);
-  const [onlyWithPrice, setOnlyWithPrice] = useState(false);
+export default function CityEscortHubPage() {
+  const [serverStates, setServerStates] = useState<Record<string, any>>({});
+  const [onlyAvailable4h, setOnlyAvailable4h] = useState(false);
+  const [maxRate60, setMaxRate60] = useState<number>(1200);
+  const [sortBy, setSortBy] = useState<"recommended" | "available" | "price_asc" | "price_desc">("recommended");
 
-  const cityProfiles = useMemo(() => {
-    const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
-    const list = raw
-      .map((item: any, idx: number) => {
-        const geo = normalizeSwissGeo(item.city, item.canton);
-        const rate = Number(item.advertisedBaseChf) || null;
-        const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
-        const isClean =
-          String(item.sourcePortal || "").toLowerCase().includes("bemygirl") ||
-          String(item.sourcePortal || "").toLowerCase().includes("fgirl");
-        const availabilityConfirmed = idx < 12 && isClean && idx % 2 === 0;
-        return {
-          ...item,
-          id: item.dedupClusterId || "c-" + (idx + 1),
-          cleanCity: geo.cleanCity,
-          canton: geo.trueCanton,
-          advertisedBaseChf: rate,
-          durationLabel,
-          availabilityConfirmed,
-          confirmedMinutesAgo: availabilityConfirmed ? 6 : null,
-          isSelfManaged: Boolean(item.bookingMode === "direct" || availabilityConfirmed),
-          fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
-        };
+  useEffect(() => {
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.states) setServerStates(d.states);
       })
-      .filter((p) => p.canton === "BE");
+      .catch(() => {});
+  }, []);
 
-    return list.filter((p) => {
-      if (onlyAvailable && !p.availabilityConfirmed) return false;
-      if (onlyWithPrice && !p.advertisedBaseChf) return false;
-      return true;
+  const profiles = useMemo(() => {
+    const raw = (offersData as any[]) || [];
+    const list: any[] = [];
+
+    for (const o of raw) {
+      if (String(o.canton || "").toUpperCase() !== TARGET_CANTON) continue;
+      const pid = o.id || o.dedupClusterId;
+      const st = serverStates[pid] || {};
+      if (st.paused || st.hidden) continue;
+
+      const r60 = Math.max(100, Math.min(1200, Number(st.rate60Chf || o.advertisedBaseChf) || 350));
+      const r30 = Math.max(80, Math.min(800, Number(st.rate30Chf || o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+      const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
+
+      if (onlyAvailable4h && !isAvail) continue;
+      if (r60 > maxRate60) continue;
+
+      list.push({ ...o, id: pid, rate60Chf: r60, rate30Chf: r30, isAvail });
+    }
+
+    list.sort((a, b) => {
+      if (sortBy === "available") return (b.isAvail ? 1 : 0) - (a.isAvail ? 1 : 0) || a.rate60Chf - b.rate60Chf;
+      if (sortBy === "price_asc") return a.rate60Chf - b.rate60Chf;
+      if (sortBy === "price_desc") return b.rate60Chf - a.rate60Chf;
+      return (b.curationScore || 80) - (a.curationScore || 80);
     });
-  }, [onlyAvailable, onlyWithPrice]);
+
+    return list.slice(0, 48);
+  }, [serverStates, onlyAvailable4h, maxRate60, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
       <SEO
-        title={"Escorts & Studios in Bern (BE) – Profile, Preise & Quellen | iwantsexnow.ch"}
-        description={"Lokale Profile, Preise und Quellen für Bern City, Biel, Thun und das Mittelland."}
+        title={`Escort ${CITY_NAME} (${TARGET_CANTON}) - ${profiles.length} geprüfte Profile & +41 Direktkontakt | iwantsexnow.ch`}
+        description={`Unabhängige Escorts, Girlfriend Experience, Tantra & Hotelbesuche (Outcall) in ${CITY_NAME} (Kanton ${TARGET_CANTON}). Transparente 30m/60m CHF-Tarife ohne Provision.`}
+        url={`https://iwantsexnow.ch/${ROUTE_NAME}`}
       />
       <LuxuryHeader />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="hover:text-white">Schweiz Übersicht</Link>
-            <span>/</span>
-            <span className="text-[#C6A574] font-semibold">Bern (BE)</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <XeniaDoubtTrigger topic="status" label="Status-Erklärung" />
-            <XeniaDoubtTrigger topic="price" label="Preis-Einordnung" />
-            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
-          </div>
-        </div>
-
-        <div className="space-y-1">
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">Escorts & Studios in Bern (BE)</h1>
-          <p className="text-xs sm:text-sm text-gray-300">Lokale Profile, Preise und Quellen für Bern City, Biel, Thun und das Mittelland.</p>
-        </div>
-
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#1A1E27] border border-[#C6A574]/35 grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs">
-          <div className="lg:col-span-8 space-y-1">
-            <div className="font-bold text-[#E5C99B] uppercase tracking-wider text-[11px]">
-              Regionale Preis- & Konditionen-Einordnung für Bern (BE)
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+              <MapPin size={13} /> KANTON {TARGET_CANTON} · REGIONALES DIREKTVERZEICHNIS
             </div>
-            <p className="text-gray-300 leading-relaxed">Veröffentlichte Preise im Raum Bern werden transparent mit ihrer Zeiteinheit (60 Min. vs. 30 Min. laut Inserat) ausgewiesen. Fehlende Preisangaben im Ursprungsinserat bleiben offen als 'Keine Preisangabe' gekennzeichnet.</p>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
+              Escort, Tantra & Begleitung in {CITY_NAME} ({profiles.length} Profile)
+            </h1>
           </div>
-          <div className="lg:col-span-4 flex flex-wrap items-center justify-end gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Link href={`/kategorie/${CITY_SLUG}/girlfriend-experience`} className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white">
+              GFE {CITY_NAME} →
+            </Link>
+            <Link href={`/kategorie/${CITY_SLUG}/tantra-massage`} className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white">
+              Tantra {CITY_NAME} →
+            </Link>
+            <Link href={`/kategorie/${CITY_SLUG}/haus-und-hotelbesuche`} className="px-3.5 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+              Hotel-Outcall {CITY_NAME} →
+            </Link>
+          </div>
+        </section>
+
+        <section className="p-4 rounded-2xl bg-[#121722] border border-white/10 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => setOnlyAvailable(!onlyAvailable)}
-              className={
-                onlyAvailable
-                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
-                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
-              }
+              onClick={() => setOnlyAvailable4h(!onlyAvailable4h)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
+                onlyAvailable4h ? "bg-emerald-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+              }`}
             >
-              Jetzt verfügbar
+              ● Nur 4h verfügbar
             </button>
-            <button
-              type="button"
-              onClick={() => setOnlyWithPrice(!onlyWithPrice)}
-              className={
-                onlyWithPrice
-                  ? "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#C6A574] text-[#13161C] border-[#C6A574]"
-                  : "px-3 py-2 rounded-xl font-bold border cursor-pointer bg-[#12151C] border-white/15 text-gray-200"
-              }
-            >
-              Nur mit Preisangabe
-            </button>
-            <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
+            {[
+              { label: "Alle CHF", val: 1200 },
+              { label: "≤ CHF 300", val: 300 },
+              { label: "≤ CHF 400", val: 400 },
+            ].map((p) => (
               <button
+                key={p.val}
                 type="button"
-                onClick={() => setViewMode("grid")}
-                className={viewMode === "grid" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
+                onClick={() => setMaxRate60(p.val)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer ${
+                  maxRate60 === p.val ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] border border-white/10 text-gray-400"
+                }`}
               >
-                <LayoutGrid size={15} />
+                {p.label}
               </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("list")}
-                className={viewMode === "list" ? "p-2 cursor-pointer bg-white/15 text-white" : "p-2 cursor-pointer text-gray-400"}
-              >
-                <ListIcon size={15} />
-              </button>
-            </div>
+            ))}
           </div>
-        </div>
 
-        {viewMode === "grid" ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
-              const cleanName =
-                String(p.rawName || "Profil")
-                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                  .trim()
-                  .slice(0, 24) || "Profil";
-              return (
-                <article
-                  key={"city-" + idx}
-                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
-                >
-                  <div className="relative aspect-[4/3.65] bg-stone-800">
-                    <Link href={"/profile/" + encodeURIComponent(p.id)}>
-                      <img
-                        src={p.thumbnail || p.fallbackImg}
-                        alt={cleanName}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
-                        }}
-                        className="w-full h-full object-cover object-top"
-                        loading="lazy"
-                      />
-                    </Link>
-                    {p.availabilityConfirmed && (
-                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-                        Jetzt verfügbar
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-3.5 space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <Link
-                          href={"/profile/" + encodeURIComponent(p.id)}
-                          className="text-base font-bold text-white hover:text-[#C6A574] truncate block"
-                        >
-                          {cleanName}
-                        </Link>
-                        <p className="text-xs text-gray-400">
-                          {p.cleanCity} · {p.canton}
-                        </p>
-                      </div>
-                      {p.advertisedBaseChf && (
-                        <div className="text-right shrink-0">
-                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
-                          <div className="text-[10px] text-gray-500">60 Min.</div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="pt-2 border-t border-white/10 text-xs flex items-center justify-between text-gray-400">
-                      <span>{p.isSelfManaged ? "Selbst verwaltet" : "Quelle: " + (p.sourcePortal || "Index")}</span>
-                      <Link
-                        href={"/profile/" + encodeURIComponent(p.id)}
-                        className="text-[#C6A574] font-bold hover:underline"
-                      >
-                        Profil →
-                      </Link>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+          <div className="flex items-center gap-1.5 bg-[#0D111A] border border-white/15 rounded-xl px-3 py-1.5">
+            <ArrowUpDown size={13} className="text-[#C8A97E]" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="bg-transparent text-xs font-bold text-white outline-none cursor-pointer"
+            >
+              <option value="recommended" className="bg-[#121722]">Empfohlen in {CITY_NAME}</option>
+              <option value="available" className="bg-[#121722]">● Jetzt 4h verfügbar zuerst</option>
+              <option value="price_asc" className="bg-[#121722]">CHF-Honorar: Aufsteigend</option>
+              <option value="price_desc" className="bg-[#121722]">CHF-Honorar: Absteigend</option>
+            </select>
           </div>
-        ) : (
-          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
-            {cityProfiles.slice(0, 32).map((p: any, idx: number) => {
-              const cleanName =
-                String(p.rawName || "Profil")
-                  .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-                  .trim()
-                  .slice(0, 28) || "Profil";
-              return (
-                <article key={"cl-" + idx} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                  <div className="md:col-span-6 flex items-center gap-4">
-                    <img
-                      src={p.thumbnail || p.fallbackImg}
-                      alt={cleanName}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
-                      }}
-                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
-                    />
-                    <div>
-                      <Link
-                        href={"/profile/" + encodeURIComponent(p.id)}
-                        className="text-lg font-serif font-bold text-white hover:underline"
-                      >
-                        {cleanName}
-                      </Link>
-                      <div className="text-xs text-gray-300">
-                        {p.cleanCity} · {p.canton}
-                      </div>
-                    </div>
+        </section>
+
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {profiles.map((p: any) => (
+            <div key={p.id} className="rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/60 overflow-hidden flex flex-col justify-between transition">
+              <div>
+                <div className="relative h-60 bg-[#0D111A]">
+                  <img
+                    src={p.thumbnail || "/images/escort-portrait-1.jpg"}
+                    alt={p.rawName}
+                    loading="lazy"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/85 border border-white/15 text-xs font-extrabold text-[#C8A97E]">
+                    CHF {p.rate60Chf}.– / 60m
                   </div>
-                  <div className="md:col-span-3">
-                    {p.advertisedBaseChf ? (
-                      <>
-                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
-                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
-                      </>
-                    ) : (
-                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
-                    )}
+                </div>
+                <div className="p-4 space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-bold text-[#C8A97E]">{p.canton} · {p.city}</span>
+                    <span className="text-gray-400">30m: CHF {p.rate30Chf}.–</span>
                   </div>
-                  <div className="md:col-span-3 flex justify-end">
-                    <Link
-                      href={"/profile/" + encodeURIComponent(p.id)}
-                      className="text-xs font-bold text-[#C6A574] hover:underline"
-                    >
-                      Profil ansehen →
-                    </Link>
+                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-white hover:text-[#C8A97E] truncate">
+                    {p.rawName}
+                  </Link>
+                  <div className="text-xs text-gray-300">
+                    {p.age || 25} J. · {p.heightCm || 168} cm · Cup {p.cupSize || "C"}
                   </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+                </div>
+              </div>
+              <div className="p-4 pt-0">
+                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block w-full py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs text-center">
+                  Profil & +41 Kontakt →
+                </Link>
+              </div>
+            </div>
+          ))}
+        </section>
       </main>
-      <CorporateFooter />
     </div>
   );
 }
