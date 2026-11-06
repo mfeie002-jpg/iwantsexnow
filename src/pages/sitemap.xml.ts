@@ -1,88 +1,85 @@
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import offersData from "@/data/harvested-offers.json";
 
-const BASE_URL = "https://iwantsexnow.ch";
-
-const TOP_SWISS_CITIES = [
-  "zuerich", "zug", "cham", "basel", "bern", "luzern",
-  "st-gallen", "baden", "winterthur", "geneve", "lausanne", "lugano"
-];
-
-const TOP_SERVICES = [
+const CITIES = ["zug", "zuerich", "luzern", "baden", "basel", "bern", "st-gallen", "winterthur", "geneve", "lausanne", "lugano"];
+const SERVICES = [
   "girlfriend-experience",
-  "erotische-massage",
   "tantra-massage",
-  "hotelbesuch-outcall",
-  "privatempfang-incall",
+  "haus-und-hotelbesuche",
   "domina-bdsm",
-  "trans-ts"
+  "dinner-date",
+  "trans-escort",
+  "paare-und-bisex",
 ];
 
-const STATIC_ROUTES = [
+const STATIC_PATHS = [
   "",
   "/search",
-  "/compare-escorts",
-  "/rankings",
-  "/reviews",
-  "/reviews/xdate-review",
-  "/reviews/fgirl-review",
-  "/reviews/and6-review",
-  "/reviews/bemygirl-review",
+  "/matches",
+  "/stories",
   "/live-cam",
+  "/rankings",
+  "/compare-escorts",
+  "/clubs",
   "/pricing",
-  "/advertise",
-  "/create-post",
-  "/verify",
-  "/how-it-works",
-  "/escort-zurich",
-  "/escort-geneva",
-  "/escort-basel",
-  "/escort-bern",
-  "/escort-lausanne",
-  "/escort-lugano",
+  "/hotels",
+  "/reviews",
+  "/register",
+  "/favorites",
+  "/boost",
+  "/premium",
+  "/events",
+  "/messages",
+  "/notifications",
+  "/gifts",
+  "/members",
+  "/search-atlas",
+  "/guides",
+  "/faq",
+  "/safety",
 ];
 
-export default function SitemapXml() {
-  return null;
-}
-
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const nowIso = new Date().toISOString();
-  const offers = (offersData as any[]) || [];
+  const baseUrl = "https://iwantsexnow.ch";
+  const now = new Date().toISOString();
 
-  const urls: string[] = [];
+  const urls: { loc: string; priority: string; changefreq: string }[] = [];
 
-  // 1. Statische Haupt- & Städte-Routen
-  for (const r of STATIC_ROUTES) {
-    urls.push(
-      `<url><loc>${BASE_URL}${r}</loc><lastmod>${nowIso}</lastmod><changefreq>daily</changefreq><priority>${r === "" ? "1.0" : "0.9"}</priority></url>`
-    );
+  for (const p of STATIC_PATHS) {
+    urls.push({ loc: `${baseUrl}${p}`, priority: p === "" ? "1.0" : "0.9", changefreq: "hourly" });
   }
 
-  // 2. 2D Programmatische SEO-Landingpages: Stadt x Service (84 hochrelevante Google.ch Kombinationen)
-  for (const city of TOP_SWISS_CITIES) {
-    urls.push(
-      `<url><loc>${BASE_URL}/orte/${city}</loc><lastmod>${nowIso}</lastmod><changefreq>daily</changefreq><priority>0.85</priority></url>`
-    );
-    for (const srv of TOP_SERVICES) {
-      urls.push(
-        `<url><loc>${BASE_URL}/kategorie/${city}/${srv}</loc><lastmod>${nowIso}</lastmod><changefreq>daily</changefreq><priority>0.85</priority></url>`
-      );
+  for (const c of CITIES) {
+    urls.push({ loc: `${baseUrl}/orte/${c}`, priority: "0.9", changefreq: "hourly" });
+    for (const s of SERVICES) {
+      urls.push({ loc: `${baseUrl}/kategorie/${c}/${s}`, priority: "0.85", changefreq: "daily" });
     }
   }
 
-  // 3. Alle 2.526 Schweizer Einzelprofile (/profile/[id])
-  for (const o of offers) {
+  const rawOffers = ((offersData as any[]) || []).slice(0, 1000);
+  for (const o of rawOffers) {
     const pid = o.id || o.dedupClusterId;
-    if (!pid) continue;
-    urls.push(
-      `<url><loc>${BASE_URL}/profile/${encodeURIComponent(pid)}</loc><lastmod>${nowIso}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`
-    );
+    if (pid) {
+      urls.push({
+        loc: `${baseUrl}/profile/${encodeURIComponent(pid)}`,
+        priority: "0.8",
+        changefreq: "daily",
+      });
+    }
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join("\n")}
+${urls
+  .map(
+    (u) => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`
+  )
+  .join("\n")}
 </urlset>`;
 
   res.setHeader("Content-Type", "text/xml; charset=utf-8");
@@ -92,3 +89,7 @@ ${urls.join("\n")}
 
   return { props: {} };
 };
+
+export default function SitemapXml() {
+  return null;
+}

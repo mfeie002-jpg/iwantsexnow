@@ -1,596 +1,551 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import React, { useState, useEffect, useMemo } from "react";
+import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { StructuredSchema } from "@/components/StructuredSchema";
-import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
-import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
-import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
+import offersData from "@/data/harvested-offers.json";
 import {
-  ArrowLeft,
-  Check,
-  Clock,
-  ExternalLink,
-  HelpCircle,
-  Layers,
   MapPin,
   Phone,
-  User,
-  Flag,
+  ShieldCheck,
+  CheckCircle2,
   Lock,
-  Unlock,
-  Video,
-  Radio,
-  Image as ImageIcon,
+  Heart,
+  Scale,
   Sparkles,
+  MessageSquare,
+  AlertTriangle,
+  ArrowLeft,
+  ExternalLink,
 } from "lucide-react";
 
-const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=85",
-];
+function normalizeSwissPhone(raw: any): string | null {
+  const digits = String(raw || "").replace(/\D/g, "");
+  if (!digits) return null;
+  let local = "";
+  if (digits.startsWith("41") && digits.length === 11) local = "0" + digits.slice(2);
+  else if (digits.startsWith("0041") && digits.length === 13) local = "0" + digits.slice(4);
+  else if (digits.startsWith("0") && digits.length === 10) local = digits;
+  else return null;
+  if (/(\d)\1{5,}|123456/.test(local)) return null;
+  return `+41 ${local.slice(1, 3)} ${local.slice(3, 6)} ${local.slice(6, 8)} ${local.slice(8, 10)}`;
+}
 
-export default function ProfileDetailPage({ initialProfileId }: { initialProfileId?: string }) {
-  const router = useRouter();
-  const rawId = String(router.query.id || initialProfileId || "ch-a720e283e85f");
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const rawId = String(ctx.params?.id || "").trim();
+  const allOffers = (offersData as any[]) || [];
 
-  const [serverData, setServerData] = useState<{ metrics: Record<string, any>; states: Record<string, any> }>({
-    metrics: {},
-    states: {},
-  });
-  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
-  const [unlockedVaultIds, setUnlockedVaultIds] = useState<string[]>([]);
-  const [inquirySent, setInquirySent] = useState(false);
-  const [inquiryMessage, setInquiryMessage] = useState("");
-  const [inquiryContact, setInquiryContact] = useState("");
+  const found =
+    allOffers.find((o) => String(o.id || o.dedupClusterId) === rawId) ||
+    allOffers.find((o) => String(o.id || "").toLowerCase() === rawId.toLowerCase()) ||
+    allOffers[0];
+
+  if (!found) {
+    return { notFound: true };
+  }
+
+  const pid = String(found.id || found.dedupClusterId || rawId);
+  const r60 = Math.max(100, Math.min(1200, Number(found.advertisedBaseChf) || 350));
+  const r30 = Math.max(80, Math.min(800, Number(found.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+  const cleanPhone = normalizeSwissPhone(found.rawPhone || found.phone);
+
+  const related = allOffers
+    .filter((o) => (o.id || o.dedupClusterId) !== pid && o.canton === found.canton)
+    .slice(0, 4)
+    .map((o) => ({
+      id: o.id || o.dedupClusterId,
+      rawName: o.rawName || "Verifiziertes Profil",
+      city: o.city || "Zürich",
+      canton: o.canton || "ZH",
+      rate60Chf: Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350)),
+      thumbnail: o.thumbnail || "/images/escort-portrait-1.jpg",
+      age: Number(o.age) || 25,
+      cupSize: o.cupSize || "C",
+    }));
+
+  return {
+    props: {
+      profile: {
+        ...found,
+        id: pid,
+        rawName: found.rawName || "Verifiziertes Schweizer Profil",
+        city: found.city || "Zug",
+        canton: found.canton || "ZG",
+        rate60Chf: r60,
+        rate30Chf: r30,
+        cleanPhone,
+        thumbnail: found.thumbnail || "/images/escort-portrait-1.jpg",
+        age: Number(found.age) || 25,
+        heightCm: Number(found.heightCm) || 168,
+        cupSize: found.cupSize || "C",
+        hairColor: found.hairColor || "Brünett",
+        languages: Array.isArray(found.languages) ? found.languages : ["Deutsch", "Englisch"],
+        includedTags: Array.isArray(found.includedTags)
+          ? found.includedTags
+          : ["Direktkontakt", "Diskreter Empfang", "Girlfriend Experience"],
+      },
+      relatedProfiles: related,
+    },
+  };
+};
+
+export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
+  const [liveState, setLiveState] = useState<any>({});
+  const [isFav, setIsFav] = useState(false);
+  const [vaultUnlocked, setVaultUnlocked] = useState(false);
+  const [claimContact, setClaimContact] = useState("");
+  const [claimSent, setClaimSent] = useState(false);
 
   useEffect(() => {
     fetch("/api/vault/metrics")
       .then((r) => r.json())
       .then((d) => {
-        if (d) {
-          setServerData({ metrics: d.metrics || {}, states: d.states || {} });
+        if (d?.states && d.states[profile.id]) {
+          setLiveState(d.states[profile.id]);
         }
       })
       .catch(() => {});
-  }, []);
 
-  useEffect(() => {
-    if (!rawId) return;
-    setActivePhotoIdx(0);
-    fetch("/api/vault/metrics", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "track_view", profileId: rawId }),
-    }).catch(() => {});
-  }, [rawId]);
+    try {
+      const favs = JSON.parse(localStorage.getItem("ch_favorite_profiles") || "[]");
+      setIsFav(Array.isArray(favs) && favs.includes(profile.id));
+      const unlocked = JSON.parse(localStorage.getItem("ch_unlocked_vaults") || "[]");
+      setVaultUnlocked(Array.isArray(unlocked) && unlocked.includes(profile.id));
+    } catch {}
+  }, [profile.id]);
 
-  const profileData = useMemo(() => {
-    const rawList = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
-    let foundIdx = rawList.findIndex(
-      (item: any, idx: number) =>
-        item.id === rawId ||
-        (item.dedupClusterId || "ch-" + (idx + 1)) === rawId ||
-        String(item.rawName || "").toLowerCase() === rawId.toLowerCase()
-    );
-    if (foundIdx < 0) {
-      const numMatch = rawId.match(/\d+/);
-      foundIdx = numMatch ? Math.max(0, (parseInt(numMatch[0], 10) - 1) % Math.max(1, rawList.length)) : 0;
-    }
-
-    const baseItem = rawList[foundIdx] || rawList[0] || {};
-    const id = baseItem.id || baseItem.dedupClusterId || "ch-" + (foundIdx + 1);
-    const st = serverData.states[id] || {};
-    const geo = normalizeSwissGeo(st.city || baseItem.city, st.canton || baseItem.canton);
-
-    const isSelfManaged = Boolean(st.claimed || st.accountConfirmed || baseItem.bookingMode === "direct");
-    const isIdentityVerified = Boolean(st.identityVerified || st.identityRequested);
-    const availabilityConfirmed = Boolean(
-      st.availabilityConfirmed || (st.availableUntil && new Date(st.availableUntil).getTime() > Date.now())
-    );
-
-    const cleanKey = String(baseItem.rawName || "").toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
-    const matchingSources: Array<{ portal: string; url: string; rate: number | null; city: string }> = [];
-
-    for (const candidate of rawList) {
-      if (!candidate || !candidate.rawName) continue;
-      const cKey = String(candidate.rawName).toLowerCase().replace(/[^\w]/g, "").slice(0, 18);
-      if (cKey && cKey === cleanKey) {
-        const pName = candidate.sourcePortal || "xdate.ch";
-        if (!matchingSources.some((m) => m.portal === pName)) {
-          const cGeo = normalizeSwissGeo(candidate.city, candidate.canton);
-          matchingSources.push({
-            portal: pName,
-            url: candidate.sourceUrl || "#",
-            rate: Number(candidate.advertisedBaseChf) || null,
-            city: cGeo.cleanCity + " · " + cGeo.trueCanton,
-          });
-        }
-      }
-    }
-
-    if (matchingSources.length === 0) {
-      matchingSources.push({
-        portal: baseItem.sourcePortal || "Portal-Index",
-        url: baseItem.sourceUrl || "#",
-        rate: Number(baseItem.advertisedBaseChf) || null,
-        city: geo.cleanCity + " · " + geo.trueCanton,
-      });
-    }
-
-    const rate60 = st.rate60Chf !== undefined ? Number(st.rate60Chf) : Number(baseItem.advertisedBaseChf) || 350;
-    const rate30 = st.rate30Chf !== undefined ? Number(st.rate30Chf) : Number(baseItem.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10;
-    const phone = st.phoneDisplay || baseItem.rawPhone || "";
-
-    const rawGal =
-      Array.isArray(st.gallery) && st.gallery.length > 0
-        ? st.gallery
-        : Array.isArray(baseItem.gallery) && baseItem.gallery.length > 0
-        ? baseItem.gallery
-        : [];
-    const mainThumb = st.thumbnail || baseItem.thumbnail || FALLBACK_PORTRAITS[foundIdx % FALLBACK_PORTRAITS.length];
-    const gallery = Array.from(new Set([mainThumb, ...rawGal])).filter((u) => String(u).startsWith("http"));
-
-    const defaultPaidItems = [
-      {
-        id: "ppv-1",
-        title: "Private 4K Backstage & Lingerie Video (Uncensored)",
-        type: "video",
-        priceChf: 29,
-        mediaCount: "1x 4K Video (6:40 Min.)",
-        active: true,
-      },
-      {
-        id: "ppv-2",
-        title: "Exklusives VIP Foto-Set (12 High-Res Aufnahmen)",
-        type: "photoset",
-        priceChf: 19,
-        mediaCount: "12 Fotos",
-        active: true,
-      },
-    ];
-    const paidItems = (Array.isArray(st.paidItems) && st.paidItems.length > 0 ? st.paidItems : defaultPaidItems).filter(
-      (it: any) => it.active !== false
-    );
-
-    const cleanName =
-      String(st.displayName || baseItem.rawName || "Profil")
-        .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-        .trim()
-        .slice(0, 36) || "Profil";
-
-    return {
-      ...baseItem,
-      id,
-      cleanName,
-      cleanCity: geo.cleanCity,
-      canton: geo.trueCanton,
-      rate30,
-      rate60,
-      phone,
-      age: baseItem.age || 24,
-      heightCm: baseItem.heightCm || 168,
-      cupSize: baseItem.cupSize || "75C",
-      hairColor: baseItem.hairColor || "Brünett",
-      languages: Array.isArray(baseItem.languages) ? baseItem.languages : ["Deutsch", "Englisch"],
-      gallery: gallery.length > 0 ? gallery : [FALLBACK_PORTRAITS[foundIdx % FALLBACK_PORTRAITS.length]],
-      videoUrl: st.videoUrl || "",
-      paidItems,
-      liveCamActive: Boolean(st.liveCamActive),
-      liveCamChfPerMin: Number(st.liveCamChfPerMin) || 6,
-      isSelfManaged,
-      isIdentityVerified,
-      availabilityConfirmed,
-      matchingSources,
-      tags:
-        Array.isArray(st.tags) && st.tags.length > 0
-          ? st.tags
-          : Array.isArray(baseItem.includedTags) && baseItem.includedTags.length > 0
-          ? baseItem.includedTags
-          : ["Incall", "Outcall", "Direktkontakt"],
-      bioText:
-        st.bio ||
-        baseItem.bio ||
-        `Verifiziertes Profil in ${geo.cleanCity} (Kanton ${geo.trueCanton}). Direktkontakt und veröffentlichte Konditionen ohne Agentur-Aufschlag.`,
-      fallbackImg: FALLBACK_PORTRAITS[foundIdx % FALLBACK_PORTRAITS.length],
-    };
-  }, [rawId, serverData]);
-
-  const recordAction = (action: string) => {
-    fetch("/api/vault/metrics", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, profileId: profileData.id }),
-    }).catch(() => {});
+  const toggleFav = () => {
+    try {
+      const favs = JSON.parse(localStorage.getItem("ch_favorite_profiles") || "[]");
+      const list = Array.isArray(favs) ? favs : [];
+      const next = list.includes(profile.id) ? list.filter((x: string) => x !== profile.id) : [profile.id, ...list];
+      localStorage.setItem("ch_favorite_profiles", JSON.stringify(next));
+      setIsFav(next.includes(profile.id));
+      window.dispatchEvent(new Event("ch-favorites-updated"));
+    } catch {}
   };
 
-  const activePhoto = profileData.gallery[activePhotoIdx] || profileData.gallery[0] || profileData.fallbackImg;
+  const handleClaimRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!claimContact.trim()) return;
+    try {
+      const r = await fetch("/api/claims/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profileId: profile.id,
+          contact: claimContact,
+          note: `Schnell-Übernahme angefordert auf /profile/${profile.id}`,
+        }),
+      });
+      const d = await r.json();
+      if (d?.ok) setClaimSent(true);
+    } catch {}
+  };
+
+  const rate60 = Math.max(100, Math.min(1200, Number(liveState.rate60Chf || profile.rate60Chf) || 350));
+  const rate30 = Math.max(80, Math.min(800, Number(liveState.rate30Chf || profile.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10));
+  const rate120 = Math.round((rate60 * 1.85) / 10) * 10;
+  const cleanPhone = normalizeSwissPhone(liveState.phoneDisplay || profile.cleanPhone || profile.rawPhone);
+  const isAvailable4h = Boolean(liveState.availabilityConfirmed || profile.availabilityConfirmed);
+  const isVerified = Boolean(liveState.identityVerified || profile.identityVerified);
+  const vaultPriceChf = Number(liveState.vaultPriceChf || 29);
+
+  const galleryPhotos: string[] = useMemo(() => {
+    const custom = Array.isArray(liveState.customPhotos) ? liveState.customPhotos : [];
+    const base = [
+      profile.thumbnail || "/images/escort-portrait-1.jpg",
+      ...custom,
+      "/images/escort-portrait-2.jpg",
+      "/images/escort-portrait-3.jpg",
+    ];
+    return Array.from(new Set(base.filter(Boolean))).slice(0, 6);
+  }, [profile.thumbnail, liveState.customPhotos]);
+
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${profile.rawName} — Escort & Begleitung in ${profile.city} (${profile.canton})`,
+    description: profile.bio || `Verifiziertes Schweizer Profil in ${profile.city} (${profile.canton}).`,
+    areaServed: { "@type": "City", name: profile.city },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "CHF",
+      price: String(rate60),
+      availability: isAvailable4h ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
+    },
+  };
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-36">
       <SEO
-        title={`${profileData.cleanName} (${profileData.age}) in ${profileData.cleanCity} (${profileData.canton}) – CHF ${profileData.rate30}/${profileData.rate60} & +41 Direktkontakt | iwantsexnow.ch`}
-        description={`Profil von ${profileData.cleanName} (${profileData.age} J., ${profileData.cupSize}, ${profileData.hairColor}) in ${profileData.cleanCity} (${profileData.canton}). CHF ${profileData.rate30} (30m) / CHF ${profileData.rate60} (60m), Foto-Galerie, VIP Paid Content & Direktkontakt.`}
+        title={`${profile.rawName} in ${profile.city} (${profile.canton}) · CHF ${rate60}.– / 60m & +41 Direktkontakt | iwantsexnow.ch`}
+        description={`${profile.rawName} (${profile.age} J., ${profile.heightCm} cm, Cup ${profile.cupSize}) in ${profile.city} (${profile.canton}). Honorar: CHF ${rate60}.– / 60 Min. (CHF ${rate30}.– / 30 Min.). Direkter +41 Kontakt ohne Provision.`}
+        url={`https://iwantsexnow.ch/profile/${encodeURIComponent(profile.id)}`}
+        image={profile.thumbnail}
+        schemaJson={personSchema}
       />
-      <StructuredSchema cityName={profileData.cleanCity} cantonCode={profileData.canton} />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 space-y-8">
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400 border-b border-white/10 pb-4">
-          <Link href="/" className="inline-flex items-center gap-1.5 font-bold text-white hover:text-[#C6A574]">
-            <ArrowLeft size={15} />
-            <span>Zurück zur Profilübersicht</span>
-          </Link>
-          <div className="flex flex-wrap items-center gap-4">
-            <XeniaDoubtTrigger topic="status" label="Status-Erklärung" />
-            <XeniaDoubtTrigger topic="price" label="Preis-Einordnung" />
-            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8">
+        {/* Top Breadcrumb & Quick Actions */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <Link href="/search" className="hover:text-white inline-flex items-center gap-1">
+              <ArrowLeft size={13} /> Zurück zur Suche
+            </Link>
+            <span>·</span>
+            <Link href={`/orte/${String(profile.city || "zug").toLowerCase()}`} className="text-[#C8A97E] font-bold hover:underline">
+              Kanton {profile.canton} ({profile.city})
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleFav}
+              className={`px-3.5 py-2 rounded-xl border text-xs font-extrabold inline-flex items-center gap-1.5 cursor-pointer transition ${
+                isFav ? "bg-rose-500/20 border-rose-500 text-rose-300" : "bg-[#121722] border-white/15 text-gray-200 hover:border-[#C8A97E]"
+              }`}
+            >
+              <Heart size={13} className={isFav ? "fill-rose-400 text-rose-400" : ""} />
+              <span>{isFav ? "Auf deiner Merkliste" : "Merken"}</span>
+            </button>
+            <Link
+              href="/compare-escorts"
+              className="px-3.5 py-2 rounded-xl bg-[#121722] border border-white/15 hover:border-[#C8A97E] text-xs font-bold text-gray-200 inline-flex items-center gap-1.5"
+            >
+              <Scale size={13} className="text-[#C8A97E]" /> Vergleichen
+            </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Linke Spalte: Foto-Galerie & 4K-Video */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="relative aspect-[4/4.6] w-full rounded-2xl overflow-hidden bg-stone-900 border border-white/15 shadow-2xl">
+        {/* Haupt-Profil-Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Linke Spalte: Porträt & Foto-Galerie */}
+          <div className="lg:col-span-5 space-y-3">
+            <div className="relative rounded-2xl overflow-hidden bg-[#121722] border border-[#C8A97E]/40 h-96 sm:h-[460px]">
               <img
-                src={activePhoto}
-                alt={`${profileData.cleanName} – ${profileData.cleanCity}`}
+                src={galleryPhotos[0]}
+                alt={profile.rawName}
                 onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = profileData.fallbackImg;
+                  (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";
                 }}
-                className="w-full h-full object-cover object-top transition-all duration-300"
+                className="w-full h-full object-cover object-top"
               />
-
-              <div className="absolute top-4 left-4 flex flex-col gap-2">
-                {profileData.availabilityConfirmed && (
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-bold shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-ping" />
-                    Jetzt verfügbar (4h bestätigt)
+              <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                {isAvailable4h && (
+                  <span className="px-3 py-1 rounded-full bg-emerald-500 text-[#07120B] text-xs font-extrabold shadow">
+                    ● Jetzt für 4h verfügbar
                   </span>
                 )}
-                {profileData.liveCamActive && (
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-600/95 text-white border border-rose-400/50 text-xs font-bold shadow-lg">
-                    <Radio size={13} />
-                    1:1 Live-Cam aktiv (CHF {profileData.liveCamChfPerMin}/Min.)
+                {isVerified && (
+                  <span className="px-3 py-1 rounded-full bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold shadow">
+                    ✓ Geprüfte Originalfotos
                   </span>
                 )}
               </div>
-
-              <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/75 border border-white/15 text-[11px] font-semibold text-gray-200 flex items-center gap-1.5">
-                <ImageIcon size={12} className="text-[#C6A574]" />
-                <span>Foto {activePhotoIdx + 1} / {profileData.gallery.length}</span>
+              <div className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl bg-black/85 border border-white/15 text-sm font-extrabold text-[#C8A97E]">
+                CHF {rate60}.– <span className="text-[11px] text-gray-300 font-normal">/ 60 Min.</span>
               </div>
             </div>
 
-            {profileData.gallery.length > 1 && (
-              <div className="grid grid-cols-5 gap-2">
-                {profileData.gallery.map((imgUrl: string, i: number) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setActivePhotoIdx(i)}
-                    className={`relative aspect-square rounded-xl overflow-hidden border-2 transition cursor-pointer ${
-                      activePhotoIdx === i ? "border-[#C6A574] scale-[1.03]" : "border-white/10 opacity-70 hover:opacity-100"
-                    }`}
-                  >
-                    <img src={imgUrl} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {profileData.videoUrl && (
-              <div className="p-4 rounded-2xl bg-[#1C2029] border border-[#C6A574]/40 space-y-2">
-                <div className="text-xs font-bold text-[#C6A574] flex items-center gap-1.5">
-                  <Video size={14} /> 4K-Vorstellungsvideo von {profileData.cleanName}
+            <div className="grid grid-cols-3 gap-2.5">
+              {galleryPhotos.slice(1, 4).map((imgUrl, idx) => (
+                <div key={idx} className="h-28 rounded-xl overflow-hidden bg-[#121722] border border-white/10">
+                  <img
+                    src={imgUrl}
+                    alt={`${profile.rawName} Foto ${idx + 2}`}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";
+                    }}
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
-                <video src={profileData.videoUrl} controls className="w-full rounded-xl bg-black max-h-64" />
-              </div>
-            )}
-
-            <div className="p-4 rounded-2xl bg-[#1A1E27] border border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-300">
-              <span>Ist das dein Profil?</span>
-              <div className="flex items-center gap-3 font-semibold">
-                <Link href={`/creator-dashboard?id=${encodeURIComponent(profileData.id)}`} className="text-[#C6A574] hover:underline">
-                  Im Anbieter-Cockpit bearbeiten →
-                </Link>
-                <span className="text-gray-600">|</span>
-                <Link
-                  href={`/report?name=${encodeURIComponent(profileData.cleanName)}&id=${encodeURIComponent(profileData.id)}`}
-                  className="text-gray-400 hover:text-white inline-flex items-center gap-1"
-                >
-                  <Flag size={11} />
-                  <span>Opt-out</span>
-                </Link>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Rechte Spalte: Preise, Deep-Attribute, Direktkontakt & Paid-Vault */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="p-6 rounded-2xl bg-[#1C2029] border border-white/10 space-y-4">
-              <div className="flex flex-wrap items-start justify-between gap-4">
+          {/* Rechte Spalte: Details, CHF-Tarife, +41 Kontakt & 80/20 Paid-Vault */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="p-6 rounded-2xl bg-[#121722] border border-white/10 space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
-                      {profileData.cleanName}
-                    </h1>
-                    {profileData.isIdentityVerified && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#C6A574]/20 border border-[#C6A574]/50 text-[#E5C99B] text-xs font-bold">
-                        <Check size={12} /> Identität geprüft
-                      </span>
-                    )}
+                  <div className="text-xs font-extrabold uppercase tracking-wider text-[#C8A97E] flex items-center gap-1.5">
+                    <MapPin size={14} /> KANTON {profile.canton} · {profile.city}
                   </div>
-                  <p className="text-sm text-gray-300 flex items-center gap-1.5 mt-1">
-                    <MapPin size={15} className="text-[#C6A574]" />
-                    <span>{profileData.cleanCity} · Kanton {profileData.canton}</span>
-                  </p>
+                  <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
+                    {profile.rawName}
+                  </h1>
                 </div>
+                <span className="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[11px] text-gray-300 font-mono">
+                  ID: {profile.id}
+                </span>
+              </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="p-3 rounded-xl bg-[#13161C] border border-white/10 text-right">
-                    <div className="text-sm font-bold text-gray-200">CHF {profileData.rate30}</div>
-                    <div className="text-[10px] text-gray-400">30 Min. Richtpreis</div>
-                  </div>
-                  <div className="p-3 rounded-xl bg-[#13161C] border border-[#C6A574]/40 text-right">
-                    <div className="text-xl font-extrabold text-[#C6A574]">CHF {profileData.rate60}</div>
-                    <div className="text-[10px] text-gray-400">60 Min. Richtpreis</div>
-                  </div>
+              {liveState.statusMessage && (
+                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-200 font-medium">
+                  <strong>Aktueller Live-Status:</strong> „{liveState.statusMessage}“
+                </div>
+              )}
+
+              {/* Transparente Schweizer CHF-Honorar-Matrix */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10">
+                  <div className="text-[10px] text-gray-400 uppercase font-bold">30 Min. Express</div>
+                  <div className="text-lg font-extrabold text-white mt-0.5">CHF {rate30}.–</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#0D111A] border border-[#C8A97E]/60">
+                  <div className="text-[10px] text-[#C8A97E] uppercase font-bold">60 Min. Standard</div>
+                  <div className="text-lg font-extrabold text-[#C8A97E] mt-0.5">CHF {rate60}.–</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10">
+                  <div className="text-[10px] text-gray-400 uppercase font-bold">2 Std. Dinner / Outcall</div>
+                  <div className="text-lg font-extrabold text-white mt-0.5">CHF {rate120}.–</div>
                 </div>
               </div>
 
-              {/* Deep Physical & Language Attributes */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 text-xs">
-                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
-                  <div className="text-[10px] text-gray-400">Alter & Grösse</div>
-                  <div className="font-bold text-white">{profileData.age} Jahre · {profileData.heightCm} cm</div>
+              {/* Physische Attribute & Sprachen */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
+                  <span className="text-gray-400 block text-[10px]">Alter</span>
+                  <strong className="text-white">{profile.age} Jahre</strong>
                 </div>
-                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
-                  <div className="text-[10px] text-gray-400">Oberweite</div>
-                  <div className="font-bold text-[#C6A574]">Körbchen {profileData.cupSize}</div>
+                <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
+                  <span className="text-gray-400 block text-[10px]">Grösse</span>
+                  <strong className="text-white">{profile.heightCm} cm</strong>
                 </div>
-                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
-                  <div className="text-[10px] text-gray-400">Haarfarbe</div>
-                  <div className="font-bold text-white">{profileData.hairColor}</div>
+                <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
+                  <span className="text-gray-400 block text-[10px]">Körbchengrösse</span>
+                  <strong className="text-white">Cup {profile.cupSize}</strong>
                 </div>
-                <div className="p-2.5 rounded-xl bg-[#13161C] border border-white/5">
-                  <div className="text-[10px] text-gray-400">Sprachen</div>
-                  <div className="font-bold text-white truncate">{profileData.languages.join(", ")}</div>
+                <div className="p-3 rounded-xl bg-[#0D111A] border border-white/5">
+                  <span className="text-gray-400 block text-[10px]">Haarfarbe</span>
+                  <strong className="text-white">{profile.hairColor}</strong>
                 </div>
               </div>
 
-              <div className="space-y-2.5 pt-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-gray-400">
-                  Angebotene Services & Rahmenbedingungen
+              {/* Direkter +41 Kontakt-Block */}
+              <div className="p-4 rounded-2xl bg-[#0D111A] border border-emerald-500/40 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <div className="text-[10px] uppercase tracking-wider text-emerald-400 font-extrabold">
+                      DIREKTER SCHWEIZER +41 KONTAKT (0 % VERMITTLUNGSPROVISION)
+                    </div>
+                    <div className="text-base font-extrabold text-white mt-0.5">
+                      {cleanPhone || "Diskrete Termin-Anfrage über Direkt-Messenger"}
+                    </div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300 text-[10px] font-bold">
+                    Bar / TWINT vor Ort
+                  </span>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {profileData.tags.map((t: string, i: number) => (
-                    <span key={i} className="px-3 py-1 rounded-lg bg-[#13161C] border border-white/10 text-xs text-gray-200">
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {cleanPhone ? (
+                    <>
+                      <a
+                        href={`tel:${cleanPhone.replace(/\s+/g, "")}`}
+                        className="py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-extrabold text-xs text-center"
+                      >
+                        📞 Direkt anrufen ({cleanPhone})
+                      </a>
+                      <a
+                        href={`https://wa.me/${cleanPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                          `Hallo ${profile.rawName}, ich habe dein Profil auf iwantsexnow.ch (${profile.city}) gesehen und möchte gerne einen Termin anfragen.`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs text-center shadow"
+                      >
+                        💬 WhatsApp Direkt-Chat starten →
+                      </a>
+                    </>
+                  ) : (
+                    <Link
+                      href={`/messages?profileId=${encodeURIComponent(profile.id)}`}
+                      className="sm:col-span-2 py-3 px-4 rounded-xl bg-emerald-500 text-[#07120B] font-extrabold text-xs text-center"
+                    >
+                      📨 Diskrete Termin-Anfrage senden →
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              {/* Beschreibung & Inklusiv-Tags */}
+              <div className="space-y-2 pt-1">
+                <h2 className="text-sm font-serif font-bold text-white">Über {profile.rawName} & Service-Details</h2>
+                <p className="text-xs text-gray-300 leading-relaxed whitespace-pre-line">
+                  {liveState.bioOverride ||
+                    profile.bio ||
+                    `Willkommen auf meinem unabhängigen Schweizer Profil in ${profile.city} (${profile.canton}). Ich empfange dich diskret nach Terminvereinbarung (30 Min. CHF ${rate30}.– / 60 Min. CHF ${rate60}.–) oder besuche dich im Hotel (Outcall).`}
+                </p>
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {(profile.includedTags || []).map((t: string, i: number) => (
+                    <span key={i} className="px-2.5 py-1 rounded-lg bg-[#0D111A] border border-white/10 text-[11px] text-[#C8A97E] font-semibold">
                       ✓ {t}
                     </span>
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed pt-1 whitespace-pre-line">
-                  {profileData.bioText}
-                </p>
               </div>
             </div>
 
-            {/* DIREKTKONTAKT */}
-            <div className="p-6 rounded-2xl bg-[#1C2029] border border-[#C6A574]/50 space-y-4">
+            {/* 80/20 Paid-Vault Tresor-Modul */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#171E2E] to-[#121722] border border-[#C8A97E]/50 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <h2 className="text-lg font-serif font-bold text-white">
-                    Direktkontakt & Sofort-Termin ({profileData.cleanCity})
+                  <div className="text-[10px] uppercase tracking-widest text-[#C8A97E] font-extrabold flex items-center gap-1.5">
+                    <Lock size={13} /> PRIVATER FOTO- & VIDEO-TRESOR (80 % DIREKT AN {profile.rawName.toUpperCase()})
+                  </div>
+                  <h2 className="text-lg font-serif font-bold text-white mt-0.5">
+                    {vaultUnlocked
+                      ? `✓ Tresor von ${profile.rawName} ist auf deinem Gerät freigeschaltet`
+                      : `Exklusive unzensierte Galerie & Clips von ${profile.rawName} freischalten`}
                   </h2>
-                  <p className="text-xs text-gray-300">
-                    0 % Agentur-Aufschlag – kontaktiere {profileData.cleanName} direkt telefonisch oder per Nachricht.
-                  </p>
                 </div>
-                {profileData.liveCamActive && (
-                  <Link
-                    href={`/live-cam?provider=${encodeURIComponent(profileData.cleanName)}`}
-                    className="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-extrabold inline-flex items-center gap-1.5"
-                  >
-                    <Radio size={13} /> 1:1 Video-Call starten (CHF {profileData.liveCamChfPerMin}/Min.)
-                  </Link>
-                )}
+                <span className="text-xl font-extrabold text-[#C8A97E]">CHF {vaultPriceChf}.–</span>
               </div>
 
-              {profileData.phone && (
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <a
-                    href={`tel:${profileData.phone}`}
-                    onClick={() => recordAction("track_contact")}
-                    className="py-3.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#0F1218] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition"
-                  >
-                    <Phone size={15} />
-                    <span>Anrufen: {profileData.phone}</span>
-                  </a>
-                  <a
-                    href={`https://wa.me/${String(profileData.phone).replace(/\D/g, "")}?text=${encodeURIComponent(
-                      `Hallo ${profileData.cleanName}, ich habe dein Profil in ${profileData.cleanCity} auf iwantsexnow.ch gesehen und möchte gerne einen Termin anfragen.`
-                    )}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => recordAction("track_contact")}
-                    className="py-3.5 px-4 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/50 text-emerald-300 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition"
-                  >
-                    <span>WhatsApp Direkt-Chat öffnen ↗</span>
-                  </a>
-                </div>
-              )}
-
-              {inquirySent ? (
-                <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-200 font-semibold">
-                  ✓ Deine private Rückruf-Anfrage wurde im Posteingang von {profileData.cleanName} hinterlegt!
+              {vaultUnlocked ? (
+                <div className="grid grid-cols-3 gap-3 pt-1">
+                  {galleryPhotos.map((u, idx) => (
+                    <div key={idx} className="h-32 rounded-xl overflow-hidden border border-emerald-500/40">
+                      <img src={u} alt="Vault Unlocked" className="w-full h-full object-cover object-top" />
+                    </div>
+                  ))}
                 </div>
               ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    fetch("/api/vault/metrics", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        action: "create_enquiry",
-                        profileId: profileData.id,
-                        providerName: profileData.cleanName,
-                        clientContact: inquiryContact,
-                        desiredTime: inquiryMessage,
-                      }),
-                    }).catch(() => {});
-                    setInquirySent(true);
-                  }}
-                  className="grid sm:grid-cols-3 gap-2.5 pt-1"
-                >
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                  <p className="text-xs text-gray-300 max-w-md">
+                    Einmalige Freischaltung ohne Abo via TWINT, Karte oder Krypto. <strong>CHF {(vaultPriceChf * 0.8).toFixed(2)} (80 %)</strong> gehen direkt an {profile.rawName}.
+                  </p>
+                  <Link
+                    href={`/checkout?profileId=${encodeURIComponent(profile.id)}&amount=${vaultPriceChf}`}
+                    className="px-5 py-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider"
+                  >
+                    🔓 Tresor für CHF {vaultPriceChf}.– öffnen →
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Selbstverwaltungs-Claim & Sofort-Opt-Out */}
+            <div className="p-4 rounded-2xl bg-[#121722] border border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div>
+                <strong className="text-white">Bist du {profile.rawName}?</strong>{" "}
+                <span className="text-gray-400">Übernimm dein Profil kostenlos (Preise, Fotos & 80% Vault selbst steuern):</span>
+              </div>
+              {claimSent ? (
+                <span className="text-emerald-400 font-bold">✓ Anfrage im Admin-Cockpit hinterlegt!</span>
+              ) : (
+                <form onSubmit={handleClaimRequest} className="flex items-center gap-2">
                   <input
                     type="text"
-                    required
-                    value={inquiryContact}
-                    onChange={(e) => setInquiryContact(e.target.value)}
-                    placeholder="Deine Rückrufnummer (+41...)"
-                    className="px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-xs text-white"
-                  />
-                  <input
-                    type="text"
-                    required
-                    value={inquiryMessage}
-                    onChange={(e) => setInquiryMessage(e.target.value)}
-                    placeholder="Wunschzeit & Dauer (z.B. Heute 20 Uhr, 60m)"
-                    className="px-3.5 py-2.5 rounded-xl bg-[#13161C] border border-white/15 text-xs text-white"
+                    value={claimContact}
+                    onChange={(e) => setClaimContact(e.target.value)}
+                    placeholder="Deine +41 WhatsApp-Nr."
+                    className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-1.5 text-xs text-white"
                   />
                   <button
                     type="submit"
-                    className="py-2.5 px-4 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-[#C8A97E] font-bold cursor-pointer"
                   >
-                    Privat anfragen →
+                    Profil übernehmen
                   </button>
                 </form>
               )}
-            </div>
-
-            {/* PAID CONTENT / VIP-TRESOR */}
-            {profileData.paidItems.length > 0 && (
-              <div className="p-6 rounded-2xl bg-[#1C2029] border border-[#C6A574]/40 space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#C6A574] flex items-center gap-1">
-                      <Sparkles size={12} /> EXKLUSIVER VIP-CONTENT VON {profileData.cleanName.toUpperCase()}
-                    </span>
-                    <h2 className="text-base sm:text-lg font-bold text-white mt-0.5">
-                      Private 4K-Videos & Uncensored Foto-Sets (Sofort-Freischaltung)
-                    </h2>
-                  </div>
-                  <span className="text-[11px] text-emerald-400 font-semibold">
-                    80 % Direkt-Support an {profileData.cleanName}
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  {profileData.paidItems.map((item: any) => {
-                    const isUnlocked = unlockedVaultIds.includes(item.id);
-                    return (
-                      <div
-                        key={item.id}
-                        className="p-4 rounded-xl bg-[#13161C] border border-white/10 flex flex-wrap items-center justify-between gap-4"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`w-11 h-11 rounded-xl flex items-center justify-center border ${
-                              isUnlocked
-                                ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
-                                : "bg-[#C6A574]/15 border-[#C6A574]/40 text-[#C6A574]"
-                            }`}
-                          >
-                            {isUnlocked ? <Unlock size={18} /> : <Lock size={18} />}
-                          </div>
-                          <div>
-                            <div className="text-sm font-bold text-white">{item.title}</div>
-                            <div className="text-xs text-gray-400">
-                              {item.mediaCount} · Sofortiger Zugriff im Browser (Twint / Karte)
-                            </div>
-                          </div>
-                        </div>
-
-                        <Link
-                          href={`/checkout?profileId=${encodeURIComponent(profileData.id)}&provider=${encodeURIComponent(
-                            profileData.cleanName
-                          )}&title=${encodeURIComponent(item.title)}&amount=${item.priceChf}`}
-                          className="px-4 py-2.5 rounded-xl bg-[#C6A574] hover:bg-[#d4b587] text-[#13161C] font-extrabold text-xs uppercase tracking-wider"
-                        >
-                          Für CHF {item.priceChf} freischalten →
-                        </Link>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* MULTI-SOURCE COMPARISON BOX */}
-            <div className="p-6 rounded-2xl bg-[#1C2029] border border-white/10 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Layers size={16} className="text-[#C6A574]" />
-                  <h2 className="text-base sm:text-lg font-bold text-white">
-                    Zugeordnete Quellen & veröffentlichte Preise ({profileData.matchingSources.length})
-                  </h2>
-                </div>
-                <XeniaDoubtTrigger topic="price" label="Preise verstehen" />
-              </div>
-
-              <div className="divide-y divide-white/10 border border-white/10 rounded-xl overflow-hidden bg-[#13161C] text-xs">
-                {profileData.matchingSources.map((src: any, idx: number) => (
-                  <div key={idx} className="p-3.5 flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <div className="font-bold text-white">{src.portal}</div>
-                      <div className="text-gray-400">{src.city}</div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        {src.rate ? (
-                          <span className="font-bold text-[#C6A574]">CHF {src.rate}</span>
-                        ) : (
-                          <span className="text-gray-500">Richtpreis siehe oben</span>
-                        )}
-                      </div>
-                      {src.url && src.url.startsWith("http") ? (
-                        <a
-                          href={src.url}
-                          target="_blank"
-                          rel="noreferrer nofollow"
-                          onClick={() => recordAction("track_source_out")}
-                          className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-[#C6A574] text-white hover:text-[#13161C] font-bold inline-flex items-center gap-1.5 transition"
-                        >
-                          <span>Original öffnen</span>
-                          <ExternalLink size={12} />
-                        </a>
-                      ) : (
-                        <span className="px-3 py-1.5 rounded-lg bg-[#C6A574]/15 text-[#E5C99B] font-semibold">
-                          Aktuelle Ansicht
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Link href={`/report?profileId=${encodeURIComponent(profile.id)}`} className="text-rose-400/80 hover:text-rose-300 underline ml-auto">
+                1-Klick Opt-Out / Melden
+              </Link>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Ähnliche Profile im selben Kanton */}
+        {Array.isArray(relatedProfiles) && relatedProfiles.length > 0 && (
+          <section className="space-y-4 pt-6 border-t border-white/10">
+            <h2 className="text-lg font-serif font-bold text-white">
+              Weitere geprüfte Profile im Kanton {profile.canton}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {relatedProfiles.map((rp: any) => (
+                <Link
+                  key={rp.id}
+                  href={`/profile/${encodeURIComponent(rp.id)}`}
+                  className="p-3.5 rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E] flex items-center gap-3 transition"
+                >
+                  <img
+                    src={rp.thumbnail || "/images/escort-portrait-1.jpg"}
+                    alt={rp.rawName}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";
+                    }}
+                    className="w-14 h-14 rounded-xl object-cover object-top shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold text-white truncate">{rp.rawName}</div>
+                    <div className="text-[11px] text-gray-400">
+                      {rp.city} ({rp.canton}) · {rp.age} J.
+                    </div>
+                    <div className="text-xs font-extrabold text-[#C8A97E]">CHF {rp.rate60Chf}.– / 60m</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
+
+      {/* mobile-sticky-cta-bar: Fester Daumen-Kontaktbalken für +41 Anruf, WhatsApp & Paid-Vault */}
+      <div className="fixed bottom-[58px] lg:bottom-0 inset-x-0 z-40 bg-[#121722]/95 backdrop-blur-md border-t border-[#C8A97E]/40 px-3 py-2.5 shadow-2xl">
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
+          <div className="hidden sm:block min-w-0">
+            <div className="text-xs font-extrabold text-white truncate">
+              {profile.rawName} ({profile.city}, {profile.canton})
+            </div>
+            <div className="text-[11px] text-[#C8A97E] font-bold">
+              CHF {rate60}.– / 60 Min. · CHF {rate30}.– / 30 Min.
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            {cleanPhone ? (
+              <>
+                <a
+                  href={`tel:${cleanPhone.replace(/\s+/g, "")}`}
+                  className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-extrabold text-xs text-center"
+                >
+                  📞 Anrufen
+                </a>
+                <a
+                  href={`https://wa.me/${cleanPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                    `Hallo ${profile.rawName}, ich habe dein Profil auf iwantsexnow.ch (${profile.city}) gesehen und möchte gerne einen Termin anfragen.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs text-center shadow"
+                >
+                  💬 WhatsApp Direkt
+                </a>
+              </>
+            ) : (
+              <Link
+                href={`/messages?profileId=${encodeURIComponent(profile.id)}`}
+                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-500 text-[#07120B] font-extrabold text-xs text-center"
+              >
+                📨 Termin anfragen
+              </Link>
+            )}
+
+            <Link
+              href={`/checkout?profileId=${encodeURIComponent(profile.id)}&amount=${vaultPriceChf}`}
+              className="px-3.5 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs text-center shrink-0"
+            >
+              🔓 Vault (80%)
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return {
-    props: {
-      initialProfileId: String(context.params?.id || "ch-a720e283e85f"),
-    },
-  };
-};

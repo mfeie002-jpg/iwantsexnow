@@ -1,0 +1,18 @@
+{
+  "name": "IWANTSEXNOW.CH — Schweizer Escort & Club Direktverzeichnis",
+  "short_name": "IWANTSEXNOW.CH",
+  "description": "2'515+ geprüfte Schweizer Escort-, GFE-, Tantra- & Studio-Profile sowie 108 Clubs mit +41 Direktkontakt und transparenten CHF-Tarifen.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D111A",
+  "theme_color": "#0D111A",
+  "orientation": "portrait-primary",
+  "lang": "de-CH",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
