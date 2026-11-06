@@ -1,51 +1,57 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
-  const body = req.body || {};
-  const priceChf = Number(body.priceChf || 29);
-  const providerShareChf = Math.round(priceChf * 0.8);
-  const platformFeeChf = priceChf - providerShareChf;
-  const unlockRef = `PPV-${Math.floor(100000 + Math.random() * 900000)}`;
+  try {
+    const body = req.body || {};
+    const profileId = String(body.profileId || "").trim();
+    const amountChf = Math.max(10, Math.min(500, Number(body.amountChf) || 29));
+    const paymentMethod = String(body.paymentMethod || "TWINT / Karte").trim();
 
-  const tgToken = process.env.TELEGRAM_BOT_TOKEN;
-  const tgChatId = process.env.TELEGRAM_CHAT_ID;
-
-  if (tgToken && tgChatId) {
-    try {
-      const text = [
-        `💎 *iWantSexNow.ch · Locked VIP Content verkauft!*`,
-        `*Ref:* \`${unlockRef}\``,
-        `*Anbieterin:* ${body.providerName || "Sophia"}`,
-        `*Medium:* ${body.itemTitle || "VIP Video/Foto-Set"}`,
-        `*Verkaufspreis:* CHF ${priceChf}.00`,
-        `*Dein 20% Plattform-Gewinn:* *CHF ${platformFeeChf}.00*`,
-        `*80% Provider-Gutschrift:* CHF ${providerShareChf}.00`,
-      ].join("\n");
-
-      await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: tgChatId,
-          text,
-          parse_mode: "Markdown",
-        }),
-      });
-    } catch {
-      // non-blocking
+    if (!profileId) {
+      return res.status(400).json({ ok: false, error: "profileId fehlt." });
     }
-  }
 
-  return res.status(200).json({
-    status: "ok",
-    unlockRef,
-    priceChf,
-    providerShareChf,
-    platformFeeChf,
-    unlockedAt: new Date().toISOString(),
-  });
+    const dataDir = path.join(process.cwd(), "src", "data");
+    const statesPath = path.join(dataDir, "managed-profile-states.json");
+    const states = fs.existsSync(statesPath) ? JSON.parse(fs.readFileSync(statesPath, "utf8")) : {};
+
+    const creatorShareChf = Math.round(amountChf * 0.8 * 100) / 100;
+    const platformShareChf = Math.round(amountChf * 0.2 * 100) / 100;
+    const receiptId = "CH-VLT-" + crypto.randomBytes(4).toString("hex").toUpperCase();
+
+    const prev = states[profileId] || { profileId };
+    const prevUnlocks = Number(prev.vaultUnlockCount || 0);
+    const prevGross = Number(prev.vaultGrossChf || 0);
+    const prevNet80 = Number(prev.vaultNetCreatorChf || 0);
+
+    states[profileId] = {
+      ...prev,
+      vaultUnlockCount: prevUnlocks + 1,
+      vaultGrossChf: Math.round((prevGross + amountChf) * 100) / 100,
+      vaultNetCreatorChf: Math.round((prevNet80 + creatorShareChf) * 100) / 100,
+      lastVaultUnlockAt: new Date().toISOString(),
+    };
+
+    fs.writeFileSync(statesPath, JSON.stringify(states, null, 2), "utf8");
+
+    return res.status(200).json({
+      ok: true,
+      receiptId,
+      profileId,
+      amountChf,
+      creatorShareChf,
+      platformShareChf,
+      paymentMethod,
+      unlockedAt: new Date().toISOString(),
+    });
+  } catch (e: any) {
+    return res.status(500).json({ ok: false, error: e?.message || "Unlock error" });
+  }
 }
