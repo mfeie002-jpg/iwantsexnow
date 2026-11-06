@@ -1,159 +1,176 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import clubsVault from "@/data/swiss-establishments-vault.json";
-import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
-import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
-import { MapPin, Building2, ArrowUpRight, Search } from "lucide-react";
+import offersData from "@/data/harvested-offers.json";
+import { Trophy, Sparkles, CheckCircle2, ArrowRight, Flame } from "lucide-react";
 
-export default function HarmonizedClubsDirectoryPage() {
-  const [selectedCanton, setSelectedCanton] = useState<string>("ALL");
-  const [searchTerm, setSearchTerm] = useState<string>("");
+export default function RankingsPage() {
+  const [serverStates, setServerStates] = useState<Record<string, any>>({});
+  const [blockedIds, setBlockedIds] = useState<string[]>([]);
+  const [cantonFilter, setCantonFilter] = useState<string>("ALL");
 
-  const clubs = useMemo(() => {
-    const raw = Array.isArray(clubsVault) ? clubsVault : [];
-    return raw.map((c: any) => {
-      const geo = normalizeSwissGeo(c.city || c.address, c.canton);
-      return {
-        ...c,
-        cleanCity: geo.cleanCity,
-        canton: geo.trueCanton,
-      };
-    });
+  useEffect(() => {
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.states) setServerStates(d.states);
+        if (Array.isArray(d?.blockedIds)) setBlockedIds(d.blockedIds);
+      })
+      .catch(() => {});
   }, []);
 
-  const filteredClubs = useMemo(() => {
-    return clubs.filter((c: any) => {
-      if (selectedCanton !== "ALL" && c.canton !== selectedCanton) return false;
-      if (searchTerm.trim()) {
-        const q = searchTerm.toLowerCase().trim();
-        const hay = (c.name + " " + c.cleanCity + " " + c.canton + " " + (c.category || "") + " " + (c.address || "")).toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-  }, [clubs, selectedCanton, searchTerm]);
+  const rankedList = useMemo(() => {
+    const blocked = new Set(blockedIds);
+    const raw = (offersData as any[]) || [];
+    const items: any[] = [];
 
-  const cantons = ["ALL", "ZH", "ZG", "AG", "BS", "BE", "LU", "SG", "SO", "TG", "GE", "VD", "TI"];
+    for (const o of raw) {
+      const pid = o.id || o.dedupClusterId;
+      if (!pid || blocked.has(pid)) continue;
+      const st = serverStates[pid] || {};
+      if (st.paused || st.hidden) continue;
+
+      if (cantonFilter !== "ALL" && String(o.canton || "").toUpperCase() !== cantonFilter) continue;
+
+      const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
+      const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+      const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
+      const isVerif = Boolean(st.identityVerified || o.identityVerified);
+      const isFeatured = Boolean(st.featured);
+      const unlocks = Number(st.vaultUnlockCount || 0);
+
+      const rankScore =
+        (isFeatured ? 600 : 0) +
+        (isAvail ? 400 : 0) +
+        (isVerif ? 250 : 0) +
+        unlocks * 80 +
+        (o.rawPhone ? 100 : 0) +
+        Number(o.curationScore || 75);
+
+      items.push({
+        ...o,
+        id: pid,
+        rate60Chf: r60,
+        rate30Chf: r30,
+        isAvail,
+        isVerif,
+        isFeatured,
+        rankScore,
+      });
+    }
+
+    items.sort((a, b) => b.rankScore - a.rankScore);
+    return items.slice(0, 50);
+  }, [serverStates, blockedIds, cantonFilter]);
 
   return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
+    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
       <SEO
-        title="Schweizer Clubs, Studios & Laufhäuser – Verzeichnis nach Kanton | iwantsexnow.ch"
-        description={"Übersicht über " + clubs.length + " stationäre Schweizer Clubs, Kontaktbars, FKK- und Massagestudios mit Quellenangabe und Selbstverwaltung."}
+        title="Schweizer Escort Top-50 Ranking & Kantonale Bestenliste (Zug, Zürich, Luzern) | iwantsexnow.ch"
+        description="Tagesaktuelles Schweizer Top-50 Ranking unabhängiger Escort-, Tantra- & GFE-Profile nach Kanton (ZG, ZH, LU, BS, BE, GE), Echtzeit-Verfügbarkeit und Echtheits-Prüfung."
+        url="https://iwantsexnow.ch/rankings"
       />
       <LuxuryHeader />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-white/10">
-          <div className="space-y-1.5 max-w-3xl">
-            <div className="text-[11px] font-bold uppercase tracking-widest text-[#C6A574]">
-              STATIONÄRE SCHWEIZER ADRESSEN · CLUBS & STUDIOS
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+              <Trophy size={14} /> TAGESAKTUELLES SCHWEIZER KANTONS-RANKING (TOP 50)
             </div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
-              Schweizer Clubs, Studios & Laufhäuser ({filteredClubs.length})
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
+              Gefragteste Profile nach Echtzeit-Status & Verifizierung
             </h1>
-            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-              Geordnete Übersicht nach Kanton. Betreiber können ihren Eintrag kostenlos übernehmen, Öffnungszeiten aktualisieren oder über das Meldeformular korrigieren lassen.
+            <p className="text-xs text-gray-300 mt-1">
+              Berechnet aus aktiver 4h-Verfügbarkeit, bestätigter Foto-Echtheit, Direktkontakt-Quote und Paid-Vault-Nachfrage.
             </p>
           </div>
+          <Link href="/compare-escorts" className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+            Top-Profile direkt vergleichen →
+          </Link>
+        </section>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <XeniaDoubtTrigger topic="source" label="Quellen-Erklärung" />
-            <Link
-              href="/reviews"
-              className="px-4 py-2.5 rounded-xl bg-[#C6A574] text-[#13161C] font-bold text-xs inline-flex items-center gap-1.5"
+        {/* Kantons-Umschalter */}
+        <div className="flex flex-wrap gap-1.5">
+          {["ALL", "ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCantonFilter(c)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
+                cantonFilter === c ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#121722] text-gray-300 border border-white/10"
+              }`}
             >
-              <span>Zum Online-Portalvergleich</span>
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
-        </div>
-
-        {/* Filter Bar */}
-        <div className="p-3.5 rounded-2xl bg-[#1A1E27] border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-            {cantons.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setSelectedCanton(c)}
-                className={
-                  selectedCanton === c
-                    ? "px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 cursor-pointer bg-[#C6A574] text-[#13161C]"
-                    : "px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 cursor-pointer bg-[#12151C] text-gray-300 border border-white/10 hover:text-white"
-                }
-              >
-                {c === "ALL" ? "Ganze Schweiz" : c}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center bg-[#12151C] border border-white/15 rounded-xl px-3 py-1.5 sm:w-72">
-            <Search size={14} className="text-[#C6A574] shrink-0" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Clubname, Stadt oder Strasse..."
-              className="w-full px-2 bg-transparent text-xs text-white focus:outline-none"
-            />
-          </div>
-        </div>
-
-        {/* Clubs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredClubs.map((club: any, idx: number) => (
-            <article
-              key={club.name + "-" + idx}
-              className="p-5 rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 transition flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-wider text-[#C6A574] font-bold">
-                  <span className="flex items-center gap-1.5">
-                    <Building2 size={12} />
-                    <span>{club.type || club.category || "Club / Studio"}</span>
-                  </span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-gray-300 border border-white/10">
-                    {club.cleanCity} · {club.canton}
-                  </span>
-                </div>
-                <h2 className="text-lg font-serif font-bold text-white">{club.name}</h2>
-                <p className="text-xs text-gray-300 flex items-center gap-1.5">
-                  <MapPin size={13} className="text-[#C6A574] shrink-0" />
-                  <span>{club.address || club.cleanCity + " (" + club.canton + ")"}</span>
-                </p>
-                {club.description && (
-                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{club.description}</p>
-                )}
-              </div>
-
-              <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-                <span className="text-[11px] text-gray-400">
-                  Quelle: {club.sourcePortal || "Verzeichnis-Index"}
-                </span>
-                <div className="flex items-center gap-3">
-                  <Link
-                    href={"/create-post?claim=" + encodeURIComponent(club.name || "") + "&city=" + encodeURIComponent(club.cleanCity) + "&canton=" + encodeURIComponent(club.canton)}
-                    className="text-[#C6A574] hover:underline font-semibold"
-                  >
-                    Eintrag übernehmen →
-                  </Link>
-                  <Link
-                    href={"/report?name=" + encodeURIComponent(club.name || "")}
-                    className="text-gray-400 hover:text-white"
-                  >
-                    Melden
-                  </Link>
-                </div>
-              </div>
-            </article>
+              {c === "ALL" ? "🇨🇭 Gesamte Schweiz (Top 50)" : `Top Kanton ${c}`}
+            </button>
           ))}
         </div>
+
+        {/* Ranking-Liste */}
+        <section className="space-y-3">
+          {rankedList.map((p: any, idx: number) => (
+            <div
+              key={p.id}
+              className="p-4 rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/50 flex flex-wrap items-center justify-between gap-4 transition"
+            >
+              <div className="flex items-center gap-4">
+                <div
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-sm ${
+                    idx < 3 ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] text-gray-400 border border-white/10"
+                  }`}
+                >
+                  #{idx + 1}
+                </div>
+                <img
+                  src={p.thumbnail || "/images/escort-portrait-1.jpg"}
+                  alt={p.rawName}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
+                  className="w-14 h-14 rounded-xl object-cover object-top border border-white/15"
+                />
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-base font-serif font-bold text-white hover:text-[#C8A97E]">
+                      {p.rawName}
+                    </Link>
+                    <span className="px-2 py-0.5 rounded bg-white/10 text-[#C8A97E] text-[10px] font-bold">
+                      {p.canton} · {p.city}
+                    </span>
+                    {p.isAvail && (
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
+                        ● 4h Live
+                      </span>
+                    )}
+                    {p.isVerif && (
+                      <span className="px-2 py-0.5 rounded bg-[#C8A97E]/20 text-[#C8A97E] text-[10px] font-bold">
+                        ✓ Geprüft
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">
+                    {p.age || 25} J. · {p.heightCm || 168} cm · Cup {p.cupSize || "C"} · {p.hairColor || "Brünett"} · Score:{" "}
+                    <strong className="text-gray-200">{p.rankScore} Pkt.</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 ml-auto">
+                <div className="text-right">
+                  <div className="text-sm font-extrabold text-[#C8A97E]">CHF {p.rate60Chf}.– / 60m</div>
+                  <div className="text-[11px] text-gray-400">30 Min.: CHF {p.rate30Chf}.–</div>
+                </div>
+                <Link
+                  href={`/profile/${encodeURIComponent(p.id)}`}
+                  className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs inline-flex items-center gap-1"
+                >
+                  <span>Profil</span>
+                  <ArrowRight size={12} />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </section>
       </main>
-      <CorporateFooter />
     </div>
   );
 }
