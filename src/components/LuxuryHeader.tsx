@@ -1,226 +1,218 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { StencilSerifX } from "@/components/BrandLogo";
-import { ChevronDown, Menu, X, Sparkles, Building2, Scale, UserCheck, Globe } from "lucide-react";
+import {
+  Search,
+  Sparkles,
+  Trophy,
+  Video,
+  Flame,
+  Building2,
+  Scale,
+  Heart,
+  Menu,
+  X,
+  PlusCircle,
+  MapPin,
+  ShieldCheck,
+  KeyRound,
+  Star,
+} from "lucide-react";
 
-const PROVIDER_MENU = [
-  { href: "/advertise", title: "Für Anbieter: Übersicht & Vorteile", sub: "Kostenlose Profilkontrolle, Statistik & Konditionen" },
-  { href: "/create-post", title: "Bestehendes Profil übernehmen", sub: "Eintrag bestätigen oder neues Profil anlegen" },
-  { href: "/creator-dashboard", title: "Anbieter-Cockpit öffnen", sub: "Angaben pflegen, Verfügbarkeit bestätigen & pausieren" },
-  { href: "/verify", title: "Identitätsprüfung beantragen", sub: "Dokumentiertes Prüfverfahren für Ihr Profil" },
-  { href: "/report", title: "Profil melden oder entfernen", sub: "Kostenloser Widerspruch ohne Registrierungspflicht" },
+const MAIN_NAV = [
+  { href: "/search", label: "Deep-Suche", icon: Search },
+  { href: "/matches", label: "Quick-Matcher", icon: Sparkles },
+  { href: "/stories", label: "24h-Stories", icon: Flame, badge: "LIVE" },
+  { href: "/live-cam", label: "Video & Vault", icon: Video },
+  { href: "/rankings", label: "Top-50", icon: Trophy },
+  { href: "/clubs", label: "108 Clubs", icon: Building2 },
+  { href: "/compare-escorts", label: "Direktvergleich", icon: Scale },
+  { href: "/pricing", label: "CHF-Kompass", icon: ShieldCheck },
+  { href: "/hotels", label: "Outcall-Hotels", icon: KeyRound },
+  { href: "/reviews", label: "Bewertungen", icon: Star },
 ];
 
-const LANGUAGE_HUBS = [
-  { code: "DE", label: "Deutsch (Schweiz)", href: "/" },
-  { code: "FR", label: "Français (Genève & Vaud)", href: "/escort-geneva" },
-  { code: "IT", label: "Italiano (Lugano & Ticino)", href: "/escort-lugano" },
+const CANTON_QUICK_LINKS = [
+  { slug: "zug", code: "ZG", label: "Zug" },
+  { slug: "zuerich", code: "ZH", label: "Zürich" },
+  { slug: "luzern", code: "LU", label: "Luzern" },
+  { slug: "baden", code: "AG", label: "Baden / AG" },
+  { slug: "basel", code: "BS", label: "Basel" },
+  { slug: "bern", code: "BE", label: "Bern" },
+  { slug: "st-gallen", code: "SG", label: "St. Gallen" },
+  { slug: "geneve", code: "GE", label: "Genève" },
+  { slug: "lausanne", code: "VD", label: "Lausanne" },
+  { slug: "lugano", code: "TI", label: "Lugano" },
 ];
 
 export function LuxuryHeader() {
   const router = useRouter();
-  const [providerOpen, setProviderOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [favCount, setFavCount] = useState(0);
 
-  const isActive = (path: string) => router.pathname === path || router.pathname.startsWith(path + "/");
-  const currentLang =
-    router.pathname.includes("geneva") || router.pathname.includes("lausanne") || router.asPath.includes("geneve")
-      ? "FR"
-      : router.pathname.includes("lugano") || router.asPath.includes("lugano")
-      ? "IT"
-      : "DE";
+  useEffect(() => {
+    const syncFavs = () => {
+      try {
+        const raw = localStorage.getItem("ch_favorite_profiles") || localStorage.getItem("favorites") || "[]";
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setFavCount(parsed.length);
+      } catch {}
+    };
+    syncFavs();
+    window.addEventListener("storage", syncFavs);
+    window.addEventListener("ch-favorites-updated", syncFavs);
+    return () => {
+      window.removeEventListener("storage", syncFavs);
+      window.removeEventListener("ch-favorites-updated", syncFavs);
+    };
+  }, [router.asPath]);
 
   return (
-    <>
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#12151C]/95 backdrop-blur-xl text-white">
-        <div className="max-w-[1380px] mx-auto px-6 sm:px-10 h-14 sm:h-16 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-              <div className="w-9 h-9 rounded-lg bg-[#1A1E29] border border-[#C6A574]/50 flex items-center justify-center">
-                <StencilSerifX color="#C6A574" className="w-5 h-4" />
-              </div>
-              <div>
-                <div className="text-lg sm:text-xl font-serif font-bold tracking-tight text-white flex items-baseline">
-                  <span>iwantse</span>
-                  <StencilSerifX color="#C6A574" className="w-[15px] h-[13px] mx-[0.5px] translate-y-[1px]" />
-                  <span>now.ch</span>
-                </div>
-                <div className="text-[10px] tracking-[0.14em] uppercase text-gray-400 leading-none mt-0.5">
-                  Schweizer Profilverzeichnis
-                </div>
-              </div>
-            </Link>
+    <header className="sticky top-0 z-50 bg-[#0D111A]/95 backdrop-blur-md border-b border-white/10">
+      {/* Obere Hauptzeile */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#C8A97E] to-[#9A7B4F] flex items-center justify-center text-[#0D111A] font-serif font-extrabold text-base shadow">
+            CH
+          </div>
+          <div>
+            <span className="text-base sm:text-lg font-serif font-bold tracking-wide text-white block leading-none">
+              IWANTSEXNOW<span className="text-[#C8A97E]">.CH</span>
+            </span>
+            <span className="text-[9px] uppercase tracking-widest text-gray-400 block mt-0.5">
+              SCHWEIZER DIREKTVERZEICHNIS · 0% PROVISION
+            </span>
+          </div>
+        </Link>
 
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Hauptnavigation">
+        {/* Desktop-Navigation (Kompakt) */}
+        <nav className="hidden xl:flex items-center gap-1">
+          {MAIN_NAV.slice(0, 7).map((item) => {
+            const Icon = item.icon;
+            const active = router.pathname === item.href;
+            return (
               <Link
-                href="/"
-                className={
-                  router.pathname === "/" || router.pathname === "/search"
-                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
-                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
-                }
+                key={item.href}
+                href={item.href}
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                  active
+                    ? "bg-[#C8A97E] text-[#0D111A]"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                }`}
               >
-                Profile
+                <Icon size={13} className={active ? "text-[#0D111A]" : "text-[#C8A97E]"} />
+                <span>{item.label}</span>
+                {item.badge && (
+                  <span className="px-1.5 py-0.2 rounded bg-emerald-500 text-[#07120B] text-[9px] font-extrabold">
+                    {item.badge}
+                  </span>
+                )}
               </Link>
+            );
+          })}
+        </nav>
+
+        {/* Rechte Aktions-Buttons: Merkliste & Profil eintragen */}
+        <div className="flex items-center gap-2">
+          <Link
+            href="/favorites"
+            className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white flex items-center gap-1.5"
+            title="Gespeicherte Favoriten & Merkliste"
+          >
+            <Heart size={14} className={favCount > 0 ? "text-rose-400 fill-rose-400" : "text-[#C8A97E]"} />
+            <span className="hidden sm:inline">Merkliste</span>
+            {favCount > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-[#C8A97E] text-[#0D111A] text-[10px] font-extrabold">
+                {favCount}
+              </span>
+            )}
+          </Link>
+
+          <Link
+            href="/register"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] text-xs font-extrabold shadow"
+          >
+            <PlusCircle size={14} />
+            <span>Profil eintragen (0%)</span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="xl:hidden p-2 rounded-xl bg-white/5 border border-white/15 text-white cursor-pointer"
+            aria-label="Menü öffnen"
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Untere Kantons- & Modul-Schnellleiste */}
+      <div className="bg-[#121722]/90 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar text-[11px]">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="text-gray-400 font-bold flex items-center gap-1 mr-1">
+              <MapPin size={11} className="text-[#C8A97E]" /> Kantone:
+            </span>
+            {CANTON_QUICK_LINKS.map((c) => (
               <Link
-                href="/clubs"
-                className={
-                  isActive("/rankings")
-                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
-                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
-                }
+                key={c.slug}
+                href={`/orte/${c.slug}`}
+                className="px-2 py-0.5 rounded-lg bg-[#0D111A] hover:bg-[#C8A97E] text-gray-300 hover:text-[#0D111A] border border-white/10 font-bold transition shrink-0"
               >
-                Clubs & Studios
+                {c.code} · {c.label}
               </Link>
-              <Link
-                href="/reviews"
-                className={
-                  isActive("/reviews")
-                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
-                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
-                }
-              >
-                Portalvergleich
-              </Link>
-            </nav>
+            ))}
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <div
-              className="relative hidden sm:block"
-              onMouseEnter={() => setProviderOpen(true)}
-              onMouseLeave={() => setProviderOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setProviderOpen(!providerOpen)}
-                className="px-3.5 py-2 rounded-lg border border-[#C6A574]/50 bg-[#C6A574]/10 hover:bg-[#C6A574]/20 text-[#E5C99B] text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
-              >
-                <span>Für Anbieter</span>
-                <ChevronDown size={13} className={providerOpen ? "transition-transform rotate-180" : "transition-transform"} />
-              </button>
-
-              {providerOpen && (
-                <div className="absolute right-0 top-full pt-1.5 w-80 z-50">
-                  <div className="rounded-xl border border-white/15 bg-[#171A22] p-2 shadow-2xl divide-y divide-white/5">
-                    {PROVIDER_MENU.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setProviderOpen(false)}
-                        className="block px-3.5 py-2.5 rounded-lg hover:bg-white/5 transition"
-                      >
-                        <div className="text-xs font-bold text-white hover:text-[#C6A574]">{item.title}</div>
-                        <div className="text-[11px] text-gray-400 mt-0.5">{item.sub}</div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Link
-              href="/login"
-              className="px-3.5 py-2 rounded-lg border border-white/15 hover:border-white/30 bg-white/5 text-xs font-semibold text-gray-200 transition"
-            >
-              Login
-            </Link>
-
-            <div
-              className="relative hidden sm:block"
-              onMouseEnter={() => setLangOpen(true)}
-              onMouseLeave={() => setLangOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setLangOpen(!langOpen)}
-                className="px-2.5 py-2 rounded-lg border border-white/15 hover:border-white/30 bg-white/5 text-xs font-semibold text-gray-200 flex items-center gap-1 cursor-pointer"
-              >
-                <Globe size={13} className="text-[#C6A574]" />
-                <span>{currentLang}</span>
-                <ChevronDown size={12} />
-              </button>
-
-              {langOpen && (
-                <div className="absolute right-0 top-full pt-1.5 w-56 z-50">
-                  <div className="rounded-xl border border-white/15 bg-[#171A22] p-1.5 shadow-2xl space-y-0.5">
-                    {LANGUAGE_HUBS.map((l) => (
-                      <Link
-                        key={l.code}
-                        href={l.href}
-                        onClick={() => setLangOpen(false)}
-                        className={
-                          currentLang === l.code
-                            ? "block px-3 py-2 rounded-lg text-xs transition bg-[#C6A574] text-[#12151C] font-bold"
-                            : "block px-3 py-2 rounded-lg text-xs font-semibold transition text-gray-200 hover:bg-white/5"
-                        }
-                      >
-                        {l.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Menü"
-              className="md:hidden p-2 rounded-lg border border-white/15 bg-white/5 text-white"
-            >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+          <div className="hidden lg:flex items-center gap-3 shrink-0 text-gray-300 font-semibold">
+            <Link href="/pricing" className="hover:text-[#C8A97E]">CHF-Kompass</Link>
+            <Link href="/hotels" className="hover:text-[#C8A97E]">Outcall-Hotels</Link>
+            <Link href="/reviews" className="hover:text-[#C8A97E]">Bewertungen</Link>
+            <Link href="/notifications" className="text-emerald-400 hover:underline">● 4h-Live-Ticker</Link>
           </div>
         </div>
-
-        {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 bg-[#12151C] px-4 py-4 space-y-3 text-sm">
-            <div className="flex flex-col space-y-2">
-              <Link href="/" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-white border-b border-white/5">
-                Profile entdecken (DE)
-              </Link>
-              <Link href="/escort-geneva" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Français · Genève & Vaud (FR)
-              </Link>
-              <Link href="/escort-lugano" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Italiano · Lugano & Ticino (IT)
-              </Link>
-              <Link href="/clubs" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Clubs & Studios
-              </Link>
-              <Link href="/reviews" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Portalvergleich
-              </Link>
-              <Link href="/advertise" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-[#C6A574]">
-                Für Anbieter (Profil kostenlos verwalten)
-              </Link>
-            </div>
-          </div>
-        )}
-      </header>
-
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/15 bg-[#12151C]/95 backdrop-blur-xl px-1 pt-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))] grid grid-cols-4 gap-1 text-[10px] font-semibold text-gray-400">
-        <Link href="/" className={router.pathname === "/" ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <Sparkles size={16} />
-          <span className="mt-0.5">Profile</span>
-        </Link>
-        <Link href="/clubs" className={isActive("/rankings") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <Building2 size={16} />
-          <span className="mt-0.5">Clubs</span>
-        </Link>
-        <Link href="/reviews" className={isActive("/reviews") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <Scale size={16} />
-          <span className="mt-0.5">Vergleich</span>
-        </Link>
-        <Link href="/advertise" className={isActive("/advertise") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <UserCheck size={16} />
-          <span className="mt-0.5">Für Anbieter</span>
-        </Link>
       </div>
-    </>
+
+      {/* Mobiles Aufklapp-Menü */}
+      {mobileOpen && (
+        <div className="xl:hidden bg-[#121722] border-b border-white/15 px-4 py-4 space-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {MAIN_NAV.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="p-2.5 rounded-xl bg-[#0D111A] border border-white/10 text-xs font-bold text-white flex items-center gap-2"
+                >
+                  <Icon size={14} className="text-[#C8A97E]" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-white/10">
+            <Link
+              href="/register"
+              onClick={() => setMobileOpen(false)}
+              className="flex-1 py-2.5 px-4 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold text-center"
+            >
+              + Kostenloses Schweizer Profil anlegen →
+            </Link>
+            <Link
+              href="/members"
+              onClick={() => setMobileOpen(false)}
+              className="py-2.5 px-4 rounded-xl bg-white/10 text-white text-xs font-bold text-center"
+            >
+              Gentleman-Lounge
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
+
 export default LuxuryHeader;
