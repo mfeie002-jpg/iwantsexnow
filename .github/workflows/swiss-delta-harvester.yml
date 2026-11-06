@@ -1,0 +1,39 @@
+name: Swiss 6h Delta Harvester & Quality Gate
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  harvest-and-sanitize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run 5-Stage Delta Sanitizer
+        run: node scripts/run-delta-scraper.mjs
+
+      - name: Run Swiss Canton & PLZ Disambiguator
+        run: node scripts/scrape-swiss-cantons.mjs
+
+      - name: Commit & Push updated Swiss index if changed
+        run: |
+          git config user.name "iwantsexnow-harvester-bot"
+          git config user.email "bot@iwantsexnow.ch"
+          if [ -n "$(git status --porcelain src/data/)" ]; then
+            git add src/data/harvested-offers.json src/data/harvestedOffers.ts src/data/index-stats.json
+            git commit -m "Automated 6h Swiss delta harvest & quality gate sync"
+            git push origin main
+          else
+            echo "Keine neuen Delta-Änderungen im Tresor."
+          fi
