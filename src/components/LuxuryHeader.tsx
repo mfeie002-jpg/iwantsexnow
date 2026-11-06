@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import {
   Search,
   Sparkles,
@@ -68,6 +69,7 @@ export function LuxuryHeader() {
   }, [router.asPath]);
 
   return (
+    <>
     <header className="sticky top-0 z-50 bg-[#0D111A]/95 backdrop-blur-md border-b border-white/10">
       {/* Obere Hauptzeile */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
@@ -212,6 +214,8 @@ export function LuxuryHeader() {
         </div>
       )}
     </header>
+    <MobileBottomNav />
+    </>
   );
 }
 
