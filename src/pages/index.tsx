@@ -332,7 +332,7 @@ export default function HomePage() {
     <div className={pageClass} data-edition={designTheme}>
       <SEO
         title="IWANTSEXNOW.CH — Schweizer Escort, Tantra & Studio Direktverzeichnis (0% Provision)"
-        description={`${activeOffers.length.toLocaleString("de-CH")}+ geprüfte Schweizer Escort-, Tantra- & Studio-Profile sowie ${TOTAL_CLUBS} Clubs. Echte 30m/60m CHF-Preise & direkter +41 WhatsApp-Kontakt.`}
+        description={`${activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")}+ geprüfte Schweizer Escort-, Tantra- & Studio-Profile sowie ${TOTAL_CLUBS} Clubs. Echte 30m/60m CHF-Preise & direkter +41 WhatsApp-Kontakt.`}
         url="https://iwantsexnow.ch"
       />
 
@@ -362,7 +362,7 @@ export default function HomePage() {
             </span>
             <span>Direkter +41 Kontakt</span>
             <span className="tabular-nums text-[#C8A97E]">
-              {activeOffers.length.toLocaleString("de-CH")} Dossiers · {TOTAL_CLUBS} Clubs
+              {activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")} Dossiers · {TOTAL_CLUBS} Clubs
             </span>
           </div>
         </section>

@@ -127,7 +127,7 @@ export function LuxuryHeader() {
             <SwissDoorplate
               state="FREI"
               roomNumber="CH"
-              customLabel={`${TOTAL_PROFILES.toLocaleString("de-CH")} PROFILE AKTIV`}
+              customLabel={`${TOTAL_PROFILES.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")} PROFILE AKTIV`}
               size="sm"
             />
           </div>
