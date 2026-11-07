@@ -172,8 +172,7 @@ export default function ProfileDetailPage({ profile, relatedProfiles }: any) {
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 space-y-3">
             <div className="relative rounded-2xl overflow-hidden bg-[#121722] border border-[#C8A97E]/40 h-96 sm:h-[440px]">
-              <img
-                src={galleryPhotos[0]}
+              <img referrerPolicy="no-referrer" src={galleryPhotos[0]}
                 alt={profile.rawName}
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg";

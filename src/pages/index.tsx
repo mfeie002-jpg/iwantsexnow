@@ -386,8 +386,7 @@ export default function HomePage() {
               >
                 <div>
                   <div className="relative h-64 bg-[#0D111A] overflow-hidden">
-                    <img
-                      src={p.thumbnail || "/images/escort-portrait-1.jpg"}
+                    <img referrerPolicy="no-referrer" src={p.thumbnail || "/images/escort-portrait-1.jpg"}
                       alt={p.rawName}
                       loading="lazy"
                       onError={(e) => {

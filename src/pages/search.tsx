@@ -183,8 +183,7 @@ export default function DeepAttributeSearchPage() {
                 className="rounded-2xl overflow-hidden bg-[#121722] border border-white/10 hover:border-[#C8A97E] transition flex flex-col justify-between"
               >
                 <Link href={`/profile/${encodeURIComponent(p.id)}`} className="relative aspect-[3/4] block bg-black">
-                  <img
-                    src={img}
+                  <img referrerPolicy="no-referrer" src={img}
                     alt={cleanName}
                     onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG; }}
                     className="w-full h-full object-cover object-top"
