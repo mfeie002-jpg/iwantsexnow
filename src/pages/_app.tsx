@@ -1,87 +1,69 @@
-import { Toaster } from "@/components/ui/toaster";
-import { SEO } from "@/components/SEO";
-import { AgeVerificationGate } from "@/components/AgeVerificationGate";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Head from "next/head";
-import { useRouter } from "next/router";
-
-const routeMeta: Record<string, { title: string; description: string }> = {
-  "/": {
-    title: "iWantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen",
-    description: "Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung in Zürich & Zug.",
-  },
-  "/search": {
-    title: "Erotik & Escort Suche Schweiz – Preis- & Portalvergleich | iWantSexNow.ch",
-    description: "Schweizweite Meta-Suche für Zürich, Zug, Cham und die ganze Schweiz mit transparentem Endpreis-Rechner.",
-  },
-  "/compare-escorts": {
-    title: "Schweizer Portale & Direktprofile im Endpreis-Vergleich | iWantSexNow.ch",
-    description: "Dubletten-Check, echte Endpreise und verifizierte Direktprofile im direkten Vergleich.",
-  },
-  "/escort-zurich": {
-    title: "Escort Zürich, Zug & Cham – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Geprüfte Profile in Zürich, Zug, Cham und Winterthur mit Echtzeit-Verfügbarkeit und Endpreis-Garantie.",
-  },
-  "/escort-geneva": {
-    title: "Escort Genève – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Exklusive Begleitung und geprüfte Profile in Genf.",
-  },
-  "/escort-basel": {
-    title: "Escort Basel – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Geprüfte Anbieterinnen, Studios und Direktprofile in Basel.",
-  },
-  "/escort-bern": {
-    title: "Escort Bern – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Diskrete Begleitung und verifizierte Profile in Bern.",
-  },
-  "/escort-lausanne": {
-    title: "Escort Lausanne – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Geprüfte Profile und diskrete Direkt-Anfragen in Lausanne.",
-  },
-};
-
-export const previewOnlyRoutes: Record<string, string> = {};
+import Link from "next/link";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { pathname } = useRouter();
-  const fallbackName =
-    pathname
-      .split("/")
-      .filter((segment) => segment && !segment.startsWith("["))
-      .join(" / ")
-      .replace(/-/g, " ") || "Schweizer Escort-Index";
-
-  const meta = routeMeta[pathname] || {
-    title: fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1) + " | iWantSexNow.ch",
-    description: "Verifizierter Schweizer Escort- & Preisvergleich mit transparenten Endpreisen und diskreter Direktbuchung.",
-  };
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "iWantSexNow.ch",
-    url: "https://iwantsexnow.ch",
-    description: meta.description,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://iwantsexnow.ch/search?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  };
-
   return (
-    <>
-      <SEO title={meta.title} description={meta.description} />
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </Head>
-      <AgeVerificationGate />
-      <Component {...pageProps} />
-      <Toaster />
-    </>
+    <div className="min-h-screen flex flex-col bg-[#090A0F] text-[#F5F2EB]">
+      <div className="flex-1">
+        <Component {...pageProps}/>
+      </div>
+
+      <footer className="bg-[#090A0F] border-t border-white/10 py-10 px-4 sm:px-6 mt-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-xs text-gray-400">
+          <div className="space-y-2">
+            <div className="text-base font-serif font-bold text-white">
+              IWANTSEXNOW<span className="text-[#C8A97E]">.CH</span>
+            </div>
+            <p className="leading-relaxed">
+              Das unabhängige Schweizer Direktverzeichnis für verifizierte Escorts, Girlfriend Experience, Tantra-Studios & 305 stationäre Clubs. 0 % Buchungsprovision & 80 % Creator-Anteil.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-white font-bold uppercase tracking-wider text-[11px]">Schweizer Fokus-Kantone</div>
+            <div className="grid grid-cols-2 gap-1.5">
+              <Link className="hover:text-[#C8A97E]" href="/orte/zug">Zug & Baar (ZG)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/escort-zurich">Zürich City (ZH)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/orte/luzern">Luzern (LU)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/orte/baden">Baden / Aargau (AG)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/escort-basel">Basel-Stadt (BS)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/escort-bern">Bern (BE)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/escort-geneva">Genève (GE)</Link>
+              <Link className="hover:text-[#C8A97E]" href="/escort-lugano">Lugano (TI)</Link>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-white font-bold uppercase tracking-wider text-[11px]">Plattform & KI-Werkzeuge</div>
+            <div className="grid grid-cols-2 gap-1.5">
+              <Link className="hover:text-[#C8A97E]" href="/search">Deep-Filter Suche</Link>
+              <Link className="text-[#C8A97E] font-semibold hover:underline" href="/fantasy-preview">🔮 Avatar & Preview</Link>
+              <Link className="hover:text-[#C8A97E]" href="/compare-escorts">4-Profil Vergleich</Link>
+              <Link className="hover:text-[#C8A97E]" href="/rankings">Top-50 Ranking</Link>
+              <Link className="hover:text-[#C8A97E]" href="/clubs">305 Schweizer Clubs</Link>
+              <Link className="hover:text-[#C8A97E]" href="/pricing">CHF-Honorar-Kompass</Link>
+              <Link className="hover:text-[#C8A97E]" href="/hotels">Outcall-Hotel-Guide</Link>
+              <Link className="hover:text-[#C8A97E]" href="/reviews">Portal-Prüfberichte</Link>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-white font-bold uppercase tracking-wider text-[11px]">Für Anbieterinnen & Rechtliches</div>
+            <div className="flex flex-col gap-1.5">
+              <Link className="text-[#C8A97E] font-bold hover:underline" href="/register">+ Eigenes Profil kostenlos eintragen (60s)</Link>
+              <Link className="hover:text-white" href="/boost">Kantonaler 24h Top-Spot Boost</Link>
+              <Link className="hover:text-white" href="/safety">Sicherheit, Schutz & 18+ Richtlinien</Link>
+              <div className="flex flex-wrap gap-3 pt-2 text-[11px]">
+                <Link className="hover:text-white" href="/imprint">Impressum</Link>
+                <Link className="hover:text-white" href="/privacy">Datenschutz</Link>
+                <Link className="hover:text-white" href="/terms">AGB</Link>
+                <Link className="text-rose-400 hover:underline font-semibold" href="/report">1-Klick Opt-Out / Melden</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

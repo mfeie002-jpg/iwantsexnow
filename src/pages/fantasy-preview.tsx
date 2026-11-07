@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
@@ -23,6 +24,7 @@ const ARCHETYPES = [
 ];
 
 export default function FantasyPreviewAndAvatarPage() {
+  const router = useRouter();
   const topProfiles = (Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : []).slice(0, 12);
   const [selectedProfile, setSelectedProfile] = useState<any>(
     topProfiles[0] || { id: "ch-paradeplatz-vip", rawName: "Victoria · Zürich Paradeplatz", city: "Zürich", canton: "ZH", advertisedBaseChf: 450, rate30Chf: 250 }
@@ -48,6 +50,13 @@ export default function FantasyPreviewAndAvatarPage() {
   const [freePreviewsUsed, setFreePreviewsUsed] = useState<number>(0);
   const [previewResult, setPreviewResult] = useState<any>(null);
   const [optOutNotice, setOptOutNotice] = useState<string>("");
+  useEffect(() => {
+    const qId = String(router.query.id || "").trim();
+    if (qId && Array.isArray(HARVESTED_SWISS_OFFERS)) {
+      const found = HARVESTED_SWISS_OFFERS.find((x: any) => (x.id || x.dedupClusterId) === qId);
+      if (found) setSelectedProfile(found);
+    }
+  }, [router.query.id]);
 
   const sendQuickChip = async (chipText: string) => {
     const nextHistory = [...chatHistory, { sender: "user" as const, text: chipText }];

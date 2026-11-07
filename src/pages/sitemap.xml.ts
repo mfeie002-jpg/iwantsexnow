@@ -14,7 +14,7 @@ const SERVICES = [
 
 const STATIC_PATHS = [
   "",
-  "/search",
+  "/search", "/fantasy-preview", "/clubs", "/pricing",
   "/matches",
   "/stories",
   "/live-cam",
