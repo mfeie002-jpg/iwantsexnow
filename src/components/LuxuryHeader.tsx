@@ -1,8 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Heart, Search, Building2, Sparkles, ShieldCheck, PlusCircle, Crown } from "lucide-react";
+import {
+  Heart,
+  Search,
+  Building2,
+  Sparkles,
+  ShieldCheck,
+  PlusCircle,
+} from "lucide-react";
 import { SwissDoorplate } from "@/components/SwissDoorplate";
+import offersData from "@/data/harvested-offers.json";
+import clubsData from "@/data/swiss-establishments-vault.json";
+
+const TOTAL_PROFILES = Array.isArray(offersData) && offersData.length > 0 ? offersData.length : 2590;
+const TOTAL_CLUBS = Array.isArray(clubsData) && clubsData.length > 0 ? clubsData.length : 108;
 
 export function LuxuryHeader() {
   const router = useRouter();
@@ -18,9 +30,11 @@ export function LuxuryHeader() {
         setFavCount(0);
       }
     };
+
     syncFavs();
     window.addEventListener("storage", syncFavs);
     window.addEventListener("ch-favorites-updated", syncFavs);
+
     return () => {
       window.removeEventListener("storage", syncFavs);
       window.removeEventListener("ch-favorites-updated", syncFavs);
@@ -28,87 +42,128 @@ export function LuxuryHeader() {
   }, []);
 
   const navItems = [
-    { href: "/search", label: "Deep-Suche", icon: Search, highlight: false },
-    { href: "/clubs", label: "305 Clubs & Suiten", icon: Building2, highlight: false },
-    { href: "/fantasy-preview", label: "Voice-Avatar & Preview", icon: Sparkles, highlight: true },
-    { href: "/pricing", label: "CHF-Kompass", icon: ShieldCheck, highlight: false },
+    {
+      href: "/search",
+      label: "Deep-Suche",
+      icon: Search,
+      highlight: false,
+    },
+    {
+      href: "/clubs",
+      label: `${TOTAL_CLUBS} Clubs & Studios`,
+      icon: Building2,
+      highlight: false,
+    },
+    {
+      href: "/fantasy-preview",
+      label: "Avatar & Preview",
+      icon: Sparkles,
+      highlight: true,
+    },
+    {
+      href: "/pricing",
+      label: "CHF-Kompass",
+      icon: ShieldCheck,
+      highlight: false,
+    },
   ];
 
   const getNavClass = (isHighlight: boolean, isActive: boolean) => {
     const base =
-      "px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.14em] inline-flex items-center gap-1.5 transition ";
+      "relative inline-flex min-h-[35px] items-center gap-1.5 whitespace-nowrap rounded-[5px] border px-3 py-1.5 text-[10px] font-medium tracking-[0.025em] transition duration-200 ";
+
     if (isHighlight) {
       return (
         base +
-        "emerald-3d border border-[#C8A97E]/50 text-[#EAD2AA]"
+        "border-[#C8A97E]/30 bg-[#C8A97E]/[0.055] text-[#DEC393] hover:border-[#DEC393]/65 hover:bg-[#C8A97E]/10"
       );
     }
+
     if (isActive) {
       return (
         base +
-        "bg-[#C8A97E]/20 text-[#EAD2AA] border border-[#C8A97E]/50"
+        "border-[#C8A97E]/25 bg-[#C8A97E]/[0.06] text-[#DEC393] after:absolute after:inset-x-3 after:-bottom-[18px] after:h-px after:bg-[#DEC393]"
       );
     }
+
     return (
       base +
-      "text-[#C8B9A6] hover:text-[#EAD2AA] hover:bg-white/[0.04] border border-transparent"
+      "border-transparent text-[#8F8578] hover:bg-white/[0.025] hover:text-[#E7DCCB]"
     );
   };
 
-  const heartClass = favCount > 0 ? "text-rose-400 fill-rose-400" : "text-[#DEC393]";
+  const heartClass =
+    favCount > 0
+      ? "fill-[#DEC393] text-[#DEC393]"
+      : "text-[#A79A89]";
 
   return (
-    <header
-      style={{
-        background: "linear-gradient(180deg, rgba(14,11,9,0.97) 0%, rgba(7,6,6,0.95) 100%)",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.85)",
-      }}
-      className="sticky top-0 z-40 backdrop-blur-xl border-b border-[#C8A97E]/30"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="brass-3d w-9 h-9 rounded-xl border border-[#F5E3B8]/60 flex items-center justify-center shadow-lg">
-              <Crown size={17} className="text-[#191105]" />
+    <header className="sticky top-0 z-40 border-b border-[#C8A97E]/15 bg-[#070606]/90 backdrop-blur-2xl">
+      <div className="h-px bg-gradient-to-r from-transparent via-[#DEC393]/55 to-transparent" />
+
+      <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
+        <div className="flex min-w-0 items-center gap-3">
+          <Link
+            href="/"
+            className="group flex min-w-0 items-center gap-3"
+            aria-label="iwantsexnow.ch Startseite"
+          >
+            <div className="brass-button relative flex h-9 w-9 shrink-0 items-center justify-center rounded-[5px] font-serif text-[13px] font-semibold tracking-[0.08em]">
+              <span className="relative z-[1]">CH</span>
             </div>
-            <div>
-              <div className="text-base sm:text-lg font-serif font-bold tracking-[0.14em] text-[#F5EFE6] leading-none">
-                IWANTSEXNOW<span className="text-[#DEC393]">.CH</span>
+
+            <div className="min-w-0">
+              <div className="truncate font-serif text-[14px] font-medium tracking-[0.065em] text-[#F2EADF] sm:text-[17px]">
+                IWANTSEXNOW
+                <span className="text-[#C8A97E]">.CH</span>
               </div>
-              <div className="text-[9px] font-mono text-[#B6A48E] tracking-[0.22em] uppercase mt-1">
-                SWISS PENTHOUSE DIRECTORY · 0% PROVISION
+              <div className="mt-1 truncate text-[7px] font-medium uppercase tracking-[0.2em] text-[#776D60] sm:text-[8px]">
+                Schweizer Direktverzeichnis · 0% Provision
               </div>
             </div>
           </Link>
 
-          <div className="hidden xl:block pl-2">
-            <SwissDoorplate state="FREI" roomNumber="CH" customLabel="2'529 SUITEN" size="sm" />
+          <div className="hidden pl-2 2xl:block">
+            <SwissDoorplate
+              state="FREI"
+              roomNumber="CH"
+              customLabel={`${TOTAL_PROFILES.toLocaleString("de-CH")} PROFILE AKTIV`}
+              size="sm"
+            />
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-2">
+        <nav
+          className="hidden items-center gap-1 lg:flex"
+          aria-label="Hauptnavigation"
+        >
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = router.pathname === item.href;
-            const linkCls = getNavClass(Boolean(item.highlight), active);
+
             return (
-              <Link key={item.href} href={item.href} className={linkCls}>
-                <Icon size={13} className="text-[#DEC393]" />
+              <Link
+                key={item.href}
+                href={item.href}
+                className={getNavClass(Boolean(item.highlight), active)}
+              >
+                <Icon size={12} strokeWidth={1.55} />
                 <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <Link
             href="/favorites"
-            className="px-3.5 py-1.5 rounded-full bg-[#120E0C] hover:bg-[#1A1411] border border-[#C8A97E]/35 text-[11px] font-mono font-bold tracking-wider uppercase text-[#EAD2AA] inline-flex items-center gap-1.5 transition"
+            className="ghost-button inline-flex min-h-[37px] items-center gap-1.5 rounded-[5px] px-2.5 py-1.5 text-[10px] font-medium sm:px-3"
+            aria-label={"Merkliste mit " + favCount + " Einträgen"}
           >
-            <Heart size={13} className={heartClass} />
-            <span className="hidden sm:inline">Merkliste</span>
+            <Heart size={13} className={heartClass} strokeWidth={1.55} />
+            <span className="hidden xl:inline">Merkliste</span>
             {favCount > 0 && (
-              <span className="brass-3d px-1.5 py-0.2 rounded-full text-[10px] font-mono font-extrabold">
+              <span className="min-w-[18px] rounded-full border border-[#DEC393]/30 bg-[#C8A97E]/10 px-1.5 py-0.5 text-center font-mono text-[9px] tabular-nums text-[#DEC393]">
                 {favCount}
               </span>
             )}
@@ -116,10 +171,17 @@ export function LuxuryHeader() {
 
           <Link
             href="/register"
-            className="brass-3d px-4 py-1.5 rounded-full border border-[#F5E3B8]/60 font-sans font-extrabold text-[11px] tracking-[0.14em] uppercase inline-flex items-center gap-1.5 transition"
+            className="brass-button inline-flex min-h-[37px] items-center gap-1.5 rounded-[5px] px-3 py-1.5 text-[9px] uppercase tracking-[0.065em] sm:px-3.5 sm:text-[10px]"
           >
-            <PlusCircle size={13} />
-            <span>Inserat (0%)</span>
+            <PlusCircle
+              size={13}
+              strokeWidth={1.8}
+              className="relative z-[1]"
+            />
+            <span className="relative z-[1] hidden sm:inline">
+              + Inserat (0%)
+            </span>
+            <span className="relative z-[1] sm:hidden">+ Inserat</span>
           </Link>
         </div>
       </div>

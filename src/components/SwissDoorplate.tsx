@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import { DoorplateState, SWISS_DOORPLATE_TOKENS } from "@/lib/brand/doorplateTokens";
-import { Volume2, ArrowRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  DoorplateState,
+  SWISS_DOORPLATE_TOKENS,
+} from "@/lib/brand/doorplateTokens";
 
 interface SwissDoorplateProps {
   state?: DoorplateState;
@@ -16,145 +17,141 @@ interface SwissDoorplateProps {
 export function SwissDoorplate({
   state = "FREI",
   customLabel,
-  roomNumber = "SUITE 215",
+  roomNumber,
   size = "sm",
   interactiveToggle = false,
   onToggle,
   className = "",
 }: SwissDoorplateProps) {
   const [currentState, setCurrentState] = useState<DoorplateState>(state);
+
+  useEffect(() => {
+    setCurrentState(state);
+  }, [state]);
+
   const activeState = interactiveToggle ? currentState : state;
-  const cfg = SWISS_DOORPLATE_TOKENS.colors.states[activeState] || SWISS_DOORPLATE_TOKENS.colors.states.FREI;
+  const cfg =
+    SWISS_DOORPLATE_TOKENS.colors.states[activeState] ||
+    SWISS_DOORPLATE_TOKENS.colors.states.FREI;
+
+  const flip = () => {
+    const next: DoorplateState =
+      activeState === "FREI" ? "BESETZT" : "FREI";
+    setCurrentState(next);
+    if (onToggle) onToggle(next);
+  };
 
   const handleFlip = (e: React.MouseEvent) => {
     if (!interactiveToggle) return;
     e.preventDefault();
     e.stopPropagation();
-    const next: DoorplateState = activeState === "FREI" ? "BESETZT" : "FREI";
-    setCurrentState(next);
-    if (onToggle) onToggle(next);
+    flip();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!interactiveToggle) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      e.stopPropagation();
+      flip();
+    }
+  };
+
+  const sizeCls =
+    size === "lg"
+      ? "min-h-[38px] text-[10px] tracking-[0.16em]"
+      : size === "md"
+      ? "min-h-[31px] text-[9px] tracking-[0.14em]"
+      : "min-h-[25px] text-[8px] tracking-[0.11em]";
+
+  const innerPadding =
+    size === "lg"
+      ? "px-3 py-2"
+      : size === "md"
+      ? "px-2.5 py-1.5"
+      : "px-2 py-1";
+
   const interactiveCls = interactiveToggle
-    ? "cursor-pointer hover:scale-[1.03] active:scale-[0.98]"
+    ? "cursor-pointer hover:-translate-y-px hover:brightness-110 active:translate-y-px"
     : "";
 
-  if (size === "lg") {
-    return (
-      <div
-        onClick={handleFlip}
-        style={{
-          background: "linear-gradient(145deg, #DEC393 0%, #B38E52 50%, #7D5D2B 100%)",
-          boxShadow:
-            "0 12px 32px rgba(0,0,0,0.88), inset 0 1px 1px rgba(255,248,228,0.72), 0 0 24px rgba(212,175,55,0.22)",
-          transition: "transform 180ms cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-        className={
-          "relative inline-flex flex-col items-center justify-between px-5 py-3 rounded-xl border border-[#F5E3B8]/65 text-[#1E1407] select-none " +
-          interactiveCls +
-          " " +
-          className
-        }
-        title={interactiveToggle ? "Türschild umdrehen (FREI / BESETZT)" : undefined}
-      >
-        <div className="w-3.5 h-3.5 rounded-full bg-gradient-to-b from-[#4B3616] to-[#9E7B42] p-[2px] shadow-inner flex items-center justify-center mb-1">
-          <span
-            className="w-full h-full rounded-full"
-            style={{ backgroundColor: cfg.dot, boxShadow: cfg.glow }}
-          />
-        </div>
+  const pulseCls = activeState === "FREI" ? "animate-pulse" : "";
+  const plateClass =
+    "relative inline-flex max-w-full select-none items-center overflow-hidden rounded-[5px] border font-mono tabular-nums font-semibold uppercase transition duration-200 " +
+    sizeCls +
+    " " +
+    interactiveCls +
+    " " +
+    className;
 
-        <div className="w-full flex items-center justify-between gap-3.5 my-0.5">
-          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#FFF3D1] to-[#59401B] border border-[#3A280E] shadow-inner shrink-0" />
-          <span className="font-mono text-xs font-extrabold tracking-[0.26em] text-[#1A1105] drop-shadow-[0_1px_0_rgba(255,255,255,0.45)] uppercase">
-            {customLabel || cfg.labelDe}
-          </span>
-          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#FFF3D1] to-[#59401B] border border-[#3A280E] shadow-inner shrink-0" />
-        </div>
+  const enamelStyle: React.CSSProperties = {
+    background:
+      "linear-gradient(180deg, rgba(255,245,220,0.055), transparent 38%), " +
+      cfg.bg,
+    borderColor: cfg.border + "66",
+    color: cfg.text,
+  };
 
-        <div className="w-8 h-[1px] bg-[#3A280E]/40 my-1" />
-        <div className="text-[9px] font-mono font-bold tracking-[0.22em] text-[#2C1E0A] uppercase">
-          {roomNumber}
-        </div>
-      </div>
-    );
-  }
-
-  const paddingCls =
-    size === "md"
-      ? "px-3 py-1 text-[10px] tracking-[0.18em] rounded-[8px]"
-      : "px-2.5 py-1 text-[9px] tracking-[0.16em] rounded-[7px]";
+  const ledStyle: React.CSSProperties = {
+    backgroundColor: cfg.dot,
+    boxShadow:
+      "0 0 5px " +
+      cfg.dot +
+      ", 0 0 12px " +
+      cfg.dot +
+      "55, inset 0 1px 0 rgba(255,255,255,0.55)",
+  };
 
   return (
     <div
       onClick={handleFlip}
-      style={{
-        background: "linear-gradient(135deg, #DEC393 0%, #B69156 52%, #876633 100%)",
-        boxShadow:
-          "0 6px 16px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,250,230,0.65), 0 0 12px rgba(200,169,126,0.22)",
-        transition: "transform 180ms cubic-bezier(0.22, 1, 0.36, 1)",
-      }}
-      className={
-        "relative inline-flex items-center gap-1.5 border border-[#F5E3B8]/60 text-[#1B1205] font-mono font-extrabold uppercase select-none " +
-        paddingCls +
-        " " +
-        interactiveCls +
-        " " +
-        className
+      onKeyDown={handleKeyDown}
+      role={interactiveToggle ? "button" : undefined}
+      tabIndex={interactiveToggle ? 0 : undefined}
+      aria-pressed={
+        interactiveToggle ? activeState === "FREI" : undefined
       }
-      title={interactiveToggle ? "Türschild umdrehen (FREI / BESETZT)" : undefined}
+      aria-label={customLabel || cfg.labelDe}
+      title={
+        interactiveToggle
+          ? "Mechanisches Türschild umschalten"
+          : customLabel || cfg.labelDe
+      }
+      className={plateClass}
+      style={{
+        borderColor: "rgba(222,195,147,0.5)",
+        background:
+          "linear-gradient(135deg, #DEC393 0%, #B38E52 52%, #876633 100%)",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,245,220,0.35), inset 0 -1px 0 rgba(55,34,10,0.5), 0 6px 18px rgba(0,0,0,0.7)",
+      }}
     >
-      <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-[#FFF3D1] to-[#59401B] border border-[#3B290F] shrink-0" />
-      <span className="w-2.5 h-2.5 rounded-full bg-[#4A3516] p-[1.5px] flex items-center justify-center shrink-0">
-        <span
-          className="w-full h-full rounded-full"
-          style={{ backgroundColor: cfg.dot, boxShadow: cfg.glow }}
-        />
-      </span>
-      <span className="text-[#1A1105] drop-shadow-[0_1px_0_rgba(255,255,255,0.45)]">
-        {customLabel || cfg.labelDe}
-      </span>
-      {roomNumber && (
-        <span className="text-[#3B280D] border-l border-[#3B280D]/35 pl-1.5 font-mono font-bold">
-          {roomNumber}
+      <span className="pointer-events-none absolute left-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.35)]" />
+      <span className="pointer-events-none absolute right-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.35)]" />
+      <span className="pointer-events-none absolute bottom-[3px] left-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.25)]" />
+      <span className="pointer-events-none absolute bottom-[3px] right-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.25)]" />
+
+      <div
+        className={
+          "relative m-[3px] flex min-w-0 items-center gap-1.5 rounded-[2px] border " +
+          innerPadding
+        }
+        style={enamelStyle}
+      >
+        <span className="flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full border border-[#DEC393]/35 bg-black/45 p-[2px]">
+          <span
+            className={"h-full w-full rounded-full " + pulseCls}
+            style={ledStyle}
+          />
         </span>
-      )}
-      <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-[#FFF3D1] to-[#59401B] border border-[#3B290F] shrink-0" />
-    </div>
-  );
-}
 
-export function XeniaDoorplateTeaser() {
-  const [dismissed, setDismissed] = useState(false);
-  if (dismissed) return null;
-
-  return (
-    <div className="bg-[#100D0B] border-b border-[#C8A97E]/35 px-4 py-2">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
-        <div className="flex flex-wrap items-center gap-2.5">
-          <SwissDoorplate state="FREI" roomNumber="SUITE 01" customLabel="CONCIERGE · FREI" size="sm" />
-          <span className="text-[#EAD2AA] font-medium">
-            „Keine Lust auf Endlos-Scrollen? Ich zeige dir in 3 Klicks, welche Suite heute Abend in deinem Kanton offen steht.“
+        {roomNumber && (
+          <span className="shrink-0 border-r border-[#DEC393]/25 pr-1.5 text-[#DEC393]">
+            {roomNumber}
           </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/fantasy-preview"
-            className="brass-3d inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold text-[11px] uppercase tracking-wider transition"
-          >
-            <Volume2 size={12} />
-            <span>Voice & Preview</span>
-            <ArrowRight size={12} />
-          </Link>
-          <button
-            type="button"
-            onClick={() => setDismissed(true)}
-            className="text-gray-500 hover:text-[#EAD2AA] px-1.5 text-xs cursor-pointer"
-            aria-label="Türschild ausblenden"
-          >
-            ✕
-          </button>
-        </div>
+        )}
+
+        <span className="truncate">{customLabel || cfg.labelDe}</span>
       </div>
     </div>
   );

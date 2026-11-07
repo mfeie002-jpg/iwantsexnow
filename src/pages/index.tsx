@@ -1,78 +1,152 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { SwissDoorplate } from "@/components/SwissDoorplate";
 import { SWISS_DOORPLATE_TOKENS } from "@/lib/brand/doorplateTokens";
 import offersData from "@/data/harvested-offers.json";
+import clubsData from "@/data/swiss-establishments-vault.json";
 import {
   Search,
   Heart,
   ArrowUpDown,
   RotateCcw,
   Sparkles,
+  ShieldCheck,
+  PhoneCall,
   Crown,
-  MessageCircle,
   User,
-  Building2,
+  ArrowRight,
 } from "lucide-react";
 
+type DesignTheme = "audemars" | "velvet" | "vogue";
+
+const TOTAL_CLUBS = Array.isArray(clubsData) && clubsData.length > 0 ? clubsData.length : 108;
+const TOTAL_SOURCES = (() => {
+  if (!Array.isArray(offersData)) return 55;
+  const s = new Set<string>();
+  for (const item of offersData as any[]) {
+    if (item?.sourcePortal) s.add(String(item.sourcePortal).toLowerCase().trim());
+  }
+  return Math.max(55, s.size);
+})();
+
 const CANTON_PILLS = [
-  { code: "ALL", label: "🇨🇭 ALLE SUITEN" },
-  { code: "ZG", label: "ZG · ZUG" },
-  { code: "ZH", label: "ZH · ZÜRICH" },
-  { code: "LU", label: "LU · LUZERN" },
-  { code: "BS", label: "BS · BASEL" },
-  { code: "BE", label: "BE · BERN" },
-  { code: "AG", label: "AG · AARGAU" },
-  { code: "SG", label: "SG · ST. GALLEN" },
-  { code: "GE", label: "GE · GENÈVE" },
-  { code: "VD", label: "VD · LAUSANNE" },
-  { code: "TI", label: "TI · LUGANO" },
+  { code: "ALL", label: "CH · Alle" },
+  { code: "ZG", label: "ZG · Zug" },
+  { code: "ZH", label: "ZH · Zürich" },
+  { code: "LU", label: "LU · Luzern" },
+  { code: "BS", label: "BS · Basel" },
+  { code: "BE", label: "BE · Bern" },
+  { code: "AG", label: "AG · Aargau" },
+  { code: "SG", label: "SG · St. Gallen" },
+  { code: "GE", label: "GE · Genève" },
+  { code: "VD", label: "VD · Lausanne" },
+  { code: "TI", label: "TI · Lugano" },
 ];
 
 const RUBRIC_TABS = [
-  { id: "ALL", label: "ALLE COMPANIONS" },
-  { id: "female", label: "ELITE ESCORT & GFE" },
-  { id: "massage", label: "TANTRA & PRIVATE SPA" },
-  { id: "bdsm", label: "DOMINA & NOIR STUDIO" },
-  { id: "trans", label: "TRANS VIP" },
+  { id: "ALL", label: "Alle" },
+  { id: "female", label: "Escort & GFE" },
+  { id: "massage", label: "Tantra & Massage" },
+  { id: "bdsm", label: "Domina & BDSM" },
+  { id: "trans", label: "Trans VIP" },
 ];
 
+function rubricTitle(rubric: string) {
+  if (rubric === "massage") return "TANTRA & MASSAGE";
+  if (rubric === "bdsm") return "DOMINA & BDSM";
+  if (rubric === "trans") return "TRANS VIP";
+  return "ELITE COMPANION";
+}
+
 export default function HomePage() {
-  const [studioFilterOn, setStudioFilterOn] = useState<boolean>(true);
-  const [serverStates, setServerStates] = useState<Record<string, any>>({});
+  const [designTheme, setDesignTheme] =
+    useState<DesignTheme>("audemars");
+  const [serverStates, setServerStates] = useState<Record<string, any>>(
+    {}
+  );
   const [blockedIds, setBlockedIds] = useState<string[]>([]);
   const [favIds, setFavIds] = useState<string[]>([]);
 
   const [cantonFilter, setCantonFilter] = useState<string>("ALL");
   const [rubricFilter, setRubricFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [onlyAvailable4h, setOnlyAvailable4h] = useState<boolean>(false);
+  const [onlyAvailable4h, setOnlyAvailable4h] =
+    useState<boolean>(false);
   const [maxRate60, setMaxRate60] = useState<number>(1200);
-  const [sortBy, setSortBy] = useState<"recommended" | "available" | "price_asc" | "price_desc">("recommended");
+  const [sortBy, setSortBy] = useState<
+    "recommended" | "available" | "price_asc" | "price_desc"
+  >("recommended");
   const [visibleLimit, setVisibleLimit] = useState<number>(24);
+  const [studioNoir, setStudioNoir] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("/api/vault/metrics")
       .then((r) => r.json())
       .then((d) => {
         if (d?.states) setServerStates(d.states);
-        if (Array.isArray(d?.blockedIds)) setBlockedIds(d.blockedIds);
+        if (Array.isArray(d?.blockedIds)) {
+          setBlockedIds(d.blockedIds);
+        }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .then(() => setIsLoading(false));
 
     try {
-      const saved = JSON.parse(localStorage.getItem("ch_favorite_profiles") || "[]");
+      const saved = JSON.parse(
+        localStorage.getItem("ch_favorite_profiles") || "[]"
+      );
       if (Array.isArray(saved)) setFavIds(saved);
+
+      const savedTheme = localStorage.getItem(
+        "ch_luxury_theme"
+      ) as DesignTheme;
+
+      if (
+        savedTheme === "audemars" ||
+        savedTheme === "velvet" ||
+        savedTheme === "vogue"
+      ) {
+        setDesignTheme(savedTheme);
+      }
+
+      setStudioNoir(
+        localStorage.getItem("ch_studio_noir") !== "off"
+      );
     } catch {}
   }, []);
 
-  const toggleFav = (id: string) => {
-    const next = favIds.includes(id) ? favIds.filter((x) => x !== id) : [id, ...favIds];
-    setFavIds(next);
+  const switchTheme = (t: DesignTheme) => {
+    setDesignTheme(t);
     try {
-      localStorage.setItem("ch_favorite_profiles", JSON.stringify(next));
+      localStorage.setItem("ch_luxury_theme", t);
+    } catch {}
+  };
+
+  const toggleStudioNoir = () => {
+    const next = !studioNoir;
+    setStudioNoir(next);
+    try {
+      localStorage.setItem(
+        "ch_studio_noir",
+        next ? "on" : "off"
+      );
+    } catch {}
+  };
+
+  const toggleFav = (id: string) => {
+    const next = favIds.includes(id)
+      ? favIds.filter((x) => x !== id)
+      : [id, ...favIds];
+    setFavIds(next);
+
+    try {
+      localStorage.setItem(
+        "ch_favorite_profiles",
+        JSON.stringify(next)
+      );
       window.dispatchEvent(new Event("ch-favorites-updated"));
     } catch {}
   };
@@ -85,13 +159,31 @@ export default function HomePage() {
     for (const o of raw) {
       const pid = o.id || o.dedupClusterId;
       if (!pid || blocked.has(pid)) continue;
+
       const st = serverStates[pid] || {};
       if (st.paused || st.hidden || st.removedByReport) continue;
 
-      const r60 = Math.max(100, Math.min(1200, Number(st.rate60Chf || o.advertisedBaseChf) || 350));
-      const r30 = Math.max(80, Math.min(800, Number(st.rate30Chf || o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
-      const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
-      const isVerif = Boolean(st.identityVerified || o.identityVerified);
+      const r60 = Math.max(
+        100,
+        Math.min(
+          1200,
+          Number(st.rate60Chf || o.advertisedBaseChf) || 350
+        )
+      );
+      const r30 = Math.max(
+        80,
+        Math.min(
+          800,
+          Number(st.rate30Chf || o.rate30Chf) ||
+            Math.round((r60 * 0.6) / 10) * 10
+        )
+      );
+      const isAvail = Boolean(
+        st.availabilityConfirmed || o.availabilityConfirmed
+      );
+      const isVerif = Boolean(
+        st.identityVerified || o.identityVerified
+      );
       const isFeatured = Boolean(st.featured);
 
       const rawThumb = String(o.thumbnail || "").trim();
@@ -102,378 +194,647 @@ export default function HomePage() {
         !rawThumb.includes("escort-portrait") &&
         !rawThumb.endsWith(".svg");
 
-      if (cantonFilter !== "ALL" && String(o.canton || "").toUpperCase() !== cantonFilter) continue;
-      if (rubricFilter !== "ALL" && (o.rubric || "female") !== rubricFilter) continue;
+      if (
+        cantonFilter !== "ALL" &&
+        String(o.canton || "").toUpperCase() !== cantonFilter
+      ) {
+        continue;
+      }
+
+      if (
+        rubricFilter !== "ALL" &&
+        (o.rubric || "female") !== rubricFilter
+      ) {
+        continue;
+      }
+
       if (onlyAvailable4h && !isAvail) continue;
       if (r60 > maxRate60) continue;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const hay = [o.rawName, o.city, o.canton, ...(o.includedTags || [])].filter(Boolean).join(" ").toLowerCase();
+        const hay = [
+          o.rawName,
+          o.city,
+          o.canton,
+          o.postalCode,
+          ...(o.includedTags || []),
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
         if (!hay.includes(q)) continue;
       }
-
-      const cleanTitle = String(o.rawName || "VALENTINA")
-        .replace(/^[\W_]+/, "")
-        .split(/[·|-]/)[0]
-        .trim()
-        .slice(0, 22);
 
       list.push({
         ...o,
         id: pid,
-        cleanTitle: cleanTitle || "VALENTINA",
         rate60Chf: r60,
         rate30Chf: r30,
         isAvail,
         isVerif,
         isFeatured,
         hasRealPhoto,
-        cleanThumb: rawThumb.replace(/[?&]iwsn_clean=1.*$/i, ""),
+        cleanThumb: rawThumb.replace(
+          /[?&]iwsn_clean=1.*$/i,
+          ""
+        ),
       });
     }
 
     list.sort((a, b) => {
-      if (a.hasRealPhoto !== b.hasRealPhoto) return a.hasRealPhoto ? -1 : 1;
+      if (a.hasRealPhoto !== b.hasRealPhoto) {
+        return a.hasRealPhoto ? -1 : 1;
+      }
+
       if (sortBy === "available") {
         if (a.isAvail !== b.isAvail) return a.isAvail ? -1 : 1;
         return a.rate60Chf - b.rate60Chf;
       }
-      if (sortBy === "price_asc") return a.rate60Chf - b.rate60Chf;
-      if (sortBy === "price_desc") return b.rate60Chf - a.rate60Chf;
 
-      const scoreA = (a.isFeatured ? 800 : 0) + (a.isAvail ? 450 : 0) + (a.isVerif ? 250 : 0) + Number(a.curationScore || 75);
-      const scoreB = (b.isFeatured ? 800 : 0) + (b.isAvail ? 450 : 0) + (b.isVerif ? 250 : 0) + Number(b.curationScore || 75);
+      if (sortBy === "price_asc") {
+        return a.rate60Chf - b.rate60Chf;
+      }
+
+      if (sortBy === "price_desc") {
+        return b.rate60Chf - a.rate60Chf;
+      }
+
+      const scoreA =
+        (a.isFeatured ? 800 : 0) +
+        (a.isAvail ? 450 : 0) +
+        (a.isVerif ? 250 : 0) +
+        Number(a.curationScore || 75);
+      const scoreB =
+        (b.isFeatured ? 800 : 0) +
+        (b.isAvail ? 450 : 0) +
+        (b.isVerif ? 250 : 0) +
+        Number(b.curationScore || 75);
+
       return scoreB - scoreA;
     });
 
     return list;
-  }, [serverStates, blockedIds, cantonFilter, rubricFilter, searchQuery, onlyAvailable4h, maxRate60, sortBy]);
+  }, [
+    serverStates,
+    blockedIds,
+    cantonFilter,
+    rubricFilter,
+    searchQuery,
+    onlyAvailable4h,
+    maxRate60,
+    sortBy,
+  ]);
 
-  const imgClass = studioFilterOn ? "darkroom-img" : "darkroom-img-raw";
+  const resetFilters = () => {
+    setCantonFilter("ALL");
+    setRubricFilter("ALL");
+    setSearchQuery("");
+    setOnlyAvailable4h(false);
+    setMaxRate60(1200);
+    setSortBy("recommended");
+  };
+
+  const hasActiveFilters =
+    cantonFilter !== "ALL" ||
+    rubricFilter !== "ALL" ||
+    Boolean(searchQuery) ||
+    onlyAvailable4h ||
+    maxRate60 < 1200;
+
+  const pageClass =
+    designTheme === "velvet"
+      ? "penthouse-page min-h-screen pb-16 text-[#FAF3E8]"
+      : designTheme === "vogue"
+      ? "penthouse-page min-h-screen pb-16 text-[#F5F0E8]"
+      : "penthouse-page min-h-screen pb-16 text-[#F2EADF]";
+
+  const consoleClass =
+    designTheme === "vogue"
+      ? "luxury-console rounded-[8px]"
+      : designTheme === "velvet"
+      ? "luxury-console rounded-[18px]"
+      : "luxury-console rounded-[12px]";
+
+  const noirStageClass = studioNoir
+    ? "noir-stage relative aspect-[3/4] overflow-hidden"
+    : "noir-stage noir-disabled relative aspect-[3/4] overflow-hidden";
+
+  const getEditionClass = (edition: DesignTheme) => {
+    const active = designTheme === edition;
+    return active
+      ? "shrink-0 cursor-pointer rounded-full border border-[#C8A97E]/45 bg-[#C8A97E]/10 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.08em] text-[#DEC393]"
+      : "shrink-0 cursor-pointer rounded-full border border-transparent px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.08em] text-[#71675B] transition hover:text-[#C8A97E]";
+  };
 
   return (
-    <div className="min-h-screen bg-[#070606] text-[#F5EFE6]">
+    <div className={pageClass} data-edition={designTheme}>
       <SEO
-        title="IWANTSEXNOW.CH — Private Penthouse Directory & Swiss Companions (0% Provision)"
-        description="2'529+ geprüfte Schweizer Escort-, Tantra- & Studio-Dossiers sowie 305 Clubs. Echte 30m/60m CHF-Tarife & direkter +41 WhatsApp-Kontakt."
+        title="IWANTSEXNOW.CH — Schweizer Escort, Tantra & Studio Direktverzeichnis (0% Provision)"
+        description={`${activeOffers.length.toLocaleString("de-CH")}+ geprüfte Schweizer Escort-, Tantra- & Studio-Profile sowie ${TOTAL_CLUBS} Clubs. Echte 30m/60m CHF-Preise & direkter +41 WhatsApp-Kontakt.`}
         url="https://iwantsexnow.ch"
       />
+
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-5 space-y-6">
-        {/* STEUER- & FILTER-COCKPIT ABOVE THE FOLD */}
-        <section className="penthouse-panel p-4 sm:p-5 rounded-[22px] border border-[#C8A97E]/35 space-y-3.5">
-          {/* Zeile 1: Rubrik-Schalter + Darkroom-Engine-Toggle + Preview-Shortcut */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#C8A97E]/20 pb-3">
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+      <main className="mx-auto max-w-7xl px-3 pb-8 pt-4 sm:px-6 sm:pt-6">
+        <section className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              <span className="h-px w-7 bg-[#C8A97E]/65" />
+              <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#C8A97E]">
+                Private Swiss Index · {TOTAL_SOURCES} Quellen
+              </span>
+            </div>
+            <h1 className="mt-2 font-serif text-[25px] font-normal leading-tight tracking-[0.015em] text-[#F2EADF] sm:text-[34px]">
+              Die Schweiz.{" "}
+              <span className="brass-text italic">
+                Diskret kuratiert.
+              </span>
+            </h1>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[8px] uppercase tracking-[0.08em] text-[#746A5D]">
+            <span className="inline-flex items-center gap-1.5 text-[#9BC7B2]">
+              <ShieldCheck size={12} />
+              0% Agentur-Provision
+            </span>
+            <span>Direkter +41 Kontakt</span>
+            <span className="tabular-nums text-[#C8A97E]">
+              {activeOffers.length.toLocaleString("de-CH")} Dossiers · {TOTAL_CLUBS} Clubs
+            </span>
+          </div>
+        </section>
+
+        <div className="no-scrollbar mb-3 flex items-center justify-between gap-3 overflow-x-auto border-y border-white/[0.045] py-2">
+          <div className="flex items-center gap-1">
+            <span className="mr-1 shrink-0 font-mono text-[8px] uppercase tracking-[0.15em] text-[#61584E]">
+              Atelier
+            </span>
+            <button
+              type="button"
+              onClick={() => switchTheme("audemars")}
+              className={getEditionClass("audemars")}
+            >
+              01 · Bahnhofstrasse
+            </button>
+            <button
+              type="button"
+              onClick={() => switchTheme("velvet")}
+              className={getEditionClass("velvet")}
+            >
+              02 · Velvet Noir
+            </button>
+            <button
+              type="button"
+              onClick={() => switchTheme("vogue")}
+              className={getEditionClass("vogue")}
+            >
+              03 · Editorial
+            </button>
+          </div>
+
+          <Link
+            href="/fantasy-preview"
+            className="inline-flex shrink-0 items-center gap-1.5 text-[9px] font-medium text-[#C8A97E] transition hover:text-[#DEC393]"
+          >
+            <Sparkles size={11} />
+            Voice-Avatar & 5s Preview
+            <ArrowRight size={11} />
+          </Link>
+        </div>
+
+        <section
+          className={consoleClass}
+          aria-label="Steuer- und Filter-Cockpit"
+        >
+          <div className="flex flex-col gap-2 border-b border-white/[0.055] p-2.5 xl:flex-row xl:items-center xl:justify-between">
+            <div className="no-scrollbar flex items-center gap-1 overflow-x-auto">
               {RUBRIC_TABS.map((tab) => {
-                const isAct = rubricFilter === tab.id;
-                const cls = isAct
-                  ? "brass-3d px-3.5 py-1.5 rounded-full text-[10px] font-mono font-extrabold tracking-[0.16em] uppercase cursor-pointer shrink-0"
-                  : "px-3.5 py-1.5 rounded-full text-[10px] font-mono font-semibold tracking-[0.16em] uppercase bg-black/50 text-[#C8B9A6] hover:text-[#EAD2AA] border border-[#C8A97E]/20 cursor-pointer shrink-0 transition";
+                const active = rubricFilter === tab.id;
+                const tabClass = active
+                  ? "min-h-[33px] shrink-0 cursor-pointer rounded-[5px] border border-[#DEC393]/35 bg-[linear-gradient(135deg,rgba(222,195,147,0.18),rgba(135,102,51,0.1))] px-3.5 py-1.5 text-[10px] font-medium text-[#DEC393] shadow-[inset_0_1px_0_rgba(255,245,220,0.1)]"
+                  : "min-h-[33px] shrink-0 cursor-pointer rounded-[5px] border border-transparent px-3.5 py-1.5 text-[10px] font-medium text-[#81776A] transition hover:bg-white/[0.025] hover:text-[#D7C9B5]";
+
                 return (
-                  <button key={tab.id} type="button" onClick={() => setRubricFilter(tab.id)} className={cls}>
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setRubricFilter(tab.id)}
+                    className={tabClass}
+                  >
                     {tab.label}
                   </button>
                 );
               })}
             </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setStudioFilterOn(!studioFilterOn)}
-                className={
-                  studioFilterOn
-                    ? "px-3 py-1.5 rounded-full bg-[#C8A97E]/20 border border-[#C8A97E]/60 text-[#EAD2AA] text-[10px] font-mono font-bold tracking-wider cursor-pointer"
-                    : "px-3 py-1.5 rounded-full bg-black/50 border border-white/15 text-gray-400 text-[10px] font-mono tracking-wider cursor-pointer"
-                }
-                title="Luxury Darkroom Engine: Dämpft grelle Farben und schneidet Portal-Wasserzeichen an den Bildrändern ab"
-              >
-                {studioFilterOn ? "✨ DARKROOM ENGINE: AKTIV" : "DARKROOM ENGINE: AUS"}
-              </button>
-
-              <Link
-                href="/clubs"
-                className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 border border-[#C8A97E]/30 text-[#EAD2AA] text-[10px] font-mono font-bold tracking-wider uppercase hover:border-[#EAD2AA]"
-              >
-                <Building2 size={12} className="text-[#DEC393]" />
-                <span>305 Clubs</span>
-              </Link>
-
-              <Link
-                href="/fantasy-preview"
-                className="emerald-3d hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#C8A97E]/45 text-[10px] font-mono font-bold tracking-wider uppercase"
-              >
-                <Sparkles size={12} className="text-[#DEC393]" />
-                <span>Voice & 5s Preview</span>
-              </Link>
+            <div className="hidden items-center gap-2 font-mono text-[8px] uppercase tracking-[0.1em] text-[#6E6458] xl:flex">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.45)]" />
+              Live Schweizer Index
             </div>
           </div>
 
-          {/* Zeile 2: Horizontale Schweizer Kantons-Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-            {CANTON_PILLS.map((c) => {
-              const isAct = cantonFilter === c.code;
-              const cls = isAct
-                ? "px-3 py-1 rounded-full bg-[#EAD2AA] text-[#161006] text-[10px] font-mono font-extrabold tracking-[0.15em] shrink-0 cursor-pointer shadow"
-                : "px-3 py-1 rounded-full bg-black/55 border border-[#C8A97E]/25 text-[#C8B9A6] hover:border-[#EAD2AA]/70 hover:text-white text-[10px] font-mono tracking-[0.15em] shrink-0 cursor-pointer transition";
+          <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-b border-white/[0.045] px-2.5 py-2.5">
+            {CANTON_PILLS.map((canton) => {
+              const active = cantonFilter === canton.code;
+              const pillClass = active
+                ? "min-h-[28px] shrink-0 cursor-pointer rounded-full border border-[#DEC393]/55 bg-[#C8A97E]/10 px-3 py-1 font-mono text-[9px] tabular-nums text-[#DEC393]"
+                : "min-h-[28px] shrink-0 cursor-pointer rounded-full border border-white/[0.065] bg-black/20 px-3 py-1 font-mono text-[9px] tabular-nums text-[#7E7467] transition hover:border-[#C8A97E]/35 hover:text-[#C8A97E]";
+
               return (
-                <button key={c.code} type="button" onClick={() => setCantonFilter(c.code)} className={cls}>
-                  {c.label}
+                <button
+                  key={canton.code}
+                  type="button"
+                  onClick={() => setCantonFilter(canton.code)}
+                  className={pillClass}
+                >
+                  {canton.label}
                 </button>
               );
             })}
           </div>
 
-          {/* Zeile 3: Suchfeld + 3D-Türschild-Filter + CHF-Honorar-Obergrenze + Sortierung */}
-          <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
-            <div className="relative flex-1 min-w-[200px]">
-              <Search size={14} className="absolute left-3.5 top-2.5 text-[#DEC393]" />
+          <div className="grid gap-2 p-2.5 md:grid-cols-2 xl:grid-cols-[minmax(240px,1fr)_auto_180px_225px_auto_auto] xl:items-center">
+            <div className="relative md:col-span-2 xl:col-span-1">
+              <Search
+                size={14}
+                strokeWidth={1.5}
+                className="pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[#C8A97E]"
+              />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Suite, Stadt (Zürich, Zug 6300, Genève, Lugano), Name oder Service..."
-                className="w-full pl-9 pr-3 py-2 rounded-full bg-black/75 border border-[#C8A97E]/35 text-xs text-[#F5EFE6] placeholder-[#8E8271] focus:border-[#EAD2AA] outline-none"
+                placeholder="PLZ, Stadt, Name oder Service"
+                className="luxury-input pl-9"
+                aria-label="Dossiers durchsuchen"
               />
             </div>
 
-            <button
-              type="button"
-              onClick={() => setOnlyAvailable4h(!onlyAvailable4h)}
-              className="cursor-pointer"
-            >
+            <div className="flex min-h-[42px] items-center">
               <SwissDoorplate
                 state={onlyAvailable4h ? "FREI" : "RESERVIERT"}
-                roomNumber="4H"
-                customLabel={onlyAvailable4h ? "NUR FREI · AKTIV" : "NUR FREI ZEIGEN"}
-                size="sm"
+                roomNumber="FILTER"
+                customLabel={
+                  onlyAvailable4h ? "NUR FREI · 4H" : "NUR FREI · AUS"
+                }
+                size="md"
+                interactiveToggle={true}
+                onToggle={(next) =>
+                  setOnlyAvailable4h(next === "FREI")
+                }
               />
-            </button>
+            </div>
 
             <select
               value={maxRate60}
-              onChange={(e) => setMaxRate60(Number(e.target.value))}
-              className="rounded-full bg-black/75 border border-[#C8A97E]/35 px-3.5 py-2 text-[11px] font-mono font-bold text-[#EAD2AA] outline-none cursor-pointer"
+              onChange={(e) =>
+                setMaxRate60(Number(e.target.value))
+              }
+              className="luxury-select cursor-pointer font-mono tabular-nums"
+              aria-label="Maximales 60-Minuten-Honorar"
             >
-              <option value={1200} className="bg-[#100D0B]">HONORAR: ALLE CHF</option>
-              <option value={250} className="bg-[#100D0B]">BIS CHF 250 / STD.</option>
-              <option value={350} className="bg-[#100D0B]">BIS CHF 350 / STD.</option>
-              <option value={500} className="bg-[#100D0B]">BIS CHF 500 / STD.</option>
+              <option value={1200}>CHF · ALLE TARIFE</option>
+              <option value={250}>MAX. CHF 250 / 60M</option>
+              <option value={350}>MAX. CHF 350 / 60M</option>
+              <option value={500}>MAX. CHF 500 / 60M</option>
             </select>
 
-            <div className="flex items-center gap-1.5 bg-black/75 border border-[#C8A97E]/35 rounded-full px-3.5 py-2">
-              <ArrowUpDown size={12} className="text-[#DEC393]" />
+            <div className="relative">
+              <ArrowUpDown
+                size={12}
+                className="pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[#C8A97E]"
+              />
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-transparent text-[11px] font-mono font-bold text-[#F5EFE6] outline-none cursor-pointer"
+                onChange={(e) =>
+                  setSortBy(e.target.value as any)
+                }
+                className="luxury-select cursor-pointer pl-8 font-mono tabular-nums"
+                aria-label="Sortierung"
               >
-                <option value="recommended" className="bg-[#100D0B]">KURATIERT ({activeOffers.length})</option>
-                <option value="available" className="bg-[#100D0B]">TÜRSCHILD: FREI ZUERST</option>
-                <option value="price_asc" className="bg-[#100D0B]">CHF AUFSTEIGEND</option>
-                <option value="price_desc" className="bg-[#100D0B]">CHF ABSTEIGEND</option>
+                <option value="recommended">
+                  KURATIERT ({activeOffers.length})
+                </option>
+                <option value="available">FREI · 4H LIVE</option>
+                <option value="price_asc">CHF AUFSTEIGEND</option>
+                <option value="price_desc">CHF ABSTEIGEND</option>
               </select>
             </div>
 
-            {(cantonFilter !== "ALL" || rubricFilter !== "ALL" || searchQuery || onlyAvailable4h || maxRate60 < 1200) && (
-              <button
-                type="button"
-                onClick={() => {
-                  setCantonFilter("ALL");
-                  setRubricFilter("ALL");
-                  setSearchQuery("");
-                  setOnlyAvailable4h(false);
-                  setMaxRate60(1200);
-                }}
-                className="p-2 rounded-full bg-white/5 hover:bg-white/15 border border-[#C8A97E]/30 text-[#EAD2AA] cursor-pointer"
-                title="Alle Filter zurücksetzen"
-              >
-                <RotateCcw size={14} />
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={toggleStudioNoir}
+              aria-pressed={studioNoir}
+              className={
+                studioNoir
+                  ? "inline-flex min-h-[42px] cursor-pointer items-center justify-center gap-2 rounded-[6px] border border-[#C8A97E]/40 bg-[#C8A97E]/[0.07] px-3 font-mono text-[8px] uppercase tracking-[0.08em] text-[#DEC393]"
+                  : "ghost-button inline-flex min-h-[42px] cursor-pointer items-center justify-center gap-2 rounded-[6px] px-3 font-mono text-[8px] uppercase tracking-[0.08em]"
+              }
+            >
+              <Sparkles size={12} />
+              Studio Noir {studioNoir ? "On" : "Off"}
+            </button>
+
+            <button
+              type="button"
+              onClick={resetFilters}
+              disabled={!hasActiveFilters}
+              className="ghost-button flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-[6px] disabled:cursor-default disabled:opacity-30"
+              title="Filter zurücksetzen"
+              aria-label="Filter zurücksetzen"
+            >
+              <RotateCcw size={14} strokeWidth={1.5} />
+            </button>
           </div>
         </section>
 
-        {/* EMPTY STATE MIT TROCKENEM SCHWEIZER HUMOR */}
-        {activeOffers.length === 0 && (
-          <div className="penthouse-panel rounded-[24px] border border-[#C8A97E]/40 p-10 text-center space-y-4">
-            <SwissDoorplate state="BESETZT" roomNumber="0 TREFFER" customLabel="KEINE SUITE OFFEN" size="lg" />
-            <p className="text-sm font-serif text-[#EAD2AA] max-w-lg mx-auto">
-              {SWISS_DOORPLATE_TOKENS.microcopyDe.emptyFilter}
+        <div className="mb-4 mt-7 flex items-end justify-between gap-4 px-1">
+          <div>
+            <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#8F7958]">
+              La sélection
+            </div>
+            <h2 className="mt-1 font-serif text-xl font-normal text-[#E9DFD0]">
+              Private Dossiers
+            </h2>
+          </div>
+          <div className="font-mono text-[8px] tabular-nums text-[#6F6559]">
+            {Math.min(visibleLimit, activeOffers.length)} /{" "}
+            {activeOffers.length}
+          </div>
+        </div>
+
+        {isLoading && (
+          <div>
+            <p className="mb-4 text-center font-mono text-[9px] text-[#8E806E]">
+              {SWISS_DOORPLATE_TOKENS.microcopyDe.loadingState}
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                setCantonFilter("ALL");
-                setRubricFilter("ALL");
-                setSearchQuery("");
-                setOnlyAvailable4h(false);
-                setMaxRate60(1200);
-              }}
-              className="brass-3d px-6 py-2.5 rounded-full text-xs font-mono font-extrabold uppercase tracking-widest cursor-pointer"
-            >
-              ALLE 2&apos;529 SCHWEIZER SUITEN ÖFFNEN
-            </button>
+            <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="lux-skeleton skeleton-card"
+                  aria-label="Dossier wird geladen"
+                />
+              ))}
+            </section>
           </div>
         )}
 
-        {/* DIE "VALENTINA"-PROFIKARTEN IM GRID */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {activeOffers.slice(0, visibleLimit).map((p: any, idx: number) => {
-            const isFav = favIds.includes(p.id);
-            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
-            const suiteNum = "SUITE " + String(101 + (idx % 899));
+        {!isLoading && (
+          <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+            {activeOffers
+              .slice(0, visibleLimit)
+              .map((p: any, idx: number) => {
+                const isFav = favIds.includes(p.id);
+                const cleanDigits = p.rawPhone
+                  ? String(p.rawPhone).replace(/\D/g, "")
+                  : "";
+                const portalBadge = String(
+                  p.sourcePortal || "CH-DIREKT"
+                ).replace(/^www\./, "");
+                const profileHref =
+                  "/profile/" + encodeURIComponent(p.id);
+                const whatsAppHref =
+                  "https://wa.me/" +
+                  cleanDigits +
+                  "?text=" +
+                  encodeURIComponent(
+                    "Hallo " +
+                      p.rawName +
+                      ", ich habe dein Dossier auf iwantsexnow.ch (" +
+                      p.city +
+                      ") gesehen."
+                  );
+                const locationLine =
+                  "• " +
+                  String(p.city || "SCHWEIZ").toUpperCase() +
+                  " (" +
+                  String(p.canton || "CH").toUpperCase() +
+                  ") · " +
+                  rubricTitle(String(p.rubric || "female")) +
+                  " •";
 
-            return (
-              <div
-                key={p.id}
-                className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
-              >
-                <div className="relative rounded-[20px] overflow-hidden border border-[#C8A97E]/35 bg-[#070505] flex-1 flex flex-col justify-between">
-                  {/* LUXURY DARKROOM STAGE */}
-                  <Link
-                    href={"/profile/" + encodeURIComponent(p.id)}
-                    className="darkroom-stage block aspect-[3/4.1] w-full"
+                return (
+                  <article
+                    key={p.id}
+                    className="valentina-card group flex flex-col overflow-hidden"
                   >
-                    {p.hasRealPhoto ? (
-                      <img
-                        referrerPolicy="no-referrer"
-                        src={p.cleanThumb}
-                        alt={p.cleanTitle}
-                        loading={idx < 8 ? "eager" : "lazy"}
-                        onError={(e) => {
-                          const t = e.currentTarget as HTMLImageElement;
-                          t.style.display = "none";
-                        }}
-                        className={imgClass}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-[#16110E] to-[#070505]">
-                        <div className="w-12 h-12 rounded-full border border-[#C8A97E]/45 flex items-center justify-center text-[#DEC393] mb-2">
-                          <Crown size={20} />
+                    <div className={noirStageClass}>
+                      <div className="photo-fallback">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C8A97E]/35 font-serif text-base text-[#C8A97E]">
+                          CH
                         </div>
-                        <div className="text-xs font-serif tracking-widest uppercase text-[#EAD2AA]">
-                          {p.cleanTitle}
+                        <div className="mt-3 max-w-full truncate font-serif text-xs text-[#D8CCBA]">
+                          {p.rawName}
+                        </div>
+                        <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.1em] text-[#7E6C52]">
+                          Original-Fotos im Dossier
                         </div>
                       </div>
-                    )}
 
-                    <div className="darkroom-vignette" />
-                    <div className="darkroom-floor" />
-
-                    {/* Oben links: Krone + 3D-Messing-Türschild */}
-                    <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#C8A97E]/55 flex items-center justify-center text-[#DEC393] shadow">
-                        <Crown size={13} />
-                      </div>
-                      <SwissDoorplate
-                        state={p.isAvail ? "FREI" : "RESERVIERT"}
-                        roomNumber={p.canton || "CH"}
-                        customLabel={p.isAvail ? "FREI" : suiteNum}
-                        size="sm"
-                      />
-                    </div>
-
-                    {/* Oben rechts: Runder Glas-Merklisten-Button */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleFav(p.id);
-                      }}
-                      className="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-black/75 hover:bg-black border border-[#C8A97E]/40 flex items-center justify-center text-[#EAD2AA] cursor-pointer transition"
-                      aria-label="Merken"
-                    >
-                      <Heart size={13} className={isFav ? "text-rose-400 fill-rose-400" : "text-[#EAD2AA]"} />
-                    </button>
-
-                    {/* Unten zentrierte Valentina-Luxus-Typografie */}
-                    <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
-                      <h3
-                        style={{ textShadow: "0 4px 18px rgba(0,0,0,0.95)" }}
-                        className="font-serif text-xl sm:text-2xl tracking-[0.14em] uppercase text-[#EAD2AA] font-normal truncate max-w-full"
-                      >
-                        {p.cleanTitle}
-                      </h3>
-
-                      <div className="text-[9px] font-sans font-semibold tracking-[0.26em] uppercase text-[#C8B69E] mt-1 truncate max-w-full">
-                        • {p.city} ({p.canton}) · ELITE COMPANION •
-                      </div>
-
-                      <div className="flex items-center justify-center gap-2 my-2 w-36">
-                        <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#C8A97E]/65" />
-                        <span className="text-[#DEC393] text-[9px]">✦</span>
-                        <span className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#C8A97E]/65" />
-                      </div>
-
-                      <div className="text-[8px] font-mono tracking-[0.28em] uppercase text-[#A89882]">
-                        STARTING AT
-                      </div>
-
-                      <div className="font-serif font-mono text-2xl sm:text-3xl text-[#EAD2AA] tracking-wider leading-tight mt-0.5">
-                        CHF {p.rate60Chf}
-                      </div>
-
-                      <div className="text-[8px] font-mono tracking-[0.22em] uppercase text-[#9E8C74] mt-0.5">
-                        PER HOUR · (30 MIN: CHF {p.rate30Chf})
-                      </div>
-                    </div>
-                  </Link>
-
-                  {/* Untere 2-Spalten-Daumenleiste (Links Gebürstetes Gold WhatsApp, Rechts Dunkel-Smaragd View Profile) */}
-                  <div className="px-3.5 pb-3.5 pt-2 bg-[#070505] grid grid-cols-2 gap-2.5">
-                    {cleanDigits ? (
-                      <a
-                        href={
-                          "https://wa.me/" +
-                          cleanDigits +
-                          "?text=" +
-                          encodeURIComponent(
-                            "Hallo " + p.cleanTitle + ", ich habe deine Suite (" + p.city + ") auf iwantsexnow.ch gesehen."
-                          )
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5 transition"
-                      >
-                        <MessageCircle size={12} className="shrink-0" />
-                        <span>WHATSAPP</span>
-                      </a>
-                    ) : (
                       <Link
-                        href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
-                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5 transition"
+                        href={profileHref}
+                        className="absolute inset-0 z-[1] block"
+                        aria-label={
+                          "Dossier von " + String(p.rawName) + " öffnen"
+                        }
                       >
-                        <Sparkles size={12} className="shrink-0" />
-                        <span>PREVIEW</span>
+                        {p.hasRealPhoto && (
+                          <img
+                            referrerPolicy="no-referrer"
+                            src={p.cleanThumb}
+                            alt={String(p.rawName || "Profil")}
+                            loading={idx < 8 ? "eager" : "lazy"}
+                            onError={(e) => {
+                              const target =
+                                e.currentTarget as HTMLImageElement;
+                              target.style.opacity = "0";
+                            }}
+                            className="noir-media scale-[1.06] object-cover object-top"
+                          />
+                        )}
+
+                        <div className="noir-vignette" />
+                        <div className="noir-floor" />
+
+                        <div className="absolute inset-x-0 bottom-0 z-[4] px-2.5 pb-3 text-center sm:px-4 sm:pb-4">
+                          <div className="engraved-type mx-auto line-clamp-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#B5A184] sm:text-[7px] sm:tracking-[0.11em]">
+                            {locationLine}
+                          </div>
+
+                          <div
+                            title={String(p.rawName || "")}
+                            className="dossier-name engraved-type mx-auto mt-1.5 min-h-[38px] font-serif text-[17px] font-medium uppercase leading-[1.08] tracking-[0.045em] text-[#F5EDE0] sm:min-h-[46px] sm:text-[22px]"
+                          >
+                            {p.rawName}
+                          </div>
+
+                          <div className="my-2 flex items-center justify-center gap-2 text-[#B38E52] sm:my-2.5">
+                            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#B38E52]/75 sm:w-12" />
+                            <span className="text-[8px]">✦</span>
+                            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#B38E52]/75 sm:w-12" />
+                          </div>
+
+                          <div className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#8C7C66] sm:text-[7px]">
+                            Starting at
+                          </div>
+                          <div className="mt-0.5 whitespace-nowrap font-mono text-[22px] font-medium tabular-nums tracking-[-0.04em] text-[#DEC393] sm:text-[29px]">
+                            <span className="mr-1 text-[9px] font-normal tracking-[0.04em] sm:text-[11px]">
+                              CHF
+                            </span>
+                            {p.rate60Chf}
+                          </div>
+                          <div className="mt-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#928575] sm:text-[7px]">
+                            Per hour · 30 min: CHF {p.rate30Chf}
+                          </div>
+                        </div>
                       </Link>
-                    )}
 
-                    <Link
-                      href={"/profile/" + encodeURIComponent(p.id)}
-                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#C8A97E]/45 font-sans font-bold text-[10px] tracking-[0.14em] uppercase flex items-center justify-center gap-1.5 transition"
-                    >
-                      <User size={12} className="shrink-0 text-[#DEC393]" />
-                      <span>VIEW PROFILE</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </section>
+                      <div className="pointer-events-none absolute left-2.5 top-2.5 z-20 flex max-w-[78%] items-center gap-1.5">
+                        <Crown
+                          size={13}
+                          strokeWidth={1.4}
+                          className="shrink-0 text-[#DEC393] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                        />
+                        <SwissDoorplate
+                          state={p.isAvail ? "FREI" : "EXTERN"}
+                          roomNumber={String(p.canton || "CH")}
+                          customLabel={
+                            p.isAvail
+                              ? "FREI · LIVE"
+                              : portalBadge
+                                  .slice(0, 12)
+                                  .toUpperCase()
+                          }
+                          size="sm"
+                        />
+                      </div>
 
-        {visibleLimit < activeOffers.length && (
-          <div className="text-center pt-6">
+                      <button
+                        type="button"
+                        onClick={() => toggleFav(p.id)}
+                        className="glass-icon-button absolute right-2.5 top-2.5 z-30 h-8 w-8 cursor-pointer sm:h-9 sm:w-9"
+                        aria-label={
+                          isFav
+                            ? "Von Merkliste entfernen"
+                            : "Auf Merkliste speichern"
+                        }
+                      >
+                        <Heart
+                          size={13}
+                          strokeWidth={1.5}
+                          className={
+                            isFav
+                              ? "fill-[#DEC393] text-[#DEC393]"
+                              : "text-[#D0C4B3]"
+                          }
+                        />
+                      </button>
+
+                      {p.isVerif && (
+                        <div className="absolute bottom-2 right-2 z-20 hidden text-[#C8A97E] sm:block">
+                          <ShieldCheck size={12} strokeWidth={1.4} />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="relative z-[5] mt-auto grid grid-cols-2 gap-1.5 border-t border-[#C8A97E]/15 bg-[#0B0908] p-2">
+                      {cleanDigits ? (
+                        <a
+                          href={whatsAppHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="brass-pill inline-flex min-h-[39px] items-center justify-center gap-1 rounded-full px-1.5 font-mono text-[7px] uppercase tracking-[0.035em] sm:min-h-[42px] sm:gap-1.5 sm:text-[9px]"
+                        >
+                          <PhoneCall
+                            size={11}
+                            className="relative z-[1]"
+                          />
+                          <span className="relative z-[1]">
+                            WhatsApp
+                          </span>
+                        </a>
+                      ) : (
+                        <Link
+                          href={
+                            "/fantasy-preview?id=" +
+                            encodeURIComponent(p.id)
+                          }
+                          className="brass-pill inline-flex min-h-[39px] items-center justify-center gap-1 rounded-full px-1.5 font-mono text-[7px] uppercase tracking-[0.035em] sm:min-h-[42px] sm:text-[9px]"
+                        >
+                          <Sparkles
+                            size={11}
+                            className="relative z-[1]"
+                          />
+                          <span className="relative z-[1]">
+                            KI-Preview
+                          </span>
+                        </Link>
+                      )}
+
+                      <Link
+                        href={profileHref}
+                        className="emerald-pill inline-flex min-h-[39px] items-center justify-center gap-1 rounded-full px-1.5 font-mono text-[7px] uppercase tracking-[0.025em] sm:min-h-[42px] sm:gap-1.5 sm:text-[8px]"
+                      >
+                        <User size={11} strokeWidth={1.5} />
+                        <span>View Profile</span>
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
+          </section>
+        )}
+
+        {!isLoading && activeOffers.length === 0 && (
+          <section className="empty-state rounded-[18px] px-6 py-14 text-center">
+            <SwissDoorplate
+              state="BESETZT"
+              roomNumber="00"
+              customLabel="KEIN TREFFER"
+              size="lg"
+            />
+            <h2 className="mt-5 font-serif text-2xl font-normal text-[#E5DACA]">
+              Diskretion hat ihre Grenzen.
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-xs font-light leading-6 text-[#8E8273]">
+              {searchQuery.trim()
+                ? SWISS_DOORPLATE_TOKENS.microcopyDe.zeroSearch
+                : SWISS_DOORPLATE_TOKENS.microcopyDe.emptyFilter}
+            </p>
             <button
               type="button"
-              onClick={() => setVisibleLimit((prev) => prev + 24)}
-              className="brass-3d px-8 py-3 rounded-full border border-[#F5E3B8]/65 text-xs font-mono font-extrabold tracking-[0.2em] uppercase cursor-pointer transition"
+              onClick={resetFilters}
+              className="brass-button mt-6 inline-flex min-h-[42px] cursor-pointer items-center gap-2 rounded-full px-5 text-[10px] uppercase tracking-[0.07em]"
             >
-              + 24 WEITERE SUITEN ÖFFNEN ({activeOffers.length - visibleLimit} IM TRESOR)
+              <RotateCcw size={13} className="relative z-[1]" />
+              <span className="relative z-[1]">
+                Filter zurücksetzen
+              </span>
+            </button>
+          </section>
+        )}
+
+        {!isLoading && visibleLimit < activeOffers.length && (
+          <div className="pt-9 text-center">
+            <button
+              type="button"
+              onClick={() =>
+                setVisibleLimit((prev) => prev + 24)
+              }
+              className="ghost-button group inline-flex min-h-[46px] cursor-pointer items-center gap-3 rounded-full px-6 py-3 font-mono text-[9px] uppercase tracking-[0.09em]"
+            >
+              +24 weitere Dossiers
+              <span className="font-mono text-[8px] tabular-nums text-[#746857]">
+                {activeOffers.length - visibleLimit} verbleibend
+              </span>
+              <ArrowRight
+                size={12}
+                className="transition-transform group-hover:translate-x-1"
+              />
             </button>
           </div>
         )}

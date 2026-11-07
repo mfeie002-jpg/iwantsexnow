@@ -1,112 +1,191 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Link from "next/link";
+import { ShieldCheck, Sparkles } from "lucide-react";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
-import { ShieldCheck, Crown } from "lucide-react";
+import clubsData from "@/data/swiss-establishments-vault.json";
 
-export default function App({ Component, pageProps }: AppProps) {
+const TOTAL_CLUBS = Array.isArray(clubsData) && clubsData.length > 0 ? clubsData.length : 108;
+
+function PenthouseFooter() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#070606] text-[#F5EFE6]">
-      <div className="flex-1">
-        <Component {...pageProps} />
-      </div>
+    <footer className="relative border-t border-[#C8A97E]/20 bg-[#090706] pb-28 pt-12 text-xs lg:pb-8">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DEC393]/55 to-transparent" />
 
-      {/* Globaler Penthouse-Footer — strikt am unteren Seitenende */}
-      <footer
-        style={{
-          background: "linear-gradient(180deg, #0C0908 0%, #050404 100%)",
-        }}
-        className="border-t border-[#C8A97E]/30 py-12 px-4 sm:px-6 mt-20 pb-28 lg:pb-12"
-      >
-        <div className="max-w-7xl mx-auto space-y-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#C8A97E]/20">
-            <div className="flex items-center gap-3">
-              <div className="brass-3d w-8 h-8 rounded-lg flex items-center justify-center">
-                <Crown size={15} className="text-[#191105]" />
-              </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div>
+            <div className="font-serif text-lg tracking-[0.045em] text-[#F2EADF]">
+              IWANTSEXNOW
+              <span className="text-[#C8A97E]">.CH</span>
+            </div>
+            <div className="mt-2 font-mono text-[8px] uppercase tracking-[0.2em] text-[#756A5D]">
+              Private Swiss Directory · Est. Zürich
+            </div>
+            <p className="mt-4 max-w-sm text-[11px] font-light leading-6 text-[#8F8476]">
+              Das unabhängige Schweizer Direktverzeichnis für Escorts,
+              Girlfriend Experience, Tantra-Studios und {TOTAL_CLUBS} stationäre
+              Clubs. 0% Buchungsprovision und 80% Creator-Anteil im
+              Paid-Vault.
+            </p>
+
+            <div className="mt-5 inline-flex items-start gap-2.5 border-l border-[#C8A97E]/45 pl-3">
+              <ShieldCheck
+                size={16}
+                strokeWidth={1.4}
+                className="mt-0.5 shrink-0 text-[#C8A97E]"
+              />
               <div>
-                <div className="text-base font-serif font-bold tracking-[0.16em] text-[#EAD2AA]">
-                  IWANTSEXNOW.CH
+                <div className="font-mono text-[9px] uppercase tracking-[0.1em] text-[#D2B98D]">
+                  CHF-Transparenzsiegel
                 </div>
-                <div className="text-[10px] font-mono tracking-[0.2em] text-[#9E8C74] uppercase">
-                  SWISS PRIVATE DIRECTORY · DIRECT +41 ACCESS
+                <div className="mt-1 text-[9px] leading-4 text-[#746A5E]">
+                  30m/60m Honorare · Direkter +41 Kontakt · 0% Agentur
                 </div>
               </div>
             </div>
-            <SwissDoorplate state="FREI" roomNumber="CH-INDEX" customLabel="2'529 DOSSIERS · 305 CLUBS" size="sm" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-xs text-[#B6A48E]">
-            <div className="space-y-3">
-              <div className="text-[#EAD2AA] font-mono font-bold uppercase tracking-[0.18em] text-[11px]">
-                Das Schweizer Direkt-Prinzip
-              </div>
-              <p className="leading-relaxed text-[11px]">
-                Unabhängiges Schweizer Luxus- und Direktverzeichnis für verifizierte Escorts, Girlfriend Experience, Tantra-Ateliers und 305 stationäre Etablissements. 0 % Vermittlungsprovision und 80 % Creator-Erlösanteil.
-              </p>
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-bold pt-1">
-                <ShieldCheck size={14} />
-                <span>100 % CHF-HONORAR-TRANSPARENZ</span>
-              </div>
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.17em] text-[#C8A97E]">
+              Kantons-Direktlinks
             </div>
-
-            <div className="space-y-2.5">
-              <div className="text-[#EAD2AA] font-mono font-bold uppercase tracking-[0.18em] text-[11px]">
-                Schweizer Fokus-Kantone
-              </div>
-              <div className="grid grid-cols-2 gap-1.5 text-[11px]">
-                <Link className="hover:text-[#EAD2AA] transition" href="/orte/zug">Zug & Baar (ZG)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/escort-zurich">Zürich City (ZH)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/orte/luzern">Luzern (LU)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/orte/baden">Baden / Aargau (AG)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/escort-basel">Basel-Stadt (BS)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/escort-bern">Bern (BE)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/escort-geneva">Genève (GE)</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/escort-lugano">Lugano (TI)</Link>
-              </div>
+            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[10px]">
+              <Link className="footer-link" href="/orte/zug">
+                Zug & Baar <span className="font-mono">ZG</span>
+              </Link>
+              <Link className="footer-link" href="/escort-zurich">
+                Zürich City <span className="font-mono">ZH</span>
+              </Link>
+              <Link className="footer-link" href="/orte/luzern">
+                Luzern <span className="font-mono">LU</span>
+              </Link>
+              <Link className="footer-link" href="/orte/baden">
+                Baden / Aargau <span className="font-mono">AG</span>
+              </Link>
+              <Link className="footer-link" href="/escort-basel">
+                Basel-Stadt <span className="font-mono">BS</span>
+              </Link>
+              <Link className="footer-link" href="/escort-bern">
+                Bern <span className="font-mono">BE</span>
+              </Link>
+              <Link className="footer-link" href="/orte/st-gallen">
+                St. Gallen <span className="font-mono">SG</span>
+              </Link>
+              <Link className="footer-link" href="/escort-geneva">
+                Genève <span className="font-mono">GE</span>
+              </Link>
+              <Link className="footer-link" href="/orte/lausanne">
+                Lausanne <span className="font-mono">VD</span>
+              </Link>
+              <Link className="footer-link" href="/escort-lugano">
+                Lugano <span className="font-mono">TI</span>
+              </Link>
             </div>
+          </div>
 
-            <div className="space-y-2.5">
-              <div className="text-[#EAD2AA] font-mono font-bold uppercase tracking-[0.18em] text-[11px]">
-                Concierge & KI-Module
-              </div>
-              <div className="grid grid-cols-2 gap-1.5 text-[11px]">
-                <Link className="hover:text-[#EAD2AA] transition" href="/search">Deep-Filter Suche</Link>
-                <Link className="text-[#DEC393] font-bold hover:underline" href="/fantasy-preview">🔮 Voice & Preview</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/compare-escorts">4-Suiten Vergleich</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/rankings">Top-50 Kuratierung</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/clubs">305 Schweizer Clubs</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/pricing">CHF-Honorar-Kompass</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/hotels">Diskrete Day-Use Hotels</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/reviews">Portal-Prüfberichte</Link>
-              </div>
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.17em] text-[#C8A97E]">
+              Plattform & KI-Werkzeuge
             </div>
+            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[10px]">
+              <Link className="footer-link" href="/search">
+                Deep-Filter Suche
+              </Link>
+              <Link
+                className="inline-flex items-center gap-1 text-[#D2B98D] transition hover:text-[#DEC393]"
+                href="/fantasy-preview"
+              >
+                <Sparkles size={10} />
+                Avatar & Preview
+              </Link>
+              <Link className="footer-link" href="/matches">
+                10s Quick-Matcher
+              </Link>
+              <Link className="footer-link" href="/compare-escorts">
+                4-Profil Vergleich
+              </Link>
+              <Link className="footer-link" href="/rankings">
+                Top-50 Ranking
+              </Link>
+              <Link className="footer-link" href="/clubs">
+                {TOTAL_CLUBS} Schweizer Clubs
+              </Link>
+              <Link className="footer-link" href="/pricing">
+                CHF-Honorar-Kompass
+              </Link>
+              <Link className="footer-link" href="/hotels">
+                Outcall-Hotel-Guide
+              </Link>
+              <Link className="footer-link" href="/reviews">
+                Portal-Prüfberichte
+              </Link>
+              <Link className="footer-link" href="/stories">
+                4h Live-Stories
+              </Link>
+            </div>
+          </div>
 
-            <div className="space-y-2.5">
-              <div className="text-[#EAD2AA] font-mono font-bold uppercase tracking-[0.18em] text-[11px]">
-                Für Anbieterinnen & Recht (CH-DSG)
-              </div>
-              <div className="flex flex-col gap-1.5 text-[11px]">
-                <Link className="text-[#DEC393] font-bold hover:underline" href="/register">
-                  + Eigene Suite kostenlos eintragen (60s)
-                </Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/boost">Kantonaler 24h Top-Spot Boost</Link>
-                <Link className="hover:text-[#EAD2AA] transition" href="/safety">18+ Schutz & Schweizer Richtlinien</Link>
-                <div className="flex flex-wrap gap-3 pt-2 text-[11px]">
-                  <Link className="hover:text-[#EAD2AA]" href="/imprint">Impressum</Link>
-                  <Link className="hover:text-[#EAD2AA]" href="/privacy">Datenschutz</Link>
-                  <Link className="hover:text-[#EAD2AA]" href="/terms">AGB</Link>
-                  <Link className="text-rose-400 hover:underline font-bold" href="/report">
-                    1-Klick Opt-Out / Melden
-                  </Link>
-                </div>
-              </div>
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.17em] text-[#C8A97E]">
+              Anbieterinnen & Rechtliches
+            </div>
+            <div className="mt-4 flex flex-col gap-2.5 text-[10px]">
+              <Link
+                className="brass-button inline-flex min-h-[34px] w-fit items-center rounded-[4px] px-3 text-[9px] font-semibold uppercase tracking-[0.06em]"
+                href="/register"
+              >
+                <span className="relative z-[1]">
+                  + Profil eintragen · 0%
+                </span>
+              </Link>
+              <Link className="footer-link" href="/boost">
+                Kantonaler 24h Top-Spot Boost
+              </Link>
+              <Link className="footer-link" href="/safety">
+                Sicherheit, Schutz & 18+ Richtlinien
+              </Link>
+              <Link
+                className="bordeaux-button mt-2 inline-flex min-h-[34px] w-fit items-center rounded-[4px] px-3 text-[9px] font-medium"
+                href="/report"
+              >
+                1-Klick Opt-Out / Profil melden
+              </Link>
             </div>
           </div>
         </div>
-      </footer>
 
+        <div className="mt-10 flex flex-col gap-4 border-t border-[#C8A97E]/10 pt-5 text-[9px] text-[#6E6458] sm:flex-row sm:items-center sm:justify-between">
+          <div className="font-mono uppercase tracking-[0.08em]">
+            © {new Date().getFullYear()} IWANTSEXNOW.CH · Schweiz · 18+
+          </div>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link className="footer-link" href="/imprint">
+              Impressum
+            </Link>
+            <Link className="footer-link" href="/privacy">
+              Datenschutz
+            </Link>
+            <Link className="footer-link" href="/terms">
+              AGB
+            </Link>
+            <Link className="footer-link" href="/report">
+              Opt-Out
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <div className="flex min-h-screen flex-col bg-[#070606] text-[#F2EADF]">
+      <div className="flex-1">
+        <Component {...pageProps} />
+      </div>
+      <PenthouseFooter />
       <MobileBottomNav />
     </div>
   );
