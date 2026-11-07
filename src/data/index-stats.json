@@ -32,8 +32,8 @@
     "NW": 1,
     "GL": 3
   },
-  "lastDeltaScrapeAt": "2026-11-06T22:29:23.493Z",
-  "lastCantonHarvestAt": "2026-11-06T22:29:23.649Z",
+  "lastDeltaScrapeAt": "2026-11-07T03:33:05.331Z",
+  "lastCantonHarvestAt": "2026-11-07T03:33:05.565Z",
   "totalEstablishments": 108,
   "sourceBreakdown": {
     "xdate.ch": 1352,
@@ -104,7 +104,7 @@
     "villa-viktoria.ch": 1,
     "lady-juna.com": 1
   },
-  "lastStudioCrawlAt": "2026-11-06T22:29:24.488Z",
+  "lastStudioCrawlAt": "2026-11-07T03:33:06.204Z",
   "lastDeepNightAuditAt": "2026-11-06T02:01:36.234Z",
   "checkedExternalImages": 2339,
   "repairedDeadImages": 9,
