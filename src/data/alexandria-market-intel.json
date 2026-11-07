@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-11-07T19:45:22.772Z",
+  "competitorMatrix": [
+    {
+      "domain": "xdate.ch",
+      "threatLevel": "HIGH",
+      "estMonthlyVisitsCh": 1850000,
+      "mainWeakness": "Starke Dubletten-Flut, teure Tages-Pushs, kein 80/20 Creator-Vault",
+      "attackVector": "Direct +41 Price Arbitrage & Multi-Source Popover"
+    },
+    {
+      "domain": "fgirl.ch",
+      "threatLevel": "HIGH",
+      "estMonthlyVisitsCh": 1420000,
+      "mainWeakness": "Romandie-Monopol mit starrer Abo-Struktur, keine KI-Avatare",
+      "attackVector": "FR/DE Hreflang 2D-Matrix (/escort-geneva, /escort-lausanne)"
+    },
+    {
+      "domain": "and6.com",
+      "threatLevel": "HIGH",
+      "estMonthlyVisitsCh": 1610000,
+      "mainWeakness": "Desktop-lastiges 2010er UI, keine 30m/60m Endpreis-Garantie",
+      "attackVector": "Mobile-First 3:4 Cards + 4h Live-Pulse & Club-Rosters"
+    },
+    {
+      "domain": "bemygirl.ch",
+      "threatLevel": "MEDIUM",
+      "estMonthlyVisitsCh": 390000,
+      "mainWeakness": "Kleine Kuratierung, hohe Hürden für unabhängige Newcomer",
+      "attackVector": "60s Self-Claim + VIP Fantasy Preview (Wan 2.7)"
+    },
+    {
+      "domain": "6navi.ch",
+      "threatLevel": "MEDIUM",
+      "estMonthlyVisitsCh": 310000,
+      "mainWeakness": "Aggressives Wasserzeichen auf Fotos, veraltete Filter",
+      "attackVector": "Watermark-Neutralizer + Deep-Attribute Search"
+    },
+    {
+      "domain": "sex4u.ch",
+      "threatLevel": "MEDIUM",
+      "estMonthlyVisitsCh": 280000,
+      "mainWeakness": "Ungeprüfte Karteileichen ohne Live-Zeitstempel",
+      "attackVector": "4h-Live-Verfügbarkeit mit Minuten-Stempel"
+    },
+    {
+      "domain": "slumi.ch",
+      "threatLevel": "LOW",
+      "estMonthlyVisitsCh": 190000,
+      "mainWeakness": "Schwache strukturierte Daten (kein AggregateOffer JSON-LD)",
+      "attackVector": "Programmatic PLZ + Service Schema.org"
+    },
+    {
+      "domain": "eurogirlsescort.com",
+      "threatLevel": "MEDIUM",
+      "estMonthlyVisitsCh": 450000,
+      "mainWeakness": "Internationaler Katalog ohne Schweizer TWINT/Kantons-Fokus",
+      "attackVector": "Hyper-Local Canton Hubs (ZG, ZH, LU, BS, GE, TI)"
+    }
+  ],
+  "longTailQuestionsCh": [
+    {
+      "query": "escort zug 6300 diskret hotelbesuch preise chf",
+      "intent": "transactional",
+      "targetRoute": "/orte/zug"
+    },
+    {
+      "query": "was kostet 1 stunde escort in zürich ohne agentur",
+      "intent": "informational_commercial",
+      "targetRoute": "/pricing"
+    },
+    {
+      "query": "tantra massage zürich seefeld seriös verifiziert",
+      "intent": "transactional",
+      "targetRoute": "/kategorie/zuerich/tantra-massage"
+    },
+    {
+      "query": "fkk club und laufhaus aargau spreitenbach heute offen",
+      "intent": "local_visit",
+      "targetRoute": "/clubs"
+    },
+    {
+      "query": "accompagnatrice indipendente lugano centro chf",
+      "intent": "transactional_it",
+      "targetRoute": "/escort-lugano"
+    },
+    {
+      "query": "escorte indépendante genève eaux-vives tarif 30 min",
+      "intent": "transactional_fr",
+      "targetRoute": "/escort-geneva"
+    }
+  ],
+  "swissComplianceMap": {
+    "revFADP_DSG": "Opt-out in 1 Klick über /report + do-not-import.json Sperrliste aktiv",
+    "PBV_Preisbekanntgabe": "Alle 2.526+ Profile zeigen transparente 30-Min.- und 60-Min.-Richtwerte in CHF",
+    "AI_Transparency": "KI-Avatare (ElevenLabs) und Fantasy-Previews (Venice Wan 2.7) tragen das Label 'KI-Interpretation' + Opt-in Lizenz-Flow"
+  }
+}

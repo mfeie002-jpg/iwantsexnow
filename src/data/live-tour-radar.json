@@ -1,0 +1,128 @@
+{
+  "updatedAt": "2026-11-07T19:45:22.769Z",
+  "monthlyCreditBudget": 3000,
+  "monitoredHubsCount": 10,
+  "interactTemplates": {
+    "ageGateAndPhoneReveal": [
+      {
+        "type": "wait",
+        "milliseconds": 700
+      },
+      {
+        "type": "click",
+        "selector": "button[data-age-confirm], .age-gate-confirm, #enter-18-plus, button:has-text('18')"
+      },
+      {
+        "type": "wait",
+        "milliseconds": 500
+      },
+      {
+        "type": "scroll",
+        "direction": "down",
+        "amount": 550
+      },
+      {
+        "type": "click",
+        "selector": ".show-phone, [data-action='reveal-phone'], a[href^='tel:'], button:has-text('Telefon'), button:has-text('Nummer')"
+      },
+      {
+        "type": "wait",
+        "milliseconds": 600
+      }
+    ]
+  },
+  "hubs": [
+    {
+      "id": "mon-zg-xdate",
+      "portal": "xdate.ch",
+      "canton": "ZG",
+      "city": "Zug / Cham",
+      "url": "https://www.xdate.ch/de/girls/zentralschweiz",
+      "lastCheckedAt": "2026-11-07T19:45:18.399Z",
+      "contentSignature": "da39a3ee5e6b",
+      "status": "CACHED_FALLBACK"
+    },
+    {
+      "id": "mon-zh-xdate",
+      "portal": "xdate.ch",
+      "canton": "ZH",
+      "city": "Zürich",
+      "url": "https://www.xdate.ch/de/girls/zuerich",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "contentSignature": "e635aa2a84a3",
+      "status": "LIVE_TRACKED"
+    },
+    {
+      "id": "mon-zh-and6",
+      "portal": "and6.com",
+      "canton": "ZH",
+      "city": "Zürich",
+      "url": "https://www.and6.com/de/girls/zuerich",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-zg-and6",
+      "portal": "and6.com",
+      "canton": "ZG",
+      "city": "Zug",
+      "url": "https://www.and6.com/de/girls/zentralschweiz",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-ge-fgirl",
+      "portal": "fgirl.ch",
+      "canton": "GE",
+      "city": "Genève",
+      "url": "https://www.fgirl.ch/filles/geneve/",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-vd-fgirl",
+      "portal": "fgirl.ch",
+      "canton": "VD",
+      "city": "Lausanne",
+      "url": "https://www.fgirl.ch/filles/vaud/",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-ti-best",
+      "portal": "bestticino.ch",
+      "canton": "TI",
+      "city": "Lugano",
+      "url": "https://www.bestticino.ch/",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-bs-and6",
+      "portal": "and6.com",
+      "canton": "BS",
+      "city": "Basel",
+      "url": "https://www.and6.com/de/girls/basel",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-be-and6",
+      "portal": "and6.com",
+      "canton": "BE",
+      "city": "Bern",
+      "url": "https://www.and6.com/de/girls/bern",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    },
+    {
+      "id": "mon-ag-and6",
+      "portal": "and6.com",
+      "canton": "AG",
+      "city": "Baden / Aargau",
+      "url": "https://www.and6.com/de/girls/mittelland",
+      "lastCheckedAt": "2026-11-07T19:45:22.769Z",
+      "status": "ACTIVE_MONITOR_SCHEDULE"
+    }
+  ]
+}
