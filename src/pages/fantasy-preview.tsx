@@ -3,16 +3,26 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { SwissDoorplate } from "@/components/SwissDoorplate";
 import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
-import { Sparkles, Volume2, Lock, ShieldCheck, Video, MessageCircle, CheckCircle2 } from "lucide-react";
+import {
+  Sparkles,
+  Volume2,
+  Lock,
+  ShieldCheck,
+  Video,
+  MessageCircle,
+  CheckCircle2,
+  Crown,
+} from "lucide-react";
 
 const SCENES = [
-  { id: "dinner", label: "1. Romantisches Dinner & Champagner" },
-  { id: "hotel", label: "2. 5-Sterne-Hotelzimmer bei Nacht" },
-  { id: "massage", label: "3. Sinnliche Tantra- & Warmöl-Session" },
+  { id: "dinner", label: "1. Candlelight Dinner & Champagne (Zürich/Zug)" },
+  { id: "hotel", label: "2. 5-Sterne-Penthouse Suite bei Nacht" },
+  { id: "massage", label: "3. Sinnliches Tantra- & Warmöl-Ritual" },
   { id: "gfe", label: "4. Girlfriend Experience (GFE) im Chalet" },
-  { id: "domina", label: "5. Dominante Studio-Audienz (Noir)" },
-  { id: "business", label: "6. Verführung nach dem Business-Date" },
+  { id: "domina", label: "5. Dominante Studio-Audienz (Leder & Türschild)" },
+  { id: "business", label: "6. Verführung nach dem Business-Meeting" },
 ];
 
 const ARCHETYPES = [
@@ -25,15 +35,22 @@ const ARCHETYPES = [
 
 export default function FantasyPreviewAndAvatarPage() {
   const router = useRouter();
-  const topProfiles = (Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : []).slice(0, 12);
+  const topProfiles = (Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : []).slice(0, 14);
   const [selectedProfile, setSelectedProfile] = useState<any>(
-    topProfiles[0] || { id: "ch-paradeplatz-vip", rawName: "Victoria · Zürich Paradeplatz", city: "Zürich", canton: "ZH", advertisedBaseChf: 450, rate30Chf: 250 }
+    topProfiles[0] || {
+      id: "ch-paradeplatz-vip",
+      rawName: "Victoria · Zürich Paradeplatz",
+      city: "Zürich",
+      canton: "ZH",
+      advertisedBaseChf: 450,
+      rate30Chf: 250,
+    }
   );
   const [archetype, setArchetype] = useState<string>("seductress");
   const [chatHistory, setChatHistory] = useState<Array<{ sender: "avatar" | "user"; text: string }>>([
     {
       sender: "avatar",
-      text: "Du hast dir meine Fotos ziemlich genau angesehen… Klick einfach auf eine Antwort unten – tippen musst du bei mir nicht.",
+      text: "Du stehst vor meiner Suitentür (FREI). Klick einfach unten auf einen der goldenen Chips – tippen musst du bei mir keinen Buchstaben.",
     },
   ]);
   const [quickReplies, setQuickReplies] = useState<string[]>([
@@ -50,6 +67,7 @@ export default function FantasyPreviewAndAvatarPage() {
   const [freePreviewsUsed, setFreePreviewsUsed] = useState<number>(0);
   const [previewResult, setPreviewResult] = useState<any>(null);
   const [optOutNotice, setOptOutNotice] = useState<string>("");
+
   useEffect(() => {
     const qId = String(router.query.id || "").trim();
     if (qId && Array.isArray(HARVESTED_SWISS_OFFERS)) {
@@ -62,7 +80,7 @@ export default function FantasyPreviewAndAvatarPage() {
     const nextHistory = [...chatHistory, { sender: "user" as const, text: chipText }];
     setChatHistory(nextHistory);
 
-    const res = await fetch(`/api/avatar-chat/${encodeURIComponent(selectedProfile.id || "default")}`, {
+    const res = await fetch("/api/avatar-chat/" + encodeURIComponent(selectedProfile.id || "default"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -106,7 +124,7 @@ export default function FantasyPreviewAndAvatarPage() {
   };
 
   const handleProviderOptOut = async (optOut: boolean) => {
-    const res = await fetch(`/api/avatar-chat/${encodeURIComponent(selectedProfile.id || "default")}`, {
+    const res = await fetch("/api/avatar-chat/" + encodeURIComponent(selectedProfile.id || "default"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -121,45 +139,52 @@ export default function FantasyPreviewAndAvatarPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090A0F] text-white pb-24">
+    <div className="min-h-screen bg-[#070606] text-[#F5EFE6] pb-28">
       <SEO
-        title="Provider-Avatar (Voice) & Fantasy Preview | iwantsexnow.ch"
-        description="Interaktive Schweizer Provider-Avatare mit ElevenLabs Voice, 1-Klick-Chips und KI-Vorgeschmack (80/20 Creator-Split & 1-Klick Opt-Out)."
+        title="Provider-Avatar (ElevenLabs Voice) & Venice Wan 2.7 Fantasy Preview | iwantsexnow.ch"
+        description="Interaktive Schweizer Provider-Avatare mit ElevenLabs Voice, 1-Klick-Chips und 5s Video-Vorgeschmack (80/20 Creator-Split & 1-Klick Opt-Out)."
       />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
-        {/* Header Banner */}
-        <div className="p-6 rounded-2xl bg-[#11131C] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C8A97E]/15 border border-[#C8A97E]/40 text-[#C8A97E] text-[11px] font-bold uppercase tracking-wider">
-              <Sparkles size={13} />
-              <span>SCHWEIZER NEUHEIT · AVATAR VOICE & VORGESCHMACK (80% AN ANBIETERIN)</span>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-7 space-y-7">
+        {/* Penthouse Hero Header */}
+        <div className="penthouse-panel p-6 sm:p-7 rounded-[24px] border border-[#C8A97E]/45 flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <SwissDoorplate state="FREI" roomNumber="VIP SUITE" customLabel="VOICE & WAN 2.7 PREVIEW" size="sm" />
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#DEC393] font-bold">
+                80 % ERLÖSANTEIL DIREKT AN DIE ANBIETERIN
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+            <h1 className="text-2xl sm:text-4xl font-serif text-[#EAD2AA] tracking-wide">
               Provider-Avatar & Fantasy Preview („Try Before You Buy“)
             </h1>
-            <p className="text-xs sm:text-sm text-gray-300 max-w-2xl">
-              Kein Tippen nötig: Chatten Sie per 1-Klick-Chips mit dem lizenzierten KI-Avatar der Anbieterin (inkl. mehrsprachiger ElevenLabs-Stimme) oder generieren Sie ein 5-Sekunden-Vorschauvideo Ihrer Wunsch-Szene.
+            <p className="text-xs sm:text-sm text-[#C8B9A6] max-w-2xl leading-relaxed">
+              Null-Tippen-Konversation per 1-Klick-Chips (inkl. mehrsprachiger ElevenLabs-Sprachausgabe) oder 5-Sekunden-Vorschauvideo Ihrer Wunsch-Szene via Venice.ai Wan 2.7.
             </p>
           </div>
-          <div className="text-right text-xs text-gray-400 space-y-1">
-            <div className="inline-flex items-center gap-1.5 text-emerald-300 font-semibold">
+
+          <div className="text-right text-xs font-mono text-[#B6A48E] space-y-1">
+            <div className="inline-flex items-center gap-1.5 text-emerald-400 font-bold">
               <ShieldCheck size={14} />
-              <span>KI-Interpretation klar gekennzeichnet</span>
+              <span>KI-INTERPRETATION KLAR GEKENNZEICHNET</span>
             </div>
-            <div>80% aller Erlöse gehen direkt an die Anbieterin</div>
+            <div>1-Klick Opt-Out nach Schweizer DSG jederzeit aktiv</div>
           </div>
         </div>
 
-        {/* Profile Selector */}
+        {/* Suite / Companion Selector */}
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-[#C8A97E]">
-            1. Schweizer Anbieterin auswählen:
+          <label className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-[#DEC393]">
+            1. Schweizer Suite / Anbieterin wählen:
           </label>
-          <div className="flex gap-2.5 overflow-x-auto pb-2">
+          <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-2">
             {topProfiles.map((p: any, i: number) => {
               const active = p.id === selectedProfile?.id;
+              const pillCls = active
+                ? "brass-3d px-4 py-2.5 rounded-2xl border border-[#F5E3B8]/70 text-left shrink-0 cursor-pointer"
+                : "px-4 py-2.5 rounded-2xl bg-[#110D0B] text-[#EAD2AA] border border-[#C8A97E]/25 hover:border-[#EAD2AA]/60 text-left shrink-0 cursor-pointer transition";
+              const subCls = active ? "text-[10px] font-mono text-[#2B1D0A]" : "text-[10px] font-mono text-[#A89882]";
               return (
                 <button
                   key={p.id || i}
@@ -169,14 +194,10 @@ export default function FantasyPreviewAndAvatarPage() {
                     setLockedState(null);
                     setPreviewResult(null);
                   }}
-                  className={`px-3.5 py-2 rounded-xl border text-left shrink-0 transition cursor-pointer ${
-                    active
-                      ? "bg-[#C8A97E] text-[#090A0F] border-[#C8A97E] font-bold"
-                      : "bg-[#11131C] text-gray-200 border-white/10 hover:border-white/30"
-                  }`}
+                  className={pillCls}
                 >
-                  <div className="text-xs truncate max-w-[160px]">{p.rawName}</div>
-                  <div className={`text-[10px] ${active ? "text-[#090A0F]/80" : "text-gray-400"}`}>
+                  <div className="text-xs font-serif font-bold truncate max-w-[170px]">{p.rawName}</div>
+                  <div className={subCls}>
                     {p.city} ({p.canton}) · CHF {p.advertisedBaseChf || 350}
                   </div>
                 </button>
@@ -185,83 +206,82 @@ export default function FantasyPreviewAndAvatarPage() {
           </div>
         </div>
 
+        {/* 2-Column Penthouse Split: Left Voice Avatar, Right Venice Wan 2.7 Video Preview */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* LEFT: Provider Avatar Chat + ElevenLabs Voice */}
-          <section className="p-6 rounded-2xl bg-[#11131C] border border-white/10 flex flex-col justify-between space-y-5">
+          {/* LEFT PANEL: ElevenLabs Voice Avatar */}
+          <section className="penthouse-panel p-6 rounded-[24px] border border-[#C8A97E]/35 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#C8A97E]/20 pb-3.5">
                 <div>
-                  <span className="text-[10px] uppercase tracking-wider text-[#C8A97E] font-bold">
-                    TÜRSCHILD: FREI · KI-AVATAR SPRECHSTUNDE
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#DEC393] font-bold">
+                    ELEVENLABS VOICE · SPRECHSTUNDE
                   </span>
-                  <h2 className="text-lg font-serif font-bold text-white flex items-center gap-2">
-                    <MessageCircle size={18} className="text-[#C8A97E]" />
+                  <h2 className="text-xl font-serif text-[#EAD2AA] flex items-center gap-2 mt-0.5">
+                    <MessageCircle size={18} className="text-[#DEC393]" />
                     <span>{selectedProfile.rawName}</span>
                   </h2>
                 </div>
-                <div className="flex gap-1">
-                  {ARCHETYPES.map((a) => (
-                    <button
-                      key={a.id}
-                      type="button"
-                      onClick={() => setArchetype(a.id)}
-                      className={`px-2 py-1 rounded text-[10px] font-semibold cursor-pointer ${
-                        archetype === a.id ? "bg-[#C8A97E] text-[#090A0F]" : "bg-white/5 text-gray-400"
-                      }`}
-                    >
-                      {a.label}
-                    </button>
-                  ))}
+                <div className="flex flex-wrap gap-1">
+                  {ARCHETYPES.map((a) => {
+                    const isAct = archetype === a.id;
+                    const archCls = isAct
+                      ? "brass-3d px-2.5 py-1 rounded-full text-[10px] font-mono font-extrabold cursor-pointer"
+                      : "px-2.5 py-1 rounded-full bg-black/60 border border-[#C8A97E]/25 text-[#C8B9A6] text-[10px] font-mono cursor-pointer";
+                    return (
+                      <button key={a.id} type="button" onClick={() => setArchetype(a.id)} className={archCls}>
+                        {a.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Conversation History */}
               <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
-                {chatHistory.map((m, idx) => (
-                  <div
-                    key={idx}
-                    className={`p-3.5 rounded-xl text-xs leading-relaxed ${
-                      m.sender === "avatar"
-                        ? "bg-black/50 border border-[#C8A97E]/30 text-gray-100"
-                        : "bg-[#C8A97E]/20 border border-[#C8A97E]/40 text-white ml-8"
-                    }`}
-                  >
-                    <div className="text-[10px] font-bold text-[#C8A97E] mb-1">
-                      {m.sender === "avatar" ? `${selectedProfile.rawName} (KI-Interpretation)` : "Deine Auswahl"}
+                {chatHistory.map((m, idx) => {
+                  const bubbleCls =
+                    m.sender === "avatar"
+                      ? "p-4 rounded-2xl bg-black/65 border border-[#C8A97E]/35 text-xs leading-relaxed text-[#F5EFE6]"
+                      : "p-4 rounded-2xl bg-[#0D291E]/80 border border-[#C8A97E]/45 text-xs leading-relaxed text-[#EAD2AA] ml-8";
+                  return (
+                    <div key={idx} className={bubbleCls}>
+                      <div className="text-[9px] font-mono uppercase tracking-widest text-[#DEC393] font-bold mb-1">
+                        {m.sender === "avatar"
+                          ? selectedProfile.rawName + " · KI-INTERPRETATION"
+                          : "DEINE 1-KLICK AUSWAHL"}
+                      </div>
+                      {m.text}
                     </div>
-                    {m.text}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {audioUrl && (
-                <div className="p-3 rounded-xl bg-black/40 border border-emerald-500/30 flex items-center justify-between text-xs">
-                  <span className="inline-flex items-center gap-1.5 text-emerald-300 font-semibold">
+                <div className="p-3.5 rounded-2xl bg-black/70 border border-emerald-500/40 flex items-center justify-between text-xs">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-emerald-300 font-bold">
                     <Volume2 size={15} />
-                    <span>ElevenLabs Sprachnachricht bereit:</span>
+                    <span>ELEVENLABS SPRACHNACHRICHT:</span>
                   </span>
                   <audio controls src={audioUrl} className="h-8" />
                 </div>
               )}
 
-              {/* Paywall Lock Box after 4 messages */}
               {lockedState && !unlockedChat && (
-                <div className="p-4 rounded-xl bg-[#090A0F] border border-[#C8A97E] space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#C8A97E]">
+                <div className="p-4 rounded-2xl bg-black/85 border border-[#DEC393] space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#DEC393]">
                     <Lock size={14} />
-                    <span>Gratis-Vorschau beendet · 80% direkt an {selectedProfile.rawName}</span>
+                    <span>GRATIS-KONTINGENT ERREICHT · 80% AN {selectedProfile.rawName}</span>
                   </div>
-                  <p className="text-xs text-gray-300">{lockedState.text}</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <p className="text-xs text-[#D5C7B2]">{lockedState.text}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <button
                       type="button"
                       onClick={() => {
                         setUnlockedChat(true);
                         setLockedState(null);
                       }}
-                      className="py-2.5 px-3 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-xs cursor-pointer"
+                      className="brass-3d py-2.5 px-3 rounded-full font-mono font-extrabold text-xs uppercase cursor-pointer"
                     >
-                      10 Nachrichten · CHF 2.50
+                      10 NACHRICHTEN · CHF 2.50
                     </button>
                     <button
                       type="button"
@@ -269,19 +289,18 @@ export default function FantasyPreviewAndAvatarPage() {
                         setUnlockedChat(true);
                         setLockedState(null);
                       }}
-                      className="py-2.5 px-3 rounded-lg bg-white/10 hover:bg-white/15 text-white font-semibold text-xs border border-white/15 cursor-pointer"
+                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#C8A97E]/50 font-mono font-bold text-xs uppercase cursor-pointer"
                     >
-                      Monats-Flatrate · CHF 9.90
+                      FLATRATE · CHF 9.90 / MONAT
                     </button>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Zero-Typing Quick-Reply Chips */}
-            <div className="space-y-2 pt-3 border-t border-white/10">
-              <div className="text-[11px] text-gray-400">
-                Nur klicken, nicht tippen (1-Tap Antworten):
+            <div className="space-y-2 pt-3 border-t border-[#C8A97E]/20">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-[#A89882]">
+                1-Tap Antwort-Chips (Kein Tippen erforderlich):
               </div>
               <div className="flex flex-wrap gap-2">
                 {quickReplies.map((qr, i) => (
@@ -289,7 +308,7 @@ export default function FantasyPreviewAndAvatarPage() {
                     key={i}
                     type="button"
                     onClick={() => sendQuickChip(qr)}
-                    className="px-3 py-2 rounded-lg bg-white/5 hover:bg-[#C8A97E] hover:text-[#090A0F] text-xs text-gray-200 border border-white/10 transition cursor-pointer font-medium"
+                    className="px-3.5 py-2 rounded-full bg-black/65 hover:bg-[#DEC393] text-[#EAD2AA] hover:text-[#191105] text-xs border border-[#C8A97E]/35 transition cursor-pointer font-medium"
                   >
                     {qr}
                   </button>
@@ -298,59 +317,62 @@ export default function FantasyPreviewAndAvatarPage() {
             </div>
           </section>
 
-          {/* RIGHT: Venice.ai Wan 2.7 Fantasy Preview ("Try Before You Buy") */}
-          <section className="p-6 rounded-2xl bg-[#11131C] border border-white/10 flex flex-col justify-between space-y-5">
+          {/* RIGHT PANEL: Venice.ai Wan 2.7 Video Preview */}
+          <section className="penthouse-panel p-6 rounded-[24px] border border-[#C8A97E]/35 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
-              <div className="border-b border-white/10 pb-3">
-                <span className="text-[10px] uppercase tracking-wider text-[#C8A97E] font-bold">
-                  VENICE.AI WAN 2.7 · VIDEO-VORGESCHMACK (5 SEKUNDEN)
+              <div className="border-b border-[#C8A97E]/20 pb-3.5">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#DEC393] font-bold">
+                  VENICE.AI WAN 2.7 · 5-SEKUNDEN VIDEO-SZENE
                 </span>
-                <h2 className="text-lg font-serif font-bold text-white flex items-center gap-2">
-                  <Video size={18} className="text-[#C8A97E]" />
+                <h2 className="text-xl font-serif text-[#EAD2AA] flex items-center gap-2 mt-0.5">
+                  <Video size={18} className="text-[#DEC393]" />
                   <span>Fantasy Preview mit {selectedProfile.rawName}</span>
                 </h2>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-gray-300">
-                  Wunsch-Szene für euer Preview wählen:
+                <label className="text-[11px] font-mono uppercase tracking-wider text-[#C8B9A6]">
+                  Szene für euer Preview-Rendering auswählen:
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {SCENES.map((sc) => (
-                    <button
-                      key={sc.id}
-                      type="button"
-                      onClick={() => setSelectedScene(sc.id)}
-                      className={`p-2.5 rounded-xl border text-left text-xs transition cursor-pointer ${
-                        selectedScene === sc.id
-                          ? "bg-[#C8A97E]/20 border-[#C8A97E] text-white font-bold"
-                          : "bg-black/40 border-white/10 text-gray-300 hover:border-white/25"
-                      }`}
-                    >
-                      {sc.label}
-                    </button>
-                  ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {SCENES.map((sc) => {
+                    const isAct = selectedScene === sc.id;
+                    const scCls = isAct
+                      ? "p-3 rounded-2xl border border-[#DEC393] bg-[#DEC393]/15 text-left text-xs text-[#EAD2AA] font-bold cursor-pointer"
+                      : "p-3 rounded-2xl border border-white/10 bg-black/55 hover:border-[#C8A97E]/45 text-left text-xs text-[#C8B9A6] cursor-pointer transition";
+                    return (
+                      <button key={sc.id} type="button" onClick={() => setSelectedScene(sc.id)} className={scCls}>
+                        {sc.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-black/40 border border-white/10 text-xs text-gray-300 space-y-1">
-                <div>• Gratis-Kontingent zum Testen: <strong>{Math.max(0, 2 - freePreviewsUsed)} von 2 frei</strong></div>
-                <div>• Danach: <strong>CHF 5.00 pro Clip</strong> (CHF 4.00 / 80% gehen direkt an {selectedProfile.rawName})</div>
-                <div>• Kennzeichnung: <strong>KI-Interpretation</strong> (gemäss Schweizer Recht ausgewiesen)</div>
+              <div className="p-4 rounded-2xl bg-black/60 border border-[#C8A97E]/25 text-xs font-mono text-[#C8B9A6] space-y-1.5">
+                <div>
+                  • GRATIS-TEASER: <strong className="text-[#EAD2AA]">{Math.max(0, 2 - freePreviewsUsed)} VON 2 FREI</strong>
+                </div>
+                <div>
+                  • DANACH: <strong className="text-[#DEC393]">CHF 5.00 PRO CLIP</strong> (CHF 4.00 / 80% AN ANBIETERIN)
+                </div>
+                <div>
+                  • TRANSPARENZ: <strong className="text-emerald-400">KI-INTERPRETATION (KEIN ECHTFOTO)</strong>
+                </div>
               </div>
 
               {previewResult && (
-                <div className="p-4 rounded-xl bg-[#090A0F] border border-[#C8A97E]/60 space-y-2.5 text-xs">
+                <div className="p-4 rounded-2xl bg-black/80 border border-[#DEC393]/60 space-y-2.5 text-xs">
                   {previewResult.paywallRequired ? (
                     <>
-                      <div className="font-bold text-[#C8A97E]">{previewResult.message}</div>
+                      <div className="font-mono font-bold text-[#DEC393]">{previewResult.message}</div>
                       <div className="grid grid-cols-1 gap-2 pt-1">
                         {previewResult.pricingOptions?.map((opt: any) => (
                           <button
                             key={opt.id}
                             type="button"
                             onClick={() => triggerPreviewRender(true)}
-                            className="py-2 px-3 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-xs cursor-pointer"
+                            className="brass-3d py-2.5 px-4 rounded-full font-mono font-extrabold text-xs uppercase cursor-pointer"
                           >
                             {opt.label}
                           </button>
@@ -359,20 +381,20 @@ export default function FantasyPreviewAndAvatarPage() {
                     </>
                   ) : (
                     <>
-                      <div className="flex items-center justify-between text-emerald-300 font-bold">
+                      <div className="flex items-center justify-between text-emerald-400 font-mono font-bold">
                         <span className="inline-flex items-center gap-1.5">
                           <CheckCircle2 size={14} />
-                          <span>Szene bereit: {previewResult.sceneTitle}</span>
+                          <span>SZENE BEREIT: {previewResult.sceneTitle}</span>
                         </span>
-                        <span className="text-[10px] text-[#C8A97E]">{previewResult.aiDisclosureLabel}</span>
+                        <span className="text-[10px] text-[#DEC393]">{previewResult.aiDisclosureLabel}</span>
                       </div>
-                      <p className="text-gray-400 text-[11px]">{previewResult.synthesizedPrompt}</p>
+                      <p className="text-[#A89882] text-[11px] font-mono">{previewResult.synthesizedPrompt}</p>
                       <div className="pt-2 flex flex-wrap gap-2">
                         <Link
-                          href={`/profile/${encodeURIComponent(selectedProfile.id)}`}
-                          className="px-4 py-2 rounded-lg bg-[#C8A97E] text-[#090A0F] font-bold text-xs"
+                          href={"/profile/" + encodeURIComponent(selectedProfile.id)}
+                          className="brass-3d px-5 py-2.5 rounded-full font-mono font-extrabold text-xs uppercase"
                         >
-                          Jetzt echtes Date mit {selectedProfile.rawName} buchen →
+                          ECHTE SUITE VON {selectedProfile.rawName} ÖFFNEN →
                         </Link>
                       </div>
                     </>
@@ -384,38 +406,39 @@ export default function FantasyPreviewAndAvatarPage() {
             <button
               type="button"
               onClick={() => triggerPreviewRender(false)}
-              className="w-full py-3 rounded-xl bg-[#C8A97E] hover:bg-[#d8b98e] text-[#090A0F] font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-lg"
+              className="brass-3d w-full py-3.5 rounded-full border border-[#F5E3B8]/65 font-mono font-extrabold text-xs uppercase tracking-[0.18em] cursor-pointer transition"
             >
-              🔮 5-Sekunden Fantasy Preview generieren ({Math.max(0, 2 - freePreviewsUsed)} Gratis übrig)
+              🔮 5-SEKUNDEN FANTASY PREVIEW STARTEN ({Math.max(0, 2 - freePreviewsUsed)} GRATIS)
             </button>
           </section>
         </div>
 
-        {/* Update 9: Mandatory Swiss License, Opt-In & 1-Click Opt-Out Bar for Providers */}
-        <section className="p-5 rounded-2xl bg-[#11131C] border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs">
+        {/* Mandatory Swiss License, Opt-In & 1-Click Opt-Out Bar */}
+        <section className="penthouse-panel p-5 rounded-[22px] border border-[#C8A97E]/30 flex flex-wrap items-center justify-between gap-4 text-xs">
           <div className="space-y-1">
-            <div className="font-bold text-white">
-              Lizenz-, Bildrechte- & 1-Klick-Opt-Out-Steuerung für Anbieterinnen (Schweizer DSG & KI-Transparenz)
+            <div className="font-mono font-bold uppercase tracking-wider text-[#EAD2AA] flex items-center gap-2">
+              <Crown size={14} className="text-[#DEC393]" />
+              <span>SCHWEIZER LIZENZ-, BILDRECHTE- & 1-KLICK-OPT-OUT-STEUERUNG (CH-DSG)</span>
             </div>
-            <p className="text-gray-400">
-              Bist du {selectedProfile.rawName}? Du erhältst 80% aller Avatar- und Preview-Erlöse oder kannst die KI-Funktionen hier mit 1 Klick sofort deaktivieren.
+            <p className="text-[#B6A48E]">
+              Bist du {selectedProfile.rawName}? Du erhältst 80 % aller Avatar- und Preview-Erlöse oder kannst die KI-Funktionen hier mit 1 Klick sofort deaktivieren.
             </p>
-            {optOutNotice && <p className="text-[#C8A97E] font-semibold pt-1">{optOutNotice}</p>}
+            {optOutNotice && <p className="text-[#DEC393] font-mono font-bold pt-1">{optOutNotice}</p>}
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => handleProviderOptOut(false)}
-              className="px-3.5 py-2 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-semibold cursor-pointer"
+              className="emerald-3d px-4 py-2 rounded-full border border-emerald-500/45 font-mono font-bold text-[11px] uppercase cursor-pointer"
             >
-              ✓ 80/20 Avatar-Lizenz aktivieren (Opt-In)
+              ✓ 80/20 LIZENZ AKTIVIEREN (OPT-IN)
             </button>
             <button
               type="button"
               onClick={() => handleProviderOptOut(true)}
-              className="px-3.5 py-2 rounded-lg bg-rose-500/15 border border-rose-500/40 text-rose-300 font-semibold cursor-pointer"
+              className="px-4 py-2 rounded-full bg-rose-950/60 border border-rose-500/50 text-rose-300 font-mono font-bold text-[11px] uppercase cursor-pointer hover:bg-rose-900/60"
             >
-              ✕ Sofortiges 1-Klick Opt-Out
+              ✕ SOFORTIGES 1-KLICK OPT-OUT
             </button>
           </div>
         </section>

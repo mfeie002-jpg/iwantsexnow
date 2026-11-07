@@ -1,107 +1,171 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 5%;
-  --card: 0 0% 98%;
-  --card-foreground: 0 0% 5%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 5%;
-  --primary: 0 0% 10%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 10%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 345 20% 25%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --ring: 0 0% 10%;
-  --chart-1: 345 20% 35%;
-  --chart-2: 345 15% 45%;
-  --chart-3: 345 10% 55%;
-  --chart-4: 345 8% 65%;
-  --chart-5: 345 5% 75%;
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 0 0% 8%;
-  --foreground: 0 0% 95%;
-  --card: 0 0% 10%;
-  --card-foreground: 0 0% 95%;
-  --popover: 0 0% 8%;
-  --popover-foreground: 0 0% 95%;
-  --primary: 0 0% 95%;
-  --primary-foreground: 0 0% 10%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 95%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 345 15% 20%;
-  --accent-foreground: 0 0% 95%;
-  --destructive: 0 62% 50%;
-  --destructive-foreground: 0 0% 95%;
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 0 0% 83%;
-  --chart-1: 345 15% 25%;
-  --chart-2: 345 12% 35%;
-  --chart-3: 345 10% 45%;
-  --chart-4: 345 8% 55%;
-  --chart-5: 345 5% 65%;
+  --background: 15 12% 3%;
+  --foreground: 36 33% 93%;
+  --card: 20 16% 5%;
+  --card-foreground: 36 33% 93%;
+  --popover: 20 16% 5%;
+  --popover-foreground: 36 33% 93%;
+  --primary: 38 45% 69%;
+  --primary-foreground: 24 45% 8%;
+  --secondary: 20 14% 9%;
+  --secondary-foreground: 36 33% 93%;
+  --muted: 20 12% 11%;
+  --muted-foreground: 34 15% 65%;
+  --accent: 158 52% 11%;
+  --accent-foreground: 38 45% 82%;
+  --destructive: 0 72% 42%;
+  --destructive-foreground: 36 33% 95%;
+  --border: 38 35% 24%;
+  --input: 20 14% 12%;
+  --ring: 38 45% 69%;
+  --radius: 0.75rem;
 }
 
 * {
-  border-color: hsl(var(--border));
+  border-color: rgba(200, 169, 126, 0.18);
 }
 
+html,
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: 'Inter', sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-/* === mobile-ux-hardening: iwantsexnow.ch Mobile-First & Touch-Standards === */
-html, body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
-  background-color: #0D111A;
-  color: #F5F2EB;
+  background-color: #070606;
+  color: #F5EFE6;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Verhindert ungewolltes Hineinzoomen auf iPhones (iOS Safari) bei Klick in Such- und Formularfelder */
-@media screen and (max-width: 768px) {
-  input, select, textarea {
-    font-size: 16px !important;
-  }
+h1,
+h2,
+h3,
+h4,
+.font-serif {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
 }
 
-/* Versteckt unschöne Scrollbalken in horizontalen Kantons-Schnellleisten */
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background-color: rgba(222, 195, 147, 0.32);
+  color: #FFFDF9;
+}
+
+/* Custom Luxury Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #070606;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #876633 0%, #4E391A 100%);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #DEC393 0%, #9E783D 100%);
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* iOS Safari Auto-Zoom Protection */
+@media screen and (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* === 3D Brushed Brass & Penthouse Surfaces === */
+.brass-3d {
+  background: linear-gradient(135deg, #DEC393 0%, #B38E52 52%, #876633 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 250, 230, 0.65), 0 6px 18px rgba(0, 0, 0, 0.78);
+  color: #191105;
+}
+.brass-3d:hover {
+  filter: brightness(1.08);
+}
+
+.emerald-3d {
+  background: linear-gradient(135deg, #0D291E 0%, #071711 100%);
+  box-shadow: inset 0 1px 0 rgba(110, 231, 183, 0.22), 0 6px 18px rgba(0, 0, 0, 0.78);
+  color: #EAD2AA;
+}
+.emerald-3d:hover {
+  border-color: rgba(234, 210, 170, 0.85);
+  filter: brightness(1.12);
+}
+
+.penthouse-panel {
+  background: linear-gradient(180deg, rgba(20, 15, 13, 0.94) 0%, rgba(9, 7, 6, 0.98) 100%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.92), inset 0 1px 0 rgba(222, 195, 147, 0.22);
+}
+
+.valentina-outer-card {
+  background: linear-gradient(180deg, #110D0B 0%, #070505 100%);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.94), inset 0 0 0 1px rgba(217, 188, 138, 0.28);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.valentina-outer-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 60px rgba(200, 169, 126, 0.18), inset 0 0 0 1px rgba(229, 201, 155, 0.55);
+}
+
+/* === LUXURY DARKROOM ENGINE FOR HETEROGENEOUS SCRAPED PHOTOS === */
+.darkroom-stage {
+  position: relative;
+  overflow: hidden;
+  background-color: #080606;
+}
+.darkroom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transform: scale(1.06);
+  filter: brightness(0.88) contrast(1.12) saturate(0.82) sepia(0.10);
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms ease;
+}
+.group:hover .darkroom-img,
+.darkroom-stage:hover .darkroom-img {
+  transform: scale(1.11);
+  filter: brightness(0.95) contrast(1.10) saturate(0.90) sepia(0.05);
+}
+.darkroom-img-raw {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transform: scale(1.03);
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.darkroom-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 0) 35%, rgba(7, 5, 5, 0.64) 78%, rgba(7, 5, 5, 0.95) 100%);
+}
+.darkroom-floor {
+  position: absolute;
+  inset-x: 0;
+  bottom: 0;
+  height: 64%;
+  pointer-events: none;
+  background: linear-gradient(to top, #070505 14%, rgba(7, 5, 5, 0.92) 46%, rgba(7, 5, 5, 0.44) 76%, transparent 100%);
 }
