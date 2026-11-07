@@ -1,467 +1,183 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useRouter } from "next/router";
+import React from "react";
+import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import clubsVault from "@/data/swiss-establishments-vault.json";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
-import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
-import { XeniaDoubtTrigger } from "@/components/XeniaContextualHelp";
-import {
-  Check,
-  Clock,
-  User,
-  ExternalLink,
-  Bookmark,
-  LayoutGrid,
-  List as ListIcon,
-  Layers,
-  HelpCircle,
-  ArrowRight,
-  MapPin,
-} from "lucide-react";
+import { SwissDoorplate } from "@/components/SwissDoorplate";
+import offersData from "@/data/harvested-offers.json";
+import { Crown, MessageCircle, User, Sparkles } from "lucide-react";
 
-interface SlugConfig {
-  title: string;
-  subtitle: string;
-  canton: string;
-  cityFilter: string;
-  category: "all" | "escort" | "massage" | "bdsm" | "trans";
-  lang: "de" | "fr" | "it";
-}
+const SLUG_TO_CANTON: Record<string, { title: string; canton: string }> = {
+  zug: { title: "Zug, Baar & Cham", canton: "ZG" },
+  zuerich: { title: "Zürich City & Seefeld", canton: "ZH" },
+  zurich: { title: "Zürich City & Seefeld", canton: "ZH" },
+  luzern: { title: "Luzern & Zentralschweiz", canton: "LU" },
+  baden: { title: "Baden, Spreitenbach & Aargau", canton: "AG" },
+  aargau: { title: "Aargau & Mittelland", canton: "AG" },
+  basel: { title: "Basel-Stadt", canton: "BS" },
+  bern: { title: "Bern & Espace Mittelland", canton: "BE" },
+  "st-gallen": { title: "St. Gallen & Ostschweiz", canton: "SG" },
+  geneve: { title: "Genève & Lac Léman", canton: "GE" },
+  lausanne: { title: "Lausanne, Montreux & Vaud", canton: "VD" },
+  lugano: { title: "Lugano, Locarno & Ticino", canton: "TI" },
+};
 
-function resolveSlugIntent(slugRaw: string): SlugConfig {
-  const s = String(slugRaw || "zuerich").toLowerCase();
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const slug = String(ctx.params?.slug || "zuerich").toLowerCase().trim();
+  const cfg = SLUG_TO_CANTON[slug] || { title: slug.toUpperCase(), canton: "ZH" };
+  const all = (offersData as any[]) || [];
 
-  if (s.includes("massage") || s.includes("tantra")) {
-    return {
-      title: "Erotische Massage & Tantra in der Schweiz",
-      subtitle: "Sinnliche Massagen, Body-to-Body und Tantra-Studios mit transparenter Orts- und Preisangabe.",
-      canton: s.includes("zug") ? "ZG" : s.includes("zuerich") || s.includes("zurich") ? "ZH" : "ALL",
-      cityFilter: "",
-      category: "massage",
-      lang: "de",
-    };
-  }
-  if (s.includes("domina") || s.includes("bdsm")) {
-    return {
-      title: "Domina & BDSM Studios in der Schweiz",
-      subtitle: "Klassische Dominanz, Fetisch und Rollenspiel – nach Region und Prüfstatus geordnet.",
-      canton: "ALL",
-      cityFilter: "",
-      category: "bdsm",
-      lang: "de",
-    };
-  }
-  if (s.includes("cham") || s.includes("zug") || s.includes("baar")) {
-    return {
-      title: "Escorts & Studios in Zug, Cham und Baar (ZG)",
-      subtitle: "Lokale Übersicht für den Kanton Zug mit bestätigter Verfügbarkeit und Quellenangaben.",
-      canton: "ZG",
-      cityFilter: "",
-      category: "all",
-      lang: "de",
-    };
-  }
-  if (s.includes("geneve") || s.includes("genf")) {
-    return {
-      title: "Escorts & Salons à Genève (GE)",
-      subtitle: "Sélection locale pour Genève (Champel, Eaux-Vives, Plainpalais, Carouge) avec sources vérifiables.",
-      canton: "GE",
-      cityFilter: "",
-      category: "all",
-      lang: "fr",
-    };
-  }
-  if (s.includes("lausanne") || s.includes("vaud")) {
-    return {
-      title: "Escorts & Salons à Lausanne et Vaud (VD)",
-      subtitle: "Profils et adresses vérifiables à Lausanne, Ouchy, Morges, Nyon et Montreux.",
-      canton: "VD",
-      cityFilter: "",
-      category: "all",
-      lang: "fr",
-    };
-  }
-  if (s.includes("lugano") || s.includes("ticino") || s.includes("tessin")) {
-    return {
-      title: "Escort e Studi a Lugano e in Ticino (TI) – Svizzera",
-      subtitle: "Elenco locale per Lugano, Paradiso, Locarno, Ascona e Bellinzona (Canton Ticino, CH).",
-      canton: "TI",
-      cityFilter: "",
-      category: "all",
-      lang: "it",
-    };
-  }
-  if (s.includes("basel")) {
-    return {
-      title: "Escorts & Studios in Basel (BS/BL)",
-      subtitle: "Regionale Übersicht für Basel-Stadt und Umgebung mit Preis- und Quellenvergleich.",
-      canton: "BS",
-      cityFilter: "",
-      category: "all",
-      lang: "de",
-    };
-  }
-  if (s.includes("bern")) {
-    return {
-      title: "Escorts & Studios in Bern (BE)",
-      subtitle: "Regionale Übersicht für Bern, Biel, Thun und das Mittelland.",
-      canton: "BE",
-      cityFilter: "",
-      category: "all",
-      lang: "de",
-    };
-  }
-  if (s.includes("luzern")) {
-    return {
-      title: "Escorts & Studios in Luzern (LU)",
-      subtitle: "Regionale Übersicht für Luzern, Emmen, Kriens und die Zentralschweiz.",
-      canton: "LU",
-      cityFilter: "",
-      category: "all",
-      lang: "de",
-    };
-  }
-  if (s.includes("baden") || s.includes("aarau") || s.includes("aargau")) {
-    return {
-      title: "Escorts & Studios in Baden, Aarau & Aargau (AG)",
-      subtitle: "Regionale Übersicht für den Kanton Aargau mit Preis- und Quellenangaben.",
-      canton: "AG",
-      cityFilter: "",
-      category: "all",
-      lang: "de",
-    };
-  }
-  if (s.includes("st-gallen") || s.includes("wil")) {
-    return {
-      title: "Escorts & Studios in St. Gallen & Wil (SG)",
-      subtitle: "Regionale Übersicht für die Ostschweiz.",
-      canton: "SG",
-      cityFilter: "",
-      category: "all",
-      lang: "de",
-    };
-  }
-
-  return {
-    title: "Escorts & Studios in Zürich (ZH)",
-    subtitle: "Lokale Profile in Zürich City, Paradeplatz, Oerlikon, Seefeld und Winterthur.",
-    canton: "ZH",
-    cityFilter: "",
-    category: "all",
-    lang: "de",
-  };
-}
-
-function inferOfferCategory(item: any): "escort" | "massage" | "bdsm" | "trans" {
-  const text = `${item.rawName || ""} ${(item.includedTags || []).join(" ")} ${item.bio || ""}`.toLowerCase();
-  if (/\b(trans|ts|ladyboy|shemale|transe)\b/.test(text)) return "trans";
-  if (/\b(domina|bdsm|fetisch|herrin|sklav|bizarr)\b/.test(text)) return "bdsm";
-  if (/\b(tantra|masseurin|thaimassage|body-to-body|massage)\b/.test(text) && !/\bescort\b/.test(text)) return "massage";
-  return "escort";
-}
-
-const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
-];
-
-export default function LocalIntentDirectoryPage() {
-  const router = useRouter();
-  const slug = String(router.query.slug || "zuerich");
-  const intent = useMemo(() => resolveSlugIntent(slug), [slug]);
-
-  const [selectedCanton, setSelectedCanton] = useState<string>(intent.canton);
-  const [selectedCategory, setSelectedCategory] = useState<string>(intent.category);
-  const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
-  const [onlyWithPrice, setOnlyWithPrice] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [compareIds, setCompareIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    setSelectedCanton(intent.canton);
-    setSelectedCategory(intent.category);
-  }, [intent.canton, intent.category]);
-
-  const profiles = useMemo(() => {
-    const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
-    return raw.map((item: any, idx: number) => {
-      const id = item.dedupClusterId || `loc-${idx + 1}`;
-      const geo = normalizeSwissGeo(item.city, item.canton);
-      const offerCat = inferOfferCategory(item);
-      const rate = Number(item.advertisedBaseChf) || null;
-      const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
-      const isCleanPhoto = String(item.sourcePortal || "").toLowerCase().includes("bemygirl") || String(item.sourcePortal || "").toLowerCase().includes("fgirl");
-      const availabilityConfirmed = idx < 10 && isCleanPhoto && idx % 2 === 0;
-      const isSelfManaged = Boolean(item.bookingMode === "direct" || availabilityConfirmed);
-
+  const matched = all
+    .filter(
+      (o) =>
+        String(o.canton || "").toUpperCase() === cfg.canton ||
+        String(o.city || "").toLowerCase().includes(slug)
+    )
+    .slice(0, 36)
+    .map((o) => {
+      const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
+      const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+      const rawThumb = String(o.thumbnail || "").trim().replace(/[?&]iwsn_clean=1.*$/i, "");
+      const cleanTitle = String(o.rawName || "VALENTINA")
+        .replace(/^[\W_]+/, "")
+        .split(/[·|-]/)[0]
+        .trim()
+        .slice(0, 22);
       return {
-        ...item,
-        id,
-        cleanCity: geo.cleanCity,
-        canton: geo.trueCanton,
-        offerCategory: offerCat,
-        advertisedBaseChf: rate,
-        durationLabel,
-        availabilityConfirmed,
-        confirmedMinutesAgo: availabilityConfirmed ? 8 : null,
-        isSelfManaged,
-        fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
+        id: o.id || o.dedupClusterId,
+        cleanTitle: cleanTitle || "VALENTINA",
+        city: o.city || cfg.title,
+        canton: o.canton || cfg.canton,
+        rate60Chf: r60,
+        rate30Chf: r30,
+        rawPhone: o.rawPhone || "",
+        cleanThumb: rawThumb,
+        isAvail: Boolean(o.availabilityConfirmed),
       };
     });
-  }, []);
 
-  const filtered = useMemo(() => {
-    return profiles.filter((p) => {
-      if (selectedCanton !== "ALL" && p.canton !== selectedCanton) return false;
-      if (selectedCategory !== "all" && p.offerCategory !== selectedCategory) return false;
-      if (onlyAvailable && !p.availabilityConfirmed) return false;
-      if (onlyWithPrice && !p.advertisedBaseChf) return false;
-      return true;
-    });
-  }, [profiles, selectedCanton, selectedCategory, onlyAvailable, onlyWithPrice]);
-
-  const toggleCompare = (id: string) => {
-    setCompareIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev.slice(-2), id]));
-  };
-
-  return (
-    <div className="min-h-screen bg-[#13161C] text-white pb-24">
-      <SEO title={`${intent.title} | iwantsexnow.ch`} description={intent.subtitle} />
-      <LuxuryHeader />
-
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-5 pb-12 space-y-5">
-        {/* Breadcrumb + Preserved Search Intent */}
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="hover:text-white">Schweiz Übersicht</Link>
-            <span>/</span>
-            <span className="text-[#C6A574] font-semibold">{intent.title}</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <XeniaDoubtTrigger topic="status" label="Was bedeutet 'Jetzt verfügbar'?" />
-            <XeniaDoubtTrigger topic="price" label="Preise & Dauer verstehen" />
-            <XeniaDoubtTrigger topic="source" label="Quellen-Herkunft" />
-          </div>
-        </div>
-
-        <div className="space-y-1">
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">{intent.title}</h1>
-          <p className="text-xs sm:text-sm text-gray-300">{intent.subtitle}</p>
-        </div>
-
-        {/* Filter Bar Preserving City & Category */}
-        <div className="p-3.5 rounded-2xl bg-[#1A1E27] border border-white/10 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            {["ALL", "ZH", "ZG", "BS", "BE", "LU", "AG", "SG", "GE", "VD", "TI"].map((c) => (
-              <button
-                key={c}
-                onClick={() => setSelectedCanton(c)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition ${
-                  selectedCanton === c
-                    ? "bg-[#C6A574] text-[#13161C]"
-                    : "bg-[#12151C] text-gray-300 border border-white/10 hover:text-white"
-                }`}
-              >
-                {c === "ALL" ? "Ganze Schweiz" : c}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-3 text-xs">
-            <label className="inline-flex items-center gap-1.5 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyAvailable}
-                onChange={() => setOnlyAvailable(!onlyAvailable)}
-                className="accent-[#C6A574] w-4 h-4 rounded"
-              />
-              <span>Jetzt verfügbar</span>
-            </label>
-            <label className="inline-flex items-center gap-1.5 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyWithPrice}
-                onChange={() => setOnlyWithPrice(!onlyWithPrice)}
-                className="accent-[#C6A574] w-4 h-4 rounded"
-              />
-              <span>Nur mit Preis</span>
-            </label>
-            <div className="flex rounded-xl overflow-hidden border border-white/15 bg-[#12151C]">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`p-1.5 cursor-pointer ${viewMode === "grid" ? "bg-white/15 text-white" : "text-gray-400"}`}
-              >
-                <LayoutGrid size={15} />
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`p-1.5 cursor-pointer ${viewMode === "list" ? "bg-white/15 text-white" : "text-gray-400"}`}
-              >
-                <ListIcon size={15} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Results */}
-        {viewMode === "grid" ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-            {filtered.slice(0, 32).map((p: any, idx: number) => {
-              const cleanName = String(p.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 24) || "Profil";
-              return (
-                <article
-                  key={`${p.id}-${idx}`}
-                  className="rounded-2xl bg-[#1C2029] border border-white/10 hover:border-[#C6A574]/60 overflow-hidden flex flex-col justify-between"
-                >
-                  <div className="relative aspect-[4/3.65] bg-stone-800">
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`}>
-                      <img
-                        src={p.thumbnail || p.fallbackImg}
-                        alt={cleanName}
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = p.fallbackImg; }}
-                        className="w-full h-full object-cover object-top"
-                        loading="lazy"
-                      />
-                    </Link>
-                    {p.availabilityConfirmed && (
-                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1B5E32] text-[#A7F3D0] border border-emerald-400/40 text-xs font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-                        Jetzt verfügbar
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-3.5 space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-base font-bold text-white hover:text-[#C6A574] truncate block">
-                          {cleanName}
-                        </Link>
-                        <p className="text-xs text-gray-400">{p.cleanCity} · {p.canton}</p>
-                      </div>
-                      {p.advertisedBaseChf && (
-                        <div className="text-right shrink-0">
-                          <div className="text-xs font-extrabold text-gray-200">CHF {p.advertisedBaseChf}</div>
-                          <div className="text-[10px] text-gray-500">60 Min.</div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="pt-2 border-t border-white/10 text-xs space-y-1">
-                      {p.availabilityConfirmed ? (
-                        <div className="flex items-center gap-1.5 text-[#22C55E]">
-                          <Clock size={12} />
-                          <span>Bestätigt vor {p.confirmedMinutesAgo} Min.</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1.5 text-gray-400">
-                          <ExternalLink size={12} />
-                          <span className="truncate">Quelle: {p.sourcePortal || "Verzeichnis"}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="pt-1 flex items-center justify-between text-xs font-bold text-[#C6A574]">
-                      <Link href={`/profile/${encodeURIComponent(p.id)}`} className="hover:underline">
-                        {p.isSelfManaged ? "Privat anfragen →" : "Original & Details →"}
-                      </Link>
-                      <XeniaDoubtTrigger topic="source" />
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="rounded-2xl overflow-hidden border border-white/10 divide-y divide-white/10 bg-[#1C2029]">
-            {filtered.slice(0, 32).map((p: any, idx: number) => {
-              const cleanName = String(p.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 28) || "Profil";
-              return (
-                <article key={`l-${p.id}-${idx}`} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                  <div className="md:col-span-6 flex items-center gap-4">
-                    <img
-                      src={p.thumbnail || p.fallbackImg}
-                      alt={cleanName}
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = p.fallbackImg; }}
-                      className="w-20 h-20 rounded-xl object-cover object-top shrink-0"
-                    />
-                    <div>
-                      <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-lg font-serif font-bold text-white hover:underline">
-                        {cleanName}
-                      </Link>
-                      <div className="text-xs text-gray-300">{p.cleanCity} · {p.canton}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">
-                        {p.isSelfManaged ? "Selbst verwaltet" : `Quelle: ${p.sourcePortal || "Index"}`}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="md:col-span-3 md:border-l md:border-white/10 md:pl-5">
-                    {p.advertisedBaseChf ? (
-                      <>
-                        <div className="text-base font-extrabold text-white">CHF {p.advertisedBaseChf}</div>
-                        <div className="text-xs text-gray-400">{p.durationLabel}</div>
-                      </>
-                    ) : (
-                      <div className="text-sm font-bold text-gray-400">Keine Preisangabe</div>
-                    )}
-                  </div>
-                  <div className="md:col-span-3 flex justify-end">
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-xs font-bold text-[#C6A574] hover:underline">
-                      Profil ansehen →
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-        {/* Kantonale Clubs, FKK-Saunaclubs & Studios + 2D Service-Hubs */}
-        <section className="mt-12 pt-8 border-t border-white/10 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-                STATIONÄRE ETABLISSEMENTS & 2D-SERVICE-VERZEICHNIS
-              </div>
-              <h2 className="text-xl font-serif font-bold text-white mt-1">
-                Geprüfte Clubs, Studios & Spezial-Rubriken in der Region
-              </h2>
-            </div>
-            <Link href="/clubs" className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#C8A97E]">
-              Alle 108 Schweizer Clubs ansehen →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {((clubsVault as any[]) || []).slice(0, 6).map((cl: any) => (
-              <div key={cl.id} className="p-4 rounded-2xl bg-[#121722] border border-white/10 flex flex-col justify-between gap-2 text-xs">
-                <div>
-                  <span className="px-2 py-0.5 rounded bg-[#C8A97E]/20 text-[#C8A97E] font-bold text-[10px]">
-                    {cl.canton} · {cl.city}
-                  </span>
-                  <h3 className="text-sm font-bold text-white mt-1.5">{cl.name}</h3>
-                  <p className="text-gray-400 text-[11px] mt-0.5">{cl.categoryLabel || "Erotik-Studio & Club"}</p>
-                </div>
-                <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[11px]">
-                  <span className="text-emerald-400 font-semibold">{cl.phoneDisplay || "Direktkontakt"}</span>
-                  <Link href="/clubs" className="text-[#C8A97E] font-bold hover:underline">
-                    Details →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-      <CorporateFooter />
-    </div>
-  );
-}
-export async function getServerSideProps(context: any) {
   return {
     props: {
-      initialSlug: String(context.params?.slug || "zuerich"),
+      slug,
+      hubTitle: cfg.title,
+      cantonCode: cfg.canton,
+      profiles: matched,
     },
   };
+};
+
+export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any) {
+  return (
+    <div className="min-h-screen bg-[#070606] text-[#F5EFE6] pb-24">
+      <SEO
+        title={"Escort & Tantra Suiten in " + hubTitle + " (" + cantonCode + ") | iwantsexnow.ch"}
+        description={
+          profiles.length +
+          " geprüfte Escort-, GFE- und Tantra-Suiten in " +
+          hubTitle +
+          " (" +
+          cantonCode +
+          ") mit 30m/60m CHF-Richtpreisen und direktem +41 WhatsApp."
+        }
+      />
+      <LuxuryHeader />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <div className="penthouse-panel p-6 rounded-[24px] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <SwissDoorplate state="FREI" roomNumber={cantonCode} customLabel={profiles.length + " SUITEN OFFEN"} size="sm" />
+            <h1 className="text-2xl sm:text-4xl font-serif text-[#EAD2AA] mt-2">
+              Private Penthouse Suiten in {hubTitle} ({cantonCode})
+            </h1>
+          </div>
+          <Link
+            href="/clubs"
+            className="brass-3d px-5 py-2.5 rounded-full text-xs font-mono font-extrabold uppercase tracking-wider"
+          >
+            305 CLUBS & STUDIOS ANSEHEN →
+          </Link>
+        </div>
+
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {profiles.map((p: any, idx: number) => {
+            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
+            return (
+              <div
+                key={p.id || idx}
+                className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
+              >
+                <div className="relative rounded-[20px] overflow-hidden border border-[#C8A97E]/35 bg-[#070505] flex-1 flex flex-col justify-between">
+                  <Link href={"/profile/" + encodeURIComponent(p.id)} className="darkroom-stage block aspect-[3/4.1] w-full">
+                    <img
+                      referrerPolicy="no-referrer"
+                      src={p.cleanThumb}
+                      alt={p.cleanTitle}
+                      loading={idx < 8 ? "eager" : "lazy"}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                      className="darkroom-img"
+                    />
+                    <div className="darkroom-vignette" />
+                    <div className="darkroom-floor" />
+
+                    <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#C8A97E]/55 flex items-center justify-center text-[#DEC393]">
+                        <Crown size={13} />
+                      </div>
+                      <SwissDoorplate state={p.isAvail ? "FREI" : "RESERVIERT"} roomNumber={p.canton} customLabel="FREI" size="sm" />
+                    </div>
+
+                    <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
+                      <h3 className="font-serif text-xl tracking-[0.14em] uppercase text-[#EAD2AA] truncate max-w-full">
+                        {p.cleanTitle}
+                      </h3>
+                      <div className="text-[9px] font-sans font-semibold tracking-[0.26em] uppercase text-[#C8B69E] mt-1">
+                        • {p.city} ({p.canton}) •
+                      </div>
+                      <div className="font-serif font-mono text-2xl text-[#EAD2AA] mt-1">
+                        CHF {p.rate60Chf}
+                      </div>
+                      <div className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#9E8C74]">
+                        PER HOUR · (30M: CHF {p.rate30Chf})
+                      </div>
+                    </div>
+                  </Link>
+
+                  <div className="px-3.5 pb-3.5 pt-2 bg-[#070505] grid grid-cols-2 gap-2.5">
+                    {cleanDigits ? (
+                      <a
+                        href={"https://wa.me/" + cleanDigits}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                      >
+                        <MessageCircle size={12} />
+                        <span>WHATSAPP</span>
+                      </a>
+                    ) : (
+                      <Link
+                        href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
+                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                      >
+                        <Sparkles size={12} />
+                        <span>PREVIEW</span>
+                      </Link>
+                    )}
+                    <Link
+                      href={"/profile/" + encodeURIComponent(p.id)}
+                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#C8A97E]/45 font-sans font-bold text-[10px] tracking-[0.14em] uppercase flex items-center justify-center gap-1.5"
+                    >
+                      <User size={12} className="text-[#DEC393]" />
+                      <span>VIEW PROFILE</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </section>
+      </main>
+    </div>
+  );
 }

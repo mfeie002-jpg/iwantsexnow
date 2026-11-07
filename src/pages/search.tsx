@@ -1,239 +1,275 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { SwissDoorplate } from "@/components/SwissDoorplate";
 import offersData from "@/data/harvested-offers.json";
-import { Search, MapPin, RotateCcw, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Search, Crown, MessageCircle, User, Sparkles, RotateCcw } from "lucide-react";
 
-const FALLBACK_IMG = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85";
+const CANTONS = ["ALL", "ZG", "ZH", "LU", "BS", "BE", "AG", "SG", "GE", "VD", "TI", "VS", "FR", "NE", "SO", "GR", "TG", "SZ"];
 
-export default function DeepAttributeSearchPage() {
-  const router = useRouter();
+export default function DeepSearchPage() {
   const [query, setQuery] = useState("");
   const [canton, setCanton] = useState("ALL");
   const [rubric, setRubric] = useState("ALL");
-  const [ageGroup, setAgeGroup] = useState("ALL");
-  const [hairColor, setHairColor] = useState("ALL");
-  const [maxPrice60, setMaxPrice60] = useState<number>(1000);
-  const [page, setPage] = useState(1);
+  const [maxPrice, setMaxPrice] = useState(1200);
+  const [onlyFree, setOnlyFree] = useState(false);
+  const [limit, setLimit] = useState(24);
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (router.query.q) setQuery(String(router.query.q));
-    if (router.query.canton) setCanton(String(router.query.canton).toUpperCase());
-    if (router.query.rubric) setRubric(String(router.query.rubric));
-  }, [router.isReady, router.query]);
+  const results = useMemo(() => {
+    const raw = (offersData as any[]) || [];
+    const list: any[] = [];
 
-  const filtered = useMemo(() => {
-    const all = (offersData as any[]) || [];
-    return all.filter((p) => {
-      if (canton !== "ALL" && String(p.canton || "").toUpperCase() !== canton) return false;
-      if (rubric !== "ALL" && (p.rubric || "female") !== rubric) return false;
-      if (hairColor !== "ALL" && String(p.hairColor || "") !== hairColor) return false;
-      if (Number(p.advertisedBaseChf || 350) > maxPrice60) return false;
+    for (const o of raw) {
+      const pid = o.id || o.dedupClusterId;
+      if (!pid) continue;
+      const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
+      const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+      const isAvail = Boolean(o.availabilityConfirmed);
+      const rawThumb = String(o.thumbnail || "").trim();
+      const hasRealPhoto =
+        rawThumb.startsWith("http") &&
+        !rawThumb.includes("unsplash.com") &&
+        !rawThumb.includes("placeholder") &&
+        !rawThumb.includes("escort-portrait") &&
+        !rawThumb.endsWith(".svg");
 
-      const age = Number(p.age) || 25;
-      if (ageGroup === "18-24" && (age < 18 || age > 24)) return false;
-      if (ageGroup === "25-30" && (age < 25 || age > 30)) return false;
-      if (ageGroup === "31+" && age < 31) return false;
+      if (canton !== "ALL" && String(o.canton || "").toUpperCase() !== canton) continue;
+      if (rubric !== "ALL" && (o.rubric || "female") !== rubric) continue;
+      if (onlyFree && !isAvail) continue;
+      if (r60 > maxPrice) continue;
 
       if (query.trim()) {
-        const q = query.toLowerCase().trim();
-        const hay = `${p.rawName || ""} ${p.city || ""} ${p.canton || ""} ${(p.includedTags || []).join(" ")} ${p.bio || ""} ${p.rawPhone || ""}`.toLowerCase();
-        if (!hay.includes(q)) return false;
+        const q = query.toLowerCase();
+        const hay = [o.rawName, o.city, o.canton, o.hairColor, o.cupSize, ...(o.includedTags || [])]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        if (!hay.includes(q)) continue;
       }
-      return true;
+
+      const cleanTitle = String(o.rawName || "VALENTINA")
+        .replace(/^[\W_]+/, "")
+        .split(/[·|-]/)[0]
+        .trim()
+        .slice(0, 22);
+
+      list.push({
+        ...o,
+        id: pid,
+        cleanTitle: cleanTitle || "VALENTINA",
+        rate60Chf: r60,
+        rate30Chf: r30,
+        isAvail,
+        hasRealPhoto,
+        cleanThumb: rawThumb.replace(/[?&]iwsn_clean=1.*$/i, ""),
+      });
+    }
+
+    list.sort((a, b) => {
+      if (a.hasRealPhoto !== b.hasRealPhoto) return a.hasRealPhoto ? -1 : 1;
+      return Number(b.curationScore || 80) - Number(a.curationScore || 80);
     });
-  }, [query, canton, rubric, ageGroup, hairColor, maxPrice60]);
 
-  const pageItems = useMemo(() => filtered.slice((page - 1) * 48, page * 48), [filtered, page]);
-
-  const resetAll = () => {
-    setQuery("");
-    setCanton("ALL");
-    setRubric("ALL");
-    setAgeGroup("ALL");
-    setHairColor("ALL");
-    setMaxPrice60(1000);
-    setPage(1);
-  };
+    return list;
+  }, [query, canton, rubric, maxPrice, onlyFree]);
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#070606] text-[#F5EFE6] pb-24">
       <SEO
-        title="Schweizer Escort-Suche mit Deep-Filter (Kanton, Alter, Haare, Körbchen, CHF-Tarif) | iwantsexnow.ch"
-        description="Durchsuche alle 2.526 Schweizer Escort-, Tantra-, Massage- und BDSM-Profile nach Kanton, Rubrik, Alter, Haarfarbe, Körbchengrösse und 30m/60m CHF-Richtpreis."
+        title="Deep-Filter Suche · 2'529 Schweizer Suiten & Dossiers | iwantsexnow.ch"
+        description="Durchsuchen Sie 2'529+ verifizierte Schweizer Escort-, Tantra- und Studio-Dossiers nach Kanton, 30m/60m CHF-Honorar und Live-Status."
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-        <div className="p-6 rounded-2xl bg-[#121722] border border-white/10 space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <section className="penthouse-panel p-5 sm:p-6 rounded-[24px] border border-[#C8A97E]/40 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#C8A97E]/20 pb-3.5">
             <div>
-              <span className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-                SCHWEIZER DEEP-FILTER & ATTRIBUT-SUCHE (24 KANTONE)
+              <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#DEC393] font-bold">
+                SWISS DEEP-FILTER ENGINE
               </span>
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-0.5">
-                {filtered.length.toLocaleString("de-CH")} passende Schweizer Profile
+              <h1 className="text-2xl sm:text-3xl font-serif text-[#EAD2AA] mt-0.5">
+                Präzisions-Suche über {results.length} Schweizer Suiten
               </h1>
             </div>
-            <button
-              type="button"
-              onClick={resetAll}
-              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-            >
-              <RotateCcw size={13} /> Alle Filter zurücksetzen
-            </button>
+            <SwissDoorplate state="FREI" roomNumber="CH" customLabel={results.length + " TREFFER"} size="sm" />
           </div>
 
-          {/* 6-Spalten Power-Filter (wie xdate/and6, aber moderner & schneller) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
-            <div className="lg:col-span-2 flex items-center bg-[#0D111A] border border-white/15 rounded-xl px-3.5">
-              <Search size={15} className="text-[#C8A97E] shrink-0" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <div className="lg:col-span-2 relative">
+              <Search size={14} className="absolute left-3.5 top-3 text-[#DEC393]" />
               <input
                 type="text"
                 value={query}
-                onChange={(e) => { setQuery(e.target.value); setPage(1); }}
-                placeholder="Name, Ort, Service (GFE, Tantra, Duo) oder +41..."
-                className="w-full py-2.5 px-2.5 bg-transparent text-xs text-white focus:outline-none"
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Name, Stadt, PLZ (6300, 8001), Service (GFE, Tantra)..."
+                className="w-full pl-9 pr-3 py-2.5 rounded-full bg-black/75 border border-[#C8A97E]/35 text-xs text-white placeholder-[#8E8271] focus:border-[#EAD2AA] outline-none"
               />
             </div>
 
             <select
-              value={rubric}
-              onChange={(e) => { setRubric(e.target.value); setPage(1); }}
-              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
-            >
-              <option value="ALL">Alle Rubriken (2.526)</option>
-              <option value="female">💃 Escort Girls & Privat</option>
-              <option value="massage">💆‍♀️ Tantra & Erotik-Massage</option>
-              <option value="bdsm">⛓️ Domina & BDSM</option>
-              <option value="trans">🏳️‍⚧️ Trans / TS</option>
-            </select>
-
-            <select
               value={canton}
-              onChange={(e) => { setCanton(e.target.value); setPage(1); }}
-              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+              onChange={(e) => setCanton(e.target.value)}
+              className="rounded-full bg-black/75 border border-[#C8A97E]/35 px-4 py-2.5 text-xs font-mono font-bold text-[#EAD2AA] outline-none cursor-pointer"
             >
-              <option value="ALL">🇨🇭 Alle 24 Kantone</option>
-              {["ZG","ZH","GE","VD","BS","BL","BE","LU","AG","SG","SO","TI","VS","FR","NE","TG","SZ","GR","SH"].map((c) => (
-                <option key={c} value={c}>Kanton {c}</option>
+              {CANTONS.map((c) => (
+                <option key={c} value={c} className="bg-[#100D0B]">
+                  {c === "ALL" ? "KANTON: GANZE SCHWEIZ" : "KANTON: " + c}
+                </option>
               ))}
             </select>
 
             <select
-              value={ageGroup}
-              onChange={(e) => { setAgeGroup(e.target.value); setPage(1); }}
-              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+              value={rubric}
+              onChange={(e) => setRubric(e.target.value)}
+              className="rounded-full bg-black/75 border border-[#C8A97E]/35 px-4 py-2.5 text-xs font-mono font-bold text-[#EAD2AA] outline-none cursor-pointer"
             >
-              <option value="ALL">Jedes Alter (18+)</option>
-              <option value="18-24">18 – 24 Jahre</option>
-              <option value="25-30">25 – 30 Jahre</option>
-              <option value="31+">31+ Jahre (MILF / Lady)</option>
+              <option value="ALL" className="bg-[#100D0B]">RUBRIK: ALLE</option>
+              <option value="female" className="bg-[#100D0B]">ELITE ESCORT & GFE</option>
+              <option value="massage" className="bg-[#100D0B]">TANTRA & MASSAGE</option>
+              <option value="bdsm" className="bg-[#100D0B]">DOMINA & BDSM</option>
+              <option value="trans" className="bg-[#100D0B]">TRANS VIP</option>
             </select>
 
             <select
-              value={hairColor}
-              onChange={(e) => { setHairColor(e.target.value); setPage(1); }}
-              className="px-3 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-semibold"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              className="rounded-full bg-black/75 border border-[#C8A97E]/35 px-4 py-2.5 text-xs font-mono font-bold text-[#EAD2AA] outline-none cursor-pointer"
             >
-              <option value="ALL">Alle Haarfarben</option>
-              <option value="Blond">Blond</option>
-              <option value="Brünett">Brünett</option>
-              <option value="Schwarz">Schwarz</option>
-              <option value="Braun">Braun</option>
-              <option value="Rot">Rot</option>
+              <option value={1200} className="bg-[#100D0B]">HONORAR: ALLE CHF</option>
+              <option value={250} className="bg-[#100D0B]">MAX. CHF 250 / 60M</option>
+              <option value={350} className="bg-[#100D0B]">MAX. CHF 350 / 60M</option>
+              <option value={500} className="bg-[#100D0B]">MAX. CHF 500 / 60M</option>
             </select>
           </div>
 
-          {/* 2D SEO Quick-Links (Stadt x Service) */}
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10 text-[11px]">
-            <span className="text-[#C8A97E] font-bold">Beliebte Schweizer Direkt-Kombinationen:</span>
-            {[
-              { label: "GFE Escort Zug", href: "/kategorie/zug/girlfriend-experience" },
-              { label: "GFE Escort Zürich", href: "/kategorie/zuerich/girlfriend-experience" },
-              { label: "Erotische Massage Zürich", href: "/kategorie/zuerich/erotische-massage" },
-              { label: "Tantra Massage Zug", href: "/kategorie/zug/tantra-massage" },
-              { label: "Hotel Outcall Zürich", href: "/kategorie/zuerich/hotelbesuch-outcall" },
-              { label: "Domina & BDSM Zürich", href: "/kategorie/zuerich/domina-bdsm" },
-              { label: "Escort Genève (FR)", href: "/kategorie/geneve/girlfriend-experience" },
-              { label: "Escort Lugano (IT)", href: "/kategorie/lugano/girlfriend-experience" },
-            ].map((lnk) => (
-              <Link
-                key={lnk.href}
-                href={lnk.href}
-                className="px-2.5 py-1 rounded-lg bg-[#0D111A] border border-white/10 hover:border-[#C8A97E] text-gray-300 hover:text-white"
-              >
-                {lnk.label} →
-              </Link>
-            ))}
-          </div>
-        </div>
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => setOnlyFree(!onlyFree)}
+              className="cursor-pointer"
+            >
+              <SwissDoorplate
+                state={onlyFree ? "FREI" : "RESERVIERT"}
+                roomNumber="LIVE"
+                customLabel={onlyFree ? "NUR FREI (4H) AKTIV" : "NUR FREI (4H) FILTERN"}
+                size="sm"
+              />
+            </button>
 
-        {/* Ergebnis-Raster */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {pageItems.map((p: any, idx: number) => {
-            const cleanName = String(p.rawName || "Profil").replace(/[^\w\säöüÄÖÜéèà-]/g, "").trim().slice(0, 26) || "Profil";
-            const img = p.thumbnail || FALLBACK_IMG;
+            <button
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setCanton("ALL");
+                setRubric("ALL");
+                setMaxPrice(1200);
+                setOnlyFree(false);
+              }}
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-[#C8B9A6] hover:text-[#EAD2AA] cursor-pointer"
+            >
+              <RotateCcw size={13} />
+              <span>FILTER ZURÜCKSETZEN</span>
+            </button>
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {results.slice(0, limit).map((p: any, idx: number) => {
+            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
             return (
-              <article
-                key={`${p.id}-${idx}`}
-                className="rounded-2xl overflow-hidden bg-[#121722] border border-white/10 hover:border-[#C8A97E] transition flex flex-col justify-between"
+              <div
+                key={p.id}
+                className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
               >
-                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="relative aspect-[3/4] block bg-black">
-                  <img referrerPolicy="no-referrer" src={img}
-                    alt={cleanName}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG; }}
-                    className="w-full h-full object-cover object-top"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/25" />
-                  <div className="absolute top-2.5 left-2.5 flex gap-1">
-                    <span className="px-2 py-0.5 rounded bg-black/80 border border-[#C8A97E]/40 text-[#C8A97E] text-[10px] font-bold">
-                      {p.age || 24} J. · {p.cupSize || "75C"} · {p.hairColor || "Brünett"}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-2">
-                    <div className="min-w-0">
-                      <h2 className="text-sm sm:text-base font-serif font-bold text-white truncate">{cleanName}</h2>
-                      <p className="text-[11px] text-gray-300 flex items-center gap-1 truncate">
-                        <MapPin size={11} className="text-[#C8A97E]" /> {p.city} ({p.canton})
-                      </p>
+                <div className="relative rounded-[20px] overflow-hidden border border-[#C8A97E]/35 bg-[#070505] flex-1 flex flex-col justify-between">
+                  <Link href={"/profile/" + encodeURIComponent(p.id)} className="darkroom-stage block aspect-[3/4.1] w-full">
+                    {p.hasRealPhoto ? (
+                      <img
+                        referrerPolicy="no-referrer"
+                        src={p.cleanThumb}
+                        alt={p.cleanTitle}
+                        loading={idx < 8 ? "eager" : "lazy"}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display = "none";
+                        }}
+                        className="darkroom-img"
+                      />
+                    ) : null}
+                    <div className="darkroom-vignette" />
+                    <div className="darkroom-floor" />
+
+                    <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#C8A97E]/55 flex items-center justify-center text-[#DEC393]">
+                        <Crown size={13} />
+                      </div>
+                      <SwissDoorplate
+                        state={p.isAvail ? "FREI" : "RESERVIERT"}
+                        roomNumber={p.canton || "CH"}
+                        customLabel={p.isAvail ? "FREI" : "SUITE"}
+                        size="sm"
+                      />
                     </div>
-                    <div className="bg-black/85 px-2.5 py-1 rounded-lg border border-[#C8A97E]/40 text-xs font-extrabold text-[#C8A97E] shrink-0">
-                      CHF {p.advertisedBaseChf || 350}
+
+                    <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
+                      <h3 className="font-serif text-xl tracking-[0.14em] uppercase text-[#EAD2AA] truncate max-w-full">
+                        {p.cleanTitle}
+                      </h3>
+                      <div className="text-[9px] font-sans font-semibold tracking-[0.26em] uppercase text-[#C8B69E] mt-1 truncate max-w-full">
+                        • {p.city} ({p.canton}) •
+                      </div>
+                      <div className="font-serif font-mono text-2xl text-[#EAD2AA] mt-1">
+                        CHF {p.rate60Chf}
+                      </div>
+                      <div className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#9E8C74]">
+                        60 MIN · (30M: CHF {p.rate30Chf})
+                      </div>
                     </div>
-                  </div>
-                </Link>
-                <div className="p-3 flex items-center justify-between text-[11px] text-gray-400 border-t border-white/10">
-                  <span className="truncate">{(p.includedTags || ["Incall", "Outcall"]).slice(0, 2).join(" · ")}</span>
-                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-white font-bold hover:text-[#C8A97E] shrink-0">
-                    Details →
                   </Link>
+
+                  <div className="px-3.5 pb-3.5 pt-2 bg-[#070505] grid grid-cols-2 gap-2.5">
+                    {cleanDigits ? (
+                      <a
+                        href={"https://wa.me/" + cleanDigits}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                      >
+                        <MessageCircle size={12} />
+                        <span>WHATSAPP</span>
+                      </a>
+                    ) : (
+                      <Link
+                        href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
+                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                      >
+                        <Sparkles size={12} />
+                        <span>PREVIEW</span>
+                      </Link>
+                    )}
+                    <Link
+                      href={"/profile/" + encodeURIComponent(p.id)}
+                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#C8A97E]/45 font-sans font-bold text-[10px] tracking-[0.14em] uppercase flex items-center justify-center gap-1.5"
+                    >
+                      <User size={12} className="text-[#DEC393]" />
+                      <span>DOSSIER</span>
+                    </Link>
+                  </div>
                 </div>
-              </article>
+              </div>
             );
           })}
-        </div>
+        </section>
 
-        {filtered.length > 48 && (
-          <div className="flex items-center justify-center gap-3 pt-4">
+        {limit < results.length && (
+          <div className="text-center pt-4">
             <button
-              disabled={page <= 1}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="px-4 py-2 rounded-xl bg-[#121722] border border-white/15 text-xs disabled:opacity-40 cursor-pointer"
+              type="button"
+              onClick={() => setLimit((prev) => prev + 24)}
+              className="brass-3d px-8 py-3 rounded-full border border-[#F5E3B8]/65 text-xs font-mono font-extrabold tracking-[0.2em] uppercase cursor-pointer"
             >
-              ← Vorherige 48
-            </button>
-            <span className="text-xs text-gray-400">Seite {page} von {Math.ceil(filtered.length / 48)}</span>
-            <button
-              disabled={page * 48 >= filtered.length}
-              onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs disabled:opacity-40 cursor-pointer"
-            >
-              Nächste 48 →
+              + 24 WEITERE SUITEN ANZEIGEN
             </button>
           </div>
         )}
