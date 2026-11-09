@@ -1,18 +1,18 @@
 // Shared helpers for the illustrated poster system (pure, deterministic — SSR safe).
 
 export const PAL = {
-  nacht: "#07141A",
-  tiefsee: "#0D1F27",
-  fels: "#143039",
-  linie: "#1D4350",
-  gletscher: "#F2F7F6",
-  nebel: "#9FB8B5",
-  glueh: "#FF6B5E",
-  rose: "#FF5A8A",
-  bernstein: "#FFB067",
-  lago: "#4FD1B0",
-  papier: "#F2F7F6",
-  tinte: "#0B2229",
+  nacht: "#1E2247",
+  tiefsee: "#3A3F7A",
+  fels: "#2B2F6B",
+  linie: "#C9C9DB",
+  gletscher: "#FFFFFF",
+  nebel: "#9C9DBA",
+  glueh: "#D92B52",
+  rose: "#FFD3DC",
+  bernstein: "#FFD34D",
+  lago: "#5EC59B",
+  papier: "#FBFAF8",
+  tinte: "#1E2247",
 };
 
 function mulberry32(seed: number) {

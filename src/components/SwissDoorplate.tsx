@@ -65,10 +65,9 @@ export function SwissDoorplate({
       : "min-h-[26px] gap-1.5 px-2.5 text-[11px]";
 
   const interactiveCls = interactiveToggle
-    ? "cursor-pointer hover:-translate-y-px hover:brightness-110 active:translate-y-px"
+    ? "cursor-pointer hover:-translate-y-px active:translate-y-px"
     : "";
 
-  const pulseCls = activeState === "FREI" ? "animate-pulse" : "";
 
   return (
     <div
@@ -80,22 +79,22 @@ export function SwissDoorplate({
       aria-label={customLabel || cfg.labelDe}
       title={interactiveToggle ? "Türschild umschalten" : customLabel || cfg.labelDe}
       className={
-        "relative inline-flex max-w-full select-none items-center overflow-hidden rounded-full border font-bold tabular-nums tracking-[0.02em] transition duration-200 " +
+        "relative inline-flex max-w-full select-none items-center overflow-hidden rounded-full border-2 font-bold tabular-nums transition duration-200 " +
         sizeCls +
         " " +
         interactiveCls +
         " " +
         className
       }
-      style={{ background: cfg.bg, borderColor: cfg.border + "aa", color: cfg.text }}
+      style={{ background: cfg.bg, borderColor: cfg.border, color: cfg.text }}
     >
       <span
-        className={"h-2 w-2 shrink-0 rounded-full " + pulseCls}
-        style={{ backgroundColor: cfg.dot, boxShadow: "0 0 8px " + cfg.dot + "aa" }}
+        className="h-2.5 w-2.5 shrink-0 rounded-full border border-tinte/40"
+        style={{ backgroundColor: cfg.dot }}
       />
 
       {roomNumber && (
-        <span className="shrink-0 rounded-full bg-black/30 px-1.5 text-[0.86em] leading-5 opacity-90">{roomNumber}</span>
+        <span className="shrink-0 rounded-full bg-tinte/10 px-1.5 text-[0.86em] leading-5">{roomNumber}</span>
       )}
 
       <span className="truncate">{customLabel || cfg.labelDe}</span>

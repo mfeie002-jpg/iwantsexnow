@@ -1,93 +1,137 @@
 import React from "react";
-import { HeroScene } from "@/components/visuals";
+import { CantonPostcard, Doodle, HeroScene } from "@/components/visuals";
 
-type CantonOption = { code: string; label: string };
+type Opt = { value: string; label: string };
 
 type Props = {
-  query: string;
-  onQuery: (v: string) => void;
+  rubric: string;
+  onRubric: (v: string) => void;
   canton: string;
   onCanton: (v: string) => void;
+  freeToday: boolean;
+  onFreeToday: (v: boolean) => void;
+  maxRate: number;
+  onMaxRate: (v: number) => void;
   onSubmit: () => void;
-  cantons: CantonOption[];
+  cantons: Opt[];
+  matchCount: number;
   profileCount: string;
   clubCount: number;
+  counts: Record<string, number>;
 };
 
-export function AlpenHero({ query, onQuery, canton, onCanton, onSubmit, cantons, profileCount, clubCount }: Props) {
+const RUBRICS: Opt[] = [
+  { value: "ALL", label: "Escort, Massage & mehr" },
+  { value: "female", label: "Escort & GFE" },
+  { value: "massage", label: "Tantra & Massage" },
+  { value: "bdsm", label: "Domina & BDSM" },
+  { value: "trans", label: "Trans VIP" },
+];
+
+const WHEN: Opt[] = [
+  { value: "any", label: "egal wann" },
+  { value: "today", label: "heute noch frei" },
+];
+
+const BUDGET: Opt[] = [
+  { value: "1200", label: "ohne Preislimit" },
+  { value: "250", label: "bis CHF 250 pro Stunde" },
+  { value: "350", label: "bis CHF 350 pro Stunde" },
+  { value: "500", label: "bis CHF 500 pro Stunde" },
+];
+
+function Slot({ label, value, options, onChange }: { label: string; value: string; options: Opt[]; onChange: (v: string) => void }) {
+  const current = options.find((o) => o.value === value) || options[0];
   return (
-    <section className="relative isolate overflow-hidden border-b border-[#1d4350]">
-      <HeroScene className="sun-rise absolute inset-0 -z-20 h-full w-full" align="xMidYMax" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#07141a]/95 from-10% via-[#07141a]/74 via-45% to-[#07141a]/5" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-[#07141a] to-transparent" />
-      <div
-        aria-hidden="true"
-        className="hero-glow pointer-events-none absolute -right-20 top-6 -z-10 h-[26rem] w-[26rem] rounded-full bg-[#ff6b5e]/30 blur-3xl"
-      />
+    <select
+      aria-label={label}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="sentence-slot"
+      style={{ width: `${current.label.length * 0.56 + 1.7}em` }}
+    >
+      {options.map((o) => (
+        <option key={o.value} value={o.value}>
+          {o.label}
+        </option>
+      ))}
+    </select>
+  );
+}
 
-      <div className="mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 sm:pt-20 lg:pb-20 lg:pt-28">
-        <h1 className="max-w-3xl text-[clamp(2.35rem,6.4vw,4.9rem)] text-white">Eine Suche für die ganze Schweiz.</h1>
-        <p
-          className="mt-4 text-[clamp(1.2rem,2.6vw,1.85rem)] text-[#ffe2c2]"
-          style={{ fontFamily: "Archivo, Arial, sans-serif", fontStretch: "108%", fontWeight: 600 }}
-        >
-          Vergleichen &amp; Direkt Buchen.
-        </p>
+export function AlpenHero({
+  rubric,
+  onRubric,
+  canton,
+  onCanton,
+  freeToday,
+  onFreeToday,
+  maxRate,
+  onMaxRate,
+  onSubmit,
+  cantons,
+  matchCount,
+  profileCount,
+  clubCount,
+  counts,
+}: Props) {
+  const cantonOpts: Opt[] = cantons.map((c) => ({ value: c.value, label: c.value === "ALL" ? "der ganzen Schweiz" : c.label }));
+  const budgetValue = [250, 350, 500].includes(maxRate) ? String(maxRate) : "1200";
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit();
-          }}
-          className="paper ticket mt-9 grid max-w-3xl gap-4 rounded-3xl p-5 shadow-[0_30px_80px_rgba(2,10,14,0.55)] sm:grid-cols-[1.5fr_1fr_auto] sm:items-end sm:p-6"
-          style={{ ["--notch-y" as string]: "50%" }}
-          role="search"
-        >
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-bold text-[#0b2229]">Stadt, PLZ, Name oder Service</span>
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => onQuery(e.target.value)}
-              placeholder="z.B. Zürich, 8001, Tantra"
-              className="luxury-input"
-              autoComplete="off"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-bold text-[#0b2229]">Kanton</span>
-            <select value={canton} onChange={(e) => onCanton(e.target.value)} className="luxury-select cursor-pointer">
-              {cantons.map((c) => (
-                <option key={c.code} value={c.code}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button type="submit" className="brass-button min-h-[46px] cursor-pointer px-7 text-base">
-            Profile anzeigen
-          </button>
-        </form>
+  return (
+    <section className="field-blush relative isolate overflow-hidden" aria-labelledby="hero-h">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-24 pt-10 sm:px-6 sm:pt-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-6 lg:pb-40 lg:pt-16">
+        <div className="relative z-10">
+          <h1 id="hero-h" className="text-[clamp(2.6rem,6.4vw,5.3rem)] leading-[0.98] text-tinte">
+            Eine Suche für die ganze Schweiz.
+          </h1>
+          <p className="mt-4 font-display text-[clamp(1.35rem,2.7vw,2rem)] font-bold text-tinte">
+            <span className="squiggle">Vergleichen &amp; Direkt Buchen.</span>
+          </p>
+          <p className="mt-6 max-w-lg text-[17px] leading-8 text-tinte/80">
+            {profileCount} Profile in allen Kantonen und {clubCount} Clubs. Preise in CHF, direkter Kontakt auf +41, keine Agentur dazwischen.
+          </p>
 
-        <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-5">
-          {[
-            [profileCount, "Profile in 24 Kantonen"],
-            [String(clubCount), "Clubs & Studios"],
-            ["0%", "Agentur-Provision"],
-            ["+41", "Direkter Kontakt"],
-          ].map(([n, l]) => (
-            <div key={l} className="border-l-2 border-[#ff6b5e]/70 pl-4">
-              <dt
-                className="text-3xl text-white tabular-nums"
-                style={{ fontFamily: "Archivo, Arial, sans-serif", fontStretch: "112%", fontWeight: 800 }}
-              >
-                {n}
-              </dt>
-              <dd className="mt-0.5 text-sm text-[#c7dad8]">{l}</dd>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
+            role="search"
+            aria-label="Suche als Satz"
+            className="relative mt-9 max-w-[40rem] -rotate-[0.6deg] rounded-[1.6rem_1.3rem_1.7rem_1.2rem] border-2 border-tinte bg-white p-5 shadow-[0_6px_0_rgba(30,34,71,0.92)] sm:p-7"
+          >
+            <span className="tape" style={{ top: "-0.8rem", left: "2rem", ["--r" as string]: "-5deg" }} />
+            <p className="font-display text-[clamp(1.3rem,2.6vw,1.85rem)] font-semibold leading-[2.1] text-tinte">
+              Ich suche <Slot label="Kategorie" value={rubric} options={RUBRICS} onChange={onRubric} />{" "}
+              <span className="whitespace-nowrap">
+                in <Slot label="Ort" value={canton} options={cantonOpts} onChange={onCanton} />,
+              </span>{" "}
+              <Slot label="Wann" value={freeToday ? "today" : "any"} options={WHEN} onChange={(v) => onFreeToday(v === "today")} />,{" "}
+              <Slot label="Budget" value={budgetValue} options={BUDGET} onChange={(v) => onMaxRate(Number(v))} />.
+            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <button type="submit" className="brass-button inline-flex min-h-[54px] cursor-pointer items-center px-7 text-base">
+                Zeig mir, wer da ist
+              </button>
+              <p className="hand text-[1.6rem] text-tinte/80" aria-live="polite">
+                {matchCount > 0 ? `${matchCount} Profile passen gerade` : "Hier passt gerade nichts, probier etwas anderes"}
+              </p>
             </div>
-          ))}
-        </dl>
+          </form>
+        </div>
+
+        <div className="relative mx-auto h-[25rem] w-full max-w-[34rem] sm:h-[30rem] lg:h-[36rem] lg:max-w-none" aria-hidden="true">
+          <div className="blob absolute left-[8%] top-[6%] h-[78%] w-[78%] bg-butter/80" />
+          <CantonPostcard canton="zh" count={counts.ZH} tilt={-6} className="absolute left-0 top-[12%] z-10 w-[60%]" />
+          <CantonPostcard canton="lu" count={counts.LU} tilt={5} className="absolute right-0 top-0 z-[5] w-[54%]" />
+          <CantonPostcard canton="ti" count={counts.TI} tilt={-2} tape className="absolute -bottom-[7%] right-[4%] z-20 w-[56%]" />
+          <Doodle kind="star" color="#1e2247" className="absolute left-[2%] top-0 h-12 w-12 rotate-[-10deg]" />
+          <Doodle kind="sun" color="#d92b52" className="absolute bottom-[34%] right-[-2%] hidden h-16 w-16 sm:block" />
+        </div>
       </div>
+
+      <HeroScene className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[11rem] w-full sm:h-[13rem] lg:h-[17rem]" align="xMidYMax" />
     </section>
   );
 }

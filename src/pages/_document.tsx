@@ -19,8 +19,8 @@ export default function Document() {
         <link rel="manifest" href="/site.webmanifest" />
         
         {/* Theme Color */}
-        <meta name="theme-color" content="#07141a" />
-        <meta name="msapplication-TileColor" content="#07141a" />
+        <meta name="theme-color" content="#fbfaf8" />
+        <meta name="msapplication-TileColor" content="#fbfaf8" />
         <meta name="msapplication-TileImage" content="/logo_256x256.png" />
       </Head>
       <body>

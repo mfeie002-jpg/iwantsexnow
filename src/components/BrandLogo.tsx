@@ -4,7 +4,7 @@ import { BrandMark, Wordmark } from "@/components/visuals";
 export type BrandThemeId = "A" | "B" | "C" | "D" | "E" | "F";
 
 export function StencilSerifX({
-  color = "#ff6b5e",
+  color = "#d92b52",
   className = "w-6 h-6 inline-block",
 }: {
   color?: string;
@@ -31,8 +31,8 @@ export function BrandLogo({
     <div className="group flex select-none items-center gap-3">
       <BrandMark size={compact ? 36 : 46} className="shrink-0 transition-transform duration-300 group-hover:-rotate-3" />
       <div className="flex flex-col">
-        <Wordmark className={compact ? "text-xl text-[#f2f7f6]" : "text-2xl text-[#f2f7f6] md:text-[28px]"} />
-        <span className="mt-1.5 text-xs font-semibold text-[#9fb8b5]">Vergleichen &amp; direkt buchen</span>
+        <Wordmark className={compact ? "text-xl text-tinte" : "text-2xl text-tinte md:text-[28px]"} />
+        <span className="hand mt-1 text-[1.15rem] text-tinte/70">Vergleichen &amp; direkt buchen</span>
       </div>
     </div>
   );

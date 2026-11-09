@@ -1,12 +1,12 @@
 import React, { useId } from "react";
-import { PAL, ridgePath, scatter, uid } from "./art";
+import { PAL, ridgePath, uid } from "./art";
 
 export type CantonKey = "zh" | "zg" | "lu" | "bs" | "be" | "ag" | "sg" | "ge" | "vd" | "ti" | "ch";
 
 const W = 400;
 const H = 520;
 const HORIZON = 342;
-const INK = PAL.nacht;
+const INK = "#2b2f6b";
 
 interface SceneDef {
   sky: [string, string, string];
@@ -14,92 +14,39 @@ interface SceneDef {
   far: { seed: number; base: number; amp: number; top: string; bottom: string };
   near: { seed: number; base: number; amp: number; fill: string };
   water: [string, string];
-  stars?: boolean;
+  clouds: Array<[number, number, number]>;
 }
 
+const day = (
+  sky: [string, string, string],
+  sunX: number,
+  seeds: [number, number],
+  amps: [number, number],
+  far: [string, string],
+  near: string,
+  water: [string, string],
+  clouds: Array<[number, number, number]>,
+): SceneDef => ({
+  sky,
+  sun: { x: sunX, y: 150, r: 46, c: "#ffe48a" },
+  far: { seed: seeds[0], base: 318, amp: amps[0], top: far[0], bottom: far[1] },
+  near: { seed: seeds[1], base: 340, amp: amps[1], fill: near },
+  water,
+  clouds,
+});
+
 const SCENES: Record<CantonKey, SceneDef> = {
-  zh: {
-    sky: ["#1a2358", "#c4457a", "#ffb067"],
-    sun: { x: 282, y: 322, r: 70, c: "#ffe2ae" },
-    far: { seed: 11, base: 318, amp: 140, top: "#8a4f8f", bottom: "#4a2c6c" },
-    near: { seed: 5, base: 340, amp: 36, fill: "#241f4d" },
-    water: ["#7a2f62", "#0d1f27"],
-    stars: true,
-  },
-  zg: {
-    sky: ["#0f2a4a", "#4e7fae", "#f7c59f"],
-    sun: { x: 120, y: 316, r: 58, c: "#fff0c9" },
-    far: { seed: 23, base: 316, amp: 150, top: "#6f8fb8", bottom: "#2f4f7a" },
-    near: { seed: 9, base: 340, amp: 30, fill: "#173553" },
-    water: ["#4d6f96", "#0d1f27"],
-  },
-  lu: {
-    sky: ["#2b1b4d", "#c2506b", "#ffb36b"],
-    sun: { x: 98, y: 318, r: 62, c: "#ffd9a0" },
-    far: { seed: 37, base: 322, amp: 170, top: "#8f4c86", bottom: "#4b2760" },
-    near: { seed: 14, base: 340, amp: 28, fill: "#2a1b45" },
-    water: ["#8a3f68", "#0d1f27"],
-    stars: true,
-  },
-  bs: {
-    sky: ["#13335c", "#5b8fc4", "#ffd6a5"],
-    sun: { x: 300, y: 326, r: 54, c: "#fff2d2" },
-    far: { seed: 41, base: 318, amp: 72, top: "#6f98c6", bottom: "#33567f" },
-    near: { seed: 19, base: 340, amp: 24, fill: "#16395e" },
-    water: ["#5f86b0", "#0d1f27"],
-  },
-  be: {
-    sky: ["#1c2a4f", "#9a4c7e", "#ffaf6b"],
-    sun: { x: 300, y: 322, r: 66, c: "#ffd9a0" },
-    far: { seed: 53, base: 320, amp: 130, top: "#85508f", bottom: "#412a63" },
-    near: { seed: 27, base: 340, amp: 30, fill: "#231d49" },
-    water: ["#7d3f70", "#0d1f27"],
-    stars: true,
-  },
-  ag: {
-    sky: ["#14344b", "#4f9aa8", "#f6b26b"],
-    sun: { x: 290, y: 318, r: 56, c: "#fff0c0" },
-    far: { seed: 61, base: 324, amp: 80, top: "#5b9fa6", bottom: "#27596a" },
-    near: { seed: 31, base: 342, amp: 40, fill: "#123a46" },
-    water: ["#4d94a0", "#0d1f27"],
-  },
-  sg: {
-    sky: ["#1e2a55", "#8e5aa6", "#ffc58b"],
-    sun: { x: 80, y: 320, r: 56, c: "#ffe7b9" },
-    far: { seed: 71, base: 318, amp: 190, top: "#a07bb8", bottom: "#4b3a78" },
-    near: { seed: 33, base: 340, amp: 34, fill: "#262451" },
-    water: ["#7a5d9c", "#0d1f27"],
-  },
-  ge: {
-    sky: ["#17285e", "#d45f86", "#ffc27a"],
-    sun: { x: 330, y: 312, r: 62, c: "#fff0c9" },
-    far: { seed: 83, base: 312, amp: 160, top: "#c48aa8", bottom: "#6a4a86" },
-    near: { seed: 35, base: 338, amp: 20, fill: "#2a2a5a" },
-    water: ["#b5517e", "#0d1f27"],
-    stars: true,
-  },
-  vd: {
-    sky: ["#112b55", "#5c8bd0", "#ffd0a0"],
-    sun: { x: 90, y: 318, r: 60, c: "#fff0cd" },
-    far: { seed: 97, base: 316, amp: 150, top: "#7ea0d6", bottom: "#3b5c96" },
-    near: { seed: 37, base: 340, amp: 26, fill: "#173a66" },
-    water: ["#5d86be", "#0d1f27"],
-  },
-  ti: {
-    sky: ["#0d3a4d", "#35a5a5", "#ffc796"],
-    sun: { x: 110, y: 322, r: 64, c: "#fff1d0" },
-    far: { seed: 101, base: 322, amp: 150, top: "#5fb3b0", bottom: "#1f6e72" },
-    near: { seed: 39, base: 340, amp: 32, fill: "#0f4650" },
-    water: ["#3a9ca0", "#0d1f27"],
-  },
-  ch: {
-    sky: ["#1a2358", "#d45f86", "#ffb067"],
-    sun: { x: 250, y: 318, r: 72, c: "#ffe2ae" },
-    far: { seed: 7, base: 318, amp: 170, top: "#a46a9a", bottom: "#4a2c6c" },
-    near: { seed: 3, base: 340, amp: 34, fill: "#231f4d" },
-    water: ["#8a3d6c", "#0d1f27"],
-    stars: true,
-  },
+  zh: day(["#c6dffa", "#e3eefc", "#fff3d6"], 300, [11, 5], [120, 30], ["#b3c3ee", "#98a9de"], "#7fcaa6", ["#8cc4f0", "#6aa6e0"], [[70, 96, 1], [250, 70, 0.8]]),
+  zg: day(["#bfe3f6", "#ddf1fa", "#fff3d6"], 110, [23, 9], [128, 26], ["#a9c8ee", "#8eb0e2"], "#79c9a2", ["#8fc9ee", "#6cabe0"], [[260, 90, 1], [90, 66, 0.7]]),
+  lu: day(["#d8d0f5", "#ece4f8", "#ffe6d4"], 96, [37, 14], [146, 24], ["#b9aef0", "#9d90e2"], "#80cba8", ["#8ec2ec", "#69a3dc"], [[250, 84, 1], [120, 56, 0.7]]),
+  bs: day(["#c9e2fb", "#e5effc", "#ffecc9"], 300, [41, 19], [60, 22], ["#bdd0f1", "#a2b8e6"], "#84cca6", ["#8bc3ee", "#68a6de"], [[80, 80, 1], [240, 60, 0.7]]),
+  be: day(["#ffd3dc", "#ffe6e2", "#ffefc9"], 300, [53, 27], [112, 26], ["#e2b6e0", "#c79ad0"], "#86cca4", ["#8dc4ee", "#69a5dd"], [[90, 90, 1], [220, 62, 0.8]]),
+  ag: day(["#bfebd6", "#e1f5e9", "#fff3cf"], 292, [61, 31], [74, 34], ["#a2d9c4", "#85c8b0"], "#6fc29a", ["#8bd0e0", "#66b4cd"], [[78, 84, 1], [240, 64, 0.7]]),
+  sg: day(["#dcd3f7", "#eee7fa", "#ffe4d0"], 84, [71, 33], [164, 30], ["#c2b6ee", "#a597e0"], "#7ecba7", ["#8ec2ec", "#6aa4dc"], [[250, 76, 1], [130, 54, 0.7]]),
+  ge: day(["#ffc9d4", "#ffe2dc", "#ffefc2"], 330, [83, 35], [138, 18], ["#ebb7d4", "#d49ac2"], "#8ccea6", ["#8cc4f0", "#68a5e0"], [[70, 84, 1], [200, 56, 0.7]]),
+  vd: day(["#bdd9f7", "#dcebfb", "#fff1d4"], 90, [97, 37], [128, 24], ["#a8c2ee", "#8aa8e0"], "#78c7a3", ["#8bc3ee", "#66a4de"], [[250, 80, 1], [140, 58, 0.7]]),
+  ti: day(["#bdebe0", "#dff5ee", "#ffe9c4"], 110, [101, 39], [126, 28], ["#9ed8cc", "#7cc4b8"], "#6ec29e", ["#84d0e4", "#5eb2d0"], [[260, 80, 1], [90, 60, 0.7]]),
+  ch: day(["#ffd3dc", "#ffe8e0", "#fff0c8"], 250, [7, 3], [140, 30], ["#e0b5dc", "#c398cc"], "#84cca4", ["#8cc4f0", "#68a5e0"], [[80, 84, 1], [300, 60, 0.7]]),
 };
 
 /* ---------------------------------------------------------------- landmarks */
@@ -233,12 +180,12 @@ const GE = () => (
       <rect x={74} y={326} width={60} height={20} />
       <rect x={300} y={328} width={56} height={18} />
     </g>
-    <path d="M196,338 L200,104 L204,338 Z" fill={PAL.gletscher} opacity={0.96} />
-    <path d="M200,118 C158,140 150,232 132,326" stroke={PAL.gletscher} strokeWidth={2.4} fill="none" opacity={0.75} />
-    <path d="M200,118 C242,140 250,232 268,326" stroke={PAL.gletscher} strokeWidth={2.4} fill="none" opacity={0.75} />
-    <path d="M200,130 C176,150 170,214 160,300" stroke={PAL.gletscher} strokeWidth={1.6} fill="none" opacity={0.55} />
-    <path d="M200,130 C224,150 230,214 240,300" stroke={PAL.gletscher} strokeWidth={1.6} fill="none" opacity={0.55} />
-    <ellipse cx={200} cy={334} rx={46} ry={9} fill={PAL.gletscher} opacity={0.4} />
+    <path d="M196,338 L200,104 L204,338 Z" fill={"#4d84d6"} opacity={0.96} />
+    <path d="M200,118 C158,140 150,232 132,326" stroke={"#4d84d6"} strokeWidth={2.4} fill="none" opacity={0.75} />
+    <path d="M200,118 C242,140 250,232 268,326" stroke={"#4d84d6"} strokeWidth={2.4} fill="none" opacity={0.75} />
+    <path d="M200,130 C176,150 170,214 160,300" stroke={"#4d84d6"} strokeWidth={1.6} fill="none" opacity={0.55} />
+    <path d="M200,130 C224,150 230,214 240,300" stroke={"#4d84d6"} strokeWidth={1.6} fill="none" opacity={0.55} />
+    <ellipse cx={200} cy={334} rx={46} ry={9} fill={"#4d84d6"} opacity={0.4} />
   </g>
 );
 
@@ -314,27 +261,30 @@ export function CantonPoster({
   canton,
   className,
   title,
-  stars = true,
+  variant = "card",
 }: {
   canton: CantonKey;
   className?: string;
   title?: string;
+  /** "card" is a landscape crop for postcards, "portrait" shows the whole scene */
+  variant?: "card" | "portrait";
+  /** kept for older call sites; daytime scenes have no stars */
   stars?: boolean;
 }) {
   const id = uid(useId());
   const s = SCENES[canton] || SCENES.ch;
   const Landmark = LANDMARKS[canton] || CH;
-  const dots = s.stars && stars ? scatter(canton.charCodeAt(0) * 7 + canton.charCodeAt(1), 28, W, 150, 0.6, 1.5) : [];
   const farPath = ridgePath(s.far.seed, W, H, s.far.base, s.far.amp);
   const nearPath = ridgePath(s.near.seed, W, H, s.near.base, s.near.amp, 24);
-  const streaks = Array.from({ length: 9 }, (_, i) => ({
-    y: HORIZON + 10 + i * 17,
-    w: 120 - i * 10 + (i % 2) * 14,
+  const streaks = Array.from({ length: 7 }, (_, i) => ({
+    y: HORIZON + 8 + i * 16,
+    w: 96 - i * 9 + (i % 2) * 12,
   }));
+  const viewBox = variant === "card" ? `0 54 ${W} 326` : `0 0 ${W} ${H}`;
 
   return (
     <svg
-      viewBox={`0 0 ${W} ${H}`}
+      viewBox={viewBox}
       preserveAspectRatio="xMidYMid slice"
       role="img"
       aria-label={title || CANTON_META[canton]?.name}
@@ -344,14 +294,9 @@ export function CantonPoster({
       <defs>
         <linearGradient id={`${id}sky`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={s.sky[0]} />
-          <stop offset="0.58" stopColor={s.sky[1]} />
+          <stop offset="0.55" stopColor={s.sky[1]} />
           <stop offset="1" stopColor={s.sky[2]} />
         </linearGradient>
-        <radialGradient id={`${id}sun`}>
-          <stop offset="0" stopColor={s.sun.c} stopOpacity="1" />
-          <stop offset="0.38" stopColor={s.sun.c} stopOpacity="0.55" />
-          <stop offset="1" stopColor={s.sun.c} stopOpacity="0" />
-        </radialGradient>
         <linearGradient id={`${id}far`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={s.far.top} />
           <stop offset="1" stopColor={s.far.bottom} />
@@ -366,23 +311,26 @@ export function CantonPoster({
       </defs>
 
       <rect width={W} height={H} fill={`url(#${id}sky)`} />
-      {dots.map((d, i) => (
-        <circle key={i} cx={d.x} cy={d.y} r={d.r} fill="#fff" opacity={d.o * 0.7} />
+      <circle cx={s.sun.x} cy={s.sun.y} r={s.sun.r * 1.7} fill={s.sun.c} opacity={0.3} />
+      <circle cx={s.sun.x} cy={s.sun.y} r={s.sun.r} fill={s.sun.c} />
+      {s.clouds.map(([cx, cy, k], i) => (
+        <g key={i} transform={`translate(${cx} ${cy}) scale(${k})`} fill="#fff" opacity={0.95}>
+          <ellipse cx={0} cy={0} rx={38} ry={12} />
+          <ellipse cx={-16} cy={-9} rx={18} ry={14} />
+          <ellipse cx={8} cy={-13} rx={22} ry={16} />
+        </g>
       ))}
-      <circle cx={s.sun.x} cy={s.sun.y} r={s.sun.r * 2.6} fill={`url(#${id}sun)`} />
-      <circle cx={s.sun.x} cy={s.sun.y} r={s.sun.r * 0.62} fill={s.sun.c} opacity={0.95} />
 
       <g clipPath={`url(#${id}clip)`}>
-        <path d={farPath} fill={`url(#${id}far)`} opacity={0.96} />
+        <path d={farPath} fill={`url(#${id}far)`} />
         <path d={nearPath} fill={s.near.fill} />
         <Landmark />
       </g>
 
       <rect x="0" y={HORIZON} width={W} height={H - HORIZON} fill={`url(#${id}water)`} />
       {streaks.map((st, i) => (
-        <rect key={i} x={s.sun.x - st.w / 2} y={st.y} width={st.w} height={2.4} rx={1.2} fill={s.sun.c} opacity={0.5 - i * 0.045} />
+        <rect key={i} x={s.sun.x - st.w / 2} y={st.y} width={st.w} height={3} rx={1.5} fill="#fff" opacity={0.55 - i * 0.06} />
       ))}
-      <rect x="0" y={HORIZON} width={W} height={1.5} fill="#fff" opacity={0.18} />
     </svg>
   );
 }

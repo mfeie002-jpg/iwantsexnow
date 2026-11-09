@@ -1,38 +1,34 @@
 import type { Config } from "tailwindcss";
 
 const COOL = {
-  50: "#f2f7f6",
-  100: "#e2eeec",
-  200: "#ccdddb",
-  300: "#a9c3c0",
-  400: "#86a4a2",
-  500: "#668582",
-  600: "#4d6a6a",
-  700: "#34504f",
-  800: "#1d3a42",
-  900: "#102830",
-  950: "#0a171d",
+  50: "#f7f7fb", 100: "#efeff6", 200: "#e1e1ec", 300: "#c9c9db", 400: "#9c9dba",
+  500: "#73759a", 600: "#565980", 700: "#3f4268", 800: "#2b2e54", 900: "#1e2247", 950: "#141735",
 };
 
+/* cherry */
 const glow = {
-  50: "#fff1ee", 100: "#ffe2dc", 200: "#ffc6bb", 300: "#ffa393", 400: "#ff8472",
-  500: "#ff6b5e", 600: "#e8564a", 700: "#c4443a", 800: "#a8382e", 900: "#7a3028", 950: "#5a2a24",
+  50: "#fff0f3", 100: "#ffdde5", 200: "#ffbfce", 300: "#ff94ac", 400: "#f7627f",
+  500: "#e8395e", 600: "#d92b52", 700: "#b51e42", 800: "#8f1935", 900: "#6e162e", 950: "#430a1b",
 };
+/* butter / amber */
 const sun = {
-  50: "#fff8ec", 100: "#ffeed0", 200: "#ffdca3", 300: "#ffc977", 400: "#ffb067",
-  500: "#ff9a45", 600: "#e07f2c", 700: "#b86220", 800: "#8a4a1a", 900: "#613416", 950: "#3a1f0e",
+  50: "#fffbea", 100: "#fff3c4", 200: "#ffe48a", 300: "#ffd34d", 400: "#ffc21f",
+  500: "#f5a800", 600: "#cc8400", 700: "#9c6300", 800: "#744a05", 900: "#523606", 950: "#2d1c00",
 };
+/* lilac */
 const dusk = {
-  50: "#f3f1ff", 100: "#e6e2ff", 200: "#cdc6ff", 300: "#aea3ff", 400: "#8a7bff",
-  500: "#6f60f0", 600: "#5a4cd0", 700: "#4739a8", 800: "#352c80", 900: "#262058", 950: "#181436",
+  50: "#f6f3fe", 100: "#ece6fc", 200: "#dcd3f7", 300: "#c3b5f0", 400: "#a590e6",
+  500: "#876dd8", 600: "#6c50c2", 700: "#553ca0", 800: "#413081", 900: "#2f2360", 950: "#1b1438",
 };
+/* mint green */
 const mint = {
-  50: "#ecfdf7", 100: "#d3f9ec", 200: "#a8f0d9", 300: "#78e3c4", 400: "#4fd1b0",
-  500: "#2fb897", 600: "#229a7d", 700: "#1d7b66", 800: "#1b6152", 900: "#194f44", 950: "#0a2e28",
+  50: "#eefbf5", 100: "#d6f5e7", 200: "#bfebd6", 300: "#93dbba", 400: "#5ec59b",
+  500: "#2faa7e", 600: "#1e8a64", 700: "#176d50", 800: "#145741", 900: "#114636", 950: "#08271e",
 };
+/* sky blue */
 const lake = {
-  50: "#eef9fc", 100: "#d5f0f7", 200: "#aee1ee", 300: "#7ccbe0", 400: "#4aaecb",
-  500: "#2b92b3", 600: "#227796", 700: "#1e6079", 800: "#1d4e62", 900: "#1b4151", 950: "#0d2a36",
+  50: "#f0f7ff", 100: "#dfeefe", 200: "#c6dffa", 300: "#98c6f5", 400: "#62a5eb",
+  500: "#3b86dc", 600: "#2a68bd", 700: "#245398", 800: "#20447a", 900: "#1f3a63", 950: "#12223d",
 };
 
 const config: Config = {
@@ -46,23 +42,31 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Hanken Grotesk", "system-ui", "Helvetica", "Arial", "sans-serif"],
-        mono: ["Hanken Grotesk", "system-ui", "Helvetica", "Arial", "sans-serif"],
-        serif: ["Archivo", "Hanken Grotesk", "Arial", "sans-serif"],
-        display: ["Archivo", "Hanken Grotesk", "Arial", "sans-serif"],
+        sans: ["Figtree", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        mono: ["Figtree", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        serif: ["Bricolage Grotesque", "Figtree", "Arial", "sans-serif"],
+        display: ["Bricolage Grotesque", "Figtree", "Arial", "sans-serif"],
+        hand: ["Caveat", "Bradley Hand", "cursive"],
       },
       colors: {
-        nacht: "#07141a",
-        tiefsee: "#0d1f27",
-        fels: "#143039",
-        linie: "#1d4350",
-        gletscher: "#f2f7f6",
-        nebel: "#9fb8b5",
-        glueh: "#ff6b5e",
-        bernstein: "#ffb067",
-        lago: "#4fd1b0",
-        papier: "#f2f7f6",
-        tinte: "#0b2229",
+        /* roles kept from the previous system, re-pointed to the light palette */
+        nacht: "#fbfaf8",
+        tiefsee: "#ffffff",
+        fels: "#f1f0f6",
+        linie: "#e1e1ec",
+        gletscher: "#1e2247",
+        nebel: "#5b5f84",
+        glueh: "#d92b52",
+        bernstein: "#f5a800",
+        lago: "#1e8a64",
+        papier: "#fbfaf8",
+        tinte: "#1e2247",
+        kirsche: { DEFAULT: "#d92b52", tief: "#a81c3d" },
+        butter: "#ffe48a",
+        blush: "#ffd3dc",
+        minze: "#bfebd6",
+        himmel: "#c6dffa",
+        flieder: "#dcd3f7",
         glow,
         sun,
         dusk,

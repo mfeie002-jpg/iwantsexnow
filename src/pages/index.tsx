@@ -63,17 +63,17 @@ const CANTON_COUNTS: Record<string, number> = (() => {
 const TOTAL_PROFILES = Array.isArray(offersData) ? offersData.length : 0;
 
 const CANTON_PILLS = [
-  { code: "ALL", label: "CH · Alle" },
-  { code: "ZG", label: "ZG · Zug" },
-  { code: "ZH", label: "ZH · Zürich" },
-  { code: "LU", label: "LU · Luzern" },
-  { code: "BS", label: "BS · Basel" },
-  { code: "BE", label: "BE · Bern" },
-  { code: "AG", label: "AG · Aargau" },
-  { code: "SG", label: "SG · St. Gallen" },
-  { code: "GE", label: "GE · Genève" },
-  { code: "VD", label: "VD · Lausanne" },
-  { code: "TI", label: "TI · Lugano" },
+  { code: "ALL", label: "Ganze Schweiz" },
+  { code: "ZG", label: "Zug" },
+  { code: "ZH", label: "Zürich" },
+  { code: "LU", label: "Luzern" },
+  { code: "BS", label: "Basel" },
+  { code: "BE", label: "Bern" },
+  { code: "AG", label: "Aargau" },
+  { code: "SG", label: "St. Gallen" },
+  { code: "GE", label: "Genève" },
+  { code: "VD", label: "Lausanne" },
+  { code: "TI", label: "Lugano" },
 ];
 
 const RUBRIC_TABS = [
@@ -346,7 +346,7 @@ export default function HomePage() {
   const profileCountLabel = TOTAL_PROFILES.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 
   return (
-    <div className="penthouse-page min-h-screen text-[#dcebe8]">
+    <div className="penthouse-page min-h-screen">
       <SEO
         title="IWANTSEXNOW.CH — Schweizer Escort, Tantra & Studio Direktverzeichnis (0% Provision)"
         description={`${activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")}+ geprüfte Schweizer Escort-, Tantra- & Studio-Profile sowie ${TOTAL_CLUBS} Clubs. Echte 30m/60m CHF-Preise & direkter +41 WhatsApp-Kontakt.`}
@@ -356,17 +356,20 @@ export default function HomePage() {
       <LuxuryHeader />
 
       <AlpenHero
-        query={searchQuery}
-        onQuery={setSearchQuery}
+        rubric={rubricFilter}
+        onRubric={setRubricFilter}
         canton={cantonFilter}
         onCanton={setCantonFilter}
+        freeToday={onlyAvailable4h}
+        onFreeToday={setOnlyAvailable4h}
+        maxRate={maxRate60}
+        onMaxRate={setMaxRate60}
         onSubmit={scrollToGrid}
-        cantons={CANTON_PILLS.map((c) => ({
-          code: c.code,
-          label: c.code === "ALL" ? "Ganze Schweiz" : c.label.split(" · ")[1] || c.label,
-        }))}
+        cantons={CANTON_PILLS.map((c) => ({ value: c.code, label: c.label }))}
+        matchCount={activeOffers.length}
         profileCount={profileCountLabel}
         clubCount={TOTAL_CLUBS}
+        counts={CANTON_COUNTS}
       />
 
       <CantonRail
@@ -377,7 +380,7 @@ export default function HomePage() {
 
       <CategoryMosaic activeRubric={rubricFilter} onPickRubric={pickRubric} onPickVip={pickVip} />
 
-      <main id="dossiers" className="mx-auto max-w-7xl scroll-mt-20 px-3 pb-12 pt-16 sm:px-6">
+      <main id="dossiers" className="mx-auto max-w-7xl scroll-mt-20 px-3 pb-12 pt-20 sm:px-6">
         <section className="luxury-console p-4 sm:p-5" aria-label="Filter">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
@@ -392,10 +395,6 @@ export default function HomePage() {
                   {tab.label}
                 </button>
               ))}
-            </div>
-            <div className="hidden items-center gap-2 text-sm text-[#9fb8b5] xl:flex">
-              <span className="h-2 w-2 rounded-full bg-[#4fd1b0]" />
-              Live-Index
             </div>
           </div>
 
@@ -415,12 +414,12 @@ export default function HomePage() {
 
           <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(240px,1fr)_auto_190px_230px_auto_auto] xl:items-center">
             <div className="relative md:col-span-2 xl:col-span-1">
-              <Search size={16} strokeWidth={1.8} className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-[#9fb8b5]" />
+              <Search size={16} strokeWidth={1.8} className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-tinte/60" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="PLZ, Stadt, Name oder Service"
+                placeholder="Name, PLZ, Stadt oder Service"
                 className="luxury-input pl-10"
                 aria-label="Profile durchsuchen"
               />
@@ -450,7 +449,7 @@ export default function HomePage() {
             </select>
 
             <div className="relative">
-              <ArrowUpDown size={14} className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-[#9fb8b5]" />
+              <ArrowUpDown size={14} className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-tinte/60" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
@@ -488,15 +487,15 @@ export default function HomePage() {
         </section>
 
         <div className="mb-5 mt-10 flex items-end justify-between gap-4 px-1">
-          <h2 className="text-2xl text-white sm:text-3xl">Alle Profile</h2>
-          <div className="text-sm font-semibold tabular-nums text-[#9fb8b5]">
+          <h2 className="text-[clamp(1.8rem,3.6vw,2.6rem)] text-tinte">Alle Profile</h2>
+          <div className="text-sm font-semibold tabular-nums text-tinte/60">
             {Math.min(visibleLimit, activeOffers.length)} von {activeOffers.length}
           </div>
         </div>
 
         {isLoading && (
           <div>
-            <p className="mb-4 text-center text-sm text-[#9fb8b5]">
+            <p className="mb-4 text-center text-sm text-tinte/60">
               {SWISS_DOORPLATE_TOKENS.microcopyDe.loadingState}
             </p>
             <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
@@ -552,13 +551,13 @@ export default function HomePage() {
                   >
                     <div className={noirStageClass}>
                       <div className="photo-fallback">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#ff6b5e]/35 font-serif text-base text-[#ff6b5e]">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#ffe48a]/35 font-serif text-base text-[#ffe48a]">
                           CH
                         </div>
-                        <div className="mt-3 max-w-full truncate font-serif text-xs text-[#ff6b5e]">
+                        <div className="mt-3 max-w-full truncate font-serif text-xs text-[#ffe48a]">
                           {p.rawName}
                         </div>
-                        <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.1em] text-[#a8382e]">
+                        <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.1em] text-[#c9b06a]">
                           Original-Fotos im Dossier
                         </div>
                       </div>
@@ -589,33 +588,33 @@ export default function HomePage() {
                         <div className="noir-floor" />
 
                         <div className="absolute inset-x-0 bottom-0 z-[4] px-2.5 pb-3 text-center sm:px-4 sm:pb-4">
-                          <div className="engraved-type mx-auto line-clamp-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#ff6b5e] sm:text-[7px] sm:tracking-[0.11em]">
+                          <div className="engraved-type mx-auto line-clamp-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#ffe48a] sm:text-[7px] sm:tracking-[0.11em]">
                             {locationLine}
                           </div>
 
                           <div
                             title={String(p.rawName || "")}
-                            className="dossier-name engraved-type mx-auto mt-1.5 min-h-[38px] font-serif text-[17px] font-medium uppercase leading-[1.08] tracking-[0.045em] text-[#ff6b5e] sm:min-h-[46px] sm:text-[22px]"
+                            className="dossier-name engraved-type mx-auto mt-1.5 min-h-[38px] font-serif text-[17px] font-medium uppercase leading-[1.08] tracking-[0.045em] text-[#ffe48a] sm:min-h-[46px] sm:text-[22px]"
                           >
                             {p.rawName}
                           </div>
 
-                          <div className="my-2 flex items-center justify-center gap-2 text-[#e8564a] sm:my-2.5">
-                            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#e8564a]/75 sm:w-12" />
+                          <div className="my-2 flex items-center justify-center gap-2 text-[#ffd34d] sm:my-2.5">
+                            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#ffd34d]/75 sm:w-12" />
                             <span className="text-[8px]">✦</span>
-                            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#e8564a]/75 sm:w-12" />
+                            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#ffd34d]/75 sm:w-12" />
                           </div>
 
-                          <div className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#6f8c93] sm:text-[7px]">
+                          <div className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#a9abc8] sm:text-[7px]">
                             Starting at
                           </div>
-                          <div className="mt-0.5 whitespace-nowrap font-mono text-[22px] font-medium tabular-nums tracking-[-0.04em] text-[#ff6b5e] sm:text-[29px]">
+                          <div className="mt-0.5 whitespace-nowrap font-mono text-[22px] font-medium tabular-nums tracking-[-0.04em] text-[#ffe48a] sm:text-[29px]">
                             <span className="mr-1 text-[9px] font-normal tracking-[0.04em] sm:text-[11px]">
                               CHF
                             </span>
                             {p.rate60Chf}
                           </div>
-                          <div className="mt-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#6f8c93] sm:text-[7px]">
+                          <div className="mt-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#a9abc8] sm:text-[7px]">
                             Per hour · 30 min: CHF {p.rate30Chf}
                           </div>
                         </div>
@@ -625,7 +624,7 @@ export default function HomePage() {
                         <Crown
                           size={13}
                           strokeWidth={1.4}
-                          className="shrink-0 text-[#ff6b5e] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                          className="shrink-0 text-[#ffe48a] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                         />
                         <SwissDoorplate
                           state={p.isAvail ? "FREI" : "EXTERN"}
@@ -656,20 +655,20 @@ export default function HomePage() {
                           strokeWidth={1.5}
                           className={
                             isFav
-                              ? "fill-[#ff6b5e] text-[#ff6b5e]"
-                              : "text-[#ff6b5e]"
+                              ? "fill-[#ffe48a] text-[#ffe48a]"
+                              : "text-[#ffe48a]"
                           }
                         />
                       </button>
 
                       {p.isVerif && (
-                        <div className="absolute bottom-2 right-2 z-20 hidden text-[#ff6b5e] sm:block">
+                        <div className="absolute bottom-2 right-2 z-20 hidden text-[#ffe48a] sm:block">
                           <ShieldCheck size={12} strokeWidth={1.4} />
                         </div>
                       )}
                     </div>
 
-                    <div className="relative z-[5] mt-auto grid grid-cols-2 gap-1.5 border-t border-[#ff6b5e]/15 bg-[#07141a] p-2">
+                    <div className="relative z-[5] mt-auto grid grid-cols-2 gap-1.5 border-t border-[#ffe48a]/20 bg-[#1e2247] p-2">
                       {cleanDigits ? (
                         <a
                           href={whatsAppHref}
@@ -720,10 +719,10 @@ export default function HomePage() {
         {!isLoading && activeOffers.length === 0 && (
           <section className="empty-state px-6 py-14 text-center">
             <EmptyArt className="mx-auto w-56" />
-            <h2 className="mt-6 text-2xl text-white">
+            <h2 className="mt-6 text-2xl text-tinte">
               Keine Treffer für diese Auswahl.
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#b4cac8]">
+            <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-tinte/75">
               {searchQuery.trim()
                 ? SWISS_DOORPLATE_TOKENS.microcopyDe.zeroSearch
                 : SWISS_DOORPLATE_TOKENS.microcopyDe.emptyFilter}
@@ -751,7 +750,7 @@ export default function HomePage() {
               className="ghost-button group inline-flex min-h-[50px] cursor-pointer items-center gap-3 px-7 py-3 text-sm font-semibold"
             >
               +24 weitere Dossiers
-              <span className="text-xs tabular-nums text-[#9fb8b5]">
+              <span className="text-xs tabular-nums text-tinte/60">
                 {activeOffers.length - visibleLimit} verbleibend
               </span>
               <ArrowRight
