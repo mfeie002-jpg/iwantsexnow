@@ -21,7 +21,7 @@ export function CantonRail({ items, active, onPick }: { items: Item[]; active: s
         )}
       </div>
 
-      <div className="no-scrollbar -mx-4 mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6">
+      <div className="no-scrollbar -mx-4 mt-7 flex snap-x snap-mandatory scroll-pl-4 gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:scroll-pl-6 sm:px-6">
         {items.map((it) => {
           const meta = CANTON_META[it.key];
           const isActive = active === it.code;

@@ -27,9 +27,9 @@ export function HowItWorksBand() {
           In drei Schritten zum direkten Kontakt
         </h2>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-3 lg:gap-0">
+        <div className="mt-10 grid gap-10 lg:-mx-8 lg:grid-cols-3 lg:gap-0">
           {STEPS.map(({ Art, title, text }, i) => (
-            <div key={title} className={"lg:px-8 " + (i > 0 ? "lg:border-l-2 lg:border-dashed lg:border-[#0b2229]/25" : "lg:pl-0")}>
+            <div key={title} className={"lg:px-8 " + (i > 0 ? "lg:border-l-2 lg:border-dashed lg:border-[#0b2229]/25" : "")}>
               <Art className="w-full rounded-3xl" />
               <h3 className="mt-6 text-2xl">{title}</h3>
               <p className="mt-2 max-w-sm leading-7 text-[#2d4650]">{text}</p>

@@ -2,7 +2,7 @@ export type DoorplateState = "FREI" | "BESETZT" | "RESERVIERT" | "NEU" | "EXTERN
 
 export const SWISS_DOORPLATE_TOKENS = {
   conceptOneLiner:
-    "Schweizer Ordnung trifft Penthouse-Noir: gebürstetes Messing, mechanische Studiotür-Schilder und präzise tabellarische Typografie.",
+    "Schweizer Ordnung trifft Alpenglühen: klare Türschilder als Status-Chips, präzise tabellarische Ziffern, Nachtsee und Abendrot.",
   colors: {
     canvasObsidian: "#07141a",
     panelAnthracite: "#07141a",
@@ -12,46 +12,46 @@ export const SWISS_DOORPLATE_TOKENS = {
     heatSignalRed: "#3a1830",
     states: {
       FREI: {
-        bg: "#0d1f27",
+        bg: "#0c2e2c",
         border: "#4fd1b0",
-        text: "#B8E4D1",
+        text: "#b8f0de",
         dot: "#4fd1b0",
         labelDe: "FREI · 4H LIVE",
       },
       BESETZT: {
         bg: "#3a1830",
-        border: "#9F343B",
-        text: "#E4B4B6",
-        dot: "#DC4148",
+        border: "#ff5a8a",
+        text: "#ffc3d4",
+        dot: "#ff5a8a",
         labelDe: "BESETZT",
       },
       RESERVIERT: {
-        bg: "#5a2a24",
-        border: "#ff6b5e",
-        text: "#ff6b5e",
-        dot: "#ff6b5e",
+        bg: "#143039",
+        border: "#9fb8b5",
+        text: "#d6e4e2",
+        dot: "#9fb8b5",
         labelDe: "RESERVIERT",
       },
       NEU: {
-        bg: "#5a2a24",
-        border: "#ff6b5e",
-        text: "#ff6b5e",
-        dot: "#ff6b5e",
+        bg: "#3a2410",
+        border: "#ffb067",
+        text: "#ffd9a0",
+        dot: "#ffb067",
         labelDe: "NEU IM HAUS",
       },
       EXTERN: {
-        bg: "#07141a",
+        bg: "#0d1f27",
         border: "#6f8c93",
-        text: "#6f8c93",
+        text: "#b4cac8",
         dot: "#6f8c93",
         labelDe: "INDEX-QUELLE",
       },
     },
   },
   typography: {
-    editorial: "'Playfair Display', Georgia, serif",
-    interface: "'Inter', Helvetica, Arial, sans-serif",
-    figures: "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace",
+    editorial: "'Archivo', 'Hanken Grotesk', Arial, sans-serif",
+    interface: "'Hanken Grotesk', Helvetica, Arial, sans-serif",
+    figures: "'Hanken Grotesk', Helvetica, Arial, sans-serif",
   },
   motion: {
     mechanical: "cubic-bezier(0.22, 1, 0.36, 1)",

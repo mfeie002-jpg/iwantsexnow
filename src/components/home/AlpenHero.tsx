@@ -18,14 +18,14 @@ export function AlpenHero({ query, onQuery, canton, onCanton, onSubmit, cantons,
   return (
     <section className="relative isolate overflow-hidden border-b border-[#1d4350]">
       <HeroScene className="sun-rise absolute inset-0 -z-20 h-full w-full" align="xMidYMax" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#07141a]/92 via-[#07141a]/58 to-[#07141a]/10" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#07141a] to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#07141a]/95 from-10% via-[#07141a]/74 via-45% to-[#07141a]/5" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-[#07141a] to-transparent" />
       <div
         aria-hidden="true"
         className="hero-glow pointer-events-none absolute -right-20 top-6 -z-10 h-[26rem] w-[26rem] rounded-full bg-[#ff6b5e]/30 blur-3xl"
       />
 
-      <div className="mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 sm:pt-20 lg:pb-24 lg:pt-28">
+      <div className="mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 sm:pt-20 lg:pb-20 lg:pt-28">
         <h1 className="max-w-3xl text-[clamp(2.35rem,6.4vw,4.9rem)] text-white">Eine Suche für die ganze Schweiz.</h1>
         <p
           className="mt-4 text-[clamp(1.2rem,2.6vw,1.85rem)] text-[#ffe2c2]"

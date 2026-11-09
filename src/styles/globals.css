@@ -308,15 +308,22 @@ img {
 .luxury-select,
 .field {
   min-height: 46px;
-  padding: 0.7rem 0.95rem;
   font-size: 0.95rem;
 }
 
 .luxury-textarea {
   min-height: 128px;
-  padding: 0.85rem 0.95rem;
   font-size: 0.95rem;
   line-height: 1.6;
+}
+
+/* zero specificity: utilities such as pl-10 (for leading icons) still win */
+:where(.luxury-input, .luxury-select, .field) {
+  padding: 0.7rem 0.95rem;
+}
+
+:where(.luxury-textarea) {
+  padding: 0.85rem 0.95rem;
 }
 
 .luxury-input::placeholder,

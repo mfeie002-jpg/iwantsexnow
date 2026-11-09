@@ -59,48 +59,16 @@ export function SwissDoorplate({
 
   const sizeCls =
     size === "lg"
-      ? "min-h-[38px] text-[10px] tracking-[0.16em]"
+      ? "min-h-[42px] gap-2.5 px-4 text-sm"
       : size === "md"
-      ? "min-h-[31px] text-[9px] tracking-[0.14em]"
-      : "min-h-[25px] text-[8px] tracking-[0.11em]";
-
-  const innerPadding =
-    size === "lg"
-      ? "px-3 py-2"
-      : size === "md"
-      ? "px-2.5 py-1.5"
-      : "px-2 py-1";
+      ? "min-h-[36px] gap-2 px-3.5 text-[13px]"
+      : "min-h-[26px] gap-1.5 px-2.5 text-[11px]";
 
   const interactiveCls = interactiveToggle
     ? "cursor-pointer hover:-translate-y-px hover:brightness-110 active:translate-y-px"
     : "";
 
   const pulseCls = activeState === "FREI" ? "animate-pulse" : "";
-  const plateClass =
-    "relative inline-flex max-w-full select-none items-center overflow-hidden rounded-xl border font-mono tabular-nums font-semibold uppercase transition duration-200 " +
-    sizeCls +
-    " " +
-    interactiveCls +
-    " " +
-    className;
-
-  const enamelStyle: React.CSSProperties = {
-    background:
-      "linear-gradient(180deg, rgba(255,245,220,0.055), transparent 38%), " +
-      cfg.bg,
-    borderColor: cfg.border + "66",
-    color: cfg.text,
-  };
-
-  const ledStyle: React.CSSProperties = {
-    backgroundColor: cfg.dot,
-    boxShadow:
-      "0 0 5px " +
-      cfg.dot +
-      ", 0 0 12px " +
-      cfg.dot +
-      "55, inset 0 1px 0 rgba(255,255,255,0.55)",
-  };
 
   return (
     <div
@@ -108,53 +76,29 @@ export function SwissDoorplate({
       onKeyDown={handleKeyDown}
       role={interactiveToggle ? "button" : undefined}
       tabIndex={interactiveToggle ? 0 : undefined}
-      aria-pressed={
-        interactiveToggle ? activeState === "FREI" : undefined
-      }
+      aria-pressed={interactiveToggle ? activeState === "FREI" : undefined}
       aria-label={customLabel || cfg.labelDe}
-      title={
-        interactiveToggle
-          ? "Mechanisches Türschild umschalten"
-          : customLabel || cfg.labelDe
+      title={interactiveToggle ? "Türschild umschalten" : customLabel || cfg.labelDe}
+      className={
+        "relative inline-flex max-w-full select-none items-center overflow-hidden rounded-full border font-bold tabular-nums tracking-[0.02em] transition duration-200 " +
+        sizeCls +
+        " " +
+        interactiveCls +
+        " " +
+        className
       }
-      className={plateClass}
-      style={{
-        borderColor: "rgba(222,195,147,0.5)",
-        background:
-          "linear-gradient(135deg, #ff6b5e 0%, #e8564a 52%, #a8382e 100%)",
-        boxShadow:
-          "inset 0 1px 0 rgba(255,245,220,0.35), inset 0 -1px 0 rgba(55,34,10,0.5), 0 6px 18px rgba(0,0,0,0.7)",
-      }}
+      style={{ background: cfg.bg, borderColor: cfg.border + "aa", color: cfg.text }}
     >
-      <span className="pointer-events-none absolute left-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#5a2a24] shadow-[0_1px_0_rgba(255,245,220,0.35)]" />
-      <span className="pointer-events-none absolute right-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#5a2a24] shadow-[0_1px_0_rgba(255,245,220,0.35)]" />
-      <span className="pointer-events-none absolute bottom-[3px] left-[3px] h-[3px] w-[3px] rounded-full bg-[#5a2a24] shadow-[0_1px_0_rgba(255,245,220,0.25)]" />
-      <span className="pointer-events-none absolute bottom-[3px] right-[3px] h-[3px] w-[3px] rounded-full bg-[#5a2a24] shadow-[0_1px_0_rgba(255,245,220,0.25)]" />
+      <span
+        className={"h-2 w-2 shrink-0 rounded-full " + pulseCls}
+        style={{ backgroundColor: cfg.dot, boxShadow: "0 0 8px " + cfg.dot + "aa" }}
+      />
 
-      <div
-        className={
-          "relative m-[3px] flex min-w-0 items-center gap-1.5 rounded-[2px] border " +
-          innerPadding
-        }
-        style={enamelStyle}
-      >
-        <span className="flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full border border-[#ff6b5e]/35 bg-black/45 p-[2px]">
-          <span
-            className={"h-full w-full rounded-full " + pulseCls}
-            style={ledStyle}
-          />
-        </span>
+      {roomNumber && (
+        <span className="shrink-0 rounded-full bg-black/30 px-1.5 text-[0.86em] leading-5 opacity-90">{roomNumber}</span>
+      )}
 
-        {roomNumber && (
-          <span className="shrink-0 border-r border-[#ff6b5e]/25 pr-1.5 text-[#ff6b5e]">
-            {roomNumber}
-          </span>
-        )}
-
-        <span className="truncate">{customLabel || cfg.labelDe}</span>
-      </div>
+      <span className="truncate">{customLabel || cfg.labelDe}</span>
     </div>
   );
 }
-
-export default SwissDoorplate;

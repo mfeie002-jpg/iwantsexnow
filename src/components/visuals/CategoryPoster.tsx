@@ -141,9 +141,9 @@ function Art({ kind, id }: { kind: CategoryKey; id: string }) {
         const lit = (i * 7) % 3 !== 0;
         return <rect key={i} x={92 + col * 36} y={186 + row * 36} width={20} height={22} rx={2} fill={lit ? PAL.bernstein : "#12303a"} opacity={lit ? 0.5 + w.o * 0.45 : 0.9} />;
       })}
-      <rect x={118} y={300} width={164} height={64} rx={14} fill="none" stroke={PAL.rose} strokeWidth={4} />
-      <rect x={118} y={300} width={164} height={64} rx={14} fill="none" stroke={PAL.rose} strokeWidth={12} opacity={0.22} />
-      <text x={200} y={346} textAnchor="middle" fontFamily="Archivo, Arial, sans-serif" fontWeight={800} fontSize={34} letterSpacing={3} fill="#ffd1dc">OPEN</text>
+      <rect x={118} y={262} width={164} height={64} rx={14} fill="none" stroke={PAL.rose} strokeWidth={4} />
+      <rect x={118} y={262} width={164} height={64} rx={14} fill="none" stroke={PAL.rose} strokeWidth={12} opacity={0.22} />
+      <text x={200} y={308} textAnchor="middle" fontFamily="Archivo, Arial, sans-serif" fontWeight={800} fontSize={34} letterSpacing={3} fill="#ffd1dc">OPEN</text>
       <rect x={168} y={376} width={64} height={54} fill="#14090f" />
       <rect x={0} y={430} width={W} height={H - 430} fill="#07141a" />
       <path d="M130,432 H270 L300,520 H100 Z" fill={PAL.rose} opacity={0.2} />
@@ -178,8 +178,17 @@ export function CategoryPoster({ kind, className, title }: { kind: CategoryKey; 
           <stop offset="0.6" stopColor={b} />
           <stop offset="1" stopColor={c} />
         </linearGradient>
+        <linearGradient id={`${id}f`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#07141a" stopOpacity="0" />
+          <stop offset="1" stopColor="#07141a" stopOpacity="1" />
+        </linearGradient>
       </defs>
-      <Art kind={kind} id={id} />
+      {/* art sits 52px high so the caption band never covers the focal object */}
+      <g transform="translate(0 -52)">
+        <Art kind={kind} id={id} />
+      </g>
+      <rect x={0} y={H - 190} width={W} height={138} fill={`url(#${id}f)`} />
+      <rect x={0} y={H - 52} width={W} height={52} fill="#07141a" />
     </svg>
   );
 }
