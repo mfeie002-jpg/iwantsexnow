@@ -1,5 +1,19 @@
 import type { Config } from "tailwindcss";
 
+const COOL = {
+  50: "#f2f7f6",
+  100: "#e2eeec",
+  200: "#ccdddb",
+  300: "#a9c3c0",
+  400: "#86a4a2",
+  500: "#668582",
+  600: "#4d6a6a",
+  700: "#34504f",
+  800: "#1d3a42",
+  900: "#102830",
+  950: "#0a171d",
+};
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -10,7 +24,27 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Hanken Grotesk", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        mono: ["Hanken Grotesk", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        serif: ["Archivo", "Hanken Grotesk", "Arial", "sans-serif"],
+        display: ["Archivo", "Hanken Grotesk", "Arial", "sans-serif"],
+      },
       colors: {
+        nacht: "#07141a",
+        tiefsee: "#0d1f27",
+        fels: "#143039",
+        linie: "#1d4350",
+        gletscher: "#f2f7f6",
+        nebel: "#9fb8b5",
+        glueh: "#ff6b5e",
+        rose: "#ff5a8a",
+        bernstein: "#ffb067",
+        lago: "#4fd1b0",
+        papier: "#f2f7f6",
+        tinte: "#0b2229",
+        gray: COOL,
+        stone: COOL,
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
