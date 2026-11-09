@@ -69,7 +69,7 @@ export default function SearchAtlasPage() {
               type="button"
               onClick={() => setSelectedCanton(c)}
               className={`px-3.5 py-2 rounded-xl text-[13px] font-extrabold cursor-pointer ${
-                selectedCanton === c ? "bg-kirsche text-white" : "bg-white text-gray-300 border border-tinte/20"
+                selectedCanton === c ? "bg-kirsche text-white" : "bg-white text-tinte border border-tinte/20 hover:bg-blush"
               }`}
             >
               {c === "ALL" ? "Alle Regionen" : `Kanton ${c}`}

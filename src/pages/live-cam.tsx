@@ -100,7 +100,7 @@ export default function LiveCamPage() {
                 type="button"
                 onClick={() => setCantonFilter(c)}
                 className={`px-3 py-1.5 rounded-xl text-[13px] font-extrabold cursor-pointer ${
-                  cantonFilter === c ? "bg-kirsche text-white" : "bg-papier text-gray-300 border border-tinte/20"
+                  cantonFilter === c ? "bg-kirsche text-white" : "bg-papier text-tinte border border-tinte/20 hover:bg-blush"
                 }`}
               >
                 {c === "ALL" ? "Alle Kantone" : c}

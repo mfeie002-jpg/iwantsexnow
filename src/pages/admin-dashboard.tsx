@@ -367,10 +367,10 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-white p-2 rounded-2xl border border-tinte/20">
-            <button type="button" onClick={() => setAdminTab("pilots")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "pilots" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"}`}>1. Pilot-20 & Live-Schalter (ZG/ZH)</button>
-            <button type="button" onClick={() => setAdminTab("verifications")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "verifications" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"}`}>2. Identitäts-Prüfungen ({verificationRequests.length})</button>
-            <button type="button" onClick={() => setAdminTab("leads")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "leads" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"}`}>3. Kunden-Anfragen / Leads ({enquiries.length})</button>
-            <button type="button" onClick={() => setAdminTab("takedowns")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "takedowns" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"}`}>4. Opt-Outs ({takedowns.length})</button>
+            <button type="button" onClick={() => setAdminTab("pilots")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "pilots" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"}`}>1. Pilot-20 & Live-Schalter (ZG/ZH)</button>
+            <button type="button" onClick={() => setAdminTab("verifications")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "verifications" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"}`}>2. Identitäts-Prüfungen ({verificationRequests.length})</button>
+            <button type="button" onClick={() => setAdminTab("leads")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "leads" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"}`}>3. Kunden-Anfragen / Leads ({enquiries.length})</button>
+            <button type="button" onClick={() => setAdminTab("takedowns")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "takedowns" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"}`}>4. Opt-Outs ({takedowns.length})</button>
             <button type="button" onClick={() => setAdminTab("scraper")} className={`py-3 px-3 rounded-xl text-[13px] font-extrabold cursor-pointer ${adminTab === "scraper" ? "bg-mint-500 text-tinte" : "text-mint-700 hover:bg-tinte/[0.04]"}`}>5. 🕷️ Live-URL Scraper</button>
           </div>
 
@@ -380,7 +380,7 @@ export default function AdminDashboardPage() {
                 <h2 className="text-lg sm:text-xl font-serif font-bold text-tinte">Pilot-20 Live-Steuerung (10x Kanton Zug · 10x Kanton Zürich)</h2>
                 <div className="flex gap-2">
                   {(["ALL", "ZG", "ZH"] as const).map((c) => (
-                    <button key={c} type="button" onClick={() => setFilterCanton(c)} className={`px-3.5 py-1.5 rounded-xl text-[13px] font-bold cursor-pointer ${filterCanton === c ? "bg-kirsche text-white" : "bg-papier text-gray-300 border border-tinte/20"}`}>
+                    <button key={c} type="button" onClick={() => setFilterCanton(c)} className={`px-3.5 py-1.5 rounded-xl text-[13px] font-bold cursor-pointer ${filterCanton === c ? "bg-kirsche text-white" : "bg-papier text-tinte border border-tinte/20"}`}>
                       {c === "ALL" ? "Alle 20 (ZG + ZH)" : `Nur ${c} (10)`}
                     </button>
                   ))}
@@ -420,7 +420,7 @@ export default function AdminDashboardPage() {
                           <td className="py-3.5 px-2">
                             <div className="flex flex-wrap items-center gap-1.5">
                               <button type="button" onClick={() => trigger4hAvailability(p.profileId, st.displayName || p.name)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isAvail ? "bg-mint-500 text-tinte" : "bg-papier border border-tinte/25 text-gray-700"}`}>{isAvail ? "● 4h Aktiv" : "+ 4h Verfügbar"}</button>
-                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { identityVerified: !isVerif }, `✓ Prüf-Status für ${st.displayName || p.name} geändert!`)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isVerif ? "bg-kirsche text-white" : "bg-papier border border-tinte/25 text-gray-300"}`}>{isVerif ? "✓ Geprüft" : "✓ Prüfen"}</button>
+                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { identityVerified: !isVerif }, `✓ Prüf-Status für ${st.displayName || p.name} geändert!`)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isVerif ? "bg-kirsche text-white" : "bg-papier border border-tinte/25 text-tinte"}`}>{isVerif ? "✓ Geprüft" : "✓ Prüfen"}</button>
                               <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { sponsored: !isSpons }, `★ Top-Spot Status aktualisiert!`)} className={`px-2 py-1 rounded-lg font-bold cursor-pointer ${isSpons ? "bg-sun-500/30 border border-sun-400 text-sun-800" : "bg-papier border border-tinte/25 text-gray-600"}`}>★ Top</button>
                               <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { paused: !isPaused }, isPaused ? "Profil wieder eingeblendet!" : "Profil ausgeblendet!")} className={`px-2 py-1 rounded-lg font-bold cursor-pointer ${isPaused ? "bg-glow-500/30 text-glow-700" : "bg-papier border border-tinte/25 text-gray-600"}`}>{isPaused ? "Pausiert" : "Aktiv"}</button>
                             </div>

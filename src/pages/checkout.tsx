@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import offersData from "@/data/harvested-offers.json";
 import { ShieldCheck, Lock, CheckCircle2, Sparkles, CreditCard, ArrowLeft } from "lucide-react";
 
@@ -60,8 +61,14 @@ export default function CheckoutPage() {
         url="https://iwantsexnow.ch/checkout"
       />
       <LuxuryHeader />
-
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-6">
+      <PageIntro
+        tone="butter"
+        note="Diskret & fair"
+        title={receipt ? "Freigeschaltet, Beleg liegt bereit" : "Privaten Tresor freischalten"}
+        lead="80 % gehen direkt an die Anbieterin. Neutraler Beleg, keine versteckten Gebühren."
+        art="none"
+      />
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-10 space-y-6">
         <Link
           href={selectedProfile?.id ? `/profile/${encodeURIComponent(selectedProfile.id)}` : "/search"}
           className="inline-flex items-center gap-1.5 text-[13px] font-bold text-kirsche hover:underline"
@@ -77,9 +84,9 @@ export default function CheckoutPage() {
             <div className="text-[13px] text-mint-700 font-bold">
               FREISCHALTUNG BESTÄTIGT · BELEG {receipt.receiptId}
             </div>
-            <h1 className="text-2xl font-serif font-bold text-tinte">
+            <h2 className="text-2xl font-display font-extrabold text-tinte">
               Privater Tresor von {selectedProfile.rawName} ist freigeschaltet!
-            </h1>
+            </h2>
             <p className="text-[13px] text-gray-700 max-w-md mx-auto">
               Betrag: <strong>CHF {receipt.amountChf}.–</strong> ({receipt.paymentMethod}) · Davon wurden{" "}
               <strong className="text-mint-700">CHF {receipt.creatorShareChf} (80 %)</strong> direkt dem Cockpit von{" "}
@@ -101,9 +108,9 @@ export default function CheckoutPage() {
                 <div className="text-[13px] text-kirsche font-bold flex items-center gap-1.5">
                   <Lock size={13} /> Diskrete Schweizer Sofort-Freischaltung (Neutraler Beleg)
                 </div>
-                <h1 className="text-2xl font-serif font-bold text-tinte mt-1">
+                <h2 className="text-2xl font-display font-extrabold text-tinte mt-1">
                   Paid-Vault Zugang: {selectedProfile.rawName} ({selectedProfile.city}, {selectedProfile.canton})
-                </h1>
+                </h2>
               </div>
               <div className="text-right">
                 <div className="text-2xl font-extrabold text-kirsche">CHF {vaultPriceChf}.–</div>

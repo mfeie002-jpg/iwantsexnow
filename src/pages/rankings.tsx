@@ -92,7 +92,7 @@ export default function RankingsPage() {
               type="button"
               onClick={() => setCantonFilter(c)}
               className={`px-3.5 py-2 rounded-xl text-[13px] font-extrabold cursor-pointer ${
-                cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-gray-300 border border-tinte/20"
+                cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-tinte border border-tinte/20 hover:bg-blush"
               }`}
             >
               {c === "ALL" ? "🇨🇭 Gesamte Schweiz (Top 50)" : `Top Kanton ${c}`}

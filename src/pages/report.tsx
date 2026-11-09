@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import { ShieldAlert, CheckCircle2, ArrowLeft } from "lucide-react";
 
 export default function ReportAndOptOutPage() {
@@ -48,20 +49,22 @@ export default function ReportAndOptOutPage() {
         description="Unkomplizierte Sofort-Ausblendung und Sperrliste (Do-Not-Import) nach Schweizer Datenschutzgesetz (revDSG)."
       />
       <LuxuryHeader />
+      <PageIntro
+        tone="himmel"
+        note="Dein Recht, ohne Umwege"
+        title="Eintrag entfernen oder Korrektur melden"
+        lead="Sofort-Ausblendung ohne Login, nach Schweizer Datenschutzgesetz (revDSG)."
+        art="verified"
+      >
+        <Link href="/" className="emerald-button"><ArrowLeft size={14} /> Zurück zur Übersicht</Link>
+      </PageIntro>
 
-      <main className="max-w-2xl mx-auto px-6 py-10 space-y-6">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-gray-700 hover:text-tinte">
-          <ArrowLeft size={14} /> Zurück zur Übersicht
-        </Link>
-
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-tinte/20 space-y-6">
+      <main className="-mt-6 relative z-10 max-w-2xl mx-auto px-4 sm:px-6 pb-10 space-y-6">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
           <div>
             <span className="text-[13px] text-glow-700 font-bold flex items-center gap-1.5">
               <ShieldAlert size={13} /> Sofort-Ausblendung ohne Login-Pflicht (CH-DSG)
             </span>
-            <h1 className="text-2xl font-serif font-bold text-tinte mt-1">
-              Eintrag entfernen (Opt-Out) oder Korrektur melden
-            </h1>
             <p className="text-[13px] text-gray-600 mt-1">
               Sobald du dieses Formular absendest, wird die angegebene Profil-ID sofort im öffentlichen Verzeichnis ausgeblendet und auf die interne Do-Not-Import-Sperrliste gesetzt.
             </p>

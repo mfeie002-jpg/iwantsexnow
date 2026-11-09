@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import { ArrowRight } from "lucide-react";
 
 export default function CreatePostPage() {
@@ -62,17 +63,17 @@ export default function CreatePostPage() {
     <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO title="Neues Profil erstellen oder Eintrag übernehmen | iWantSexNow.ch" description="Kostenloses Schweizer Direktprofil erstellen oder bestehenden Index-Eintrag übernehmen." />
       <LuxuryHeader />
-      <main className="max-w-3xl mx-auto px-6 py-10 space-y-6">
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-kirsche/40 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-tinte/20 pb-5">
-            <div>
-              <span className="text-[13px] text-mint-700 font-bold">● 100 % Kostenloses Basis-Profil · 30 Tage Pro-Pilot Inklusive</span>
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-tinte mt-1">
-                {claimQuery ? `Profil „${claimQuery}“ übernehmen` : "Neues Schweizer Direktprofil anlegen"}
-              </h1>
-            </div>
-            <Link href="/login" className="text-[13px] font-bold text-kirsche hover:underline">Bereits registriert? Zum Login →</Link>
-          </div>
+      <PageIntro
+        tone="minze"
+        note="Dein Auftritt, deine Regeln"
+        title={claimQuery ? `Profil „${claimQuery}“ übernehmen` : "Neues Direktprofil anlegen"}
+        lead="Kostenloses Basis-Profil, 30 Tage Pro-Pilot inklusive. Du entscheidest, was sichtbar ist."
+        art="hanger"
+      >
+        <Link href="/login" className="emerald-button">Bereits registriert? Zum Login</Link>
+      </PageIntro>
+      <main className="-mt-6 relative z-10 max-w-3xl mx-auto px-4 sm:px-6 pb-10 space-y-6">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>

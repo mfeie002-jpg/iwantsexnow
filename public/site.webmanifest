@@ -1,11 +1,11 @@
 {
   "name": "iWantSexNow.ch",
   "short_name": "iWantSexNow",
-  "description": "Switzerland's premier adult companionship platform - Where Desire Meets Discretion",
+  "description": "Eine Suche für die ganze Schweiz. Vergleichen & Direkt Buchen.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#1a1a1a",
+  "background_color": "#fbfaf8",
+  "theme_color": "#fbfaf8",
   "orientation": "portrait-primary",
   "icons": [
     {

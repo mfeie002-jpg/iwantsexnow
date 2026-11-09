@@ -168,7 +168,7 @@ export default function FavoritesPage() {
                   type="button"
                   onClick={() => setCantonFilter(c)}
                   className={`px-3 py-1 rounded-lg text-[13px] font-extrabold cursor-pointer ${
-                    cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-gray-300 border border-tinte/20"
+                    cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-tinte border border-tinte/20 hover:bg-blush"
                   }`}
                 >
                   {c === "ALL" ? "Alle" : c}
@@ -197,7 +197,7 @@ export default function FavoritesPage() {
                 <button
                   type="button"
                   onClick={() => toggleFav(p.id)}
-                  className="w-full py-2 rounded-xl bg-tinte/[0.04] hover:bg-kirsche text-gray-200 hover:text-white border border-tinte/20 text-[13px] font-extrabold cursor-pointer transition"
+                  className="w-full py-2 rounded-xl bg-tinte/[0.04] hover:bg-kirsche text-tinte hover:text-white border border-tinte/20 text-[13px] font-extrabold cursor-pointer transition"
                 >
                   ♥ Auf Merkliste speichern
                 </button>

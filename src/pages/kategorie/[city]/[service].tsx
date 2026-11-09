@@ -236,7 +236,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
               type="button"
               onClick={() => setOnlyVerified(!onlyVerified)}
               className={`px-3.5 py-2 rounded-xl text-[13px] font-extrabold cursor-pointer ${
-                onlyVerified ? "bg-kirsche text-white" : "bg-papier border border-tinte/25 text-gray-300"
+                onlyVerified ? "bg-kirsche text-white" : "bg-papier border border-tinte/25 text-tinte"
               }`}
             >
               ✓ Nur geprüfte Identität
@@ -245,7 +245,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
               type="button"
               onClick={() => setOnlyWithPhone(!onlyWithPhone)}
               className={`px-3.5 py-2 rounded-xl text-[13px] font-extrabold cursor-pointer ${
-                onlyWithPhone ? "bg-lake-500 text-white" : "bg-papier border border-tinte/25 text-gray-300"
+                onlyWithPhone ? "bg-lake-500 text-white" : "bg-papier border border-tinte/25 text-tinte"
               }`}
             >
               📞 Nur mit +41 Nummer

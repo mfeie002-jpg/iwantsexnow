@@ -482,7 +482,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("profile")}
             className={`py-3 px-3 rounded-xl text-[13px] font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "profile" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"
+              activeTab === "profile" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"
             }`}
           >
             <Save size={14} /> 1. Angaben & Preise
@@ -491,7 +491,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("media")}
             className={`py-3 px-3 rounded-xl text-[13px] font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "media" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"
+              activeTab === "media" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"
             }`}
           >
             <ImageIcon size={14} /> 2. Fotos & 4K-Video ({gallery.length})
@@ -500,7 +500,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("paid")}
             className={`py-3 px-3 rounded-xl text-[13px] font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "paid" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"
+              activeTab === "paid" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"
             }`}
           >
             <Lock size={14} /> 3. Paid Content / VIP Vault (80%)
@@ -509,7 +509,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("boost")}
             className={`py-3 px-3 rounded-xl text-[13px] font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "boost" ? "bg-kirsche text-white" : "text-gray-300 hover:bg-tinte/[0.04]"
+              activeTab === "boost" ? "bg-kirsche text-white" : "text-tinte hover:bg-tinte/[0.04]"
             }`}
           >
             <TrendingUp size={14} /> 4. Live-Cam, Bidding & Statistik
