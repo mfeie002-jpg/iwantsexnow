@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import { Zap, Sparkles, CheckCircle2, ArrowRight, ShieldCheck } from "lucide-react";
 
 const BOOST_PACKAGES = [
@@ -45,7 +46,7 @@ export default function BoostProfilePage() {
   const [profileIdInput, setProfileIdInput] = useState("");
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Kantonaler Profil-Boost & Top-Spot Platzierung (Zug, Zürich, Luzern) | iwantsexnow.ch"
         description="Hebe dein Schweizer Escort- oder Studio-Profil auf Platz 1 in deinem Kanton. Faire Tages- und Wochenpauschalen per TWINT ohne Vermittlungsprovision."
@@ -53,32 +54,24 @@ export default function BoostProfilePage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
-              <Zap size={14} /> MAXIMALE SICHTBARKEIT IN DEINEM KANTON · 0% BUCHUNGSPROVISION
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
-              Profil-Booster & Kantonale Top-Spot-Platzierung
-            </h1>
-            <p className="text-xs text-gray-300 mt-1">
-              Kein Abo-Zwang: Buche deinen Top-Spot flexibel für 24 Stunden, 3 Tage oder 7 Tage direkt per TWINT oder Karte.
-            </p>
-          </div>
-          <Link href="/register" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#ff6b5e]">
+      <PageIntro tone="blush" note="Ganz oben stehen" art="book" title={<>Profil-Booster & Kantonale Top-Spot-Platzierung</>}
+        lead={<>Kein Abo-Zwang: Buche deinen Top-Spot flexibel für 24 Stunden, 3 Tage oder 7 Tage direkt per TWINT oder Karte.</>}>
+        <Link href="/register" className="px-4 py-2.5 rounded-xl bg-tinte/[0.04] hover:bg-tinte/[0.06] border border-tinte/25 text-[13px] font-bold text-kirsche">
             Noch kein Profil? Kostenlos starten →
           </Link>
-        </section>
+      </PageIntro>
 
-        <div className="p-4 rounded-2xl bg-[#0d1f27] border border-white/10 flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs font-bold text-gray-300">Optional: Deine Profil-ID oder Name für die direkte Zuordnung:</span>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+        
+
+        <div className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-[13px] font-bold text-gray-700">Optional: Deine Profil-ID oder Name für die direkte Zuordnung:</span>
           <input
             type="text"
             value={profileIdInput}
             onChange={(e) => setProfileIdInput(e.target.value)}
             placeholder="z.B. rosalon-188 oder Anzeigename..."
-            className="w-full sm:w-80 rounded-xl bg-[#07141a] border border-white/15 px-3.5 py-2 text-xs text-white"
+            className="w-full sm:w-80 rounded-xl bg-papier border border-tinte/25 px-3.5 py-2 text-[13px] text-tinte"
           />
         </div>
 
@@ -87,28 +80,28 @@ export default function BoostProfilePage() {
             <div
               key={pkg.id}
               className={`p-6 rounded-2xl border flex flex-col justify-between gap-6 ${
-                pkg.popular ? "bg-[#0d1f27] border-[#ff6b5e]" : "bg-[#0d1f27] border-white/10"
+                pkg.popular ? "bg-white border-kirsche" : "bg-white border-tinte/20"
               }`}
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded bg-white/10 text-[#ff6b5e] text-[10px] font-extrabold uppercase">
+                  <span className="px-2.5 py-1 rounded bg-tinte/[0.06] text-kirsche text-[13px] font-extrabold ">
                     {pkg.duration}
                   </span>
                   {pkg.popular && (
-                    <span className="px-2.5 py-1 rounded bg-mint-500 text-[#07141a] text-[10px] font-extrabold uppercase">
+                    <span className="px-2.5 py-1 rounded bg-mint-500 text-tinte text-[13px] font-extrabold ">
                       Meistgewählt
                     </span>
                   )}
                 </div>
-                <h2 className="text-lg font-serif font-bold text-white">{pkg.title}</h2>
-                <div className="text-3xl font-extrabold text-[#ff6b5e]">
-                  CHF {pkg.priceChf}.– <span className="text-xs text-gray-400 font-normal">einmalig</span>
+                <h2 className="text-lg font-serif font-bold text-tinte">{pkg.title}</h2>
+                <div className="text-3xl font-extrabold text-kirsche">
+                  CHF {pkg.priceChf}.– <span className="text-[13px] text-gray-600 font-normal">einmalig</span>
                 </div>
-                <ul className="space-y-2.5 text-xs text-gray-300 pt-2 border-t border-white/10">
+                <ul className="space-y-2.5 text-[13px] text-gray-700 pt-2 border-t border-tinte/20">
                   {pkg.features.map((f, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 size={14} className="text-mint-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 size={14} className="text-mint-700 shrink-0 mt-0.5" />
                       <span>{f}</span>
                     </li>
                   ))}
@@ -117,7 +110,7 @@ export default function BoostProfilePage() {
 
               <Link
                 href={`/checkout?profileId=${encodeURIComponent(profileIdInput || "boost-order")}&amount=${pkg.priceChf}`}
-                className="w-full py-3 rounded-xl bg-[#ff6b5e] hover:bg-[#e8564a] text-[#07141a] font-extrabold text-xs uppercase tracking-wider text-center block"
+                className="w-full py-3 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] text-center block"
               >
                 ⚡ Jetzt für CHF {pkg.priceChf}.– aktivieren →
               </Link>

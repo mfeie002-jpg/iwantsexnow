@@ -44,7 +44,7 @@ export function CantonPostcard({
       </div>
       <Postmark className="pointer-events-none absolute right-12 top-1 h-10 w-20" />
       <Stamp code={meta.code} count={count} color={STAMP_COLORS[canton]} className="absolute -right-2 -top-3 h-[4.6rem] w-[3.85rem] rotate-[5deg] drop-shadow-[0_2px_2px_rgba(30,34,71,0.25)]" />
-      <p className="hand mt-2 px-1 text-[1.7rem] text-tinte">{greeting || `Gruss aus ${meta.name}`}</p>
+      <p className="hand mt-2 px-1 text-[1.7rem] text-tinte">{greeting || (canton === "ch" ? "Gruss aus der Schweiz" : `Gruss aus ${meta.name}`)}</p>
     </div>
   );
 }

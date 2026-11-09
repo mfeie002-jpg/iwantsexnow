@@ -59,62 +59,62 @@ export default function CreatePostPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO title="Neues Profil erstellen oder Eintrag übernehmen | iWantSexNow.ch" description="Kostenloses Schweizer Direktprofil erstellen oder bestehenden Index-Eintrag übernehmen." />
       <LuxuryHeader />
       <main className="max-w-3xl mx-auto px-6 py-10 space-y-6">
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-kirsche/40 space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-tinte/20 pb-5">
             <div>
-              <span className="text-[11px] uppercase tracking-widest text-mint-400 font-bold">● 100 % KOSTENLOSES BASIS-PROFIL · 30 TAGE PRO-PILOT INKLUSIVE</span>
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
+              <span className="text-[13px] text-mint-700 font-bold">● 100 % Kostenloses Basis-Profil · 30 Tage Pro-Pilot Inklusive</span>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-tinte mt-1">
                 {claimQuery ? `Profil „${claimQuery}“ übernehmen` : "Neues Schweizer Direktprofil anlegen"}
               </h1>
             </div>
-            <Link href="/login" className="text-xs font-bold text-[#ff6b5e] hover:underline">Bereits registriert? Zum Login →</Link>
+            <Link href="/login" className="text-[13px] font-bold text-kirsche hover:underline">Bereits registriert? Zum Login →</Link>
           </div>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Anzeigename / Künstlername *</label>
-                <input type="text" required value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="z.B. Isabella VIP" className="w-full rounded-xl bg-[#07141a] border border-white/15 px-4 py-3 text-sm text-white" />
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Anzeigename / Künstlername *</label>
+                <input type="text" required value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="z.B. Isabella VIP" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Schweizer Direkt-Telefon / WhatsApp (+41) *</label>
-                <input type="text" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+41 79 123 45 67" className="w-full rounded-xl bg-[#07141a] border border-white/15 px-4 py-3 text-sm text-mint-400 font-bold" />
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Schweizer Direkt-Telefon / WhatsApp (+41) *</label>
+                <input type="text" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+41 79 123 45 67" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-mint-700 font-bold" />
               </div>
             </div>
             <div className="grid sm:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Stadt / Ort *</label>
-                <input type="text" required value={city} onChange={(e) => setCity(e.target.value)} className="w-full rounded-xl bg-[#07141a] border border-white/15 px-3.5 py-2.5 text-sm text-white" />
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Stadt / Ort *</label>
+                <input type="text" required value={city} onChange={(e) => setCity(e.target.value)} className="w-full rounded-xl bg-papier border border-tinte/25 px-3.5 py-2.5 text-sm text-tinte" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Kanton *</label>
-                <select value={canton} onChange={(e) => setCanton(e.target.value)} className="w-full rounded-xl bg-[#07141a] border border-white/15 px-3.5 py-2.5 text-sm text-white">
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Kanton *</label>
+                <select value={canton} onChange={(e) => setCanton(e.target.value)} className="w-full rounded-xl bg-papier border border-tinte/25 px-3.5 py-2.5 text-sm text-tinte">
                   {["ZG","ZH","GE","VD","BS","BL","BE","LU","AG","SG","SO","TI","VS","FR","NE","TG","SZ","GR","SH"].map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">30 Min. (CHF)</label>
-                <input type="number" value={rate30Chf} onChange={(e) => setRate30Chf(Number(e.target.value))} className="w-full rounded-xl bg-[#07141a] border border-white/15 px-3.5 py-2.5 text-sm text-white" />
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">30 Min. (CHF)</label>
+                <input type="number" value={rate30Chf} onChange={(e) => setRate30Chf(Number(e.target.value))} className="w-full rounded-xl bg-papier border border-tinte/25 px-3.5 py-2.5 text-sm text-tinte" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">60 Min. (CHF)</label>
-                <input type="number" value={rate60Chf} onChange={(e) => setRate60Chf(Number(e.target.value))} className="w-full rounded-xl bg-[#07141a] border border-white/15 px-3.5 py-2.5 text-sm text-[#ff6b5e] font-bold" />
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">60 Min. (CHF)</label>
+                <input type="number" value={rate60Chf} onChange={(e) => setRate60Chf(Number(e.target.value))} className="w-full rounded-xl bg-papier border border-tinte/25 px-3.5 py-2.5 text-sm text-kirsche font-bold" />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-300 mb-1.5">Haupt-Profilbild URL (Optional)</label>
-              <input type="url" value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} placeholder="https://..." className="w-full rounded-xl bg-[#07141a] border border-white/15 px-4 py-2.5 text-sm text-white" />
+              <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Haupt-Profilbild URL (Optional)</label>
+              <input type="url" value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} placeholder="https://..." className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-300 mb-1.5">Kurzbeschreibung & Rahmenbedingungen</label>
-              <textarea rows={3} value={bio} onChange={(e) => setBio(e.target.value)} className="w-full rounded-xl bg-[#07141a] border border-white/15 p-3.5 text-sm text-white" />
+              <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Kurzbeschreibung & Rahmenbedingungen</label>
+              <textarea rows={3} value={bio} onChange={(e) => setBio(e.target.value)} className="w-full rounded-xl bg-papier border border-tinte/25 p-3.5 text-sm text-tinte" />
             </div>
-            <button type="submit" disabled={loading} className="w-full py-4 rounded-xl bg-[#ff6b5e] hover:bg-[#e8564a] text-[#07141a] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+            <button type="submit" disabled={loading} className="w-full py-4 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer shadow-lg">
               <span>{loading ? "Richte dein Anbieter-Cockpit ein..." : "Profil aktivieren & direkt ins Anbieter-Cockpit →"}</span>
               <ArrowRight size={16} />
             </button>

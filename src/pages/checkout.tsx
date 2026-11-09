@@ -53,7 +53,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Diskreter Schweizer Paid-Vault Checkout (80/20 Fair-Split) | iwantsexnow.ch"
         description="Schalte private Foto- und Video-Tresore verifizierter Schweizer Anbieterinnen diskret frei. 80% direkte Ausschüttung an die Anbieterin."
@@ -64,72 +64,72 @@ export default function CheckoutPage() {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-6">
         <Link
           href={selectedProfile?.id ? `/profile/${encodeURIComponent(selectedProfile.id)}` : "/search"}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ff6b5e] hover:underline"
+          className="inline-flex items-center gap-1.5 text-[13px] font-bold text-kirsche hover:underline"
         >
           <ArrowLeft size={14} /> Zurück zum Profil
         </Link>
 
         {receipt ? (
-          <section className="p-8 rounded-2xl bg-[#0d1f27] border border-mint-500/50 space-y-5 text-center">
-            <div className="w-12 h-12 rounded-full bg-mint-500/20 text-mint-400 flex items-center justify-center mx-auto">
+          <section className="p-8 rounded-2xl bg-white border border-mint-500/50 space-y-5 text-center">
+            <div className="w-12 h-12 rounded-full bg-mint-500/20 text-mint-700 flex items-center justify-center mx-auto">
               <CheckCircle2 size={26} />
             </div>
-            <div className="text-[11px] uppercase tracking-widest text-mint-400 font-bold">
+            <div className="text-[13px] text-mint-700 font-bold">
               FREISCHALTUNG BESTÄTIGT · BELEG {receipt.receiptId}
             </div>
-            <h1 className="text-2xl font-serif font-bold text-white">
+            <h1 className="text-2xl font-serif font-bold text-tinte">
               Privater Tresor von {selectedProfile.rawName} ist freigeschaltet!
             </h1>
-            <p className="text-xs text-gray-300 max-w-md mx-auto">
+            <p className="text-[13px] text-gray-700 max-w-md mx-auto">
               Betrag: <strong>CHF {receipt.amountChf}.–</strong> ({receipt.paymentMethod}) · Davon wurden{" "}
-              <strong className="text-mint-400">CHF {receipt.creatorShareChf} (80 %)</strong> direkt dem Cockpit von{" "}
+              <strong className="text-mint-700">CHF {receipt.creatorShareChf} (80 %)</strong> direkt dem Cockpit von{" "}
               {selectedProfile.rawName} gutgeschrieben.
             </p>
             <div className="pt-2">
               <Link
                 href={`/profile/${encodeURIComponent(selectedProfile.id || selectedProfile.dedupClusterId)}`}
-                className="px-6 py-3 rounded-xl bg-[#ff6b5e] text-[#07141a] font-extrabold text-xs uppercase tracking-wider inline-block"
+                className="px-6 py-3 rounded-xl bg-kirsche text-white font-extrabold text-[13px] inline-block"
               >
                 Freigeschaltetes Profil & Galerie öffnen →
               </Link>
             </div>
           </section>
         ) : (
-          <section className="p-6 sm:p-8 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 space-y-6">
-            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+          <section className="p-6 sm:p-8 rounded-2xl bg-white border border-kirsche/40 space-y-6">
+            <div className="flex items-start justify-between gap-4 border-b border-tinte/20 pb-5">
               <div>
-                <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
-                  <Lock size={13} /> DISKRETE SCHWEIZER SOFORT-FREISCHALTUNG (NEUTRALER BELEG)
+                <div className="text-[13px] text-kirsche font-bold flex items-center gap-1.5">
+                  <Lock size={13} /> Diskrete Schweizer Sofort-Freischaltung (Neutraler Beleg)
                 </div>
-                <h1 className="text-2xl font-serif font-bold text-white mt-1">
+                <h1 className="text-2xl font-serif font-bold text-tinte mt-1">
                   Paid-Vault Zugang: {selectedProfile.rawName} ({selectedProfile.city}, {selectedProfile.canton})
                 </h1>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-extrabold text-[#ff6b5e]">CHF {vaultPriceChf}.–</div>
-                <div className="text-[10px] text-gray-400">Einmalig · Kein Abo</div>
+                <div className="text-2xl font-extrabold text-kirsche">CHF {vaultPriceChf}.–</div>
+                <div className="text-[13px] text-gray-600">Einmalig · Kein Abo</div>
               </div>
             </div>
 
             {/* Transparenter 80/20 Fair-Split Nachweis */}
-            <div className="p-4 rounded-xl bg-[#07141a] border border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="p-4 rounded-xl bg-papier border border-tinte/20 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[13px]">
               <div>
-                <div className="text-gray-400 text-[11px]">Gesamtbetrag (Einmalig)</div>
-                <div className="font-bold text-white text-sm mt-0.5">CHF {vaultPriceChf}.00</div>
+                <div className="text-gray-600 text-[13px]">Gesamtbetrag (Einmalig)</div>
+                <div className="font-bold text-tinte text-sm mt-0.5">CHF {vaultPriceChf}.00</div>
               </div>
               <div>
-                <div className="text-gray-400 text-[11px]">Direkt an {selectedProfile.rawName} (80 %)</div>
-                <div className="font-bold text-mint-400 text-sm mt-0.5">CHF {creator80.toFixed(2)}</div>
+                <div className="text-gray-600 text-[13px]">Direkt an {selectedProfile.rawName} (80 %)</div>
+                <div className="font-bold text-mint-700 text-sm mt-0.5">CHF {creator80.toFixed(2)}</div>
               </div>
               <div>
-                <div className="text-gray-400 text-[11px]">Plattform & Hosting (20 %)</div>
-                <div className="font-bold text-[#ff6b5e] text-sm mt-0.5">CHF {platform20.toFixed(2)}</div>
+                <div className="text-gray-600 text-[13px]">Plattform & Hosting (20 %)</div>
+                <div className="font-bold text-kirsche text-sm mt-0.5">CHF {platform20.toFixed(2)}</div>
               </div>
             </div>
 
             {/* Zahlungsart wählen */}
             <div className="space-y-2">
-              <label className="text-xs font-bold text-gray-300 uppercase tracking-wider">
+              <label className="text-[13px] font-bold text-gray-700 ">
                 Diskrete Zahlungsmethode wählen (neutrale Abrechnung):
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -144,12 +144,12 @@ export default function CheckoutPage() {
                     onClick={() => setPaymentMethod(m.id as any)}
                     className={`p-3.5 rounded-xl border text-left cursor-pointer transition ${
                       paymentMethod === m.id
-                        ? "bg-[#192030] border-[#ff6b5e] text-white"
-                        : "bg-[#07141a] border-white/10 text-gray-400"
+                        ? "bg-white border-kirsche text-tinte"
+                        : "bg-papier border-tinte/20 text-gray-600"
                     }`}
                   >
-                    <div className="text-xs font-extrabold">{m.label}</div>
-                    <div className="text-[10px] text-gray-400 mt-0.5">{m.sub}</div>
+                    <div className="text-[13px] font-extrabold">{m.label}</div>
+                    <div className="text-[13px] text-gray-600 mt-0.5">{m.sub}</div>
                   </button>
                 ))}
               </div>
@@ -159,7 +159,7 @@ export default function CheckoutPage() {
               type="button"
               disabled={processing}
               onClick={handleUnlock}
-              className="w-full py-4 rounded-xl bg-[#ff6b5e] hover:bg-[#e8564a] text-[#07141a] font-extrabold text-xs uppercase tracking-wider cursor-pointer shadow-lg"
+              className="w-full py-4 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] cursor-pointer shadow-lg"
             >
               {processing
                 ? "Freischaltung wird verschlüsselt..."

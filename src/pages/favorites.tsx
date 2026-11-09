@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import offersData from "@/data/harvested-offers.json";
 import { Heart, Trash2, Scale, Plus, ArrowRight, Sparkles } from "lucide-react";
 
@@ -65,7 +66,7 @@ export default function FavoritesPage() {
   }, [allProfiles, favIds, cantonFilter]);
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Meine Schweizer Favoriten & Merkliste (Zero-Trace lokal gespeichert) | iwantsexnow.ch"
         description="Verwalte deine gespeicherten Schweizer Escort- & Massage-Favoriten anonym auf deinem Gerät und vergleiche Honorare & Attribute mit 1 Klick."
@@ -73,23 +74,16 @@ export default function FavoritesPage() {
       />
       <LuxuryHeader />
 
+      <PageIntro tone="blush" note="Deine Merkliste" art="none" title={<>Deine gespeicherten Favoriten & Schnellvergleich</>}
+        lead={<>100 % lokal auf deinem Gerät gespeichert (kein Account erforderlich).</>} />
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-10">
-        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-widest text-glow-400 font-bold flex items-center gap-1.5">
-              <Heart size={14} className="fill-glow-400" /> PERSÖNLICHE SCHWEIZER MERKLISTE ({savedProfiles.length} PROFILE)
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
-              Deine gespeicherten Favoriten & Schnellvergleich
-            </h1>
-            <p className="text-xs text-gray-300 mt-1">
-              100 % lokal auf deinem Gerät gespeichert (kein Account erforderlich).
-            </p>
-          </div>
+        <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
+          
           <div className="flex flex-wrap gap-2">
             <Link
               href="/compare-escorts"
-              className="px-4 py-2.5 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold inline-flex items-center gap-1.5"
+              className="px-4 py-2.5 rounded-xl bg-kirsche text-white text-[13px] font-extrabold inline-flex items-center gap-1.5"
             >
               <Scale size={14} /> 4-Profil Direktvergleich öffnen →
             </Link>
@@ -97,7 +91,7 @@ export default function FavoritesPage() {
               <button
                 type="button"
                 onClick={() => updateFavs([])}
-                className="px-3.5 py-2.5 rounded-xl bg-glow-500/15 border border-glow-500/30 text-glow-300 text-xs font-bold cursor-pointer"
+                className="px-3.5 py-2.5 rounded-xl bg-glow-500/15 border border-glow-500/30 text-glow-700 text-[13px] font-bold cursor-pointer"
               >
                 Liste leeren
               </button>
@@ -107,16 +101,16 @@ export default function FavoritesPage() {
 
         {/* Gespeicherte Favoriten */}
         {savedProfiles.length === 0 ? (
-          <div className="p-10 rounded-2xl bg-[#0d1f27] border border-white/10 text-center space-y-3">
-            <p className="text-sm text-gray-300 font-semibold">Deine Merkliste ist aktuell leer.</p>
-            <p className="text-xs text-gray-400">Füge unten mit 1 Klick Profile aus deinem Kanton hinzu.</p>
+          <div className="p-10 rounded-2xl bg-white border border-tinte/20 text-center space-y-3">
+            <p className="text-sm text-gray-700 font-semibold">Deine Merkliste ist aktuell leer.</p>
+            <p className="text-[13px] text-gray-600">Füge unten mit 1 Klick Profile aus deinem Kanton hinzu.</p>
           </div>
         ) : (
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {savedProfiles.map((p: any) => (
-              <div key={p.id} className="rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/60 overflow-hidden flex flex-col justify-between">
+              <div key={p.id} className="rounded-2xl bg-white border border-kirsche/60 overflow-hidden flex flex-col justify-between">
                 <div>
-                  <div className="relative h-60 bg-[#07141a]">
+                  <div className="relative h-60 bg-papier">
                     <img
                       src={p.thumbnail || "/images/escort-portrait-1.jpg"}
                       alt={p.rawName}
@@ -131,19 +125,19 @@ export default function FavoritesPage() {
                     >
                       <Trash2 size={14} />
                     </button>
-                    <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 border border-white/15 text-xs font-extrabold text-[#ff6b5e]">
+                    <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 border border-tinte/25 text-[13px] font-extrabold text-kirsche">
                       CHF {p.rate60Chf}.– / 60m
                     </div>
                   </div>
                   <div className="p-4 space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="font-bold text-[#ff6b5e]">{p.canton} · {p.city}</span>
-                      <span className="text-gray-400">30 Min.: CHF {p.rate30Chf}.–</span>
+                    <div className="flex items-center justify-between text-[13px]">
+                      <span className="font-bold text-kirsche">{p.canton} · {p.city}</span>
+                      <span className="text-gray-600">30 Min.: CHF {p.rate30Chf}.–</span>
                     </div>
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-white hover:text-[#ff6b5e] truncate">
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-tinte hover:text-kirsche truncate">
                       {p.rawName}
                     </Link>
-                    <div className="text-xs text-gray-300">
+                    <div className="text-[13px] text-gray-700">
                       {p.age || 25} J. · {p.heightCm || 168} cm · Cup {p.cupSize || "C"} · {p.hairColor || "Brünett"}
                     </div>
                   </div>
@@ -151,7 +145,7 @@ export default function FavoritesPage() {
                 <div className="p-4 pt-0">
                   <Link
                     href={`/profile/${encodeURIComponent(p.id)}`}
-                    className="block w-full py-2.5 px-3 rounded-xl bg-[#ff6b5e] text-[#07141a] font-extrabold text-xs text-center"
+                    className="block w-full py-2.5 px-3 rounded-xl bg-kirsche text-white font-extrabold text-[13px] text-center"
                   >
                     Profil & +41 Kontakt öffnen →
                   </Link>
@@ -162,9 +156,9 @@ export default function FavoritesPage() {
         )}
 
         {/* Weitere Empfehlungen nach Kanton zum 1-Klick-Merken */}
-        <section className="space-y-4 pt-6 border-t border-white/10">
+        <section className="space-y-4 pt-6 border-t border-tinte/20">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-serif font-bold text-white">
+            <h2 className="text-lg font-serif font-bold text-tinte">
               Weitere Top-Profile nach Kanton zur Merkliste hinzufügen
             </h2>
             <div className="flex flex-wrap gap-1.5">
@@ -173,8 +167,8 @@ export default function FavoritesPage() {
                   key={c}
                   type="button"
                   onClick={() => setCantonFilter(c)}
-                  className={`px-3 py-1 rounded-lg text-xs font-extrabold cursor-pointer ${
-                    cantonFilter === c ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#0d1f27] text-gray-300 border border-white/10"
+                  className={`px-3 py-1 rounded-lg text-[13px] font-extrabold cursor-pointer ${
+                    cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-gray-300 border border-tinte/20"
                   }`}
                 >
                   {c === "ALL" ? "Alle" : c}
@@ -185,7 +179,7 @@ export default function FavoritesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {suggestions.map((p: any) => (
-              <div key={p.id} className="p-4 rounded-2xl bg-[#0d1f27] border border-white/10 flex flex-col justify-between gap-3">
+              <div key={p.id} className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-col justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <img
                     src={p.thumbnail || "/images/escort-portrait-1.jpg"}
@@ -194,16 +188,16 @@ export default function FavoritesPage() {
                     className="w-12 h-12 rounded-xl object-cover object-top"
                   />
                   <div className="min-w-0">
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-xs font-bold text-white hover:text-[#ff6b5e] truncate block">
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-[13px] font-bold text-tinte hover:text-kirsche truncate block">
                       {p.rawName}
                     </Link>
-                    <div className="text-[11px] text-gray-400">{p.city} ({p.canton}) · CHF {p.rate60Chf}.–</div>
+                    <div className="text-[13px] text-gray-600">{p.city} ({p.canton}) · CHF {p.rate60Chf}.–</div>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => toggleFav(p.id)}
-                  className="w-full py-2 rounded-xl bg-white/5 hover:bg-[#ff6b5e] text-gray-200 hover:text-[#07141a] border border-white/10 text-xs font-extrabold cursor-pointer transition"
+                  className="w-full py-2 rounded-xl bg-tinte/[0.04] hover:bg-kirsche text-gray-200 hover:text-white border border-tinte/20 text-[13px] font-extrabold cursor-pointer transition"
                 >
                   ♥ Auf Merkliste speichern
                 </button>

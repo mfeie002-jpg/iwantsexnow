@@ -122,7 +122,7 @@ export default function ContentFeed() {
               <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
                 <Link href="/profile">Profile</Link>
               </Button>
-              <Button size="sm" className="bg-gradient-to-r from-glow-600 to-dusk-600 hover:from-glow-700 hover:to-dusk-700 text-xs md:text-sm" asChild>
+              <Button size="sm" className="bg-gradient-to-r from-glow-600 to-dusk-600 hover:from-glow-700 hover:to-dusk-700 text-[13px] md:text-sm" asChild>
                 <Link href="/creator-dashboard">Creator</Link>
               </Button>
             </div>
@@ -211,17 +211,17 @@ export default function ContentFeed() {
                           <Star size={14} className="text-lake-500 fill-lake-500" />
                         )}
                         {post.trending && (
-                          <Badge className="bg-sun-500 border-0 text-xs">
+                          <Badge className="bg-sun-500 border-0 text-[13px]">
                             <TrendingUp size={10} className="mr-1" />
                             Trending
                           </Badge>
                         )}
                       </div>
-                      <p className="text-xs md:text-sm text-gray-600">{post.timestamp}</p>
+                      <p className="text-[13px] md:text-sm text-gray-600">{post.timestamp}</p>
                     </div>
                   </div>
                   {!post.isSubscribed && (
-                    <Button size="sm" className="bg-glow-600 hover:bg-glow-700 text-xs md:text-sm">
+                    <Button size="sm" className="bg-glow-600 hover:bg-glow-700 text-[13px] md:text-sm">
                       Subscribe CHF {post.subscriptionPrice}/mo
                     </Button>
                   )}
@@ -261,7 +261,7 @@ export default function ContentFeed() {
                               <DollarSign size={18} className="mr-2" />
                               Unlock for CHF {post.ppvPrice}
                             </Button>
-                            <p className="text-xs md:text-sm text-gray-500 mt-3">
+                            <p className="text-[13px] md:text-sm text-gray-500 mt-3">
                               Or subscribe to get access to all content
                             </p>
                           </>
@@ -272,12 +272,12 @@ export default function ContentFeed() {
 
                   {/* Stats Overlay */}
                   <div className="absolute top-4 right-4 flex gap-2">
-                    <Badge className="bg-black/70 text-white border-0 text-xs">
+                    <Badge className="bg-white text-white border-0 text-[13px]">
                       <Eye size={12} className="mr-1" />
                       {post.views.toLocaleString()}
                     </Badge>
                     {post.type === "video" && (
-                      <Badge className="bg-glow-600 border-0 text-xs">Video</Badge>
+                      <Badge className="bg-glow-600 border-0 text-[13px]">Video</Badge>
                     )}
                   </div>
                 </div>
@@ -319,15 +319,15 @@ export default function ContentFeed() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                 <div className="text-2xl md:text-3xl font-black mb-2">80%</div>
-                <div className="text-xs md:text-sm">Revenue Share</div>
+                <div className="text-[13px] md:text-sm">Revenue Share</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                 <div className="text-2xl md:text-3xl font-black mb-2">Free</div>
-                <div className="text-xs md:text-sm">To Get Started</div>
+                <div className="text-[13px] md:text-sm">To Get Started</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                 <div className="text-2xl md:text-3xl font-black mb-2">24/7</div>
-                <div className="text-xs md:text-sm">Creator Support</div>
+                <div className="text-[13px] md:text-sm">Creator Support</div>
               </div>
             </div>
             <Button size="lg" className="bg-white text-dusk-600 hover:bg-gray-100 text-base md:text-lg px-8" asChild>

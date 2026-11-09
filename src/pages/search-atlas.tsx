@@ -36,7 +36,7 @@ export default function SearchAtlasPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Schweizer 2D-Such-Atlas: Alle Kantone, Städte & Spezial-Rubriken | iwantsexnow.ch"
         description="Komplettes Schweizer Verzeichnis aller Ortsseiten und 84 Stadt-Service-Kombinationen (GFE, Tantra, Hotel-Outcall, BDSM, Trans) mit CHF-Richtpreisen."
@@ -45,19 +45,19 @@ export default function SearchAtlasPage() {
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
+        <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
-              <Compass size={14} /> 2D-PROGRAMMATIC DIRECTORY ATLAS · SCHWEIZ
+            <div className="text-[13px] text-kirsche font-bold flex items-center gap-1.5">
+              <Compass size={14} /> 2D-PROGRAMMATIC Directory Atlas · SCHWEIZ
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-tinte mt-1">
               Kompletter Schweizer Orts- & Rubriken-Atlas
             </h1>
-            <p className="text-xs text-gray-300 mt-1">
+            <p className="text-[13px] text-gray-700 mt-1">
               Direktzugriff auf alle regionalen Schweizer Knotenpunkte und Spezial-Rubriken mit 5-Wege-Echtzeit-Sortierung.
             </p>
           </div>
-          <Link href="/search" className="px-4 py-2.5 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold">
+          <Link href="/search" className="px-4 py-2.5 rounded-xl bg-kirsche text-white text-[13px] font-extrabold">
             Zur Deep-Filter-Suche →
           </Link>
         </section>
@@ -68,8 +68,8 @@ export default function SearchAtlasPage() {
               key={c}
               type="button"
               onClick={() => setSelectedCanton(c)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                selectedCanton === c ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#0d1f27] text-gray-300 border border-white/10"
+              className={`px-3.5 py-2 rounded-xl text-[13px] font-extrabold cursor-pointer ${
+                selectedCanton === c ? "bg-kirsche text-white" : "bg-white text-gray-300 border border-tinte/20"
               }`}
             >
               {c === "ALL" ? "Alle Regionen" : `Kanton ${c}`}
@@ -79,31 +79,31 @@ export default function SearchAtlasPage() {
 
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {visibleCities.map((city) => (
-            <div key={city.slug} className="p-5 rounded-2xl bg-[#0d1f27] border border-white/10 space-y-3">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+            <div key={city.slug} className="p-5 rounded-2xl bg-white border border-tinte/20 space-y-3">
+              <div className="flex items-center justify-between border-b border-tinte/20 pb-2.5">
                 <div>
-                  <span className="text-[10px] font-extrabold text-[#ff6b5e] uppercase">Kanton {city.canton}</span>
-                  <h2 className="text-lg font-serif font-bold text-white">{city.name}</h2>
+                  <span className="text-[13px] font-extrabold text-kirsche ">Kanton {city.canton}</span>
+                  <h2 className="text-lg font-serif font-bold text-tinte">{city.name}</h2>
                 </div>
                 <Link
                   href={`/orte/${city.slug}`}
-                  className="px-3 py-1.5 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold"
+                  className="px-3 py-1.5 rounded-xl bg-kirsche text-white text-[13px] font-extrabold"
                 >
                   Hauptseite →
                 </Link>
               </div>
 
-              <div className="space-y-1.5 text-xs">
+              <div className="space-y-1.5 text-[13px]">
                 {SERVICES.map((srv) => (
                   <Link
                     key={srv.slug}
                     href={`/kategorie/${city.slug}/${srv.slug}`}
-                    className="p-2 rounded-xl bg-[#07141a] hover:bg-white/5 border border-white/5 hover:border-[#ff6b5e]/40 flex items-center justify-between text-gray-300 hover:text-white transition"
+                    className="p-2 rounded-xl bg-papier hover:bg-tinte/[0.04] border border-tinte/10 hover:border-kirsche/40 flex items-center justify-between text-gray-700 hover:text-tinte transition"
                   >
                     <span>
                       {srv.label} in <strong>{city.name}</strong>
                     </span>
-                    <ArrowRight size={12} className="text-[#ff6b5e]" />
+                    <ArrowRight size={12} className="text-kirsche" />
                   </Link>
                 ))}
               </div>

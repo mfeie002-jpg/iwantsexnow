@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import { SwissDoorplate } from "@/components/SwissDoorplate";
 import offersData from "@/data/harvested-offers.json";
 import { ShieldCheck, Calculator } from "lucide-react";
@@ -43,45 +44,39 @@ export default function SwissPricingCompassPage() {
   const finalEstimate = visitType === "outcall" ? baseCalc + 50 : baseCalc;
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Schweizer CHF-Honorar-Kompass (30 Min. / 60 Min. Richtpreise) | iwantsexnow.ch"
         description="Live-Marktauswertung über 2'529+ Schweizer Escort- und Tantra-Profile nach Kanton (Zürich, Zug, Genf, Basel, Tessin) gemäss Preisbekanntgabeverordnung."
       />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-7">
-        <div className="penthouse-panel p-6 sm:p-7 rounded-[24px] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <SwissDoorplate state="FREI" roomNumber="PBV-KONFORM" customLabel="100% CHF PREISTRANSPARENZ" size="sm" />
-            <h1 className="text-2xl sm:text-4xl font-serif text-[#ff6b5e] mt-2">
-              Schweizer CHF-Honorar-Kompass & Tarifrechner
-            </h1>
-            <p className="text-xs sm:text-sm text-[#9fb8b5] max-w-2xl">
-              Echte Durchschnittswerte aus 2&apos;529 aktiven Schweizer Dossiers – ohne versteckte Agentur-Provisionen.
-            </p>
-          </div>
-          <div className="text-right font-mono text-xs text-mint-400 font-bold flex items-center gap-1.5">
+      <PageIntro tone="butter" note="Ehrlich gerechnet" art="canton:zh" title={<>Schweizer CHF-Honorar-Kompass & Tarifrechner</>}
+        lead={<>Echte Durchschnittswerte aus 2&apos;529 aktiven Schweizer Dossiers – ohne versteckte Agentur-Provisionen.</>}>
+        <div className="text-right font-mono text-[13px] text-mint-700 font-bold flex items-center gap-1.5">
             <ShieldCheck size={15} />
             <span>0 % BUCHUNGSKOMMISSION</span>
           </div>
-        </div>
+      </PageIntro>
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-7">
+        
 
         {/* Interaktiver Schweizer Honorar-Rechner */}
-        <section className="penthouse-panel p-6 rounded-[24px] border border-[#ff6b5e]/50 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+        <section className="penthouse-panel p-6 rounded-[24px] border border-kirsche/50 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
           <div className="lg:col-span-2 space-y-4">
-            <div className="text-xs font-mono uppercase tracking-[0.2em] text-[#ff6b5e] font-bold flex items-center gap-2">
+            <div className="text-[13px] font-mono text-kirsche font-bold flex items-center gap-2">
               <Calculator size={15} />
-              <span>INTERAKTIVER SCHWEIZER HONORAR-RECHNER</span>
+              <span>Interaktiver Schweizer Honorar-Rechner</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <select
                 value={selectedCanton}
                 onChange={(e) => setSelectedCanton(e.target.value)}
-                className="rounded-full bg-black/75 border border-[#ff6b5e]/40 px-4 py-2.5 text-xs font-mono font-bold text-[#ff6b5e] outline-none"
+                className="rounded-full bg-white border border-kirsche/40 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none"
               >
                 {cantonStats.map((s) => (
-                  <option key={s.canton} value={s.canton} className="bg-[#07141a]">
+                  <option key={s.canton} value={s.canton} className="bg-papier">
                     KANTON {s.canton} ({s.count} Suiten)
                   </option>
                 ))}
@@ -90,32 +85,32 @@ export default function SwissPricingCompassPage() {
               <select
                 value={durationMins}
                 onChange={(e) => setDurationMins(Number(e.target.value))}
-                className="rounded-full bg-black/75 border border-[#ff6b5e]/40 px-4 py-2.5 text-xs font-mono font-bold text-[#ff6b5e] outline-none"
+                className="rounded-full bg-white border border-kirsche/40 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none"
               >
-                <option value={30} className="bg-[#07141a]">DAUER: 30 MIN. EXPRESS</option>
-                <option value={60} className="bg-[#07141a]">DAUER: 60 MIN. STANDARD</option>
-                <option value={120} className="bg-[#07141a]">DAUER: 120 MIN. DINNER</option>
+                <option value={30} className="bg-papier">Dauer: 30 Min. Express</option>
+                <option value={60} className="bg-papier">Dauer: 60 Min. Standard</option>
+                <option value={120} className="bg-papier">Dauer: 120 Min. Dinner</option>
               </select>
 
               <select
                 value={visitType}
                 onChange={(e) => setVisitType(e.target.value as any)}
-                className="rounded-full bg-black/75 border border-[#ff6b5e]/40 px-4 py-2.5 text-xs font-mono font-bold text-[#ff6b5e] outline-none"
+                className="rounded-full bg-white border border-kirsche/40 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none"
               >
-                <option value="incall" className="bg-[#07141a]">EMPFANG IN SUITE (INCALL)</option>
-                <option value="outcall" className="bg-[#07141a]">HOTELBESUCH (OUTCALL)</option>
+                <option value="incall" className="bg-papier">Empfang in Suite (INCALL)</option>
+                <option value="outcall" className="bg-papier">HOTELBESUCH (OUTCALL)</option>
               </select>
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-black/80 border border-[#ff6b5e] text-center space-y-1">
-            <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#9fb8b5]">
+          <div className="p-5 rounded-2xl bg-white border border-kirsche text-center space-y-1">
+            <div className="text-[13px] font-mono text-tinte-soft">
               MARKTÜBLICHER RICHTWERT ({selectedCanton})
             </div>
-            <div className="font-serif font-mono text-3xl sm:text-4xl text-[#ff6b5e] font-bold">
+            <div className="font-serif font-mono text-3xl sm:text-4xl text-kirsche font-bold">
               CHF {finalEstimate}.–
             </div>
-            <div className="text-[10px] font-mono text-mint-400">
+            <div className="text-[13px] font-mono text-mint-700">
               Direktzahlung vor Ort (Bar / TWINT)
             </div>
           </div>
@@ -125,18 +120,18 @@ export default function SwissPricingCompassPage() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {cantonStats.map((st) => (
             <div key={st.canton} className="valentina-outer-card rounded-[20px] p-2">
-              <div className="rounded-[15px] border border-[#ff6b5e]/30 bg-[#07141a] p-4 space-y-2.5 font-mono text-xs">
+              <div className="rounded-[15px] border border-kirsche/30 bg-papier p-4 space-y-2.5 font-mono text-[13px]">
                 <div className="flex items-center justify-between">
                   <SwissDoorplate state="FREI" roomNumber={st.canton} customLabel={st.count + " DOSSIERS"} size="sm" />
-                  <span className="text-[#ff6b5e] font-bold">Ø CHF {st.avg60}.– / 60M</span>
+                  <span className="text-kirsche font-bold">Ø CHF {st.avg60}.– / 60M</span>
                 </div>
-                <div className="flex justify-between text-[11px] text-[#9fb8b5] pt-2 border-t border-white/10">
+                <div className="flex justify-between text-[13px] text-tinte-soft pt-2 border-t border-tinte/20">
                   <span>30 Min. Express Ø:</span>
-                  <strong className="text-white">CHF {st.avg30}.–</strong>
+                  <strong className="text-tinte">CHF {st.avg30}.–</strong>
                 </div>
-                <div className="flex justify-between text-[11px] text-[#9fb8b5]">
+                <div className="flex justify-between text-[13px] text-tinte-soft">
                   <span>Bandbreite (60 Min.):</span>
-                  <strong className="text-[#ff6b5e]">CHF {st.min60} – {st.max60}</strong>
+                  <strong className="text-kirsche">CHF {st.min60} – {st.max60}</strong>
                 </div>
               </div>
             </div>

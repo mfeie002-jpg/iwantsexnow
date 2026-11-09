@@ -135,16 +135,16 @@ export default function AdminLogin() {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-900 dark:via-dusk-950 dark:to-glow-950 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl">
+      <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-100 dark:via-dusk-100 dark:to-glow-100 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md p-8 bg-white/80 dark:bg-gray-100/80 backdrop-blur-sm shadow-2xl">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-dusk-600 to-glow-600 rounded-2xl mb-4">
-              <Lock className="w-8 h-8 text-white" />
+              <Lock className="w-8 h-8 text-tinte" />
             </div>
             <h1 className="text-3xl font-black bg-gradient-to-r from-dusk-600 via-glow-600 to-red-600 bg-clip-text text-transparent">
               Admin Login
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-gray-500 dark:text-gray-600 mt-2">
               Web Analyzer Suite
             </p>
           </div>
@@ -219,12 +219,12 @@ export default function AdminLogin() {
             </div>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-600">
             <p>
               After signup, contact an admin to grant you admin role:
             </p>
-            <code className="block mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs">
-              INSERT INTO user_roles (user_id, role) VALUES ('your-id', 'admin');
+            <code className="block mt-2 p-2 bg-gray-900 dark:bg-gray-200 rounded text-[13px]">
+              Insert Into user_roles (user_id, role) VALUES ('your-id', 'admin');
             </code>
           </div>
         </Card>

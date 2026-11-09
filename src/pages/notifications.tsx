@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import offersData from "@/data/harvested-offers.json";
 import { Bell, CheckCircle2, Sparkles, Clock, ArrowRight } from "lucide-react";
 
@@ -46,7 +47,7 @@ export default function NotificationsRadarPage() {
   }, [serverStates, cantonFilter]);
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Schweizer Echtzeit-Verfügbarkeits-Ticker & 4h-Radar | iwantsexnow.ch"
         description="Live-Ticker aller 4-Stunden-Verfügbarkeiten, Foto-Verifizierungen und Paid-Vault-Updates in Zug, Zürich, Luzern, Basel & Genf."
@@ -54,24 +55,19 @@ export default function NotificationsRadarPage() {
       />
       <LuxuryHeader />
 
+      <PageIntro tone="butter" note="Neuigkeiten" art="none" title={<>Schweizer 4h-Verfügbarkeits- & Status-Ticker</>} />
+
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-6">
-        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-widest text-mint-400 font-bold flex items-center gap-1.5">
-              <Bell size={14} /> LIVE-STATUS-FEED · ALLE KANTONE
-            </div>
-            <h1 className="text-2xl font-serif font-bold text-white mt-1">
-              Schweizer 4h-Verfügbarkeits- & Status-Ticker
-            </h1>
-          </div>
+        <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
+          
           <div className="flex flex-wrap gap-1.5">
             {["ALL", "ZG", "ZH", "LU", "AG", "BS", "BE", "GE"].map((c) => (
               <button
                 key={c}
                 type="button"
                 onClick={() => setCantonFilter(c)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-extrabold cursor-pointer ${
-                  cantonFilter === c ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#07141a] text-gray-300 border border-white/10"
+                className={`px-3 py-1.5 rounded-xl text-[13px] font-extrabold cursor-pointer ${
+                  cantonFilter === c ? "bg-kirsche text-white" : "bg-papier text-gray-300 border border-tinte/20"
                 }`}
               >
                 {c === "ALL" ? "Alle" : c}
@@ -82,28 +78,28 @@ export default function NotificationsRadarPage() {
 
         <section className="space-y-2.5">
           {liveEvents.map((ev) => (
-            <div key={ev.id} className="p-4 rounded-2xl bg-[#0d1f27] border border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div key={ev.id} className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-wrap items-center justify-between gap-3 text-[13px]">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-white/10 text-[#ff6b5e] font-bold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-tinte/[0.06] text-kirsche font-bold text-[13px]">
                     {ev.canton} · {ev.city}
                   </span>
-                  <Link href={`/profile/${encodeURIComponent(ev.id)}`} className="font-bold text-white text-sm hover:text-[#ff6b5e]">
+                  <Link href={`/profile/${encodeURIComponent(ev.id)}`} className="font-bold text-tinte text-sm hover:text-kirsche">
                     {ev.rawName}
                   </Link>
-                  <span className="text-gray-400 text-[11px]">· CHF {ev.rate60Chf}.– / 60m</span>
+                  <span className="text-gray-600 text-[13px]">· CHF {ev.rate60Chf}.– / 60m</span>
                 </div>
-                <div className={ev.isAvail ? "text-mint-400 font-semibold" : "text-gray-300"}>
+                <div className={ev.isAvail ? "text-mint-700 font-semibold" : "text-gray-700"}>
                   {ev.eventLabel}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[13px] text-gray-600 flex items-center gap-1">
                   <Clock size={12} /> vor {ev.minsAgo} Min.
                 </span>
                 <Link
                   href={`/profile/${encodeURIComponent(ev.id)}`}
-                  className="px-3.5 py-2 rounded-xl bg-[#ff6b5e] text-[#07141a] font-extrabold inline-flex items-center gap-1"
+                  className="px-3.5 py-2 rounded-xl bg-kirsche text-white font-extrabold inline-flex items-center gap-1"
                 >
                   <span>Öffnen</span>
                   <ArrowRight size={12} />

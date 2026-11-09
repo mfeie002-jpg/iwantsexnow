@@ -57,7 +57,7 @@ export default function UploadPhotos() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-black mb-4">Upload Your Photos</h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-500">
               Profiles with photos get 10x more views and messages!
             </p>
           </div>
@@ -73,7 +73,7 @@ export default function UploadPhotos() {
                   />
                   <button
                     onClick={() => removePhoto(index)}
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 bg-red-500 text-tinte rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <X size={20} />
                   </button>
@@ -86,7 +86,7 @@ export default function UploadPhotos() {
               ))}
 
               {photos.length < 6 && (
-                <label className="relative border-2 border-dashed border-gray-300 rounded-lg h-64 flex flex-col items-center justify-center cursor-pointer hover:border-glow-600 hover:bg-glow-50 transition-all">
+                <label className="relative border-2 border-dashed border-gray-700 rounded-lg h-64 flex flex-col items-center justify-center cursor-pointer hover:border-glow-600 hover:bg-glow-50 transition-all">
                   <input
                     type="file"
                     accept="image/*"
@@ -94,9 +94,9 @@ export default function UploadPhotos() {
                     onChange={handleFileSelect}
                     className="hidden"
                   />
-                  <Upload size={48} className="text-gray-400 mb-4" />
-                  <p className="text-gray-600 font-medium mb-1">Upload Photos</p>
-                  <p className="text-sm text-gray-400">PNG, JPG up to 10MB</p>
+                  <Upload size={48} className="text-gray-600 mb-4" />
+                  <p className="text-gray-500 font-medium mb-1">Upload Photos</p>
+                  <p className="text-sm text-gray-600">PNG, JPG up to 10MB</p>
                 </label>
               )}
             </div>
@@ -105,8 +105,8 @@ export default function UploadPhotos() {
               <div className="flex gap-3">
                 <Camera className="text-lake-600 flex-shrink-0" size={24} />
                 <div>
-                  <h3 className="font-bold text-lake-900 mb-2">Photo Guidelines</h3>
-                  <ul className="text-sm text-lake-800 space-y-1">
+                  <h3 className="font-bold text-lake-300 mb-2">Photo Guidelines</h3>
+                  <ul className="text-sm text-lake-400 space-y-1">
                     <li>• Use clear, well-lit photos showing your face</li>
                     <li>• Avoid group photos or photos with filters</li>
                     <li>• No nudity or inappropriate content</li>
@@ -144,7 +144,7 @@ export default function UploadPhotos() {
                 <Camera className="text-glow-600" size={32} />
               </div>
               <h3 className="font-bold text-lg mb-2">Be Authentic</h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-500">
                 Use recent photos that accurately represent you
               </p>
             </Card>
@@ -154,7 +154,7 @@ export default function UploadPhotos() {
                 <ImageIcon className="text-dusk-600" size={32} />
               </div>
               <h3 className="font-bold text-lg mb-2">Quality Matters</h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-500">
                 High-quality images get better engagement
               </p>
             </Card>
@@ -164,7 +164,7 @@ export default function UploadPhotos() {
                 <Upload className="text-lake-600" size={32} />
               </div>
               <h3 className="font-bold text-lg mb-2">More is Better</h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-500">
                 Upload multiple photos to increase profile views
               </p>
             </Card>

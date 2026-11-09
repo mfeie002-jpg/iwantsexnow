@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import { SwissDoorplate } from "@/components/SwissDoorplate";
 import offersData from "@/data/harvested-offers.json";
 import { Search, Crown, MessageCircle, User, Sparkles, RotateCcw } from "lucide-react";
@@ -75,47 +76,41 @@ export default function DeepSearchPage() {
   }, [query, canton, rubric, maxPrice, onlyFree]);
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Deep-Filter Suche · 2'529 Schweizer Suiten & Dossiers | iwantsexnow.ch"
         description="Durchsuchen Sie 2'529+ verifizierte Schweizer Escort-, Tantra- und Studio-Dossiers nach Kanton, 30m/60m CHF-Honorar und Live-Status."
       />
       <LuxuryHeader />
 
+      <PageIntro tone="himmel" note="Finde, wen du suchst" art="search" title={<>Präzisions-Suche über {results.length} Schweizer Suiten</>}>
+        <SwissDoorplate state="FREI" roomNumber="CH" customLabel={results.length + " TREFFER"} size="sm" />
+      </PageIntro>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <section className="penthouse-panel p-5 sm:p-6 rounded-[24px] border border-[#ff6b5e]/40 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#ff6b5e]/20 pb-3.5">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#ff6b5e] font-bold">
-                SWISS DEEP-FILTER ENGINE
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-serif text-[#ff6b5e] mt-0.5">
-                Präzisions-Suche über {results.length} Schweizer Suiten
-              </h1>
-            </div>
-            <SwissDoorplate state="FREI" roomNumber="CH" customLabel={results.length + " TREFFER"} size="sm" />
-          </div>
+        <section className="penthouse-panel p-5 sm:p-6 rounded-[24px] border border-kirsche/40 space-y-4">
+          
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <div className="lg:col-span-2 relative">
-              <Search size={14} className="absolute left-3.5 top-3 text-[#ff6b5e]" />
+              <Search size={14} className="absolute left-3.5 top-3 text-kirsche" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Name, Stadt, PLZ (6300, 8001), Service (GFE, Tantra)..."
-                className="w-full pl-9 pr-3 py-2.5 rounded-full bg-black/75 border border-[#ff6b5e]/35 text-xs text-white placeholder-[#6f8c93] focus:border-[#ff6b5e] outline-none"
+                className="w-full pl-9 pr-3 py-2.5 rounded-full bg-white border border-kirsche/35 text-[13px] text-tinte placeholder-tinte-soft focus:border-kirsche outline-none"
               />
             </div>
 
             <select
               value={canton}
               onChange={(e) => setCanton(e.target.value)}
-              className="rounded-full bg-black/75 border border-[#ff6b5e]/35 px-4 py-2.5 text-xs font-mono font-bold text-[#ff6b5e] outline-none cursor-pointer"
+              className="rounded-full bg-white border border-kirsche/35 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none cursor-pointer"
             >
               {CANTONS.map((c) => (
-                <option key={c} value={c} className="bg-[#07141a]">
-                  {c === "ALL" ? "KANTON: GANZE SCHWEIZ" : "KANTON: " + c}
+                <option key={c} value={c} className="bg-papier">
+                  {c === "ALL" ? "Kanton: Ganze Schweiz" : "KANTON: " + c}
                 </option>
               ))}
             </select>
@@ -123,24 +118,24 @@ export default function DeepSearchPage() {
             <select
               value={rubric}
               onChange={(e) => setRubric(e.target.value)}
-              className="rounded-full bg-black/75 border border-[#ff6b5e]/35 px-4 py-2.5 text-xs font-mono font-bold text-[#ff6b5e] outline-none cursor-pointer"
+              className="rounded-full bg-white border border-kirsche/35 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none cursor-pointer"
             >
-              <option value="ALL" className="bg-[#07141a]">RUBRIK: ALLE</option>
-              <option value="female" className="bg-[#07141a]">ELITE ESCORT & GFE</option>
-              <option value="massage" className="bg-[#07141a]">TANTRA & MASSAGE</option>
-              <option value="bdsm" className="bg-[#07141a]">DOMINA & BDSM</option>
-              <option value="trans" className="bg-[#07141a]">TRANS VIP</option>
+              <option value="ALL" className="bg-papier">Rubrik: Alle</option>
+              <option value="female" className="bg-papier">Elite Escort & GFE</option>
+              <option value="massage" className="bg-papier">Tantra & Massage</option>
+              <option value="bdsm" className="bg-papier">Domina & BDSM</option>
+              <option value="trans" className="bg-papier">Trans VIP</option>
             </select>
 
             <select
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="rounded-full bg-black/75 border border-[#ff6b5e]/35 px-4 py-2.5 text-xs font-mono font-bold text-[#ff6b5e] outline-none cursor-pointer"
+              className="rounded-full bg-white border border-kirsche/35 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none cursor-pointer"
             >
-              <option value={1200} className="bg-[#07141a]">HONORAR: ALLE CHF</option>
-              <option value={250} className="bg-[#07141a]">MAX. CHF 250 / 60M</option>
-              <option value={350} className="bg-[#07141a]">MAX. CHF 350 / 60M</option>
-              <option value={500} className="bg-[#07141a]">MAX. CHF 500 / 60M</option>
+              <option value={1200} className="bg-papier">Honorar: Alle CHF</option>
+              <option value={250} className="bg-papier">MAX. CHF 250 / 60M</option>
+              <option value={350} className="bg-papier">MAX. CHF 350 / 60M</option>
+              <option value={500} className="bg-papier">MAX. CHF 500 / 60M</option>
             </select>
           </div>
 
@@ -167,10 +162,10 @@ export default function DeepSearchPage() {
                 setMaxPrice(1200);
                 setOnlyFree(false);
               }}
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-[#9fb8b5] hover:text-[#ff6b5e] cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-[13px] font-mono text-tinte-soft hover:text-kirsche cursor-pointer"
             >
               <RotateCcw size={13} />
-              <span>FILTER ZURÜCKSETZEN</span>
+              <span>Filter Zurücksetzen</span>
             </button>
           </div>
         </section>
@@ -183,7 +178,7 @@ export default function DeepSearchPage() {
                 key={p.id}
                 className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
               >
-                <div className="relative rounded-[20px] overflow-hidden border border-[#ff6b5e]/35 bg-[#07141a] flex-1 flex flex-col justify-between">
+                <div className="relative rounded-[20px] overflow-hidden border border-kirsche/35 bg-papier flex-1 flex flex-col justify-between">
                   <Link href={"/profile/" + encodeURIComponent(p.id)} className="darkroom-stage block aspect-[3/4.1] w-full">
                     {p.hasRealPhoto ? (
                       <img
@@ -201,7 +196,7 @@ export default function DeepSearchPage() {
                     <div className="darkroom-floor" />
 
                     <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#ff6b5e]/55 flex items-center justify-center text-[#ff6b5e]">
+                      <div className="w-7 h-7 rounded-full bg-white border border-kirsche/55 flex items-center justify-center text-kirsche">
                         <Crown size={13} />
                       </div>
                       <SwissDoorplate
@@ -213,28 +208,28 @@ export default function DeepSearchPage() {
                     </div>
 
                     <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
-                      <h3 className="font-serif text-xl tracking-[0.14em] uppercase text-[#ff6b5e] truncate max-w-full">
+                      <h3 className="font-serif text-xl text-butter truncate max-w-full">
                         {p.cleanTitle}
                       </h3>
-                      <div className="text-[9px] font-sans font-semibold tracking-[0.26em] uppercase text-[#ff6b5e] mt-1 truncate max-w-full">
+                      <div className="text-[13px] font-sans font-semibold text-butter mt-1 truncate max-w-full">
                         • {p.city} ({p.canton}) •
                       </div>
-                      <div className="font-serif font-mono text-2xl text-[#ff6b5e] mt-1">
+                      <div className="font-serif font-mono text-2xl text-butter mt-1">
                         CHF {p.rate60Chf}
                       </div>
-                      <div className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#7fa3a6]">
+                      <div className="text-[8px] font-mono text-white/80">
                         60 MIN · (30M: CHF {p.rate30Chf})
                       </div>
                     </div>
                   </Link>
 
-                  <div className="px-3.5 pb-3.5 pt-2 bg-[#07141a] grid grid-cols-2 gap-2.5">
+                  <div className="px-3.5 pb-3.5 pt-2 bg-papier grid grid-cols-2 gap-2.5">
                     {cleanDigits ? (
                       <a
                         href={"https://wa.me/" + cleanDigits}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="brass-3d py-2.5 px-3 rounded-full border border-[#ff6b5e]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                        className="brass-3d py-2.5 px-3 rounded-full border border-kirsche/65 font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
                       >
                         <MessageCircle size={12} />
                         <span>WHATSAPP</span>
@@ -242,7 +237,7 @@ export default function DeepSearchPage() {
                     ) : (
                       <Link
                         href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
-                        className="brass-3d py-2.5 px-3 rounded-full border border-[#ff6b5e]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                        className="brass-3d py-2.5 px-3 rounded-full border border-kirsche/65 font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
                       >
                         <Sparkles size={12} />
                         <span>PREVIEW</span>
@@ -250,9 +245,9 @@ export default function DeepSearchPage() {
                     )}
                     <Link
                       href={"/profile/" + encodeURIComponent(p.id)}
-                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#ff6b5e]/45 font-sans font-bold text-[10px] tracking-[0.14em] uppercase flex items-center justify-center gap-1.5"
+                      className="emerald-3d py-2.5 px-3 rounded-full border border-kirsche/45 font-sans font-bold text-[13px] flex items-center justify-center gap-1.5"
                     >
-                      <User size={12} className="text-[#ff6b5e]" />
+                      <User size={12} className="text-kirsche" />
                       <span>DOSSIER</span>
                     </Link>
                   </div>
@@ -267,9 +262,9 @@ export default function DeepSearchPage() {
             <button
               type="button"
               onClick={() => setLimit((prev) => prev + 24)}
-              className="brass-3d px-8 py-3 rounded-full border border-[#ff6b5e]/65 text-xs font-mono font-extrabold tracking-[0.2em] uppercase cursor-pointer"
+              className="brass-3d px-8 py-3 rounded-full border border-kirsche/65 text-[13px] font-mono font-extrabold cursor-pointer"
             >
-              + 24 WEITERE SUITEN ANZEIGEN
+              + 24 Weitere Suiten Anzeigen
             </button>
           </div>
         )}

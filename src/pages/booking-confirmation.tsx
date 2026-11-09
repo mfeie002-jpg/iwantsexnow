@@ -9,7 +9,7 @@ export default function LegacyRedirectPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-[#0d1f27] text-white flex items-center justify-center text-xs text-gray-400">
+    <div className="min-h-screen bg-white text-tinte flex items-center justify-center text-[13px] text-gray-600">
       <SEO title="Weiterleitung | iwantsexnow.ch" noindex />
       <span>Weiterleitung zum Schweizer Profilverzeichnis...</span>
     </div>

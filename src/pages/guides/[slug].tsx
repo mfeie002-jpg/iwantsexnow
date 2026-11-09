@@ -1,3 +1,4 @@
+import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useRouter } from "next/router";
 import type { GetServerSideProps } from "next";
@@ -259,7 +260,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-white">
+    <div className="min-h-screen bg-papier text-tinte">
       <SEO
         title={article.metaTitle}
         description={article.metaDescription}
@@ -267,49 +268,43 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
         type="article"
         structuredData={articleSchema}
       />
-      <header className="border-b border-[#ff6b5e]/25 bg-[#07141a] py-4 sticky top-0 z-50">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/"><BrandLogo compact /></Link>
-          <div className="hidden lg:block"><Navigation /></div>
-          <MobileNav />
-        </div>
-      </header>
+      <LuxuryHeader />
 
       <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
-        <Link href="/guides" className="inline-flex items-center gap-2 text-xs text-[#ff6b5e] font-bold hover:underline">
+        <Link href="/guides" className="inline-flex items-center gap-2 text-[13px] text-kirsche font-bold hover:underline">
           <ArrowLeft size={14} /> Zurück zur Magazin- & Guide-Übersicht (/guides)
         </Link>
 
-        <article className="bg-[#07141a] border-2 border-[#ff6b5e]/50 rounded-3xl p-6 md:p-10 space-y-6 shadow-2xl">
+        <article className="bg-papier border-2 border-kirsche/50 rounded-3xl p-6 md:p-10 space-y-6 shadow-2xl">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <Badge className="bg-[#ff6b5e]/20 text-[#ff6b5e] border border-[#ff6b5e]/40">
+            <Badge className="bg-kirsche/20 text-kirsche border border-kirsche/40">
               {article.category}
             </Badge>
-            <span className="text-xs text-gray-400">{article.readTime} · Aktualisiert 2026</span>
+            <span className="text-[13px] text-gray-600">{article.readTime} · Aktualisiert 2026</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-serif font-black leading-tight">
             {article.title}
           </h1>
 
-          <p className="text-sm sm:text-base text-sun-100/90 leading-relaxed bg-black/40 p-4 rounded-2xl border border-[#ff6b5e]/30">
+          <p className="text-sm sm:text-base text-sun-900/90 leading-relaxed bg-tinte/10 p-4 rounded-2xl border border-kirsche/30">
             {article.heroIntro}
           </p>
 
           <div className="space-y-6 pt-2">
             {article.sections.map((sec, idx) => (
               <div key={idx} className="space-y-3">
-                <h2 className="text-xl font-serif font-black text-[#ff6b5e]">
+                <h2 className="text-xl font-serif font-black text-kirsche">
                   {sec.heading}
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
+                <p className="text-[13px] sm:text-sm text-gray-800 leading-relaxed">
                   {sec.body}
                 </p>
                 {sec.bullets && (
-                  <ul className="space-y-2 bg-black/40 p-4 rounded-xl border border-white/10 text-xs sm:text-sm text-gray-200">
+                  <ul className="space-y-2 bg-tinte/10 p-4 rounded-xl border border-tinte/20 text-[13px] sm:text-sm text-gray-800">
                     {sec.bullets.map((b, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-mint-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 size={15} className="text-mint-700 shrink-0 mt-0.5" />
                         <span>{b}</span>
                       </li>
                     ))}
@@ -320,13 +315,13 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
           </div>
 
           {/* Targeted Long-Tail Keyword Tags */}
-          <div className="pt-4 border-t border-white/10 flex flex-wrap items-center gap-1.5 text-[11px]">
-            <span className="text-gray-400 font-bold mr-1">Verwandte Themen & Suchen:</span>
+          <div className="pt-4 border-t border-tinte/20 flex flex-wrap items-center gap-1.5 text-[13px]">
+            <span className="text-gray-600 font-bold mr-1">Verwandte Themen & Suchen:</span>
             {article.targetKeywords.map((kw) => (
               <Link
                 key={kw}
                 href={`/search?q=${encodeURIComponent(kw.split(" ")[0])}`}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#ff6b5e]/20 border border-white/10 text-gray-300"
+                className="px-2.5 py-1 rounded-lg bg-tinte/[0.04] hover:bg-kirsche/20 border border-tinte/20 text-gray-700"
               >
                 #{kw}
               </Link>
@@ -335,7 +330,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
 
           <div className="pt-2">
             <Button
-              className="w-full bg-gradient-to-r from-[#ff6b5e] via-[#ff6b5e] to-[#ff6b5e] text-[#0d1f27] font-black py-6 text-sm shadow-xl"
+              className="w-full bg-gradient-to-r from-kirsche via-kirsche to-kirsche text-[#ffffff] font-black py-6 text-sm shadow-xl"
               asChild
             >
               <Link href={article.ctaHref}>
@@ -346,21 +341,21 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
         </article>
 
         {/* Internal Cross-Links to all other Long-Tail Guides */}
-        <Card className="bg-[#07141a] border border-white/15 p-6 rounded-2xl text-white space-y-4">
-          <h3 className="text-lg font-serif font-black text-[#ff6b5e]">
+        <Card className="bg-papier border border-tinte/25 p-6 rounded-2xl text-tinte space-y-4">
+          <h3 className="text-lg font-serif font-black text-kirsche">
             Weitere Schweizer Guides & Insider-Berichte:
           </h3>
-          <div className="grid sm:grid-cols-2 gap-3 text-xs">
+          <div className="grid sm:grid-cols-2 gap-3 text-[13px]">
             {Object.values(SWISS_LONG_TAIL_ARTICLES)
               .filter((a) => a.slug !== article.slug)
               .map((a) => (
                 <Link
                   key={a.slug}
                   href={`/guides/${a.slug}`}
-                  className="p-3.5 rounded-xl bg-black/40 hover:bg-white/10 border border-white/10 transition-all block"
+                  className="p-3.5 rounded-xl bg-tinte/10 hover:bg-tinte/[0.06] border border-tinte/20 transition-all block"
                 >
-                  <div className="text-[10px] text-[#ff6b5e] font-bold">{a.category}</div>
-                  <div className="font-bold text-white mt-0.5 line-clamp-2">{a.title}</div>
+                  <div className="text-[13px] text-kirsche font-bold">{a.category}</div>
+                  <div className="font-bold text-tinte mt-0.5 line-clamp-2">{a.title}</div>
                 </Link>
               ))}
           </div>

@@ -120,25 +120,25 @@ export default function AccountSettings() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dusk-900 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-dusk-100 to-gray-100">
       <SEO 
         title="Account Settings - Manage Your Profile | iWantSexNow.ch"
         description="Manage your account settings, favorites, and booking history."
       />
 
       {/* Header */}
-      <header className="border-b border-white/10 backdrop-blur-md bg-black/60 sticky top-0 z-50">
+      <header className="border-b border-tinte/20 backdrop-blur-md bg-tinte/10 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <div>
                 <span className="text-2xl font-bold tracking-tight">
-                  <span className="text-white">iWant</span>
-                  <span className="text-[#ff6b5e]">Sex</span>
-                  <span className="text-white">Now</span>
-                  <span className="text-gray-400 text-xl">.ch</span>
+                  <span className="text-tinte">iWant</span>
+                  <span className="text-kirsche">Sex</span>
+                  <span className="text-tinte">Now</span>
+                  <span className="text-gray-600 text-xl">.ch</span>
                 </span>
-                <div className="text-xs text-glow-500 font-semibold tracking-wider">ACCOUNT SETTINGS</div>
+                <div className="text-[13px] text-glow-700 font-semibold ">Account Settings</div>
               </div>
             </Link>
             <MobileNav />
@@ -153,12 +153,12 @@ export default function AccountSettings() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <h1 className="text-4xl font-black text-white mb-2">Account Settings</h1>
-            <p className="text-gray-300">Manage your profile, preferences, and bookings</p>
+            <h1 className="text-4xl font-black text-tinte mb-2">Account Settings</h1>
+            <p className="text-gray-700">Manage your profile, preferences, and bookings</p>
           </motion.div>
 
           <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="bg-white/10 border border-white/20 p-1">
+            <TabsList className="bg-tinte/[0.06] border border-tinte/30 p-1">
               <TabsTrigger value="profile" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
                 <User size={18} className="mr-2" />
                 Profile
@@ -179,9 +179,9 @@ export default function AccountSettings() {
 
             {/* Profile Tab */}
             <TabsContent value="profile">
-              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
+              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-white">Profile Information</h2>
+                  <h2 className="text-2xl font-bold text-tinte">Profile Information</h2>
                   {!editMode ? (
                     <Button
                       onClick={() => setEditMode(true)}
@@ -202,7 +202,7 @@ export default function AccountSettings() {
                       <Button
                         onClick={() => setEditMode(false)}
                         variant="outline"
-                        className="border-white/30 text-white hover:bg-white/10"
+                        className="border-tinte/40 text-tinte hover:bg-tinte/[0.06]"
                       >
                         <X size={18} className="mr-2" />
                         Cancel
@@ -214,59 +214,59 @@ export default function AccountSettings() {
                 <div className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <Label className="text-white mb-2 block">Full Name</Label>
+                      <Label className="text-tinte mb-2 block">Full Name</Label>
                       <Input
                         value={user.name}
                         onChange={(e) => setUser({...user, name: e.target.value})}
                         disabled={!editMode}
-                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
+                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
                       />
                     </div>
 
                     <div>
-                      <Label className="text-white mb-2 block">Email</Label>
+                      <Label className="text-tinte mb-2 block">Email</Label>
                       <Input
                         type="email"
                         value={user.email}
                         onChange={(e) => setUser({...user, email: e.target.value})}
                         disabled={!editMode}
-                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
+                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
                       />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <Label className="text-white mb-2 block">Phone</Label>
+                      <Label className="text-tinte mb-2 block">Phone</Label>
                       <Input
                         type="tel"
                         value={user.phone}
                         onChange={(e) => setUser({...user, phone: e.target.value})}
                         disabled={!editMode}
-                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
+                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
                       />
                     </div>
 
                     <div>
-                      <Label className="text-white mb-2 block">City</Label>
+                      <Label className="text-tinte mb-2 block">City</Label>
                       <Input
                         value={user.city}
                         onChange={(e) => setUser({...user, city: e.target.value})}
                         disabled={!editMode}
-                        className="bg-white/10 border-white/20 text-white disabled:opacity-50"
+                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <Label className="text-white mb-2 block">Bio</Label>
+                    <Label className="text-tinte mb-2 block">Bio</Label>
                     <Textarea
                       value={user.bio}
                       onChange={(e) => setUser({...user, bio: e.target.value})}
                       disabled={!editMode}
                       rows={4}
                       placeholder="Tell us about yourself..."
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 disabled:opacity-50"
+                      className="bg-tinte/[0.06] border-tinte/30 text-tinte placeholder:text-gray-600 disabled:opacity-50"
                     />
                   </div>
                 </div>
@@ -275,8 +275,8 @@ export default function AccountSettings() {
 
             {/* Favorites Tab */}
             <TabsContent value="favorites">
-              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
-                <h2 className="text-2xl font-bold text-white mb-6">Your Favorites ({favorites.length})</h2>
+              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
+                <h2 className="text-2xl font-bold text-tinte mb-6">Your Favorites ({favorites.length})</h2>
 
                 {favorites.length > 0 ? (
                   <div className="grid md:grid-cols-2 gap-6">
@@ -286,7 +286,7 @@ export default function AccountSettings() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                       >
-                        <Card className="overflow-hidden bg-white/5 border-white/10 hover:border-glow-500 transition-all">
+                        <Card className="overflow-hidden bg-tinte/[0.04] border-tinte/20 hover:border-glow-500 transition-all">
                           <div className="flex gap-4 p-4">
                             <img
                               src={favorite.image}
@@ -294,21 +294,21 @@ export default function AccountSettings() {
                               className="w-24 h-24 rounded-lg object-cover"
                             />
                             <div className="flex-1">
-                              <h3 className="text-xl font-bold text-white mb-1">
+                              <h3 className="text-xl font-bold text-tinte mb-1">
                                 {favorite.name}, {favorite.age}
                               </h3>
-                              <div className="flex items-center gap-2 text-lake-400 text-sm mb-2">
+                              <div className="flex items-center gap-2 text-lake-700 text-sm mb-2">
                                 <MapPin size={14} />
                                 <span>{favorite.location}</span>
                               </div>
                               <div className="flex items-center gap-2 mb-2">
-                                <Star size={14} className="text-sun-500 fill-sun-500" />
-                                <span className="text-white text-sm">{favorite.rating}</span>
+                                <Star size={14} className="text-sun-700 fill-sun-700" />
+                                <span className="text-tinte text-sm">{favorite.rating}</span>
                                 {favorite.available && (
-                                  <Badge className="bg-mint-500 text-xs">Available</Badge>
+                                  <Badge className="bg-mint-500 text-[13px]">Available</Badge>
                                 )}
                               </div>
-                              <div className="text-sun-500 font-bold">CHF {favorite.rate}/hr</div>
+                              <div className="text-sun-700 font-bold">CHF {favorite.rate}/hr</div>
                             </div>
                             <div className="flex flex-col gap-2">
                               <Button
@@ -336,9 +336,9 @@ export default function AccountSettings() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Heart size={64} className="mx-auto text-gray-500 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-2">No favorites yet</h3>
-                    <p className="text-gray-400 mb-6">Start adding escorts to your favorites</p>
+                    <Heart size={64} className="mx-auto text-gray-600 mb-4" />
+                    <h3 className="text-xl font-bold text-tinte mb-2">No favorites yet</h3>
+                    <p className="text-gray-600 mb-6">Start adding escorts to your favorites</p>
                     <Button className="bg-glow-600 hover:bg-glow-700" asChild>
                       <Link href="/escort-zurich">Browse Escorts</Link>
                     </Button>
@@ -349,23 +349,23 @@ export default function AccountSettings() {
 
             {/* Bookings Tab */}
             <TabsContent value="bookings">
-              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
-                <h2 className="text-2xl font-bold text-white mb-6">Booking History ({bookings.length})</h2>
+              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
+                <h2 className="text-2xl font-bold text-tinte mb-6">Booking History ({bookings.length})</h2>
 
                 {bookings.length > 0 ? (
                   <div className="space-y-4">
                     {bookings.map((booking) => (
-                      <Card key={booking.confirmationCode} className="p-6 bg-white/5 border-white/10">
+                      <Card key={booking.confirmationCode} className="p-6 bg-tinte/[0.04] border-tinte/20">
                         <div className="flex items-start justify-between mb-4">
                           <div>
                             <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-xl font-bold text-white">{booking.escortName}</h3>
+                              <h3 className="text-xl font-bold text-tinte">{booking.escortName}</h3>
                               <Badge className={`${getStatusColor(booking.status)} border-0`}>
                                 {booking.status.toUpperCase()}
                               </Badge>
                             </div>
-                            <div className="text-gray-400 text-sm">
-                              Confirmation: <span className="text-sun-500 font-mono">{booking.confirmationCode}</span>
+                            <div className="text-gray-600 text-sm">
+                              Confirmation: <span className="text-sun-700 font-mono">{booking.confirmationCode}</span>
                             </div>
                           </div>
                           {booking.status === "pending" && (
@@ -381,21 +381,21 @@ export default function AccountSettings() {
                         </div>
 
                         <div className="grid md:grid-cols-3 gap-4 text-sm">
-                          <div className="flex items-center gap-2 text-gray-300">
-                            <Calendar size={16} className="text-glow-500" />
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <Calendar size={16} className="text-glow-700" />
                             <span>{booking.date}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-gray-300">
-                            <History size={16} className="text-glow-500" />
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <History size={16} className="text-glow-700" />
                             <span>{booking.time}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-gray-300">
-                            <Shield size={16} className="text-glow-500" />
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <Shield size={16} className="text-glow-700" />
                             <span>{booking.duration}</span>
                           </div>
                         </div>
 
-                        <div className="mt-4 text-xs text-gray-500">
+                        <div className="mt-4 text-[13px] text-gray-600">
                           Booked on: {new Date(booking.createdAt).toLocaleString()}
                         </div>
                       </Card>
@@ -403,9 +403,9 @@ export default function AccountSettings() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <History size={64} className="mx-auto text-gray-500 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-2">No bookings yet</h3>
-                    <p className="text-gray-400 mb-6">Your booking history will appear here</p>
+                    <History size={64} className="mx-auto text-gray-600 mb-4" />
+                    <h3 className="text-xl font-bold text-tinte mb-2">No bookings yet</h3>
+                    <p className="text-gray-600 mb-6">Your booking history will appear here</p>
                     <Button className="bg-glow-600 hover:bg-glow-700" asChild>
                       <Link href="/escort-zurich">Book an Escort</Link>
                     </Button>
@@ -416,14 +416,14 @@ export default function AccountSettings() {
 
             {/* Notifications Tab */}
             <TabsContent value="notifications">
-              <Card className="p-8 bg-white/10 backdrop-blur-md border-white/20">
-                <h2 className="text-2xl font-bold text-white mb-6">Notification Preferences</h2>
+              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
+                <h2 className="text-2xl font-bold text-tinte mb-6">Notification Preferences</h2>
 
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
                     <div>
-                      <h3 className="text-white font-bold mb-1">Email Updates</h3>
-                      <p className="text-gray-400 text-sm">Receive booking confirmations via email</p>
+                      <h3 className="text-tinte font-bold mb-1">Email Updates</h3>
+                      <p className="text-gray-600 text-sm">Receive booking confirmations via email</p>
                     </div>
                     <Switch
                       checked={notifications.emailUpdates}
@@ -431,10 +431,10 @@ export default function AccountSettings() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
                     <div>
-                      <h3 className="text-white font-bold mb-1">SMS Notifications</h3>
-                      <p className="text-gray-400 text-sm">Get booking updates via text message</p>
+                      <h3 className="text-tinte font-bold mb-1">SMS Notifications</h3>
+                      <p className="text-gray-600 text-sm">Get booking updates via text message</p>
                     </div>
                     <Switch
                       checked={notifications.smsNotifications}
@@ -442,10 +442,10 @@ export default function AccountSettings() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
                     <div>
-                      <h3 className="text-white font-bold mb-1">New Matches</h3>
-                      <p className="text-gray-400 text-sm">Notify when new escorts match your preferences</p>
+                      <h3 className="text-tinte font-bold mb-1">New Matches</h3>
+                      <p className="text-gray-600 text-sm">Notify when new escorts match your preferences</p>
                     </div>
                     <Switch
                       checked={notifications.newMatches}
@@ -453,10 +453,10 @@ export default function AccountSettings() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
                     <div>
-                      <h3 className="text-white font-bold mb-1">Promotions</h3>
-                      <p className="text-gray-400 text-sm">Receive special offers and promotions</p>
+                      <h3 className="text-tinte font-bold mb-1">Promotions</h3>
+                      <p className="text-gray-600 text-sm">Receive special offers and promotions</p>
                     </div>
                     <Switch
                       checked={notifications.promotions}
@@ -466,11 +466,11 @@ export default function AccountSettings() {
                 </div>
 
                 <div className="mt-6 p-4 bg-lake-500/10 border border-lake-500/30 rounded-lg">
-                  <div className="flex items-start gap-3 text-lake-400">
+                  <div className="flex items-start gap-3 text-lake-700">
                     <Shield size={20} className="flex-shrink-0 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-semibold mb-1">Privacy Notice</p>
-                      <p className="text-lake-300/80">
+                      <p className="text-lake-700/80">
                         Your notification preferences are private and secure. You can change these settings at any time.
                       </p>
                     </div>

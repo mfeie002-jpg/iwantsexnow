@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import offersData from "@/data/harvested-offers.json";
 import { Gift, Sparkles, Heart, CheckCircle2 } from "lucide-react";
 
@@ -17,7 +18,7 @@ export default function GiftsPage() {
   const [selectedId, setSelectedId] = useState<string>(profiles[0]?.id || "rosalon-188");
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Diskrete Schweizer Aufmerksamkeiten & 80/20 Creator-Tips | iwantsexnow.ch"
         description="Sende verifizierten Schweizer Anbieterinnen diskret ein Trinkgeld, Champagner-Vorbestellung oder Wunsch-Geschenk per TWINT (80% direkte Ausschüttung)."
@@ -25,25 +26,18 @@ export default function GiftsPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 space-y-2">
-          <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
-            <Gift size={14} /> 80 % DIREKTE GUTSCHRIFT AN DIE ANBIETERIN · NEUTRALER TWINT-BELEG
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
-            Schweizer Gentleman-Aufmerksamkeiten & Wunsch-Geschenke
-          </h1>
-          <p className="text-xs text-gray-300">
-            Bereite deiner Favoritin vor einem Date eine Freude oder bedanke dich diskret – <strong>80 % des Betrags</strong> werden sofort ihrem Cockpit gutgeschrieben.
-          </p>
-        </section>
+      <PageIntro tone="blush" note="Eine kleine Aufmerksamkeit" art="none" title={<>Schweizer Gentleman-Aufmerksamkeiten & Wunsch-Geschenke</>}
+        lead={<>Bereite deiner Favoritin vor einem Date eine Freude oder bedanke dich diskret – <strong>80 % des Betrags</strong> werden sofort ihrem Cockpit gutgeschrieben.</>} />
 
-        <div className="p-4 rounded-2xl bg-[#0d1f27] border border-white/10 flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs font-bold text-gray-300">Empfängerin auswählen:</span>
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+        
+
+        <div className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-[13px] font-bold text-gray-700">Empfängerin auswählen:</span>
           <select
             value={selectedId}
             onChange={(e) => setSelectedId(e.target.value)}
-            className="w-full sm:w-96 rounded-xl bg-[#07141a] border border-white/15 px-3.5 py-2.5 text-xs text-white font-bold"
+            className="w-full sm:w-96 rounded-xl bg-papier border border-tinte/25 px-3.5 py-2.5 text-[13px] text-tinte font-bold"
           >
             {profiles.map((p: any) => (
               <option key={p.id} value={p.id}>
@@ -55,17 +49,17 @@ export default function GiftsPage() {
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {GIFT_ITEMS.map((g) => (
-            <div key={g.id} className="p-6 rounded-2xl bg-[#0d1f27] border border-white/10 hover:border-[#ff6b5e]/50 flex flex-col justify-between gap-4">
+            <div key={g.id} className="p-6 rounded-2xl bg-white border border-tinte/20 hover:border-kirsche/50 flex flex-col justify-between gap-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-serif font-bold text-white">{g.title}</h2>
-                  <span className="text-lg font-extrabold text-[#ff6b5e]">CHF {g.amountChf}.–</span>
+                  <h2 className="text-base font-serif font-bold text-tinte">{g.title}</h2>
+                  <span className="text-lg font-extrabold text-kirsche">CHF {g.amountChf}.–</span>
                 </div>
-                <p className="text-xs text-gray-400">{g.desc}</p>
+                <p className="text-[13px] text-gray-600">{g.desc}</p>
               </div>
               <Link
                 href={`/checkout?profileId=${encodeURIComponent(selectedId)}&amount=${g.amountChf}`}
-                className="w-full py-3 rounded-xl bg-[#ff6b5e] hover:bg-[#e8564a] text-[#07141a] font-extrabold text-xs uppercase tracking-wider text-center block"
+                className="w-full py-3 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] text-center block"
               >
                 🎁 Jetzt für CHF {g.amountChf}.– senden (80 % direkt) →
               </Link>

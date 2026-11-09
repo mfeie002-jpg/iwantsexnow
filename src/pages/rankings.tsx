@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import offersData from "@/data/harvested-offers.json";
 import { Trophy, Sparkles, CheckCircle2, ArrowRight, Flame } from "lucide-react";
 
@@ -65,7 +66,7 @@ export default function RankingsPage() {
   }, [serverStates, blockedIds, cantonFilter]);
 
   return (
-    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Schweizer Escort Top-50 Ranking & Kantonale Bestenliste (Zug, Zürich, Luzern) | iwantsexnow.ch"
         description="Tagesaktuelles Schweizer Top-50 Ranking unabhängiger Escort-, Tantra- & GFE-Profile nach Kanton (ZG, ZH, LU, BS, BE, GE), Echtzeit-Verfügbarkeit und Echtheits-Prüfung."
@@ -73,23 +74,15 @@ export default function RankingsPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
-              <Trophy size={14} /> TAGESAKTUELLES SCHWEIZER KANTONS-RANKING (TOP 50)
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
-              Gefragteste Profile nach Echtzeit-Status & Verifizierung
-            </h1>
-            <p className="text-xs text-gray-300 mt-1">
-              Berechnet aus aktiver 4h-Verfügbarkeit, bestätigter Foto-Echtheit, Direktkontakt-Quote und Paid-Vault-Nachfrage.
-            </p>
-          </div>
-          <Link href="/compare-escorts" className="px-4 py-2.5 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold">
+      <PageIntro tone="butter" note="Die Nase vorn" art="none" title={<>Gefragteste Profile nach Echtzeit-Status & Verifizierung</>}
+        lead={<>Berechnet aus aktiver 4h-Verfügbarkeit, bestätigter Foto-Echtheit, Direktkontakt-Quote und Paid-Vault-Nachfrage.</>}>
+        <Link href="/compare-escorts" className="px-4 py-2.5 rounded-xl bg-kirsche text-white text-[13px] font-extrabold">
             Top-Profile direkt vergleichen →
           </Link>
-        </section>
+      </PageIntro>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        
 
         {/* Kantons-Umschalter */}
         <div className="flex flex-wrap gap-1.5">
@@ -98,8 +91,8 @@ export default function RankingsPage() {
               key={c}
               type="button"
               onClick={() => setCantonFilter(c)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                cantonFilter === c ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#0d1f27] text-gray-300 border border-white/10"
+              className={`px-3.5 py-2 rounded-xl text-[13px] font-extrabold cursor-pointer ${
+                cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-gray-300 border border-tinte/20"
               }`}
             >
               {c === "ALL" ? "🇨🇭 Gesamte Schweiz (Top 50)" : `Top Kanton ${c}`}
@@ -112,12 +105,12 @@ export default function RankingsPage() {
           {rankedList.map((p: any, idx: number) => (
             <div
               key={p.id}
-              className="p-4 rounded-2xl bg-[#0d1f27] border border-white/10 hover:border-[#ff6b5e]/50 flex flex-wrap items-center justify-between gap-4 transition"
+              className="p-4 rounded-2xl bg-white border border-tinte/20 hover:border-kirsche/50 flex flex-wrap items-center justify-between gap-4 transition"
             >
               <div className="flex items-center gap-4">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-sm ${
-                    idx < 3 ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#07141a] text-gray-400 border border-white/10"
+                    idx < 3 ? "bg-[#d92b52] text-[#fbfaf8]" : "bg-[#fbfaf8] text-gray-400 border border-white/10"
                   }`}
                 >
                   #{idx + 1}
@@ -126,42 +119,42 @@ export default function RankingsPage() {
                   src={p.thumbnail || "/images/escort-portrait-1.jpg"}
                   alt={p.rawName}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                  className="w-14 h-14 rounded-xl object-cover object-top border border-white/15"
+                  className="w-14 h-14 rounded-xl object-cover object-top border border-tinte/25"
                 />
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-base font-serif font-bold text-white hover:text-[#ff6b5e]">
+                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-base font-serif font-bold text-tinte hover:text-kirsche">
                       {p.rawName}
                     </Link>
-                    <span className="px-2 py-0.5 rounded bg-white/10 text-[#ff6b5e] text-[10px] font-bold">
+                    <span className="px-2 py-0.5 rounded bg-tinte/[0.06] text-kirsche text-[13px] font-bold">
                       {p.canton} · {p.city}
                     </span>
                     {p.isAvail && (
-                      <span className="px-2 py-0.5 rounded bg-mint-500/20 text-mint-300 text-[10px] font-bold">
+                      <span className="px-2 py-0.5 rounded bg-mint-500/20 text-mint-700 text-[13px] font-bold">
                         ● 4h Live
                       </span>
                     )}
                     {p.isVerif && (
-                      <span className="px-2 py-0.5 rounded bg-[#ff6b5e]/20 text-[#ff6b5e] text-[10px] font-bold">
+                      <span className="px-2 py-0.5 rounded bg-kirsche/20 text-kirsche text-[13px] font-bold">
                         ✓ Geprüft
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">
+                  <div className="text-[13px] text-gray-600 mt-1">
                     {p.age || 25} J. · {p.heightCm || 168} cm · Cup {p.cupSize || "C"} · {p.hairColor || "Brünett"} · Score:{" "}
-                    <strong className="text-gray-200">{p.rankScore} Pkt.</strong>
+                    <strong className="text-gray-800">{p.rankScore} Pkt.</strong>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-4 ml-auto">
                 <div className="text-right">
-                  <div className="text-sm font-extrabold text-[#ff6b5e]">CHF {p.rate60Chf}.– / 60m</div>
-                  <div className="text-[11px] text-gray-400">30 Min.: CHF {p.rate30Chf}.–</div>
+                  <div className="text-sm font-extrabold text-kirsche">CHF {p.rate60Chf}.– / 60m</div>
+                  <div className="text-[13px] text-gray-600">30 Min.: CHF {p.rate30Chf}.–</div>
                 </div>
                 <Link
                   href={`/profile/${encodeURIComponent(p.id)}`}
-                  className="px-4 py-2.5 rounded-xl bg-[#ff6b5e] text-[#07141a] font-extrabold text-xs inline-flex items-center gap-1"
+                  className="px-4 py-2.5 rounded-xl bg-kirsche text-white font-extrabold text-[13px] inline-flex items-center gap-1"
                 >
                   <span>Profil</span>
                   <ArrowRight size={12} />
