@@ -136,7 +136,7 @@ export function SEOAnalyzerTab() {
           <Button
             onClick={analyzeURL}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            className="w-full bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
           >
             {loading ? (
               <>
@@ -171,13 +171,13 @@ export function SEOAnalyzerTab() {
                 <div className="space-y-2">
                   <h4 className="font-semibold text-sm">Statistics</h4>
                   <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="bg-blue-50 dark:bg-blue-950 p-2 rounded">
+                    <div className="bg-lake-50 dark:bg-lake-950 p-2 rounded">
                       <div className="font-medium">Links</div>
-                      <div className="text-2xl font-bold text-blue-600">{rawHtml.links?.length || 0}</div>
+                      <div className="text-2xl font-bold text-lake-600">{rawHtml.links?.length || 0}</div>
                     </div>
-                    <div className="bg-green-50 dark:bg-green-950 p-2 rounded">
+                    <div className="bg-mint-50 dark:bg-mint-950 p-2 rounded">
                       <div className="font-medium">Images</div>
-                      <div className="text-2xl font-bold text-green-600">{rawHtml.images?.length || 0}</div>
+                      <div className="text-2xl font-bold text-mint-600">{rawHtml.images?.length || 0}</div>
                     </div>
                   </div>
                 </div>

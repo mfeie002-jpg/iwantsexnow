@@ -87,10 +87,10 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
     <Card className="p-6 bg-white border-2 border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <CalendarIcon size={24} className="text-pink-600" />
+          <CalendarIcon size={24} className="text-glow-600" />
           Availability Calendar
         </h3>
-        <Badge className="bg-green-500 text-white">
+        <Badge className="bg-mint-500 text-white">
           <CheckCircle size={12} className="mr-1" />
           Real-time Updates
         </Badge>
@@ -102,7 +102,7 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
           variant="outline"
           size="sm"
           onClick={previousMonth}
-          className="hover:bg-pink-50"
+          className="hover:bg-glow-50"
         >
           <ChevronLeft size={18} />
         </Button>
@@ -111,7 +111,7 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
           variant="outline"
           size="sm"
           onClick={nextMonth}
-          className="hover:bg-pink-50"
+          className="hover:bg-glow-50"
         >
           <ChevronRight size={18} />
         </Button>
@@ -149,18 +149,18 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
                   isPastDate
                     ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
                     : isSelected
-                    ? "bg-gradient-to-r from-pink-600 to-purple-600 text-white border-pink-600 scale-105 shadow-lg"
+                    ? "bg-gradient-to-r from-glow-600 to-dusk-600 text-white border-glow-600 scale-105 shadow-lg"
                     : isTodayDate
-                    ? "bg-pink-50 text-pink-600 border-pink-300 font-bold"
+                    ? "bg-glow-50 text-glow-600 border-glow-300 font-bold"
                     : hasAvailability
-                    ? "bg-white border-gray-300 hover:border-pink-600 hover:bg-pink-50 text-gray-900"
+                    ? "bg-white border-gray-300 hover:border-glow-600 hover:bg-glow-50 text-gray-900"
                     : "bg-white border-gray-200 text-gray-500"
                 }`}
               >
                 <div className="flex flex-col items-center justify-center h-full">
                   <span className="text-sm font-semibold">{date.getDate()}</span>
                   {!isPastDate && hasAvailability && (
-                    <div className="w-1 h-1 bg-green-500 rounded-full mt-1"></div>
+                    <div className="w-1 h-1 bg-mint-500 rounded-full mt-1"></div>
                   )}
                 </div>
               </button>
@@ -173,7 +173,7 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
       {selectedDate && (
         <div className="border-t-2 border-gray-200 pt-6">
           <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Clock size={20} className="text-pink-600" />
+            <Clock size={20} className="text-glow-600" />
             Available Time Slots - {selectedDate.toLocaleDateString("en-US", { month: "long", day: "numeric" })}
           </h4>
 
@@ -183,12 +183,12 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
                 key={index}
                 className={`flex items-center justify-between p-3 rounded-lg border-2 ${
                   slot.available
-                    ? "bg-green-50 border-green-200"
+                    ? "bg-mint-50 border-mint-200"
                     : "bg-gray-100 border-gray-200"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <Clock size={16} className={slot.available ? "text-green-600" : "text-gray-400"} />
+                  <Clock size={16} className={slot.available ? "text-mint-600" : "text-gray-400"} />
                   <span className={`font-semibold ${slot.available ? "text-gray-900" : "text-gray-500"}`}>
                     {slot.time}
                   </span>
@@ -199,7 +199,7 @@ export function AvailabilityCalendar({ escortName }: { escortName: string }) {
                       <span className="text-sm font-bold text-gray-900">CHF {slot.price}</span>
                       <Button
                         size="sm"
-                        className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
+                        className="bg-gradient-to-r from-glow-600 to-dusk-600 hover:from-glow-700 hover:to-dusk-700"
                       >
                         Book Now
                       </Button>

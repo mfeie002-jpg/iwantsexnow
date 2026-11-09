@@ -6,6 +6,13 @@ import { SwissDoorplate } from "@/components/SwissDoorplate";
 import { SWISS_DOORPLATE_TOKENS } from "@/lib/brand/doorplateTokens";
 import offersData from "@/data/harvested-offers.json";
 import clubsData from "@/data/swiss-establishments-vault.json";
+import { AlpenHero } from "@/components/home/AlpenHero";
+import { CantonRail } from "@/components/home/CantonRail";
+import { CategoryMosaic } from "@/components/home/CategoryMosaic";
+import { HowItWorksBand } from "@/components/home/HowItWorksBand";
+import { ProviderBand } from "@/components/home/ProviderBand";
+import { EmptyArt } from "@/components/visuals";
+import type { CantonKey } from "@/components/visuals";
 import {
   Search,
   Heart,
@@ -19,8 +26,6 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-type DesignTheme = "audemars" | "velvet" | "vogue";
-
 const TOTAL_CLUBS = Array.isArray(clubsData) && clubsData.length > 0 ? clubsData.length : 108;
 const TOTAL_SOURCES = (() => {
   if (!Array.isArray(offersData)) return 55;
@@ -30,6 +35,32 @@ const TOTAL_SOURCES = (() => {
   }
   return Math.max(55, s.size);
 })();
+
+const CANTON_RAIL: { code: string; key: CantonKey }[] = [
+  { code: "ZG", key: "zg" },
+  { code: "ZH", key: "zh" },
+  { code: "LU", key: "lu" },
+  { code: "BS", key: "bs" },
+  { code: "BE", key: "be" },
+  { code: "AG", key: "ag" },
+  { code: "SG", key: "sg" },
+  { code: "GE", key: "ge" },
+  { code: "VD", key: "vd" },
+  { code: "TI", key: "ti" },
+];
+
+const CANTON_COUNTS: Record<string, number> = (() => {
+  const m: Record<string, number> = {};
+  if (Array.isArray(offersData)) {
+    for (const o of offersData as any[]) {
+      const c = String(o?.canton || "").toUpperCase();
+      if (c) m[c] = (m[c] || 0) + 1;
+    }
+  }
+  return m;
+})();
+
+const TOTAL_PROFILES = Array.isArray(offersData) ? offersData.length : 0;
 
 const CANTON_PILLS = [
   { code: "ALL", label: "CH · Alle" },
@@ -61,8 +92,6 @@ function rubricTitle(rubric: string) {
 }
 
 export default function HomePage() {
-  const [designTheme, setDesignTheme] =
-    useState<DesignTheme>("audemars");
   const [serverStates, setServerStates] = useState<Record<string, any>>(
     {}
   );
@@ -100,30 +129,12 @@ export default function HomePage() {
       );
       if (Array.isArray(saved)) setFavIds(saved);
 
-      const savedTheme = localStorage.getItem(
-        "ch_luxury_theme"
-      ) as DesignTheme;
-
-      if (
-        savedTheme === "audemars" ||
-        savedTheme === "velvet" ||
-        savedTheme === "vogue"
-      ) {
-        setDesignTheme(savedTheme);
-      }
 
       setStudioNoir(
         localStorage.getItem("ch_studio_noir") !== "off"
       );
     } catch {}
   }, []);
-
-  const switchTheme = (t: DesignTheme) => {
-    setDesignTheme(t);
-    try {
-      localStorage.setItem("ch_luxury_theme", t);
-    } catch {}
-  };
 
   const toggleStudioNoir = () => {
     const next = !studioNoir;
@@ -303,33 +314,39 @@ export default function HomePage() {
     onlyAvailable4h ||
     maxRate60 < 1200;
 
-  const pageClass =
-    designTheme === "velvet"
-      ? "penthouse-page min-h-screen pb-16 text-[#FAF3E8]"
-      : designTheme === "vogue"
-      ? "penthouse-page min-h-screen pb-16 text-[#F5F0E8]"
-      : "penthouse-page min-h-screen pb-16 text-[#F2EADF]";
-
-  const consoleClass =
-    designTheme === "vogue"
-      ? "luxury-console rounded-[8px]"
-      : designTheme === "velvet"
-      ? "luxury-console rounded-[18px]"
-      : "luxury-console rounded-[12px]";
-
   const noirStageClass = studioNoir
     ? "noir-stage relative aspect-[3/4] overflow-hidden"
     : "noir-stage noir-disabled relative aspect-[3/4] overflow-hidden";
 
-  const getEditionClass = (edition: DesignTheme) => {
-    const active = designTheme === edition;
-    return active
-      ? "shrink-0 cursor-pointer rounded-full border border-[#C8A97E]/45 bg-[#C8A97E]/10 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.08em] text-[#DEC393]"
-      : "shrink-0 cursor-pointer rounded-full border border-transparent px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.08em] text-[#71675B] transition hover:text-[#C8A97E]";
+  const scrollToGrid = () => {
+    try {
+      document.getElementById("dossiers")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch {}
   };
 
+  const pickCanton = (code: string) => {
+    setCantonFilter(code);
+    setVisibleLimit(24);
+    scrollToGrid();
+  };
+
+  const pickRubric = (id: string) => {
+    setRubricFilter(id);
+    setVisibleLimit(24);
+    scrollToGrid();
+  };
+
+  const pickVip = () => {
+    setRubricFilter("ALL");
+    setSortBy("price_desc");
+    setVisibleLimit(24);
+    scrollToGrid();
+  };
+
+  const profileCountLabel = TOTAL_PROFILES.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+
   return (
-    <div className={pageClass} data-edition={designTheme}>
+    <div className="penthouse-page min-h-screen text-[#dcebe8]">
       <SEO
         title="IWANTSEXNOW.CH — Schweizer Escort, Tantra & Studio Direktverzeichnis (0% Provision)"
         description={`${activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")}+ geprüfte Schweizer Escort-, Tantra- & Studio-Profile sowie ${TOTAL_CLUBS} Clubs. Echte 30m/60m CHF-Preise & direkter +41 WhatsApp-Kontakt.`}
@@ -338,189 +355,112 @@ export default function HomePage() {
 
       <LuxuryHeader />
 
-      <main className="mx-auto max-w-7xl px-3 pb-8 pt-4 sm:px-6 sm:pt-6">
-        <section className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="h-px w-7 bg-[#C8A97E]/65" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#C8A97E]">
-                Private Swiss Index · {TOTAL_SOURCES} Quellen
-              </span>
-            </div>
-            <h1 className="mt-2 font-serif text-[25px] font-normal leading-tight tracking-[0.015em] text-[#F2EADF] sm:text-[34px]">
-              Die Schweiz.{" "}
-              <span className="brass-text italic">
-                Diskret kuratiert.
-              </span>
-            </h1>
-          </div>
+      <AlpenHero
+        query={searchQuery}
+        onQuery={setSearchQuery}
+        canton={cantonFilter}
+        onCanton={setCantonFilter}
+        onSubmit={scrollToGrid}
+        cantons={CANTON_PILLS.map((c) => ({
+          code: c.code,
+          label: c.code === "ALL" ? "Ganze Schweiz" : c.label.split(" · ")[1] || c.label,
+        }))}
+        profileCount={profileCountLabel}
+        clubCount={TOTAL_CLUBS}
+      />
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[8px] uppercase tracking-[0.08em] text-[#746A5D]">
-            <span className="inline-flex items-center gap-1.5 text-[#9BC7B2]">
-              <ShieldCheck size={12} />
-              0% Agentur-Provision
-            </span>
-            <span>Direkter +41 Kontakt</span>
-            <span className="tabular-nums text-[#C8A97E]">
-              {activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")} Dossiers · {TOTAL_CLUBS} Clubs
-            </span>
-          </div>
-        </section>
+      <CantonRail
+        items={CANTON_RAIL.map((c) => ({ ...c, count: CANTON_COUNTS[c.code] || 0 }))}
+        active={cantonFilter}
+        onPick={pickCanton}
+      />
 
-        <div className="no-scrollbar mb-3 flex items-center justify-between gap-3 overflow-x-auto border-y border-white/[0.045] py-2">
-          <div className="flex items-center gap-1">
-            <span className="mr-1 shrink-0 font-mono text-[8px] uppercase tracking-[0.15em] text-[#61584E]">
-              Atelier
-            </span>
-            <button
-              type="button"
-              onClick={() => switchTheme("audemars")}
-              className={getEditionClass("audemars")}
-            >
-              01 · Bahnhofstrasse
-            </button>
-            <button
-              type="button"
-              onClick={() => switchTheme("velvet")}
-              className={getEditionClass("velvet")}
-            >
-              02 · Velvet Noir
-            </button>
-            <button
-              type="button"
-              onClick={() => switchTheme("vogue")}
-              className={getEditionClass("vogue")}
-            >
-              03 · Editorial
-            </button>
-          </div>
+      <CategoryMosaic activeRubric={rubricFilter} onPickRubric={pickRubric} onPickVip={pickVip} />
 
-          <Link
-            href="/fantasy-preview"
-            className="inline-flex shrink-0 items-center gap-1.5 text-[9px] font-medium text-[#C8A97E] transition hover:text-[#DEC393]"
-          >
-            <Sparkles size={11} />
-            Voice-Avatar & 5s Preview
-            <ArrowRight size={11} />
-          </Link>
-        </div>
-
-        <section
-          className={consoleClass}
-          aria-label="Steuer- und Filter-Cockpit"
-        >
-          <div className="flex flex-col gap-2 border-b border-white/[0.055] p-2.5 xl:flex-row xl:items-center xl:justify-between">
-            <div className="no-scrollbar flex items-center gap-1 overflow-x-auto">
-              {RUBRIC_TABS.map((tab) => {
-                const active = rubricFilter === tab.id;
-                const tabClass = active
-                  ? "min-h-[33px] shrink-0 cursor-pointer rounded-[5px] border border-[#DEC393]/35 bg-[linear-gradient(135deg,rgba(222,195,147,0.18),rgba(135,102,51,0.1))] px-3.5 py-1.5 text-[10px] font-medium text-[#DEC393] shadow-[inset_0_1px_0_rgba(255,245,220,0.1)]"
-                  : "min-h-[33px] shrink-0 cursor-pointer rounded-[5px] border border-transparent px-3.5 py-1.5 text-[10px] font-medium text-[#81776A] transition hover:bg-white/[0.025] hover:text-[#D7C9B5]";
-
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setRubricFilter(tab.id)}
-                    className={tabClass}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="hidden items-center gap-2 font-mono text-[8px] uppercase tracking-[0.1em] text-[#6E6458] xl:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.45)]" />
-              Live Schweizer Index
-            </div>
-          </div>
-
-          <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-b border-white/[0.045] px-2.5 py-2.5">
-            {CANTON_PILLS.map((canton) => {
-              const active = cantonFilter === canton.code;
-              const pillClass = active
-                ? "min-h-[28px] shrink-0 cursor-pointer rounded-full border border-[#DEC393]/55 bg-[#C8A97E]/10 px-3 py-1 font-mono text-[9px] tabular-nums text-[#DEC393]"
-                : "min-h-[28px] shrink-0 cursor-pointer rounded-full border border-white/[0.065] bg-black/20 px-3 py-1 font-mono text-[9px] tabular-nums text-[#7E7467] transition hover:border-[#C8A97E]/35 hover:text-[#C8A97E]";
-
-              return (
+      <main id="dossiers" className="mx-auto max-w-7xl scroll-mt-20 px-3 pb-12 pt-16 sm:px-6">
+        <section className="luxury-console p-4 sm:p-5" aria-label="Filter">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
+              {RUBRIC_TABS.map((tab) => (
                 <button
-                  key={canton.code}
+                  key={tab.id}
                   type="button"
-                  onClick={() => setCantonFilter(canton.code)}
-                  className={pillClass}
+                  onClick={() => setRubricFilter(tab.id)}
+                  aria-pressed={rubricFilter === tab.id}
+                  className={"chip cursor-pointer " + (rubricFilter === tab.id ? "is-active" : "")}
                 >
-                  {canton.label}
+                  {tab.label}
                 </button>
-              );
-            })}
+              ))}
+            </div>
+            <div className="hidden items-center gap-2 text-sm text-[#9fb8b5] xl:flex">
+              <span className="h-2 w-2 rounded-full bg-[#4fd1b0]" />
+              Live-Index
+            </div>
           </div>
 
-          <div className="grid gap-2 p-2.5 md:grid-cols-2 xl:grid-cols-[minmax(240px,1fr)_auto_180px_225px_auto_auto] xl:items-center">
+          <div className="no-scrollbar mt-3 flex items-center gap-2 overflow-x-auto pb-1">
+            {CANTON_PILLS.map((canton) => (
+              <button
+                key={canton.code}
+                type="button"
+                onClick={() => setCantonFilter(canton.code)}
+                aria-pressed={cantonFilter === canton.code}
+                className={"chip min-h-[34px] cursor-pointer text-[13px] " + (cantonFilter === canton.code ? "is-active" : "")}
+              >
+                {canton.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(240px,1fr)_auto_190px_230px_auto_auto] xl:items-center">
             <div className="relative md:col-span-2 xl:col-span-1">
-              <Search
-                size={14}
-                strokeWidth={1.5}
-                className="pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[#C8A97E]"
-              />
+              <Search size={16} strokeWidth={1.8} className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-[#9fb8b5]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="PLZ, Stadt, Name oder Service"
-                className="luxury-input pl-9"
-                aria-label="Dossiers durchsuchen"
+                className="luxury-input pl-10"
+                aria-label="Profile durchsuchen"
               />
             </div>
 
-            <div className="flex min-h-[42px] items-center">
+            <div className="flex min-h-[46px] items-center">
               <SwissDoorplate
                 state={onlyAvailable4h ? "FREI" : "RESERVIERT"}
                 roomNumber="FILTER"
-                customLabel={
-                  onlyAvailable4h ? "NUR FREI · 4H" : "NUR FREI · AUS"
-                }
+                customLabel={onlyAvailable4h ? "NUR FREI · 4H" : "NUR FREI · AUS"}
                 size="md"
                 interactiveToggle={true}
-                onToggle={(next) =>
-                  setOnlyAvailable4h(next === "FREI")
-                }
+                onToggle={(next) => setOnlyAvailable4h(next === "FREI")}
               />
             </div>
 
             <select
               value={maxRate60}
-              onChange={(e) =>
-                setMaxRate60(Number(e.target.value))
-              }
-              className="luxury-select cursor-pointer font-mono tabular-nums"
+              onChange={(e) => setMaxRate60(Number(e.target.value))}
+              className="luxury-select cursor-pointer tabular-nums"
               aria-label="Maximales 60-Minuten-Honorar"
             >
-              <option value={1200}>CHF · ALLE TARIFE</option>
-              <option value={250}>MAX. CHF 250 / 60M</option>
-              <option value={350}>MAX. CHF 350 / 60M</option>
-              <option value={500}>MAX. CHF 500 / 60M</option>
+              <option value={1200}>Alle Tarife</option>
+              <option value={250}>Bis CHF 250 / 60 Min.</option>
+              <option value={350}>Bis CHF 350 / 60 Min.</option>
+              <option value={500}>Bis CHF 500 / 60 Min.</option>
             </select>
 
             <div className="relative">
-              <ArrowUpDown
-                size={12}
-                className="pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[#C8A97E]"
-              />
+              <ArrowUpDown size={14} className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-[#9fb8b5]" />
               <select
                 value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value as any)
-                }
-                className="luxury-select cursor-pointer pl-8 font-mono tabular-nums"
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="luxury-select cursor-pointer pl-9 tabular-nums"
                 aria-label="Sortierung"
               >
-                <option value="recommended">
-                  KURATIERT ({activeOffers.length})
-                </option>
-                <option value="available">FREI · 4H LIVE</option>
-                <option value="price_asc">CHF AUFSTEIGEND</option>
-                <option value="price_desc">CHF ABSTEIGEND</option>
+                <option value="recommended">Kuratiert ({activeOffers.length})</option>
+                <option value="available">Frei in 4h</option>
+                <option value="price_asc">Preis aufsteigend</option>
+                <option value="price_desc">Preis absteigend</option>
               </select>
             </div>
 
@@ -528,47 +468,35 @@ export default function HomePage() {
               type="button"
               onClick={toggleStudioNoir}
               aria-pressed={studioNoir}
-              className={
-                studioNoir
-                  ? "inline-flex min-h-[42px] cursor-pointer items-center justify-center gap-2 rounded-[6px] border border-[#C8A97E]/40 bg-[#C8A97E]/[0.07] px-3 font-mono text-[8px] uppercase tracking-[0.08em] text-[#DEC393]"
-                  : "ghost-button inline-flex min-h-[42px] cursor-pointer items-center justify-center gap-2 rounded-[6px] px-3 font-mono text-[8px] uppercase tracking-[0.08em]"
-              }
+              className={"chip min-h-[46px] cursor-pointer justify-center " + (studioNoir ? "is-active" : "")}
             >
-              <Sparkles size={12} />
-              Studio Noir {studioNoir ? "On" : "Off"}
+              <Sparkles size={14} />
+              Studio-Look {studioNoir ? "an" : "aus"}
             </button>
 
             <button
               type="button"
               onClick={resetFilters}
               disabled={!hasActiveFilters}
-              className="ghost-button flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-[6px] disabled:cursor-default disabled:opacity-30"
+              className="ghost-button flex h-[46px] w-[46px] cursor-pointer items-center justify-center disabled:cursor-default disabled:opacity-30"
               title="Filter zurücksetzen"
               aria-label="Filter zurücksetzen"
             >
-              <RotateCcw size={14} strokeWidth={1.5} />
+              <RotateCcw size={16} strokeWidth={1.8} />
             </button>
           </div>
         </section>
 
-        <div className="mb-4 mt-7 flex items-end justify-between gap-4 px-1">
-          <div>
-            <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#8F7958]">
-              La sélection
-            </div>
-            <h2 className="mt-1 font-serif text-xl font-normal text-[#E9DFD0]">
-              Private Dossiers
-            </h2>
-          </div>
-          <div className="font-mono text-[8px] tabular-nums text-[#6F6559]">
-            {Math.min(visibleLimit, activeOffers.length)} /{" "}
-            {activeOffers.length}
+        <div className="mb-5 mt-10 flex items-end justify-between gap-4 px-1">
+          <h2 className="text-2xl text-white sm:text-3xl">Alle Profile</h2>
+          <div className="text-sm font-semibold tabular-nums text-[#9fb8b5]">
+            {Math.min(visibleLimit, activeOffers.length)} von {activeOffers.length}
           </div>
         </div>
 
         {isLoading && (
           <div>
-            <p className="mb-4 text-center font-mono text-[9px] text-[#8E806E]">
+            <p className="mb-4 text-center text-sm text-[#9fb8b5]">
               {SWISS_DOORPLATE_TOKENS.microcopyDe.loadingState}
             </p>
             <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
@@ -624,13 +552,13 @@ export default function HomePage() {
                   >
                     <div className={noirStageClass}>
                       <div className="photo-fallback">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C8A97E]/35 font-serif text-base text-[#C8A97E]">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#ff6b5e]/35 font-serif text-base text-[#ff6b5e]">
                           CH
                         </div>
-                        <div className="mt-3 max-w-full truncate font-serif text-xs text-[#D8CCBA]">
+                        <div className="mt-3 max-w-full truncate font-serif text-xs text-[#ff6b5e]">
                           {p.rawName}
                         </div>
-                        <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.1em] text-[#7E6C52]">
+                        <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.1em] text-[#a8382e]">
                           Original-Fotos im Dossier
                         </div>
                       </div>
@@ -661,33 +589,33 @@ export default function HomePage() {
                         <div className="noir-floor" />
 
                         <div className="absolute inset-x-0 bottom-0 z-[4] px-2.5 pb-3 text-center sm:px-4 sm:pb-4">
-                          <div className="engraved-type mx-auto line-clamp-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#B5A184] sm:text-[7px] sm:tracking-[0.11em]">
+                          <div className="engraved-type mx-auto line-clamp-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#ff6b5e] sm:text-[7px] sm:tracking-[0.11em]">
                             {locationLine}
                           </div>
 
                           <div
                             title={String(p.rawName || "")}
-                            className="dossier-name engraved-type mx-auto mt-1.5 min-h-[38px] font-serif text-[17px] font-medium uppercase leading-[1.08] tracking-[0.045em] text-[#F5EDE0] sm:min-h-[46px] sm:text-[22px]"
+                            className="dossier-name engraved-type mx-auto mt-1.5 min-h-[38px] font-serif text-[17px] font-medium uppercase leading-[1.08] tracking-[0.045em] text-[#ff6b5e] sm:min-h-[46px] sm:text-[22px]"
                           >
                             {p.rawName}
                           </div>
 
-                          <div className="my-2 flex items-center justify-center gap-2 text-[#B38E52] sm:my-2.5">
-                            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#B38E52]/75 sm:w-12" />
+                          <div className="my-2 flex items-center justify-center gap-2 text-[#e8564a] sm:my-2.5">
+                            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#e8564a]/75 sm:w-12" />
                             <span className="text-[8px]">✦</span>
-                            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#B38E52]/75 sm:w-12" />
+                            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#e8564a]/75 sm:w-12" />
                           </div>
 
-                          <div className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#8C7C66] sm:text-[7px]">
+                          <div className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#6f8c93] sm:text-[7px]">
                             Starting at
                           </div>
-                          <div className="mt-0.5 whitespace-nowrap font-mono text-[22px] font-medium tabular-nums tracking-[-0.04em] text-[#DEC393] sm:text-[29px]">
+                          <div className="mt-0.5 whitespace-nowrap font-mono text-[22px] font-medium tabular-nums tracking-[-0.04em] text-[#ff6b5e] sm:text-[29px]">
                             <span className="mr-1 text-[9px] font-normal tracking-[0.04em] sm:text-[11px]">
                               CHF
                             </span>
                             {p.rate60Chf}
                           </div>
-                          <div className="mt-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#928575] sm:text-[7px]">
+                          <div className="mt-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#6f8c93] sm:text-[7px]">
                             Per hour · 30 min: CHF {p.rate30Chf}
                           </div>
                         </div>
@@ -697,7 +625,7 @@ export default function HomePage() {
                         <Crown
                           size={13}
                           strokeWidth={1.4}
-                          className="shrink-0 text-[#DEC393] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                          className="shrink-0 text-[#ff6b5e] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                         />
                         <SwissDoorplate
                           state={p.isAvail ? "FREI" : "EXTERN"}
@@ -728,20 +656,20 @@ export default function HomePage() {
                           strokeWidth={1.5}
                           className={
                             isFav
-                              ? "fill-[#DEC393] text-[#DEC393]"
-                              : "text-[#D0C4B3]"
+                              ? "fill-[#ff6b5e] text-[#ff6b5e]"
+                              : "text-[#ff6b5e]"
                           }
                         />
                       </button>
 
                       {p.isVerif && (
-                        <div className="absolute bottom-2 right-2 z-20 hidden text-[#C8A97E] sm:block">
+                        <div className="absolute bottom-2 right-2 z-20 hidden text-[#ff6b5e] sm:block">
                           <ShieldCheck size={12} strokeWidth={1.4} />
                         </div>
                       )}
                     </div>
 
-                    <div className="relative z-[5] mt-auto grid grid-cols-2 gap-1.5 border-t border-[#C8A97E]/15 bg-[#0B0908] p-2">
+                    <div className="relative z-[5] mt-auto grid grid-cols-2 gap-1.5 border-t border-[#ff6b5e]/15 bg-[#07141a] p-2">
                       {cleanDigits ? (
                         <a
                           href={whatsAppHref}
@@ -790,17 +718,12 @@ export default function HomePage() {
         )}
 
         {!isLoading && activeOffers.length === 0 && (
-          <section className="empty-state rounded-[18px] px-6 py-14 text-center">
-            <SwissDoorplate
-              state="BESETZT"
-              roomNumber="00"
-              customLabel="KEIN TREFFER"
-              size="lg"
-            />
-            <h2 className="mt-5 font-serif text-2xl font-normal text-[#E5DACA]">
-              Diskretion hat ihre Grenzen.
+          <section className="empty-state px-6 py-14 text-center">
+            <EmptyArt className="mx-auto w-56" />
+            <h2 className="mt-6 text-2xl text-white">
+              Keine Treffer für diese Auswahl.
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-xs font-light leading-6 text-[#8E8273]">
+            <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#b4cac8]">
               {searchQuery.trim()
                 ? SWISS_DOORPLATE_TOKENS.microcopyDe.zeroSearch
                 : SWISS_DOORPLATE_TOKENS.microcopyDe.emptyFilter}
@@ -808,7 +731,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={resetFilters}
-              className="brass-button mt-6 inline-flex min-h-[42px] cursor-pointer items-center gap-2 rounded-full px-5 text-[10px] uppercase tracking-[0.07em]"
+              className="brass-button mt-6 inline-flex min-h-[48px] cursor-pointer items-center gap-2 px-6 text-sm"
             >
               <RotateCcw size={13} className="relative z-[1]" />
               <span className="relative z-[1]">
@@ -825,10 +748,10 @@ export default function HomePage() {
               onClick={() =>
                 setVisibleLimit((prev) => prev + 24)
               }
-              className="ghost-button group inline-flex min-h-[46px] cursor-pointer items-center gap-3 rounded-full px-6 py-3 font-mono text-[9px] uppercase tracking-[0.09em]"
+              className="ghost-button group inline-flex min-h-[50px] cursor-pointer items-center gap-3 px-7 py-3 text-sm font-semibold"
             >
               +24 weitere Dossiers
-              <span className="font-mono text-[8px] tabular-nums text-[#746857]">
+              <span className="text-xs tabular-nums text-[#9fb8b5]">
                 {activeOffers.length - visibleLimit} verbleibend
               </span>
               <ArrowRight
@@ -839,6 +762,9 @@ export default function HomePage() {
           </div>
         )}
       </main>
+
+      <HowItWorksBand />
+      <ProviderBand />
     </div>
   );
 }

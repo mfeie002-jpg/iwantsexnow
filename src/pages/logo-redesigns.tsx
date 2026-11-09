@@ -13,14 +13,14 @@ export default function LogoRedesigns() {
         <meta name="description" content="Three complete brand redesign concepts for iWantSexNow.ch" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950">
+      <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-900 dark:via-dusk-950 dark:to-glow-950">
         <Navigation />
         <MobileNav />
 
         <main className="container mx-auto px-4 py-24">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-dusk-600 via-glow-600 to-red-600 bg-clip-text text-transparent">
               Brand Redesigns
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -32,7 +32,7 @@ export default function LogoRedesigns() {
           <section className="mb-32">
             <div className="bg-white dark:bg-gray-800 rounded-3xl p-12 shadow-2xl">
               <div className="text-center mb-12">
-                <span className="inline-block px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-900 dark:text-purple-100 rounded-full text-sm font-bold mb-4">
+                <span className="inline-block px-4 py-2 bg-dusk-100 dark:bg-dusk-900 text-dusk-900 dark:text-dusk-100 rounded-full text-sm font-bold mb-4">
                   Concept 1
                 </span>
                 <h2 className="text-4xl font-light mb-4 tracking-tight">Minimalist Luxury</h2>
@@ -42,10 +42,10 @@ export default function LogoRedesigns() {
               </div>
 
               {/* Primary Logo - Minimalist */}
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:to-purple-950 rounded-2xl p-16 mb-8">
+              <div className="bg-gradient-to-br from-dusk-50 to-glow-50 dark:from-gray-900 dark:to-dusk-950 rounded-2xl p-16 mb-8">
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative mb-8">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 blur-3xl opacity-30"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-dusk-400 to-glow-400 blur-3xl opacity-30"></div>
                     <svg width="200" height="200" viewBox="0 0 200 200" className="relative">
                       {/* Minimalist Heart/Diamond Icon */}
                       <path
@@ -62,15 +62,15 @@ export default function LogoRedesigns() {
                       />
                       <defs>
                         <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style={{ stopColor: "#9333EA", stopOpacity: 1 }} />
-                          <stop offset="100%" style={{ stopColor: "#EC4899", stopOpacity: 1 }} />
+                          <stop offset="0%" style={{ stopColor: "#8a7bff", stopOpacity: 1 }} />
+                          <stop offset="100%" style={{ stopColor: "#ff5a8a", stopOpacity: 1 }} />
                         </linearGradient>
                       </defs>
                     </svg>
                   </div>
                   <h3 className="text-5xl font-light tracking-widest mb-2">
                     <span className="text-gray-900 dark:text-white">iWant</span>
-                    <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-normal">SexNow</span>
+                    <span className="bg-gradient-to-r from-dusk-600 to-glow-600 bg-clip-text text-transparent font-normal">SexNow</span>
                   </h3>
                   <p className="text-sm tracking-[0.3em] text-gray-500 dark:text-gray-400 font-light">.CH</p>
                 </div>
@@ -79,7 +79,7 @@ export default function LogoRedesigns() {
               {/* Variations */}
               <div className="grid md:grid-cols-3 gap-6 mb-8">
                 {/* Monogram */}
-                <Card className="p-8 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-purple-900 border-0">
+                <Card className="p-8 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-dusk-900 border-0">
                   <svg width="80" height="80" viewBox="0 0 80 80">
                     <circle cx="40" cy="40" r="35" fill="none" stroke="white" strokeWidth="1" opacity="0.3" />
                     <text x="40" y="50" textAnchor="middle" fill="white" fontSize="36" fontWeight="300" fontFamily="serif">
@@ -92,7 +92,7 @@ export default function LogoRedesigns() {
                 {/* Horizontal Layout */}
                 <Card className="p-8 flex flex-col items-center justify-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-sm"></div>
+                    <div className="w-8 h-8 bg-gradient-to-br from-dusk-600 to-glow-600 rounded-sm"></div>
                     <div className="text-left">
                       <p className="text-lg font-light leading-none text-gray-900 dark:text-white">iWantSexNow</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400 tracking-wider">.CH</p>
@@ -102,7 +102,7 @@ export default function LogoRedesigns() {
                 </Card>
 
                 {/* Badge */}
-                <Card className="p-8 flex flex-col items-center justify-center bg-gradient-to-br from-purple-600 to-pink-600 border-0">
+                <Card className="p-8 flex flex-col items-center justify-center bg-gradient-to-br from-dusk-600 to-glow-600 border-0">
                   <div className="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center">
                     <Heart className="w-8 h-8 text-white" fill="white" />
                   </div>
@@ -116,15 +116,15 @@ export default function LogoRedesigns() {
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <div className="h-20 bg-gray-900 dark:bg-white rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#0F0F0F</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#07141a</p>
                   </div>
                   <div className="flex-1">
-                    <div className="h-20 bg-purple-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#9333EA</p>
+                    <div className="h-20 bg-dusk-600 rounded-lg mb-2"></div>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#8a7bff</p>
                   </div>
                   <div className="flex-1">
-                    <div className="h-20 bg-pink-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#EC4899</p>
+                    <div className="h-20 bg-glow-600 rounded-lg mb-2"></div>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#ff5a8a</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg mb-2"></div>
@@ -138,7 +138,7 @@ export default function LogoRedesigns() {
           {/* Concept 2: Bold & Confident */}
           <section className="mb-32">
             <div className="bg-gray-900 rounded-3xl p-12 shadow-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-purple-500/10"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-dusk-500/10"></div>
               
               <div className="relative text-center mb-12">
                 <span className="inline-block px-4 py-2 bg-red-500 text-white rounded-full text-sm font-bold mb-4">
@@ -152,7 +152,7 @@ export default function LogoRedesigns() {
 
               {/* Primary Logo - Bold */}
               <div className="bg-black rounded-2xl p-16 mb-8 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 via-purple-600/20 to-pink-600/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 via-dusk-600/20 to-glow-600/20"></div>
                 <div className="relative flex flex-col items-center justify-center">
                   <div className="mb-8">
                     <svg width="120" height="120" viewBox="0 0 120 120">
@@ -167,14 +167,14 @@ export default function LogoRedesigns() {
                       <defs>
                         <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" style={{ stopColor: "#EF4444", stopOpacity: 1 }} />
-                          <stop offset="100%" style={{ stopColor: "#A855F7", stopOpacity: 1 }} />
+                          <stop offset="100%" style={{ stopColor: "#8a7bff", stopOpacity: 1 }} />
                         </linearGradient>
                       </defs>
                     </svg>
                   </div>
                   <h3 className="text-6xl md:text-7xl font-black tracking-tighter mb-2">
                     <span className="text-white">i</span>
-                    <span className="bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">WANT</span>
+                    <span className="bg-gradient-to-r from-red-500 via-dusk-500 to-glow-500 bg-clip-text text-transparent">WANT</span>
                     <span className="text-white">SEX</span>
                   </h3>
                   <p className="text-4xl font-black text-red-500 tracking-wider">NOW</p>
@@ -195,9 +195,9 @@ export default function LogoRedesigns() {
                 </Card>
 
                 {/* Icon Only */}
-                <Card className="p-8 flex flex-col items-center justify-center bg-purple-600 border-0">
+                <Card className="p-8 flex flex-col items-center justify-center bg-dusk-600 border-0">
                   <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center rotate-12 transform hover:rotate-0 transition-transform">
-                    <Star className="w-12 h-12 text-purple-600" fill="currentColor" />
+                    <Star className="w-12 h-12 text-dusk-600" fill="currentColor" />
                   </div>
                   <p className="text-white text-xs mt-4 font-bold tracking-wide">ICON</p>
                 </Card>
@@ -216,15 +216,15 @@ export default function LogoRedesigns() {
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <div className="h-20 bg-black rounded-lg mb-2 border-2 border-white"></div>
-                    <p className="text-xs text-center font-mono text-gray-400">#000000</p>
+                    <p className="text-xs text-center font-mono text-gray-400">#07141a</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-red-500 rounded-lg mb-2"></div>
                     <p className="text-xs text-center font-mono text-gray-400">#EF4444</p>
                   </div>
                   <div className="flex-1">
-                    <div className="h-20 bg-purple-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-400">#A855F7</p>
+                    <div className="h-20 bg-dusk-600 rounded-lg mb-2"></div>
+                    <p className="text-xs text-center font-mono text-gray-400">#8a7bff</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-white rounded-lg mb-2"></div>
@@ -239,7 +239,7 @@ export default function LogoRedesigns() {
           <section className="mb-32">
             <div className="bg-white dark:bg-gray-800 rounded-3xl p-12 shadow-2xl">
               <div className="text-center mb-12">
-                <span className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-full text-sm font-bold mb-4">
+                <span className="inline-block px-4 py-2 bg-lake-100 dark:bg-lake-900 text-lake-900 dark:text-lake-100 rounded-full text-sm font-bold mb-4">
                   Concept 3
                 </span>
                 <h2 className="text-4xl font-bold mb-4 tracking-tight">Swiss Precision</h2>
@@ -258,8 +258,8 @@ export default function LogoRedesigns() {
                       <rect x="70" y="40" width="20" height="80" fill="#DC2626" />
                       
                       {/* Geometric Frame */}
-                      <rect x="30" y="30" width="100" height="100" fill="none" stroke="#1F2937" strokeWidth="2" />
-                      <rect x="35" y="35" width="90" height="90" fill="none" stroke="#1F2937" strokeWidth="1" opacity="0.3" />
+                      <rect x="30" y="30" width="100" height="100" fill="none" stroke="#143039" strokeWidth="2" />
+                      <rect x="35" y="35" width="90" height="90" fill="none" stroke="#143039" strokeWidth="1" opacity="0.3" />
                       
                       {/* Corner Markers */}
                       <circle cx="30" cy="30" r="3" fill="#DC2626" />
@@ -322,7 +322,7 @@ export default function LogoRedesigns() {
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <div className="h-20 bg-gray-900 dark:bg-white rounded-lg mb-2 border border-gray-200 dark:border-gray-700"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#1F2937</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#143039</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-red-600 rounded-lg mb-2"></div>
@@ -350,7 +350,7 @@ export default function LogoRedesigns() {
                   <thead>
                     <tr className="border-b-2 border-gray-200 dark:border-gray-700">
                       <th className="text-left py-4 px-6 font-bold text-gray-900 dark:text-white">Attribute</th>
-                      <th className="text-left py-4 px-6 font-bold text-purple-600">Minimalist Luxury</th>
+                      <th className="text-left py-4 px-6 font-bold text-dusk-600">Minimalist Luxury</th>
                       <th className="text-left py-4 px-6 font-bold text-red-500">Bold & Confident</th>
                       <th className="text-left py-4 px-6 font-bold text-red-600">Swiss Precision</th>
                     </tr>
@@ -395,7 +395,7 @@ export default function LogoRedesigns() {
           {/* CTA */}
           <div className="text-center">
             <div className="inline-flex gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Button size="lg" className="bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700">
                 <Download className="w-5 h-5 mr-2" />
                 Download All Concepts
               </Button>

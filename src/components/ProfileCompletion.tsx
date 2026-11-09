@@ -60,7 +60,7 @@ export function ProfileCompletion({ completionPercentage }: ProfileCompletionPro
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xl font-bold">Profile Completion</h3>
-          <Badge className={completionPercentage === 100 ? "bg-green-500" : "bg-pink-600"}>
+          <Badge className={completionPercentage === 100 ? "bg-mint-500" : "bg-glow-600"}>
             {completionPercentage}%
           </Badge>
         </div>
@@ -81,14 +81,14 @@ export function ProfileCompletion({ completionPercentage }: ProfileCompletionPro
               key={index}
               className={`flex items-start gap-3 p-3 rounded-lg border-2 transition-all ${
                 step.completed 
-                  ? "bg-green-50 border-green-200" 
+                  ? "bg-mint-50 border-mint-200" 
                   : nextStep === step
-                  ? "bg-pink-50 border-pink-300 shadow-md"
+                  ? "bg-glow-50 border-glow-300 shadow-md"
                   : "bg-gray-50 border-gray-200"
               }`}
             >
               <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                step.completed ? "bg-green-500" : "bg-gray-300"
+                step.completed ? "bg-mint-500" : "bg-gray-300"
               }`}>
                 {step.completed ? (
                   <CheckCircle className="text-white" size={20} />
@@ -98,13 +98,13 @@ export function ProfileCompletion({ completionPercentage }: ProfileCompletionPro
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <Icon size={16} className={step.completed ? "text-green-600" : "text-gray-600"} />
+                  <Icon size={16} className={step.completed ? "text-mint-600" : "text-gray-600"} />
                   <h4 className="font-bold text-sm">{step.title}</h4>
                   <Badge variant="outline" className="text-xs">+{step.points}%</Badge>
                 </div>
                 <p className="text-xs text-gray-600">{step.description}</p>
                 {!step.completed && nextStep === step && (
-                  <Button size="sm" className="mt-2 bg-pink-600 hover:bg-pink-700 h-7 text-xs" asChild>
+                  <Button size="sm" className="mt-2 bg-glow-600 hover:bg-glow-700 h-7 text-xs" asChild>
                     <Link href={step.link}>Complete Now</Link>
                   </Button>
                 )}
@@ -115,12 +115,12 @@ export function ProfileCompletion({ completionPercentage }: ProfileCompletionPro
       </div>
 
       {completionPercentage === 100 && (
-        <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-lg">
+        <div className="mt-4 p-4 bg-gradient-to-r from-mint-50 to-mint-50 border-2 border-mint-300 rounded-lg">
           <div className="flex items-start gap-3">
-            <Award className="text-green-600 flex-shrink-0" size={24} />
+            <Award className="text-mint-600 flex-shrink-0" size={24} />
             <div>
-              <h4 className="font-bold text-green-900 mb-1">Profile Master! 🏆</h4>
-              <p className="text-sm text-green-800">
+              <h4 className="font-bold text-mint-900 mb-1">Profile Master! 🏆</h4>
+              <p className="text-sm text-mint-800">
                 Your complete profile gets 3x more views. Keep your photos updated for best results!
               </p>
             </div>

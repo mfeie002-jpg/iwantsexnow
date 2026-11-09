@@ -217,7 +217,7 @@ export default function FantasyPreviewAndAvatarPage() {
   };
 
   return (
-    <div className="penthouse-page min-h-screen pb-24 text-[#F2EADF]">
+    <div className="penthouse-page min-h-screen pb-24 text-[#dcebe8]">
       <SEO
         title="Provider-Avatar (Voice) & Fantasy Preview | iwantsexnow.ch"
         description="Interaktive Schweizer Provider-Avatare mit ElevenLabs Voice, 1-Klick-Chips und KI-Vorgeschmack (80/20 Creator-Split & 1-Klick Opt-Out)."
@@ -232,30 +232,30 @@ export default function FantasyPreviewAndAvatarPage() {
               <Sparkles size={11} />
               Schweizer Neuheit · 80% an Anbieterin
             </div>
-            <h1 className="mt-4 font-serif text-[28px] font-normal leading-tight text-[#F0E5D5] sm:text-[38px]">
+            <h1 className="mt-4 font-serif text-[28px] font-normal leading-tight text-[#ff6b5e] sm:text-[38px]">
               Voice-Avatar &{" "}
               <span className="brass-text italic">
                 Fantasy Preview.
               </span>
             </h1>
-            <p className="mt-3 max-w-2xl text-[11px] font-light leading-6 text-[#938777] sm:text-xs">
+            <p className="mt-3 max-w-2xl text-[11px] font-light leading-6 text-[#6f8c93] sm:text-xs">
               Chatten Sie per 1-Tap-Chips mit dem lizenzierten KI-Avatar
               inklusive ElevenLabs-Stimme oder wählen Sie eine klar
               gekennzeichnete 5-Sekunden-KI-Szene.
             </p>
           </div>
 
-          <div className="flex shrink-0 items-start gap-3 border-l border-[#C8A97E]/30 pl-4">
+          <div className="flex shrink-0 items-start gap-3 border-l border-[#ff6b5e]/30 pl-4">
             <ShieldCheck
               size={18}
               strokeWidth={1.4}
-              className="mt-0.5 text-[#C8A97E]"
+              className="mt-0.5 text-[#ff6b5e]"
             />
             <div>
-              <div className="text-[10px] text-[#C8B89D]">
+              <div className="text-[10px] text-[#ff6b5e]">
                 KI-Interpretation klar gekennzeichnet
               </div>
-              <div className="mt-1 font-mono text-[8px] text-[#74695B]">
+              <div className="mt-1 font-mono text-[8px] text-[#6f8c93]">
                 80/20 CREATOR-SPLIT · OPT-OUT JEDERZEIT
               </div>
             </div>
@@ -264,10 +264,10 @@ export default function FantasyPreviewAndAvatarPage() {
 
         <section className="mt-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <label className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#C8A97E]">
+            <label className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#ff6b5e]">
               01 · Anbieterin auswählen
             </label>
-            <span className="font-mono text-[8px] tabular-nums text-[#6E6458]">
+            <span className="font-mono text-[8px] tabular-nums text-[#5d7a82]">
               {topProfiles.length} kuratierte Dossiers
             </span>
           </div>
@@ -276,8 +276,8 @@ export default function FantasyPreviewAndAvatarPage() {
             {topProfiles.map((p: any, index: number) => {
               const active = p.id === selectedProfile?.id;
               const selectorClass = active
-                ? "flex w-[210px] shrink-0 cursor-pointer items-center gap-3 rounded-[10px] border border-[#DEC393]/55 bg-[#C8A97E]/[0.075] p-2 text-left shadow-[inset_0_1px_0_rgba(255,245,220,0.07)]"
-                : "flex w-[210px] shrink-0 cursor-pointer items-center gap-3 rounded-[10px] border border-white/[0.075] bg-[#100D0B] p-2 text-left transition hover:border-[#C8A97E]/35";
+                ? "flex w-[210px] shrink-0 cursor-pointer items-center gap-3 rounded-[10px] border border-[#ff6b5e]/55 bg-[#ff6b5e]/[0.075] p-2 text-left shadow-[inset_0_1px_0_rgba(255,245,220,0.07)]"
+                : "flex w-[210px] shrink-0 cursor-pointer items-center gap-3 rounded-[10px] border border-white/[0.075] bg-[#07141a] p-2 text-left transition hover:border-[#ff6b5e]/35";
 
               return (
                 <button
@@ -291,7 +291,7 @@ export default function FantasyPreviewAndAvatarPage() {
                   }}
                   className={selectorClass}
                 >
-                  <span className="noir-stage block h-[58px] w-[46px] shrink-0 rounded-[5px]">
+                  <span className="noir-stage block h-[58px] w-[46px] shrink-0 rounded-xl">
                     {p.thumbnail ? (
                       <img
                         referrerPolicy="no-referrer"
@@ -304,7 +304,7 @@ export default function FantasyPreviewAndAvatarPage() {
                         className="noir-media scale-[1.06] object-cover object-top"
                       />
                     ) : (
-                      <span className="photo-fallback p-0 font-serif text-[10px] text-[#C8A97E]">
+                      <span className="photo-fallback p-0 font-serif text-[10px] text-[#ff6b5e]">
                         CH
                       </span>
                     )}
@@ -312,13 +312,13 @@ export default function FantasyPreviewAndAvatarPage() {
                   </span>
 
                   <span className="min-w-0">
-                    <span className="block truncate font-serif text-[12px] text-[#E2D6C4]">
+                    <span className="block truncate font-serif text-[12px] text-[#ff6b5e]">
                       {p.rawName}
                     </span>
-                    <span className="mt-1.5 block font-mono text-[8px] tabular-nums text-[#8D795A]">
+                    <span className="mt-1.5 block font-mono text-[8px] tabular-nums text-[#ff6b5e]">
                       {p.canton} · {p.city}
                     </span>
-                    <span className="mt-1 block font-mono text-[8px] tabular-nums text-[#C8A97E]">
+                    <span className="mt-1 block font-mono text-[8px] tabular-nums text-[#ff6b5e]">
                       CHF {p.advertisedBaseChf || 350}.–
                     </span>
                   </span>
@@ -329,7 +329,7 @@ export default function FantasyPreviewAndAvatarPage() {
         </section>
 
         {actionError && (
-          <div className="bordeaux-button mt-5 rounded-[8px] px-4 py-3 text-[10px] leading-5">
+          <div className="bordeaux-button mt-5 rounded-xl px-4 py-3 text-[10px] leading-5">
             {actionError}
           </div>
         )}
@@ -350,10 +350,10 @@ export default function FantasyPreviewAndAvatarPage() {
                   <span className="luxury-badge">ElevenLabs Voice</span>
                 </div>
 
-                <h2 className="mt-4 flex items-center gap-2 font-serif text-xl font-normal text-[#EBDFCE]">
+                <h2 className="mt-4 flex items-center gap-2 font-serif text-xl font-normal text-[#ff6b5e]">
                   <MessageCircle
                     size={18}
-                    className="text-[#C8A97E]"
+                    className="text-[#ff6b5e]"
                   />
                   {selectedProfile.rawName}
                 </h2>
@@ -362,7 +362,7 @@ export default function FantasyPreviewAndAvatarPage() {
                   {ARCHETYPES.map((item) => {
                     const active = archetype === item.id;
                     const archetypeClass = active
-                      ? "shrink-0 cursor-pointer rounded-full border border-[#DEC393]/45 bg-[#C8A97E]/10 px-3 py-1.5 text-[8px] text-[#DEC393]"
+                      ? "shrink-0 cursor-pointer rounded-full border border-[#ff6b5e]/45 bg-[#ff6b5e]/10 px-3 py-1.5 text-[8px] text-[#ff6b5e]"
                       : "ghost-button shrink-0 cursor-pointer rounded-full px-3 py-1.5 text-[8px]";
 
                     return (
@@ -384,12 +384,12 @@ export default function FantasyPreviewAndAvatarPage() {
                   const avatarMessage =
                     message.sender === "avatar";
                   const messageClass = avatarMessage
-                    ? "rounded-[10px] rounded-tl-[2px] border border-[#C8A97E]/20 bg-black/30 p-3.5 text-[11px] font-light leading-6 text-[#C9BCAA]"
-                    : "ml-8 rounded-[10px] rounded-tr-[2px] border border-[#C8A97E]/30 bg-[#C8A97E]/[0.08] p-3.5 text-[11px] font-light leading-6 text-[#E3D7C5]";
+                    ? "rounded-[10px] rounded-tl-[2px] border border-[#ff6b5e]/20 bg-black/30 p-3.5 text-[11px] font-light leading-6 text-[#ff6b5e]"
+                    : "ml-8 rounded-[10px] rounded-tr-[2px] border border-[#ff6b5e]/30 bg-[#ff6b5e]/[0.08] p-3.5 text-[11px] font-light leading-6 text-[#ff6b5e]";
 
                   return (
                     <div key={index} className={messageClass}>
-                      <div className="mb-1.5 font-mono text-[7px] uppercase tracking-[0.12em] text-[#A88D61]">
+                      <div className="mb-1.5 font-mono text-[7px] uppercase tracking-[0.12em] text-[#ff6b5e]">
                         {avatarMessage
                           ? selectedProfile.rawName +
                             " · KI-Interpretation"
@@ -401,12 +401,12 @@ export default function FantasyPreviewAndAvatarPage() {
                 })}
 
                 {chatBusy && (
-                  <div className="lux-skeleton h-20 rounded-[10px] border border-[#C8A97E]/10" />
+                  <div className="lux-skeleton h-20 rounded-[10px] border border-[#ff6b5e]/10" />
                 )}
               </div>
 
               {audioUrl && (
-                <div className="mt-4 flex flex-col gap-3 rounded-[8px] border border-[#10B981]/20 bg-[#0D291E]/35 p-3 text-[10px] sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-4 flex flex-col gap-3 rounded-xl border border-[#4fd1b0]/20 bg-[#0d1f27]/35 p-3 text-[10px] sm:flex-row sm:items-center sm:justify-between">
                   <span className="inline-flex items-center gap-2 text-[#A8C8B7]">
                     <Volume2 size={15} />
                     Sprachnachricht bereit
@@ -420,12 +420,12 @@ export default function FantasyPreviewAndAvatarPage() {
               )}
 
               {lockedState && !unlockedChat && (
-                <div className="mt-4 rounded-[10px] border border-[#C8A97E]/45 bg-[#0A0807] p-4">
-                  <div className="flex items-center gap-2 text-[10px] font-medium text-[#DEC393]">
+                <div className="mt-4 rounded-[10px] border border-[#ff6b5e]/45 bg-[#07141a] p-4">
+                  <div className="flex items-center gap-2 text-[10px] font-medium text-[#ff6b5e]">
                     <Lock size={14} />
                     Gratis-Vorschau beendet · Demo-Freischaltung (ohne Zahlung)
                   </div>
-                  <p className="mt-2 text-[10px] font-light leading-5 text-[#9B8E7D]">
+                  <p className="mt-2 text-[10px] font-light leading-5 text-[#6f8c93]">
                     {lockedState.text}
                   </p>
                   <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -457,7 +457,7 @@ export default function FantasyPreviewAndAvatarPage() {
             </div>
 
             <div className="mt-5 border-t border-white/[0.065] pt-4">
-              <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#74695B]">
+              <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#6f8c93]">
                 Zero-Typing · 1-Tap Antworten
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -491,11 +491,11 @@ export default function FantasyPreviewAndAvatarPage() {
                   </span>
                 </div>
 
-                <h2 className="mt-4 flex items-center gap-2 font-serif text-xl font-normal text-[#EBDFCE]">
-                  <Video size={18} className="text-[#C8A97E]" />
+                <h2 className="mt-4 flex items-center gap-2 font-serif text-xl font-normal text-[#ff6b5e]">
+                  <Video size={18} className="text-[#ff6b5e]" />
                   Fantasy Preview
                 </h2>
-                <p className="mt-1 text-[10px] font-light text-[#817567]">
+                <p className="mt-1 text-[10px] font-light text-[#6f8c93]">
                   Szene mit {selectedProfile.rawName}
                 </p>
               </div>
@@ -504,8 +504,8 @@ export default function FantasyPreviewAndAvatarPage() {
                 {SCENES.map((scene, index) => {
                   const active = selectedScene === scene.id;
                   const sceneClass = active
-                    ? "min-h-[68px] cursor-pointer rounded-[8px] border border-[#DEC393]/50 bg-[#C8A97E]/[0.075] p-3 text-left"
-                    : "min-h-[68px] cursor-pointer rounded-[8px] border border-white/[0.07] bg-black/20 p-3 text-left transition hover:border-[#C8A97E]/30";
+                    ? "min-h-[68px] cursor-pointer rounded-xl border border-[#ff6b5e]/50 bg-[#ff6b5e]/[0.075] p-3 text-left"
+                    : "min-h-[68px] cursor-pointer rounded-xl border border-white/[0.07] bg-black/20 p-3 text-left transition hover:border-[#ff6b5e]/30";
 
                   return (
                     <button
@@ -514,10 +514,10 @@ export default function FantasyPreviewAndAvatarPage() {
                       onClick={() => setSelectedScene(scene.id)}
                       className={sceneClass}
                     >
-                      <span className="font-mono text-[8px] tabular-nums text-[#A88C60]">
+                      <span className="font-mono text-[8px] tabular-nums text-[#ff6b5e]">
                         SZENE {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="mt-1.5 block text-[10px] font-light leading-5 text-[#C5B8A6]">
+                      <span className="mt-1.5 block text-[10px] font-light leading-5 text-[#ff6b5e]">
                         {scene.label}
                       </span>
                     </button>
@@ -525,23 +525,23 @@ export default function FantasyPreviewAndAvatarPage() {
                 })}
               </div>
 
-              <div className="mt-4 space-y-2 rounded-[8px] border border-white/[0.065] bg-black/20 p-3.5 text-[9px] leading-5 text-[#8E8171]">
+              <div className="mt-4 space-y-2 rounded-xl border border-white/[0.065] bg-black/20 p-3.5 text-[9px] leading-5 text-[#6f8c93]">
                 <div>
                   Gratis-Kontingent:{" "}
-                  <strong className="font-mono tabular-nums text-[#C8B393]">
+                  <strong className="font-mono tabular-nums text-[#9fb8b5]">
                     {Math.max(0, 2 - freePreviewsUsed)} von 2 frei
                   </strong>
                 </div>
                 <div>
                   Danach:{" "}
-                  <strong className="font-mono tabular-nums text-[#C8B393]">
+                  <strong className="font-mono tabular-nums text-[#9fb8b5]">
                     CHF 5.00 pro Clip
                   </strong>{" "}
                   · CHF 4.00 / 80% an {selectedProfile.rawName}
                 </div>
                 <div>
                   Ausweis:{" "}
-                  <strong className="text-[#C8B393]">
+                  <strong className="text-[#9fb8b5]">
                     KI-Interpretation, kein Originalvideo
                   </strong>
                 </div>
@@ -549,18 +549,18 @@ export default function FantasyPreviewAndAvatarPage() {
 
               {previewBusy && (
                 <div className="mt-4">
-                  <div className="lux-skeleton aspect-video rounded-[10px] border border-[#C8A97E]/15" />
-                  <div className="mt-2 text-center font-mono text-[8px] uppercase tracking-[0.1em] text-[#8D795B]">
+                  <div className="lux-skeleton aspect-video rounded-[10px] border border-[#ff6b5e]/15" />
+                  <div className="mt-2 text-center font-mono text-[8px] uppercase tracking-[0.1em] text-[#ff6b5e]">
                     Projektionsbühne wird vorbereitet
                   </div>
                 </div>
               )}
 
               {previewResult && !previewBusy && (
-                <div className="mt-4 rounded-[10px] border border-[#C8A97E]/35 bg-[#0A0807] p-4 text-[10px]">
+                <div className="mt-4 rounded-[10px] border border-[#ff6b5e]/35 bg-[#07141a] p-4 text-[10px]">
                   {previewResult.paywallRequired ? (
                     <div>
-                      <div className="font-medium text-[#DEC393]">
+                      <div className="font-medium text-[#ff6b5e]">
                         {previewResult.message}
                       </div>
                       <div className="mt-3 grid gap-2">
@@ -593,7 +593,7 @@ export default function FantasyPreviewAndAvatarPage() {
                           {previewResult.aiDisclosureLabel}
                         </span>
                       </div>
-                      <p className="mt-3 text-[9px] font-light leading-5 text-[#827667]">
+                      <p className="mt-3 text-[9px] font-light leading-5 text-[#6f8c93]">
                         {previewResult.synthesizedPrompt}
                       </p>
                       <Link
@@ -637,16 +637,16 @@ export default function FantasyPreviewAndAvatarPage() {
 
         <section className="dossier-panel mt-6 flex flex-col gap-5 rounded-[12px] p-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-3xl">
-            <div className="font-mono text-[8px] uppercase tracking-[0.15em] text-[#C8A97E]">
+            <div className="font-mono text-[8px] uppercase tracking-[0.15em] text-[#ff6b5e]">
               Schweizer DSG · Lizenz · Bildrechte · 1-Klick Opt-Out
             </div>
-            <p className="mt-2 text-[10px] font-light leading-5 text-[#8E8171]">
+            <p className="mt-2 text-[10px] font-light leading-5 text-[#6f8c93]">
               Bist du {selectedProfile.rawName}? Du erhältst 80% aller
               Avatar- und Preview-Erlöse oder kannst die KI-Funktionen
               hier sofort deaktivieren.
             </p>
             {optOutNotice && (
-              <p className="mt-2 text-[10px] text-[#DEC393]">
+              <p className="mt-2 text-[10px] text-[#ff6b5e]">
                 {optOutNotice}
               </p>
             )}

@@ -24,13 +24,13 @@ export function MoneyPageSeoContent({
   return (
     <section
       aria-label={`Marktbericht, Preis-Spiegel und Expat-Guide für ${cityOrRegion}`}
-      className="bg-[#08111C] border-t border-[#C69C6D]/30 py-12 text-white"
+      className="bg-[#08111C] border-t border-[#ff6b5e]/30 py-12 text-white"
     >
       <div className="container mx-auto px-4 max-w-7xl space-y-8">
         {/* Language Switcher Header for Swiss Locals & English Tourists/Expats */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
           <div>
-            <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40 mb-1.5">
+            <Badge className="bg-[#ff6b5e]/20 text-[#ff6b5e] border border-[#ff6b5e]/40 mb-1.5">
               <Sparkles size={12} className="mr-1.5 inline" /> Offizielles Schweizer Markt-Dossier & Expat-Guide 2026
             </Badge>
             <h2 className="text-2xl md:text-3xl font-serif font-black">
@@ -40,12 +40,12 @@ export function MoneyPageSeoContent({
             </h2>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-black/60 p-1.5 rounded-xl border border-[#C69C6D]/50">
+          <div className="flex items-center gap-1.5 bg-black/60 p-1.5 rounded-xl border border-[#ff6b5e]/50">
             <button
               type="button"
               onClick={() => setLang("de")}
               className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
-                lang === "de" ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-300 hover:text-white"
+                lang === "de" ? "bg-[#ff6b5e] text-[#0d1f27]" : "text-gray-300 hover:text-white"
               }`}
             >
               🇨🇭 Deutsch (CH)
@@ -54,7 +54,7 @@ export function MoneyPageSeoContent({
               type="button"
               onClick={() => setLang("en")}
               className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
-                lang === "en" ? "bg-[#C69C6D] text-[#0D1B2A]" : "text-gray-300 hover:text-white"
+                lang === "en" ? "bg-[#ff6b5e] text-[#0d1f27]" : "text-gray-300 hover:text-white"
               }`}
             >
               🇬🇧 English (Tourists & Expats)
@@ -86,22 +86,22 @@ export function MoneyPageSeoContent({
 
             {/* Right 5 Cols: Structured Price & Keyword Silo Table */}
             <div className="lg:col-span-5 space-y-4">
-              <Card className="bg-[#09131E] border border-[#C69C6D]/45 p-5 rounded-2xl text-white space-y-3">
-                <h3 className="text-base font-serif font-black text-[#D5A021] flex items-center gap-2">
+              <Card className="bg-[#07141a] border border-[#ff6b5e]/45 p-5 rounded-2xl text-white space-y-3">
+                <h3 className="text-base font-serif font-black text-[#ff6b5e] flex items-center gap-2">
                   <Coins size={16} /> Offizielle Richtpreise in {cityOrRegion} (2026)
                 </h3>
                 <div className="divide-y divide-white/10 text-xs">
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">30 Min. Express / Studio-Visit (Incall):</span>
-                    <strong className="text-emerald-400">ab CHF {Math.round(minRateChf * 0.65)} – {Math.round(avgRateChf * 0.7)}</strong>
+                    <strong className="text-mint-400">ab CHF {Math.round(minRateChf * 0.65)} – {Math.round(avgRateChf * 0.7)}</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">60 Min. Direktbuchung (inkl. GFE):</span>
-                    <strong className="text-emerald-400">ab CHF {minRateChf} (Ø CHF {avgRateChf})</strong>
+                    <strong className="text-mint-400">ab CHF {minRateChf} (Ø CHF {avgRateChf})</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">2 Stunden VIP Dinner- oder Hotel-Date:</span>
-                    <strong className="text-[#D5A021]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
+                    <strong className="text-[#ff6b5e]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">Overnight (10–12 Std. inkl. Frühstück):</span>
@@ -109,13 +109,13 @@ export function MoneyPageSeoContent({
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">3-Minuten 1:1 Live-Cam Vibe-Check vorab:</span>
-                    <strong className="text-rose-300">CHF 29 (CHF 20 Date-Gutschrift!)</strong>
+                    <strong className="text-glow-300">CHF 29 (CHF 20 Date-Gutschrift!)</strong>
                   </div>
                 </div>
               </Card>
 
               <div className="bg-black/40 border border-white/10 rounded-2xl p-4 text-xs space-y-2">
-                <div className="font-bold text-[#D5A021]">Weiterführende Schweizer Insider-Guides:</div>
+                <div className="font-bold text-[#ff6b5e]">Weiterführende Schweizer Insider-Guides:</div>
                 <div className="flex flex-wrap gap-1.5">
                   <Link href="/guides/english-tourist-expat-escort-guide-switzerland" className="underline text-gray-300 hover:text-white">
                     🇬🇧 English Tourist & Expat Guide
@@ -149,7 +149,7 @@ export function MoneyPageSeoContent({
               <p>
                 <strong>iWantSexNow.ch</strong> is Switzerland’s official meta-index and direct-booking platform: We scan and deduplicate over <strong>{profileCount} verified companions, female escorts, male gigolos (for women & couples), and VIP trans models</strong> every hour by their Swiss <code>+41</code> phone number.
               </p>
-              <ul className="space-y-1.5 text-emerald-300 font-medium">
+              <ul className="space-y-1.5 text-mint-300 font-medium">
                 <li>✓ <strong>100% Fixed-Price Guarantee (Swiss Shield Certificate):</strong> Select your duration (30m, 60m, 2h, Overnight) and desired services (GFE, Dinner Date, Hotel Outcall, Massage) upfront—zero price negotiation in your hotel room.</li>
                 <li>✓ <strong>3-Minute 1:1 Live-Cam Vibe-Check (CHF 29):</strong> Verify that your companion looks 100% like her photos via a private browser video call before booking (includes a CHF 20 credit toward your date!).</li>
                 <li>✓ <strong>5-Star Hotel Outcall & Crypto Friendly:</strong> Discreet outcalls to all major Swiss luxury hotels (Dolder Grand, Baur au Lac, Park Hyatt, Park Hotel Zug, Kameha Grand, Mandarin Oriental, Badrutt’s Palace). Cash (CHF/EUR/USD), TWINT, and USDT/Crypto accepted.</li>
@@ -157,22 +157,22 @@ export function MoneyPageSeoContent({
             </div>
 
             <div className="lg:col-span-5 space-y-4">
-              <Card className="bg-[#09131E] border border-[#C69C6D]/45 p-5 rounded-2xl text-white space-y-3">
-                <h3 className="text-base font-serif font-black text-[#D5A021] flex items-center gap-2">
+              <Card className="bg-[#07141a] border border-[#ff6b5e]/45 p-5 rounded-2xl text-white space-y-3">
+                <h3 className="text-base font-serif font-black text-[#ff6b5e] flex items-center gap-2">
                   <Globe size={16} /> Swiss Companion Rates & Etiquette (English)
                 </h3>
                 <div className="divide-y divide-white/10 text-xs">
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">Legal Status in Switzerland:</span>
-                    <strong className="text-emerald-400">100% Legal & Regulated (18+)</strong>
+                    <strong className="text-mint-400">100% Legal & Regulated (18+)</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">60 Min. Verified Direct Rate:</span>
-                    <strong className="text-emerald-400">from CHF {minRateChf} (avg. CHF {avgRateChf})</strong>
+                    <strong className="text-mint-400">from CHF {minRateChf} (avg. CHF {avgRateChf})</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">2 Hours Dinner / Hotel Outcall:</span>
-                    <strong className="text-[#D5A021]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
+                    <strong className="text-[#ff6b5e]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">Accepted Currencies:</span>
@@ -181,7 +181,7 @@ export function MoneyPageSeoContent({
                 </div>
                 <Link
                   href="/guides/english-tourist-expat-escort-guide-switzerland"
-                  className="block text-center w-full py-2.5 rounded-xl bg-[#C69C6D] text-[#0D1B2A] font-black text-xs"
+                  className="block text-center w-full py-2.5 rounded-xl bg-[#ff6b5e] text-[#0d1f27] font-black text-xs"
                 >
                   Read Complete English Visitor & Hotel Outcall Guide →
                 </Link>

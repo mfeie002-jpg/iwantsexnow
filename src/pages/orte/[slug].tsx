@@ -68,7 +68,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any) {
   return (
-    <div className="min-h-screen bg-[#070606] text-[#F5EFE6] pb-24">
+    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
       <SEO
         title={"Escort & Tantra Suiten in " + hubTitle + " (" + cantonCode + ") | iwantsexnow.ch"}
         description={
@@ -83,10 +83,10 @@ export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any)
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <div className="penthouse-panel p-6 rounded-[24px] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <div className="penthouse-panel p-6 rounded-[24px] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
             <SwissDoorplate state="FREI" roomNumber={cantonCode} customLabel={profiles.length + " SUITEN OFFEN"} size="sm" />
-            <h1 className="text-2xl sm:text-4xl font-serif text-[#EAD2AA] mt-2">
+            <h1 className="text-2xl sm:text-4xl font-serif text-[#ff6b5e] mt-2">
               Private Penthouse Suiten in {hubTitle} ({cantonCode})
             </h1>
           </div>
@@ -106,7 +106,7 @@ export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any)
                 key={p.id || idx}
                 className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
               >
-                <div className="relative rounded-[20px] overflow-hidden border border-[#C8A97E]/35 bg-[#070505] flex-1 flex flex-col justify-between">
+                <div className="relative rounded-[20px] overflow-hidden border border-[#ff6b5e]/35 bg-[#07141a] flex-1 flex flex-col justify-between">
                   <Link href={"/profile/" + encodeURIComponent(p.id)} className="darkroom-stage block aspect-[3/4.1] w-full">
                     <img
                       referrerPolicy="no-referrer"
@@ -122,35 +122,35 @@ export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any)
                     <div className="darkroom-floor" />
 
                     <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#C8A97E]/55 flex items-center justify-center text-[#DEC393]">
+                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#ff6b5e]/55 flex items-center justify-center text-[#ff6b5e]">
                         <Crown size={13} />
                       </div>
                       <SwissDoorplate state={p.isAvail ? "FREI" : "RESERVIERT"} roomNumber={p.canton} customLabel="FREI" size="sm" />
                     </div>
 
                     <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
-                      <h3 className="font-serif text-xl tracking-[0.14em] uppercase text-[#EAD2AA] truncate max-w-full">
+                      <h3 className="font-serif text-xl tracking-[0.14em] uppercase text-[#ff6b5e] truncate max-w-full">
                         {p.cleanTitle}
                       </h3>
-                      <div className="text-[9px] font-sans font-semibold tracking-[0.26em] uppercase text-[#C8B69E] mt-1">
+                      <div className="text-[9px] font-sans font-semibold tracking-[0.26em] uppercase text-[#ff6b5e] mt-1">
                         • {p.city} ({p.canton}) •
                       </div>
-                      <div className="font-serif font-mono text-2xl text-[#EAD2AA] mt-1">
+                      <div className="font-serif font-mono text-2xl text-[#ff6b5e] mt-1">
                         CHF {p.rate60Chf}
                       </div>
-                      <div className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#9E8C74]">
+                      <div className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#7fa3a6]">
                         PER HOUR · (30M: CHF {p.rate30Chf})
                       </div>
                     </div>
                   </Link>
 
-                  <div className="px-3.5 pb-3.5 pt-2 bg-[#070505] grid grid-cols-2 gap-2.5">
+                  <div className="px-3.5 pb-3.5 pt-2 bg-[#07141a] grid grid-cols-2 gap-2.5">
                     {cleanDigits ? (
                       <a
                         href={"https://wa.me/" + cleanDigits}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                        className="brass-3d py-2.5 px-3 rounded-full border border-[#ff6b5e]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
                       >
                         <MessageCircle size={12} />
                         <span>WHATSAPP</span>
@@ -158,7 +158,7 @@ export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any)
                     ) : (
                       <Link
                         href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
-                        className="brass-3d py-2.5 px-3 rounded-full border border-[#F5E3B8]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
+                        className="brass-3d py-2.5 px-3 rounded-full border border-[#ff6b5e]/65 font-sans font-extrabold text-[10px] tracking-[0.15em] uppercase flex items-center justify-center gap-1.5"
                       >
                         <Sparkles size={12} />
                         <span>PREVIEW</span>
@@ -166,9 +166,9 @@ export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any)
                     )}
                     <Link
                       href={"/profile/" + encodeURIComponent(p.id)}
-                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#C8A97E]/45 font-sans font-bold text-[10px] tracking-[0.14em] uppercase flex items-center justify-center gap-1.5"
+                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#ff6b5e]/45 font-sans font-bold text-[10px] tracking-[0.14em] uppercase flex items-center justify-center gap-1.5"
                     >
-                      <User size={12} className="text-[#DEC393]" />
+                      <User size={12} className="text-[#ff6b5e]" />
                       <span>VIEW PROFILE</span>
                     </Link>
                   </div>

@@ -19,9 +19,9 @@ export function MobileNav() {
       </Button>
 
       {open && (
-        <div className="fixed inset-x-0 top-[68px] z-50 border-b border-[#C69C6D]/40 bg-[#07101A]/98 backdrop-blur-xl p-5 text-white shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-x-0 top-[68px] z-50 border-b border-[#ff6b5e]/40 bg-[#07141a]/98 backdrop-blur-xl p-5 text-white shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto">
           <div className="space-y-1.5">
-            <div className="text-[11px] font-bold uppercase tracking-widest text-[#D5A021] px-2">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-[#ff6b5e] px-2">
               Suchmaschine, Rankings & Endpreis-Rechner
             </div>
             <Link
@@ -29,7 +29,7 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
             >
-              <Search size={16} className="text-[#D5A021]" />
+              <Search size={16} className="text-[#ff6b5e]" />
               Schweizweite Meta-Suche & Filter
             </Link>
             <Link
@@ -37,15 +37,15 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
             >
-              <SlidersHorizontal size={16} className="text-emerald-400" />
+              <SlidersHorizontal size={16} className="text-mint-400" />
               Endpreis- & Portal-Matrix
             </Link>
             <Link
               href="/live-cam"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-black bg-rose-950/50 border border-rose-500/40 text-rose-200 hover:bg-rose-900/50"
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-black bg-glow-950/50 border border-glow-500/40 text-glow-200 hover:bg-glow-900/50"
             >
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+              <span className="w-2.5 h-2.5 rounded-full bg-glow-500 animate-ping" />
               1:1 Live-Cam & Video-Vibe-Check
             </Link>
             <Link
@@ -53,7 +53,7 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
             >
-              <Trophy size={16} className="text-[#D5A021]" />
+              <Trophy size={16} className="text-[#ff6b5e]" />
               Schweizer Bestenliste & Portal-Ratings
             </Link>
             <Link
@@ -61,7 +61,7 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
             >
-              <Sparkles size={16} className="text-[#D5A021]" />
+              <Sparkles size={16} className="text-[#ff6b5e]" />
               30-Sekunden Smart-Matcher
             </Link>
             <Link
@@ -69,13 +69,13 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-white/10"
             >
-              <Heart size={16} className="text-rose-400" />
+              <Heart size={16} className="text-glow-400" />
               Meine Merkliste & Preisvergleich
             </Link>
           </div>
 
           <div className="space-y-1.5 pt-3 border-t border-white/10">
-            <div className="text-[11px] font-bold uppercase tracking-widest text-[#D5A021] px-2">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-[#ff6b5e] px-2">
               StÃ¤dte & Kantone
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -84,43 +84,43 @@ export function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
               >
-                <MapPin size={13} className="text-[#D5A021]" /> ZÃ¼rich & Zug
+                <MapPin size={13} className="text-[#ff6b5e]" /> ZÃ¼rich & Zug
               </Link>
               <Link
                 href="/escort-basel"
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
               >
-                <MapPin size={13} className="text-[#D5A021]" /> Basel
+                <MapPin size={13} className="text-[#ff6b5e]" /> Basel
               </Link>
               <Link
                 href="/escort-bern"
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
               >
-                <MapPin size={13} className="text-[#D5A021]" /> Bern
+                <MapPin size={13} className="text-[#ff6b5e]" /> Bern
               </Link>
               <Link
                 href="/escort-geneva"
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs font-bold text-white"
               >
-                <MapPin size={13} className="text-[#D5A021]" /> GenÃ¨ve & Vaud
+                <MapPin size={13} className="text-[#ff6b5e]" /> GenÃ¨ve & Vaud
               </Link>
             </div>
           </div>
 
           <div className="space-y-2 pt-3 border-t border-white/10">
-            <div className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 px-2">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-mint-400 px-2">
               Login & B2B Provider-Cockpit
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="rounded-xl bg-white/10 border border-[#C69C6D]/40 px-3 py-2.5 font-bold text-center flex items-center justify-center gap-1.5"
+                className="rounded-xl bg-white/10 border border-[#ff6b5e]/40 px-3 py-2.5 font-bold text-center flex items-center justify-center gap-1.5"
               >
-                <KeyRound size={13} className="text-[#D5A021]" /> Login / Cockpit
+                <KeyRound size={13} className="text-[#ff6b5e]" /> Login / Cockpit
               </Link>
               <Link
                 href="/creator-dashboard"
@@ -133,7 +133,7 @@ export function MobileNav() {
             <Link
               href="/create-post"
               onClick={() => setOpen(false)}
-              className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#C69C6D] py-3 text-sm font-black text-[#0D1B2A] shadow-lg"
+              className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#ff6b5e] py-3 text-sm font-black text-[#0d1f27] shadow-lg"
             >
               <PlusCircle size={16} />
               Profil Ã¼bernehmen / Inserieren

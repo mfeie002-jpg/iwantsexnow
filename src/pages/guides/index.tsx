@@ -25,12 +25,12 @@ export default function SwissGuidesAndBlogIndexPage() {
   const articles = Object.values(SWISS_LONG_TAIL_ARTICLES);
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
+    <div className="min-h-screen bg-[#07141a] text-white">
       <SEO
         title="Schweizer Escort, Gigolo & English Expat Guides (Magazin & Preis-Report 2026) | iWantSexNow.ch"
         description="Offizielle Schweizer Ratgeber (Deutsch & English): Escort Preise 2026, English Tourist & Hotel Outcall Guide, WEF Davos / St. Moritz, TWINT & USDT Zahlung und Einsteiger-Guides."
       />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
+      <header className="border-b border-[#ff6b5e]/25 bg-[#07141a] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Link href="/"><BrandLogo compact /></Link>
           <div className="hidden lg:block"><Navigation /></div>
@@ -40,7 +40,7 @@ export default function SwissGuidesAndBlogIndexPage() {
 
       <main className="container mx-auto px-4 py-10 max-w-6xl space-y-10">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
+          <Badge className="bg-[#ff6b5e]/20 text-[#ff6b5e] border border-[#ff6b5e]/40">
             <BookOpen size={13} className="mr-1.5 inline" /> Swiss Shield Magazin · Deutsch & English (For Tourists & Expats)
           </Badge>
           <h1 className="text-3xl md:text-5xl font-serif font-black">
@@ -56,16 +56,16 @@ export default function SwissGuidesAndBlogIndexPage() {
           {articles.map((art) => (
             <Card
               key={art.slug}
-              className="bg-[#09131E] border border-[#C69C6D]/45 hover:border-[#D5A021] p-6 rounded-2xl text-white flex flex-col justify-between space-y-5 shadow-2xl transition-all"
+              className="bg-[#07141a] border border-[#ff6b5e]/45 hover:border-[#ff6b5e] p-6 rounded-2xl text-white flex flex-col justify-between space-y-5 shadow-2xl transition-all"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px]">
+                  <Badge className="bg-mint-500/20 text-mint-300 border border-mint-500/40 text-[11px]">
                     {art.category}
                   </Badge>
                   <span className="text-xs text-gray-400">{art.readTime}</span>
                 </div>
-                <Link href={`/guides/${art.slug}`} className="hover:text-[#D5A021]">
+                <Link href={`/guides/${art.slug}`} className="hover:text-[#ff6b5e]">
                   <h2 className="text-xl sm:text-2xl font-serif font-black leading-snug">
                     {art.title}
                   </h2>
@@ -77,7 +77,7 @@ export default function SwissGuidesAndBlogIndexPage() {
 
               <div className="space-y-2 pt-2">
                 <Button
-                  className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black text-xs py-5"
+                  className="w-full bg-gradient-to-r from-[#ff6b5e] via-[#ff6b5e] to-[#ff6b5e] text-[#0d1f27] font-black text-xs py-5"
                   asChild
                 >
                   <Link href={`/guides/${art.slug}`}>
@@ -90,9 +90,9 @@ export default function SwissGuidesAndBlogIndexPage() {
         </div>
 
         {/* Interactive Earnings Calculator */}
-        <Card className="bg-gradient-to-br from-[#13263A] to-[#09131E] border-2 border-[#C69C6D] p-6 md:p-8 rounded-2xl text-white space-y-6 shadow-2xl">
+        <Card className="bg-gradient-to-br from-[#13263A] to-[#07141a] border-2 border-[#ff6b5e] p-6 md:p-8 rounded-2xl text-white space-y-6 shadow-2xl">
           <div>
-            <Badge className="bg-[#C69C6D] text-[#0D1B2A] font-black mb-2">
+            <Badge className="bg-[#ff6b5e] text-[#0d1f27] font-black mb-2">
               <Calculator size={12} className="mr-1 inline" /> Interaktiver Schweizer Verdienst-Rechner (Escorts & Gigolos)
             </Badge>
             <h2 className="text-2xl font-serif font-black">
@@ -104,7 +104,7 @@ export default function SwissGuidesAndBlogIndexPage() {
             <div>
               <div className="flex justify-between mb-1.5">
                 <span className="text-gray-300 font-bold">Dates pro Woche:</span>
-                <strong className="text-[#D5A021]">{datesPerWeek} Dates / Woche</strong>
+                <strong className="text-[#ff6b5e]">{datesPerWeek} Dates / Woche</strong>
               </div>
               <input
                 type="range"
@@ -112,14 +112,14 @@ export default function SwissGuidesAndBlogIndexPage() {
                 max={20}
                 value={datesPerWeek}
                 onChange={(e) => setDatesPerWeek(Number(e.target.value))}
-                className="w-full accent-[#C69C6D] cursor-pointer"
+                className="w-full accent-[#ff6b5e] cursor-pointer"
               />
             </div>
 
             <div>
               <div className="flex justify-between mb-1.5">
                 <span className="text-gray-300 font-bold">Dein Stundentarif (60m):</span>
-                <strong className="text-[#D5A021]">CHF {avgRateChf}</strong>
+                <strong className="text-[#ff6b5e]">CHF {avgRateChf}</strong>
               </div>
               <input
                 type="range"
@@ -128,14 +128,14 @@ export default function SwissGuidesAndBlogIndexPage() {
                 step={50}
                 value={avgRateChf}
                 onChange={(e) => setAvgRateChf(Number(e.target.value))}
-                className="w-full accent-[#C69C6D] cursor-pointer"
+                className="w-full accent-[#ff6b5e] cursor-pointer"
               />
             </div>
 
             <div>
               <div className="flex justify-between mb-1.5">
                 <span className="text-gray-300 font-bold">Video-/Cam-Verkäufe / Woche:</span>
-                <strong className="text-emerald-400">{vaultUnlocksPerWeek}x (à CHF 29)</strong>
+                <strong className="text-mint-400">{vaultUnlocksPerWeek}x (à CHF 29)</strong>
               </div>
               <input
                 type="range"
@@ -144,7 +144,7 @@ export default function SwissGuidesAndBlogIndexPage() {
                 step={2}
                 value={vaultUnlocksPerWeek}
                 onChange={(e) => setVaultUnlocksPerWeek(Number(e.target.value))}
-                className="w-full accent-emerald-400 cursor-pointer"
+                className="w-full accent-mint-400 cursor-pointer"
               />
             </div>
           </div>
@@ -156,18 +156,18 @@ export default function SwissGuidesAndBlogIndexPage() {
                 CHF {traditionalAgencyNet.toLocaleString("de-CH")} / Mt.
               </div>
             </div>
-            <div className="p-4 rounded-xl bg-emerald-950/50 border-2 border-emerald-400">
-              <div className="text-xs text-emerald-300 font-bold uppercase">Dein Netto auf iWantSexNow.ch</div>
-              <div className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">
+            <div className="p-4 rounded-xl bg-mint-950/50 border-2 border-mint-400">
+              <div className="text-xs text-mint-300 font-bold uppercase">Dein Netto auf iWantSexNow.ch</div>
+              <div className="text-2xl sm:text-3xl font-black text-mint-400 mt-1">
                 CHF {totalMonthlyNetWithUs.toLocaleString("de-CH")} / Mt.
               </div>
             </div>
-            <div className="p-4 rounded-xl bg-[#C69C6D]/20 border border-[#C69C6D] flex flex-col justify-center">
-              <div className="text-xs text-[#D5A021] font-bold uppercase">Dein Mehrverdienst jeden Monat</div>
+            <div className="p-4 rounded-xl bg-[#ff6b5e]/20 border border-[#ff6b5e] flex flex-col justify-center">
+              <div className="text-xs text-[#ff6b5e] font-bold uppercase">Dein Mehrverdienst jeden Monat</div>
               <div className="text-2xl font-black text-white mt-1">
                 +CHF {extraMonthlyProfit.toLocaleString("de-CH")}
               </div>
-              <Link href="/create-post" className="text-[11px] text-[#D5A021] underline font-bold mt-1">
+              <Link href="/create-post" className="text-[11px] text-[#ff6b5e] underline font-bold mt-1">
                 Jetzt mit Onboarding-Buddy starten →
               </Link>
             </div>

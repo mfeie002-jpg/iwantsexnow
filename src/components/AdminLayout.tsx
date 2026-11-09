@@ -76,9 +76,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-900 dark:via-dusk-950 dark:to-glow-950">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-purple-600 mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-dusk-600 mx-auto mb-4" />
           <p className="text-gray-600 dark:text-gray-400">Checking authentication...</p>
         </div>
       </div>
@@ -86,13 +86,13 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950">
+    <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-900 dark:via-dusk-950 dark:to-glow-950">
       {/* Admin Header */}
       <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <Shield className="w-6 h-6 text-purple-600" />
+              <Shield className="w-6 h-6 text-dusk-600" />
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 Admin Panel
               </h1>

@@ -14,6 +14,27 @@ const COOL = {
   950: "#0a171d",
 };
 
+const glow = {
+  50: "#fff1ee", 100: "#ffe2dc", 200: "#ffc6bb", 300: "#ffa393", 400: "#ff8472",
+  500: "#ff6b5e", 600: "#e8564a", 700: "#c4443a", 800: "#a8382e", 900: "#7a3028", 950: "#5a2a24",
+};
+const sun = {
+  50: "#fff8ec", 100: "#ffeed0", 200: "#ffdca3", 300: "#ffc977", 400: "#ffb067",
+  500: "#ff9a45", 600: "#e07f2c", 700: "#b86220", 800: "#8a4a1a", 900: "#613416", 950: "#3a1f0e",
+};
+const dusk = {
+  50: "#f3f1ff", 100: "#e6e2ff", 200: "#cdc6ff", 300: "#aea3ff", 400: "#8a7bff",
+  500: "#6f60f0", 600: "#5a4cd0", 700: "#4739a8", 800: "#352c80", 900: "#262058", 950: "#181436",
+};
+const mint = {
+  50: "#ecfdf7", 100: "#d3f9ec", 200: "#a8f0d9", 300: "#78e3c4", 400: "#4fd1b0",
+  500: "#2fb897", 600: "#229a7d", 700: "#1d7b66", 800: "#1b6152", 900: "#194f44", 950: "#0a2e28",
+};
+const lake = {
+  50: "#eef9fc", 100: "#d5f0f7", 200: "#aee1ee", 300: "#7ccbe0", 400: "#4aaecb",
+  500: "#2b92b3", 600: "#227796", 700: "#1e6079", 800: "#1d4e62", 900: "#1b4151", 950: "#0d2a36",
+};
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -38,11 +59,15 @@ const config: Config = {
         gletscher: "#f2f7f6",
         nebel: "#9fb8b5",
         glueh: "#ff6b5e",
-        rose: "#ff5a8a",
         bernstein: "#ffb067",
         lago: "#4fd1b0",
         papier: "#f2f7f6",
         tinte: "#0b2229",
+        glow,
+        sun,
+        dusk,
+        mint,
+        lake,
         gray: COOL,
         stone: COOL,
         background: "hsl(var(--background))",

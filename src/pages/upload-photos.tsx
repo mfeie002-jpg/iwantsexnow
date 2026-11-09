@@ -36,12 +36,12 @@ export default function UploadPhotos() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-glow-50 via-white to-dusk-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Heart className="text-pink-600 fill-pink-600" size={32} />
-            <span className="text-2xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <Heart className="text-glow-600 fill-glow-600" size={32} />
+            <span className="text-2xl font-black bg-gradient-to-r from-glow-600 to-dusk-600 bg-clip-text text-transparent">
               iWantSexNow.ch
             </span>
           </Link>
@@ -78,7 +78,7 @@ export default function UploadPhotos() {
                     <X size={20} />
                   </button>
                   {index === 0 && (
-                    <div className="absolute bottom-2 left-2 bg-pink-600 text-white text-sm px-3 py-1 rounded-full font-medium">
+                    <div className="absolute bottom-2 left-2 bg-glow-600 text-white text-sm px-3 py-1 rounded-full font-medium">
                       Profile Photo
                     </div>
                   )}
@@ -86,7 +86,7 @@ export default function UploadPhotos() {
               ))}
 
               {photos.length < 6 && (
-                <label className="relative border-2 border-dashed border-gray-300 rounded-lg h-64 flex flex-col items-center justify-center cursor-pointer hover:border-pink-600 hover:bg-pink-50 transition-all">
+                <label className="relative border-2 border-dashed border-gray-300 rounded-lg h-64 flex flex-col items-center justify-center cursor-pointer hover:border-glow-600 hover:bg-glow-50 transition-all">
                   <input
                     type="file"
                     accept="image/*"
@@ -101,12 +101,12 @@ export default function UploadPhotos() {
               )}
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="bg-lake-50 border border-lake-200 rounded-lg p-4 mb-6">
               <div className="flex gap-3">
-                <Camera className="text-blue-600 flex-shrink-0" size={24} />
+                <Camera className="text-lake-600 flex-shrink-0" size={24} />
                 <div>
-                  <h3 className="font-bold text-blue-900 mb-2">Photo Guidelines</h3>
-                  <ul className="text-sm text-blue-800 space-y-1">
+                  <h3 className="font-bold text-lake-900 mb-2">Photo Guidelines</h3>
+                  <ul className="text-sm text-lake-800 space-y-1">
                     <li>• Use clear, well-lit photos showing your face</li>
                     <li>• Avoid group photos or photos with filters</li>
                     <li>• No nudity or inappropriate content</li>
@@ -121,7 +121,7 @@ export default function UploadPhotos() {
               <Button
                 size="lg"
                 onClick={handleSave}
-                className="flex-1 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg"
+                className="flex-1 bg-gradient-to-r from-glow-600 to-dusk-600 hover:from-glow-700 hover:to-dusk-700 text-lg"
                 disabled={photos.length === 0}
               >
                 <ImageIcon size={20} className="mr-2" />
@@ -140,8 +140,8 @@ export default function UploadPhotos() {
 
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-100 flex items-center justify-center">
-                <Camera className="text-pink-600" size={32} />
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-glow-100 flex items-center justify-center">
+                <Camera className="text-glow-600" size={32} />
               </div>
               <h3 className="font-bold text-lg mb-2">Be Authentic</h3>
               <p className="text-sm text-gray-600">
@@ -150,8 +150,8 @@ export default function UploadPhotos() {
             </Card>
 
             <Card className="p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-100 flex items-center justify-center">
-                <ImageIcon className="text-purple-600" size={32} />
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-dusk-100 flex items-center justify-center">
+                <ImageIcon className="text-dusk-600" size={32} />
               </div>
               <h3 className="font-bold text-lg mb-2">Quality Matters</h3>
               <p className="text-sm text-gray-600">
@@ -160,8 +160,8 @@ export default function UploadPhotos() {
             </Card>
 
             <Card className="p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center">
-                <Upload className="text-blue-600" size={32} />
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-lake-100 flex items-center justify-center">
+                <Upload className="text-lake-600" size={32} />
               </div>
               <h3 className="font-bold text-lg mb-2">More is Better</h3>
               <p className="text-sm text-gray-600">

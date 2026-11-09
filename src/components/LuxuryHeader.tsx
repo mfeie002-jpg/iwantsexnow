@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  Heart,
-  Search,
-  Building2,
-  Sparkles,
-  ShieldCheck,
-  PlusCircle,
-} from "lucide-react";
+import { Heart } from "lucide-react";
+import { BrandMark, Wordmark } from "@/components/visuals";
 import { SwissDoorplate } from "@/components/SwissDoorplate";
 import offersData from "@/data/harvested-offers.json";
 import clubsData from "@/data/swiss-establishments-vault.json";
@@ -42,83 +36,24 @@ export function LuxuryHeader() {
   }, []);
 
   const navItems = [
-    {
-      href: "/search",
-      label: "Deep-Suche",
-      icon: Search,
-      highlight: false,
-    },
-    {
-      href: "/clubs",
-      label: `${TOTAL_CLUBS} Clubs & Studios`,
-      icon: Building2,
-      highlight: false,
-    },
-    {
-      href: "/fantasy-preview",
-      label: "Avatar & Preview",
-      icon: Sparkles,
-      highlight: true,
-    },
-    {
-      href: "/pricing",
-      label: "CHF-Kompass",
-      icon: ShieldCheck,
-      highlight: false,
-    },
+    { href: "/search", label: "Suche" },
+    { href: "/clubs", label: `${TOTAL_CLUBS} Clubs & Studios` },
+    { href: "/fantasy-preview", label: "Avatar & Preview" },
+    { href: "/pricing", label: "CHF-Kompass" },
   ];
 
-  const getNavClass = (isHighlight: boolean, isActive: boolean) => {
-    const base =
-      "relative inline-flex min-h-[35px] items-center gap-1.5 whitespace-nowrap rounded-[5px] border px-3 py-1.5 text-[10px] font-medium tracking-[0.025em] transition duration-200 ";
-
-    if (isHighlight) {
-      return (
-        base +
-        "border-[#C8A97E]/30 bg-[#C8A97E]/[0.055] text-[#DEC393] hover:border-[#DEC393]/65 hover:bg-[#C8A97E]/10"
-      );
-    }
-
-    if (isActive) {
-      return (
-        base +
-        "border-[#C8A97E]/25 bg-[#C8A97E]/[0.06] text-[#DEC393] after:absolute after:inset-x-3 after:-bottom-[18px] after:h-px after:bg-[#DEC393]"
-      );
-    }
-
-    return (
-      base +
-      "border-transparent text-[#8F8578] hover:bg-white/[0.025] hover:text-[#E7DCCB]"
-    );
-  };
-
-  const heartClass =
-    favCount > 0
-      ? "fill-[#DEC393] text-[#DEC393]"
-      : "text-[#A79A89]";
+  const isActive = (href: string) => router.pathname === href || router.pathname.startsWith(href + "/");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#C8A97E]/15 bg-[#070606]/90 backdrop-blur-2xl">
-      <div className="h-px bg-gradient-to-r from-transparent via-[#DEC393]/55 to-transparent" />
-
-      <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
+    <header className="sticky top-0 z-40 border-b border-[#1d4350]/70 bg-[#07141a]/85 backdrop-blur-xl">
+      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
-          <Link
-            href="/"
-            className="group flex min-w-0 items-center gap-3"
-            aria-label="iwantsexnow.ch Startseite"
-          >
-            <div className="brass-button relative flex h-9 w-9 shrink-0 items-center justify-center rounded-[5px] font-serif text-[13px] font-semibold tracking-[0.08em]">
-              <span className="relative z-[1]">CH</span>
-            </div>
-
+          <Link href="/" className="group flex min-w-0 items-center gap-3" aria-label="iwantsexnow.ch Startseite">
+            <BrandMark size={40} className="shrink-0 transition-transform duration-300 group-hover:-rotate-3" />
             <div className="min-w-0">
-              <div className="truncate font-serif text-[14px] font-medium tracking-[0.065em] text-[#F2EADF] sm:text-[17px]">
-                IWANTSEXNOW
-                <span className="text-[#C8A97E]">.CH</span>
-              </div>
-              <div className="mt-1 truncate text-[7px] font-medium uppercase tracking-[0.2em] text-[#776D60] sm:text-[8px]">
-                Schweizer Direktverzeichnis · 0% Provision
+              <Wordmark className="truncate text-[17px] text-[#f2f7f6] sm:text-[19px]" />
+              <div className="mt-1 hidden truncate text-xs font-medium text-[#9fb8b5] sm:block">
+                Schweizer Direktverzeichnis, 0% Provision
               </div>
             </div>
           </Link>
@@ -133,22 +68,22 @@ export function LuxuryHeader() {
           </div>
         </div>
 
-        <nav
-          className="hidden items-center gap-1 lg:flex"
-          aria-label="Hauptnavigation"
-        >
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
           {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = router.pathname === item.href;
-
+            const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={getNavClass(Boolean(item.highlight), active)}
+                aria-current={active ? "page" : undefined}
+                className={
+                  "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors duration-200 " +
+                  (active
+                    ? "bg-[#ff6b5e]/12 text-[#ffb067]"
+                    : "text-[#b4cac8] hover:bg-white/[0.05] hover:text-[#f2f7f6]")
+                }
               >
-                <Icon size={12} strokeWidth={1.55} />
-                <span>{item.label}</span>
+                {item.label}
               </Link>
             );
           })}
@@ -157,31 +92,21 @@ export function LuxuryHeader() {
         <div className="flex shrink-0 items-center gap-2">
           <Link
             href="/favorites"
-            className="ghost-button inline-flex min-h-[37px] items-center gap-1.5 rounded-[5px] px-2.5 py-1.5 text-[10px] font-medium sm:px-3"
+            className="ghost-button inline-flex min-h-[40px] items-center gap-2 px-3.5 py-2 text-sm font-semibold"
             aria-label={"Merkliste mit " + favCount + " Einträgen"}
           >
-            <Heart size={13} className={heartClass} strokeWidth={1.55} />
+            <Heart size={15} className={favCount > 0 ? "fill-[#ff6b5e] text-[#ff6b5e]" : "text-[#9fb8b5]"} strokeWidth={1.8} />
             <span className="hidden xl:inline">Merkliste</span>
             {favCount > 0 && (
-              <span className="min-w-[18px] rounded-full border border-[#DEC393]/30 bg-[#C8A97E]/10 px-1.5 py-0.5 text-center font-mono text-[9px] tabular-nums text-[#DEC393]">
+              <span className="min-w-[20px] rounded-full bg-[#ff6b5e] px-1.5 text-center text-xs font-bold tabular-nums text-[#07141a]">
                 {favCount}
               </span>
             )}
           </Link>
 
-          <Link
-            href="/register"
-            className="brass-button inline-flex min-h-[37px] items-center gap-1.5 rounded-[5px] px-3 py-1.5 text-[9px] uppercase tracking-[0.065em] sm:px-3.5 sm:text-[10px]"
-          >
-            <PlusCircle
-              size={13}
-              strokeWidth={1.8}
-              className="relative z-[1]"
-            />
-            <span className="relative z-[1] hidden sm:inline">
-              + Inserat (0%)
-            </span>
-            <span className="relative z-[1] sm:hidden">+ Inserat</span>
+          <Link href="/register" className="brass-button inline-flex min-h-[40px] items-center px-4 py-2 text-sm">
+            <span className="hidden sm:inline">Inserat aufgeben</span>
+            <span className="sm:hidden">Inserat</span>
           </Link>
         </div>
       </div>

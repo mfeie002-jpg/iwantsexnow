@@ -60,7 +60,7 @@ export default function StoriesFeedPage() {
   }, [serverStates, blockedIds, cantonFilter]);
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
       <SEO
         title="24h Live-Stories & Echtzeit-Updates Schweizer Escorts (Zug, Zürich, Luzern) | iwantsexnow.ch"
         description="Aktuelle 24h-Stories, 4-Stunden-Verfügbarkeits-Impulse und neue Paid-Vault-Uploads verifizierter Schweizer Profile in Echtzeit."
@@ -69,9 +69,9 @@ export default function StoriesFeedPage() {
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5">
+            <div className="text-[11px] uppercase tracking-widest text-mint-400 font-bold flex items-center gap-1.5">
               <Flame size={14} /> 24H LIVE-STORIES & VERFÜGBARKEITS-TICKER
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
@@ -81,7 +81,7 @@ export default function StoriesFeedPage() {
               Live-Updates direkt aus den Schweizer Anbieter-Cockpits: Wer ist jetzt im Apartment oder für Hotelbesuche verfügbar?
             </p>
           </div>
-          <Link href="/register" className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+          <Link href="/register" className="px-4 py-2.5 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold">
             + Eigenes Profil & Story posten →
           </Link>
         </section>
@@ -94,7 +94,7 @@ export default function StoriesFeedPage() {
               type="button"
               onClick={() => setCantonFilter(c)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                cantonFilter === c ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#121722] text-gray-300 border border-white/10"
+                cantonFilter === c ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#0d1f27] text-gray-300 border border-white/10"
               }`}
             >
               {c === "ALL" ? "Alle Live-Stories" : `Stories ${c}`}
@@ -105,20 +105,20 @@ export default function StoriesFeedPage() {
         {/* Story-Karten */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {stories.map((s: any) => (
-            <div key={s.id} className="rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/60 overflow-hidden flex flex-col justify-between transition">
+            <div key={s.id} className="rounded-2xl bg-[#0d1f27] border border-white/10 hover:border-[#ff6b5e]/60 overflow-hidden flex flex-col justify-between transition">
               <div>
                 <div className="p-4 flex items-center justify-between gap-3 border-b border-white/10">
                   <div className="flex items-center gap-3">
-                    <div className="p-0.5 rounded-full bg-gradient-to-tr from-[#C8A97E] to-emerald-400">
+                    <div className="p-0.5 rounded-full bg-gradient-to-tr from-[#ff6b5e] to-mint-400">
                       <img
                         src={s.thumbnail || "/images/escort-portrait-1.jpg"}
                         alt={s.rawName}
                         onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                        className="w-11 h-11 rounded-full object-cover object-top border-2 border-[#0D111A]"
+                        className="w-11 h-11 rounded-full object-cover object-top border-2 border-[#07141a]"
                       />
                     </div>
                     <div>
-                      <Link href={`/profile/${encodeURIComponent(s.id)}`} className="text-sm font-serif font-bold text-white hover:text-[#C8A97E]">
+                      <Link href={`/profile/${encodeURIComponent(s.id)}`} className="text-sm font-serif font-bold text-white hover:text-[#ff6b5e]">
                         {s.rawName}
                       </Link>
                       <div className="text-[11px] text-gray-400">
@@ -131,7 +131,7 @@ export default function StoriesFeedPage() {
                   </span>
                 </div>
 
-                <div className="relative h-60 bg-[#0D111A] overflow-hidden">
+                <div className="relative h-60 bg-[#07141a] overflow-hidden">
                   <img
                     src={s.thumbnail || "/images/escort-portrait-1.jpg"}
                     alt={s.rawName}
@@ -140,14 +140,14 @@ export default function StoriesFeedPage() {
                     className="w-full h-full object-cover object-top"
                   />
                   {s.isAvail && (
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-emerald-500 text-[#07120B] text-[10px] font-extrabold shadow">
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-mint-500 text-[#07141a] text-[10px] font-extrabold shadow">
                       ● Jetzt für 4h verfügbar
                     </div>
                   )}
                 </div>
 
                 <div className="p-4">
-                  <p className="text-xs text-gray-200 leading-relaxed bg-[#0D111A] p-3 rounded-xl border border-white/5">
+                  <p className="text-xs text-gray-200 leading-relaxed bg-[#07141a] p-3 rounded-xl border border-white/5">
                     „{s.statusText}“
                   </p>
                 </div>
@@ -156,13 +156,13 @@ export default function StoriesFeedPage() {
               <div className="p-4 pt-0 grid grid-cols-2 gap-2">
                 <Link
                   href={`/checkout?profileId=${encodeURIComponent(s.id)}`}
-                  className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-[#C8A97E]/40 text-[#C8A97E] font-extrabold text-[11px] text-center inline-flex items-center justify-center gap-1"
+                  className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-[#ff6b5e]/40 text-[#ff6b5e] font-extrabold text-[11px] text-center inline-flex items-center justify-center gap-1"
                 >
                   <Lock size={12} /> Paid Vault
                 </Link>
                 <Link
                   href={`/profile/${encodeURIComponent(s.id)}`}
-                  className="py-2.5 px-3 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-[11px] text-center"
+                  className="py-2.5 px-3 rounded-xl bg-[#ff6b5e] text-[#07141a] font-extrabold text-[11px] text-center"
                 >
                   Profil & +41 Kontakt →
                 </Link>

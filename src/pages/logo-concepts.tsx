@@ -51,7 +51,7 @@ export default function LogoConcepts() {
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-2xl font-black text-white tracking-tighter mb-1">
-                    <span className="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">iWantSex</span>
+                    <span className="bg-gradient-to-r from-glow-400 to-glow-500 bg-clip-text text-transparent">iWantSex</span>
                     <span className="text-white">Now</span>
                   </div>
                   <div className="text-xs text-gray-400 tracking-widest font-bold">.CH</div>
@@ -65,7 +65,7 @@ export default function LogoConcepts() {
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-2xl font-black text-white tracking-tighter">
-                    <span className="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">iWantSex</span>
+                    <span className="bg-gradient-to-r from-glow-400 to-glow-500 bg-clip-text text-transparent">iWantSex</span>
                     <span className="text-white">Now</span>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ export default function LogoConcepts() {
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-lg font-black text-white tracking-tighter">
-                    <span className="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">iWSN</span>
+                    <span className="bg-gradient-to-r from-glow-400 to-glow-500 bg-clip-text text-transparent">iWSN</span>
                   </div>
                   <div className="text-[8px] text-gray-400 tracking-wider font-bold">.CH</div>
                 </div>
@@ -89,7 +89,7 @@ export default function LogoConcepts() {
             {/* Icon/Favicon */}
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl flex items-center justify-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-glow-500 to-glow-600 rounded-2xl flex items-center justify-center">
                   <span className="text-2xl font-black text-white">i</span>
                 </div>
               </div>
@@ -111,7 +111,7 @@ export default function LogoConcepts() {
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 rounded-lg opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 rounded-lg opacity-90" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-8 h-8 bg-gray-950 rounded" />
                     </div>
@@ -130,7 +130,7 @@ export default function LogoConcepts() {
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 rounded-lg opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 rounded-lg opacity-90" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-8 h-8 bg-gray-950 rounded" />
                     </div>
@@ -145,7 +145,7 @@ export default function LogoConcepts() {
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="w-16 h-16 relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 rounded-lg opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 rounded-lg opacity-90" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 bg-gray-950 rounded" />
                   </div>
@@ -158,7 +158,7 @@ export default function LogoConcepts() {
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="w-16 h-16 relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 rounded-lg opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 rounded-lg opacity-90" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 bg-gray-950 rounded" />
                   </div>
@@ -185,9 +185,9 @@ export default function LogoConcepts() {
                     <svg viewBox="0 0 100 100" className="w-full h-full">
                       <defs>
                         <linearGradient id="hex1" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#f43f5e" />
-                          <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="0%" stopColor="#ff5a8a" />
+                          <stop offset="50%" stopColor="#ff5a8a" />
+                          <stop offset="100%" stopColor="#ff6b5e" />
                         </linearGradient>
                       </defs>
                       <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex1)" />
@@ -210,9 +210,9 @@ export default function LogoConcepts() {
                     <svg viewBox="0 0 100 100" className="w-full h-full">
                       <defs>
                         <linearGradient id="hex2" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#f43f5e" />
-                          <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="0%" stopColor="#ff5a8a" />
+                          <stop offset="50%" stopColor="#ff5a8a" />
+                          <stop offset="100%" stopColor="#ff6b5e" />
                         </linearGradient>
                       </defs>
                       <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex2)" />
@@ -231,9 +231,9 @@ export default function LogoConcepts() {
                   <svg viewBox="0 0 100 100" className="w-full h-full">
                     <defs>
                       <linearGradient id="hex3" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#f43f5e" />
-                        <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="0%" stopColor="#ff5a8a" />
+                        <stop offset="50%" stopColor="#ff5a8a" />
+                        <stop offset="100%" stopColor="#ff6b5e" />
                       </linearGradient>
                     </defs>
                     <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex3)" />
@@ -250,9 +250,9 @@ export default function LogoConcepts() {
                   <svg viewBox="0 0 100 100" className="w-full h-full">
                     <defs>
                       <linearGradient id="hex4" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#f43f5e" />
-                        <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="0%" stopColor="#ff5a8a" />
+                        <stop offset="50%" stopColor="#ff5a8a" />
+                        <stop offset="100%" stopColor="#ff6b5e" />
                       </linearGradient>
                     </defs>
                     <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex4)" />
@@ -280,9 +280,9 @@ export default function LogoConcepts() {
                     <svg viewBox="0 0 100 100" className="w-full h-full">
                       <defs>
                         <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#f43f5e" />
-                          <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="0%" stopColor="#ff5a8a" />
+                          <stop offset="50%" stopColor="#ff5a8a" />
+                          <stop offset="100%" stopColor="#ff6b5e" />
                         </linearGradient>
                       </defs>
                       <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave1)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -306,9 +306,9 @@ export default function LogoConcepts() {
                     <svg viewBox="0 0 100 100" className="w-full h-full">
                       <defs>
                         <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#f43f5e" />
-                          <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="0%" stopColor="#ff5a8a" />
+                          <stop offset="50%" stopColor="#ff5a8a" />
+                          <stop offset="100%" stopColor="#ff6b5e" />
                         </linearGradient>
                       </defs>
                       <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave2)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -328,9 +328,9 @@ export default function LogoConcepts() {
                   <svg viewBox="0 0 100 100" className="w-full h-full">
                     <defs>
                       <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#f43f5e" />
-                        <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="0%" stopColor="#ff5a8a" />
+                        <stop offset="50%" stopColor="#ff5a8a" />
+                        <stop offset="100%" stopColor="#ff6b5e" />
                       </linearGradient>
                     </defs>
                     <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave3)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -348,9 +348,9 @@ export default function LogoConcepts() {
                   <svg viewBox="0 0 100 100" className="w-full h-full">
                     <defs>
                       <linearGradient id="wave4" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#f43f5e" />
-                        <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="0%" stopColor="#ff5a8a" />
+                        <stop offset="50%" stopColor="#ff5a8a" />
+                        <stop offset="100%" stopColor="#ff6b5e" />
                       </linearGradient>
                     </defs>
                     <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave4)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -375,7 +375,7 @@ export default function LogoConcepts() {
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 flex items-center justify-center border-2 border-white/10">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 flex items-center justify-center border-2 border-white/10">
                     <span className="text-xl font-black text-white tracking-tighter">ISN</span>
                   </div>
                   <div>
@@ -391,7 +391,7 @@ export default function LogoConcepts() {
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 flex items-center justify-center border-2 border-white/10">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 flex items-center justify-center border-2 border-white/10">
                     <span className="text-xl font-black text-white tracking-tighter">ISN</span>
                   </div>
                   <div className="text-sm font-bold text-white tracking-tight">iWantSexNow</div>
@@ -403,7 +403,7 @@ export default function LogoConcepts() {
             {/* Mobile Compact */}
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 flex items-center justify-center border-2 border-white/10">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 flex items-center justify-center border-2 border-white/10">
                   <span className="text-2xl font-black text-white tracking-tighter">ISN</span>
                 </div>
               </div>
@@ -413,7 +413,7 @@ export default function LogoConcepts() {
             {/* Icon/Favicon */}
             <Card className="p-6 bg-gray-900 border-gray-800">
               <div className="aspect-square bg-gradient-to-br from-gray-800 to-gray-950 rounded-lg flex items-center justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 flex items-center justify-center border-2 border-white/10">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-glow-500 via-glow-500 to-sun-500 flex items-center justify-center border-2 border-white/10">
                   <span className="text-2xl font-black text-white tracking-tighter">ISN</span>
                 </div>
               </div>

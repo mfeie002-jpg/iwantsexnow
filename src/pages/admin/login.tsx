@@ -135,13 +135,13 @@ export default function AdminLogin() {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-900 dark:via-dusk-950 dark:to-glow-950 flex items-center justify-center p-4">
         <Card className="w-full max-w-md p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-dusk-600 to-glow-600 rounded-2xl mb-4">
               <Lock className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-black bg-gradient-to-r from-dusk-600 via-glow-600 to-red-600 bg-clip-text text-transparent">
               Admin Login
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -194,7 +194,7 @@ export default function AdminLogin() {
             <div className="space-y-2 pt-4">
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                className="w-full bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
                 disabled={loading}
               >
                 {loading ? (

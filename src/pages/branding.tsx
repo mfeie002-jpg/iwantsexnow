@@ -146,24 +146,24 @@ export default function Branding() {
     {
       name: "Classic Pink (Solid)",
       description: "Clean, bold, no-nonsense pink - pure energy",
-      primary: "#EC4899",
+      primary: "#ff5a8a",
       secondary: "#DB2777",
       accent: "#F472B6",
-      background: "from-pink-50 via-white to-pink-50",
-      gradient: "from-pink-600 to-pink-600",
-      buttonClass: "bg-pink-600 hover:bg-pink-700",
+      background: "from-glow-50 via-white to-glow-50",
+      gradient: "from-glow-600 to-glow-600",
+      buttonClass: "bg-glow-600 hover:bg-glow-700",
       isSolid: true,
       sample: "Bold single pink color - direct, confident, energetic"
     },
     {
       name: "Deep Purple (Solid)",
       description: "Sophisticated single purple - luxury and desire",
-      primary: "#9333EA",
+      primary: "#8a7bff",
       secondary: "#7E22CE",
-      accent: "#A855F7",
-      background: "from-purple-50 via-white to-purple-50",
-      gradient: "from-purple-600 to-purple-600",
-      buttonClass: "bg-purple-600 hover:bg-purple-700",
+      accent: "#8a7bff",
+      background: "from-dusk-50 via-white to-dusk-50",
+      gradient: "from-dusk-600 to-dusk-600",
+      buttonClass: "bg-dusk-600 hover:bg-dusk-700",
       isSolid: true,
       sample: "Rich purple tone - exclusive, mysterious, premium"
     },
@@ -185,9 +185,9 @@ export default function Branding() {
       primary: "#14B8A6",
       secondary: "#0D9488",
       accent: "#2DD4BF",
-      background: "from-teal-50 via-white to-teal-50",
-      gradient: "from-teal-600 to-teal-600",
-      buttonClass: "bg-teal-600 hover:bg-teal-700",
+      background: "from-mint-50 via-white to-mint-50",
+      gradient: "from-mint-600 to-mint-600",
+      buttonClass: "bg-mint-600 hover:bg-mint-700",
       isSolid: true,
       sample: "Clean teal - fresh, premium, contemporary"
     },
@@ -197,17 +197,17 @@ export default function Branding() {
       primary: "#2563EB",
       secondary: "#1D4ED8",
       accent: "#3B82F6",
-      background: "from-blue-50 via-white to-blue-50",
-      gradient: "from-blue-600 to-blue-600",
-      buttonClass: "bg-blue-600 hover:bg-blue-700",
+      background: "from-lake-50 via-white to-lake-50",
+      gradient: "from-lake-600 to-lake-600",
+      buttonClass: "bg-lake-600 hover:bg-lake-700",
       isSolid: true,
       sample: "Strong blue - reliable, trustworthy, confident"
     },
     {
       name: "Midnight Black (Solid)",
       description: "Premium single black - exclusive and elite",
-      primary: "#1F2937",
-      secondary: "#111827",
+      primary: "#143039",
+      secondary: "#07141a",
       accent: "#374151",
       background: "from-gray-50 via-white to-gray-50",
       gradient: "from-gray-800 to-gray-800",
@@ -219,12 +219,12 @@ export default function Branding() {
     {
       name: "Pink-Purple Gradient",
       description: "Classic dating app gradient - playful energy",
-      primary: "#EC4899",
-      secondary: "#9333EA",
+      primary: "#ff5a8a",
+      secondary: "#8a7bff",
       accent: "#F472B6",
-      background: "from-pink-50 via-white to-purple-50",
-      gradient: "from-pink-600 to-purple-600",
-      buttonClass: "bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700",
+      background: "from-glow-50 via-white to-dusk-50",
+      gradient: "from-glow-600 to-dusk-600",
+      buttonClass: "bg-gradient-to-r from-glow-600 to-dusk-600 hover:from-glow-700 hover:to-dusk-700",
       isSolid: false,
       sample: "Dynamic gradient - energetic, fun, modern"
     },
@@ -232,11 +232,11 @@ export default function Branding() {
       name: "Coral-Peach Gradient",
       description: "Warm, inviting sunset tones",
       primary: "#FF6B6B",
-      secondary: "#FFB347",
+      secondary: "#ff6b5e",
       accent: "#FF8B94",
-      background: "from-orange-50 via-white to-pink-50",
-      gradient: "from-orange-500 to-pink-500",
-      buttonClass: "bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600",
+      background: "from-sun-50 via-white to-glow-50",
+      gradient: "from-sun-500 to-glow-500",
+      buttonClass: "bg-gradient-to-r from-sun-500 to-glow-500 hover:from-sun-600 hover:to-glow-600",
       isSolid: false,
       sample: "Sunset warmth - friendly, approachable, welcoming"
     },
@@ -245,10 +245,10 @@ export default function Branding() {
       description: "Energetic pop of vibrant neon",
       primary: "#D946EF",
       secondary: "#84CC16",
-      accent: "#EC4899",
-      background: "from-fuchsia-50 via-white to-lime-50",
-      gradient: "from-fuchsia-600 to-lime-500",
-      buttonClass: "bg-gradient-to-r from-fuchsia-600 to-lime-500 hover:from-fuchsia-700 hover:to-lime-600",
+      accent: "#ff5a8a",
+      background: "from-glow-50 via-white to-mint-50",
+      gradient: "from-glow-600 to-mint-500",
+      buttonClass: "bg-gradient-to-r from-glow-600 to-mint-500 hover:from-glow-700 hover:to-mint-600",
       isSolid: false,
       sample: "Electric neon - youthful, bold, impossible to ignore"
     },
@@ -256,11 +256,11 @@ export default function Branding() {
       name: "Navy-Gold Gradient",
       description: "Premium luxury positioning",
       primary: "#1E3A8A",
-      secondary: "#D97706",
+      secondary: "#a8382e",
       accent: "#3B82F6",
-      background: "from-blue-50 via-white to-amber-50",
-      gradient: "from-blue-900 to-amber-600",
-      buttonClass: "bg-gradient-to-r from-blue-900 to-amber-600 hover:from-blue-950 hover:to-amber-700",
+      background: "from-lake-50 via-white to-sun-50",
+      gradient: "from-lake-900 to-sun-600",
+      buttonClass: "bg-gradient-to-r from-lake-900 to-sun-600 hover:from-lake-950 hover:to-sun-700",
       isSolid: false,
       sample: "Luxury gradient - exclusive, trustworthy, high-end"
     },
@@ -268,11 +268,11 @@ export default function Branding() {
       name: "Turquoise-Orange Gradient",
       description: "Tropical, playful adventure",
       primary: "#06B6D4",
-      secondary: "#F97316",
+      secondary: "#ff6b5e",
       accent: "#22D3EE",
-      background: "from-cyan-50 via-white to-orange-50",
-      gradient: "from-cyan-600 to-orange-600",
-      buttonClass: "bg-gradient-to-r from-cyan-600 to-orange-600 hover:from-cyan-700 hover:to-orange-700",
+      background: "from-lake-50 via-white to-sun-50",
+      gradient: "from-lake-600 to-sun-600",
+      buttonClass: "bg-gradient-to-r from-lake-600 to-sun-600 hover:from-lake-700 hover:to-sun-700",
       isSolid: false,
       sample: "Tropical vibes - fun, exciting, adventurous"
     },
@@ -281,10 +281,10 @@ export default function Branding() {
       description: "Sophisticated jewel tones",
       primary: "#059669",
       secondary: "#14B8A6",
-      accent: "#10B981",
-      background: "from-emerald-50 via-white to-teal-50",
-      gradient: "from-emerald-600 to-teal-600",
-      buttonClass: "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700",
+      accent: "#4fd1b0",
+      background: "from-mint-50 via-white to-mint-50",
+      gradient: "from-mint-600 to-mint-600",
+      buttonClass: "bg-gradient-to-r from-mint-600 to-mint-600 hover:from-mint-700 hover:to-mint-700",
       isSolid: false,
       sample: "Jewel gradient - sophisticated, premium, elegant"
     }
@@ -294,14 +294,14 @@ export default function Branding() {
   const theme = colorThemes[selectedTheme];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-glow-50 via-white to-dusk-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold tracking-tight">
-              <span className="text-[#0D1B2A] dark:text-white">iWant</span>
-              <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
-              <span className="text-[#0D1B2A] dark:text-white">Now</span>
+              <span className="text-[#0d1f27] dark:text-white">iWant</span>
+              <span className="text-[#ff6b5e] dark:text-[#ff6b5e]">Sex</span>
+              <span className="text-[#0d1f27] dark:text-white">Now</span>
               <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
             </span>
           </Link>
@@ -314,7 +314,7 @@ export default function Branding() {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-lg px-6 py-2">
+            <Badge className="mb-4 bg-gradient-to-r from-glow-600 to-dusk-600 border-0 text-lg px-6 py-2">
               🎨 Brand Identity Studio
             </Badge>
             <h1 className="text-5xl font-black mb-4">Create Your Perfect Brand</h1>
@@ -399,7 +399,7 @@ export default function Branding() {
                 <Card
                   key={index}
                   className={`p-6 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1 ${
-                    selectedLogo === index ? "ring-4 ring-pink-600 shadow-2xl scale-105" : ""
+                    selectedLogo === index ? "ring-4 ring-glow-600 shadow-2xl scale-105" : ""
                   }`}
                   onClick={() => setSelectedLogo(index)}
                 >
@@ -417,12 +417,12 @@ export default function Branding() {
                       <h3 className="font-bold mb-1 text-sm">{logo.name}</h3>
                       <p className="text-xs text-gray-600 leading-tight mb-2">{logo.description}</p>
                       <div className="space-y-1">
-                        <p className="text-xs font-bold text-pink-600">"{logo.tagline}"</p>
+                        <p className="text-xs font-bold text-glow-600">"{logo.tagline}"</p>
                         <p className="text-xs text-gray-500 italic">{logo.slogan}</p>
                       </div>
                     </div>
                     {selectedLogo === index && (
-                      <Badge className="bg-pink-600 border-0 w-full justify-center text-xs text-white">
+                      <Badge className="bg-glow-600 border-0 w-full justify-center text-xs text-white">
                         <Check size={12} className="mr-1" />
                         Selected
                       </Badge>
@@ -448,7 +448,7 @@ export default function Branding() {
                     <Card
                       key={actualIndex}
                       className={`overflow-hidden cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1 ${
-                        selectedTheme === actualIndex ? "ring-4 ring-pink-600 shadow-2xl" : ""
+                        selectedTheme === actualIndex ? "ring-4 ring-glow-600 shadow-2xl" : ""
                       }`}
                       onClick={() => setSelectedTheme(actualIndex)}
                     >
@@ -508,7 +508,7 @@ export default function Branding() {
                     <Card
                       key={actualIndex}
                       className={`overflow-hidden cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1 ${
-                        selectedTheme === actualIndex ? "ring-4 ring-pink-600 shadow-2xl" : ""
+                        selectedTheme === actualIndex ? "ring-4 ring-glow-600 shadow-2xl" : ""
                       }`}
                       onClick={() => setSelectedTheme(actualIndex)}
                     >
@@ -560,7 +560,7 @@ export default function Branding() {
           </div>
 
           {/* Apply Theme Section */}
-          <Card className="p-8 mt-12 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-center shadow-2xl">
+          <Card className="p-8 mt-12 bg-gradient-to-r from-glow-600 to-dusk-600 text-white text-center shadow-2xl">
             <h3 className="text-3xl font-black mb-4">Your Selected Brand Identity</h3>
             <div className="space-y-2 mb-6">
               <p className="text-white/90 text-xl">
@@ -576,7 +576,7 @@ export default function Branding() {
               </p>
             </div>
             <div className="flex gap-4 justify-center flex-wrap">
-              <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-8 h-14 shadow-xl">
+              <Button size="lg" className="bg-white text-dusk-600 hover:bg-gray-100 text-lg px-8 h-14 shadow-xl">
                 Apply This Design
               </Button>
               <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 h-14">
@@ -592,7 +592,7 @@ export default function Branding() {
           <div className="mt-12 grid md:grid-cols-3 gap-6">
             <Card className="p-6 bg-white">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-600 to-purple-600"></div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-glow-600 to-dusk-600"></div>
                 Logo + Message
               </h3>
               <ul className="space-y-2 text-sm text-gray-700">
@@ -604,7 +604,7 @@ export default function Branding() {
             </Card>
             <Card className="p-6 bg-white">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600"></div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-dusk-600 to-glow-600"></div>
                 Brand Flexibility
               </h3>
               <ul className="space-y-2 text-sm text-gray-700">
@@ -616,7 +616,7 @@ export default function Branding() {
             </Card>
             <Card className="p-6 bg-white">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-600 to-orange-600"></div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-glow-600 to-sun-600"></div>
                 Implementation
               </h3>
               <ul className="space-y-2 text-sm text-gray-700">

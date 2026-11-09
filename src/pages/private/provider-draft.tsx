@@ -114,15 +114,15 @@ export default function ProviderDraftPage() {
     catch { setLogoutUncertain(true); setFailure(true); setMessage("Abmeldung nicht vollständig bestätigt. Die Sitzung ist möglicherweise noch aktiv. Bitte erneut versuchen."); }
     finally { remember(user, ""); setUser(""); reset(); setBusy(false); }
   }
-  const inputClass = "w-full rounded border border-slate-500 bg-slate-950 p-3 text-white";
-  return <main className="min-h-screen bg-slate-950 px-5 py-12 text-white">
+  const inputClass = "w-full rounded border border-gray-500 bg-gray-950 p-3 text-white";
+  return <main className="min-h-screen bg-gray-950 px-5 py-12 text-white">
     <div className="mx-auto max-w-2xl space-y-6">
-      <p className="text-sm font-bold uppercase tracking-wide text-amber-300">Privater Funktionstest / 18+</p>
+      <p className="text-sm font-bold uppercase tracking-wide text-sun-300">Privater Funktionstest / 18+</p>
       <h1 className="text-3xl font-bold">Privater Anbieter-Entwurf</h1>
       <p>Nur für freigegebene Testkonten und synthetische Angaben. Keine echten Personen-, Kontakt- oder Identitätsdaten eingeben.
         Entwürfe werden weder veröffentlicht noch als verifizierte Profile freigegeben.</p>
       <p>Die Testsitzung endet spätestens nach 30 Minuten. Nicht gespeicherte Angaben bleiben nur in diesem geöffneten Formular.</p>
-      {message && <p role={failure ? "alert" : "status"} className="rounded border border-amber-300 p-3">{message}</p>}
+      {message && <p role={failure ? "alert" : "status"} className="rounded border border-sun-300 p-3">{message}</p>}
       {busy && <p role="status">Vorgang läuft …</p>}
       {logoutUncertain && <button disabled={busy} className="rounded border p-3" onClick={signOut}>Abmeldung erneut versuchen</button>}
       {!user ? <form onSubmit={signIn} className="space-y-4" aria-label="Privater Testzugang">
@@ -130,7 +130,7 @@ export default function ProviderDraftPage() {
           <legend className="mb-3 font-semibold">Bestehendes Testkonto anmelden</legend>
           <label className="block">E-Mail<input className={inputClass} name="email" type="email" autoComplete="username" required maxLength={254} /></label>
           <label className="block">Passwort<input className={inputClass} name="password" type="password" autoComplete="current-password" required maxLength={1024} /></label>
-          <button className="rounded bg-amber-400 px-5 py-3 font-bold text-black" type="submit">Privat anmelden</button>
+          <button className="rounded bg-sun-400 px-5 py-3 font-bold text-black" type="submit">Privat anmelden</button>
         </fieldset>
       </form> : <>
         <button className="rounded border p-3" disabled={busy} onClick={signOut}>Abmelden</button>
@@ -146,7 +146,7 @@ export default function ProviderDraftPage() {
             <label className="block">Beschreibung<textarea className={inputClass} value={fields.description} maxLength={1000} rows={6} onChange={e => { setFields({ ...fields, description: e.target.value }); setDirty(true); }} /></label>
             <label className="flex gap-3"><input type="checkbox" checked={fields.photoRightsConfirmed} onChange={e => { setFields({ ...fields, photoRightsConfirmed: e.target.checked }); setDirty(true); }} />Ich bestätige die Rechte an künftig verwendeten Bildern. Dies ersetzt keine Einwilligungs-, Alters- oder Profilprüfung.</label>
             <p>Hier werden keine Fotos hochgeladen. Die Bestätigung darf für einen unvollständigen Entwurf leer bleiben.</p>
-            <button type="submit" className="rounded bg-amber-400 px-5 py-3 font-bold text-black">Privat speichern</button>
+            <button type="submit" className="rounded bg-sun-400 px-5 py-3 font-bold text-black">Privat speichern</button>
           </fieldset>
         </form>
         <button disabled={busy} className="rounded border p-3" onClick={() => {

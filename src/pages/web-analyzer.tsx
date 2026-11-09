@@ -546,14 +546,14 @@ Führe eine umfassende SEO-Analyse durch.
         <meta name="description" content="Umfassende Website-Analyse-Tools für professionelle Audits" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950">
+      <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-900 dark:via-dusk-950 dark:to-glow-950">
         <Navigation />
         <MobileNav />
 
         <main className="container mx-auto px-4 py-24">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-dusk-600 via-glow-600 to-red-600 bg-clip-text text-transparent">
               Web Analyzer Suite
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -570,9 +570,9 @@ Führe eine umfassende SEO-Analyse durch.
           )}
 
           {success && (
-            <Alert className="mb-6 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800 dark:text-green-200">{success}</AlertDescription>
+            <Alert className="mb-6 bg-mint-50 dark:bg-mint-900/20 border-mint-200 dark:border-mint-800">
+              <CheckCircle2 className="h-4 w-4 text-mint-600" />
+              <AlertDescription className="text-mint-800 dark:text-mint-200">{success}</AlertDescription>
             </Alert>
           )}
 
@@ -671,7 +671,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="quick-analysis">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-dusk-500 to-glow-500 rounded-xl">
                     <Zap className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -693,7 +693,7 @@ Führe eine umfassende SEO-Analyse durch.
                     onClick={handleQuickAnalysis}
                     disabled={loading || !projectConfig.url}
                     size="lg"
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                    className="w-full bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
                   >
                     {loading ? (
                       <>
@@ -737,7 +737,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="screenshot">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-lake-500 to-lake-500 rounded-xl">
                     <Camera className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -861,7 +861,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="seo-analyzer">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-mint-500 to-mint-500 rounded-xl">
                     <Code className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -952,7 +952,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="url-discovery">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-sun-500 to-red-500 rounded-xl">
                     <Search className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -1004,7 +1004,7 @@ Führe eine umfassende SEO-Analyse durch.
                               href={url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline flex items-center gap-1"
+                              className="text-lake-600 hover:underline flex items-center gap-1"
                             >
                               {url}
                               <ExternalLink className="w-3 h-3" />
@@ -1037,7 +1037,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="prompts">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-sun-500 to-sun-500 rounded-xl">
                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -1050,8 +1050,8 @@ Führe eine umfassende SEO-Analyse durch.
                   {PROMPT_TEMPLATES.map((template) => (
                     <Card key={template.id} className="p-6 hover:shadow-lg transition-shadow">
                       <div className="flex items-start gap-3 mb-4">
-                        <div className="p-2 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg">
-                          <template.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        <div className="p-2 bg-gradient-to-br from-dusk-100 to-glow-100 dark:from-dusk-900/30 dark:to-glow-900/30 rounded-lg">
+                          <template.icon className="w-5 h-5 text-dusk-600 dark:text-dusk-400" />
                         </div>
                         <div className="flex-1">
                           <h3 className="font-bold mb-1">{template.name}</h3>
@@ -1085,7 +1085,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="manual-package">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-dusk-500 to-dusk-500 rounded-xl">
                     <Package className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -1158,7 +1158,7 @@ Führe eine umfassende SEO-Analyse durch.
                   <Button
                     onClick={generateManualPackage}
                     disabled={loading || pages.length === 0}
-                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    className="w-full bg-gradient-to-r from-dusk-600 to-dusk-600 hover:from-dusk-700 hover:to-dusk-700"
                     size="lg"
                   >
                     {loading ? (
@@ -1181,7 +1181,7 @@ Führe eine umfassende SEO-Analyse durch.
             <TabsContent value="mega-export">
               <Card className="p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-red-500 to-glow-500 rounded-xl">
                     <Download className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -1214,7 +1214,7 @@ Führe eine umfassende SEO-Analyse durch.
 
                   <Button
                     onClick={downloadMegaExport}
-                    className="w-full bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700"
+                    className="w-full bg-gradient-to-r from-red-600 to-glow-600 hover:from-red-700 hover:to-glow-700"
                     size="lg"
                   >
                     <Download className="w-5 h-5 mr-2" />

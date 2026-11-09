@@ -166,7 +166,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
   };
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
       <SEO
         title={`${serviceTitle} in ${cityMeta.label} (${cityMeta.canton}) – Direktkontakt & CHF-Tarife | iwantsexnow.ch`}
         description={`${filteredAndSorted.length} geprüfte Profile für ${serviceTitle} in ${cityMeta.label} (${cityMeta.canton}). Ø Honorar CHF ${avgChf}.– / 60 Min.`}
@@ -175,48 +175,48 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+            <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
               <MapPin size={13} /> KANTON {cityMeta.canton} · 2D-KATEGORIE & ECHTZEIT-FILTER
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
               {serviceTitle} in {cityMeta.label}
             </h1>
             <p className="text-xs text-gray-300 mt-1">
-              <strong>{filteredAndSorted.length} aktive Profile</strong> · Ø Richtpreis 60 Min.: <strong className="text-[#C8A97E]">CHF {avgChf}.–</strong>
+              <strong>{filteredAndSorted.length} aktive Profile</strong> · Ø Richtpreis 60 Min.: <strong className="text-[#ff6b5e]">CHF {avgChf}.–</strong>
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link href={`/orte/${citySlug}`} className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white">
               Alle in {cityMeta.label} →
             </Link>
-            <Link href="/compare-escorts" className="px-3.5 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+            <Link href="/compare-escorts" className="px-3.5 py-2 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold">
               4-Profil Direktvergleich →
             </Link>
           </div>
         </section>
 
-        <section className="p-5 rounded-2xl bg-[#121722] border border-white/10 space-y-4">
+        <section className="p-5 rounded-2xl bg-[#0d1f27] border border-white/10 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
             <div className="flex items-center gap-2 text-xs font-extrabold text-white">
-              <SlidersHorizontal size={15} className="text-[#C8A97E]" />
+              <SlidersHorizontal size={15} className="text-[#ff6b5e]" />
               <span>Sofort-Filter & 5-Wege-Sortierung ({filteredAndSorted.length} Treffer)</span>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1.5 bg-[#0D111A] border border-white/15 rounded-xl px-3 py-1.5">
-                <ArrowUpDown size={13} className="text-[#C8A97E]" />
+              <div className="flex items-center gap-1.5 bg-[#07141a] border border-white/15 rounded-xl px-3 py-1.5">
+                <ArrowUpDown size={13} className="text-[#ff6b5e]" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
                   className="bg-transparent text-xs font-bold text-white outline-none cursor-pointer"
                 >
-                  <option value="recommended" className="bg-[#121722]">Empfohlen & Kuratiert</option>
-                  <option value="available" className="bg-[#121722]">● Jetzt 4h verfügbar zuerst</option>
-                  <option value="price_asc" className="bg-[#121722]">CHF-Honorar: Günstigste zuerst</option>
-                  <option value="price_desc" className="bg-[#121722]">CHF-Honorar: Exklusiv zuerst</option>
-                  <option value="age_asc" className="bg-[#121722]">Alter: Jüngste zuerst</option>
+                  <option value="recommended" className="bg-[#0d1f27]">Empfohlen & Kuratiert</option>
+                  <option value="available" className="bg-[#0d1f27]">● Jetzt 4h verfügbar zuerst</option>
+                  <option value="price_asc" className="bg-[#0d1f27]">CHF-Honorar: Günstigste zuerst</option>
+                  <option value="price_desc" className="bg-[#0d1f27]">CHF-Honorar: Exklusiv zuerst</option>
+                  <option value="age_asc" className="bg-[#0d1f27]">Alter: Jüngste zuerst</option>
                 </select>
               </div>
               <button
@@ -234,7 +234,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
               type="button"
               onClick={() => setOnlyAvailable4h(!onlyAvailable4h)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                onlyAvailable4h ? "bg-emerald-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+                onlyAvailable4h ? "bg-mint-500 text-[#07141a]" : "bg-[#07141a] border border-white/15 text-gray-300"
               }`}
             >
               ● Nur jetzt 4h verfügbar
@@ -243,7 +243,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
               type="button"
               onClick={() => setOnlyVerified(!onlyVerified)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                onlyVerified ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+                onlyVerified ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#07141a] border border-white/15 text-gray-300"
               }`}
             >
               ✓ Nur geprüfte Identität
@@ -252,7 +252,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
               type="button"
               onClick={() => setOnlyWithPhone(!onlyWithPhone)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                onlyWithPhone ? "bg-sky-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"
+                onlyWithPhone ? "bg-lake-500 text-[#07141a]" : "bg-[#07141a] border border-white/15 text-gray-300"
               }`}
             >
               📞 Nur mit +41 Nummer
@@ -270,7 +270,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
                   type="button"
                   onClick={() => setMaxRate60(p.val)}
                   className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold cursor-pointer ${
-                    maxRate60 === p.val ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] border border-white/10 text-gray-400"
+                    maxRate60 === p.val ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#07141a] border border-white/10 text-gray-400"
                   }`}
                 >
                   {p.label}
@@ -280,19 +280,19 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-            <select value={ageGroup} onChange={(e) => setAgeGroup(e.target.value as any)} className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white">
+            <select value={ageGroup} onChange={(e) => setAgeGroup(e.target.value as any)} className="rounded-xl bg-[#07141a] border border-white/15 px-3 py-2 text-xs text-white">
               <option value="ALL">Altersgruppe: Alle (18–45+)</option>
               <option value="18-24">18 – 24 Jahre</option>
               <option value="25-30">25 – 30 Jahre</option>
               <option value="31+">31+ Jahre</option>
             </select>
-            <select value={cupFilter} onChange={(e) => setCupFilter(e.target.value)} className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white">
+            <select value={cupFilter} onChange={(e) => setCupFilter(e.target.value)} className="rounded-xl bg-[#07141a] border border-white/15 px-3 py-2 text-xs text-white">
               <option value="ALL">Körbchengrösse: Alle (A – DD)</option>
               <option value="AB">Cup A / B</option>
               <option value="C">Cup C</option>
               <option value="D+">Cup D / DD</option>
             </select>
-            <select value={hairFilter} onChange={(e) => setHairFilter(e.target.value)} className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white">
+            <select value={hairFilter} onChange={(e) => setHairFilter(e.target.value)} className="rounded-xl bg-[#07141a] border border-white/15 px-3 py-2 text-xs text-white">
               <option value="ALL">Haarfarbe: Alle</option>
               <option value="Blond">Blond</option>
               <option value="Brünett">Brünett</option>
@@ -303,9 +303,9 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
 
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredAndSorted.map((p: any) => (
-            <div key={p.id} className="rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/60 overflow-hidden flex flex-col justify-between transition group">
+            <div key={p.id} className="rounded-2xl bg-[#0d1f27] border border-white/10 hover:border-[#ff6b5e]/60 overflow-hidden flex flex-col justify-between transition group">
               <div>
-                <div className="relative h-64 bg-[#0D111A] overflow-hidden">
+                <div className="relative h-64 bg-[#07141a] overflow-hidden">
                   <img
                     src={p.thumbnail || "/images/escort-portrait-1.jpg"}
                     alt={p.rawName}
@@ -313,16 +313,16 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
                     onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
                   />
-                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 border border-white/15 text-xs font-extrabold text-[#C8A97E]">
+                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 border border-white/15 text-xs font-extrabold text-[#ff6b5e]">
                     CHF {p.rate60Chf}.– <span className="text-[10px] text-gray-400 font-normal">/ 60m</span>
                   </div>
                 </div>
                 <div className="p-4 space-y-2">
                   <div className="flex items-center justify-between gap-2 text-[11px]">
-                    <span className="font-bold text-[#C8A97E]">{p.canton} · {p.city}</span>
+                    <span className="font-bold text-[#ff6b5e]">{p.canton} · {p.city}</span>
                     <span className="text-gray-400">30 Min.: CHF {p.rate30Chf}.–</span>
                   </div>
-                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-white hover:text-[#C8A97E] truncate">
+                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-white hover:text-[#ff6b5e] truncate">
                     {p.rawName}
                   </Link>
                   <div className="text-xs text-gray-300">
@@ -331,7 +331,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
                 </div>
               </div>
               <div className="p-4 pt-0">
-                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block w-full py-2.5 px-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs text-center">
+                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block w-full py-2.5 px-3 rounded-xl bg-[#ff6b5e] hover:bg-[#e8564a] text-[#07141a] font-extrabold text-xs text-center">
                   Profil & Kontakt öffnen →
                 </Link>
               </div>

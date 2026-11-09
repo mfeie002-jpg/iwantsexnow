@@ -16,8 +16,8 @@ export function ExportTab() {
 
   return (
     <div className="space-y-6">
-      <Alert className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-        <Info className="w-4 h-4 text-blue-600" />
+      <Alert className="bg-lake-50 dark:bg-lake-950 border-lake-200 dark:border-lake-800">
+        <Info className="w-4 h-4 text-lake-600" />
         <AlertTitle>Export Options</AlertTitle>
         <AlertDescription>
           Download the complete Web Analyzer Suite or just the standalone package generator component.
@@ -29,7 +29,7 @@ export function ExportTab() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Package className="w-5 h-5 text-purple-600" />
+              <Package className="w-5 h-5 text-dusk-600" />
               Mega Export
             </CardTitle>
             <CardDescription>
@@ -47,7 +47,7 @@ export function ExportTab() {
             </div>
             <Button
               onClick={downloadMegaExport}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              className="w-full bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
             >
               <Download className="w-4 h-4 mr-2" />
               Download Mega Export
@@ -59,7 +59,7 @@ export function ExportTab() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Download className="w-5 h-5 text-green-600" />
+              <Download className="w-5 h-5 text-mint-600" />
               Standalone Component
             </CardTitle>
             <CardDescription>

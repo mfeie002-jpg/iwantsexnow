@@ -42,9 +42,9 @@ export function MutualMatches() {
   ];
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-pink-50 to-purple-50 border-2 border-pink-200">
+    <Card className="p-6 bg-gradient-to-br from-glow-50 to-dusk-50 border-2 border-glow-200">
       <div className="flex items-center gap-2 mb-6">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-glow-600 to-dusk-600 flex items-center justify-center">
           <Sparkles className="text-white" size={20} />
         </div>
         <div>
@@ -64,10 +64,10 @@ export function MutualMatches() {
                   className="w-20 h-20 rounded-lg object-cover"
                 />
                 {match.online && (
-                  <div className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
+                  <div className="absolute bottom-1 right-1 w-3 h-3 bg-mint-500 rounded-full border-2 border-white" />
                 )}
                 {match.verified && (
-                  <div className="absolute top-1 right-1 bg-blue-500 text-white rounded-full p-0.5">
+                  <div className="absolute top-1 right-1 bg-lake-500 text-white rounded-full p-0.5">
                     <Star size={10} fill="white" />
                   </div>
                 )}
@@ -75,7 +75,7 @@ export function MutualMatches() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-bold">{match.name}, {match.age}</h4>
-                  <Badge className="bg-gradient-to-r from-pink-600 to-purple-600 border-0 text-xs">
+                  <Badge className="bg-gradient-to-r from-glow-600 to-dusk-600 border-0 text-xs">
                     {match.matchPercentage}% Match
                   </Badge>
                 </div>
@@ -87,7 +87,7 @@ export function MutualMatches() {
                     </Badge>
                   ))}
                 </div>
-                <Button size="sm" className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700" asChild>
+                <Button size="sm" className="w-full bg-gradient-to-r from-glow-600 to-dusk-600 hover:from-glow-700 hover:to-dusk-700" asChild>
                   <Link href="/messages">
                     <MessageCircle size={14} className="mr-2" />
                     Start Chatting

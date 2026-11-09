@@ -111,7 +111,7 @@ export default function HotelsGuidePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#07141a] text-[#f2f7f6] pb-24">
       <SEO
         title="Diskrete Schweizer Outcall-Hotels & Self-Check-in Apartments (Zug, Zürich, Basel) | iwantsexnow.ch"
         description="Schweizer Guide für diskrete Hotelbesuche (Outcall), Day-Use-Suiten mit Tiefgaragen-Lift und kontaktlose Self-Check-in-Apartments in Zug, Zürich, Luzern, Basel & Genf."
@@ -120,9 +120,9 @@ export default function HotelsGuidePage() {
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <section className="p-6 rounded-2xl bg-[#0d1f27] border border-[#ff6b5e]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+            <div className="text-[11px] uppercase tracking-widest text-[#ff6b5e] font-bold flex items-center gap-1.5">
               <KeyRound size={14} /> DISKRETION & OUTCALL-LOGISTIK SCHWEIZ
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
@@ -133,7 +133,7 @@ export default function HotelsGuidePage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Link href="/kategorie/zug/haus-und-hotelbesuche" className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+            <Link href="/kategorie/zug/haus-und-hotelbesuche" className="px-4 py-2.5 rounded-xl bg-[#ff6b5e] text-[#07141a] text-xs font-extrabold">
               Outcall Zug (ZG) →
             </Link>
             <Link href="/kategorie/zuerich/haus-und-hotelbesuche" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white">
@@ -150,7 +150,7 @@ export default function HotelsGuidePage() {
               type="button"
               onClick={() => setSelectedCanton(c)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                selectedCanton === c ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#121722] text-gray-300 border border-white/10"
+                selectedCanton === c ? "bg-[#ff6b5e] text-[#07141a]" : "bg-[#0d1f27] text-gray-300 border border-white/10"
               }`}
             >
               {c === "ALL" ? "Alle Schweizer Regionen" : `Kanton ${c}`}
@@ -161,18 +161,18 @@ export default function HotelsGuidePage() {
         {/* Regionale Hotel- & Outcall-Karten */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {visibleHubs.map((hub) => (
-            <div key={hub.citySlug} className="p-6 rounded-2xl bg-[#121722] border border-white/10 flex flex-col justify-between gap-5">
+            <div key={hub.citySlug} className="p-6 rounded-2xl bg-[#0d1f27] border border-white/10 flex flex-col justify-between gap-5">
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
                   <div>
-                    <span className="text-[11px] font-bold text-[#C8A97E] uppercase tracking-wider">
+                    <span className="text-[11px] font-bold text-[#ff6b5e] uppercase tracking-wider">
                       Kanton {hub.canton} · Ø Outcall CHF {hub.avgOutcallChf}.– / 60m
                     </span>
                     <h2 className="text-xl font-serif font-bold text-white mt-0.5">{hub.city}</h2>
                   </div>
                   <Link
                     href={`/kategorie/${hub.citySlug}/haus-und-hotelbesuche`}
-                    className="px-3.5 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs inline-flex items-center gap-1"
+                    className="px-3.5 py-2 rounded-xl bg-[#ff6b5e] text-[#07141a] font-extrabold text-xs inline-flex items-center gap-1"
                   >
                     <span>Outcall-Profile</span>
                     <ArrowRight size={12} />
@@ -181,14 +181,14 @@ export default function HotelsGuidePage() {
 
                 <div className="space-y-3">
                   {hub.highlights.map((item, i) => (
-                    <div key={i} className="p-4 rounded-xl bg-[#0D111A] border border-white/5 space-y-1.5 text-xs">
+                    <div key={i} className="p-4 rounded-xl bg-[#07141a] border border-white/5 space-y-1.5 text-xs">
                       <div className="flex items-center justify-between gap-2">
                         <strong className="text-white text-sm">{item.name}</strong>
-                        <span className="px-2 py-0.5 rounded bg-white/10 text-[#C8A97E] font-bold text-[10px]">
+                        <span className="px-2 py-0.5 rounded bg-white/10 text-[#ff6b5e] font-bold text-[10px]">
                           {item.type}
                         </span>
                       </div>
-                      <div className="text-emerald-400 font-semibold flex items-center gap-1.5">
+                      <div className="text-mint-400 font-semibold flex items-center gap-1.5">
                         <Car size={13} /> {item.access}
                       </div>
                       <p className="text-gray-400 text-[11px]">{item.note}</p>
@@ -201,7 +201,7 @@ export default function HotelsGuidePage() {
                 <Link href={`/orte/${hub.citySlug}`} className="text-gray-300 hover:text-white font-semibold">
                   Alle Profile in {hub.city} →
                 </Link>
-                <Link href={`/kategorie/${hub.citySlug}/dinner-date`} className="text-[#C8A97E] font-bold hover:underline">
+                <Link href={`/kategorie/${hub.citySlug}/dinner-date`} className="text-[#ff6b5e] font-bold hover:underline">
                   Dinner-Date Begleitung in {hub.city} →
                 </Link>
               </div>

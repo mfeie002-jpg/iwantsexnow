@@ -362,7 +362,7 @@ export default function ProfileDetailPage({
   const suite = suiteNumber(String(profile.id));
 
   return (
-    <div className="penthouse-page min-h-screen pb-52 text-[#F2EADF] lg:pb-16">
+    <div className="penthouse-page min-h-screen pb-52 text-[#dcebe8] lg:pb-16">
       <SEO
         title={
           profile.rawName +
@@ -401,10 +401,10 @@ export default function ProfileDetailPage({
 
       <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2 text-[10px] text-[#7D7265]">
+          <div className="flex flex-wrap items-center gap-2 text-[10px] text-[#6f8c93]">
             <Link
               href="/search"
-              className="group inline-flex min-h-[34px] items-center gap-1.5 transition hover:text-[#DEC393]"
+              className="group inline-flex min-h-[34px] items-center gap-1.5 transition hover:text-[#ff6b5e]"
             >
               <ArrowLeft
                 size={13}
@@ -412,10 +412,10 @@ export default function ProfileDetailPage({
               />
               Zurück zur Suche
             </Link>
-            <span className="text-[#4E453C]">/</span>
+            <span className="text-[#0d1f27]">/</span>
             <Link
               href={cityHref}
-              className="font-mono uppercase tracking-[0.08em] text-[#C8A97E]"
+              className="font-mono uppercase tracking-[0.08em] text-[#ff6b5e]"
             >
               {profile.canton} · {profile.city}
             </Link>
@@ -427,13 +427,13 @@ export default function ProfileDetailPage({
               onClick={toggleFav}
               className={
                 isFav
-                  ? "inline-flex min-h-[36px] cursor-pointer items-center gap-1.5 rounded-full border border-[#DEC393]/45 bg-[#C8A97E]/10 px-3.5 text-[10px] text-[#DEC393]"
+                  ? "inline-flex min-h-[36px] cursor-pointer items-center gap-1.5 rounded-full border border-[#ff6b5e]/45 bg-[#ff6b5e]/10 px-3.5 text-[10px] text-[#ff6b5e]"
                   : "ghost-button inline-flex min-h-[36px] cursor-pointer items-center gap-1.5 rounded-full px-3.5 text-[10px]"
               }
             >
               <Heart
                 size={13}
-                className={isFav ? "fill-[#DEC393]" : ""}
+                className={isFav ? "fill-[#ff6b5e]" : ""}
               />
               {isFav ? "Gespeichert" : "Merken"}
             </button>
@@ -442,7 +442,7 @@ export default function ProfileDetailPage({
               href="/compare-escorts"
               className="ghost-button inline-flex min-h-[36px] items-center gap-1.5 rounded-full px-3.5 text-[10px]"
             >
-              <Scale size={13} className="text-[#C8A97E]" />
+              <Scale size={13} className="text-[#ff6b5e]" />
               Vergleichen
             </Link>
           </div>
@@ -450,7 +450,7 @@ export default function ProfileDetailPage({
 
         <section className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="min-w-0 lg:col-span-7">
-            <div className="noir-stage group aspect-[3/4] rounded-[20px] border border-[#C8A97E]/35 shadow-[0_30px_90px_rgba(0,0,0,0.48)] sm:aspect-[4/5]">
+            <div className="noir-stage group aspect-[3/4] rounded-[20px] border border-[#ff6b5e]/35 shadow-[0_30px_90px_rgba(0,0,0,0.48)] sm:aspect-[4/5]">
               <img
                 referrerPolicy="no-referrer"
                 src={mainPhoto}
@@ -500,7 +500,7 @@ export default function ProfileDetailPage({
               {galleryPhotos.map((photo, index) => {
                 const active = safePhotoIndex === index;
                 const thumbClass = active
-                  ? "noir-stage relative h-24 w-[74px] shrink-0 cursor-pointer overflow-hidden rounded-[7px] border border-[#DEC393]"
+                  ? "noir-stage relative h-24 w-[74px] shrink-0 cursor-pointer overflow-hidden rounded-[7px] border border-[#ff6b5e]"
                   : "noir-stage relative h-24 w-[74px] shrink-0 cursor-pointer overflow-hidden rounded-[7px] border border-white/10 opacity-55 transition hover:opacity-90";
 
                 return (
@@ -535,35 +535,35 @@ export default function ProfileDetailPage({
           <div className="min-w-0 space-y-5 lg:col-span-5">
             <section className="dossier-panel rounded-[16px] p-5 sm:p-7">
               <div className="flex items-center justify-between gap-3">
-                <div className="font-mono text-[8px] uppercase tracking-[0.23em] text-[#C8A97E]">
+                <div className="font-mono text-[8px] uppercase tracking-[0.23em] text-[#ff6b5e]">
                   Dossier privé · {suite}
                 </div>
-                <span className="font-mono text-[8px] tabular-nums text-[#665C50]">
+                <span className="font-mono text-[8px] tabular-nums text-[#6f8c93]">
                   ID {String(profile.id).slice(0, 18)}
                 </span>
               </div>
 
-              <div className="mt-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.12em] text-[#B9A585]">
-                <MapPin size={13} className="text-[#C8A97E]" />
+              <div className="mt-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.12em] text-[#ff6b5e]">
+                <MapPin size={13} className="text-[#ff6b5e]" />
                 Kanton {profile.canton} · {profile.city}
               </div>
 
-              <h1 className="mt-3 break-words font-serif text-[29px] font-normal leading-[1.14] tracking-[0.012em] text-[#F3EADC] sm:text-[38px]">
+              <h1 className="mt-3 break-words font-serif text-[29px] font-normal leading-[1.14] tracking-[0.012em] text-[#ff6b5e] sm:text-[38px]">
                 {profile.rawName}
               </h1>
 
-              <div className="mt-3 flex items-center gap-3 text-[#B38E52]">
-                <span className="h-px w-10 bg-[#B38E52]/55" />
+              <div className="mt-3 flex items-center gap-3 text-[#e8564a]">
+                <span className="h-px w-10 bg-[#e8564a]/55" />
                 <span className="text-[8px]">✦</span>
-                <span className="h-px w-10 bg-[#B38E52]/55" />
+                <span className="h-px w-10 bg-[#e8564a]/55" />
               </div>
 
-              <p className="mt-4 text-[10px] font-light leading-6 text-[#95897A]">
+              <p className="mt-4 text-[10px] font-light leading-6 text-[#6f8c93]">
                 {profile.age} Jahre · {profile.heightCm} cm · Cup{" "}
                 {profile.cupSize} · {profile.hairColor}
               </p>
 
-              <div className="mt-6 overflow-hidden rounded-[8px] border border-[#C8A97E]/20 bg-black/20">
+              <div className="mt-6 overflow-hidden rounded-xl border border-[#ff6b5e]/20 bg-black/20">
                 <table className="honorar-table">
                   <thead>
                     <tr>
@@ -574,40 +574,40 @@ export default function ProfileDetailPage({
                   <tbody>
                     <tr>
                       <td>
-                        <div className="text-[#C7BAA9]">
+                        <div className="text-[#ff6b5e]">
                           30 Min. Express
                         </div>
-                        <div className="mt-1 text-[8px] text-[#6F6559]">
+                        <div className="mt-1 text-[8px] text-[#5d7a82]">
                           Richtwert / Kennenlernen
                         </div>
                       </td>
-                      <td className="text-right font-mono text-base tabular-nums text-[#CDBFA9]">
+                      <td className="text-right font-mono text-base tabular-nums text-[#ff6b5e]">
                         CHF {rate30}.–
                       </td>
                     </tr>
                     <tr className="featured-rate">
                       <td>
-                        <div className="text-[#DEC393]">
+                        <div className="text-[#ff6b5e]">
                           60 Min. Standard
                         </div>
-                        <div className="mt-1 text-[8px] text-[#8E7957]">
+                        <div className="mt-1 text-[8px] text-[#a8382e]">
                           Empfohlener Direkttarif
                         </div>
                       </td>
-                      <td className="text-right font-mono text-xl tabular-nums text-[#DEC393]">
+                      <td className="text-right font-mono text-xl tabular-nums text-[#ff6b5e]">
                         CHF {rate60}.–
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <div className="text-[#C7BAA9]">
+                        <div className="text-[#ff6b5e]">
                           2 Std. Dinner / Outcall
                         </div>
-                        <div className="mt-1 text-[8px] text-[#6F6559]">
+                        <div className="mt-1 text-[8px] text-[#5d7a82]">
                           Geschätzter Richtwert nach Vereinbarung
                         </div>
                       </td>
-                      <td className="text-right font-mono text-base tabular-nums text-[#CDBFA9]">
+                      <td className="text-right font-mono text-base tabular-nums text-[#ff6b5e]">
                         CHF {rate120}.–
                       </td>
                     </tr>
@@ -615,11 +615,11 @@ export default function ProfileDetailPage({
                 </table>
               </div>
 
-              <div className="mt-5 rounded-[9px] border border-[#10B981]/20 bg-[#0D291E]/45 p-4">
+              <div className="mt-5 rounded-[9px] border border-[#4fd1b0]/20 bg-[#0d1f27]/45 p-4">
                 <div className="font-mono text-[8px] uppercase tracking-[0.14em] text-[#91B7A3]">
                   Direkter Schweizer +41 Kontakt · 0% Provision
                 </div>
-                <div className="mt-2 break-words font-mono text-[13px] tabular-nums text-[#E0D7C9]">
+                <div className="mt-2 break-words font-mono text-[13px] tabular-nums text-[#ff6b5e]">
                   {cleanPhone ||
                     "Diskrete Termin-Anfrage über Direkt-Messenger"}
                 </div>
@@ -659,7 +659,7 @@ export default function ProfileDetailPage({
                 </div>
               </div>
 
-              <p className="mt-5 whitespace-pre-line font-serif text-[15px] font-normal leading-7 text-[#BDB1A1]">
+              <p className="mt-5 whitespace-pre-line font-serif text-[15px] font-normal leading-7 text-[#6f8c93]">
                 {profile.bio ||
                   "Unabhängiges Schweizer Profil in " +
                     profile.city +
@@ -684,24 +684,24 @@ export default function ProfileDetailPage({
 
             <Link
               href={previewHref}
-              className="group dossier-panel flex items-center justify-between gap-4 rounded-[12px] p-5 transition hover:border-[#DEC393]/55"
+              className="group dossier-panel flex items-center justify-between gap-4 rounded-[12px] p-5 transition hover:border-[#ff6b5e]/55"
             >
               <div className="flex items-center gap-3">
                 <span className="brass-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
                   <Sparkles size={16} className="relative z-[1]" />
                 </span>
                 <div>
-                  <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#C8A97E]">
+                  <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#ff6b5e]">
                     Lizenzierte KI-Interpretation
                   </div>
-                  <div className="mt-1 font-serif text-base text-[#E4D8C7]">
+                  <div className="mt-1 font-serif text-base text-[#ff6b5e]">
                     Voice-Avatar & 5s Preview
                   </div>
                 </div>
               </div>
               <ArrowRight
                 size={15}
-                className="shrink-0 text-[#C8A97E] transition-transform group-hover:translate-x-1"
+                className="shrink-0 text-[#ff6b5e] transition-transform group-hover:translate-x-1"
               />
             </Link>
           </div>
@@ -709,14 +709,14 @@ export default function ProfileDetailPage({
 
         <section className="mt-7 grid gap-5 lg:grid-cols-2">
           <div className="dossier-panel overflow-hidden rounded-[14px]">
-            <div className="border-b border-[#C8A97E]/15 p-5">
-              <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#C8A97E]">
+            <div className="border-b border-[#ff6b5e]/15 p-5">
+              <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#ff6b5e]">
                 Multi-Portal-Quellenvergleich
               </div>
-              <h2 className="mt-2 font-serif text-xl font-normal text-[#E7DCCB]">
+              <h2 className="mt-2 font-serif text-xl font-normal text-[#ff6b5e]">
                 Herkunft statt Hörensagen.
               </h2>
-              <p className="mt-2 text-[10px] font-light leading-5 text-[#817567]">
+              <p className="mt-2 text-[10px] font-light leading-5 text-[#6f8c93]">
                 Angezeigt werden ausschliesslich übermittelte Quellen- und
                 Tarifdaten. Keine erfundenen Live-Preise.
               </p>
@@ -735,13 +735,13 @@ export default function ProfileDetailPage({
                 <tbody>
                   {sourceRows.map((source: any) => (
                     <tr key={source.id}>
-                      <td className="font-medium text-[#D4C6B2]">
+                      <td className="font-medium text-[#ff6b5e]">
                         {source.name}
                       </td>
-                      <td className="text-[#817567]">
+                      <td className="text-[#6f8c93]">
                         {source.status}
                       </td>
-                      <td className="text-right font-mono tabular-nums text-[#DEC393]">
+                      <td className="text-right font-mono tabular-nums text-[#ff6b5e]">
                         {source.rate
                           ? "CHF " + source.rate + ".–"
                           : "—"}
@@ -753,13 +753,13 @@ export default function ProfileDetailPage({
                             target="_blank"
                             rel="noopener noreferrer"
                             referrerPolicy="no-referrer"
-                            className="inline-flex items-center gap-1 text-[#C8A97E] hover:text-[#DEC393]"
+                            className="inline-flex items-center gap-1 text-[#ff6b5e] hover:text-[#ff6b5e]"
                           >
                             Quelle
                             <ExternalLink size={10} />
                           </a>
                         ) : (
-                          <span className="text-[#5F564C]">Index</span>
+                          <span className="text-[#6f8c93]">Index</span>
                         )}
                       </td>
                     </tr>
@@ -769,7 +769,7 @@ export default function ProfileDetailPage({
             </div>
 
             {sourceRows.length < 2 && (
-              <div className="border-t border-white/[0.05] px-5 py-3 text-[9px] text-[#6D6357]">
+              <div className="border-t border-white/[0.05] px-5 py-3 text-[9px] text-[#6f8c93]">
                 Aktuell liegt nur eine verwertbare Quelle vor. Weitere
                 Portale erscheinen erst nach Datenabgleich.
               </div>
@@ -778,16 +778,16 @@ export default function ProfileDetailPage({
 
           <div className="dossier-panel flex flex-col justify-between rounded-[14px] p-5 sm:p-6">
             <div>
-              <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.15em] text-[#C8A97E]">
+              <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.15em] text-[#ff6b5e]">
                 <Lock size={13} />
                 Paid Vault · 80/20 Creator-Lizenz
               </div>
-              <h2 className="mt-3 font-serif text-2xl font-normal text-[#E9DDCB]">
+              <h2 className="mt-3 font-serif text-2xl font-normal text-[#ff6b5e]">
                 {vaultUnlocked
                   ? "Ihr privater Tresor ist geöffnet."
                   : "Private Galerie. Transparente Aufteilung."}
               </h2>
-              <p className="mt-3 max-w-lg text-[11px] font-light leading-6 text-[#8B7F70]">
+              <p className="mt-3 max-w-lg text-[11px] font-light leading-6 text-[#6f8c93]">
                 {vaultUnlocked
                   ? "Der Tresor ist auf diesem Gerät freigeschaltet."
                   : "CHF " +
@@ -800,12 +800,12 @@ export default function ProfileDetailPage({
               </p>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#C8A97E]/15 pt-5">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#ff6b5e]/15 pt-5">
               <div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#786B5B]">
+                <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#6f8c93]">
                   Einmaliger Zugang
                 </div>
-                <div className="mt-1 font-mono text-2xl tabular-nums text-[#DEC393]">
+                <div className="mt-1 font-mono text-2xl tabular-nums text-[#ff6b5e]">
                   CHF {vaultPriceChf}.–
                 </div>
               </div>
@@ -827,16 +827,16 @@ export default function ProfileDetailPage({
           <section className="mt-10">
             <div className="mb-4 flex items-end justify-between">
               <div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#C8A97E]">
+                <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#ff6b5e]">
                   Kanton {profile.canton}
                 </div>
-                <h2 className="mt-1 font-serif text-2xl font-normal text-[#E8DCCB]">
+                <h2 className="mt-1 font-serif text-2xl font-normal text-[#ff6b5e]">
                   Weitere Suiten in der Nähe
                 </h2>
               </div>
               <Link
                 href="/search"
-                className="text-[10px] text-[#C8A97E] hover:text-[#DEC393]"
+                className="text-[10px] text-[#ff6b5e] hover:text-[#ff6b5e]"
               >
                 Alle ansehen →
               </Link>
@@ -869,13 +869,13 @@ export default function ProfileDetailPage({
                     <div className="noir-vignette" />
                     <div className="noir-floor" />
                     <div className="absolute inset-x-0 bottom-0 z-[4] p-3 text-center">
-                      <div className="font-mono text-[7px] uppercase tracking-[0.1em] text-[#B5A184]">
+                      <div className="font-mono text-[7px] uppercase tracking-[0.1em] text-[#ff6b5e]">
                         {related.city} · {related.canton}
                       </div>
-                      <div className="dossier-name mt-1 font-serif text-base text-[#F0E5D4]">
+                      <div className="dossier-name mt-1 font-serif text-base text-[#ff6b5e]">
                         {related.rawName}
                       </div>
-                      <div className="mt-2 font-mono text-sm tabular-nums text-[#DEC393]">
+                      <div className="mt-2 font-mono text-sm tabular-nums text-[#ff6b5e]">
                         CHF {related.rate60Chf}.–
                       </div>
                     </div>
@@ -887,13 +887,13 @@ export default function ProfileDetailPage({
         )}
       </main>
 
-      <div className="profile-mobile-cta fixed inset-x-0 z-40 border-t border-[#C8A97E]/25 px-3 py-2.5 lg:hidden">
+      <div className="profile-mobile-cta fixed inset-x-0 z-40 border-t border-[#ff6b5e]/25 px-3 py-2.5 lg:hidden">
         <div className="mx-auto flex max-w-lg items-center gap-2">
           <div className="hidden min-w-0 flex-1 sm:block">
-            <div className="truncate font-serif text-xs text-[#E9DDCB]">
+            <div className="truncate font-serif text-xs text-[#ff6b5e]">
               {profile.rawName}
             </div>
-            <div className="mt-1 font-mono text-[8px] tabular-nums text-[#C8A97E]">
+            <div className="mt-1 font-mono text-[8px] tabular-nums text-[#ff6b5e]">
               CHF {rate60}.– / 60M · CHF {rate30}.– / 30M
             </div>
           </div>
@@ -932,7 +932,7 @@ export default function ProfileDetailPage({
 
           <Link
             href={previewHref}
-            className="ghost-button flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full text-[#C8A97E]"
+            className="ghost-button flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full text-[#ff6b5e]"
             aria-label="Voice-Avatar und Video-Preview"
           >
             <Video size={15} />

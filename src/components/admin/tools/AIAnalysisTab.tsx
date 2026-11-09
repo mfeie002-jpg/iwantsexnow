@@ -107,8 +107,8 @@ export function AIAnalysisTab() {
         </Alert>
       )}
 
-      <Alert className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-        <Info className="w-4 h-4 text-blue-600" />
+      <Alert className="bg-lake-50 dark:bg-lake-950 border-lake-200 dark:border-lake-800">
+        <Info className="w-4 h-4 text-lake-600" />
         <AlertTitle>1-Click AI Analysis</AlertTitle>
         <AlertDescription>
           Automatically captures screenshots and HTML, then analyzes with AI. Select how many pages to analyze for deeper insights.
@@ -118,7 +118,7 @@ export function AIAnalysisTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-yellow-500" />
+            <Zap className="w-5 h-5 text-sun-500" />
             Quick AI Analysis
           </CardTitle>
           <CardDescription>Instant website analysis powered by AI</CardDescription>
@@ -150,7 +150,7 @@ export function AIAnalysisTab() {
           <Button
             onClick={analyzeWebsite}
             disabled={loading}
-            className="w-full h-12 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            className="w-full h-12 text-lg bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
           >
             {loading ? (
               <>

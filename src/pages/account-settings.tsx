@@ -111,16 +111,16 @@ export default function AccountSettings() {
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case "confirmed": return "bg-green-500";
-      case "pending": return "bg-yellow-500";
-      case "completed": return "bg-blue-500";
+      case "confirmed": return "bg-mint-500";
+      case "pending": return "bg-sun-500";
+      case "completed": return "bg-lake-500";
       case "cancelled": return "bg-red-500";
       default: return "bg-gray-500";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dusk-900 to-gray-900">
       <SEO 
         title="Account Settings - Manage Your Profile | iWantSexNow.ch"
         description="Manage your account settings, favorites, and booking history."
@@ -134,11 +134,11 @@ export default function AccountSettings() {
               <div>
                 <span className="text-2xl font-bold tracking-tight">
                   <span className="text-white">iWant</span>
-                  <span className="text-[#D5A021]">Sex</span>
+                  <span className="text-[#ff6b5e]">Sex</span>
                   <span className="text-white">Now</span>
                   <span className="text-gray-400 text-xl">.ch</span>
                 </span>
-                <div className="text-xs text-pink-500 font-semibold tracking-wider">ACCOUNT SETTINGS</div>
+                <div className="text-xs text-glow-500 font-semibold tracking-wider">ACCOUNT SETTINGS</div>
               </div>
             </Link>
             <MobileNav />
@@ -159,19 +159,19 @@ export default function AccountSettings() {
 
           <Tabs defaultValue="profile" className="space-y-6">
             <TabsList className="bg-white/10 border border-white/20 p-1">
-              <TabsTrigger value="profile" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+              <TabsTrigger value="profile" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
                 <User size={18} className="mr-2" />
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="favorites" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+              <TabsTrigger value="favorites" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
                 <Heart size={18} className="mr-2" />
                 Favorites
               </TabsTrigger>
-              <TabsTrigger value="bookings" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+              <TabsTrigger value="bookings" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
                 <History size={18} className="mr-2" />
                 Bookings
               </TabsTrigger>
-              <TabsTrigger value="notifications" className="data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+              <TabsTrigger value="notifications" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
                 <Bell size={18} className="mr-2" />
                 Notifications
               </TabsTrigger>
@@ -185,7 +185,7 @@ export default function AccountSettings() {
                   {!editMode ? (
                     <Button
                       onClick={() => setEditMode(true)}
-                      className="bg-pink-600 hover:bg-pink-700"
+                      className="bg-glow-600 hover:bg-glow-700"
                     >
                       <Edit size={18} className="mr-2" />
                       Edit Profile
@@ -194,7 +194,7 @@ export default function AccountSettings() {
                     <div className="flex gap-2">
                       <Button
                         onClick={handleSaveProfile}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="bg-mint-600 hover:bg-mint-700"
                       >
                         <Save size={18} className="mr-2" />
                         Save
@@ -286,7 +286,7 @@ export default function AccountSettings() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                       >
-                        <Card className="overflow-hidden bg-white/5 border-white/10 hover:border-pink-500 transition-all">
+                        <Card className="overflow-hidden bg-white/5 border-white/10 hover:border-glow-500 transition-all">
                           <div className="flex gap-4 p-4">
                             <img
                               src={favorite.image}
@@ -297,18 +297,18 @@ export default function AccountSettings() {
                               <h3 className="text-xl font-bold text-white mb-1">
                                 {favorite.name}, {favorite.age}
                               </h3>
-                              <div className="flex items-center gap-2 text-blue-400 text-sm mb-2">
+                              <div className="flex items-center gap-2 text-lake-400 text-sm mb-2">
                                 <MapPin size={14} />
                                 <span>{favorite.location}</span>
                               </div>
                               <div className="flex items-center gap-2 mb-2">
-                                <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                                <Star size={14} className="text-sun-500 fill-sun-500" />
                                 <span className="text-white text-sm">{favorite.rating}</span>
                                 {favorite.available && (
-                                  <Badge className="bg-green-500 text-xs">Available</Badge>
+                                  <Badge className="bg-mint-500 text-xs">Available</Badge>
                                 )}
                               </div>
-                              <div className="text-yellow-500 font-bold">CHF {favorite.rate}/hr</div>
+                              <div className="text-sun-500 font-bold">CHF {favorite.rate}/hr</div>
                             </div>
                             <div className="flex flex-col gap-2">
                               <Button
@@ -321,7 +321,7 @@ export default function AccountSettings() {
                               </Button>
                               <Button
                                 size="sm"
-                                className="bg-pink-600 hover:bg-pink-700"
+                                className="bg-glow-600 hover:bg-glow-700"
                                 asChild
                               >
                                 <Link href={`/booking-confirmation?escortId=${favorite.id}&escortName=${favorite.name}`}>
@@ -339,7 +339,7 @@ export default function AccountSettings() {
                     <Heart size={64} className="mx-auto text-gray-500 mb-4" />
                     <h3 className="text-xl font-bold text-white mb-2">No favorites yet</h3>
                     <p className="text-gray-400 mb-6">Start adding escorts to your favorites</p>
-                    <Button className="bg-pink-600 hover:bg-pink-700" asChild>
+                    <Button className="bg-glow-600 hover:bg-glow-700" asChild>
                       <Link href="/escort-zurich">Browse Escorts</Link>
                     </Button>
                   </div>
@@ -365,7 +365,7 @@ export default function AccountSettings() {
                               </Badge>
                             </div>
                             <div className="text-gray-400 text-sm">
-                              Confirmation: <span className="text-yellow-500 font-mono">{booking.confirmationCode}</span>
+                              Confirmation: <span className="text-sun-500 font-mono">{booking.confirmationCode}</span>
                             </div>
                           </div>
                           {booking.status === "pending" && (
@@ -382,15 +382,15 @@ export default function AccountSettings() {
 
                         <div className="grid md:grid-cols-3 gap-4 text-sm">
                           <div className="flex items-center gap-2 text-gray-300">
-                            <Calendar size={16} className="text-pink-500" />
+                            <Calendar size={16} className="text-glow-500" />
                             <span>{booking.date}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-300">
-                            <History size={16} className="text-pink-500" />
+                            <History size={16} className="text-glow-500" />
                             <span>{booking.time}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-300">
-                            <Shield size={16} className="text-pink-500" />
+                            <Shield size={16} className="text-glow-500" />
                             <span>{booking.duration}</span>
                           </div>
                         </div>
@@ -406,7 +406,7 @@ export default function AccountSettings() {
                     <History size={64} className="mx-auto text-gray-500 mb-4" />
                     <h3 className="text-xl font-bold text-white mb-2">No bookings yet</h3>
                     <p className="text-gray-400 mb-6">Your booking history will appear here</p>
-                    <Button className="bg-pink-600 hover:bg-pink-700" asChild>
+                    <Button className="bg-glow-600 hover:bg-glow-700" asChild>
                       <Link href="/escort-zurich">Book an Escort</Link>
                     </Button>
                   </div>
@@ -465,12 +465,12 @@ export default function AccountSettings() {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                  <div className="flex items-start gap-3 text-blue-400">
+                <div className="mt-6 p-4 bg-lake-500/10 border border-lake-500/30 rounded-lg">
+                  <div className="flex items-start gap-3 text-lake-400">
                     <Shield size={20} className="flex-shrink-0 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-semibold mb-1">Privacy Notice</p>
-                      <p className="text-blue-300/80">
+                      <p className="text-lake-300/80">
                         Your notification preferences are private and secure. You can change these settings at any time.
                       </p>
                     </div>

@@ -50,11 +50,11 @@ export function SeoSiloFooter() {
   return (
     <section
       aria-label="Schweizer Regionen, Services und Preisvergleichs-Verzeichnis"
-      className="bg-[#060C15] border-t border-[#C69C6D]/30 py-12 text-xs text-gray-300"
+      className="bg-[#060C15] border-t border-[#ff6b5e]/30 py-12 text-xs text-gray-300"
     >
       <div className="container mx-auto px-4 max-w-7xl space-y-8">
         <div className="max-w-3xl space-y-1.5">
-          <div className="text-[11px] font-black uppercase tracking-widest text-[#D5A021]">
+          <div className="text-[11px] font-black uppercase tracking-widest text-[#ff6b5e]">
             Schweizer Erotik- & Escort-Index · Alle Kantone, Ortschaften & Services
           </div>
           <h2 className="text-lg sm:text-xl font-serif font-black text-white">
@@ -69,7 +69,7 @@ export function SeoSiloFooter() {
           {/* Column 1: Cities & Sub-Regions */}
           <div className="space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
-              <MapPin size={14} className="text-[#D5A021]" />
+              <MapPin size={14} className="text-[#ff6b5e]" />
               Städte, Bezirke & Business-Hotspots
             </h3>
             <div className="flex flex-wrap gap-1.5">
@@ -77,7 +77,7 @@ export function SeoSiloFooter() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#C69C6D]/20 border border-white/10 hover:border-[#C69C6D]/50 text-gray-200 hover:text-white transition-all"
+                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#ff6b5e]/20 border border-white/10 hover:border-[#ff6b5e]/50 text-gray-200 hover:text-white transition-all"
                 >
                   {item.label}
                 </Link>
@@ -88,7 +88,7 @@ export function SeoSiloFooter() {
           {/* Column 2: High-Intent Service Combinations */}
           <div className="space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
-              <Sparkles size={14} className="text-emerald-400" />
+              <Sparkles size={14} className="text-mint-400" />
               Beliebte Service- & Vorlieben-Kombinationen
             </h3>
             <div className="flex flex-wrap gap-1.5">
@@ -96,7 +96,7 @@ export function SeoSiloFooter() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 hover:border-emerald-400/50 text-gray-200 hover:text-white transition-all"
+                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-mint-500/20 border border-white/10 hover:border-mint-400/50 text-gray-200 hover:text-white transition-all"
                 >
                   {item.label}
                 </Link>
@@ -107,7 +107,7 @@ export function SeoSiloFooter() {
           {/* Column 3: Houses, Portals & Guides */}
           <div className="space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
-              <Building2 size={14} className="text-[#D5A021]" />
+              <Building2 size={14} className="text-[#ff6b5e]" />
               Häuser, Portal-Benchmarks & Ratgeber
             </h3>
             <ul className="space-y-2">
@@ -115,7 +115,7 @@ export function SeoSiloFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-gray-300 hover:text-[#D5A021] underline decoration-white/20 hover:decoration-[#D5A021] transition-colors"
+                    className="text-gray-300 hover:text-[#ff6b5e] underline decoration-white/20 hover:decoration-[#ff6b5e] transition-colors"
                   >
                     → {item.label}
                   </Link>

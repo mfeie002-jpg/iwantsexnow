@@ -15,22 +15,22 @@ export default function DemoListingDetail({ listing }: { listing: DemoListing })
   const router = useRouter();
   const filters = parseCatalogueFilters(router.isReady ? router.query : {});
   const back = filters.invalid ? "/search" : catalogueHref(filters);
-  return <div className="min-h-screen bg-[#f7f5f1] pb-32 text-slate-950">
+  return <div className="min-h-screen bg-[#ff6b5e] pb-32 text-gray-950">
     <CatalogueHeader />
     <main className="mx-auto max-w-3xl px-5 py-10 md:py-16">
       <Link href={back} className="text-sm font-semibold underline underline-offset-4">Zurück zum Katalog</Link>
-      <article className="mt-7 rounded-2xl border border-slate-200 bg-white p-6 md:p-10">
-        <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-800">Fiktives Demo-Inserat · keine reale Person</p>
+      <article className="mt-7 rounded-2xl border border-gray-200 bg-white p-6 md:p-10">
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-sun-800">Fiktives Demo-Inserat · keine reale Person</p>
         <h1 className="mt-4 text-4xl font-bold">{listing.title}</h1>
-        <p className="mt-4 text-lg text-slate-600">{cityLabel(listing.city)} · {categoryLabel(listing.category)}</p>
-        <div className="my-7 flex h-48 items-center justify-center rounded-xl bg-[#eee9df]" aria-hidden="true"><span className="text-sm font-bold tracking-widest text-slate-500">DEMO · KEIN FOTO</span></div>
+        <p className="mt-4 text-lg text-gray-600">{cityLabel(listing.city)} · {categoryLabel(listing.category)}</p>
+        <div className="my-7 flex h-48 items-center justify-center rounded-xl bg-[#ff6b5e]" aria-hidden="true"><span className="text-sm font-bold tracking-widest text-gray-500">DEMO · KEIN FOTO</span></div>
         <h2 className="text-xl font-bold">Über dieses Beispiel</h2>
-        <p className="mt-3 leading-relaxed text-slate-600">{listing.description}</p>
-        <p className="mt-3 leading-relaxed text-slate-600">Dieses Beispiel dient ausschliesslich dem Test von Katalog, Filtern und Detailansicht. Es gibt keine Kontaktperson, Preise, Bewertungen oder buchbare Verfügbarkeit.</p>
-        <aside className="mt-7 rounded-xl border border-amber-300 bg-amber-50 p-5 text-sm leading-relaxed text-amber-950">
+        <p className="mt-3 leading-relaxed text-gray-600">{listing.description}</p>
+        <p className="mt-3 leading-relaxed text-gray-600">Dieses Beispiel dient ausschliesslich dem Test von Katalog, Filtern und Detailansicht. Es gibt keine Kontaktperson, Preise, Bewertungen oder buchbare Verfügbarkeit.</p>
+        <aside className="mt-7 rounded-xl border border-sun-300 bg-sun-50 p-5 text-sm leading-relaxed text-sun-950">
           <strong>Private Anfrage – noch nicht aktiv.</strong> Es werden keine Nachrichten oder Buchungen versendet. Auch Registrierung und Veröffentlichung bleiben gesperrt.
         </aside>
-        <button disabled className="mt-5 w-full cursor-not-allowed rounded-lg bg-slate-200 px-5 py-3 font-semibold text-slate-600">Anfragen noch nicht möglich</button>
+        <button disabled className="mt-5 w-full cursor-not-allowed rounded-lg bg-gray-200 px-5 py-3 font-semibold text-gray-600">Anfragen noch nicht möglich</button>
         <p className="mt-5 text-sm"><Link href="/safety" className="underline">Sicherheit und Vorschau-Status</Link></p>
       </article>
     </main>
