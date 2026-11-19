@@ -1,8 +1,8 @@
 import type { Config } from "tailwindcss";
 
 const COOL = {
-  50: "#f7f7fb", 100: "#efeff6", 200: "#e1e1ec", 300: "#c9c9db", 400: "#9c9dba",
-  500: "#73759a", 600: "#565980", 700: "#3f4268", 800: "#2b2e54", 900: "#1e2247", 950: "#141735",
+  50: "#f7f4ee", 100: "#efeae2", 200: "#e3dcd0", 300: "#c9c0b2", 400: "#6f6a60",
+  500: "#5c564c", 600: "#4a453d", 700: "#3a352e", 800: "#2a261f", 900: "#1c1915", 950: "#12100d",
 };
 
 /* cherry */
@@ -59,14 +59,14 @@ const config: Config = {
         glueh: "#d92b52",
         bernstein: "#f5a800",
         lago: "#1e8a64",
-        papier: "#fbfaf8",
-        tinte: "#1e2247",
-        kirsche: { DEFAULT: "#d92b52", tief: "#a81c3d" },
-        butter: "#ffe48a",
-        blush: "#ffd3dc",
-        minze: "#bfebd6",
-        himmel: "#c6dffa",
-        flieder: "#dcd3f7",
+        papier: "#f3efe6",
+        tinte: "#1c1915",
+        kirsche: { DEFAULT: "#8e2f2a", tief: "#6c221f" },
+        butter: "#e6d3a4",
+        blush: "#efe4d8",
+        minze: "#d5e3d8",
+        himmel: "#d5e0ea",
+        flieder: "#e4dee6",
         glow,
         sun,
         dusk,

@@ -1,272 +1,197 @@
-import React, { useState, useMemo } from "react";
-import Link from "next/link";
+import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
+import { ListingGrid } from "@/components/listing/ListingCard";
+import { countLabel, toListing, type ListingProfile } from "@/lib/listing";
 import offersData from "@/data/harvested-offers.json";
-import { Search, Crown, MessageCircle, User, Sparkles, RotateCcw } from "lucide-react";
 
-const CANTONS = ["ALL", "ZG", "ZH", "LU", "BS", "BE", "AG", "SG", "GE", "VD", "TI", "VS", "FR", "NE", "SO", "GR", "TG", "SZ"];
+const RUBRICS = [
+  { id: "ALL", label: "Alle Arten" },
+  { id: "female", label: "Escort & Begleitung" },
+  { id: "massage", label: "Tantra & Massage" },
+  { id: "bdsm", label: "Domina & BDSM" },
+  { id: "trans", label: "Trans" },
+];
 
 export default function DeepSearchPage() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [canton, setCanton] = useState("ALL");
   const [rubric, setRubric] = useState("ALL");
   const [maxPrice, setMaxPrice] = useState(1200);
   const [onlyFree, setOnlyFree] = useState(false);
+  const [sortBy, setSortBy] = useState<"photo" | "price_asc" | "price_desc" | "available">("photo");
   const [limit, setLimit] = useState(24);
+  const [hydrated, setHydrated] = useState(false);
 
-  const results = useMemo(() => {
-    const raw = (offersData as any[]) || [];
-    const list: any[] = [];
+  useEffect(() => {
+    if (!router.isReady || hydrated) return;
+    const q = router.query;
+    setQuery(typeof q.q === "string" ? q.q : "");
+    setCanton(typeof q.canton === "string" && q.canton ? q.canton.toUpperCase() : "ALL");
+    setRubric(typeof q.rubric === "string" && q.rubric ? q.rubric : "ALL");
+    const max = Number(q.max);
+    setMaxPrice(Number.isFinite(max) && max > 0 ? max : 1200);
+    setOnlyFree(q.free === "1");
+    const sort = String(q.sort || "");
+    if (sort === "price_asc" || sort === "price_desc" || sort === "available" || sort === "photo") setSortBy(sort);
+    setHydrated(true);
+  }, [router.isReady, router.query, hydrated]);
 
-    for (const o of raw) {
-      const pid = o.id || o.dedupClusterId;
-      if (!pid) continue;
-      const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
-      const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
-      const isAvail = Boolean(o.availabilityConfirmed);
-      const rawThumb = String(o.thumbnail || "").trim();
-      const hasRealPhoto =
-        rawThumb.startsWith("http") &&
-        !rawThumb.includes("unsplash.com") &&
-        !rawThumb.includes("placeholder") &&
-        !rawThumb.includes("escort-portrait") &&
-        !rawThumb.endsWith(".svg");
+  useEffect(() => {
+    if (!hydrated) return;
+    const next: Record<string, string> = {};
+    if (query.trim()) next.q = query.trim();
+    if (canton !== "ALL") next.canton = canton;
+    if (rubric !== "ALL") next.rubric = rubric;
+    if (maxPrice < 1200) next.max = String(maxPrice);
+    if (onlyFree) next.free = "1";
+    if (sortBy !== "photo") next.sort = sortBy;
+    router.replace({ pathname: "/search", query: next }, undefined, { shallow: true });
+    setLimit(24);
+    // router.replace identity changes; hydrated gate avoids a loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, canton, rubric, maxPrice, onlyFree, sortBy, hydrated]);
 
+  const cantons = useMemo(() => {
+    const set = new Set<string>();
+    for (const o of (offersData as any[]) || []) {
+      const code = String(o?.canton || "").toUpperCase();
+      if (code) set.add(code);
+    }
+    return Array.from(set).sort();
+  }, []);
+
+  const results: ListingProfile[] = useMemo(() => {
+    const list: { item: ListingProfile; score: number }[] = [];
+    for (const o of (offersData as any[]) || []) {
       if (canton !== "ALL" && String(o.canton || "").toUpperCase() !== canton) continue;
       if (rubric !== "ALL" && (o.rubric || "female") !== rubric) continue;
-      if (onlyFree && !isAvail) continue;
-      if (r60 > maxPrice) continue;
-
+      const item = toListing(o);
+      if (!item) continue;
+      if (onlyFree && !item.available) continue;
+      if (item.rate60 > maxPrice) continue;
       if (query.trim()) {
-        const q = query.toLowerCase();
         const hay = [o.rawName, o.city, o.canton, o.hairColor, o.cupSize, ...(o.includedTags || [])]
           .filter(Boolean)
           .join(" ")
           .toLowerCase();
-        if (!hay.includes(q)) continue;
+        if (!hay.includes(query.trim().toLowerCase())) continue;
       }
-
-      const cleanTitle = String(o.rawName || "VALENTINA")
-        .replace(/^[\W_]+/, "")
-        .split(/[·|-]/)[0]
-        .trim()
-        .slice(0, 22);
-
-      list.push({
-        ...o,
-        id: pid,
-        cleanTitle: cleanTitle || "VALENTINA",
-        rate60Chf: r60,
-        rate30Chf: r30,
-        isAvail,
-        hasRealPhoto,
-        cleanThumb: rawThumb.replace(/[?&]iwsn_clean=1.*$/i, ""),
-      });
+      list.push({ item, score: Number(o.curationScore) || 0 });
     }
-
     list.sort((a, b) => {
-      if (a.hasRealPhoto !== b.hasRealPhoto) return a.hasRealPhoto ? -1 : 1;
-      return Number(b.curationScore || 80) - Number(a.curationScore || 80);
+      if (sortBy === "price_asc") return a.item.rate60 - b.item.rate60;
+      if (sortBy === "price_desc") return b.item.rate60 - a.item.rate60;
+      if (sortBy === "available") return Number(b.item.available) - Number(a.item.available) || b.score - a.score;
+      if (a.item.photo !== b.item.photo) return a.item.photo ? -1 : 1;
+      return b.score - a.score;
     });
-
-    return list;
-  }, [query, canton, rubric, maxPrice, onlyFree]);
+    return list.map((row) => row.item);
+  }, [query, canton, rubric, maxPrice, onlyFree, sortBy]);
 
   return (
-    <div className="min-h-screen bg-papier text-tinte pb-24">
+    <div className="min-h-screen pb-24">
       <SEO
-        title="Deep-Filter Suche · 2'529 Schweizer Suiten & Dossiers | iwantsexnow.ch"
-        description="Durchsuchen Sie 2'529+ verifizierte Schweizer Escort-, Tantra- und Studio-Dossiers nach Kanton, 30m/60m CHF-Honorar und Live-Status."
+        title="Suche · Schweizer Profile nach Ort, Art und CHF-Preis | iwantsexnow.ch"
+        description="Profile in der Schweiz filtern nach Kanton, Art, 30- und 60-Minuten-Preis und bestätigter Verfügbarkeit. Direkter +41 Kontakt."
+        url="https://iwantsexnow.ch/search"
       />
       <LuxuryHeader />
+      <PageIntro
+        tone="himmel"
+        note="Verzeichnis"
+        art="search"
+        title={<>{countLabel(results.length)} Einträge</>}
+        lead="Name, Stadt, Kanton, Art und Preisgrenze. Die Preise sind die 30- und 60-Minuten-Angaben aus dem Eintrag."
+      />
 
-      <PageIntro tone="himmel" note="Finde, wen du suchst" art="search" title={<>Präzisions-Suche über {results.length} Schweizer Suiten</>}>
-        <SwissDoorplate state="FREI" roomNumber="CH" customLabel={results.length + " TREFFER"} size="sm" />
-      </PageIntro>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <section className="penthouse-panel p-5 sm:p-6 rounded-[24px] border border-kirsche/40 space-y-4">
-          
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            <div className="lg:col-span-2 relative">
-              <Search size={14} className="absolute left-3.5 top-3 text-kirsche" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Name, Stadt, PLZ (6300, 8001), Service (GFE, Tantra)..."
-                className="w-full pl-9 pr-3 py-2.5 rounded-full bg-white border border-kirsche/35 text-[13px] text-tinte placeholder-tinte-soft focus:border-kirsche outline-none"
-              />
-            </div>
-
-            <select
-              value={canton}
-              onChange={(e) => setCanton(e.target.value)}
-              className="rounded-full bg-white border border-kirsche/35 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none cursor-pointer"
-            >
-              {CANTONS.map((c) => (
-                <option key={c} value={c} className="bg-papier">
-                  {c === "ALL" ? "Kanton: Ganze Schweiz" : "KANTON: " + c}
+      <main className="sheet">
+        <form
+          className="filter-bar"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <label>
+            Name oder Stadt
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="z. B. Zürich, Tantra, Vorname"
+              aria-label="Name, Stadt oder Stichwort"
+            />
+          </label>
+          <label>
+            Kanton
+            <select value={canton} onChange={(e) => setCanton(e.target.value)} aria-label="Kanton">
+              <option value="ALL">Ganze Schweiz</option>
+              {cantons.map((code) => (
+                <option key={code} value={code}>
+                  {code}
                 </option>
               ))}
             </select>
-
-            <select
-              value={rubric}
-              onChange={(e) => setRubric(e.target.value)}
-              className="rounded-full bg-white border border-kirsche/35 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none cursor-pointer"
-            >
-              <option value="ALL" className="bg-papier">Rubrik: Alle</option>
-              <option value="female" className="bg-papier">Elite Escort & GFE</option>
-              <option value="massage" className="bg-papier">Tantra & Massage</option>
-              <option value="bdsm" className="bg-papier">Domina & BDSM</option>
-              <option value="trans" className="bg-papier">Trans VIP</option>
+          </label>
+          <label>
+            Art
+            <select value={rubric} onChange={(e) => setRubric(e.target.value)} aria-label="Art">
+              {RUBRICS.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
             </select>
-
-            <select
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="rounded-full bg-white border border-kirsche/35 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none cursor-pointer"
-            >
-              <option value={1200} className="bg-papier">Honorar: Alle CHF</option>
-              <option value={250} className="bg-papier">MAX. CHF 250 / 60M</option>
-              <option value={350} className="bg-papier">MAX. CHF 350 / 60M</option>
-              <option value={500} className="bg-papier">MAX. CHF 500 / 60M</option>
+          </label>
+          <label>
+            Bis, 60 Min.
+            <select value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} aria-label="Maximaler 60-Minuten-Preis">
+              <option value={1200}>Alle Preise</option>
+              <option value={250}>CHF 250</option>
+              <option value={350}>CHF 350</option>
+              <option value={500}>CHF 500</option>
             </select>
-          </div>
+          </label>
+          <label>
+            Sortierung
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)} aria-label="Sortierung">
+              <option value="photo">Mit Foto zuerst</option>
+              <option value="available">Zuerst als frei markiert</option>
+              <option value="price_asc">Preis aufsteigend</option>
+              <option value="price_desc">Preis absteigend</option>
+            </select>
+          </label>
+          <label className="check-line">
+            <input type="checkbox" checked={onlyFree} onChange={(e) => setOnlyFree(e.target.checked)} />
+            Nur in den letzten 4 Stunden bestätigt
+          </label>
+          <button
+            type="button"
+            className="text-link"
+            onClick={() => {
+              setQuery("");
+              setCanton("ALL");
+              setRubric("ALL");
+              setMaxPrice(1200);
+              setOnlyFree(false);
+              setSortBy("photo");
+            }}
+          >
+            Zurücksetzen
+          </button>
+        </form>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <button
-              type="button"
-              onClick={() => setOnlyFree(!onlyFree)}
-              className="cursor-pointer"
-            >
-              <SwissDoorplate
-                state={onlyFree ? "FREI" : "RESERVIERT"}
-                roomNumber="LIVE"
-                customLabel={onlyFree ? "NUR FREI (4H) AKTIV" : "NUR FREI (4H) FILTERN"}
-                size="sm"
-              />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setQuery("");
-                setCanton("ALL");
-                setRubric("ALL");
-                setMaxPrice(1200);
-                setOnlyFree(false);
-              }}
-              className="inline-flex items-center gap-1.5 text-[13px] font-mono text-tinte-soft hover:text-kirsche cursor-pointer"
-            >
-              <RotateCcw size={13} />
-              <span>Filter Zurücksetzen</span>
-            </button>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {results.slice(0, limit).map((p: any, idx: number) => {
-            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
-            return (
-              <div
-                key={p.id}
-                className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
-              >
-                <div className="relative rounded-[20px] overflow-hidden border border-kirsche/35 bg-papier flex-1 flex flex-col justify-between">
-                  <Link href={"/profile/" + encodeURIComponent(p.id)} className="darkroom-stage block aspect-[3/4.1] w-full">
-                    {p.hasRealPhoto ? (
-                      <img
-                        referrerPolicy="no-referrer"
-                        src={p.cleanThumb}
-                        alt={p.cleanTitle}
-                        loading={idx < 8 ? "eager" : "lazy"}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).style.display = "none";
-                        }}
-                        className="darkroom-img"
-                      />
-                    ) : null}
-                    <div className="darkroom-vignette" />
-                    <div className="darkroom-floor" />
-
-                    <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-white border border-kirsche/55 flex items-center justify-center text-kirsche">
-                        <Crown size={13} />
-                      </div>
-                      <SwissDoorplate
-                        state={p.isAvail ? "FREI" : "RESERVIERT"}
-                        roomNumber={p.canton || "CH"}
-                        customLabel={p.isAvail ? "FREI" : "SUITE"}
-                        size="sm"
-                      />
-                    </div>
-
-                    <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
-                      <h3 className="font-serif text-xl text-butter truncate max-w-full">
-                        {p.cleanTitle}
-                      </h3>
-                      <div className="text-[13px] font-sans font-semibold text-butter mt-1 truncate max-w-full">
-                        • {p.city} ({p.canton}) •
-                      </div>
-                      <div className="font-serif font-mono text-2xl text-butter mt-1">
-                        CHF {p.rate60Chf}
-                      </div>
-                      <div className="text-[8px] font-mono text-white/80">
-                        60 MIN · (30M: CHF {p.rate30Chf})
-                      </div>
-                    </div>
-                  </Link>
-
-                  <div className="px-3.5 pb-3.5 pt-2 bg-papier grid grid-cols-2 gap-2.5">
-                    {cleanDigits ? (
-                      <a
-                        href={"https://wa.me/" + cleanDigits}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="brass-3d py-2.5 px-3 rounded-full border border-kirsche/65 font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
-                      >
-                        <MessageCircle size={12} />
-                        <span>WHATSAPP</span>
-                      </a>
-                    ) : (
-                      <Link
-                        href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
-                        className="brass-3d py-2.5 px-3 rounded-full border border-kirsche/65 font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
-                      >
-                        <Sparkles size={12} />
-                        <span>PREVIEW</span>
-                      </Link>
-                    )}
-                    <Link
-                      href={"/profile/" + encodeURIComponent(p.id)}
-                      className="emerald-3d py-2.5 px-3 rounded-full border border-kirsche/45 font-sans font-bold text-[13px] flex items-center justify-center gap-1.5"
-                    >
-                      <User size={12} className="text-kirsche" />
-                      <span>DOSSIER</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </section>
+        <ListingGrid profiles={results.slice(0, limit)} />
 
         {limit < results.length && (
-          <div className="text-center pt-4">
-            <button
-              type="button"
-              onClick={() => setLimit((prev) => prev + 24)}
-              className="brass-3d px-8 py-3 rounded-full border border-kirsche/65 text-[13px] font-mono font-extrabold cursor-pointer"
-            >
-              + 24 Weitere Suiten Anzeigen
+          <p className="band-more">
+            <button type="button" className="brass-button" onClick={() => setLimit((n) => n + 24)}>
+              Weitere {Math.min(24, results.length - limit)} zeigen
             </button>
-          </div>
+          </p>
         )}
       </main>
     </div>

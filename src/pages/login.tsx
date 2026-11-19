@@ -102,7 +102,7 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Admin-PIN</label>
-              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} placeholder="SWISS-BOSS-2026" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
+              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} autoComplete="current-password" className="luxury-input" />
             </div>
             <button type="submit" className="w-full py-3.5 rounded-xl bg-mint-500 hover:bg-mint-400 text-tinte font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer">
               <KeyRound size={15} /> Master-Steuerpult entsperren →

@@ -3,8 +3,10 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
+import { ListingGrid } from "@/components/listing/ListingCard";
+import { toListing } from "@/lib/listing";
 import offersData from "@/data/harvested-offers.json";
-import { MapPin, ArrowUpDown } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 const TARGET_CANTON = "ZH";
 const CITY_NAME = "Zürich";
@@ -65,7 +67,7 @@ export default function CityEscortHubPage() {
       />
       <LuxuryHeader />
 
-      <PageIntro tone="himmel" note="Gruss aus Zürich" art="canton:zh" title={<>Escort, Tantra & Begleitung in {CITY_NAME} ({profiles.length} Profile)</>}>
+      <PageIntro tone="himmel" note="Zürich" art="canton:zh" title={<>Escort, Tantra & Begleitung in {CITY_NAME} ({profiles.length} Profile)</>}>
         <div className="flex flex-wrap gap-2">
             <Link href={`/kategorie/${CITY_SLUG}/girlfriend-experience`} className="px-3.5 py-2 rounded-xl bg-tinte/[0.04] hover:bg-tinte/[0.06] border border-tinte/25 text-[13px] font-bold text-tinte">
               GFE {CITY_NAME} →
@@ -126,43 +128,7 @@ export default function CityEscortHubPage() {
           </div>
         </section>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {profiles.map((p: any) => (
-            <div key={p.id} className="rounded-2xl bg-white border border-tinte/20 hover:border-kirsche/60 overflow-hidden flex flex-col justify-between transition">
-              <div>
-                <div className="relative h-60 bg-papier">
-                  <img
-                    src={p.thumbnail || "/images/escort-portrait-1.jpg"}
-                    alt={p.rawName}
-                    loading="lazy"
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                    className="w-full h-full object-cover object-top"
-                  />
-                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/85 border border-tinte/25 text-[13px] font-extrabold text-kirsche">
-                    CHF {p.rate60Chf}.– / 60m
-                  </div>
-                </div>
-                <div className="p-4 space-y-1.5">
-                  <div className="flex items-center justify-between text-[13px]">
-                    <span className="font-bold text-kirsche">{p.canton} · {p.city}</span>
-                    <span className="text-gray-600">30m: CHF {p.rate30Chf}.–</span>
-                  </div>
-                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-tinte hover:text-kirsche truncate">
-                    {p.rawName}
-                  </Link>
-                  <div className="text-[13px] text-gray-700">
-                    {p.age || 25} J. · {p.heightCm || 168} cm · Cup {p.cupSize || "C"}
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 pt-0">
-                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block w-full py-2.5 rounded-xl bg-kirsche text-white font-extrabold text-[13px] text-center">
-                  Profil & +41 Kontakt →
-                </Link>
-              </div>
-            </div>
-          ))}
-        </section>
+        <ListingGrid profiles={profiles.map((p: any) => toListing(p)).filter((p): p is NonNullable<ReturnType<typeof toListing>> => Boolean(p))} />
       </main>
     </div>
   );

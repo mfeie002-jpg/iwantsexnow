@@ -5,7 +5,9 @@ import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
 import offersData from "@/data/harvested-offers.json";
-import { SlidersHorizontal, ArrowUpDown, MapPin, RotateCcw } from "lucide-react";
+import { ListingGrid } from "@/components/listing/ListingCard";
+import { toListing } from "@/lib/listing";
+import { ArrowUpDown, RotateCcw } from "lucide-react";
 
 const CITY_CONFIG: Record<string, { label: string; canton: string; lang: "de" | "fr" | "it" }> = {
   zuerich: { label: "Zürich", canton: "ZH", lang: "de" },
@@ -193,8 +195,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
         <section className="p-5 rounded-2xl bg-white border border-tinte/20 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-tinte/20 pb-3">
             <div className="flex items-center gap-2 text-[13px] font-extrabold text-tinte">
-              <SlidersHorizontal size={15} className="text-kirsche" />
-              <span>Sofort-Filter & 5-Wege-Sortierung ({filteredAndSorted.length} Treffer)</span>
+              <span>{filteredAndSorted.length} Treffer</span>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -294,43 +295,7 @@ export default function Category2DPage({ citySlug, serviceSlug, cityMeta, servic
           </div>
         </section>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredAndSorted.map((p: any) => (
-            <div key={p.id} className="rounded-2xl bg-white border border-tinte/20 hover:border-kirsche/60 overflow-hidden flex flex-col justify-between transition group">
-              <div>
-                <div className="relative h-64 bg-papier overflow-hidden">
-                  <img
-                    src={p.thumbnail || "/images/escort-portrait-1.jpg"}
-                    alt={p.rawName}
-                    loading="lazy"
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
-                  />
-                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 border border-tinte/25 text-[13px] font-extrabold text-kirsche">
-                    CHF {p.rate60Chf}.– <span className="text-[13px] text-gray-600 font-normal">/ 60m</span>
-                  </div>
-                </div>
-                <div className="p-4 space-y-2">
-                  <div className="flex items-center justify-between gap-2 text-[13px]">
-                    <span className="font-bold text-kirsche">{p.canton} · {p.city}</span>
-                    <span className="text-gray-600">30 Min.: CHF {p.rate30Chf}.–</span>
-                  </div>
-                  <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-tinte hover:text-kirsche truncate">
-                    {p.rawName}
-                  </Link>
-                  <div className="text-[13px] text-gray-700">
-                    {p.age} J. · {p.heightCm} cm · Cup {p.cupSize} · {p.hairColor}
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 pt-0">
-                <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block w-full py-2.5 px-3 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] text-center">
-                  Profil & Kontakt öffnen →
-                </Link>
-              </div>
-            </div>
-          ))}
-        </section>
+        <ListingGrid profiles={filteredAndSorted.map((p: any) => toListing(p)).filter((p): p is NonNullable<ReturnType<typeof toListing>> => Boolean(p))} />
       </main>
     </div>
   );

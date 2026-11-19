@@ -362,7 +362,7 @@ export default function ProfileDetailPage({
   const suite = suiteNumber(String(profile.id));
 
   return (
-    <div className="penthouse-page min-h-screen pb-52 text-[#1e2247] lg:pb-16">
+    <div className="min-h-screen">
       <SEO
         title={
           profile.rawName +
@@ -399,6 +399,7 @@ export default function ProfileDetailPage({
 
       <LuxuryHeader />
 
+      <div className="penthouse-page min-h-screen pb-52 text-[#1e2247] lg:pb-16" data-profile-sheet>
       <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2 text-[10px] text-[#5b5f84]">
@@ -947,6 +948,7 @@ export default function ProfileDetailPage({
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 }

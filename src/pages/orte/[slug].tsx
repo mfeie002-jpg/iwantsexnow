@@ -4,9 +4,9 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
 import offersData from "@/data/harvested-offers.json";
-import { Crown, MessageCircle, User, Sparkles } from "lucide-react";
+import { ListingGrid } from "@/components/listing/ListingCard";
+import { toListing } from "@/lib/listing";
 
 const SLUG_TO_CANTON: Record<string, { title: string; canton: string }> = {
   zug: { title: "Zug, Baar & Cham", canton: "ZG" },
@@ -83,97 +83,14 @@ export default function RegionalHubPage({ hubTitle, cantonCode, profiles }: any)
       />
       <LuxuryHeader />
 
-      <PageIntro tone="minze" note="Gruss aus der Region" art="none" title={<>Private Penthouse Suiten in {hubTitle} ({cantonCode})</>}>
-        <Link
-            href="/clubs"
-            className="brass-3d px-5 py-2.5 rounded-full text-[13px] font-mono font-extrabold "
-          >
-            305 Clubs & Studios Ansehen →
-          </Link>
+      <PageIntro tone="minze" note={cantonCode} art="none" title={<>Profile in {hubTitle}</>} lead={<>{profiles.length} Einträge mit 30- und 60-Minuten-Preis. Kontakt über die Nummer im Profil.</>}>
+        <Link href="/clubs" className="text-link">
+          Clubs und Studios
+        </Link>
       </PageIntro>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        
-
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {profiles.map((p: any, idx: number) => {
-            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
-            return (
-              <div
-                key={p.id || idx}
-                className="valentina-outer-card rounded-[26px] overflow-hidden flex flex-col justify-between group p-2.5"
-              >
-                <div className="relative rounded-[20px] overflow-hidden border border-kirsche/35 bg-papier flex-1 flex flex-col justify-between">
-                  <Link href={"/profile/" + encodeURIComponent(p.id)} className="darkroom-stage block aspect-[3/4.1] w-full">
-                    <img
-                      referrerPolicy="no-referrer"
-                      src={p.cleanThumb}
-                      alt={p.cleanTitle}
-                      loading={idx < 8 ? "eager" : "lazy"}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = "none";
-                      }}
-                      className="darkroom-img"
-                    />
-                    <div className="darkroom-vignette" />
-                    <div className="darkroom-floor" />
-
-                    <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-white border border-kirsche/55 flex items-center justify-center text-kirsche">
-                        <Crown size={13} />
-                      </div>
-                      <SwissDoorplate state={p.isAvail ? "FREI" : "RESERVIERT"} roomNumber={p.canton} customLabel="FREI" size="sm" />
-                    </div>
-
-                    <div className="absolute inset-x-0 bottom-2 z-10 px-4 text-center flex flex-col items-center">
-                      <h3 className="font-serif text-xl text-butter truncate max-w-full">
-                        {p.cleanTitle}
-                      </h3>
-                      <div className="text-[13px] font-sans font-semibold text-butter mt-1">
-                        • {p.city} ({p.canton}) •
-                      </div>
-                      <div className="font-serif font-mono text-2xl text-butter mt-1">
-                        CHF {p.rate60Chf}
-                      </div>
-                      <div className="text-[8px] font-mono text-white/80">
-                        PER HOUR · (30M: CHF {p.rate30Chf})
-                      </div>
-                    </div>
-                  </Link>
-
-                  <div className="px-3.5 pb-3.5 pt-2 bg-papier grid grid-cols-2 gap-2.5">
-                    {cleanDigits ? (
-                      <a
-                        href={"https://wa.me/" + cleanDigits}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="brass-3d py-2.5 px-3 rounded-full border border-kirsche/65 font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
-                      >
-                        <MessageCircle size={12} />
-                        <span>WHATSAPP</span>
-                      </a>
-                    ) : (
-                      <Link
-                        href={"/fantasy-preview?id=" + encodeURIComponent(p.id)}
-                        className="brass-3d py-2.5 px-3 rounded-full border border-kirsche/65 font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
-                      >
-                        <Sparkles size={12} />
-                        <span>PREVIEW</span>
-                      </Link>
-                    )}
-                    <Link
-                      href={"/profile/" + encodeURIComponent(p.id)}
-                      className="emerald-3d py-2.5 px-3 rounded-full border border-kirsche/45 font-sans font-bold text-[13px] flex items-center justify-center gap-1.5"
-                    >
-                      <User size={12} className="text-kirsche" />
-                      <span>View Profile</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </section>
+      <main className="sheet">
+        <ListingGrid profiles={profiles.map((p: any) => toListing({ ...p, rawName: p.cleanTitle, thumbnail: p.cleanThumb, availabilityConfirmed: p.isAvail })).filter((p): p is NonNullable<ReturnType<typeof toListing>> => Boolean(p))} />
       </main>
     </div>
   );

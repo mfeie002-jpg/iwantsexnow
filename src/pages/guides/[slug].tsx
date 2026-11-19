@@ -265,8 +265,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
         title={article.metaTitle}
         description={article.metaDescription}
         url={`https://iwantsexnow.ch/guides/${article.slug}`}
-        type="article"
-        structuredData={articleSchema}
+        schemaJson={articleSchema}
       />
       <LuxuryHeader />
 
