@@ -25,6 +25,20 @@ export default function DeepSearchPage() {
   const [sortBy, setSortBy] = useState<"photo" | "price_asc" | "price_desc" | "available">("photo");
   const [limit, setLimit] = useState(24);
   const [hydrated, setHydrated] = useState(false);
+  const [serverStates, setServerStates] = useState<Record<string, any>>({});
+  const [blockedIds, setBlockedIds] = useState<string[]>([]);
+  const [metricsReady, setMetricsReady] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.states) setServerStates(d.states);
+        if (Array.isArray(d?.blockedIds)) setBlockedIds(d.blockedIds);
+      })
+      .catch(() => {})
+      .finally(() => setMetricsReady(true));
+  }, []);
 
   useEffect(() => {
     if (!router.isReady || hydrated) return;
@@ -65,11 +79,17 @@ export default function DeepSearchPage() {
   }, []);
 
   const results: ListingProfile[] = useMemo(() => {
+    if (!metricsReady) return [];
+    const blocked = new Set(blockedIds);
     const list: { item: ListingProfile; score: number }[] = [];
     for (const o of (offersData as any[]) || []) {
+      const id = String(o.id || o.dedupClusterId || "");
+      if (!id || blocked.has(id)) continue;
+      const st = serverStates[id] || {};
+      if (st.paused || st.hidden || st.removedByReport) continue;
       if (canton !== "ALL" && String(o.canton || "").toUpperCase() !== canton) continue;
       if (rubric !== "ALL" && (o.rubric || "female") !== rubric) continue;
-      const item = toListing(o);
+      const item = toListing(o, st);
       if (!item) continue;
       if (onlyFree && !item.available) continue;
       if (item.rate60 > maxPrice) continue;
@@ -86,11 +106,13 @@ export default function DeepSearchPage() {
       if (sortBy === "price_asc") return a.item.rate60 - b.item.rate60;
       if (sortBy === "price_desc") return b.item.rate60 - a.item.rate60;
       if (sortBy === "available") return Number(b.item.available) - Number(a.item.available) || b.score - a.score;
-      if (a.item.photo !== b.item.photo) return a.item.photo ? -1 : 1;
+      const aPhoto = a.item.photo ? 1 : 0;
+      const bPhoto = b.item.photo ? 1 : 0;
+      if (aPhoto !== bPhoto) return bPhoto - aPhoto;
       return b.score - a.score;
     });
     return list.map((row) => row.item);
-  }, [query, canton, rubric, maxPrice, onlyFree, sortBy]);
+  }, [query, canton, rubric, maxPrice, onlyFree, sortBy, metricsReady, serverStates, blockedIds]);
 
   return (
     <div className="min-h-screen pb-24">
@@ -184,7 +206,7 @@ export default function DeepSearchPage() {
           </button>
         </form>
 
-        <ListingGrid profiles={results.slice(0, limit)} />
+        {!metricsReady ? <p className="listing-empty">Verfügbarkeit wird geprüft…</p> : <ListingGrid profiles={results.slice(0, limit)} />}
 
         {limit < results.length && (
           <p className="band-more">

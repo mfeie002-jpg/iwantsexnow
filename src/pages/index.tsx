@@ -92,7 +92,7 @@ export default function HomePage() {
         score: Number(o.curationScore) || 0,
       });
     }
-    rows.sort((a, b) => b.photo - a.photo || b.score - a.score);
+    rows.sort((a, b) => b.photo - a.photo || b.score - a.score || a.item.id.localeCompare(b.item.id));
     return rows.slice(0, 8).map((row) => row.item);
   }, [serverStates, blockedIds]);
 
@@ -200,7 +200,7 @@ export default function HomePage() {
           <h2 id="blatt-h">Aus dem Verzeichnis</h2>
           <p>{ready ? "Acht Einträge mit Foto, wie sie im Index liegen." : "Einträge werden geladen."}</p>
         </div>
-        <ListingGrid profiles={selection} eagerCount={2} />
+        {ready ? <ListingGrid profiles={selection} eagerCount={2} /> : null}
         <p className="band-more">
           <Link href="/search" className="brass-button">
             Ganzes Verzeichnis öffnen
