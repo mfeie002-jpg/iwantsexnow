@@ -1,74 +1,88 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Home, Flame, Search, Building2, Heart } from "lucide-react";
 
-export function MobileBottomNav() {
+export default function MobileBottomNav() {
   const router = useRouter();
-  const [favCount, setFavCount] = useState(0);
-
-  useEffect(() => {
-    const sync = () => {
-      try {
-        const raw = localStorage.getItem("ch_favorite_profiles") || "[]";
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) setFavCount(parsed.length);
-      } catch {
-        setFavCount(0);
-      }
-    };
-
-    sync();
-    window.addEventListener("storage", sync);
-    window.addEventListener("ch-favorites-updated", sync);
-
-    return () => {
-      window.removeEventListener("storage", sync);
-      window.removeEventListener("ch-favorites-updated", sync);
-    };
-  }, [router.asPath]);
-
-  const tabs = [
-    { href: "/", label: "Start", icon: Home },
-    { href: "/search", label: "Suche", icon: Search },
-    { href: "/stories", label: "Heute frei", icon: Flame, dot: true },
-    { href: "/clubs", label: "Clubs", icon: Building2 },
-    { href: "/favorites", label: "Merkliste", icon: Heart, count: favCount },
-  ];
 
   return (
-    <nav aria-label="Mobile Schnellnavigation" className="mobile-thumb-bar pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 lg:hidden">
-      <div className="pointer-events-auto mx-auto grid max-w-md grid-cols-5 gap-1 rounded-[1.6rem] border-2 border-tinte bg-white p-1.5 shadow-[0_4px_0_rgba(30,34,71,0.9),0_14px_28px_-10px_rgba(30,34,71,0.4)]">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const active = tab.href === "/" ? router.pathname === "/" : router.pathname === tab.href || router.pathname.startsWith(tab.href + "/");
+    <>
+      {/* Editorial Magazin-Footer statt technischem Sitemap-Kasten */}
+      <footer className="mt-28 pt-20 pb-28 px-6 sm:px-14 bg-gradient-to-b from-transparent to-[#050304] relative overflow-hidden">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end pb-16">
+            <div className="lg:col-span-7 space-y-4">
+              <p className="text-xs uppercase tracking-[0.35em] text-[#D9B38C]">L&apos;Art de la Nuit Suisse</p>
+              <h2 className="font-editorial italic text-4xl sm:text-6xl text-[#F4EFEA] font-normal leading-[1.08]">
+                Diskretion, Ästhetik & echte Begegnungen in der Schweiz.
+              </h2>
+            </div>
+            <div className="lg:col-span-5 flex flex-wrap gap-4 lg:justify-end">
+              <Link
+                href="/advertise"
+                className="px-7 py-4 rounded-full bg-[#D9B38C] text-[#0B0809] text-xs font-semibold uppercase tracking-[0.2em] hover:bg-white transition"
+              >
+                Als Model beitreten
+              </Link>
+              <Link
+                href="/reviews"
+                className="px-7 py-4 rounded-full bg-[#1C1417] text-[#F4EFEA] text-xs font-semibold uppercase tracking-[0.2em] hover:bg-[#2A1E22] transition"
+              >
+                Portal-Report lesen
+              </Link>
+            </div>
+          </div>
 
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              aria-current={active ? "page" : undefined}
-              className={
-                "relative flex min-h-[54px] flex-col items-center justify-center rounded-[1.1rem] px-1 text-tinte transition-colors " +
-                (active ? "bg-butter" : "hover:bg-tinte/5")
-              }
-            >
-              <span className="relative">
-                <Icon size={21} strokeWidth={active ? 2.4 : 1.9} />
-                {tab.dot && <span className="absolute -right-1 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-kirsche" />}
-                {typeof tab.count === "number" && tab.count > 0 && (
-                  <span className="absolute -right-3.5 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-kirsche px-1 text-[11px] font-extrabold tabular-nums text-white">
-                    {tab.count}
-                  </span>
-                )}
-              </span>
-              <span className={"mt-1 text-[11px] leading-none " + (active ? "font-extrabold" : "font-semibold")}>{tab.label}</span>
-            </Link>
-          );
-        })}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 py-12 text-sm text-[#A69B95]">
+            <div className="space-y-2.5">
+              <div className="text-xs uppercase tracking-[0.25em] text-[#D9B38C] mb-3">Metropolen</div>
+              <div><Link href="/orte/zuerich" className="hover:text-white transition">Zürich & Seefeld</Link></div>
+              <div><Link href="/orte/zug" className="hover:text-white transition">Zug, Baar & Cham</Link></div>
+              <div><Link href="/orte/geneve" className="hover:text-white transition">Genève & Lausanne</Link></div>
+              <div><Link href="/orte/basel" className="hover:text-white transition">Basel & Luzern</Link></div>
+            </div>
+            <div className="space-y-2.5">
+              <div className="text-xs uppercase tracking-[0.25em] text-[#D9B38C] mb-3">Kuratierte Welten</div>
+              <div><Link href="/?cat=escort" className="hover:text-white transition">Private Begleitung (GFE)</Link></div>
+              <div><Link href="/?cat=massage" className="hover:text-white transition">Tantra & Sinnliche Rituale</Link></div>
+              <div><Link href="/clubs" className="hover:text-white transition">305 Schweizer Clubs & Villen</Link></div>
+              <div><Link href="/matches" className="hover:text-white transition">Persönlicher Vibe-Matcher</Link></div>
+            </div>
+            <div className="space-y-2.5">
+              <div className="text-xs uppercase tracking-[0.25em] text-[#D9B38C] mb-3">Redaktion & Markt</div>
+              <div><Link href="/reviews" className="hover:text-white transition">Schweizer Portal-Vergleich</Link></div>
+              <div><Link href="/pricing" className="hover:text-white transition">Honorar- & Tarif-Spiegel</Link></div>
+              <div><Link href="/compare-escorts" className="hover:text-white transition">Dossiers gegenüberstellen</Link></div>
+              <div><Link href="/for-clients" className="hover:text-white transition">Gäste-Kodex & Sicherheit</Link></div>
+            </div>
+            <div className="space-y-2.5">
+              <div className="text-xs uppercase tracking-[0.25em] text-[#D9B38C] mb-3">Atelier & Recht</div>
+              <div><Link href="/login" className="hover:text-white transition">Anbieter-Atelier (Login)</Link></div>
+              <div><Link href="/report" className="hover:text-white transition">Sofort-Opt-Out & Korrektur</Link></div>
+              <div><Link href="/privacy" className="hover:text-white transition">Schweizer Datenschutz (revDSG)</Link></div>
+              <div><Link href="/terms" className="hover:text-white transition">Impressum & Richtlinien</Link></div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Schwebende, weiche Mobile-Kapsel ohne bunte Spielzeug-Icons */}
+      <div className="md:hidden fixed bottom-4 inset-x-5 z-50">
+        <div className="flex items-center justify-around px-4 py-3 rounded-full bg-[#140E10]/90 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.85)]">
+          <Link href="/" className={`text-xs uppercase tracking-[0.15em] ${router.pathname === "/" ? "text-[#D9B38C] font-bold" : "text-[#F4EFEA]/75"}`}>
+            Porträts
+          </Link>
+          <Link href="/clubs" className={`text-xs uppercase tracking-[0.15em] ${router.pathname.startsWith("/clubs") ? "text-[#D9B38C] font-bold" : "text-[#F4EFEA]/75"}`}>
+            Clubs
+          </Link>
+          <Link href="/matches" className={`text-xs uppercase tracking-[0.15em] ${router.pathname.startsWith("/matches") ? "text-[#D9B38C] font-bold" : "text-[#F4EFEA]/75"}`}>
+            Concierge
+          </Link>
+          <Link href="/reviews" className={`text-xs uppercase tracking-[0.15em] ${router.pathname.startsWith("/reviews") ? "text-[#D9B38C] font-bold" : "text-[#F4EFEA]/75"}`}>
+            Magazin
+          </Link>
+        </div>
       </div>
-    </nav>
+    </>
   );
 }
-
-export default MobileBottomNav;

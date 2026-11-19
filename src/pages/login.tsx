@@ -1,115 +1,102 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import Head from "next/head";
 import Link from "next/link";
-import { SEO } from "@/components/SEO";
-import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { PageIntro } from "@/components/PageIntro";
-import { KeyRound, ArrowRight, Sparkles, Lock } from "lucide-react";
+import LuxuryHeader from "../components/LuxuryHeader";
+import MobileBottomNav from "../components/MobileBottomNav";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [mode, setMode] = useState<"provider" | "admin">("provider");
-  const [query, setQuery] = useState("");
-  const [adminPin, setAdminPin] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+export default function AtelierLoginPage() {
+  const [phone, setPhone] = useState("");
+  const [sent, setSent] = useState(false);
 
-  const handleProviderLogin = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await fetch("/api/vault/metrics", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login_or_claim", query: query.trim() }),
-      });
-      const data = await res.json();
-      if (data?.ok && data.profileId && data.ownerToken) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem(
-            "iwsn_creator_session",
-            JSON.stringify({ profileId: data.profileId, token: data.ownerToken, name: data.state?.displayName || query })
-          );
-        }
-        router.push(data.cockpitUrl);
-      } else {
-        setErrorMsg("Profil konnte nicht geladen werden. Bitte prüfe deine +41 Nummer oder Profil-ID.");
-      }
-    } catch {
-      setErrorMsg("Verbindungsfehler zum Server.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAdminLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (adminPin.trim() === "SWISS-BOSS-2026") {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("iwsn_admin_pin", "SWISS-BOSS-2026");
-      }
-      router.push("/admin-dashboard");
-    } else {
-      setErrorMsg("Ungültiger Admin-PIN.");
-    }
+    if (phone.trim()) setSent(true);
   };
 
   return (
-    <div className="min-h-screen bg-papier text-tinte pb-24">
-      <SEO title="Anbieter- & Admin-Login | iWantSexNow.ch" description="Direkter Zugang zu deinem Schweizer Anbieter-Cockpit oder zur Plattform-Administration." />
+    <div className="min-h-screen flex flex-col justify-between bg-[#0B0809] text-[#F4EFEA]">
+      <Head>
+        <title>Atelier Login & Profil-Übernahme — iWantSexNow.ch</title>
+      </Head>
       <LuxuryHeader />
-      <PageIntro tone="himmel" note="Schön, dass du wieder da bist" art="hanger" title={<>In dein Anbieter-Cockpit einloggen</>}
-        lead={<>Gib deine Schweizer Mobilnummer (+41 79 / 078 / 076...), deinen Anzeigenamen oder deine Profil-ID (z.B. ch-a720e283e85f) ein.</>} />
-      <main className="max-w-md mx-auto px-6 py-12 space-y-6">
-        <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-white border border-tinte/20">
-          <button type="button" onClick={() => { setMode("provider"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "provider" ? "bg-kirsche text-white" : "text-gray-400 hover:text-white"}`}>
-            Anbieterinnen-Cockpit
-          </button>
-          <button type="button" onClick={() => { setMode("admin"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "admin" ? "bg-kirsche text-white" : "text-gray-400 hover:text-white"}`}>
-            Betreiber / Admin
-          </button>
+
+      <main className="max-w-[1360px] w-full mx-auto px-4 sm:px-10 pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Links: Grosses Editorial-Kunstporträt im Bogen-Schnitt */}
+          <div className="lg:col-span-6 relative h-[520px] overflow-hidden shape-arch">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80"
+              alt="Schweizer Model Atelier"
+              className="w-full h-full object-cover brightness-75"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0809] via-transparent to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8">
+              <div className="text-xs uppercase tracking-[0.3em] text-[#D9B38C]">Édition Privée · Für Anbieterinnen</div>
+              <div className="font-editorial italic text-3xl text-white mt-1">
+                Dein Dossier, deine Fotos, deine volle Freiheit.
+              </div>
+            </div>
+          </div>
+
+          {/* Rechts: Rahmenloses Gästebuch-Formular ohne eine einzige Computer-Box */}
+          <div className="lg:col-span-6 space-y-8 lg:pl-8">
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.35em] text-[#D9B38C]">Passwortloser Zugang</p>
+              <h1 className="font-editorial italic text-5xl sm:text-6xl font-normal text-[#F4EFEA]">
+                Willkommen im Atelier.
+              </h1>
+              <p className="text-base text-[#A69B95] max-w-lg leading-relaxed">
+                Gib deine Schweizer Mobilnummer (+41) ein, um dein bestehendes Dossier zu übernehmen oder deinen Verfügbarkeits-Status für heute Abend zu aktivieren.
+              </p>
+            </div>
+
+            {!sent ? (
+              <form onSubmit={handleSubmit} className="space-y-8 max-w-md">
+                <div>
+                  <label className="block text-[11px] uppercase tracking-[0.25em] text-[#D9B38C] mb-2">
+                    Deine Schweizer WhatsApp- oder Mobilnummer
+                  </label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+41 79 ..."
+                    className="w-full input-human text-2xl font-editorial italic"
+                  />
+                </div>
+                <div className="flex flex-wrap items-center gap-6">
+                  <button
+                    type="submit"
+                    className="px-9 py-4 rounded-full bg-[#F4EFEA] text-[#0B0809] text-xs font-semibold uppercase tracking-[0.22em] hover:bg-[#D9B38C] transition cursor-pointer border-0"
+                  >
+                    Zugangslink anfordern
+                  </button>
+                  <Link href="/advertise" className="text-xs uppercase tracking-[0.2em] text-[#A69B95] hover:text-white">
+                    Neues Dossier anlegen →
+                  </Link>
+                </div>
+              </form>
+            ) : (
+              <div className="space-y-4 max-w-md">
+                <div className="font-editorial italic text-3xl text-[#D9B38C]">
+                  Dein persönlicher Schlüssel ist unterwegs.
+                </div>
+                <p className="text-sm text-[#A69B95]">
+                  Wir haben die Anfrage für <span className="text-white">{phone}</span> registriert. Du kannst direkt ins Creator-Atelier wechseln:
+                </p>
+                <Link
+                  href="/creator-dashboard"
+                  className="inline-block px-8 py-4 rounded-full bg-[#D9B38C] text-[#0B0809] text-xs font-semibold uppercase tracking-[0.2em]"
+                >
+                  Direkt zum Atelier-Cockpit →
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
-
-        {errorMsg && (
-          <div className="p-3.5 rounded-xl bg-glow-100/60 border border-glow-500/40 text-glow-800 text-[13px] font-semibold">{errorMsg}</div>
-        )}
-
-        {mode === "provider" ? (
-          <form onSubmit={handleProviderLogin} className="p-6 sm:p-8 rounded-2xl bg-white border border-tinte/20 space-y-5">
-            
-            <div>
-              <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Deine +41 Telefonnummer, Name oder Profil-ID</label>
-              <input type="text" required value={query} onChange={(e) => setQuery(e.target.value)} placeholder="z.B. +41 78 807 34 79 oder ch-a720e283e85f" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
-            </div>
-            <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer shadow-lg">
-              <span>{loading ? "Öffne Cockpit..." : "Mein Anbieter-Cockpit öffnen"}</span>
-              <ArrowRight size={15} />
-            </button>
-            <div className="pt-4 border-t border-tinte/20 text-center space-y-2">
-              <div className="text-[13px] text-gray-600">Noch gar nicht im Schweizer Verzeichnis gelistet?</div>
-              <Link href="/create-post" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-kirsche hover:underline">
-                <Sparkles size={13} /> Jetzt kostenlos neues Direktprofil erstellen →
-              </Link>
-            </div>
-          </form>
-        ) : (
-          <form onSubmit={handleAdminLogin} className="p-6 sm:p-8 rounded-2xl bg-white border border-kirsche/40 space-y-5">
-            <div>
-              <span className="text-[13px] text-mint-700 font-bold flex items-center gap-1.5"><Lock size={12} /> Geschützte Plattform-Steuerung</span>
-              <h1 className="text-2xl font-serif font-bold text-tinte mt-1">Master-Steuerpult (Admin)</h1>
-            </div>
-            <div>
-              <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Admin-PIN</label>
-              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} placeholder="SWISS-BOSS-2026" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
-            </div>
-            <button type="submit" className="w-full py-3.5 rounded-xl bg-mint-500 hover:bg-mint-400 text-tinte font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer">
-              <KeyRound size={15} /> Master-Steuerpult entsperren →
-            </button>
-          </form>
-        )}
       </main>
+
+      <MobileBottomNav />
     </div>
   );
 }
