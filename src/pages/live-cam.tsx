@@ -37,7 +37,7 @@ export default function LiveCamPage() {
       const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
       const cam15Chf = Math.max(40, Math.min(180, Math.round((r60 * 0.22) / 5) * 5));
       const vaultChf = Number(st.vaultPriceChf || o.vaultPriceChf) || 29;
-      const isOnline = Boolean(st.availabilityConfirmed);
+      const isOnline = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
 
       if (cantonFilter !== "ALL" && String(o.canton || "").toUpperCase() !== cantonFilter) continue;
       if (onlyOnline && !isOnline) continue;
@@ -55,7 +55,7 @@ export default function LiveCamPage() {
         cam15Chf,
         vaultChf,
         isOnline,
-        identityVerified: Boolean(st.identityVerified),
+        identityVerified: Boolean(st.identityVerified || o.identityVerified),
       });
     }
 

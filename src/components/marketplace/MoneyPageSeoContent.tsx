@@ -24,13 +24,13 @@ export function MoneyPageSeoContent({
   return (
     <section
       aria-label={`Marktbericht, Preis-Spiegel und Expat-Guide für ${cityOrRegion}`}
-      className="bg-[#08111C] border-t border-[#ee3c7c]/30 py-12 text-white"
+      className="bg-[#08111C] border-t border-[#ff6b5e]/30 py-12 text-white"
     >
       <div className="container mx-auto px-4 max-w-7xl space-y-8">
         {/* Language Switcher Header for Swiss Locals & English Tourists/Expats */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
           <div>
-            <Badge className="bg-[#d6165f]/20 text-[#ee3c7c] border border-[#ee3c7c]/40 mb-1.5">
+            <Badge className="bg-[#ff6b5e]/20 text-[#ff6b5e] border border-[#ff6b5e]/40 mb-1.5">
               <Sparkles size={12} className="mr-1.5 inline" /> Offizielles Schweizer Markt-Dossier & Expat-Guide 2026
             </Badge>
             <h2 className="text-2xl md:text-3xl font-serif font-black">
@@ -40,12 +40,12 @@ export function MoneyPageSeoContent({
             </h2>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-black/60 p-1.5 rounded-xl border border-[#ee3c7c]/50">
+          <div className="flex items-center gap-1.5 bg-black/60 p-1.5 rounded-xl border border-[#ff6b5e]/50">
             <button
               type="button"
               onClick={() => setLang("de")}
               className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
-                lang === "de" ? "bg-[#d6165f] text-[#fbf1ec]" : "text-gray-300 hover:text-white"
+                lang === "de" ? "bg-[#ff6b5e] text-[#0d1f27]" : "text-gray-300 hover:text-white"
               }`}
             >
               🇨🇭 Deutsch (CH)
@@ -54,7 +54,7 @@ export function MoneyPageSeoContent({
               type="button"
               onClick={() => setLang("en")}
               className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
-                lang === "en" ? "bg-[#d6165f] text-[#fbf1ec]" : "text-gray-300 hover:text-white"
+                lang === "en" ? "bg-[#ff6b5e] text-[#0d1f27]" : "text-gray-300 hover:text-white"
               }`}
             >
               🇬🇧 English (Tourists & Expats)
@@ -86,8 +86,8 @@ export function MoneyPageSeoContent({
 
             {/* Right 5 Cols: Structured Price & Keyword Silo Table */}
             <div className="lg:col-span-5 space-y-4">
-              <Card className="bg-[#150810] border border-[#ee3c7c]/45 p-5 rounded-2xl text-white space-y-3">
-                <h3 className="text-base font-serif font-black text-[#ee3c7c] flex items-center gap-2">
+              <Card className="bg-[#07141a] border border-[#ff6b5e]/45 p-5 rounded-2xl text-white space-y-3">
+                <h3 className="text-base font-serif font-black text-[#ff6b5e] flex items-center gap-2">
                   <Coins size={16} /> Offizielle Richtpreise in {cityOrRegion} (2026)
                 </h3>
                 <div className="divide-y divide-white/10 text-xs">
@@ -101,7 +101,7 @@ export function MoneyPageSeoContent({
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">2 Stunden VIP Dinner- oder Hotel-Date:</span>
-                    <strong className="text-[#ee3c7c]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
+                    <strong className="text-[#ff6b5e]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">Overnight (10–12 Std. inkl. Frühstück):</span>
@@ -115,7 +115,7 @@ export function MoneyPageSeoContent({
               </Card>
 
               <div className="bg-black/40 border border-white/10 rounded-2xl p-4 text-xs space-y-2">
-                <div className="font-bold text-[#ee3c7c]">Weiterführende Schweizer Insider-Guides:</div>
+                <div className="font-bold text-[#ff6b5e]">Weiterführende Schweizer Insider-Guides:</div>
                 <div className="flex flex-wrap gap-1.5">
                   <Link href="/guides/english-tourist-expat-escort-guide-switzerland" className="underline text-gray-300 hover:text-white">
                     🇬🇧 English Tourist & Expat Guide
@@ -157,8 +157,8 @@ export function MoneyPageSeoContent({
             </div>
 
             <div className="lg:col-span-5 space-y-4">
-              <Card className="bg-[#150810] border border-[#ee3c7c]/45 p-5 rounded-2xl text-white space-y-3">
-                <h3 className="text-base font-serif font-black text-[#ee3c7c] flex items-center gap-2">
+              <Card className="bg-[#07141a] border border-[#ff6b5e]/45 p-5 rounded-2xl text-white space-y-3">
+                <h3 className="text-base font-serif font-black text-[#ff6b5e] flex items-center gap-2">
                   <Globe size={16} /> Swiss Companion Rates & Etiquette (English)
                 </h3>
                 <div className="divide-y divide-white/10 text-xs">
@@ -172,7 +172,7 @@ export function MoneyPageSeoContent({
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">2 Hours Dinner / Hotel Outcall:</span>
-                    <strong className="text-[#ee3c7c]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
+                    <strong className="text-[#ff6b5e]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">Accepted Currencies:</span>
@@ -181,7 +181,7 @@ export function MoneyPageSeoContent({
                 </div>
                 <Link
                   href="/guides/english-tourist-expat-escort-guide-switzerland"
-                  className="block text-center w-full py-2.5 rounded-xl bg-[#d6165f] text-[#fbf1ec] font-black text-xs"
+                  className="block text-center w-full py-2.5 rounded-xl bg-[#ff6b5e] text-[#0d1f27] font-black text-xs"
                 >
                   Read Complete English Visitor & Hotel Outcall Guide →
                 </Link>

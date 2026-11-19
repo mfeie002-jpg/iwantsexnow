@@ -66,7 +66,7 @@ export default function ProviderOverviewPage() {
               </div>
               <div className="relative h-28 rounded-xl bg-gradient-to-br from-fels to-papier flex items-center justify-center">
                 <span className="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#1B5E32] text-mint-700 border border-mint-400/40 text-[13px] font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#13362b]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#4fd1b0]" />
                   Jetzt verfügbar
                 </span>
                 <span className="text-[13px] text-kirsche font-semibold">Eigene Wunschfotos</span>
@@ -82,7 +82,7 @@ export default function ProviderOverviewPage() {
                 </div>
               </div>
               <div className="pt-2 border-t border-tinte/20 space-y-1.5 text-[13px]">
-                <div className="flex items-center gap-1.5 text-[#5fd3a5] font-medium">
+                <div className="flex items-center gap-1.5 text-[#4fd1b0] font-medium">
                   <Clock size={12} />
                   <span>Bestätigt vor 6 Min.</span>
                 </div>
@@ -111,7 +111,7 @@ export default function ProviderOverviewPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div className="p-6 rounded-2xl bg-fels border border-tinte/20 space-y-2.5">
-              <div className="w-10 h-10 rounded-xl bg-[#1B5E32]/40 border border-mint-500/30 flex items-center justify-center text-[#5fd3a5]">
+              <div className="w-10 h-10 rounded-xl bg-[#1B5E32]/40 border border-mint-500/30 flex items-center justify-center text-[#4fd1b0]">
                 <Clock size={18} />
               </div>
               <h3 className="text-base font-bold text-tinte">

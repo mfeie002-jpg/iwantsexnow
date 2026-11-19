@@ -1,4 +1,5 @@
 import React from "react";
+import { CantonPostcard, CategoryPolaroid, DoorHanger, Doodle, StepBookArt, StepCompareArt, StepSearchArt, VerifiedStamp, Wave } from "@/components/visuals";
 import type { CantonKey, CategoryKey } from "@/components/visuals";
 
 export type IntroTone = "blush" | "butter" | "minze" | "himmel" | "flieder";
@@ -12,18 +13,53 @@ export type IntroArt =
   | `canton:${CantonKey}`
   | `category:${CategoryKey}`;
 
-/* Arch placeholders: wine-to-ruby or gold-to-wine with a soft gold orb (Velvet Night system). */
-const ARCH: Record<IntroTone, string> = {
-  blush: "radial-gradient(circle at 66% 30%, rgba(232,201,138,0.55) 0%, rgba(232,201,138,0) 26%), radial-gradient(ellipse 95% 38% at 50% 112%, #150810 0%, #150810 62%, rgba(21,8,16,0) 63%), linear-gradient(165deg, #3a1325 0%, #d6165f 135%)",
-  butter: "radial-gradient(circle at 34% 32%, rgba(232,201,138,0.6) 0%, rgba(232,201,138,0) 26%), radial-gradient(ellipse 95% 38% at 50% 112%, #150810 0%, #150810 62%, rgba(21,8,16,0) 63%), linear-gradient(200deg, #e8c98a -40%, #3a1325 70%)",
-  minze: "radial-gradient(circle at 60% 28%, rgba(232,201,138,0.5) 0%, rgba(232,201,138,0) 24%), radial-gradient(ellipse 95% 38% at 50% 112%, #150810 0%, #150810 62%, rgba(21,8,16,0) 63%), linear-gradient(170deg, #13362b 0%, #3a1325 120%)",
-  himmel: "radial-gradient(circle at 56% 26%, rgba(232,201,138,0.5) 0%, rgba(232,201,138,0) 24%), radial-gradient(ellipse 95% 38% at 50% 112%, #150810 0%, #150810 62%, rgba(21,8,16,0) 63%), linear-gradient(150deg, #22101a 0%, #ee3c7c 140%)",
-  flieder: "radial-gradient(circle at 40% 30%, rgba(232,201,138,0.55) 0%, rgba(232,201,138,0) 24%), radial-gradient(ellipse 95% 38% at 50% 112%, #150810 0%, #150810 62%, rgba(21,8,16,0) 63%), linear-gradient(185deg, #2b1420 0%, #d6165f 140%)",
+const TONE_WAVE: Record<IntroTone, string> = {
+  blush: "#fbfaf8",
+  butter: "#fbfaf8",
+  minze: "#fbfaf8",
+  himmel: "#fbfaf8",
+  flieder: "#fbfaf8",
 };
 
+function PaperPhoto({ children, tilt = 3, tape = true, className = "" }: { children: React.ReactNode; tilt?: number; tape?: boolean; className?: string }) {
+  return (
+    <div className={`polaroid ${className}`} style={{ ["--tilt" as string]: `${tilt}deg`, paddingBottom: "0.65rem" }}>
+      {tape && <span className="tape" style={{ top: "-0.75rem", left: "50%", marginLeft: "-2.6rem", ["--r" as string]: "-4deg" }} />}
+      <div className="overflow-hidden rounded-[2px] bg-white">{children}</div>
+    </div>
+  );
+}
+
+function Art({ art }: { art: IntroArt }) {
+  if (art === "none") return null;
+  if (art === "hanger") return <DoorHanger className="h-[17rem] w-auto rotate-[4deg] drop-shadow-[0_10px_14px_rgba(30,34,71,0.18)]" />;
+  if (art === "verified") return <VerifiedStamp className="h-44 w-44 rotate-[6deg]" />;
+  if (art === "search")
+    return (
+      <PaperPhoto tilt={3}>
+        <StepSearchArt className="block h-auto w-64" />
+      </PaperPhoto>
+    );
+  if (art === "compare")
+    return (
+      <PaperPhoto tilt={-3}>
+        <StepCompareArt className="block h-auto w-64" />
+      </PaperPhoto>
+    );
+  if (art === "book")
+    return (
+      <PaperPhoto tilt={2}>
+        <StepBookArt className="block h-auto w-64" />
+      </PaperPhoto>
+    );
+  if (art.startsWith("canton:")) return <CantonPostcard canton={art.slice(7) as CantonKey} tilt={3} tape className="w-64" />;
+  if (art.startsWith("category:")) return <CategoryPolaroid kind={art.slice(9) as CategoryKey} tilt={4} className="w-56" />;
+  return null;
+}
+
 /**
- * Page header for inner pages: one calm wine band, serif headline, an italic
- * gold aside and one arch picture. Same props as before, so every page keeps working.
+ * Page header: coloured paper field, big headline, a hand-written note, one picture.
+ * Replaces the old "title panel" on inner pages.
  */
 export function PageIntro({
   tone = "butter",
@@ -42,20 +78,22 @@ export function PageIntro({
 }) {
   const hasArt = art !== "none";
   return (
-    <header className="relative isolate overflow-hidden border-b border-line bg-[radial-gradient(ellipse_90%_120%_at_15%_-20%,#3a1325_0%,#150810_70%)]">
-      <div className={`mx-auto grid max-w-[1200px] items-center gap-10 px-4 pb-14 pt-12 sm:px-6 sm:pt-16 ${hasArt ? "md:grid-cols-[1fr_auto] md:gap-16" : ""}`}>
+    <header className={`field-${tone} relative isolate overflow-hidden`}>
+      <div className={`mx-auto grid max-w-6xl items-center gap-8 px-4 pb-14 pt-9 sm:px-6 sm:pt-12 ${hasArt ? "md:grid-cols-[1fr_auto] md:gap-12" : ""}`}>
         <div className="relative z-10 max-w-3xl">
-          {note && <p className="mb-3 font-display text-[24px] italic leading-tight text-gold">{note}</p>}
-          <h1 className="font-display text-[clamp(2.4rem,5vw,3.6rem)] leading-[1.04] text-ink">{title}</h1>
-          {lead && <p className="mt-5 max-w-2xl text-[18px] leading-8 text-ink-soft sm:text-[20px]">{lead}</p>}
-          {children && <div className="mt-7 flex flex-wrap items-center gap-3">{children}</div>}
+          {note && <p className="hand mb-1 text-[1.55rem] leading-none text-kirsche-tief sm:text-[1.8rem]">{note}</p>}
+          <h1 className="font-display text-[clamp(2rem,4.6vw,3.4rem)] font-extrabold leading-[1.03] tracking-tight text-tinte">{title}</h1>
+          {lead && <p className="mt-4 max-w-2xl text-base leading-7 text-tinte/80 sm:text-lg sm:leading-8">{lead}</p>}
+          {children && <div className="mt-6 flex flex-wrap items-center gap-3">{children}</div>}
         </div>
         {hasArt && (
-          <div className="relative hidden justify-self-center md:block" aria-hidden="true">
-            <div className="aspect-[4/5] w-[200px] rounded-[999px_999px_22px_22px] border border-gold shadow-[0_16px_40px_rgba(0,0,0,0.28)]" style={{ background: ARCH[tone] }} />
+          <div className="relative hidden justify-self-center pr-2 md:block" aria-hidden="true">
+            <Art art={art} />
           </div>
         )}
+        <Doodle kind="spark" color="#1e2247" className="pointer-events-none absolute right-[6%] top-5 hidden h-9 w-9 rotate-12 opacity-70 sm:block" />
       </div>
+      <Wave color={TONE_WAVE[tone]} className="absolute inset-x-0 bottom-[-1px]" />
     </header>
   );
 }

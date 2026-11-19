@@ -436,7 +436,7 @@ export default function CreatorDashboardPage() {
               type="button"
               onClick={handleConfirm4hAvailability}
               disabled={saving}
-              className="w-full py-3.5 px-4 rounded-xl bg-[#13362b] hover:bg-[#16A34A] text-tinte font-extrabold text-[13px] transition shadow-lg cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-xl bg-[#4fd1b0] hover:bg-[#16A34A] text-tinte font-extrabold text-[13px] transition shadow-lg cursor-pointer"
             >
               ● {isCurrentlyAvailable ? "4-STUNDEN-FENSTER Jetzt Erneuern" : "JETZT FÜR 4 Stunden als VerfÜGbar BestÄTIGEN"}
             </button>

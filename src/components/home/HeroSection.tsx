@@ -82,17 +82,17 @@ export function HeroSection({
   };
 
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-16 overflow-hidden border-b border-[#ee3c7c]/25 bg-gradient-to-b from-[#150810] via-[#150810] to-[#150810]">
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-16 overflow-hidden border-b border-[#ff6b5e]/25 bg-gradient-to-b from-[#07141a] via-[#07141a] to-[#07141a]">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto text-center space-y-5">
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <Badge className="bg-[#d6165f]/20 text-[#ee3c7c] border border-[#ee3c7c]/50 px-3.5 py-1 text-xs font-bold">
+            <Badge className="bg-[#ff6b5e]/20 text-[#ff6b5e] border border-[#ff6b5e]/50 px-3.5 py-1 text-xs font-bold">
               <ShieldCheck size={14} className="mr-1.5 inline text-mint-400" />
               Die Schweizer Escort-Suchmaschine · {allProfiles.length} deduplizierte Profile
             </Badge>
             <Link
               href="/how-it-works"
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-[#ee3c7c]/40 text-[#ee3c7c] px-3.5 py-1 text-xs font-bold transition-all"
+              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-[#ff6b5e]/40 text-[#ff6b5e] px-3.5 py-1 text-xs font-bold transition-all"
             >
               <HelpCircle size={13} />
               Neu hier? So funktioniert's in 60 Sek. →
@@ -108,7 +108,7 @@ export function HeroSection({
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-black text-white tracking-tight leading-[1.1]">
             Such in Echtzeit.{" "}
-            <span className="bg-gradient-to-r from-[#d6165f] via-[#d6165f] to-[#d6165f] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#ff6b5e] via-[#ff6b5e] to-[#ff6b5e] bg-clip-text text-transparent">
               Vergleiche & buche zum Fixpreis.
             </span>
           </h1>
@@ -118,10 +118,10 @@ export function HeroSection({
           </p>
 
           {/* Instant Instant Search Bar + Dropdown */}
-          <div className="bg-[#150810]/95 border-2 border-[#ee3c7c]/65 rounded-2xl p-4 sm:p-5 shadow-[0_18px_50px_rgba(0,0,0,0.75)] text-left space-y-4 mt-6 relative">
+          <div className="bg-[#07141a]/95 border-2 border-[#ff6b5e]/65 rounded-2xl p-4 sm:p-5 shadow-[0_18px_50px_rgba(0,0,0,0.75)] text-left space-y-4 mt-6 relative">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
               <div className="md:col-span-5 relative">
-                <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#ee3c7c]" />
+                <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#ff6b5e]" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -129,13 +129,13 @@ export function HeroSection({
                   onBlur={() => setTimeout(() => setFocused(false), 220)}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Suche in Echtzeit: 'Zug GFE', 'Sophia', '+41 79...' oder 'Cham Outcall'"
-                  className="w-full rounded-xl bg-black/70 border border-white/25 pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-400 focus:border-[#ee3c7c] focus:outline-none"
+                  className="w-full rounded-xl bg-black/70 border border-white/25 pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-400 focus:border-[#ff6b5e] focus:outline-none"
                 />
 
                 {/* Instant Autocomplete Results Overlay */}
                 {focused && searchQuery.trim().length > 0 && (
-                  <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 rounded-2xl bg-[#150810] border-2 border-[#ee3c7c] shadow-2xl overflow-hidden divide-y divide-white/10">
-                    <div className="px-3.5 py-2 bg-black/60 text-[11px] font-bold text-[#ee3c7c] flex items-center justify-between">
+                  <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 rounded-2xl bg-[#07141a] border-2 border-[#ff6b5e] shadow-2xl overflow-hidden divide-y divide-white/10">
+                    <div className="px-3.5 py-2 bg-black/60 text-[11px] font-bold text-[#ff6b5e] flex items-center justify-between">
                       <span>⚡ Sofort-Treffer im Schweizer Index ({instantSuggestions.length})</span>
                       <Link href={`/search?q=${encodeURIComponent(searchQuery)}`} className="underline">
                         Alle Resultate öffnen →
@@ -148,10 +148,10 @@ export function HeroSection({
                         className="flex items-center justify-between gap-3 p-3 hover:bg-white/10 transition-colors"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <img src={p.thumbnail} alt={p.displayName} className="w-11 h-11 rounded-lg object-cover shrink-0 border border-[#ee3c7c]/40" />
+                          <img src={p.thumbnail} alt={p.displayName} className="w-11 h-11 rounded-lg object-cover shrink-0 border border-[#ff6b5e]/40" />
                           <div className="min-w-0">
                             <div className="text-xs font-black text-white truncate">
-                              {p.displayName}, {p.age} · <span className="text-[#ee3c7c]">{p.primaryCity} ({p.canton})</span>
+                              {p.displayName}, {p.age} · <span className="text-[#ff6b5e]">{p.primaryCity} ({p.canton})</span>
                             </div>
                             <div className="text-[11px] text-gray-400 truncate">
                               ✓ {p.includedServices.slice(0, 3).join(" · ")} | {p.sourcesCount} Quelle(n)
@@ -166,7 +166,7 @@ export function HeroSection({
                     ))}
                     {instantSuggestions.length === 0 && (
                       <div className="p-3.5 text-xs text-gray-400">
-                        Drücke auf „Treffer zeigen“ oder öffne die <Link href="/search" className="text-[#ee3c7c] underline">Schweizer Voll-Suche</Link>.
+                        Drücke auf „Treffer zeigen“ oder öffne die <Link href="/search" className="text-[#ff6b5e] underline">Schweizer Voll-Suche</Link>.
                       </div>
                     )}
                   </div>
@@ -177,7 +177,7 @@ export function HeroSection({
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="w-full rounded-xl bg-black/60 border border-white/20 px-3.5 py-3 text-sm text-white focus:border-[#ee3c7c] focus:outline-none"
+                  className="w-full rounded-xl bg-black/60 border border-white/20 px-3.5 py-3 text-sm text-white focus:border-[#ff6b5e] focus:outline-none"
                 >
                   <option value="all">📍 Ganze Schweiz (Alle Kantone)</option>
                   <option value="Zürich">Zürich (City, Seefeld, Oerlikon)</option>
@@ -193,7 +193,7 @@ export function HeroSection({
                 <select
                   value={selectedService}
                   onChange={(e) => setSelectedService(e.target.value)}
-                  className="w-full rounded-xl bg-black/60 border border-white/20 px-3 py-3 text-sm text-white focus:border-[#ee3c7c] focus:outline-none"
+                  className="w-full rounded-xl bg-black/60 border border-white/20 px-3 py-3 text-sm text-white focus:border-[#ff6b5e] focus:outline-none"
                 >
                   <option value="all">✨ Alle Services</option>
                   <option value="GFE">GFE (Girlfriend)</option>
@@ -206,7 +206,7 @@ export function HeroSection({
               <div className="md:col-span-2">
                 <Button
                   onClick={() => document.getElementById("decision-engine")?.scrollIntoView({ behavior: "smooth" })}
-                  className="w-full h-full min-h-[46px] bg-gradient-to-r from-[#d6165f] via-[#d6165f] to-[#d6165f] text-[#fbf1ec] font-black text-xs sm:text-sm rounded-xl shadow-lg"
+                  className="w-full h-full min-h-[46px] bg-gradient-to-r from-[#ff6b5e] via-[#ff6b5e] to-[#ff6b5e] text-[#0d1f27] font-black text-xs sm:text-sm rounded-xl shadow-lg"
                 >
                   {filteredCount} Resultate
                 </Button>
@@ -220,21 +220,21 @@ export function HeroSection({
                 <button
                   type="button"
                   onClick={() => handleSmartExample("Zug", "Zug", "all")}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#d6165f]/20 border border-white/10 text-gray-200 font-semibold"
+                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#ff6b5e]/20 border border-white/10 text-gray-200 font-semibold"
                 >
                   🔍 Escort Zug & Cham
                 </button>
                 <button
                   type="button"
                   onClick={() => handleSmartExample("", "Zürich", "GFE")}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#d6165f]/20 border border-white/10 text-gray-200 font-semibold"
+                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#ff6b5e]/20 border border-white/10 text-gray-200 font-semibold"
                 >
                   🔍 Zürich GFE inklusive
                 </button>
                 <button
                   type="button"
                   onClick={() => handleSmartExample("", "all", "Outcall")}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#d6165f]/20 border border-white/10 text-gray-200 font-semibold"
+                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#ff6b5e]/20 border border-white/10 text-gray-200 font-semibold"
                 >
                   🔍 Diskreter Hotel-Outcall
                 </button>
@@ -246,7 +246,7 @@ export function HeroSection({
                 </Link>
               </div>
 
-              <Link href="/how-it-works" className="text-[#ee3c7c] font-bold hover:underline">
+              <Link href="/how-it-works" className="text-[#ff6b5e] font-bold hover:underline">
                 Wie funktioniert die Endpreis-Garantie? →
               </Link>
             </div>

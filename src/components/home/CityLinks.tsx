@@ -55,7 +55,7 @@ export function CityLinks() {
   ];
 
   return (
-    <section id="cities" className="py-20 bg-[#22101a] border-y border-white/10">
+    <section id="cities" className="py-20 bg-[#0d1f27] border-y border-white/10">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -73,9 +73,9 @@ export function CityLinks() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {regionalStats.map((region, idx) => (
               <Link key={idx} href={region.href}>
-                <Card className="p-6 bg-white/5 border-white/15 hover:border-[#ee3c7c] transition-all duration-300 hover:-translate-y-1 cursor-pointer group text-white">
+                <Card className="p-6 bg-white/5 border-white/15 hover:border-[#ff6b5e] transition-all duration-300 hover:-translate-y-1 cursor-pointer group text-white">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl font-black group-hover:text-[#ee3c7c] transition-colors">
+                    <h3 className="text-xl font-black group-hover:text-[#ff6b5e] transition-colors">
                       {region.name}
                     </h3>
                     <ShieldCheck size={18} className="text-mint-400" />
@@ -83,7 +83,7 @@ export function CityLinks() {
                   <div className="flex items-baseline gap-3 my-3">
                     <div>
                       <div className="text-[11px] text-gray-400">Direkt-Endpreis Ø</div>
-                      <div className="text-2xl font-black text-[#ee3c7c]">{region.avgDirectChf}</div>
+                      <div className="text-2xl font-black text-[#ff6b5e]">{region.avgDirectChf}</div>
                     </div>
                     <div className="border-l border-white/10 pl-3">
                       <div className="text-[11px] text-gray-400">Drittportale Ø</div>

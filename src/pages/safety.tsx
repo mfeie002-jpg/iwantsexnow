@@ -28,7 +28,7 @@ export default function SafetyAndBeginnerGuidePage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[13px] sm:text-sm">
             <div className="p-4 rounded-xl bg-papier border border-stone-200 space-y-1">
-              <div className="font-bold text-[#5fd3a5]">● Jetzt verfügbar (mit Zeitangabe)</div>
+              <div className="font-bold text-[#2a9d86]">● Jetzt verfügbar (mit Zeitangabe)</div>
               <p className="text-stone-600 leading-relaxed">
                 Vom Anbieter aktiv in seinem Konto bestätigt (z.B. „Bestätigt vor 6 Min.“). Der Status läuft nach 4 Stunden automatisch ab. Er ist ein Verfügbarkeitssignal, aber noch keine verbindliche Terminzusage.
               </p>

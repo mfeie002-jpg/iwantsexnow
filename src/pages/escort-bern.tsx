@@ -38,7 +38,7 @@ export default function CityEscortHubPage() {
 
       const r60 = Math.max(100, Math.min(1200, Number(st.rate60Chf || o.advertisedBaseChf) || 350));
       const r30 = Math.max(80, Math.min(800, Number(st.rate30Chf || o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
-      const isAvail = Boolean(st.availabilityConfirmed);
+      const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
 
       if (onlyAvailable4h && !isAvail) continue;
       if (r60 > maxRate60) continue;

@@ -36,8 +36,8 @@ export default function RankingsPage() {
 
       const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
       const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
-      const isAvail = Boolean(st.availabilityConfirmed);
-      const isVerif = Boolean(st.identityVerified);
+      const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
+      const isVerif = Boolean(st.identityVerified || o.identityVerified);
       const isFeatured = Boolean(st.featured);
       const unlocks = Number(st.vaultUnlockCount || 0);
 
@@ -110,7 +110,7 @@ export default function RankingsPage() {
               <div className="flex items-center gap-4">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-sm ${
-                    idx < 3 ? "bg-[#d6165f] text-[#fbf1ec]" : "bg-[#150810] text-gray-400 border border-white/10"
+                    idx < 3 ? "bg-[#d92b52] text-[#fbfaf8]" : "bg-[#fbfaf8] text-gray-400 border border-white/10"
                   }`}
                 >
                   #{idx + 1}

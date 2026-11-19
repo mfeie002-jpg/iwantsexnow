@@ -143,7 +143,7 @@ export function VisualDiscoveryHub({
   ];
 
   return (
-    <section className="relative border-b border-white/10 bg-[#150810]">
+    <section className="relative border-b border-white/10 bg-[#07141a]">
       {/* Subtle architectural gold light vignette */}
       <div
         className="pointer-events-none absolute inset-0 opacity-25"
@@ -157,7 +157,7 @@ export function VisualDiscoveryHub({
         {/* Compact, authoritative Swiss Escort Directory Header + Integrated Search */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-6">
           <div>
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#ee3c7c] font-semibold mb-1.5">
+            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#ff6b5e] font-semibold mb-1.5">
               <span className="w-2 h-2 rounded-full bg-mint-400" />
               <span>THE SWISS ESCORT & PRIVATE DIRECTORY</span>
             </div>
@@ -168,8 +168,8 @@ export function VisualDiscoveryHub({
 
           {/* Sleek Luxury Search Box */}
           <div className="relative w-full lg:w-[460px] z-30">
-            <div className="flex items-center bg-[#22101a] border border-white/15 focus-within:border-[#ee3c7c] rounded-xl overflow-hidden shadow-xl transition">
-              <Search size={16} className="ml-3.5 text-[#ee3c7c] shrink-0" />
+            <div className="flex items-center bg-[#0d1f27] border border-white/15 focus-within:border-[#ff6b5e] rounded-xl overflow-hidden shadow-xl transition">
+              <Search size={16} className="ml-3.5 text-[#ff6b5e] shrink-0" />
               <input
                 type="text"
                 value={searchQuery}
@@ -189,7 +189,7 @@ export function VisualDiscoveryHub({
               )}
               <Link
                 href={`/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`}
-                className="m-1 px-4 py-2 rounded-lg bg-[#d6165f] hover:bg-[#d6165f] text-[#fbf1ec] font-bold text-xs shrink-0 transition"
+                className="m-1 px-4 py-2 rounded-lg bg-[#ff6b5e] hover:bg-[#ff6b5e] text-[#07141a] font-bold text-xs shrink-0 transition"
               >
                 Suchen
               </Link>
@@ -197,8 +197,8 @@ export function VisualDiscoveryHub({
 
             {/* Instant Zero-Typing Suggestions */}
             {searchFocused && (
-              <div className="absolute left-0 right-0 mt-1.5 p-3.5 rounded-xl bg-[#22101a] border border-[#ee3c7c]/50 shadow-2xl z-40">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-[#ee3c7c] mb-2">
+              <div className="absolute left-0 right-0 mt-1.5 p-3.5 rounded-xl bg-[#0d1f27] border border-[#ff6b5e]/50 shadow-2xl z-40">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-[#ff6b5e] mb-2">
                   Häufig gesucht (Direktwahl ohne Tippen)
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -211,7 +211,7 @@ export function VisualDiscoveryHub({
                         else onSearchChange(t.tag);
                         setSearchFocused(false);
                       }}
-                      className="px-2.5 py-1.5 rounded-lg text-xs bg-white/5 hover:bg-[#d6165f] hover:text-[#fbf1ec] text-gray-200 border border-white/10 transition"
+                      className="px-2.5 py-1.5 rounded-lg text-xs bg-white/5 hover:bg-[#ff6b5e] hover:text-[#07141a] text-gray-200 border border-white/10 transition"
                     >
                       {t.label}
                     </button>
@@ -230,7 +230,7 @@ export function VisualDiscoveryHub({
             className={`px-3.5 py-2 rounded-lg text-xs font-semibold border shrink-0 flex items-center gap-2 transition cursor-pointer ${
               onlyOnline
                 ? "bg-mint-500 text-black border-mint-400 font-bold"
-                : "bg-[#22101a] text-gray-200 border-white/15 hover:border-mint-400/60"
+                : "bg-[#0d1f27] text-gray-200 border-white/15 hover:border-mint-400/60"
             }`}
           >
             <span className={`w-2 h-2 rounded-full ${onlyOnline ? "bg-black" : "bg-mint-400"}`} />
@@ -242,11 +242,11 @@ export function VisualDiscoveryHub({
             onClick={onToggleVerified}
             className={`px-3.5 py-2 rounded-lg text-xs font-semibold border shrink-0 flex items-center gap-1.5 transition cursor-pointer ${
               onlyVerified
-                ? "bg-[#d6165f] text-[#fbf1ec] border-[#ee3c7c] font-bold"
-                : "bg-[#22101a] text-gray-200 border-white/15 hover:border-[#ee3c7c]/60"
+                ? "bg-[#ff6b5e] text-[#07141a] border-[#ff6b5e] font-bold"
+                : "bg-[#0d1f27] text-gray-200 border-white/15 hover:border-[#ff6b5e]/60"
             }`}
           >
-            <Check size={13} className={onlyVerified ? "text-[#fbf1ec]" : "text-[#ee3c7c]"} />
+            <Check size={13} className={onlyVerified ? "text-[#07141a]" : "text-[#ff6b5e]"} />
             <span>Geprüfte Originalfotos</span>
           </button>
 
@@ -259,8 +259,8 @@ export function VisualDiscoveryHub({
               onClick={() => onSelectCanton(c.code)}
               className={`px-3.5 py-2 rounded-lg text-xs font-semibold border shrink-0 transition cursor-pointer ${
                 activeCanton === c.code
-                  ? "bg-white text-[#fbf1ec] border-white font-bold"
-                  : "bg-[#22101a] text-gray-300 border-white/10 hover:border-white/30 hover:text-white"
+                  ? "bg-white text-[#07141a] border-white font-bold"
+                  : "bg-[#0d1f27] text-gray-300 border-white/10 hover:border-white/30 hover:text-white"
               }`}
             >
               {c.name}
@@ -279,8 +279,8 @@ export function VisualDiscoveryHub({
                 onClick={() => onSelectVisual(card.id, card.queryTag)}
                 className={`group relative h-32 sm:h-36 rounded-xl overflow-hidden border text-left transition-all cursor-pointer ${
                   isSelected
-                    ? "border-[#ee3c7c] ring-2 ring-[#ee3c7c]/40"
-                    : "border-white/15 hover:border-[#ee3c7c]/70"
+                    ? "border-[#ff6b5e] ring-2 ring-[#ff6b5e]/40"
+                    : "border-white/15 hover:border-[#ff6b5e]/70"
                 }`}
               >
                 <img
@@ -290,11 +290,11 @@ export function VisualDiscoveryHub({
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-semibold text-[#ee3c7c] border border-white/10">
+                <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-semibold text-[#ff6b5e] border border-white/10">
                   {card.count}
                 </div>
                 <div className="absolute bottom-2 left-2.5 right-2">
-                  <div className="text-xs font-bold text-white leading-tight group-hover:text-[#ee3c7c] transition">
+                  <div className="text-xs font-bold text-white leading-tight group-hover:text-[#ff6b5e] transition">
                     {card.label}
                   </div>
                   <div className="text-[10px] text-gray-300 truncate">{card.sub}</div>

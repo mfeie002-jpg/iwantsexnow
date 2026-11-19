@@ -74,11 +74,11 @@ export function XeniaDoubtTrigger({
         className={`inline-flex items-center gap-1 text-[11px] font-medium transition cursor-pointer ${
           light
             ? "text-stone-500 hover:text-[#a8382e]"
-            : "text-gray-400 hover:text-[#ee3c7c]"
+            : "text-gray-400 hover:text-[#ff6b5e]"
         }`}
       >
         {label && <span className="underline decoration-dotted underline-offset-2">{label}</span>}
-        <HelpCircle size={12} className="text-[#ee3c7c] shrink-0" />
+        <HelpCircle size={12} className="text-[#ff6b5e] shrink-0" />
       </button>
 
       {open && (
@@ -86,9 +86,9 @@ export function XeniaDoubtTrigger({
           onClick={(e) => e.stopPropagation()}
           className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 text-left"
         >
-          <div className="max-w-md w-full rounded-2xl bg-[#150810] border border-[#ee3c7c]/60 p-5 shadow-2xl text-white space-y-3.5">
+          <div className="max-w-md w-full rounded-2xl bg-[#07141a] border border-[#ff6b5e]/60 p-5 shadow-2xl text-white space-y-3.5">
             <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#ee3c7c]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#ff6b5e]">
                 ✨ {info.badge}
               </span>
               <button
@@ -103,7 +103,7 @@ export function XeniaDoubtTrigger({
             <h4 className="text-base font-serif font-bold text-white">{info.title}</h4>
             <p className="text-xs text-gray-300 leading-relaxed">{info.summary}</p>
 
-            <ul className="space-y-1.5 text-xs text-gray-200 bg-[#150810] p-3.5 rounded-xl border border-white/10">
+            <ul className="space-y-1.5 text-xs text-gray-200 bg-[#07141a] p-3.5 rounded-xl border border-white/10">
               {info.bullets.map((b, i) => (
                 <li key={i} className="leading-relaxed">
                   • {b}
@@ -112,13 +112,13 @@ export function XeniaDoubtTrigger({
             </ul>
 
             <div className="flex items-center justify-between pt-1 text-xs">
-              <Link href={info.linkHref} className="text-[#ee3c7c] font-bold hover:underline">
+              <Link href={info.linkHref} className="text-[#ff6b5e] font-bold hover:underline">
                 {info.linkLabel}
               </Link>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="px-3.5 py-1.5 rounded-lg bg-[#d6165f] text-[#fbf1ec] font-bold cursor-pointer"
+                className="px-3.5 py-1.5 rounded-lg bg-[#ff6b5e] text-[#07141a] font-bold cursor-pointer"
               >
                 Verstanden
               </button>

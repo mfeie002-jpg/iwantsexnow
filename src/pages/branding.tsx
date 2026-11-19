@@ -299,9 +299,9 @@ export default function Branding() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold tracking-tight">
-              <span className="text-[#fbf1ec] dark:text-white">iWant</span>
-              <span className="text-[#ee3c7c] dark:text-[#ee3c7c]">Sex</span>
-              <span className="text-[#fbf1ec] dark:text-white">Now</span>
+              <span className="text-[#0d1f27] dark:text-white">iWant</span>
+              <span className="text-[#ff6b5e] dark:text-[#ff6b5e]">Sex</span>
+              <span className="text-[#0d1f27] dark:text-white">Now</span>
               <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
             </span>
           </Link>
