@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Link from "next/link";
 import { Doodle, VerifiedStamp, Wave, Wordmark } from "@/components/visuals";
-import { MobileBottomNav } from "@/components/MobileBottomNav";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import clubsData from "@/data/swiss-establishments-vault.json";
 
 const TOTAL_CLUBS = Array.isArray(clubsData) && clubsData.length > 0 ? clubsData.length : 108;

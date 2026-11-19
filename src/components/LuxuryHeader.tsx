@@ -18,6 +18,8 @@ const EXPERIENCE_VISUALS = [
   { title: "Vibe-Concierge", sub: "Persönliches Matching", href: "/matches", img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80" }
 ];
 
+export { LuxuryHeader };
+
 export default function LuxuryHeader() {
   const [curtainOpen, setCurtainOpen] = useState(false);
   const router = useRouter();
