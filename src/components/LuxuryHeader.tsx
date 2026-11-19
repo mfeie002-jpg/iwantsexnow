@@ -21,7 +21,7 @@ const NAV_WORLDS = [
   { label: "Atelier", sub: "Für Models", href: "/advertise", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80" }
 ];
 
-export default function LuxuryHeader() {
+export function LuxuryHeader() {
   const { world, setWorld } = useDesignWorld();
   const [galleryMenuOpen, setGalleryMenuOpen] = useState(false);
   const router = useRouter();
@@ -297,3 +297,4 @@ export default function LuxuryHeader() {
     </>
   );
 }
+export default LuxuryHeader;
