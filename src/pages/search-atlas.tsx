@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { Compass, MapPin, Sparkles, ArrowRight } from "lucide-react";
+import { PageIntro } from "@/components/PageIntro";
+import { ArrowRight } from "lucide-react";
 
 const CITIES = [
   { slug: "zug", name: "Zug & Baar", canton: "ZG" },
@@ -44,24 +45,19 @@ export default function SearchAtlasPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div className="text-[13px] text-kirsche font-bold flex items-center gap-1.5">
-              <Compass size={14} /> 2D-PROGRAMMATIC Directory Atlas · SCHWEIZ
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-tinte mt-1">
-              Kompletter Schweizer Orts- & Rubriken-Atlas
-            </h1>
-            <p className="text-[13px] text-gray-700 mt-1">
-              Direktzugriff auf alle regionalen Schweizer Knotenpunkte und Spezial-Rubriken mit 5-Wege-Echtzeit-Sortierung.
-            </p>
-          </div>
-          <Link href="/search" className="px-4 py-2.5 rounded-xl bg-kirsche text-white text-[13px] font-extrabold">
-            Zur Deep-Filter-Suche →
-          </Link>
-        </section>
+      <PageIntro
+        tone="himmel"
+        note="Von Zug bis Lugano"
+        art="search"
+        title={<>Alle Orte und Rubriken auf einen Blick</>}
+        lead={<>Wähl deine Region und spring direkt zur passenden Ortsseite oder zur Rubrik, die du suchst.</>}
+      >
+        <Link href="/search" className="inline-flex items-center justify-center rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-sm px-6 py-3 transition">
+          Zur Suche mit Filtern
+        </Link>
+      </PageIntro>
 
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         <div className="flex flex-wrap gap-1.5">
           {["ALL", "ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
             <button
@@ -83,7 +79,7 @@ export default function SearchAtlasPage() {
               <div className="flex items-center justify-between border-b border-tinte/20 pb-2.5">
                 <div>
                   <span className="text-[13px] font-extrabold text-kirsche ">Kanton {city.canton}</span>
-                  <h2 className="text-lg font-serif font-bold text-tinte">{city.name}</h2>
+                  <h2 className="text-lg font-display font-bold text-tinte">{city.name}</h2>
                 </div>
                 <Link
                   href={`/orte/${city.slug}`}
@@ -98,7 +94,7 @@ export default function SearchAtlasPage() {
                   <Link
                     key={srv.slug}
                     href={`/kategorie/${city.slug}/${srv.slug}`}
-                    className="p-2 rounded-xl bg-papier hover:bg-tinte/[0.04] border border-tinte/10 hover:border-kirsche/40 flex items-center justify-between text-gray-700 hover:text-tinte transition"
+                    className="p-2 rounded-xl bg-papier hover:bg-tinte/[0.04] border border-tinte/10 hover:border-kirsche/40 flex items-center justify-between text-tinte-soft hover:text-tinte transition"
                   >
                     <span>
                       {srv.label} in <strong>{city.name}</strong>

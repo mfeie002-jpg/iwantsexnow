@@ -1,123 +1,204 @@
-import React, { useState } from "react";
-import Head from "next/head";
+import React from "react";
 import Link from "next/link";
-import LuxuryHeader from "../components/LuxuryHeader";
-import MobileBottomNav from "../components/MobileBottomNav";
+import { SEO } from "@/components/SEO";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
+import { CorporateFooter } from "@/components/CorporateFooter";
+import {
+  Check,
+  Clock,
+  User,
+  ExternalLink,
+  HelpCircle,
+  ShieldCheck,
+  ArrowRight,
+  SlidersHorizontal,
+  EyeOff,
+  BarChart3,
+  Layers,
+} from "lucide-react";
 
-export default function AdvertiseAtelierPage() {
-  const [name, setName] = useState("");
-  const [city, setCity] = useState("Zürich");
-  const [phone, setPhone] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
+export default function ProviderOverviewPage() {
   return (
-    <div className="min-h-screen flex flex-col justify-between">
-      <Head>
-        <title>Für Models & Ateliers — iWantSexNow.ch</title>
-      </Head>
+    <div className="min-h-screen bg-white text-tinte pb-24">
+      <SEO
+        title="Für Anbieter: Bestehendes Profil kostenlos übernehmen & selbst verwalten | iwantsexnow.ch"
+        description="Übernehmen Sie die volle Kontrolle über Ihren Eintrag auf iwantsexnow.ch: Verfügbarkeit in Echtzeit bestätigen, private Anfragen erhalten, Preise pflegen oder kostenlos pausieren."
+      />
       <LuxuryHeader />
 
-      <main className="max-w-[1400px] w-full mx-auto px-6 sm:px-14 pt-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-6 relative h-[560px] overflow-hidden mask-tear shadow-2xl">
-            <img
-              src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80"
-              alt="Model Atelier"
-              className="w-full h-full object-cover brightness-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8 space-y-2">
-              <div className="text-xs uppercase tracking-[0.3em] text-[#E0B589]">100% Dein Honorar · 0% Provision</div>
-              <h2 className="font-editorial italic text-4xl sm:text-5xl text-white font-normal">
-                Präsentiere dich wie auf einem Vogue-Cover, nicht wie in einem Kleinanzeigen-Blatt.
-              </h2>
-            </div>
-          </div>
-
-          <div className="lg:col-span-6 space-y-8 lg:pl-6">
-            <div>
-              <div className="text-xs uppercase tracking-[0.35em] text-[#E0B589]">Dossier eröffnen oder übernehmen</div>
-              <h1 className="font-editorial italic text-5xl sm:text-6xl font-normal mt-2">
-                Dein persönliches Atelier in 60 Sekunden.
-              </h1>
-            </div>
-
-            {!submitted ? (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSubmitted(true);
-                }}
-                className="space-y-7 max-w-lg"
-              >
-                <div>
-                  <label className="block text-[11px] uppercase tracking-[0.25em] text-[#E0B589] mb-1">
-                    Dein Künstlername
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="z.B. Valentina..."
-                    className="w-full human-line-input text-2xl font-editorial italic"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] uppercase tracking-[0.25em] text-[#E0B589] mb-1">
-                    Deine Stadt / Region
-                  </label>
-                  <input
-                    type="text"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className="w-full human-line-input text-2xl font-editorial italic"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] uppercase tracking-[0.25em] text-[#E0B589] mb-1">
-                    Deine Schweizer WhatsApp-Nummer für Direkt-Anfragen
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+41 79 ..."
-                    className="w-full human-line-input text-2xl font-editorial italic"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="px-10 py-4 rounded-full bg-[#E0B589] text-black text-xs font-bold uppercase tracking-[0.22em] cursor-pointer border-0 shadow-xl"
-                >
-                  Dossier jetzt kostenfrei aktivieren
-                </button>
-              </form>
-            ) : (
-              <div className="space-y-4">
-                <div className="font-editorial italic text-4xl text-[#E0B589]">
-                  Bienvenue, {name || "Belle"}!
-                </div>
-                <p className="text-sm opacity-80">
-                  Dein Atelier für {city} ist vorbereitet. Du kannst deine Fotos und deinen Live-Status direkt verwalten:
-                </p>
-                <Link
-                  href="/creator-dashboard"
-                  className="inline-block px-8 py-4 rounded-full bg-[#E0B589] text-black text-xs font-bold uppercase tracking-[0.2em] no-underline"
-                >
-                  Ins Atelier-Cockpit eintreten →
-                </Link>
+      <PageIntro tone="flieder" note="Für Anbieterinnen und Studios" art="compare" title={<>Dein Profil. Deine Angaben. Deine Verfügbarkeit.</>}
+        lead={<>Auf <strong>iwantsexnow.ch</strong> entscheidest du selbst, wie dein Angebot dargestellt wird. Übernimm deinen bestehenden Verzeichnis-Eintrag kostenlos oder erstelle ein neues Direktprofil – ohne Abo-Zwang und ohne versteckte Gebühren.</>}>
+        {/* Visual Before / After Card Comparison (Matches Bild 1: Availability at a Glance!) */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Before: External Entry */}
+            <div className="p-4 rounded-2xl bg-papier border border-tinte/20 space-y-3 opacity-80">
+              <div className="text-[13px] font-bold text-gray-600">
+                Vorher · Externer Eintrag
               </div>
-            )}
-          </div>
-        </div>
-      </main>
+              <div className="h-28 rounded-xl bg-stone-200 flex items-center justify-center text-[13px] text-gray-600">
+                Standard-Vorschau
+              </div>
+              <div className="space-y-1">
+                <div className="text-sm font-bold text-tinte">Beispielprofil D</div>
+                <div className="text-[13px] text-gray-600">Zürich · ZH</div>
+              </div>
+              <div className="pt-2 border-t border-tinte/20 space-y-1.5 text-[13px] text-gray-600">
+                <div className="flex items-center gap-1.5">
+                  <ExternalLink size={12} />
+                  <span>Externe Quelle · Portal A</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <HelpCircle size={12} />
+                  <span>Verfügbarkeit unbekannt</span>
+                </div>
+              </div>
+              <div className="pt-1 text-[13px] font-bold text-gray-600 flex items-center gap-1">
+                <span>Original ansehen</span>
+                <ExternalLink size={11} />
+              </div>
+            </div>
 
-      <MobileBottomNav />
+            {/* After: Self-Managed Profile */}
+            <div className="p-4 rounded-2xl bg-fels border-2 border-kirsche shadow-2xl space-y-3">
+              <div className="text-[13px] font-bold text-kirsche">
+                Nachher · Selbst verwaltet ✓
+              </div>
+              <div className="relative h-28 rounded-xl bg-gradient-to-br from-fels to-papier flex items-center justify-center">
+                <span className="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#1B5E32] text-mint-700 border border-mint-400/40 text-[13px] font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#4fd1b0]" />
+                  Jetzt verfügbar
+                </span>
+                <span className="text-[13px] text-kirsche font-semibold">Eigene Wunschfotos</span>
+              </div>
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-sm font-bold text-tinte">Dein Direktprofil</div>
+                  <div className="text-[13px] text-gray-700">Zürich · ZH</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[13px] font-bold text-kirsche">CHF 350</div>
+                  <div className="text-[13px] text-gray-600">60 Min.</div>
+                </div>
+              </div>
+              <div className="pt-2 border-t border-tinte/20 space-y-1.5 text-[13px]">
+                <div className="flex items-center gap-1.5 text-[#4fd1b0] font-medium">
+                  <Clock size={12} />
+                  <span>Bestätigt vor 6 Min.</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-gray-800">
+                  <User size={12} className="text-kirsche" />
+                  <span>Selbst verwaltet</span>
+                </div>
+              </div>
+              <div className="pt-1 text-[13px] font-bold text-kirsche flex items-center gap-1">
+                <span>Privat anfragen</span>
+                <ArrowRight size={12} />
+              </div>
+            </div>
+          </div>
+      </PageIntro>
+
+      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-14">
+        {/* Hero Section */}
+        
+
+        {/* Concrete Functional Benefits */}
+        <section className="space-y-5">
+          <h2 className="text-2xl font-serif font-bold text-tinte">
+            Was du mit einem selbst verwalteten Profil direkt steuern kannst
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="p-6 rounded-2xl bg-fels border border-tinte/20 space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-[#1B5E32]/40 border border-mint-500/30 flex items-center justify-center text-[#4fd1b0]">
+                <Clock size={18} />
+              </div>
+              <h3 className="text-base font-bold text-tinte">
+                1. „Jetzt verfügbar“ auf Knopfdruck (4h-Fenster)
+              </h3>
+              <p className="text-[13px] text-gray-700 leading-relaxed">
+                Bestätige mit einem Klick im Cockpit, dass du aktuell Termine annimmst. Besucher sehen den echten Zeitstempel („Bestätigt vor X Min.“) und können gezielt nach verfügbaren Profilen filtern. Nach 4 Stunden schaltet sich der Status automatisch wieder auf neutral.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-fels border border-tinte/20 space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-kirsche/15 border border-kirsche/40 flex items-center justify-center text-kirsche">
+                <Layers size={18} />
+              </div>
+              <h3 className="text-base font-bold text-tinte">
+                2. „Privat anfragen“ & Quellen zusammenführen
+              </h3>
+              <p className="text-[13px] text-gray-700 leading-relaxed">
+                Sobald du dein Profil übernimmst, erscheint auf deiner Karte die direkte Aktion „Privat anfragen →“. Zudem kannst du deinen Preis samt Zeiteinheit (z.B. 60 Min. vs. 30 Min.), deinen Ort und deine Telefonnummer jederzeit selbst korrigieren.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-fels border border-tinte/20 space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-tinte/[0.04] border border-tinte/25 flex items-center justify-center text-gray-800">
+                <EyeOff size={18} />
+              </div>
+              <h3 className="text-base font-bold text-tinte">
+                3. Volle Datenhoheit: Pausieren oder Entfernen
+              </h3>
+              <p className="text-[13px] text-gray-700 leading-relaxed">
+                Du machst Urlaub oder möchtest eine Pause einlegen? Im Cockpit kannst du dein Profil jederzeit mit 1 Klick vorübergehend ausblenden. Falls du gar nicht im Verzeichnis erscheinen möchtest, entfernen und sperren wir deinen Eintrag kostenlos über unser Meldeformular.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 3 Clear Steps */}
+        <section className="p-6 sm:p-8 rounded-2xl bg-papier border border-tinte/20 space-y-6">
+          <h2 className="text-2xl font-serif font-bold text-tinte">
+            So funktioniert die kostenlose Übernahme in 3 Schritten
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-[13px] sm:text-sm">
+            <div className="space-y-1.5">
+              <div className="text-[13px] font-extrabold text-kirsche">Schritt 1 · Eintrag wählen</div>
+              <div className="font-bold text-tinte">Bestehendes Profil suchen oder neu starten</div>
+              <p className="text-gray-600 text-[13px] leading-relaxed">
+                Klicke direkt an deinem Profil auf „Ist das dein Profil?“ oder gib deinen Namen und Ort im Übernahme-Formular an.
+              </p>
+            </div>
+            <div className="space-y-1.5">
+              <div className="text-[13px] font-extrabold text-kirsche">Schritt 2 · Angaben anpassen</div>
+              <div className="font-bold text-tinte">Name, Stadt, Richtpreis & Kontakt festlegen</div>
+              <p className="text-gray-600 text-[13px] leading-relaxed">
+                Du erhältst sofort deinen persönlichen Zugangsschlüssel für das Anbieter-Cockpit und kannst alle Felder selbst pflegen.
+              </p>
+            </div>
+            <div className="space-y-1.5">
+              <div className="text-[13px] font-extrabold text-kirsche">Schritt 3 · Optional prüfen lassen</div>
+              <div className="font-bold text-tinte">Dokumentierte Identitätsprüfung (✓)</div>
+              <p className="text-gray-600 text-[13px] leading-relaxed">
+                Auf Wunsch kannst du die kostenlose Echtheits- und Volljährigkeitsprüfung abschliessen, um das „Identität geprüft“-Merkmal zu erhalten.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-tinte/20">
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/create-post"
+                className="px-6 py-3 rounded-xl bg-kirsche text-[#ffffff] font-bold text-[13px] "
+              >
+                Jetzt Profil übernehmen →
+              </Link>
+              <Link
+                href="/verify"
+                className="px-5 py-3 rounded-xl bg-tinte/[0.04] hover:bg-tinte/[0.06] border border-tinte/25 text-[13px] font-semibold text-gray-800"
+              >
+                Informationen zur Identitätsprüfung →
+              </Link>
+            </div>
+            <Link href="/report" className="text-[13px] text-gray-600 hover:text-tinte underline">
+              Ich möchte meinen Eintrag ohne Konto entfernen lassen →
+            </Link>
+          </div>
+        </section>
+      </main>
+      <CorporateFooter />
     </div>
   );
 }

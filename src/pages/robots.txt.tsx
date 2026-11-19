@@ -13,7 +13,6 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "Disallow: /web-analyzer",
     "Disallow: /logo-concepts",
     "Disallow: /logo-redesigns",
-    "Disallow: /demo-accounts",
     "Disallow: /design-concept-1",
     "Disallow: /design-concept-2",
     "Disallow: /design-concept-3",
