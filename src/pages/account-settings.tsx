@@ -1,28 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { SEO } from "@/components/SEO";
-import { MobileNav } from "@/components/MobileNav";
-import { Heart, User, Bell, Shield, CreditCard, History, Settings, Eye, MapPin, Calendar, Star, Trash2, Edit, Save, X } from "lucide-react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-
-interface Favorite {
-  id: number;
-  name: string;
-  age: number;
-  location: string;
-  image: string;
-  rating: number;
-  rate: number;
-  available: boolean;
-}
+import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
+import { CorporateFooter } from "@/components/CorporateFooter";
 
 interface Booking {
   confirmationCode: string;
@@ -34,453 +17,282 @@ interface Booking {
   createdAt: string;
 }
 
+interface UserData {
+  name: string;
+  email: string;
+  phone: string;
+  city: string;
+  bio: string;
+}
+
+const EMPTY_USER: UserData = { name: "", email: "", phone: "", city: "", bio: "" };
+
+const DEFAULT_NOTIFICATIONS = {
+  emailUpdates: true,
+  smsNotifications: false,
+  newMatches: true,
+  promotions: false,
+};
+
+type NotificationKey = keyof typeof DEFAULT_NOTIFICATIONS;
+
+const NOTIFICATION_ROWS: { key: NotificationKey; title: string; text: string }[] = [
+  { key: "emailUpdates", title: "E-Mail-Updates", text: "Buchungsbestätigungen per E-Mail erhalten." },
+  { key: "smsNotifications", title: "SMS-Hinweise", text: "Kurze Hinweise zu deinen Buchungen aufs Handy." },
+  { key: "newMatches", title: "Neue Treffer", text: "Hinweis, wenn zu deiner Suche neue Profile dazukommen." },
+  { key: "promotions", title: "Aktionen", text: "Gelegentlich Angebote und Neuigkeiten." },
+];
+
+const STATUS_LABEL: Record<Booking["status"], string> = {
+  pending: "Offen",
+  confirmed: "Bestätigt",
+  completed: "Abgeschlossen",
+  cancelled: "Storniert",
+};
+
+const STATUS_TONE: Record<Booking["status"], string> = {
+  pending: "bg-butter",
+  confirmed: "bg-minze",
+  completed: "bg-himmel",
+  cancelled: "bg-blush",
+};
+
+const FIELD =
+  "w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte placeholder:text-tinte-soft/70 focus:border-kirsche outline-none disabled:bg-fels disabled:text-tinte-soft";
+
+function readJson<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeJson(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* Speicher nicht verfügbar, Eingaben bleiben nur in dieser Sitzung */
+  }
+}
+
 export default function AccountSettings() {
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+41 79 123 45 67",
-    city: "Zürich",
-    bio: ""
-  });
-
-  const [notifications, setNotifications] = useState({
-    emailUpdates: true,
-    smsNotifications: false,
-    newMatches: true,
-    promotions: false
-  });
-
-  const [editMode, setEditMode] = useState(false);
-  const [favorites, setFavorites] = useState<Favorite[]>([
-    {
-      id: 1,
-      name: "Sophia",
-      age: 26,
-      location: "Zürich City Center",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
-      rating: 5.0,
-      rate: 500,
-      available: true
-    },
-    {
-      id: 4,
-      name: "Mia",
-      age: 25,
-      location: "Oerlikon, Zürich",
-      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop",
-      rating: 5.0,
-      rate: 550,
-      available: true
-    }
-  ]);
-
+  const [user, setUser] = useState<UserData>(EMPTY_USER);
+  const [notifications, setNotifications] = useState(DEFAULT_NOTIFICATIONS);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [favoriteCount, setFavoriteCount] = useState(0);
+  const [editMode, setEditMode] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    // Load user data from localStorage
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-
-    // Load bookings from localStorage
-    const savedBookings = localStorage.getItem('bookings');
-    if (savedBookings) {
-      setBookings(JSON.parse(savedBookings));
-    }
+    setUser({ ...EMPTY_USER, ...readJson<Partial<UserData>>("user", {}) });
+    setBookings(readJson<Booking[]>("bookings", []));
+    setNotifications({ ...DEFAULT_NOTIFICATIONS, ...readJson<Partial<typeof DEFAULT_NOTIFICATIONS>>("iwsn_notifications", {}) });
+    setFavoriteCount(readJson<unknown[]>("ch_favorite_profiles", []).length);
   }, []);
 
   const handleSaveProfile = () => {
-    localStorage.setItem('user', JSON.stringify(user));
+    writeJson("user", user);
     setEditMode(false);
-  };
-
-  const removeFavorite = (id: number) => {
-    setFavorites(prev => prev.filter(fav => fav.id !== id));
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 2500);
   };
 
   const cancelBooking = (code: string) => {
-    const updatedBookings = bookings.map(booking => 
-      booking.confirmationCode === code 
-        ? { ...booking, status: "cancelled" as const }
-        : booking
-    );
-    setBookings(updatedBookings);
-    localStorage.setItem('bookings', JSON.stringify(updatedBookings));
+    const updated = bookings.map((b) => (b.confirmationCode === code ? { ...b, status: "cancelled" as const } : b));
+    setBookings(updated);
+    writeJson("bookings", updated);
   };
 
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case "confirmed": return "bg-mint-500";
-      case "pending": return "bg-sun-500";
-      case "completed": return "bg-lake-500";
-      case "cancelled": return "bg-red-500";
-      default: return "bg-gray-500";
-    }
+  const toggleNotification = (key: NotificationKey, value: boolean) => {
+    const next = { ...notifications, [key]: value };
+    setNotifications(next);
+    writeJson("iwsn_notifications", next);
   };
+
+  const trigger =
+    "rounded-xl px-4 py-2 text-[13px] font-extrabold text-tinte-soft data-[state=active]:bg-kirsche data-[state=active]:text-white data-[state=active]:shadow-none";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-dusk-100 to-gray-100">
-      <SEO 
-        title="Account Settings - Manage Your Profile | iWantSexNow.ch"
-        description="Manage your account settings, favorites, and booking history."
+    <div className="min-h-screen bg-papier text-tinte flex flex-col justify-between overflow-x-hidden">
+      <SEO
+        title="Mein Konto | iWantSexNow.ch"
+        description="Deine Angaben, Merkliste, Buchungen und Benachrichtigungen an einem Ort."
+      />
+      <LuxuryHeader />
+
+      <PageIntro
+        tone="flieder"
+        note="Alles an einem Ort"
+        art="none"
+        title={<>Mein Konto</>}
+        lead={<>Deine Angaben, deine Merkliste und deine Buchungen. Gespeichert wird nur auf diesem Gerät.</>}
       />
 
-      {/* Header */}
-      <header className="border-b border-tinte/20 backdrop-blur-md bg-tinte/10 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div>
-                <span className="text-2xl font-bold tracking-tight">
-                  <span className="text-tinte">iWant</span>
-                  <span className="text-kirsche">Sex</span>
-                  <span className="text-tinte">Now</span>
-                  <span className="text-gray-600 text-xl">.ch</span>
-                </span>
-                <div className="text-[13px] text-glow-700 font-semibold ">Account Settings</div>
-              </div>
-            </Link>
-            <MobileNav />
-          </div>
-        </div>
-      </header>
+      <main className="max-w-4xl w-full mx-auto px-4 sm:px-6 py-10">
+        <Tabs defaultValue="profile" className="space-y-6">
+          <TabsList className="flex flex-wrap h-auto gap-1.5 justify-start rounded-2xl bg-white border border-linie p-1.5">
+            <TabsTrigger value="profile" className={trigger}>Profil</TabsTrigger>
+            <TabsTrigger value="favorites" className={trigger}>Merkliste</TabsTrigger>
+            <TabsTrigger value="bookings" className={trigger}>Buchungen</TabsTrigger>
+            <TabsTrigger value="notifications" className={trigger}>Benachrichtigungen</TabsTrigger>
+          </TabsList>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
-          >
-            <h1 className="text-4xl font-black text-tinte mb-2">Account Settings</h1>
-            <p className="text-gray-700">Manage your profile, preferences, and bookings</p>
-          </motion.div>
-
-          <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="bg-tinte/[0.06] border border-tinte/30 p-1">
-              <TabsTrigger value="profile" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
-                <User size={18} className="mr-2" />
-                Profile
-              </TabsTrigger>
-              <TabsTrigger value="favorites" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
-                <Heart size={18} className="mr-2" />
-                Favorites
-              </TabsTrigger>
-              <TabsTrigger value="bookings" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
-                <History size={18} className="mr-2" />
-                Bookings
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="data-[state=active]:bg-glow-600 data-[state=active]:text-white">
-                <Bell size={18} className="mr-2" />
-                Notifications
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Profile Tab */}
-            <TabsContent value="profile">
-              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-tinte">Profile Information</h2>
-                  {!editMode ? (
-                    <Button
-                      onClick={() => setEditMode(true)}
-                      className="bg-glow-600 hover:bg-glow-700"
+          <TabsContent value="profile">
+            <section className="p-6 sm:p-8 rounded-2xl bg-white border border-linie space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-2xl font-display font-bold">Deine Angaben</h2>
+                {!editMode ? (
+                  <button
+                    type="button"
+                    onClick={() => setEditMode(true)}
+                    className="rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] px-5 py-2.5 transition"
+                  >
+                    Bearbeiten
+                  </button>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSaveProfile}
+                      className="rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] px-5 py-2.5 transition"
                     >
-                      <Edit size={18} className="mr-2" />
-                      Edit Profile
-                    </Button>
-                  ) : (
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={handleSaveProfile}
-                        className="bg-mint-600 hover:bg-mint-700"
-                      >
-                        <Save size={18} className="mr-2" />
-                        Save
-                      </Button>
-                      <Button
-                        onClick={() => setEditMode(false)}
-                        variant="outline"
-                        className="border-tinte/40 text-tinte hover:bg-tinte/[0.06]"
-                      >
-                        <X size={18} className="mr-2" />
-                        Cancel
-                      </Button>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <Label className="text-tinte mb-2 block">Full Name</Label>
-                      <Input
-                        value={user.name}
-                        onChange={(e) => setUser({...user, name: e.target.value})}
-                        disabled={!editMode}
-                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="text-tinte mb-2 block">Email</Label>
-                      <Input
-                        type="email"
-                        value={user.email}
-                        onChange={(e) => setUser({...user, email: e.target.value})}
-                        disabled={!editMode}
-                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <Label className="text-tinte mb-2 block">Phone</Label>
-                      <Input
-                        type="tel"
-                        value={user.phone}
-                        onChange={(e) => setUser({...user, phone: e.target.value})}
-                        disabled={!editMode}
-                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="text-tinte mb-2 block">City</Label>
-                      <Input
-                        value={user.city}
-                        onChange={(e) => setUser({...user, city: e.target.value})}
-                        disabled={!editMode}
-                        className="bg-tinte/[0.06] border-tinte/30 text-tinte disabled:opacity-50"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-tinte mb-2 block">Bio</Label>
-                    <Textarea
-                      value={user.bio}
-                      onChange={(e) => setUser({...user, bio: e.target.value})}
-                      disabled={!editMode}
-                      rows={4}
-                      placeholder="Tell us about yourself..."
-                      className="bg-tinte/[0.06] border-tinte/30 text-tinte placeholder:text-gray-600 disabled:opacity-50"
-                    />
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-
-            {/* Favorites Tab */}
-            <TabsContent value="favorites">
-              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
-                <h2 className="text-2xl font-bold text-tinte mb-6">Your Favorites ({favorites.length})</h2>
-
-                {favorites.length > 0 ? (
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {favorites.map((favorite) => (
-                      <motion.div
-                        key={favorite.id}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                      >
-                        <Card className="overflow-hidden bg-tinte/[0.04] border-tinte/20 hover:border-glow-500 transition-all">
-                          <div className="flex gap-4 p-4">
-                            <img
-                              src={favorite.image}
-                              alt={favorite.name}
-                              className="w-24 h-24 rounded-lg object-cover"
-                            />
-                            <div className="flex-1">
-                              <h3 className="text-xl font-bold text-tinte mb-1">
-                                {favorite.name}, {favorite.age}
-                              </h3>
-                              <div className="flex items-center gap-2 text-lake-700 text-sm mb-2">
-                                <MapPin size={14} />
-                                <span>{favorite.location}</span>
-                              </div>
-                              <div className="flex items-center gap-2 mb-2">
-                                <Star size={14} className="text-sun-700 fill-sun-700" />
-                                <span className="text-tinte text-sm">{favorite.rating}</span>
-                                {favorite.available && (
-                                  <Badge className="bg-mint-500 text-[13px]">Available</Badge>
-                                )}
-                              </div>
-                              <div className="text-sun-700 font-bold">CHF {favorite.rate}/hr</div>
-                            </div>
-                            <div className="flex flex-col gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="border-red-500 text-red-500 hover:bg-red-500/10"
-                                onClick={() => removeFavorite(favorite.id)}
-                              >
-                                <Trash2 size={16} />
-                              </Button>
-                              <Button
-                                size="sm"
-                                className="bg-glow-600 hover:bg-glow-700"
-                                asChild
-                              >
-                                <Link href={`/booking-confirmation?escortId=${favorite.id}&escortName=${favorite.name}`}>
-                                  <Eye size={16} />
-                                </Link>
-                              </Button>
-                            </div>
-                          </div>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <Heart size={64} className="mx-auto text-gray-600 mb-4" />
-                    <h3 className="text-xl font-bold text-tinte mb-2">No favorites yet</h3>
-                    <p className="text-gray-600 mb-6">Start adding escorts to your favorites</p>
-                    <Button className="bg-glow-600 hover:bg-glow-700" asChild>
-                      <Link href="/escort-zurich">Browse Escorts</Link>
-                    </Button>
+                      Speichern
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditMode(false)}
+                      className="rounded-xl border border-tinte/30 text-tinte font-bold text-[13px] px-5 py-2.5 hover:bg-fels transition"
+                    >
+                      Abbrechen
+                    </button>
                   </div>
                 )}
-              </Card>
-            </TabsContent>
+              </div>
 
-            {/* Bookings Tab */}
-            <TabsContent value="bookings">
-              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
-                <h2 className="text-2xl font-bold text-tinte mb-6">Booking History ({bookings.length})</h2>
-
-                {bookings.length > 0 ? (
-                  <div className="space-y-4">
-                    {bookings.map((booking) => (
-                      <Card key={booking.confirmationCode} className="p-6 bg-tinte/[0.04] border-tinte/20">
-                        <div className="flex items-start justify-between mb-4">
-                          <div>
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-xl font-bold text-tinte">{booking.escortName}</h3>
-                              <Badge className={`${getStatusColor(booking.status)} border-0`}>
-                                {booking.status.toUpperCase()}
-                              </Badge>
-                            </div>
-                            <div className="text-gray-600 text-sm">
-                              Confirmation: <span className="text-sun-700 font-mono">{booking.confirmationCode}</span>
-                            </div>
-                          </div>
-                          {booking.status === "pending" && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-red-500 text-red-500 hover:bg-red-500/10"
-                              onClick={() => cancelBooking(booking.confirmationCode)}
-                            >
-                              Cancel
-                            </Button>
-                          )}
-                        </div>
-
-                        <div className="grid md:grid-cols-3 gap-4 text-sm">
-                          <div className="flex items-center gap-2 text-gray-700">
-                            <Calendar size={16} className="text-glow-700" />
-                            <span>{booking.date}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-gray-700">
-                            <History size={16} className="text-glow-700" />
-                            <span>{booking.time}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-gray-700">
-                            <Shield size={16} className="text-glow-700" />
-                            <span>{booking.duration}</span>
-                          </div>
-                        </div>
-
-                        <div className="mt-4 text-[13px] text-gray-600">
-                          Booked on: {new Date(booking.createdAt).toLocaleString()}
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <History size={64} className="mx-auto text-gray-600 mb-4" />
-                    <h3 className="text-xl font-bold text-tinte mb-2">No bookings yet</h3>
-                    <p className="text-gray-600 mb-6">Your booking history will appear here</p>
-                    <Button className="bg-glow-600 hover:bg-glow-700" asChild>
-                      <Link href="/escort-zurich">Book an Escort</Link>
-                    </Button>
-                  </div>
-                )}
-              </Card>
-            </TabsContent>
-
-            {/* Notifications Tab */}
-            <TabsContent value="notifications">
-              <Card className="p-8 bg-tinte/[0.06] backdrop-blur-md border-tinte/30">
-                <h2 className="text-2xl font-bold text-tinte mb-6">Notification Preferences</h2>
-
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
-                    <div>
-                      <h3 className="text-tinte font-bold mb-1">Email Updates</h3>
-                      <p className="text-gray-600 text-sm">Receive booking confirmations via email</p>
-                    </div>
-                    <Switch
-                      checked={notifications.emailUpdates}
-                      onCheckedChange={(checked) => setNotifications({...notifications, emailUpdates: checked})}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
-                    <div>
-                      <h3 className="text-tinte font-bold mb-1">SMS Notifications</h3>
-                      <p className="text-gray-600 text-sm">Get booking updates via text message</p>
-                    </div>
-                    <Switch
-                      checked={notifications.smsNotifications}
-                      onCheckedChange={(checked) => setNotifications({...notifications, smsNotifications: checked})}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
-                    <div>
-                      <h3 className="text-tinte font-bold mb-1">New Matches</h3>
-                      <p className="text-gray-600 text-sm">Notify when new escorts match your preferences</p>
-                    </div>
-                    <Switch
-                      checked={notifications.newMatches}
-                      onCheckedChange={(checked) => setNotifications({...notifications, newMatches: checked})}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-tinte/[0.04] rounded-lg">
-                    <div>
-                      <h3 className="text-tinte font-bold mb-1">Promotions</h3>
-                      <p className="text-gray-600 text-sm">Receive special offers and promotions</p>
-                    </div>
-                    <Switch
-                      checked={notifications.promotions}
-                      onCheckedChange={(checked) => setNotifications({...notifications, promotions: checked})}
-                    />
-                  </div>
+              {saved && (
+                <div role="status" className="rounded-xl bg-minze px-4 py-3 text-[13px] font-bold">
+                  Gespeichert.
                 </div>
+              )}
 
-                <div className="mt-6 p-4 bg-lake-500/10 border border-lake-500/30 rounded-lg">
-                  <div className="flex items-start gap-3 text-lake-700">
-                    <Shield size={20} className="flex-shrink-0 mt-0.5" />
-                    <div className="text-sm">
-                      <p className="font-semibold mb-1">Privacy Notice</p>
-                      <p className="text-lake-700/80">
-                        Your notification preferences are private and secure. You can change these settings at any time.
-                      </p>
-                    </div>
-                  </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                <label className="block">
+                  <span className="block text-[13px] font-bold mb-1.5">Name</span>
+                  <input className={FIELD} value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} disabled={!editMode} placeholder="Vorname oder Anzeigename" autoComplete="name" />
+                </label>
+                <label className="block">
+                  <span className="block text-[13px] font-bold mb-1.5">E-Mail</span>
+                  <input className={FIELD} type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} disabled={!editMode} placeholder="name@beispiel.ch" autoComplete="email" />
+                </label>
+                <label className="block">
+                  <span className="block text-[13px] font-bold mb-1.5">Telefon</span>
+                  <input className={FIELD} type="tel" value={user.phone} onChange={(e) => setUser({ ...user, phone: e.target.value })} disabled={!editMode} placeholder="+41 79 …" autoComplete="tel" />
+                </label>
+                <label className="block">
+                  <span className="block text-[13px] font-bold mb-1.5">Ort</span>
+                  <input className={FIELD} value={user.city} onChange={(e) => setUser({ ...user, city: e.target.value })} disabled={!editMode} placeholder="z.B. Zürich" autoComplete="address-level2" />
+                </label>
+              </div>
+              <label className="block">
+                <span className="block text-[13px] font-bold mb-1.5">Über dich</span>
+                <textarea className={FIELD} rows={4} value={user.bio} onChange={(e) => setUser({ ...user, bio: e.target.value })} disabled={!editMode} placeholder="Ein, zwei Sätze, wenn du magst." />
+              </label>
+            </section>
+          </TabsContent>
+
+          <TabsContent value="favorites">
+            <section className="p-6 sm:p-8 rounded-2xl bg-white border border-linie space-y-4 text-center">
+              <h2 className="text-2xl font-display font-bold">Deine Merkliste</h2>
+              <p className="text-tinte-soft text-sm leading-relaxed">
+                {favoriteCount > 0
+                  ? `Du hast ${favoriteCount} ${favoriteCount === 1 ? "Profil" : "Profile"} gemerkt.`
+                  : "Noch nichts gemerkt. Tipp aufs Herz bei einem Profil, dann taucht es hier auf."}
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/favorites" className="rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] px-6 py-3 transition">
+                  Merkliste öffnen
+                </Link>
+                <Link href="/search" className="rounded-xl border border-tinte/30 font-bold text-[13px] px-6 py-3 hover:bg-fels transition">
+                  Profile suchen
+                </Link>
+              </div>
+            </section>
+          </TabsContent>
+
+          <TabsContent value="bookings">
+            <section className="p-6 sm:p-8 rounded-2xl bg-white border border-linie space-y-5">
+              <h2 className="text-2xl font-display font-bold">Deine Buchungen ({bookings.length})</h2>
+              {bookings.length > 0 ? (
+                <ul className="space-y-4">
+                  {bookings.map((b) => (
+                    <li key={b.confirmationCode} className="rounded-2xl border border-linie p-5 space-y-3">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="text-lg font-display font-bold">{b.escortName}</h3>
+                            <span className={`rounded-full px-3 py-0.5 text-[12px] font-extrabold ${STATUS_TONE[b.status]}`}>{STATUS_LABEL[b.status]}</span>
+                          </div>
+                          <p className="text-[13px] text-tinte-soft">
+                            Bestätigungscode: <span className="font-mono font-bold text-tinte">{b.confirmationCode}</span>
+                          </p>
+                        </div>
+                        {b.status === "pending" && (
+                          <button
+                            type="button"
+                            onClick={() => cancelBooking(b.confirmationCode)}
+                            className="rounded-xl border border-kirsche-tief text-kirsche-tief font-bold text-[13px] px-4 py-2 hover:bg-blush transition"
+                          >
+                            Stornieren
+                          </button>
+                        )}
+                      </div>
+                      <dl className="grid sm:grid-cols-3 gap-3 text-[13px]">
+                        <div><dt className="text-tinte-soft">Datum</dt><dd className="font-bold">{b.date}</dd></div>
+                        <div><dt className="text-tinte-soft">Zeit</dt><dd className="font-bold">{b.time}</dd></div>
+                        <div><dt className="text-tinte-soft">Dauer</dt><dd className="font-bold">{b.duration}</dd></div>
+                      </dl>
+                      <p className="text-[12px] text-tinte-soft">Gebucht am {new Date(b.createdAt).toLocaleString("de-CH")}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="text-center py-8 space-y-3">
+                  <p className="text-tinte-soft text-sm">Noch keine Buchungen. Sobald du eine machst, steht sie hier.</p>
+                  <Link href="/search" className="inline-block rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] px-6 py-3 transition">
+                    Profile suchen
+                  </Link>
                 </div>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
+              )}
+            </section>
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <section className="p-6 sm:p-8 rounded-2xl bg-white border border-linie space-y-5">
+              <h2 className="text-2xl font-display font-bold">Benachrichtigungen</h2>
+              <ul className="space-y-3">
+                {NOTIFICATION_ROWS.map((row) => (
+                  <li key={row.key} className="flex items-center justify-between gap-4 rounded-2xl bg-papier border border-linie p-4">
+                    <div>
+                      <h3 className="font-bold text-sm">{row.title}</h3>
+                      <p className="text-[13px] text-tinte-soft">{row.text}</p>
+                    </div>
+                    <Switch
+                      aria-label={row.title}
+                      checked={notifications[row.key]}
+                      onCheckedChange={(checked) => toggleNotification(row.key, checked)}
+                      className="data-[state=checked]:bg-kirsche data-[state=unchecked]:bg-tinte/25"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </TabsContent>
+        </Tabs>
+      </main>
+
+      <CorporateFooter light />
     </div>
   );
 }

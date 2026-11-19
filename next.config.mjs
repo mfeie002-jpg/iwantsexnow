@@ -3,6 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+  async redirects() {
+    return [
+      { source: "/catalogue/:path*", destination: "/search", permanent: false },
+      { source: "/demo-accounts", destination: "/", permanent: false },
+    ];
+  },
   images: {
     unoptimized: true,
     remotePatterns: [

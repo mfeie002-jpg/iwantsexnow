@@ -64,10 +64,10 @@ export default function LoginPage() {
         lead={<>Gib deine Schweizer Mobilnummer (+41 79 / 078 / 076...), deinen Anzeigenamen oder deine Profil-ID (z.B. ch-a720e283e85f) ein.</>} />
       <main className="max-w-md mx-auto px-6 py-12 space-y-6">
         <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-white border border-tinte/20">
-          <button type="button" onClick={() => { setMode("provider"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "provider" ? "bg-kirsche text-white" : "text-gray-400 hover:text-white"}`}>
+          <button type="button" onClick={() => { setMode("provider"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "provider" ? "bg-kirsche text-white" : "text-tinte-soft hover:text-tinte"}`}>
             Anbieterinnen-Cockpit
           </button>
-          <button type="button" onClick={() => { setMode("admin"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "admin" ? "bg-kirsche text-white" : "text-gray-400 hover:text-white"}`}>
+          <button type="button" onClick={() => { setMode("admin"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "admin" ? "bg-kirsche text-white" : "text-tinte-soft hover:text-tinte"}`}>
             Betreiber / Admin
           </button>
         </div>
@@ -102,7 +102,7 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Admin-PIN</label>
-              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} placeholder="SWISS-BOSS-2026" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
+              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} placeholder="Admin-PIN" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
             </div>
             <button type="submit" className="w-full py-3.5 rounded-xl bg-mint-500 hover:bg-mint-400 text-tinte font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer">
               <KeyRound size={15} /> Master-Steuerpult entsperren →
