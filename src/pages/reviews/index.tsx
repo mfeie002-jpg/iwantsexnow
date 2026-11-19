@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 import { SWISS_PORTAL_TOP10, OUR_PLATFORM_DISCLOSURE } from "@/data/portalReviewsData";
 import { Search, FileText, Scale, HelpCircle, Check, ArrowRight } from "lucide-react";
 
@@ -41,7 +40,7 @@ export default function SwissPortalComparisonHubPage() {
       <PageIntro tone="minze" note="Ehrlich bewertet" art="none" title={<>Schweizer Portale. Klar verglichen.</>}
         lead={<>Funktionen, Datenschutz und Profilkontrolle verständlich erklärt – mit offengelegten Quellen und Prüfkriterien.</>} />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 pt-8 pb-12 space-y-10">
+      <main className="guide">
         {/* Hero Headline (Exakt nach Bild 9 & Bild 8: "Schweizer Portale. Klar verglichen.") */}
         
 
@@ -251,8 +250,6 @@ export default function SwissPortalComparisonHubPage() {
           </div>
         </section>
       </main>
-
-      <CorporateFooter light />
-    </div>
+</div>
   );
 }

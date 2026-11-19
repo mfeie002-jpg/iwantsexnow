@@ -41,7 +41,7 @@ export default function SwissPricingCompassPage() {
 
   const currentStat = cantonStats.find((s) => s.canton === selectedCanton) || cantonStats[0] || { avg60: 350, avg30: 200 };
   const baseCalc = durationMins === 30 ? currentStat.avg30 : durationMins === 60 ? currentStat.avg60 : Math.round((currentStat.avg60 * (durationMins / 60) * 0.9) / 10) * 10;
-  const finalEstimate = visitType === "outcall" ? baseCalc + 50 : baseCalc;
+  const finalEstimate = baseCalc;
 
   return (
     <div className="min-h-screen bg-papier text-tinte pb-24">
@@ -52,14 +52,14 @@ export default function SwissPricingCompassPage() {
       <LuxuryHeader />
 
       <PageIntro tone="butter" note="Ehrlich gerechnet" art="canton:zh" title={<>Schweizer CHF-Honorar-Kompass & Tarifrechner</>}
-        lead={<>Echte Durchschnittswerte aus 2&apos;529 aktiven Schweizer Dossiers – ohne versteckte Agentur-Provisionen.</>}>
+        lead={<>Durchschnitt der 30- und 60-Minuten-Angaben im Verzeichnis, nach Kanton. Fahrtkosten bei einem Besuch stehen nicht in den Einträgen.</>}>
         <div className="text-right font-mono text-[13px] text-mint-700 font-bold flex items-center gap-1.5">
             <ShieldCheck size={15} />
             <span>0 % BUCHUNGSKOMMISSION</span>
           </div>
       </PageIntro>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-7">
+      <main className="guide">
         
 
         {/* Interaktiver Schweizer Honorar-Rechner */}

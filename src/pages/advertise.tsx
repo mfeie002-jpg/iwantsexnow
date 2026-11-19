@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 import {
   Check,
   Clock,
@@ -99,7 +98,7 @@ export default function ProviderOverviewPage() {
           </div>
       </PageIntro>
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-14">
+      <main className="guide">
         {/* Hero Section */}
         
 
@@ -198,7 +197,6 @@ export default function ProviderOverviewPage() {
           </div>
         </section>
       </main>
-      <CorporateFooter />
-    </div>
+</div>
   );
 }

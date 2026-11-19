@@ -108,7 +108,7 @@ export default function AdminDashboardPage() {
       <LuxuryHeader />
 
       {!authorized ? (
-        <main className="max-w-md mx-auto px-6 py-16">
+        <main className="cockpit">
           <form onSubmit={handleUnlock} className="p-8 rounded-2xl bg-white border border-tinte/20 space-y-5">
             <div className="flex items-center gap-2 text-sun-700 text-[13px] font-bold ">
               <Lock size={15} /> Server-Authentifizierung erforderlich

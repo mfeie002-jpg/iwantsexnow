@@ -59,7 +59,7 @@ export default function ReportAndOptOutPage() {
         <Link href="/" className="emerald-button"><ArrowLeft size={14} /> Zurück zur Übersicht</Link>
       </PageIntro>
 
-      <main className="-mt-6 relative z-10 max-w-2xl mx-auto px-4 sm:px-6 pb-10 space-y-6">
+      <main className="form-sheet">
         <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
           <div>
             <span className="text-[13px] text-glow-700 font-bold flex items-center gap-1.5">

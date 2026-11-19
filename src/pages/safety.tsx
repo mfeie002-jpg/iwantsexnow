@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 import { ShieldCheck, Clock, HelpCircle, Scale, Check, AlertCircle } from "lucide-react";
 
 export default function SafetyAndBeginnerGuidePage() {
@@ -18,7 +17,7 @@ export default function SafetyAndBeginnerGuidePage() {
       <PageIntro tone="himmel" note="Damit du dich wohlfühlst" art="verified" title={<>Was sollte ich vor einer Entscheidung verstehen?</>}
         lead={<>Eine transparente Übersicht über die Bedeutung unserer Kennzeichnungen, den Unterschied zwischen eigenen Profilen und externen Quellen sowie Grundregeln für einen sicheren, respektvollen Umgang.</>} />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-10 space-y-10">
+      <main className="essay">
         
 
         {/* 1. Was die Kennzeichnungen genau bedeuten (und was nicht!) */}
@@ -90,7 +89,6 @@ export default function SafetyAndBeginnerGuidePage() {
           </div>
         </section>
       </main>
-      <CorporateFooter light />
-    </div>
+</div>
   );
 }

@@ -550,7 +550,7 @@ Führe eine umfassende SEO-Analyse durch.
         <Navigation />
         <MobileNav />
 
-        <main className="container mx-auto px-4 py-24">
+        <main className="cockpit">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-dusk-600 via-glow-600 to-red-600 bg-clip-text text-transparent">

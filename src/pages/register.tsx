@@ -70,7 +70,7 @@ export default function RegisterProviderPage() {
       <PageIntro tone="blush" note="Gratis, in 60 Sekunden" art="hanger" title={<>Eigenes Schweizer Profil in 60 Sekunden live schalten</>}
         lead={<>100 % direkter Kundenkontakt über deine <strong>+41 Nummer</strong> · <strong>80 % Sofort-Anteil</strong> bei Paid-Vault-Freischaltungen · Jederzeit 1-Klick <strong>4h-Live-Verfügbarkeit</strong>.</>} />
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+      <main className="form-sheet">
         
 
         {createdResult ? (

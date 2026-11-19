@@ -57,7 +57,7 @@ export default function NotificationsRadarPage() {
 
       <PageIntro tone="butter" note="Neuigkeiten" art="none" title={<>Schweizer 4h-Verfügbarkeits- & Status-Ticker</>} />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-6">
+      <main className="guide">
         <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
           
           <div className="flex flex-wrap gap-1.5">

@@ -44,7 +44,7 @@ export default function SearchAtlasPage() {
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <main className="guide">
         <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="text-[13px] text-kirsche font-bold flex items-center gap-1.5">

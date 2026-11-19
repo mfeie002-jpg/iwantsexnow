@@ -75,7 +75,7 @@ export default function LiveCamPage() {
       <PageIntro tone="flieder" note="Live, 1:1" art="none" title={<>Schweizer Live-Video-Dates & Paid-Vault Freischaltung</>}
         lead={<>Direkte 1:1 Video-Sessions mit echten Schweizer Profilen oder sofortige Freischaltung privater Foto-/Video-Galerien via TWINT & Karte.</>} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <main className="guide">
         <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
           
           <div className="flex gap-2">

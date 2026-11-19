@@ -4,7 +4,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 import { SWISS_PORTAL_TOP10, OUR_PLATFORM_DISCLOSURE } from "@/data/portalReviewsData";
 import { FileText, Search, HelpCircle, Scale, Check, AlertTriangle, ArrowLeft, ExternalLink } from "lucide-react";
 
@@ -27,7 +26,7 @@ export default function SinglePortalReviewPage() {
       <PageIntro tone="minze" note="Ehrlich bewertet" art="none" title={<>{report.name} im Überblick: Was wirklich geprüft wurde.</>}
         lead={<>{report.summary}</>} />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-10">
+      <main className="guide">
         {/* Top Breadcrumb */}
         <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] text-stone-600">
           <Link href="/reviews" className="inline-flex items-center gap-1.5 font-bold text-tinte hover:underline">
@@ -200,7 +199,6 @@ export default function SinglePortalReviewPage() {
           </aside>
         </div>
       </main>
-      <CorporateFooter light />
-    </div>
+</div>
   );
 }

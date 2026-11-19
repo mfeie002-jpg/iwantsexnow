@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -135,13 +136,12 @@ export default function AdminLogin() {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-dusk-50 via-glow-50 to-red-50 dark:from-gray-100 dark:via-dusk-100 dark:to-glow-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md p-8 bg-white/80 dark:bg-gray-100/80 backdrop-blur-sm shadow-2xl">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-dusk-600 to-glow-600 rounded-2xl mb-4">
-              <Lock className="w-8 h-8 text-tinte" />
-            </div>
-            <h1 className="text-3xl font-black bg-gradient-to-r from-dusk-600 via-glow-600 to-red-600 bg-clip-text text-transparent">
+      <LuxuryHeader />
+      <div className="min-h-screen bg-papier text-tinte">
+        <main className="form-sheet">
+          <div className="mb-8">
+            <p className="kicker">Verwaltung</p>
+            <h1>
               Admin Login
             </h1>
             <p className="text-gray-500 dark:text-gray-600 mt-2">
@@ -227,7 +227,7 @@ export default function AdminLogin() {
               Insert Into user_roles (user_id, role) VALUES ('your-id', 'admin');
             </code>
           </div>
-        </Card>
+        </main>
       </div>
     </>
   );

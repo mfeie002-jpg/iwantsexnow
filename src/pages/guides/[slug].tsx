@@ -269,7 +269,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
       />
       <LuxuryHeader />
 
-      <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
+      <main className="guide">
         <Link href="/guides" className="inline-flex items-center gap-2 text-[13px] text-kirsche font-bold hover:underline">
           <ArrowLeft size={14} /> Zurück zur Magazin- & Guide-Übersicht (/guides)
         </Link>

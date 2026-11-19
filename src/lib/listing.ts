@@ -26,6 +26,15 @@ export function clampRate(value: unknown, fallback: number, min: number, max: nu
   return Math.max(min, Math.min(max, base));
 }
 
+export function placePhoto(canton?: unknown) {
+  const code = String(canton || "").toUpperCase();
+  if (code === "ZH" || code === "BS" || code === "GE" || code === "BL") return "/editorial/editorial-zurich.jpg";
+  if (code === "ZG" || code === "LU" || code === "BE" || code === "GR" || code === "VS" || code === "TI" || code === "UR" || code === "OW" || code === "NW") {
+    return "/editorial/editorial-alps.jpg";
+  }
+  return "/editorial/editorial-still.jpg";
+}
+
 export function usablePhoto(url: unknown) {
   const raw = String(url || "").trim().replace(/[?&]iwsn_clean=1.*$/i, "");
   if (!raw.startsWith("http")) return "";

@@ -225,7 +225,7 @@ export default function FantasyPreviewAndAvatarPage() {
 
       <LuxuryHeader />
 
-      <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6">
+      <main className="cockpit">
         <section className="dossier-panel flex flex-col gap-5 rounded-[16px] p-5 sm:p-7 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             <div className="luxury-badge">

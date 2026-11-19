@@ -57,7 +57,7 @@ export default function UploadPhotos() {
         lead="Profile mit Fotos bekommen deutlich mehr Anfragen. Bis zu sechs Bilder, du bestimmst die Reihenfolge."
       />
 
-      <main className="relative z-10 mx-auto -mt-6 max-w-4xl px-4 pb-14 sm:px-6">
+      <main className="form-sheet">
         <section className="rounded-2xl border-2 border-tinte bg-white p-5 shadow-[0_5px_0_rgba(30,34,71,0.9)] sm:p-8">
           <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
             {photos.map((photo, index) => (

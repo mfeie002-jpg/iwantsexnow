@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { chf, whatsAppHref, type ListingProfile } from "@/lib/listing";
+import { chf, placePhoto, whatsAppHref, type ListingProfile } from "@/lib/listing";
 
 export function ListingCard({
   profile,
@@ -34,9 +34,13 @@ export function ListingCard({
             onError={() => setPhotoOk(false)}
           />
         ) : (
-          <span className="listing-fallback" aria-hidden="true">
-            <span>{initial}</span>
-            <em>{profile.city}</em>
+          <span
+            className="listing-fallback"
+            style={{ backgroundImage: "url(" + placePhoto(profile.canton) + ")" }}
+            aria-hidden="true"
+          >
+            <span>{profile.city}</span>
+            <em>{initial}</em>
           </span>
         )}
       </Link>

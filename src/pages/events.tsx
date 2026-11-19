@@ -45,7 +45,7 @@ export default function EventsCalendarPage() {
           </Link>
       </PageIntro>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <main className="guide">
         
 
         <div className="flex flex-wrap gap-1.5">

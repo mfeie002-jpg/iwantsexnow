@@ -29,7 +29,7 @@ export default function GiftsPage() {
       <PageIntro tone="blush" note="Eine kleine Aufmerksamkeit" art="none" title={<>Schweizer Gentleman-Aufmerksamkeiten & Wunsch-Geschenke</>}
         lead={<>Bereite deiner Favoritin vor einem Date eine Freude oder bedanke dich diskret – <strong>80 % des Betrags</strong> werden sofort ihrem Cockpit gutgeschrieben.</>} />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+      <main className="guide">
         
 
         <div className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-wrap items-center justify-between gap-3">

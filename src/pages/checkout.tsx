@@ -68,7 +68,7 @@ export default function CheckoutPage() {
         lead="80 % gehen direkt an die Anbieterin. Neutraler Beleg, keine versteckten Gebühren."
         art="none"
       />
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-10 space-y-6">
+      <main className="guide">
         <Link
           href={selectedProfile?.id ? `/profile/${encodeURIComponent(selectedProfile.id)}` : "/search"}
           className="inline-flex items-center gap-1.5 text-[13px] font-bold text-kirsche hover:underline"

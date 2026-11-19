@@ -17,13 +17,13 @@ export default function DemoListingDetail({ listing }: { listing: DemoListing })
   const back = filters.invalid ? "/search" : catalogueHref(filters);
   return <div className="min-h-screen bg-papier pb-32 text-tinte">
     <CatalogueHeader />
-    <main className="mx-auto max-w-3xl px-5 py-10 md:py-16">
+    <main className="cockpit">
       <Link href={back} className="text-sm font-semibold underline underline-offset-4">Zurück zum Katalog</Link>
       <article className="mt-7 rounded-2xl border border-gray-200 bg-white p-6 md:p-10">
         <p className="text-xs font-bold uppercase tracking-[0.15em] text-sun-800">Fiktives Demo-Inserat · keine reale Person</p>
         <h1 className="mt-4 text-4xl font-bold">{listing.title}</h1>
         <p className="mt-4 text-lg text-gray-600">{cityLabel(listing.city)} · {categoryLabel(listing.category)}</p>
-        <div className="my-7 flex h-48 items-center justify-center rounded-xl bg-fels" aria-hidden="true"><span className="text-sm font-bold tracking-widest text-tinte-soft">DEMO · KEIN FOTO</span></div>
+        <img src="/editorial/editorial-still.jpg" alt="" className="my-7 h-56 w-full object-cover" />
         <h2 className="text-xl font-bold">Über dieses Beispiel</h2>
         <p className="mt-3 leading-relaxed text-gray-600">{listing.description}</p>
         <p className="mt-3 leading-relaxed text-gray-600">Dieses Beispiel dient ausschliesslich dem Test von Katalog, Filtern und Detailansicht. Es gibt keine Kontaktperson, Preise, Bewertungen oder buchbare Verfügbarkeit.</p>

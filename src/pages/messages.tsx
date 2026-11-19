@@ -67,7 +67,7 @@ export default function MessagesPage() {
           )}
       </PageIntro>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+      <main className="guide">
         
 
         {sentOk ? (

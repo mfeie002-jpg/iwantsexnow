@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import SEO from "@/components/SEO";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
 import {
   CheckCircle2,
   EyeOff,
@@ -148,7 +149,7 @@ export default function CreatorDashboardPage() {
     const mainImg =
       baseOffer.thumbnail && String(baseOffer.thumbnail).startsWith("http")
         ? baseOffer.thumbnail
-        : gal[0] || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=85";
+        : gal[0] || "/editorial/editorial-salon.jpg";
     setThumbnail(mainImg);
     setGallery(gal.length > 0 ? gal : [mainImg]);
     setSourcePortal(baseOffer.sourcePortal || "xdate.ch");
@@ -346,22 +347,22 @@ export default function CreatorDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-papier text-tinte py-8 px-4 pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
+      <LuxuryHeader />
       <SEO
         title={`Anbieter-Cockpit: ${displayName || profileId || "Profil verwalten"} | iWantSexNow.ch`}
         description="Selbstverwaltetes Schweizer Anbieter-Cockpit für Fotos, 4K-Videos, 80/20 Paid Content, Echtzeit-Verfügbarkeit und Top-Spot Bidding."
       />
 
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="cockpit space-y-6">
         {/* Header mit echtem Vorschaubild */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-tinte/20 pb-6">
           <div className="flex items-center gap-4">
             <img
-              src={thumbnail || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80"}
+              src={thumbnail || "/editorial/editorial-salon.jpg"}
               alt={displayName || "Profilbild"}
               onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src =
-                  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80";
+                (e.currentTarget as HTMLImageElement).src = "/editorial/editorial-salon.jpg";
               }}
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-kirsche"
             />

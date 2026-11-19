@@ -79,7 +79,7 @@ export default function MatchesFinderPage() {
             </Link>
       </PageIntro>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <main className="guide">
         <section className="p-6 rounded-2xl bg-white border border-kirsche/40 space-y-4">
           
 

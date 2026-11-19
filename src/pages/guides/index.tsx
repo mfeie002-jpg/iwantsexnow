@@ -37,7 +37,7 @@ export default function SwissGuidesAndBlogIndexPage() {
       <PageIntro tone="butter" note="Gut zu wissen" art="none" title={<>Schweizer Insider-Guides, Preis-Reports & English Visitor Briefing</>}
         lead={<>Wähle unten einen unserer detaillierten Ratgeber für <strong>internationale Gäste (English)</strong>, <strong>Schweizer Gentlemen</strong>, <strong>Neueinsteigerinnen</strong> und <strong>Gigolos / Callboys</strong>:</>} />
 
-      <main className="container mx-auto px-4 py-10 max-w-6xl space-y-10">
+      <main className="guide">
         
 
         {/* Dedicated SEO Blog Articles Grid */}

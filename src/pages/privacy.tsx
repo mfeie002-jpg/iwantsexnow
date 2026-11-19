@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 
 export default function CorporateInfoPage() {
   return (
@@ -14,7 +13,7 @@ export default function CorporateInfoPage() {
       <PageIntro tone="himmel" note="Was mit deinen Daten passiert" art="verified" title={<>Datenschutzerklärung (Schweizer DSG)</>}
         lead={<>Informationen zum Umgang mit personenbezogenen Daten gemäss dem revidierten Schweizer Datenschutzgesetz (revDSG).</>} />
 
-      <main className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
+      <main className="essay">
         
 
         <div className="max-w-4xl space-y-5">
@@ -36,8 +35,6 @@ export default function CorporateInfoPage() {
         </section>
         </div>
       </main>
-
-      <CorporateFooter light />
-    </div>
+</div>
   );
 }

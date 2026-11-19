@@ -62,7 +62,7 @@ export default function LoginPage() {
       <LuxuryHeader />
       <PageIntro tone="himmel" note="Schön, dass du wieder da bist" art="hanger" title={<>In dein Anbieter-Cockpit einloggen</>}
         lead={<>Gib deine Schweizer Mobilnummer (+41 79 / 078 / 076...), deinen Anzeigenamen oder deine Profil-ID (z.B. ch-a720e283e85f) ein.</>} />
-      <main className="max-w-md mx-auto px-6 py-12 space-y-6">
+      <main className="form-sheet">
         <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-white border border-tinte/20">
           <button type="button" onClick={() => { setMode("provider"); setErrorMsg(null); }} className={`py-2.5 rounded-xl text-[13px] font-extrabold transition cursor-pointer ${mode === "provider" ? "bg-kirsche text-white" : "text-gray-400 hover:text-white"}`}>
             Anbieterinnen-Cockpit

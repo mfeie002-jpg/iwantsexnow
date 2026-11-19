@@ -49,6 +49,14 @@ Individual profile pages keep their existing dossier layout, colours, and contro
 
 Counts, prices, names, and phone numbers still come from `harvested-offers.json` and `swiss-establishments-vault.json`. No new ratings or verification claims were added to the interface.
 
+## Second pass
+
+Every remaining public page now uses the same sheet: legal and info pages are a single prose column, forms are one column under the masthead, guides and commerce pages are hairline sections, dashboards use the paper cockpit. The merkliste no longer seeds three profiles by itself. Stories only list entries with a confirmed four-hour flag or a status the provider saved. Account settings no longer shows a sample person. The default Open Graph image is the Zürich quay photograph shipped with the site. There is no email template in the repo.
+
+Listing cards without a usable photo use a place photograph (lake, alpine town, or still life) with the city name, instead of a bare initial.
+
+The catalogue unit test expected eight demo fixtures and narrower city matches. The fixture file has six entries, and a city match includes service areas. The test now locks that current behaviour. Asking for the approved view returns nothing, because those fixtures are marked demo. Harvested profile data was not edited.
+
 ## Left as they were
 
 Profile detail components and their visual treatment. Admin tools, provider cockpit internals, and harvested data files. SEO routes, canonical handling in `SEO`, hreflang on that component, sitemap, and structured data. Payment and environment settings.

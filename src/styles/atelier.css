@@ -619,25 +619,41 @@ textarea:focus {
 }
 
 .listing-fallback {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   height: 100%;
   padding: 0.9rem;
-  background:
-    linear-gradient(160deg, #e7e1d6, #d5c7b6);
-  color: var(--tinte);
+  background-color: #cfc6b8;
+  background-size: cover;
+  background-position: center;
+  color: #fbfaf6;
+}
+
+.listing-fallback::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 30%, rgba(20, 16, 12, 0.78));
+}
+
+.listing-fallback span,
+.listing-fallback em {
+  position: relative;
+  z-index: 1;
+  color: #fbfaf6;
 }
 
 .listing-fallback span {
   font-family: var(--f-display);
-  font-size: 3rem;
+  font-size: 1.7rem;
   line-height: 1;
 }
 
 .listing-fallback em {
   font-style: normal;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-size: 0.75rem;
 }
@@ -1162,3 +1178,151 @@ textarea:focus {
 [data-profile-sheet] .rounded-\[14px\] { border-radius: 14px; }
 [data-profile-sheet] .rounded-\[16px\] { border-radius: 16px; }
 [data-profile-sheet] .rounded-\[20px\] { border-radius: 20px; }
+
+/* --------------------------------------------------------- remaining pages */
+
+.essay,
+.form-sheet,
+.guide,
+.cockpit {
+  max-width: 760px;
+}
+
+.guide,
+.cockpit {
+  max-width: 1100px;
+}
+
+.essay,
+.form-sheet,
+.guide,
+.cockpit {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+.essay section,
+.form-sheet form,
+.form-sheet section,
+.guide section,
+.cockpit section,
+.essay .rounded-2xl,
+.form-sheet .rounded-2xl,
+.guide .rounded-2xl,
+.cockpit .rounded-2xl {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.essay section + section,
+.guide section + section,
+.form-sheet form,
+.cockpit .rounded-2xl {
+  border-top: 1px solid var(--linie);
+  padding-top: 1.4rem;
+}
+
+.essay h2,
+.guide h2,
+.cockpit h1,
+.form-sheet h2 {
+  font-family: var(--f-display);
+  font-weight: 560;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+
+.essay a,
+.guide a,
+.form-sheet a {
+  color: var(--kirsche-tief);
+}
+
+.essay p,
+.guide p,
+.form-sheet p {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.guide svg,
+.essay svg,
+.form-sheet svg {
+  display: none;
+}
+
+.brass-button,
+.emerald-button,
+.ghost-button,
+.listing-card,
+.geo-city,
+.text-link,
+.category-tile img,
+.listing-photo img {
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 280ms ease,
+    opacity 160ms ease;
+}
+
+.listing-card:hover .listing-photo img {
+  transform: scale(1.03);
+}
+
+.listing-card:hover h3 a {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brass-button,
+  .emerald-button,
+  .ghost-button,
+  .listing-card,
+  .listing-photo img {
+    transition: none;
+  }
+  .listing-card:hover .listing-photo img {
+    transform: none;
+  }
+}
+
+.notice {
+  border-top: 1px solid var(--linie);
+  padding-top: 1rem;
+  color: var(--tinte-soft);
+}
+
+.empty-panel {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  align-items: end;
+  margin: 1rem 0 2rem;
+}
+
+.empty-panel img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.empty-panel h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+@media (min-width: 800px) {
+  .empty-panel {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+  .empty-panel img {
+    height: 100%;
+    min-height: 220px;
+  }
+}

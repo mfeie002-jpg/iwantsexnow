@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 
 export default function CorporateInfoPage() {
   return (
@@ -14,7 +13,7 @@ export default function CorporateInfoPage() {
       <PageIntro tone="butter" note="Wer wir sind" art="canton:ch" title={<>Über uns & Prüf-Methodik</>}
         lead={<>Warum wir auf nachvollziehbare Zeitstempel, offengelegte Quellen und ehrliche Preis-Einordnung setzen.</>} />
 
-      <main className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
+      <main className="essay">
         
 
         <div className="max-w-4xl space-y-5">
@@ -35,8 +34,6 @@ export default function CorporateInfoPage() {
         </section>
         </div>
       </main>
-
-      <CorporateFooter light />
-    </div>
+</div>
   );
 }

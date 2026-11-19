@@ -72,7 +72,7 @@ export default function CreatePostPage() {
       >
         <Link href="/login" className="emerald-button">Bereits registriert? Zum Login</Link>
       </PageIntro>
-      <main className="-mt-6 relative z-10 max-w-3xl mx-auto px-4 sm:px-6 pb-10 space-y-6">
+      <main className="form-sheet">
         <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">

@@ -72,7 +72,7 @@ export default function VerifyIdentityPage() {
       <PageIntro tone="minze" note="Echt ist besser" art="verified" title={<>Dokumentierte Identitäts- & Bildprüfung beantragen</>}
         lead={<>Das Merkmal „Identität geprüft (✓)“ wird ausschliesslich vergeben, wenn Volljährigkeit (18+) und die Übereinstimmung mit den veröffentlichten Profilbildern per Tagescode bestätigt wurden.</>} />
 
-      <main className="max-w-3xl mx-auto px-6 sm:px-10 py-10 space-y-8">
+      <main className="form-sheet">
         <Link href="/creator-dashboard" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-gray-700 hover:text-tinte">
           <ArrowLeft size={14} />
           <span>Zurück zum Anbieter-Cockpit</span>

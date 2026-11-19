@@ -18,7 +18,7 @@ export default function PremiumVipPage() {
       <PageIntro tone="butter" note="Mehr sehen, mehr sein" art="category:vip" title={<>VIP Vault-Bundles & Echtzeit-Verfügbarkeits-Radar</>}
         lead={<>Unterstütze unabhängige Schweizer Anbieterinnen direkt (<strong>80 % Fair-Split</strong>) und erhalte sofortigen Zugang zu privaten Foto- & Video-Tresoren ohne Einzelabrechnung.</>} />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+      <main className="guide">
         
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">

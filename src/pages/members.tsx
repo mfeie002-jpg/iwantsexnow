@@ -42,7 +42,7 @@ export default function MembersLoungePage() {
           </div>
       </PageIntro>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+      <main className="guide">
         
 
         <section className="p-6 rounded-2xl bg-white border border-tinte/20 space-y-4">

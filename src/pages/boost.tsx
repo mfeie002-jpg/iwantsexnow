@@ -61,7 +61,7 @@ export default function BoostProfilePage() {
           </Link>
       </PageIntro>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+      <main className="guide">
         
 
         <div className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-wrap items-center justify-between gap-3">

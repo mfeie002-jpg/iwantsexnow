@@ -14,7 +14,7 @@ export function SEO({
   title = "IWANTSEXNOW.CH — Schweizer Escort-, Tantra- & Studio-Direktverzeichnis (0% Provision)",
   description = "2'515+ geprüfte Schweizer Escort-, Girlfriend-Experience-, Tantra- & Studio-Profile sowie 108 stationäre Clubs in Zürich, Zug, Luzern, Basel, Bern & Genf. Direkter +41 Kontakt & transparente CHF-Tarife.",
   url = "https://iwantsexnow.ch",
-  image = "https://iwantsexnow.ch/images/escort-portrait-1.jpg",
+  image = "https://iwantsexnow.ch/editorial/editorial-zurich.jpg",
   noindex = false,
   schemaJson,
 }: SEOProps) {
