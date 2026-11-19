@@ -42,7 +42,7 @@ export default function ReportAndOptOutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
         title="Profil melden oder Eintrag sofort entfernen (Opt-Out ohne Login) | iWantSexNow.ch"
         description="Unkomplizierte Sofort-Ausblendung und Sperrliste (Do-Not-Import) nach Schweizer Datenschutzgesetz (revDSG)."
@@ -54,9 +54,9 @@ export default function ReportAndOptOutPage() {
           <ArrowLeft size={14} /> Zurück zur Übersicht
         </Link>
 
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-white/10 space-y-6">
+        <div className="p-6 sm:p-8 rounded-2xl bg-[#22101a] border border-white/10 space-y-6">
           <div>
-            <span className="text-[11px] uppercase tracking-widest text-rose-400 font-bold flex items-center gap-1.5">
+            <span className="text-xs uppercase tracking-widest text-rose-400 font-bold flex items-center gap-1.5">
               <ShieldAlert size={13} /> SOFORT-AUSBLENDUNG OHNE LOGIN-PFLICHT (CH-DSG)
             </span>
             <h1 className="text-2xl font-serif font-bold text-white mt-1">
@@ -89,7 +89,7 @@ export default function ReportAndOptOutPage() {
                   value={profileId}
                   onChange={(e) => setProfileId(e.target.value)}
                   placeholder="z.B. ch-a720e283e85f oder +41 79 ..."
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-2.5 text-sm text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-4 py-2.5 text-sm text-white"
                 />
               </div>
 
@@ -98,7 +98,7 @@ export default function ReportAndOptOutPage() {
                 <select
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-2.5 text-sm text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-4 py-2.5 text-sm text-white"
                 >
                   <option value="Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden">
                     Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden
@@ -115,7 +115,7 @@ export default function ReportAndOptOutPage() {
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
                   placeholder="E-Mail oder +41 Nummer für Bestätigung"
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-2.5 text-sm text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-4 py-2.5 text-sm text-white"
                 />
               </div>
 
@@ -125,7 +125,7 @@ export default function ReportAndOptOutPage() {
                   rows={3}
                   value={details}
                   onChange={(e) => setDetails(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 p-3.5 text-sm text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 p-3.5 text-sm text-white"
                 />
               </div>
 

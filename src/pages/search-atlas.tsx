@@ -36,7 +36,7 @@ export default function SearchAtlasPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
         title="Schweizer 2D-Such-Atlas: Alle Kantone, Städte & Spezial-Rubriken | iwantsexnow.ch"
         description="Komplettes Schweizer Verzeichnis aller Ortsseiten und 84 Stadt-Service-Kombinationen (GFE, Tantra, Hotel-Outcall, BDSM, Trans) mit CHF-Richtpreisen."
@@ -45,9 +45,9 @@ export default function SearchAtlasPage() {
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <section className="p-6 rounded-2xl bg-[#22101a] border border-[#e8c98a]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+            <div className="text-xs uppercase tracking-widest text-[#e8c98a] font-bold flex items-center gap-1.5">
               <Compass size={14} /> 2D-PROGRAMMATIC DIRECTORY ATLAS · SCHWEIZ
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
@@ -57,7 +57,7 @@ export default function SearchAtlasPage() {
               Direktzugriff auf alle regionalen Schweizer Knotenpunkte und Spezial-Rubriken mit 5-Wege-Echtzeit-Sortierung.
             </p>
           </div>
-          <Link href="/search" className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+          <Link href="/search" className="px-4 py-2.5 rounded-xl bg-[#d6165f] text-white text-xs font-extrabold">
             Zur Deep-Filter-Suche →
           </Link>
         </section>
@@ -69,7 +69,7 @@ export default function SearchAtlasPage() {
               type="button"
               onClick={() => setSelectedCanton(c)}
               className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
-                selectedCanton === c ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#121722] text-gray-300 border border-white/10"
+                selectedCanton === c ? "bg-[#d6165f] text-white" : "bg-[#22101a] text-gray-300 border border-white/10"
               }`}
             >
               {c === "ALL" ? "Alle Regionen" : `Kanton ${c}`}
@@ -79,15 +79,15 @@ export default function SearchAtlasPage() {
 
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {visibleCities.map((city) => (
-            <div key={city.slug} className="p-5 rounded-2xl bg-[#121722] border border-white/10 space-y-3">
+            <div key={city.slug} className="p-5 rounded-2xl bg-[#22101a] border border-white/10 space-y-3">
               <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                 <div>
-                  <span className="text-[10px] font-extrabold text-[#C8A97E] uppercase">Kanton {city.canton}</span>
+                  <span className="text-xs font-extrabold text-[#e8c98a] uppercase">Kanton {city.canton}</span>
                   <h2 className="text-lg font-serif font-bold text-white">{city.name}</h2>
                 </div>
                 <Link
                   href={`/orte/${city.slug}`}
-                  className="px-3 py-1.5 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold"
+                  className="px-3 py-1.5 rounded-xl bg-[#d6165f] text-white text-xs font-extrabold"
                 >
                   Hauptseite →
                 </Link>
@@ -98,12 +98,12 @@ export default function SearchAtlasPage() {
                   <Link
                     key={srv.slug}
                     href={`/kategorie/${city.slug}/${srv.slug}`}
-                    className="p-2 rounded-xl bg-[#0D111A] hover:bg-white/5 border border-white/5 hover:border-[#C8A97E]/40 flex items-center justify-between text-gray-300 hover:text-white transition"
+                    className="p-2 rounded-xl bg-[#150810] hover:bg-white/5 border border-white/5 hover:border-[#e8c98a]/40 flex items-center justify-between text-gray-300 hover:text-white transition"
                   >
                     <span>
                       {srv.label} in <strong>{city.name}</strong>
                     </span>
-                    <ArrowRight size={12} className="text-[#C8A97E]" />
+                    <ArrowRight size={12} className="text-[#e8c98a]" />
                   </Link>
                 ))}
               </div>

@@ -59,10 +59,10 @@ export function SwissDoorplate({
 
   const sizeCls =
     size === "lg"
-      ? "min-h-[38px] text-[10px] tracking-[0.16em]"
+      ? "min-h-[38px] text-xs tracking-[0.16em]"
       : size === "md"
-      ? "min-h-[31px] text-[9px] tracking-[0.14em]"
-      : "min-h-[25px] text-[8px] tracking-[0.11em]";
+      ? "min-h-[31px] text-xs tracking-[0.14em]"
+      : "min-h-[25px] text-xs tracking-[0.11em]";
 
   const innerPadding =
     size === "lg"
@@ -86,7 +86,7 @@ export function SwissDoorplate({
 
   const enamelStyle: React.CSSProperties = {
     background:
-      "linear-gradient(180deg, rgba(255,245,220,0.055), transparent 38%), " +
+      "linear-gradient(180deg, rgba(251,241,236,0.055), transparent 38%), " +
       cfg.bg,
     borderColor: cfg.border + "66",
     color: cfg.text,
@@ -119,17 +119,17 @@ export function SwissDoorplate({
       }
       className={plateClass}
       style={{
-        borderColor: "rgba(222,195,147,0.5)",
+        borderColor: "rgba(214,22,95,0.5)",
         background:
-          "linear-gradient(135deg, #DEC393 0%, #B38E52 52%, #876633 100%)",
+          "linear-gradient(135deg, #e8c98a 0%, #d6165f 52%, #3a1325 100%)",
         boxShadow:
-          "inset 0 1px 0 rgba(255,245,220,0.35), inset 0 -1px 0 rgba(55,34,10,0.5), 0 6px 18px rgba(0,0,0,0.7)",
+          "inset 0 1px 0 rgba(251,241,236,0.35), inset 0 -1px 0 rgba(214,22,95,0.5), 0 6px 18px rgba(0,0,0,0.7)",
       }}
     >
-      <span className="pointer-events-none absolute left-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.35)]" />
-      <span className="pointer-events-none absolute right-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.35)]" />
-      <span className="pointer-events-none absolute bottom-[3px] left-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.25)]" />
-      <span className="pointer-events-none absolute bottom-[3px] right-[3px] h-[3px] w-[3px] rounded-full bg-[#5F461F] shadow-[0_1px_0_rgba(255,245,220,0.25)]" />
+      <span className="pointer-events-none absolute left-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#3d2231] shadow-[0_1px_0_rgba(251,241,236,0.35)]" />
+      <span className="pointer-events-none absolute right-[3px] top-[3px] h-[3px] w-[3px] rounded-full bg-[#3d2231] shadow-[0_1px_0_rgba(251,241,236,0.35)]" />
+      <span className="pointer-events-none absolute bottom-[3px] left-[3px] h-[3px] w-[3px] rounded-full bg-[#3d2231] shadow-[0_1px_0_rgba(251,241,236,0.25)]" />
+      <span className="pointer-events-none absolute bottom-[3px] right-[3px] h-[3px] w-[3px] rounded-full bg-[#3d2231] shadow-[0_1px_0_rgba(251,241,236,0.25)]" />
 
       <div
         className={
@@ -138,7 +138,7 @@ export function SwissDoorplate({
         }
         style={enamelStyle}
       >
-        <span className="flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full border border-[#DEC393]/35 bg-black/45 p-[2px]">
+        <span className="flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full border border-[#e8c98a]/35 bg-black/45 p-[2px]">
           <span
             className={"h-full w-full rounded-full " + pulseCls}
             style={ledStyle}
@@ -146,7 +146,7 @@ export function SwissDoorplate({
         </span>
 
         {roomNumber && (
-          <span className="shrink-0 border-r border-[#DEC393]/25 pr-1.5 text-[#DEC393]">
+          <span className="shrink-0 border-r border-[#e8c98a]/25 pr-1.5 text-[#e8c98a]">
             {roomNumber}
           </span>
         )}

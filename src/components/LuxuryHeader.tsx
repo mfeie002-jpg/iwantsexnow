@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  Heart,
-  Search,
-  Building2,
-  Sparkles,
-  ShieldCheck,
-  PlusCircle,
-} from "lucide-react";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
-import offersData from "@/data/harvested-offers.json";
-import clubsData from "@/data/swiss-establishments-vault.json";
-
-const TOTAL_PROFILES = Array.isArray(offersData) && offersData.length > 0 ? offersData.length : 2590;
-const TOTAL_CLUBS = Array.isArray(clubsData) && clubsData.length > 0 ? clubsData.length : 108;
+import { BrandMark } from "@/components/visuals";
+import { LANGS, usePrefs } from "@/lib/prefs";
 
 export function LuxuryHeader() {
   const router = useRouter();
+  const { lang, setLang, discreet, setDiscreet, t } = usePrefs();
   const [favCount, setFavCount] = useState<number>(0);
 
   useEffect(() => {
@@ -41,152 +30,122 @@ export function LuxuryHeader() {
     };
   }, []);
 
-  const navItems = [
-    {
-      href: "/search",
-      label: "Deep-Suche",
-      icon: Search,
-      highlight: false,
-    },
-    {
-      href: "/clubs",
-      label: `${TOTAL_CLUBS} Clubs & Studios`,
-      icon: Building2,
-      highlight: false,
-    },
-    {
-      href: "/fantasy-preview",
-      label: "Avatar & Preview",
-      icon: Sparkles,
-      highlight: true,
-    },
-    {
-      href: "/pricing",
-      label: "CHF-Kompass",
-      icon: ShieldCheck,
-      highlight: false,
-    },
+  const items = [
+    { href: "/", label: t("discover"), active: router.pathname === "/" },
+    { href: "/#staedte", label: t("cities"), active: false },
+    { href: "/favorites", label: t("saved"), active: router.pathname === "/favorites", count: favCount },
   ];
 
-  const getNavClass = (isHighlight: boolean, isActive: boolean) => {
-    const base =
-      "relative inline-flex min-h-[35px] items-center gap-1.5 whitespace-nowrap rounded-[5px] border px-3 py-1.5 text-[10px] font-medium tracking-[0.025em] transition duration-200 ";
-
-    if (isHighlight) {
-      return (
-        base +
-        "border-[#C8A97E]/30 bg-[#C8A97E]/[0.055] text-[#DEC393] hover:border-[#DEC393]/65 hover:bg-[#C8A97E]/10"
-      );
-    }
-
-    if (isActive) {
-      return (
-        base +
-        "border-[#C8A97E]/25 bg-[#C8A97E]/[0.06] text-[#DEC393] after:absolute after:inset-x-3 after:-bottom-[18px] after:h-px after:bg-[#DEC393]"
-      );
-    }
-
-    return (
-      base +
-      "border-transparent text-[#8F8578] hover:bg-white/[0.025] hover:text-[#E7DCCB]"
-    );
-  };
-
-  const heartClass =
-    favCount > 0
-      ? "fill-[#DEC393] text-[#DEC393]"
-      : "text-[#A79A89]";
+  const linkClass = (active: boolean) =>
+    "inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 text-[16px] font-semibold transition " +
+    (active ? "bg-[#2b1420] text-[#fbf1ec]" : "text-[#fbf1ec] hover:bg-[#2b1420]");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#C8A97E]/15 bg-[#070606]/90 backdrop-blur-2xl">
-      <div className="h-px bg-gradient-to-r from-transparent via-[#DEC393]/55 to-transparent" />
-
-      <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
-        <div className="flex min-w-0 items-center gap-3">
-          <Link
-            href="/"
-            className="group flex min-w-0 items-center gap-3"
-            aria-label="iwantsexnow.ch Startseite"
-          >
-            <div className="brass-button relative flex h-9 w-9 shrink-0 items-center justify-center rounded-[5px] font-serif text-[13px] font-semibold tracking-[0.08em]">
-              <span className="relative z-[1]">CH</span>
-            </div>
-
-            <div className="min-w-0">
-              <div className="truncate font-serif text-[14px] font-medium tracking-[0.065em] text-[#F2EADF] sm:text-[17px]">
-                IWANTSEXNOW
-                <span className="text-[#C8A97E]">.CH</span>
-              </div>
-              <div className="mt-1 truncate text-[7px] font-medium uppercase tracking-[0.2em] text-[#776D60] sm:text-[8px]">
-                Schweizer Direktverzeichnis · 0% Provision
-              </div>
-            </div>
-          </Link>
-
-          <div className="hidden pl-2 2xl:block">
-            <SwissDoorplate
-              state="FREI"
-              roomNumber="CH"
-              customLabel={`${TOTAL_PROFILES.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")} PROFILE AKTIV`}
-              size="sm"
-            />
-          </div>
-        </div>
-
-        <nav
-          className="hidden items-center gap-1 lg:flex"
-          aria-label="Hauptnavigation"
+    <header className="sticky top-0 z-40 border-b border-[#3d2231] bg-[#150810]/90 backdrop-blur-2xl">
+      <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
+        <Link
+          href="/"
+          className="group flex min-w-0 items-center gap-3"
+          aria-label="iWantSexNow.ch Startseite"
         >
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = router.pathname === item.href;
+          <BrandMark size={38} className="shrink-0" />
+          <span className="truncate font-serif text-[26px] leading-none text-[#fbf1ec] sm:text-[30px]">
+            iWantSexNow<span className="text-[#e8c98a]">.ch</span>
+          </span>
+        </Link>
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={getNavClass(Boolean(item.highlight), active)}
-              >
-                <Icon size={12} strokeWidth={1.55} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptmenü">
+          {items.map((item) => (
+            <Link key={item.label} href={item.href} className={linkClass(item.active)}>
+              {item.label}
+              {typeof item.count === "number" && item.count > 0 && (
+                <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#e8c98a] px-1.5 text-sm font-bold text-[#2a1408]">
+                  {item.count}
+                </span>
+              )}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href="/favorites"
-            className="ghost-button inline-flex min-h-[37px] items-center gap-1.5 rounded-[5px] px-2.5 py-1.5 text-[10px] font-medium sm:px-3"
-            aria-label={"Merkliste mit " + favCount + " Einträgen"}
-          >
-            <Heart size={13} className={heartClass} strokeWidth={1.55} />
-            <span className="hidden xl:inline">Merkliste</span>
-            {favCount > 0 && (
-              <span className="min-w-[18px] rounded-full border border-[#DEC393]/30 bg-[#C8A97E]/10 px-1.5 py-0.5 text-center font-mono text-[9px] tabular-nums text-[#DEC393]">
-                {favCount}
-              </span>
-            )}
-          </Link>
+          <details className="group relative">
+            <summary
+              className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 rounded-full border border-[#947683] px-4 text-[15px] font-semibold text-[#fbf1ec] transition hover:border-[#e8c98a] hover:text-[#e8c98a]"
+              aria-label={t("menu")}
+            >
+              {lang.toUpperCase()}
+              <span className="hidden sm:inline">·</span>
+              <span className="hidden sm:inline">{t("menu")}</span>
+            </summary>
+            <div className="absolute right-0 top-14 z-50 grid w-80 gap-5 rounded-[28px] border border-[#3d2231] bg-[#22101a] p-6 shadow-[0_28px_60px_rgba(0,0,0,0.5)]">
+              <div>
+                <div className="mb-3 text-[15px] font-semibold text-[#cdb5be]">{t("language")}</div>
+                <div className="flex gap-2">
+                  {LANGS.map((l) => (
+                    <button
+                      key={l.code}
+                      type="button"
+                      onClick={() => setLang(l.code)}
+                      aria-pressed={lang === l.code}
+                      className={
+                        "min-h-[44px] flex-1 cursor-pointer rounded-full border text-[15px] font-semibold transition " +
+                        (lang === l.code
+                          ? "border-[#e8c98a] bg-[#e8c98a] text-[#2a1408]"
+                          : "border-[#947683] text-[#fbf1ec] hover:border-[#e8c98a]")
+                      }
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setDiscreet(!discreet)}
+                  aria-pressed={discreet}
+                  className="flex w-full cursor-pointer items-center justify-between gap-4 text-left"
+                >
+                  <span>
+                    <span className="block text-[16px] font-semibold text-[#fbf1ec]">{t("discreet")}</span>
+                    <span className="mt-1 block text-[14px] leading-snug text-[#cdb5be]">
+                      {t("discreetHint")}
+                    </span>
+                  </span>
+                  <span
+                    className={
+                      "relative h-8 w-14 shrink-0 rounded-full transition " +
+                      (discreet ? "bg-[#5fd3a5]" : "bg-[#947683]")
+                    }
+                  >
+                    <span
+                      className={
+                        "absolute top-1 h-6 w-6 rounded-full bg-white transition-all " +
+                        (discreet ? "left-7" : "left-1")
+                      }
+                    />
+                  </span>
+                </button>
+              </div>
+
+              <div className="grid gap-1 border-t border-[#3d2231] pt-4 text-[15px]">
+                <Link href="/clubs" className="footer-link py-1">Clubs und Studios</Link>
+                <Link href="/how-it-works" className="footer-link py-1">So funktioniert&apos;s</Link>
+                <Link href="/safety" className="footer-link py-1">Sicherheit</Link>
+                <Link href="/contact" className="footer-link py-1">Kontakt</Link>
+              </div>
+            </div>
+          </details>
 
           <Link
-            href="/register"
-            className="brass-button inline-flex min-h-[37px] items-center gap-1.5 rounded-[5px] px-3 py-1.5 text-[9px] uppercase tracking-[0.065em] sm:px-3.5 sm:text-[10px]"
+            href="/advertise"
+            className="ghost-button inline-flex min-h-[44px] items-center rounded-full px-5 text-[15px] font-semibold"
           >
-            <PlusCircle
-              size={13}
-              strokeWidth={1.8}
-              className="relative z-[1]"
-            />
-            <span className="relative z-[1] hidden sm:inline">
-              + Inserat (0%)
-            </span>
-            <span className="relative z-[1] sm:hidden">+ Inserat</span>
+            {t("advertise")}
           </Link>
         </div>
       </div>
     </header>
   );
 }
-
-export default LuxuryHeader;

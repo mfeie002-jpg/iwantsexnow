@@ -15,7 +15,7 @@ export default function DemoListingDetail({ listing }: { listing: DemoListing })
   const router = useRouter();
   const filters = parseCatalogueFilters(router.isReady ? router.query : {});
   const back = filters.invalid ? "/search" : catalogueHref(filters);
-  return <div className="min-h-screen bg-[#f7f5f1] pb-32 text-slate-950">
+  return <div className="min-h-screen bg-[#fbf4f0] pb-32 text-slate-950">
     <CatalogueHeader />
     <main className="mx-auto max-w-3xl px-5 py-10 md:py-16">
       <Link href={back} className="text-sm font-semibold underline underline-offset-4">Zurück zum Katalog</Link>
@@ -23,7 +23,7 @@ export default function DemoListingDetail({ listing }: { listing: DemoListing })
         <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-800">Fiktives Demo-Inserat · keine reale Person</p>
         <h1 className="mt-4 text-4xl font-bold">{listing.title}</h1>
         <p className="mt-4 text-lg text-slate-600">{cityLabel(listing.city)} · {categoryLabel(listing.category)}</p>
-        <div className="my-7 flex h-48 items-center justify-center rounded-xl bg-[#eee9df]" aria-hidden="true"><span className="text-sm font-bold tracking-widest text-slate-500">DEMO · KEIN FOTO</span></div>
+        <div className="my-7 flex h-48 items-center justify-center rounded-xl bg-[#fbf4f0]" aria-hidden="true"><span className="text-sm font-bold tracking-widest text-slate-500">DEMO · KEIN FOTO</span></div>
         <h2 className="text-xl font-bold">Über dieses Beispiel</h2>
         <p className="mt-3 leading-relaxed text-slate-600">{listing.description}</p>
         <p className="mt-3 leading-relaxed text-slate-600">Dieses Beispiel dient ausschliesslich dem Test von Katalog, Filtern und Detailansicht. Es gibt keine Kontaktperson, Preise, Bewertungen oder buchbare Verfügbarkeit.</p>

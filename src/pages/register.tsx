@@ -58,7 +58,7 @@ export default function RegisterProviderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
         title="Kostenloses Schweizer Escort- & Studio-Profil erstellen (0% Buchungsprovision) | iwantsexnow.ch"
         description="Erstelle in 60 Sekunden dein unabhängiges Schweizer Profil mit +41 Direktkontakt, 4h-Echtzeit-Radar und 80% Paid-Vault-Ausschüttung."
@@ -67,8 +67,8 @@ export default function RegisterProviderPage() {
       <LuxuryHeader />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 space-y-2">
-          <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+        <section className="p-6 rounded-2xl bg-[#22101a] border border-[#e8c98a]/40 space-y-2">
+          <div className="text-xs uppercase tracking-widest text-[#e8c98a] font-bold flex items-center gap-1.5">
             <Sparkles size={14} /> UNABHÄNGIGES SCHWEIZER ANBIETER-COCKPIT · 0 % VERMITTLUNGSPROVISION
           </div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
@@ -80,11 +80,11 @@ export default function RegisterProviderPage() {
         </section>
 
         {createdResult ? (
-          <section className="p-8 rounded-2xl bg-[#121722] border border-emerald-500/50 space-y-5 text-center">
+          <section className="p-8 rounded-2xl bg-[#22101a] border border-emerald-500/50 space-y-5 text-center">
             <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 size={26} />
             </div>
-            <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">
+            <div className="text-xs uppercase tracking-widest text-emerald-400 font-bold">
               PROFIL LIVE & FÜR 4 STUNDEN ALS VERFÜGBAR MARKIERT
             </div>
             <h2 className="text-2xl font-serif font-bold text-white">
@@ -93,26 +93,26 @@ export default function RegisterProviderPage() {
             <p className="text-xs text-gray-300 max-w-lg mx-auto">
               Speichere dir deinen persönlichen Cockpit-Link als Lesezeichen. Darüber kannst du jederzeit deine Preise, Fotos, Paid-Vault-Inhalte und deine 4h-Verfügbarkeit ohne Passwort-Zwang steuern:
             </p>
-            <div className="p-3.5 rounded-xl bg-[#0D111A] border border-white/10 text-xs font-mono text-[#C8A97E] break-all">
+            <div className="p-3.5 rounded-xl bg-[#150810] border border-white/10 text-xs font-mono text-[#e8c98a] break-all">
               https://iwantsexnow.ch{createdResult.cockpitUrl}
             </div>
             <div className="flex flex-wrap justify-center gap-3 pt-2">
               <Link
                 href={createdResult.cockpitUrl}
-                className="px-6 py-3 rounded-xl bg-emerald-500 text-[#07120B] font-extrabold text-xs uppercase tracking-wider"
+                className="px-6 py-3 rounded-xl bg-emerald-500 text-[#2a1408] font-extrabold text-xs uppercase tracking-wider"
               >
                 🔐 Direkt in mein Anbieter-Cockpit →
               </Link>
               <Link
                 href={createdResult.profileUrl}
-                className="px-6 py-3 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider"
+                className="px-6 py-3 rounded-xl bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider"
               >
                 Öffentliches Profil ansehen ↗
               </Link>
             </div>
           </section>
         ) : (
-          <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-white/10 space-y-5">
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#22101a] border border-white/10 space-y-5">
             {errorMsg && (
               <div className="p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-xs text-rose-200 font-bold">
                 ⚠️ {errorMsg}
@@ -121,22 +121,22 @@ export default function RegisterProviderPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Anzeigename / Künstlername *</label>
+                <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Anzeigename / Künstlername *</label>
                 <input
                   type="text"
                   required
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="z.B. Elena VIP"
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Kanton *</label>
+                <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Kanton *</label>
                 <select
                   value={canton}
                   onChange={(e) => setCanton(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                 >
                   {["ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "SZ", "SO", "GE", "VD", "TI", "VS"].map((c) => (
                     <option key={c} value={c}>Kanton {c}</option>
@@ -144,43 +144,43 @@ export default function RegisterProviderPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Stadt / Ort *</label>
+                <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Stadt / Ort *</label>
                 <input
                   type="text"
                   required
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="z.B. Zug, Baar, Zürich..."
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Schweizer +41 Nummer (WhatsApp/Call) *</label>
+                <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Schweizer +41 Nummer (WhatsApp/Call) *</label>
                 <input
                   type="tel"
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+41 79 123 45 67"
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Honorar 30 Min. (CHF)</label>
+                <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Honorar 30 Min. (CHF)</label>
                 <input
                   type="number"
                   min={80}
                   max={800}
                   value={rate30Chf}
                   onChange={(e) => setRate30Chf(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Honorar 60 Min. (CHF 100–1200) *</label>
+                <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Honorar 60 Min. (CHF 100–1200) *</label>
                 <input
                   type="number"
                   required
@@ -188,35 +188,35 @@ export default function RegisterProviderPage() {
                   max={1200}
                   value={rate60Chf}
                   onChange={(e) => setRate60Chf(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Alter</label>
-                <input type="number" min={18} max={55} value={age} onChange={(e) => setAge(e.target.value)} className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white" />
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Alter</label>
+                <input type="number" min={18} max={55} value={age} onChange={(e) => setAge(e.target.value)} className="w-full rounded-xl bg-[#150810] border border-white/15 px-3 py-2 text-xs text-white" />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Grösse (cm)</label>
-                <input type="number" min={150} max={190} value={heightCm} onChange={(e) => setHeightCm(e.target.value)} className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white" />
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Grösse (cm)</label>
+                <input type="number" min={150} max={190} value={heightCm} onChange={(e) => setHeightCm(e.target.value)} className="w-full rounded-xl bg-[#150810] border border-white/15 px-3 py-2 text-xs text-white" />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Körbchen</label>
-                <select value={cupSize} onChange={(e) => setCupSize(e.target.value)} className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white">
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Körbchen</label>
+                <select value={cupSize} onChange={(e) => setCupSize(e.target.value)} className="w-full rounded-xl bg-[#150810] border border-white/15 px-3 py-2 text-xs text-white">
                   {["A", "B", "C", "D", "DD"].map((c) => <option key={c} value={c}>Cup {c}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Haarfarbe</label>
-                <select value={hairColor} onChange={(e) => setHairColor(e.target.value)} className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white">
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Haarfarbe</label>
+                <select value={hairColor} onChange={(e) => setHairColor(e.target.value)} className="w-full rounded-xl bg-[#150810] border border-white/15 px-3 py-2 text-xs text-white">
                   {["Brünett", "Blond", "Schwarz", "Dunkelblond", "Rot"].map((h) => <option key={h} value={h}>{h}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Rubrik</label>
-                <select value={rubric} onChange={(e) => setRubric(e.target.value)} className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3 py-2 text-xs text-white">
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Rubrik</label>
+                <select value={rubric} onChange={(e) => setRubric(e.target.value)} className="w-full rounded-xl bg-[#150810] border border-white/15 px-3 py-2 text-xs text-white">
                   <option value="female">Escort & GFE</option>
                   <option value="massage">Tantra & Massage</option>
                   <option value="bdsm">Domina & BDSM</option>
@@ -226,20 +226,20 @@ export default function RegisterProviderPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-gray-300 uppercase mb-1">Über mich / Services & Empfang (Incall / Outcall)</label>
+              <label className="block text-xs font-bold text-gray-300 uppercase mb-1">Über mich / Services & Empfang (Incall / Outcall)</label>
               <textarea
                 rows={3}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Beschreibe kurz deinen Service, Sprachen und ob du im privaten Apartment oder im Hotel (Outcall) empfängst..."
-                className="w-full rounded-xl bg-[#0D111A] border border-white/15 p-3.5 text-xs text-white"
+                className="w-full rounded-xl bg-[#150810] border border-white/15 p-3.5 text-xs text-white"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider cursor-pointer shadow-lg"
+              className="w-full py-4 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider cursor-pointer shadow-lg"
             >
               {loading ? "Profil wird angelegt..." : "✓ Kostenloses Schweizer Profil & Cockpit sofort freischalten →"}
             </button>

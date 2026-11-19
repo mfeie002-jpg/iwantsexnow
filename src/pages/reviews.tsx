@@ -52,7 +52,7 @@ export default function ReviewsPage() {
   }, [reviewedProfiles, cantonFilter, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
         title="Verifizierte Schweizer Escort-Erfahrungen & Foto-Echtheits-Bewertungen | iwantsexnow.ch"
         description="Echte Erfahrungsberichte, Foto-Echtheits-Checks und 30m/60m CHF-Preis-Leistungs-Bewertungen für unabhängige Escorts & Studios in Zürich, Zug, Luzern, Basel & Bern."
@@ -61,9 +61,9 @@ export default function ReviewsPage() {
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        <section className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <section className="p-6 rounded-2xl bg-[#22101a] border border-[#e8c98a]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold flex items-center gap-1.5">
+            <div className="text-xs uppercase tracking-widest text-[#e8c98a] font-bold flex items-center gap-1.5">
               <ShieldCheck size={14} /> SCHWEIZER ECHTHEITS- & PREIS-TRANSPARENZ-INDEX
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
@@ -74,17 +74,17 @@ export default function ReviewsPage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Link href="/compare-escorts" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#C8A97E]">
+            <Link href="/compare-escorts" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#e8c98a]">
               4-Profil Direktvergleich →
             </Link>
-            <Link href="/pricing" className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] text-xs font-extrabold">
+            <Link href="/pricing" className="px-4 py-2.5 rounded-xl bg-[#d6165f] text-white text-xs font-extrabold">
               CHF-Honorar-Kompass →
             </Link>
           </div>
         </section>
 
         {/* Kantons- & Suchfilter */}
-        <section className="p-4 rounded-2xl bg-[#121722] border border-white/10 flex flex-wrap items-center justify-between gap-3">
+        <section className="p-4 rounded-2xl bg-[#22101a] border border-white/10 flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-1.5">
             {["ALL", "ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
               <button
@@ -92,7 +92,7 @@ export default function ReviewsPage() {
                 type="button"
                 onClick={() => setCantonFilter(c)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-extrabold cursor-pointer ${
-                  cantonFilter === c ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] text-gray-300 border border-white/10"
+                  cantonFilter === c ? "bg-[#d6165f] text-white" : "bg-[#150810] text-gray-300 border border-white/10"
                 }`}
               >
                 {c === "ALL" ? "Alle Kantone" : c}
@@ -107,7 +107,7 @@ export default function ReviewsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Name, Stadt oder Stichwort..."
-              className="w-full pl-9 pr-3 py-2 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white"
+              className="w-full pl-9 pr-3 py-2 rounded-xl bg-[#150810] border border-white/15 text-xs text-white"
             />
           </div>
         </section>
@@ -115,7 +115,7 @@ export default function ReviewsPage() {
         {/* Bewertungs-Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((p: any) => (
-            <div key={p.id} className="p-5 rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/50 flex flex-col justify-between gap-4 transition">
+            <div key={p.id} className="p-5 rounded-2xl bg-[#22101a] border border-white/10 hover:border-[#e8c98a]/50 flex flex-col justify-between gap-4 transition">
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -123,16 +123,16 @@ export default function ReviewsPage() {
                       src={p.thumbnail || "/images/escort-portrait-1.jpg"}
                       alt={p.rawName}
                       onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                      className="w-14 h-14 rounded-xl object-cover object-top border border-[#C8A97E]/40"
+                      className="w-14 h-14 rounded-xl object-cover object-top border border-[#e8c98a]/40"
                     />
                     <div>
-                      <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-sm font-serif font-bold text-white hover:text-[#C8A97E]">
+                      <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-sm font-serif font-bold text-white hover:text-[#e8c98a]">
                         {p.rawName}
                       </Link>
-                      <div className="text-[11px] text-gray-400">
+                      <div className="text-xs text-gray-400">
                         {p.city} ({p.canton}) · {p.age || 25} J. · Cup {p.cupSize || "C"}
                       </div>
-                      <div className="text-[11px] font-bold text-[#C8A97E] mt-0.5">
+                      <div className="text-xs font-bold text-[#e8c98a] mt-0.5">
                         CHF {p.rate60Chf}.– / 60m (CHF {p.rate30Chf}.– / 30m)
                       </div>
                     </div>
@@ -142,11 +142,11 @@ export default function ReviewsPage() {
                   </div>
                 </div>
 
-                <p className="text-xs text-gray-300 leading-relaxed bg-[#0D111A] p-3.5 rounded-xl border border-white/5 italic">
+                <p className="text-xs text-gray-300 leading-relaxed bg-[#150810] p-3.5 rounded-xl border border-white/5 italic">
                   „{p.snippet}“
                 </p>
 
-                <div className="flex flex-wrap gap-1.5 text-[10px]">
+                <div className="flex flex-wrap gap-1.5 text-xs">
                   <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-bold">
                     ✓ 100% Foto-Echtheit bestätigt
                   </span>
@@ -157,10 +157,10 @@ export default function ReviewsPage() {
               </div>
 
               <div className="pt-2 border-t border-white/10 flex items-center justify-between">
-                <span className="text-[11px] text-gray-400">Direktkontakt verfügbar</span>
+                <span className="text-xs text-gray-400">Direktkontakt verfügbar</span>
                 <Link
                   href={`/profile/${encodeURIComponent(p.id)}`}
-                  className="px-3.5 py-2 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold text-xs inline-flex items-center gap-1"
+                  className="px-3.5 py-2 rounded-xl bg-[#d6165f] text-white font-extrabold text-xs inline-flex items-center gap-1"
                 >
                   <span>Profil & Kontakt</span>
                   <ArrowRight size={12} />

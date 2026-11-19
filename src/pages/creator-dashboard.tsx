@@ -346,7 +346,7 @@ export default function CreatorDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] py-8 px-4 pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] py-8 px-4 pb-24">
       <SEO
         title={`Anbieter-Cockpit: ${displayName || profileId || "Profil verwalten"} | iWantSexNow.ch`}
         description="Selbstverwaltetes Schweizer Anbieter-Cockpit fÃƒÂ¼r Fotos, 4K-Videos, 80/20 Paid Content, Echtzeit-VerfÃƒÂ¼gbarkeit und Top-Spot Bidding."
@@ -363,10 +363,10 @@ export default function CreatorDashboardPage() {
                 (e.currentTarget as HTMLImageElement).src =
                   "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80";
               }}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-[#C8A97E]"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-[#e8c98a]"
             />
             <div>
-              <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-semibold">
+              <div className="text-xs uppercase tracking-widest text-[#e8c98a] font-semibold">
                 SELBSTVERWALTETES PROFIL Ã‚Â· ANBIETER-COCKPIT {sourcePortal ? `Ã‚Â· QUELLE: ${sourcePortal.toUpperCase()}` : ""}
               </div>
               <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-0.5">
@@ -379,7 +379,7 @@ export default function CreatorDashboardPage() {
                     <Phone size={12} /> Verifizierte Nummer: {phoneDisplay}
                   </span>
                 )}
-                <span className="text-[#C8A97E] font-semibold">
+                <span className="text-[#e8c98a] font-semibold">
                   CHF {rate30Chf} (30m) Ã‚Â· CHF {rate60Chf} (60m)
                 </span>
                 <span className="text-sky-300 font-semibold">
@@ -392,7 +392,7 @@ export default function CreatorDashboardPage() {
           <div className="flex flex-wrap items-center gap-2">
             <Link
               href={`/profile/${encodeURIComponent(profileId || "ch-1")}`}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] text-xs font-extrabold transition"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white text-xs font-extrabold transition"
             >
               VollstÃƒÂ¤ndiges Direktprofil ansehen <ExternalLink size={13} />
             </Link>
@@ -414,14 +414,14 @@ export default function CreatorDashboardPage() {
 
         {/* Top 2 Sofort-Schalter (Immer sichtbar): 1. 4h VerfÃƒÂ¼gbarkeit & 2. Pause */}
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-5">
+          <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-5">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
                   1. ECHTZEIT-VERFÃƒÅ“GBARKEIT (4H-FENSTER)
                 </span>
                 {isCurrentlyAvailable && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
                     Ã¢â€”Â Aktiv bis {new Date(availableUntil!).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" })} Uhr
                   </span>
                 )}
@@ -436,20 +436,20 @@ export default function CreatorDashboardPage() {
               type="button"
               onClick={handleConfirm4hAvailability}
               disabled={saving}
-              className="w-full py-3.5 px-4 rounded-xl bg-[#22C55E] hover:bg-[#16A34A] text-[#07120B] font-extrabold text-xs uppercase tracking-wider transition shadow-lg cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-xl bg-[#3d2231] hover:bg-[#3d2231] text-[#2a1408] font-extrabold text-xs uppercase tracking-wider transition shadow-lg cursor-pointer"
             >
               Ã¢â€”Â {isCurrentlyAvailable ? "4-STUNDEN-FENSTER JETZT ERNEUERN" : "JETZT FÃƒÅ“R 4 STUNDEN ALS VERFÃƒÅ“GBAR BESTÃƒâ€žTIGEN"}
             </button>
           </div>
 
-          <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-5">
+          <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-5">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#e8c98a]">
                   2. SICHTBARKEIT & PAUSE
                 </span>
                 <span
-                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
+                  className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                     paused
                       ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
                       : "bg-white/10 text-gray-200 border border-white/15"
@@ -468,7 +468,7 @@ export default function CreatorDashboardPage() {
               type="button"
               onClick={handleTogglePause}
               disabled={saving}
-              className="w-full py-3.5 px-4 rounded-xl bg-[#0D111A] hover:bg-white/5 border border-white/15 text-xs font-bold text-white flex items-center justify-center gap-2 transition cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-xl bg-[#150810] hover:bg-white/5 border border-white/15 text-xs font-bold text-white flex items-center justify-center gap-2 transition cursor-pointer"
             >
               {paused ? <Eye size={14} /> : <EyeOff size={14} />}
               {paused ? "Profil jetzt wieder ÃƒÂ¶ffentlich schalten" : "Profil jetzt pausieren / ausblenden"}
@@ -477,12 +477,12 @@ export default function CreatorDashboardPage() {
         </div>
 
         {/* 4-Tab-Navigation fÃƒÂ¼r alle Funktionen */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#121722] p-2 rounded-2xl border border-white/10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#22101a] p-2 rounded-2xl border border-white/10">
           <button
             type="button"
             onClick={() => setActiveTab("profile")}
             className={`py-3 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "profile" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"
+              activeTab === "profile" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"
             }`}
           >
             <Save size={14} /> 1. Angaben & Preise
@@ -491,7 +491,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("media")}
             className={`py-3 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "media" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"
+              activeTab === "media" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"
             }`}
           >
             <ImageIcon size={14} /> 2. Fotos & 4K-Video ({gallery.length})
@@ -500,7 +500,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("paid")}
             className={`py-3 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "paid" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"
+              activeTab === "paid" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"
             }`}
           >
             <Lock size={14} /> 3. Paid Content / VIP Vault (80%)
@@ -509,7 +509,7 @@ export default function CreatorDashboardPage() {
             type="button"
             onClick={() => setActiveTab("boost")}
             className={`py-3 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
-              activeTab === "boost" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"
+              activeTab === "boost" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"
             }`}
           >
             <TrendingUp size={14} /> 4. Live-Cam, Bidding & Statistik
@@ -523,13 +523,13 @@ export default function CreatorDashboardPage() {
               e.preventDefault();
               updateServerState({}, "Ã¢Å“â€œ Deine verÃƒÂ¶ffentlichten Angaben, Services und CHF-Richtpreise wurden gespeichert!");
             }}
-            className="bg-[#121722] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6"
+            className="bg-[#22101a] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg sm:text-xl font-serif font-bold text-white">
                 VerÃƒÂ¶ffentlichte Angaben, Services & Richtpreis bearbeiten
               </h2>
-              <span className="text-[11px] text-emerald-400 font-medium">
+              <span className="text-xs text-emerald-400 font-medium">
                 Ã¢Å“â€œ Automatisch vorbefÃƒÂ¼llt aus deinem verifizierten Schweizer Profil
               </span>
             </div>
@@ -541,7 +541,7 @@ export default function CreatorDashboardPage() {
                   type="text"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#C8A97E] outline-none"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#e8c98a] outline-none"
                 />
               </div>
               <div>
@@ -550,7 +550,7 @@ export default function CreatorDashboardPage() {
                   type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#C8A97E] outline-none"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#e8c98a] outline-none"
                 />
               </div>
               <div>
@@ -558,7 +558,7 @@ export default function CreatorDashboardPage() {
                 <select
                   value={canton}
                   onChange={(e) => setCanton(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#C8A97E] outline-none"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#e8c98a] outline-none"
                 >
                   {["ZG","ZH","GE","VD","BS","BL","BE","LU","AG","SG","SO","TI","VS","FR","NE","TG","SZ","GR","SH","AR","GL","UR","JU","NW"].map((c) => (
                     <option key={c} value={c}>{c}</option>
@@ -571,7 +571,7 @@ export default function CreatorDashboardPage() {
                   type="text"
                   value={phoneDisplay}
                   onChange={(e) => setPhoneDisplay(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-sm text-emerald-400 font-semibold focus:border-[#C8A97E] outline-none"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-sm text-emerald-400 font-semibold focus:border-[#e8c98a] outline-none"
                 />
               </div>
             </div>
@@ -583,7 +583,7 @@ export default function CreatorDashboardPage() {
                   type="number"
                   value={rate30Chf}
                   onChange={(e) => setRate30Chf(Number(e.target.value))}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#C8A97E] outline-none"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#e8c98a] outline-none"
                 />
               </div>
               <div>
@@ -592,7 +592,7 @@ export default function CreatorDashboardPage() {
                   type="number"
                   value={rate60Chf}
                   onChange={(e) => setRate60Chf(Number(e.target.value))}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#C8A97E] outline-none"
+                  className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2.5 text-sm text-white focus:border-[#e8c98a] outline-none"
                 />
               </div>
             </div>
@@ -611,8 +611,8 @@ export default function CreatorDashboardPage() {
                       onClick={() => toggleServiceTag(tag)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
                         active
-                          ? "bg-[#C8A97E]/25 border-[#C8A97E] text-[#F5F2EB]"
-                          : "bg-[#0D111A] border-white/10 text-gray-400 hover:text-white"
+                          ? "bg-[#d6165f]/25 border-[#e8c98a] text-[#fbf1ec]"
+                          : "bg-[#150810] border-white/10 text-gray-400 hover:text-white"
                       }`}
                     >
                       {active ? "Ã¢Å“â€œ " : "+ "}{tag}
@@ -630,7 +630,7 @@ export default function CreatorDashboardPage() {
                 rows={4}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="w-full rounded-xl bg-[#0D111A] border border-white/15 p-3.5 text-sm text-white focus:border-[#C8A97E] outline-none"
+                className="w-full rounded-xl bg-[#150810] border border-white/15 p-3.5 text-sm text-white focus:border-[#e8c98a] outline-none"
               />
             </div>
 
@@ -642,7 +642,7 @@ export default function CreatorDashboardPage() {
                     setIdentityRequested(true);
                     updateServerState({ identityRequested: true }, "Ã¢Å“â€œ Dokumentierte IdentitÃƒÂ¤tsprÃƒÂ¼fung (Ã¢Å“â€œ) wurde fÃƒÂ¼r dein Profil vorgemerkt.");
                   }}
-                  className="text-[#C8A97E] hover:underline font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+                  className="text-[#e8c98a] hover:underline font-semibold inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <ShieldCheck size={14} />
                   {identityRequested ? "IdentitÃƒÂ¤tsprÃƒÂ¼fung (Ã¢Å“â€œ) angefragt" : "Dokumentierte IdentitÃƒÂ¤tsprÃƒÂ¼fung (Ã¢Å“â€œ) beantragen Ã¢â€ â€™"}
@@ -655,7 +655,7 @@ export default function CreatorDashboardPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="px-6 py-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition shadow-lg cursor-pointer"
+                className="px-6 py-3 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition shadow-lg cursor-pointer"
               >
                 <Save size={14} /> ANGABEN SPEICHERN
               </button>
@@ -665,7 +665,7 @@ export default function CreatorDashboardPage() {
 
         {/* TAB 2: FOTOS & 4K-VIDEO-GALERIE */}
         {activeTab === "media" && (
-          <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
+          <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <h2 className="text-lg sm:text-xl font-serif font-bold text-white">
@@ -675,7 +675,7 @@ export default function CreatorDashboardPage() {
                   WÃƒÂ¤hle dein Hauptbild fÃƒÂ¼r die Startseite, fÃƒÂ¼ge neue Fotos hinzu oder hinterlege ein kurzes Vorstellungsvideo.
                 </p>
               </div>
-              <span className="text-xs font-bold text-[#C8A97E]">{gallery.length} aktive Fotos</span>
+              <span className="text-xs font-bold text-[#e8c98a]">{gallery.length} aktive Fotos</span>
             </div>
 
             {/* Neues Foto hinzufÃƒÂ¼gen */}
@@ -685,12 +685,12 @@ export default function CreatorDashboardPage() {
                 value={newPhotoUrl}
                 onChange={(e) => setNewPhotoUrl(e.target.value)}
                 placeholder="Neue Foto-URL einfÃƒÂ¼gen (https://... .jpg / .webp)"
-                className="flex-1 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none"
+                className="flex-1 rounded-xl bg-[#150810] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#e8c98a] outline-none"
               />
               <button
                 type="button"
                 onClick={handleAddPhoto}
-                className="px-5 py-3 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer"
+                className="px-5 py-3 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Plus size={15} /> Foto zur Galerie hinzufÃƒÂ¼gen
               </button>
@@ -703,8 +703,8 @@ export default function CreatorDashboardPage() {
                 return (
                   <div
                     key={`${imgUrl}-${idx}`}
-                    className={`relative rounded-2xl overflow-hidden bg-[#0D111A] border-2 ${
-                      isMain ? "border-[#C8A97E]" : "border-white/10"
+                    className={`relative rounded-2xl overflow-hidden bg-[#150810] border-2 ${
+                      isMain ? "border-[#e8c98a]" : "border-white/10"
                     }`}
                   >
                     <img
@@ -713,16 +713,16 @@ export default function CreatorDashboardPage() {
                       className="w-full aspect-[3/4] object-cover"
                     />
                     {isMain && (
-                      <span className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-[#C8A97E] text-[#0D111A] text-[10px] font-extrabold uppercase">
+                      <span className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-[#d6165f] text-white text-xs font-extrabold uppercase">
                         Ã¢Ëœâ€¦ Hauptbild
                       </span>
                     )}
-                    <div className="p-2.5 bg-[#0D111A]/95 flex items-center justify-between gap-2 text-[11px]">
+                    <div className="p-2.5 bg-[#150810]/95 flex items-center justify-between gap-2 text-xs">
                       {!isMain ? (
                         <button
                           type="button"
                           onClick={() => handleSetMainPhoto(imgUrl)}
-                          className="text-[#C8A97E] hover:underline font-bold cursor-pointer"
+                          className="text-[#e8c98a] hover:underline font-bold cursor-pointer"
                         >
                           Als Hauptbild setzen
                         </button>
@@ -745,7 +745,7 @@ export default function CreatorDashboardPage() {
             {/* 4K Teaser-Video */}
             <div className="pt-4 border-t border-white/10 space-y-3">
               <label className="block text-xs text-gray-300 font-semibold flex items-center gap-2">
-                <Video size={15} className="text-[#C8A97E]" />
+                <Video size={15} className="text-[#e8c98a]" />
                 <span>Ãƒâ€“ffentliches 4K-Teaser-Video / Vorstellungsvideo (MP4- oder Stream-URL)</span>
               </label>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -754,7 +754,7 @@ export default function CreatorDashboardPage() {
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                   placeholder="https://... (Optionales kurzes BegrÃƒÂ¼ssungsvideo auf deiner Karte)"
-                  className="flex-1 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none"
+                  className="flex-1 rounded-xl bg-[#150810] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#e8c98a] outline-none"
                 />
                 <button
                   type="button"
@@ -770,10 +770,10 @@ export default function CreatorDashboardPage() {
 
         {/* TAB 3: PAID CONTENT / VIP-VAULT (80% PROVIDER / 20% PLATTFORM) */}
         {activeTab === "paid" && (
-          <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
+          <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#e8c98a]">
                   ZUSATZ-EINNAHMEN OHNE TREFFEN Ã‚Â· 80 % DIREKT-ANTEIL FÃƒÅ“R DICH
                 </span>
                 <h2 className="text-lg sm:text-xl font-serif font-bold text-white mt-0.5">
@@ -784,33 +784,33 @@ export default function CreatorDashboardPage() {
                 </p>
               </div>
               <div className="px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-right">
-                <div className="text-[10px] uppercase text-emerald-300 font-bold">Dein Umsatz-Anteil</div>
+                <div className="text-xs uppercase text-emerald-300 font-bold">Dein Umsatz-Anteil</div>
                 <div className="text-lg font-extrabold text-emerald-400">80 % Netto</div>
               </div>
             </div>
 
             {/* Neues Paid-Content-Paket erstellen */}
-            <div className="p-5 rounded-2xl bg-[#0D111A] border border-[#C8A97E]/40 space-y-4">
-              <div className="text-xs font-bold text-[#C8A97E] uppercase tracking-wider">
+            <div className="p-5 rounded-2xl bg-[#150810] border border-[#e8c98a]/40 space-y-4">
+              <div className="text-xs font-bold text-[#e8c98a] uppercase tracking-wider">
                 + Neues gesperrtes Paid-Content-Paket anlegen
               </div>
               <div className="grid sm:grid-cols-4 gap-3">
                 <div className="sm:col-span-2">
-                  <label className="block text-[11px] text-gray-400 mb-1">Titel des Pakets</label>
+                  <label className="block text-xs text-gray-400 mb-1">Titel des Pakets</label>
                   <input
                     type="text"
                     value={newVaultTitle}
                     onChange={(e) => setNewVaultTitle(e.target.value)}
                     placeholder="z.B. Uncensored Dusch-Video 4K (8 Min.)"
-                    className="w-full rounded-xl bg-[#121722] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                    className="w-full rounded-xl bg-[#22101a] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] text-gray-400 mb-1">Medien-Typ</label>
+                  <label className="block text-xs text-gray-400 mb-1">Medien-Typ</label>
                   <select
                     value={newVaultType}
                     onChange={(e) => setNewVaultType(e.target.value as any)}
-                    className="w-full rounded-xl bg-[#121722] border border-white/15 px-3.5 py-2.5 text-xs text-white"
+                    className="w-full rounded-xl bg-[#22101a] border border-white/15 px-3.5 py-2.5 text-xs text-white"
                   >
                     <option value="video">4K Video (PPV)</option>
                     <option value="photoset">Uncensored Foto-Set</option>
@@ -818,12 +818,12 @@ export default function CreatorDashboardPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] text-gray-400 mb-1">Preis in CHF</label>
+                  <label className="block text-xs text-gray-400 mb-1">Preis in CHF</label>
                   <input
                     type="number"
                     value={newVaultPrice}
                     onChange={(e) => setNewVaultPrice(Number(e.target.value))}
-                    className="w-full rounded-xl bg-[#121722] border border-white/15 px-3.5 py-2.5 text-xs text-[#C8A97E] font-bold"
+                    className="w-full rounded-xl bg-[#22101a] border border-white/15 px-3.5 py-2.5 text-xs text-[#e8c98a] font-bold"
                   />
                 </div>
               </div>
@@ -833,12 +833,12 @@ export default function CreatorDashboardPage() {
                   value={newVaultMediaCount}
                   onChange={(e) => setNewVaultMediaCount(e.target.value)}
                   placeholder="Umfang (z.B. 1x 4K Video + 15 Fotos)"
-                  className="rounded-xl bg-[#121722] border border-white/15 px-3.5 py-2 text-xs text-white w-full sm:w-72"
+                  className="rounded-xl bg-[#22101a] border border-white/15 px-3.5 py-2 text-xs text-white w-full sm:w-72"
                 />
                 <button
                   type="button"
                   onClick={handleAddPaidItem}
-                  className="px-5 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 cursor-pointer"
                 >
                   <Lock size={13} /> Paid-Paket auf Profil verÃƒÂ¶ffentlichen
                 </button>
@@ -850,16 +850,16 @@ export default function CreatorDashboardPage() {
               {paidItems.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex flex-wrap items-center justify-between gap-4"
+                  className="p-4 rounded-xl bg-[#150810] border border-white/10 flex flex-wrap items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#C8A97E]/15 border border-[#C8A97E]/40 flex items-center justify-center text-[#C8A97E]">
+                    <div className="w-10 h-10 rounded-xl bg-[#d6165f]/15 border border-[#e8c98a]/40 flex items-center justify-center text-[#e8c98a]">
                       <Lock size={16} />
                     </div>
                     <div>
                       <div className="text-sm font-bold text-white">{item.title}</div>
                       <div className="text-xs text-gray-400">
-                        {item.mediaCount} Ã‚Â· Kundenpreis: <strong className="text-[#C8A97E]">CHF {item.priceChf}</strong> Ã‚Â· Dein Anteil:{" "}
+                        {item.mediaCount} Ã‚Â· Kundenpreis: <strong className="text-[#e8c98a]">CHF {item.priceChf}</strong> Ã‚Â· Dein Anteil:{" "}
                         <strong className="text-emerald-400">CHF {(item.priceChf * 0.8).toFixed(2)}</strong>
                       </div>
                     </div>
@@ -892,41 +892,41 @@ export default function CreatorDashboardPage() {
         {activeTab === "boost" && (
           <div className="space-y-6">
             {/* Echtzeit-Statistiken */}
-            <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-serif font-bold text-white flex items-center gap-2">
-                  <BarChart3 size={18} className="text-[#C8A97E]" />
+                  <BarChart3 size={18} className="text-[#e8c98a]" />
                   <span>Echte Profil-Statistiken (Keine geschÃƒÂ¤tzten Fake-ZÃƒÂ¤hler)</span>
                 </h2>
-                <span className="text-[11px] text-emerald-400 font-semibold">Ã¢â€”Â Live-Messung aktiv</span>
+                <span className="text-xs text-emerald-400 font-semibold">Ã¢â€”Â Live-Messung aktiv</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10">
-                  <div className="text-[11px] text-gray-400">Karten-Einblendungen</div>
+                <div className="p-4 rounded-xl bg-[#150810] border border-white/10">
+                  <div className="text-xs text-gray-400">Karten-Einblendungen</div>
                   <div className="text-2xl font-extrabold text-white mt-1">{metrics.views}</div>
                 </div>
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10">
-                  <div className="text-[11px] text-gray-400">Profil-Aufrufe (Klicks)</div>
-                  <div className="text-2xl font-extrabold text-[#C8A97E] mt-1">{metrics.detailOpens}</div>
+                <div className="p-4 rounded-xl bg-[#150810] border border-white/10">
+                  <div className="text-xs text-gray-400">Profil-Aufrufe (Klicks)</div>
+                  <div className="text-2xl font-extrabold text-[#e8c98a] mt-1">{metrics.detailOpens}</div>
                 </div>
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10">
-                  <div className="text-[11px] text-gray-400">Direktkontakt-Klicks (+41)</div>
+                <div className="p-4 rounded-xl bg-[#150810] border border-white/10">
+                  <div className="text-xs text-gray-400">Direktkontakt-Klicks (+41)</div>
                   <div className="text-2xl font-extrabold text-emerald-400 mt-1">{metrics.contactClicks}</div>
                 </div>
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-white/10">
-                  <div className="text-[11px] text-gray-400">Quellen-Vergleichsklicks</div>
+                <div className="p-4 rounded-xl bg-[#150810] border border-white/10">
+                  <div className="text-xs text-gray-400">Quellen-Vergleichsklicks</div>
                   <div className="text-2xl font-extrabold text-sky-300 mt-1">{metrics.sourceClicks}</div>
                 </div>
               </div>
             </div>
 
             {/* Eingegangene Private Kunden-Anfragen für dieses Profil */}
-            <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-3">
+            <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-serif font-bold text-white">
                   📬 Eingegangene Private Termin-Anfragen ({myEnquiries.length})
                 </h3>
-                <span className="text-[11px] text-[#C8A97E] font-semibold">0 % Provision bei Direkt-Terminen</span>
+                <span className="text-xs text-[#e8c98a] font-semibold">0 % Provision bei Direkt-Terminen</span>
               </div>
               {myEnquiries.length === 0 ? (
                 <p className="text-xs text-gray-400">
@@ -935,7 +935,7 @@ export default function CreatorDashboardPage() {
               ) : (
                 <div className="space-y-2">
                   {myEnquiries.map((lead: any) => (
-                    <div key={lead.id} className="p-3.5 rounded-xl bg-[#0D111A] border border-emerald-500/30 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div key={lead.id} className="p-3.5 rounded-xl bg-[#150810] border border-emerald-500/30 flex flex-wrap items-center justify-between gap-3 text-xs">
                       <div>
                         <div className="font-bold text-emerald-400">Kunden-Rückrufnummer: {lead.clientContact}</div>
                         <div className="text-gray-300 mt-0.5">Wunschzeit & Nachricht: {lead.desiredTime}</div>
@@ -944,7 +944,7 @@ export default function CreatorDashboardPage() {
                         href={`https://wa.me/${String(lead.clientContact).replace(/\D/g, "")}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="px-3 py-1.5 rounded-lg bg-emerald-500 text-[#07120B] font-extrabold"
+                        className="px-3 py-1.5 rounded-lg bg-emerald-500 text-[#2a1408] font-extrabold"
                       >
                         Auf WhatsApp antworten ↗
                       </a>
@@ -956,9 +956,9 @@ export default function CreatorDashboardPage() {
 
             {/* 1:1 Live-Cam & Top-Spot Bidding */}
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
+              <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
                     <Radio size={14} /> 1:1 LIVE-CAM & VIDEO-CALL
                   </span>
                   <span className="text-xs font-bold text-emerald-400">80 % Auszahlung</span>
@@ -969,12 +969,12 @@ export default function CreatorDashboardPage() {
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <label className="block text-[11px] text-gray-400 mb-1">Dein Tarif (CHF pro Minute)</label>
+                    <label className="block text-xs text-gray-400 mb-1">Dein Tarif (CHF pro Minute)</label>
                     <input
                       type="number"
                       value={liveCamChfPerMin}
                       onChange={(e) => setLiveCamChfPerMin(Number(e.target.value))}
-                      className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2 text-sm text-white"
+                      className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2 text-sm text-white"
                     />
                   </div>
                   <button
@@ -988,7 +988,7 @@ export default function CreatorDashboardPage() {
                       );
                     }}
                     className={`mt-5 px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase cursor-pointer ${
-                      liveCamActive ? "bg-rose-500 text-white" : "bg-[#C8A97E] text-[#0D111A]"
+                      liveCamActive ? "bg-rose-500 text-white" : "bg-[#d6165f] text-white"
                     }`}
                   >
                     {liveCamActive ? "Ã°Å¸â€Â´ Live-Cam ist AN (Ausschalten)" : "1:1 Live-Cam einschalten"}
@@ -996,12 +996,12 @@ export default function CreatorDashboardPage() {
                 </div>
               </div>
 
-              <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
+              <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97E] flex items-center gap-1.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#e8c98a] flex items-center gap-1.5">
                     <Star size={14} /> TOP-SPOT PLATZIERUNG ({city.toUpperCase()} / {canton})
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#C8A97E]/20 text-[#C8A97E] text-[11px] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#d6165f]/20 text-[#e8c98a] text-xs font-bold">
                     Ã°Å¸Å½Â 1. Monat Pilot-Bonus: CHF 0
                   </span>
                 </div>
@@ -1011,12 +1011,12 @@ export default function CreatorDashboardPage() {
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <label className="block text-[11px] text-gray-400 mb-1">Tages-Gebot nach Gratismonat (CHF/Tag)</label>
+                    <label className="block text-xs text-gray-400 mb-1">Tages-Gebot nach Gratismonat (CHF/Tag)</label>
                     <input
                       type="number"
                       value={topSpotBidChf}
                       onChange={(e) => setTopSpotBidChf(Number(e.target.value))}
-                      className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-3.5 py-2 text-sm text-white"
+                      className="w-full rounded-xl bg-[#150810] border border-white/15 px-3.5 py-2 text-sm text-white"
                     />
                   </div>
                   <button
@@ -1027,7 +1027,7 @@ export default function CreatorDashboardPage() {
                         `Ã¢Å“â€œ Gratis-Pilot-Boost fÃƒÂ¼r ${city} (${canton}) aktiviert!`
                       )
                     }
-                    className="mt-5 px-5 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase cursor-pointer"
+                    className="mt-5 px-5 py-2.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase cursor-pointer"
                   >
                     Gratis-Pilot-Boost aktivieren
                   </button>

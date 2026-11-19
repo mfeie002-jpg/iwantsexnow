@@ -1,5 +1,19 @@
 import type { Config } from "tailwindcss";
 
+const GRAY = {
+  50: "#fbf1ec",
+  100: "#f2e3e1",
+  200: "#e3cdd0",
+  300: "#cdb5be",
+  400: "#b09aa4",
+  500: "#947683",
+  600: "#6d4f5e",
+  700: "#4a3041",
+  800: "#2b1420",
+  900: "#22101a",
+  950: "#150810",
+};
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -10,7 +24,25 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Manrope", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        serif: ["Instrument Serif", "Times New Roman", "Georgia", "serif"],
+        display: ["Instrument Serif", "Times New Roman", "Georgia", "serif"],
+        mono: ["Manrope", "system-ui", "Helvetica", "Arial", "sans-serif"],
+      },
       colors: {
+        paper: "#150810",
+        surface: "#22101a",
+        raised: "#2b1420",
+        wine: "#3a1325",
+        ink: { DEFAULT: "#fbf1ec", soft: "#cdb5be" },
+        line: { DEFAULT: "#3d2231", strong: "#947683" },
+        ruby: { DEFAULT: "#d6165f", deep: "#ee3c7c" },
+        gold: "#e8c98a",
+        verified: "#5fd3a5",
+        jade: "#13362b",
+        gray: GRAY,
+        stone: GRAY,
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

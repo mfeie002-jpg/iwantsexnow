@@ -4,9 +4,9 @@ import { PlusCircle, Sparkles, Trophy } from "lucide-react";
 
 export function ContactSection() {
   return (
-    <section className="py-14 bg-[#09131E] border-t border-white/10 text-white">
+    <section className="py-14 bg-[#150810] border-t border-white/10 text-white">
       <div className="container mx-auto px-4 max-w-5xl">
-        <div className="rounded-2xl bg-gradient-to-r from-[#0D1B2A] via-[#15283E] to-[#0D1B2A] border-2 border-[#C69C6D]/60 p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
+        <div className="rounded-2xl bg-gradient-to-r from-[#150810] via-[#150810] to-[#150810] border-2 border-[#e8c98a]/60 p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
           <div className="space-y-2 text-center lg:text-left max-w-xl">
             <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
               Für Suchende & Selbstständige Anbieterinnen in Zürich, Zug & der Schweiz
@@ -20,19 +20,19 @@ export function ContactSection() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-3 shrink-0">
-            <Button className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-black" asChild>
+            <Button className="bg-[#d6165f] hover:bg-[#d6165f] text-white font-black" asChild>
               <Link href="/matches">
                 <Sparkles size={15} className="mr-1.5" /> 30-Sek. Smart-Matcher
               </Link>
             </Button>
-            <Button variant="outline" className="border-[#C69C6D] text-[#D5A021] hover:bg-[#C69C6D]/10 font-black" asChild>
+            <Button variant="outline" className="border-[#e8c98a] text-[#e8c98a] hover:bg-[#d6165f]/10 font-black" asChild>
               <Link href="/create-post">
                 <PlusCircle size={15} className="mr-1.5" /> Profil übernehmen (+2 Credits)
               </Link>
             </Button>
             <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 font-bold" asChild>
               <Link href="/rankings">
-                <Trophy size={15} className="mr-1.5 text-[#D5A021]" /> Bestenliste
+                <Trophy size={15} className="mr-1.5 text-[#e8c98a]" /> Bestenliste
               </Link>
             </Button>
           </div>

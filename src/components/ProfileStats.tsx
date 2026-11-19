@@ -37,7 +37,7 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
     { name: "45+", value: 15 }
   ];
 
-  const COLORS = ["#EC4899", "#9333EA", "#F59E0B", "#10B981"];
+  const COLORS = ["#ec4899", "#9333ea", "#d6165f", "#4fd6a0"];
 
   return (
     <div className="space-y-6">
@@ -105,12 +105,12 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
           <AreaChart data={profileViewsData}>
             <defs>
               <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#EC4899" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#EC4899" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#ec4899" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#ec4899" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorLikes" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#9333EA" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#9333EA" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#9333ea" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#9333ea" stopOpacity={0}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" />
@@ -118,8 +118,8 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Area type="monotone" dataKey="views" stroke="#EC4899" fillOpacity={1} fill="url(#colorViews)" name="Profile Views" />
-            <Area type="monotone" dataKey="likes" stroke="#9333EA" fillOpacity={1} fill="url(#colorLikes)" name="Likes" />
+            <Area type="monotone" dataKey="views" stroke="#ec4899" fillOpacity={1} fill="url(#colorViews)" name="Profile Views" />
+            <Area type="monotone" dataKey="likes" stroke="#9333ea" fillOpacity={1} fill="url(#colorLikes)" name="Likes" />
           </AreaChart>
         </ResponsiveContainer>
       </Card>
@@ -141,8 +141,8 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="views" fill="#EC4899" name="Profile Views" />
-              <Bar dataKey="messages" fill="#9333EA" name="Messages" />
+              <Bar dataKey="views" fill="#ec4899" name="Profile Views" />
+              <Bar dataKey="messages" fill="#9333ea" name="Messages" />
             </BarChart>
           </ResponsiveContainer>
         </Card>
@@ -165,7 +165,7 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
                 labelLine={false}
                 label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 outerRadius={100}
-                fill="#8884d8"
+                fill="#cdb5be"
                 dataKey="value"
               >
                 {viewerDemographics.map((entry, index) => (

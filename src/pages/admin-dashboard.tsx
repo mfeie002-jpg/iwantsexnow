@@ -103,13 +103,13 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO title="Geschützte Administration | iWantSexNow.ch" noindex={true} />
       <LuxuryHeader />
 
       {!authorized ? (
         <main className="max-w-md mx-auto px-6 py-16">
-          <form onSubmit={handleUnlock} className="p-8 rounded-2xl bg-[#121722] border border-white/10 space-y-5">
+          <form onSubmit={handleUnlock} className="p-8 rounded-2xl bg-[#22101a] border border-white/10 space-y-5">
             <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
               <Lock size={15} /> Server-Authentifizierung erforderlich
             </div>
@@ -128,19 +128,19 @@ export default function AdminDashboardPage() {
               value={pinInput}
               onChange={(e) => setPinInput(e.target.value)}
               placeholder="Privaten Admin-PIN eingeben..."
-              className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#C8A97E] outline-none"
+              className="w-full rounded-xl bg-[#150810] border border-white/15 px-4 py-3 text-sm text-white focus:border-[#e8c98a] outline-none"
             />
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+              className="w-full py-3.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider cursor-pointer"
             >
               Steuerpult entsperren →
             </button>
           </form>
           {adminTab === "scraper" && (
-            <div className="bg-[#121722] border border-emerald-500/40 rounded-2xl p-6 space-y-5">
+            <div className="bg-[#22101a] border border-emerald-500/40 rounded-2xl p-6 space-y-5">
               <div>
-                <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">
+                <div className="text-xs uppercase tracking-widest text-emerald-400 font-bold">
                   DIREKTER SCHWEIZER LIVE-HARVESTER · MIT 5-STUFEN QUALITY-GATE (100–1200 CHF & OPT-OUT-SCHUTZ)
                 </div>
                 <h2 className="text-xl font-serif font-bold text-white mt-1">
@@ -154,12 +154,12 @@ export default function AdminDashboardPage() {
                   value={scrapeUrl}
                   onChange={(e) => setScrapeUrl(e.target.value)}
                   placeholder="https://... (Schweizer Inserate- oder Studio-URL)"
-                  className="sm:col-span-2 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-xs text-white"
+                  className="sm:col-span-2 rounded-xl bg-[#150810] border border-white/15 px-4 py-3 text-xs text-white"
                 />
                 <select
                   value={scrapeCanton}
                   onChange={(e) => setScrapeCanton(e.target.value)}
-                  className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-3 text-xs text-white"
+                  className="rounded-xl bg-[#150810] border border-white/15 px-3 py-3 text-xs text-white"
                 >
                   {["ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
                     <option key={c} value={c}>Fallback-Kanton: {c}</option>
@@ -196,13 +196,13 @@ export default function AdminDashboardPage() {
                     }
                     setScrapeLoading(false);
                   }}
-                  className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
+                  className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#2a1408] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
                 >
                   {scrapeLoading ? "Scrape läuft..." : "🕷️ Einzel-URL scrapen →"}
                 </button>
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[#0D111A] border border-emerald-500/30">
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[#150810] border border-emerald-500/30">
                 <div className="text-xs text-gray-300">
                   <strong className="text-emerald-400">🕸️ Multi-Profile Kategorieseiten-Crawler:</strong> Extrahiert automatisch bis zu 12 Profil-Unterseiten von einer Studio-/Team- oder Kantons-Übersichtsseite.
                 </div>
@@ -239,15 +239,15 @@ export default function AdminDashboardPage() {
                     }
                     setScrapeLoading(false);
                   }}
-                  className="px-4 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider cursor-pointer"
                 >
                   {scrapeLoading ? "Crawlt Unterseiten..." : "🕸️ Ganze Übersichtsseite crawlen (bis 12 Profile) →"}
                 </button>
               </div>
 
               {batchResults.length > 0 && (
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-[#C8A97E]/40 space-y-2 text-xs">
-                  <div className="font-bold text-[#C8A97E]">
+                <div className="p-4 rounded-xl bg-[#150810] border border-[#e8c98a]/40 space-y-2 text-xs">
+                  <div className="font-bold text-[#e8c98a]">
                     ✓ {batchResults.length} Profile per Batch-Crawl neu in den Live-Index aufgenommen:
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -255,13 +255,13 @@ export default function AdminDashboardPage() {
                       <Link
                         key={bp.id}
                         href={`/profile/${encodeURIComponent(bp.id)}`}
-                        className="p-2.5 rounded-lg bg-[#121722] border border-white/10 hover:border-[#C8A97E] flex items-center justify-between gap-2"
+                        className="p-2.5 rounded-lg bg-[#22101a] border border-white/10 hover:border-[#e8c98a] flex items-center justify-between gap-2"
                       >
                         <div>
                           <div className="font-bold text-white truncate max-w-[180px]">{bp.rawName}</div>
-                          <div className="text-[10px] text-gray-400">{bp.city} ({bp.canton}) · CHF {bp.advertisedBaseChf}.–</div>
+                          <div className="text-xs text-gray-400">{bp.city} ({bp.canton}) · CHF {bp.advertisedBaseChf}.–</div>
                         </div>
-                        <span className="text-[#C8A97E] font-bold">↗</span>
+                        <span className="text-[#e8c98a] font-bold">↗</span>
                       </Link>
                     ))}
                   </div>
@@ -274,25 +274,25 @@ export default function AdminDashboardPage() {
                   value={scrapePhone}
                   onChange={(e) => setScrapePhone(e.target.value)}
                   placeholder="Optional: +41 79 ... manuell vorgeben (falls nicht im HTML)"
-                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                  className="rounded-xl bg-[#150810] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
                 />
                 <input
                   type="number"
                   value={scrapeRate60}
                   onChange={(e) => setScrapeRate60(e.target.value)}
                   placeholder="Optional: 60-Min.-Preis in CHF (100–1200)"
-                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                  className="rounded-xl bg-[#150810] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
                 />
               </div>
 
               {scrapedResult && (
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4 text-xs">
+                <div className="p-4 rounded-xl bg-[#150810] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4 text-xs">
                   <div className="space-y-1">
                     <div className="font-bold text-white text-sm">
                       ✓ Neu im Index: {scrapedResult.rawName} ({scrapedResult.city}, {scrapedResult.canton})
                     </div>
                     <div className="text-gray-300">
-                      ID: <code>{scrapedResult.id}</code> · Telefon: <strong className="text-emerald-400">{scrapedResult.rawPhone || "k.A."}</strong> · Preis: <strong className="text-[#C8A97E]">{scrapedResult.priceLabel}</strong>
+                      ID: <code>{scrapedResult.id}</code> · Telefon: <strong className="text-emerald-400">{scrapedResult.rawPhone || "k.A."}</strong> · Preis: <strong className="text-[#e8c98a]">{scrapedResult.priceLabel}</strong>
                     </div>
                     <div className="text-gray-400">
                       Attribute: {scrapedResult.age} J. · {scrapedResult.heightCm} cm · Cup {scrapedResult.cupSize} · Rubrik: {scrapedResult.rubric}
@@ -300,7 +300,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <Link
                     href={`/profile/${encodeURIComponent(scrapedResult.id)}`}
-                    className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold"
+                    className="px-4 py-2.5 rounded-xl bg-[#d6165f] text-white font-extrabold"
                   >
                     Live-Profil öffnen ↗
                   </Link>
@@ -318,9 +318,9 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          <div className="p-6 rounded-2xl bg-[#121722] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4">
+          <div className="p-6 rounded-2xl bg-[#22101a] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">
+              <div className="text-xs uppercase tracking-widest text-emerald-400 font-bold">
                 ● SERVER-AUTHENTIFIZIERT · 0 TOKENS IM ÖFFENTLICHEN CODE · 0 AUTOMATISCHE NACHRICHTEN
               </div>
               <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">
@@ -331,7 +331,7 @@ export default function AdminDashboardPage() {
               <Link href="/clubs" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-white">
                 108 Clubs prüfen
               </Link>
-              <Link href="/pricing" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#C8A97E]">
+              <Link href="/pricing" className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold text-[#e8c98a]">
                 CHF Preis-Kompass
               </Link>
               <button
@@ -345,42 +345,42 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-2xl bg-[#121722] border border-white/10">
-              <div className="text-xs text-gray-400 flex items-center gap-1.5"><Users size={14} className="text-[#C8A97E]" /> Schweizer Gesamt-Index</div>
+            <div className="p-5 rounded-2xl bg-[#22101a] border border-white/10">
+              <div className="text-xs text-gray-400 flex items-center gap-1.5"><Users size={14} className="text-[#e8c98a]" /> Schweizer Gesamt-Index</div>
               <div className="text-3xl font-extrabold text-white mt-1">{(statsData as any)?.uniqueFrontendProfiles || 2526}</div>
-              <div className="text-[11px] text-emerald-400 mt-1">Alle Preise 100–1200 CHF bereinigt</div>
+              <div className="text-xs text-emerald-400 mt-1">Alle Preise 100–1200 CHF bereinigt</div>
             </div>
-            <div className="p-5 rounded-2xl bg-[#121722] border border-white/10">
+            <div className="p-5 rounded-2xl bg-[#22101a] border border-white/10">
               <div className="text-xs text-gray-400 flex items-center gap-1.5"><Phone size={14} className="text-emerald-400" /> Echte +41 Rufnummern</div>
               <div className="text-3xl font-extrabold text-emerald-400 mt-1">{(statsData as any)?.unlockedRealPhones || 995}</div>
-              <div className="text-[11px] text-gray-400 mt-1">{(statsData as any)?.mobileWhatsappReadyPhones || 974} Handynummern (075–079)</div>
+              <div className="text-xs text-gray-400 mt-1">{(statsData as any)?.mobileWhatsappReadyPhones || 974} Handynummern (075–079)</div>
             </div>
-            <div className="p-5 rounded-2xl bg-[#121722] border border-white/10">
-              <div className="text-xs text-gray-400 flex items-center gap-1.5"><Building2 size={14} className="text-[#C8A97E]" /> Bereinigte Clubs & Studios</div>
-              <div className="text-3xl font-extrabold text-[#C8A97E] mt-1">{Array.isArray(clubsData) ? clubsData.length : 108}</div>
-              <div className="text-[11px] text-gray-400 mt-1">0 Duplikate / 0 Einzelanzeigen</div>
+            <div className="p-5 rounded-2xl bg-[#22101a] border border-white/10">
+              <div className="text-xs text-gray-400 flex items-center gap-1.5"><Building2 size={14} className="text-[#e8c98a]" /> Bereinigte Clubs & Studios</div>
+              <div className="text-3xl font-extrabold text-[#e8c98a] mt-1">{Array.isArray(clubsData) ? clubsData.length : 108}</div>
+              <div className="text-xs text-gray-400 mt-1">0 Duplikate / 0 Einzelanzeigen</div>
             </div>
-            <div className="p-5 rounded-2xl bg-[#121722] border border-white/10">
+            <div className="p-5 rounded-2xl bg-[#22101a] border border-white/10">
               <div className="text-xs text-gray-400 flex items-center gap-1.5"><Inbox size={14} className="text-sky-400" /> Kunden-Anfragen & Prüfungen</div>
               <div className="text-3xl font-extrabold text-sky-300 mt-1">{enquiries.length} Leads / {verificationRequests.length} Prüf.</div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-[#121722] p-2 rounded-2xl border border-white/10">
-            <button type="button" onClick={() => setAdminTab("pilots")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "pilots" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>1. Pilot-20 & Live-Schalter (ZG/ZH)</button>
-            <button type="button" onClick={() => setAdminTab("verifications")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "verifications" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>2. Identitäts-Prüfungen ({verificationRequests.length})</button>
-            <button type="button" onClick={() => setAdminTab("leads")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "leads" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>3. Kunden-Anfragen / Leads ({enquiries.length})</button>
-            <button type="button" onClick={() => setAdminTab("takedowns")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "takedowns" ? "bg-[#C8A97E] text-[#0D111A]" : "text-gray-300 hover:bg-white/5"}`}>4. Opt-Outs ({takedowns.length})</button>
-            <button type="button" onClick={() => setAdminTab("scraper")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "scraper" ? "bg-emerald-500 text-[#07120B]" : "text-emerald-300 hover:bg-white/5"}`}>5. 🕷️ Live-URL Scraper</button>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-[#22101a] p-2 rounded-2xl border border-white/10">
+            <button type="button" onClick={() => setAdminTab("pilots")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "pilots" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"}`}>1. Pilot-20 & Live-Schalter (ZG/ZH)</button>
+            <button type="button" onClick={() => setAdminTab("verifications")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "verifications" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"}`}>2. Identitäts-Prüfungen ({verificationRequests.length})</button>
+            <button type="button" onClick={() => setAdminTab("leads")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "leads" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"}`}>3. Kunden-Anfragen / Leads ({enquiries.length})</button>
+            <button type="button" onClick={() => setAdminTab("takedowns")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "takedowns" ? "bg-[#d6165f] text-white" : "text-gray-300 hover:bg-white/5"}`}>4. Opt-Outs ({takedowns.length})</button>
+            <button type="button" onClick={() => setAdminTab("scraper")} className={`py-3 px-3 rounded-xl text-xs font-extrabold cursor-pointer ${adminTab === "scraper" ? "bg-emerald-500 text-[#2a1408]" : "text-emerald-300 hover:bg-white/5"}`}>5. 🕷️ Live-URL Scraper</button>
           </div>
 
           {adminTab === "pilots" && (
-            <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-5">
+            <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg sm:text-xl font-serif font-bold text-white">Pilot-20 Live-Steuerung (10x Kanton Zug · 10x Kanton Zürich)</h2>
                 <div className="flex gap-2">
                   {(["ALL", "ZG", "ZH"] as const).map((c) => (
-                    <button key={c} type="button" onClick={() => setFilterCanton(c)} className={`px-3.5 py-1.5 rounded-xl text-xs font-bold cursor-pointer ${filterCanton === c ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] text-gray-300 border border-white/10"}`}>
+                    <button key={c} type="button" onClick={() => setFilterCanton(c)} className={`px-3.5 py-1.5 rounded-xl text-xs font-bold cursor-pointer ${filterCanton === c ? "bg-[#d6165f] text-white" : "bg-[#150810] text-gray-300 border border-white/10"}`}>
                       {c === "ALL" ? "Alle 20 (ZG + ZH)" : `Nur ${c} (10)`}
                     </button>
                   ))}
@@ -390,7 +390,7 @@ export default function AdminDashboardPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-white/10 text-gray-400 uppercase text-[10px]">
+                    <tr className="border-b border-white/10 text-gray-400 uppercase text-xs">
                       <th className="py-3 px-2">Slot</th>
                       <th className="py-3 px-2">Ort</th>
                       <th className="py-3 px-2">Name & Aufrufe</th>
@@ -412,24 +412,24 @@ export default function AdminDashboardPage() {
 
                       return (
                         <tr key={p.profileId} className="hover:bg-white/5">
-                          <td className="py-3.5 px-2 font-bold text-[#C8A97E]">#{p.pilotSlot}</td>
+                          <td className="py-3.5 px-2 font-bold text-[#e8c98a]">#{p.pilotSlot}</td>
                           <td className="py-3.5 px-2"><span className="px-2 py-0.5 rounded bg-white/10 font-bold text-white mr-1">{p.canton}</span><span className="text-gray-300">{st.city || p.city}</span></td>
-                          <td className="py-3.5 px-2"><div className="font-bold text-white">{st.displayName || p.name}</div><div className="text-[10px] text-gray-500">{p.profileId} · {mt.views || 0} Views · {mt.contactClicks || 0} Kontakte</div></td>
+                          <td className="py-3.5 px-2"><div className="font-bold text-white">{st.displayName || p.name}</div><div className="text-xs text-gray-500">{p.profileId} · {mt.views || 0} Views · {mt.contactClicks || 0} Kontakte</div></td>
                           <td className="py-3.5 px-2 font-semibold text-emerald-400">{st.phoneDisplay || p.phoneDisplay}</td>
-                          <td className="py-3.5 px-2 text-gray-200">{st.rate30Chf || 200} / <strong className="text-[#C8A97E]">{st.rate60Chf || 350}</strong></td>
+                          <td className="py-3.5 px-2 text-gray-200">{st.rate30Chf || 200} / <strong className="text-[#e8c98a]">{st.rate60Chf || 350}</strong></td>
                           <td className="py-3.5 px-2">
                             <div className="flex flex-wrap items-center gap-1.5">
-                              <button type="button" onClick={() => trigger4hAvailability(p.profileId, st.displayName || p.name)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isAvail ? "bg-emerald-500 text-[#07120B]" : "bg-[#0D111A] border border-white/15 text-gray-300"}`}>{isAvail ? "● 4h Aktiv" : "+ 4h Verfügbar"}</button>
-                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { identityVerified: !isVerif }, `✓ Prüf-Status für ${st.displayName || p.name} geändert!`)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isVerif ? "bg-[#C8A97E] text-[#0D111A]" : "bg-[#0D111A] border border-white/15 text-gray-300"}`}>{isVerif ? "✓ Geprüft" : "✓ Prüfen"}</button>
-                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { sponsored: !isSpons }, `★ Top-Spot Status aktualisiert!`)} className={`px-2 py-1 rounded-lg font-bold cursor-pointer ${isSpons ? "bg-amber-500/30 border border-amber-400 text-amber-200" : "bg-[#0D111A] border border-white/15 text-gray-400"}`}>★ Top</button>
-                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { paused: !isPaused }, isPaused ? "Profil wieder eingeblendet!" : "Profil ausgeblendet!")} className={`px-2 py-1 rounded-lg font-bold cursor-pointer ${isPaused ? "bg-rose-500/30 text-rose-300" : "bg-[#0D111A] border border-white/15 text-gray-400"}`}>{isPaused ? "Pausiert" : "Aktiv"}</button>
+                              <button type="button" onClick={() => trigger4hAvailability(p.profileId, st.displayName || p.name)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isAvail ? "bg-emerald-500 text-[#2a1408]" : "bg-[#150810] border border-white/15 text-gray-300"}`}>{isAvail ? "● 4h Aktiv" : "+ 4h Verfügbar"}</button>
+                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { identityVerified: !isVerif }, `✓ Prüf-Status für ${st.displayName || p.name} geändert!`)} className={`px-2.5 py-1 rounded-lg font-bold cursor-pointer ${isVerif ? "bg-[#d6165f] text-white" : "bg-[#150810] border border-white/15 text-gray-300"}`}>{isVerif ? "✓ Geprüft" : "✓ Prüfen"}</button>
+                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { sponsored: !isSpons }, `★ Top-Spot Status aktualisiert!`)} className={`px-2 py-1 rounded-lg font-bold cursor-pointer ${isSpons ? "bg-amber-500/30 border border-amber-400 text-amber-200" : "bg-[#150810] border border-white/15 text-gray-400"}`}>★ Top</button>
+                              <button type="button" onClick={() => triggerAdminUpdate(p.profileId, { paused: !isPaused }, isPaused ? "Profil wieder eingeblendet!" : "Profil ausgeblendet!")} className={`px-2 py-1 rounded-lg font-bold cursor-pointer ${isPaused ? "bg-rose-500/30 text-rose-300" : "bg-[#150810] border border-white/15 text-gray-400"}`}>{isPaused ? "Pausiert" : "Aktiv"}</button>
                             </div>
                           </td>
                           <td className="py-3.5 px-2 text-right">
                             <div className="inline-flex items-center gap-1.5">
-                              <Link href={cockpitPath} className="px-2.5 py-1.5 rounded-lg bg-[#C8A97E] text-[#0D111A] font-extrabold inline-flex items-center gap-1"><span>Cockpit</span><ExternalLink size={11} /></Link>
+                              <Link href={cockpitPath} className="px-2.5 py-1.5 rounded-lg bg-[#d6165f] text-white font-extrabold inline-flex items-center gap-1"><span>Cockpit</span><ExternalLink size={11} /></Link>
                               <Link href={`/profile/${encodeURIComponent(p.profileId)}`} className="px-2.5 py-1.5 rounded-lg bg-white/10 text-white font-semibold">Profil ↗</Link>
-                              <button type="button" onClick={() => copyCockpitLink(p.pilotSlot, cockpitPath)} className="px-2 py-1.5 rounded-lg bg-[#0D111A] border border-white/15 text-gray-300 cursor-pointer">{copiedSlot === p.pilotSlot ? "✓" : <Copy size={11} />}</button>
+                              <button type="button" onClick={() => copyCockpitLink(p.pilotSlot, cockpitPath)} className="px-2 py-1.5 rounded-lg bg-[#150810] border border-white/15 text-gray-300 cursor-pointer">{copiedSlot === p.pilotSlot ? "✓" : <Copy size={11} />}</button>
                             </div>
                           </td>
                         </tr>
@@ -442,16 +442,16 @@ export default function AdminDashboardPage() {
           )}
 
           {adminTab === "verifications" && (
-            <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-4">
               <h2 className="text-lg font-serif font-bold text-white">Offene Anträge auf Dokumentierte Identitätsprüfung (✓)</h2>
               {verificationRequests.length === 0 ? (
                 <p className="text-xs text-gray-400">Aktuell keine offenen Prüfanträge.</p>
               ) : (
                 <div className="space-y-3">
                   {verificationRequests.map((req: any) => (
-                    <div key={req.profileId} className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex items-center justify-between gap-4">
+                    <div key={req.profileId} className="p-4 rounded-xl bg-[#150810] border border-white/10 flex items-center justify-between gap-4">
                       <div><div className="font-bold text-white">{req.displayName} ({req.city}, {req.canton})</div><div className="text-xs text-gray-400">ID: {req.profileId} · Telefon: {req.phoneDisplay}</div></div>
-                      <button type="button" onClick={() => triggerAdminUpdate(req.profileId, { identityVerified: true }, `✓ Identität für ${req.displayName} bestätigt!`)} className="px-4 py-2 rounded-xl bg-emerald-500 text-[#07120B] font-extrabold text-xs cursor-pointer">✓ Jetzt freischalten</button>
+                      <button type="button" onClick={() => triggerAdminUpdate(req.profileId, { identityVerified: true }, `✓ Identität für ${req.displayName} bestätigt!`)} className="px-4 py-2 rounded-xl bg-emerald-500 text-[#2a1408] font-extrabold text-xs cursor-pointer">✓ Jetzt freischalten</button>
                     </div>
                   ))}
                 </div>
@@ -460,16 +460,16 @@ export default function AdminDashboardPage() {
           )}
 
           {adminTab === "leads" && (
-            <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-4">
               <h2 className="text-lg font-serif font-bold text-white">Eingegangene Private Kunden-Anfragen ({enquiries.length})</h2>
               {enquiries.length === 0 ? (
                 <p className="text-xs text-gray-400">Noch keine privaten Rückruf-Anfragen eingegangen.</p>
               ) : (
                 <div className="space-y-3">
                   {enquiries.map((lead: any) => (
-                    <div key={lead.id} className="p-4 rounded-xl bg-[#0D111A] border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs">
+                    <div key={lead.id} className="p-4 rounded-xl bg-[#150810] border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs">
                       <div>
-                        <div className="font-bold text-white">Anfrage für <span className="text-[#C8A97E]">{lead.providerName}</span> ({lead.profileId})</div>
+                        <div className="font-bold text-white">Anfrage für <span className="text-[#e8c98a]">{lead.providerName}</span> ({lead.profileId})</div>
                         <div className="text-gray-300 mt-0.5">Kunden-Rückrufnummer: <strong className="text-emerald-400">{lead.clientContact}</strong> · Wunschzeit: <strong>{lead.desiredTime}</strong></div>
                       </div>
                       <span className="text-gray-500">{new Date(lead.createdAt).toLocaleString("de-CH")}</span>
@@ -481,14 +481,14 @@ export default function AdminDashboardPage() {
           )}
 
           {adminTab === "takedowns" && (
-            <div className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-[#22101a] border border-white/10 rounded-2xl p-6 space-y-4">
               <h2 className="text-lg font-serif font-bold text-white">Vertrauliche Meldungen & Opt-Out-Fälle ({takedowns.length})</h2>
               {takedowns.length === 0 ? (
                 <p className="text-xs text-gray-400">Keine offenen Opt-Out-Meldungen vorliegend.</p>
               ) : (
                 <div className="space-y-3">
                   {takedowns.map((t: any) => (
-                    <div key={t.caseId} className="p-4 rounded-xl bg-[#0D111A] border border-rose-500/30 flex items-center justify-between gap-4 text-xs">
+                    <div key={t.caseId} className="p-4 rounded-xl bg-[#150810] border border-rose-500/30 flex items-center justify-between gap-4 text-xs">
                       <div><div className="font-bold text-rose-300">{t.caseId} · Profil: {t.profileId}</div><div className="text-gray-400">{t.reason} · {t.details}</div></div>
                       <span className="px-3 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold">{t.status}</span>
                     </div>
@@ -498,9 +498,9 @@ export default function AdminDashboardPage() {
             </div>
           )}
           {adminTab === "scraper" && (
-            <div className="bg-[#121722] border border-emerald-500/40 rounded-2xl p-6 space-y-5">
+            <div className="bg-[#22101a] border border-emerald-500/40 rounded-2xl p-6 space-y-5">
               <div>
-                <div className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">
+                <div className="text-xs uppercase tracking-widest text-emerald-400 font-bold">
                   DIREKTER SCHWEIZER LIVE-HARVESTER · MIT 5-STUFEN QUALITY-GATE (100–1200 CHF & OPT-OUT-SCHUTZ)
                 </div>
                 <h2 className="text-xl font-serif font-bold text-white mt-1">
@@ -514,12 +514,12 @@ export default function AdminDashboardPage() {
                   value={scrapeUrl}
                   onChange={(e) => setScrapeUrl(e.target.value)}
                   placeholder="https://... (Schweizer Inserate- oder Studio-URL)"
-                  className="sm:col-span-2 rounded-xl bg-[#0D111A] border border-white/15 px-4 py-3 text-xs text-white"
+                  className="sm:col-span-2 rounded-xl bg-[#150810] border border-white/15 px-4 py-3 text-xs text-white"
                 />
                 <select
                   value={scrapeCanton}
                   onChange={(e) => setScrapeCanton(e.target.value)}
-                  className="rounded-xl bg-[#0D111A] border border-white/15 px-3 py-3 text-xs text-white"
+                  className="rounded-xl bg-[#150810] border border-white/15 px-3 py-3 text-xs text-white"
                 >
                   {["ZG", "ZH", "LU", "AG", "BS", "BE", "SG", "GE", "VD", "TI"].map((c) => (
                     <option key={c} value={c}>Fallback-Kanton: {c}</option>
@@ -556,13 +556,13 @@ export default function AdminDashboardPage() {
                     }
                     setScrapeLoading(false);
                   }}
-                  className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
+                  className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#2a1408] font-extrabold text-xs uppercase tracking-wider py-3 px-4 cursor-pointer"
                 >
                   {scrapeLoading ? "Scrape läuft..." : "🕷️ Einzel-URL scrapen →"}
                 </button>
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[#0D111A] border border-emerald-500/30">
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[#150810] border border-emerald-500/30">
                 <div className="text-xs text-gray-300">
                   <strong className="text-emerald-400">🕸️ Multi-Profile Kategorieseiten-Crawler:</strong> Extrahiert automatisch bis zu 12 Profil-Unterseiten von einer Studio-/Team- oder Kantons-Übersichtsseite.
                 </div>
@@ -599,15 +599,15 @@ export default function AdminDashboardPage() {
                     }
                     setScrapeLoading(false);
                   }}
-                  className="px-4 py-2.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-extrabold text-xs uppercase tracking-wider cursor-pointer"
                 >
                   {scrapeLoading ? "Crawlt Unterseiten..." : "🕸️ Ganze Übersichtsseite crawlen (bis 12 Profile) →"}
                 </button>
               </div>
 
               {batchResults.length > 0 && (
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-[#C8A97E]/40 space-y-2 text-xs">
-                  <div className="font-bold text-[#C8A97E]">
+                <div className="p-4 rounded-xl bg-[#150810] border border-[#e8c98a]/40 space-y-2 text-xs">
+                  <div className="font-bold text-[#e8c98a]">
                     ✓ {batchResults.length} Profile per Batch-Crawl neu in den Live-Index aufgenommen:
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -615,13 +615,13 @@ export default function AdminDashboardPage() {
                       <Link
                         key={bp.id}
                         href={`/profile/${encodeURIComponent(bp.id)}`}
-                        className="p-2.5 rounded-lg bg-[#121722] border border-white/10 hover:border-[#C8A97E] flex items-center justify-between gap-2"
+                        className="p-2.5 rounded-lg bg-[#22101a] border border-white/10 hover:border-[#e8c98a] flex items-center justify-between gap-2"
                       >
                         <div>
                           <div className="font-bold text-white truncate max-w-[180px]">{bp.rawName}</div>
-                          <div className="text-[10px] text-gray-400">{bp.city} ({bp.canton}) · CHF {bp.advertisedBaseChf}.–</div>
+                          <div className="text-xs text-gray-400">{bp.city} ({bp.canton}) · CHF {bp.advertisedBaseChf}.–</div>
                         </div>
-                        <span className="text-[#C8A97E] font-bold">↗</span>
+                        <span className="text-[#e8c98a] font-bold">↗</span>
                       </Link>
                     ))}
                   </div>
@@ -634,25 +634,25 @@ export default function AdminDashboardPage() {
                   value={scrapePhone}
                   onChange={(e) => setScrapePhone(e.target.value)}
                   placeholder="Optional: +41 79 ... manuell vorgeben (falls nicht im HTML)"
-                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                  className="rounded-xl bg-[#150810] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
                 />
                 <input
                   type="number"
                   value={scrapeRate60}
                   onChange={(e) => setScrapeRate60(e.target.value)}
                   placeholder="Optional: 60-Min.-Preis in CHF (100–1200)"
-                  className="rounded-xl bg-[#0D111A] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
+                  className="rounded-xl bg-[#150810] border border-white/10 px-4 py-2.5 text-xs text-gray-200"
                 />
               </div>
 
               {scrapedResult && (
-                <div className="p-4 rounded-xl bg-[#0D111A] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4 text-xs">
+                <div className="p-4 rounded-xl bg-[#150810] border border-emerald-500/40 flex flex-wrap items-center justify-between gap-4 text-xs">
                   <div className="space-y-1">
                     <div className="font-bold text-white text-sm">
                       ✓ Neu im Index: {scrapedResult.rawName} ({scrapedResult.city}, {scrapedResult.canton})
                     </div>
                     <div className="text-gray-300">
-                      ID: <code>{scrapedResult.id}</code> · Telefon: <strong className="text-emerald-400">{scrapedResult.rawPhone || "k.A."}</strong> · Preis: <strong className="text-[#C8A97E]">{scrapedResult.priceLabel}</strong>
+                      ID: <code>{scrapedResult.id}</code> · Telefon: <strong className="text-emerald-400">{scrapedResult.rawPhone || "k.A."}</strong> · Preis: <strong className="text-[#e8c98a]">{scrapedResult.priceLabel}</strong>
                     </div>
                     <div className="text-gray-400">
                       Attribute: {scrapedResult.age} J. · {scrapedResult.heightCm} cm · Cup {scrapedResult.cupSize} · Rubrik: {scrapedResult.rubric}
@@ -660,7 +660,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <Link
                     href={`/profile/${encodeURIComponent(scrapedResult.id)}`}
-                    className="px-4 py-2.5 rounded-xl bg-[#C8A97E] text-[#0D111A] font-extrabold"
+                    className="px-4 py-2.5 rounded-xl bg-[#d6165f] text-white font-extrabold"
                   >
                     Live-Profil öffnen ↗
                   </Link>

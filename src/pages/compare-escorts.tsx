@@ -22,7 +22,7 @@ export default function CompareEscortsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#070606] text-[#F5EFE6] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
         title="4-Suiten Direktvergleich · 30m/60m CHF & +41 Kontakt | iwantsexnow.ch"
         description="Vergleichen Sie bis zu 4 Schweizer Escort- und Tantra-Suiten nebeneinander nach 30-Minuten- und 60-Minuten-Honorar, Kanton und Verfügbarkeit."
@@ -30,13 +30,13 @@ export default function CompareEscortsPage() {
       <LuxuryHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <div className="penthouse-panel p-6 rounded-[24px] border border-[#C8A97E]/40 flex flex-wrap items-center justify-between gap-4">
+        <div className="penthouse-panel p-6 rounded-[24px] border border-[#e8c98a]/40 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#DEC393] font-bold">
+            <span className="text-xs font-mono uppercase tracking-[0.22em] text-[#e8c98a] font-bold">
               SWISS SIDE-BY-SIDE MATRIX
             </span>
-            <h1 className="text-2xl sm:text-3xl font-serif text-[#EAD2AA] flex items-center gap-2 mt-1">
-              <Scale size={22} className="text-[#DEC393]" />
+            <h1 className="text-2xl sm:text-3xl font-serif text-[#e8c98a] flex items-center gap-2 mt-1">
+              <Scale size={22} className="text-[#e8c98a]" />
               <span>Direktvergleich Ihrer gemerkten Schweizer Suiten</span>
             </h1>
           </div>
@@ -53,7 +53,7 @@ export default function CompareEscortsPage() {
 
             return (
               <div key={pid || i} className="valentina-outer-card rounded-[24px] p-2.5 flex flex-col justify-between">
-                <div className="rounded-[18px] border border-[#C8A97E]/35 bg-[#070505] overflow-hidden flex-1 flex flex-col justify-between">
+                <div className="rounded-[18px] border border-[#e8c98a]/35 bg-[#150810] overflow-hidden flex-1 flex flex-col justify-between">
                   <div>
                     <Link href={"/profile/" + encodeURIComponent(pid)} className="darkroom-stage block aspect-[3/4] w-full">
                       <img
@@ -68,38 +68,38 @@ export default function CompareEscortsPage() {
                         <SwissDoorplate state="FREI" roomNumber={p.canton || "CH"} customLabel="FREI" size="sm" />
                       </div>
                       <div className="absolute inset-x-0 bottom-2 z-10 px-3 text-center">
-                        <div className="font-serif text-lg text-[#EAD2AA] truncate uppercase">{p.rawName}</div>
-                        <div className="text-[9px] font-mono text-[#C8B9A6]">{p.city} ({p.canton})</div>
+                        <div className="font-serif text-lg text-[#e8c98a] truncate uppercase">{p.rawName}</div>
+                        <div className="text-xs font-mono text-[#e8c98a]">{p.city} ({p.canton})</div>
                       </div>
                     </Link>
 
-                    <div className="p-3.5 space-y-2 text-xs font-mono border-t border-[#C8A97E]/20">
+                    <div className="p-3.5 space-y-2 text-xs font-mono border-t border-[#e8c98a]/20">
                       <div className="flex justify-between">
-                        <span className="text-[#9E8C74]">60 Min. Standard:</span>
-                        <strong className="text-[#DEC393]">CHF {r60}.–</strong>
+                        <span className="text-[#e8c98a]">60 Min. Standard:</span>
+                        <strong className="text-[#e8c98a]">CHF {r60}.–</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#9E8C74]">30 Min. Express:</span>
-                        <strong className="text-[#F5EFE6]">CHF {r30}.–</strong>
+                        <span className="text-[#e8c98a]">30 Min. Express:</span>
+                        <strong className="text-[#fbf1ec]">CHF {r30}.–</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#9E8C74]">Alter / Grösse:</span>
-                        <strong className="text-[#EAD2AA]">{p.age || 25}J · {p.heightCm || 168}cm</strong>
+                        <span className="text-[#e8c98a]">Alter / Grösse:</span>
+                        <strong className="text-[#e8c98a]">{p.age || 25}J · {p.heightCm || 168}cm</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#9E8C74]">Körbchen:</span>
-                        <strong className="text-[#EAD2AA]">Cup {p.cupSize || "C"}</strong>
+                        <span className="text-[#e8c98a]">Körbchen:</span>
+                        <strong className="text-[#e8c98a]">Cup {p.cupSize || "C"}</strong>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-3 grid grid-cols-1 gap-2 border-t border-[#C8A97E]/20">
+                  <div className="p-3 grid grid-cols-1 gap-2 border-t border-[#e8c98a]/20">
                     {cleanDigits && (
                       <a
                         href={"https://wa.me/" + cleanDigits}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="brass-3d py-2 px-3 rounded-full font-sans font-extrabold text-[10px] tracking-widest uppercase flex items-center justify-center gap-1.5"
+                        className="brass-3d py-2 px-3 rounded-full font-sans font-extrabold text-xs tracking-widest uppercase flex items-center justify-center gap-1.5"
                       >
                         <MessageCircle size={12} />
                         <span>WHATSAPP</span>
@@ -107,9 +107,9 @@ export default function CompareEscortsPage() {
                     )}
                     <Link
                       href={"/profile/" + encodeURIComponent(pid)}
-                      className="emerald-3d py-2 px-3 rounded-full border border-[#C8A97E]/45 font-sans font-bold text-[10px] tracking-widest uppercase flex items-center justify-center gap-1.5"
+                      className="emerald-3d py-2 px-3 rounded-full border border-[#e8c98a]/45 font-sans font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-1.5"
                     >
-                      <User size={12} className="text-[#DEC393]" />
+                      <User size={12} className="text-[#e8c98a]" />
                       <span>DOSSIER ÖFFNEN</span>
                     </Link>
                   </div>

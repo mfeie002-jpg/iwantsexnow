@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
-import { SWISS_DOORPLATE_TOKENS } from "@/lib/brand/doorplateTokens";
+import { HeroArches, CityPlates, Steps, TrustBand, cleanName, avatarGradient } from "@/components/ds";
 import offersData from "@/data/harvested-offers.json";
 import clubsData from "@/data/swiss-establishments-vault.json";
 import {
@@ -32,17 +31,17 @@ const TOTAL_SOURCES = (() => {
 })();
 
 const CANTON_PILLS = [
-  { code: "ALL", label: "CH · Alle" },
-  { code: "ZG", label: "ZG · Zug" },
-  { code: "ZH", label: "ZH · Zürich" },
-  { code: "LU", label: "LU · Luzern" },
-  { code: "BS", label: "BS · Basel" },
-  { code: "BE", label: "BE · Bern" },
-  { code: "AG", label: "AG · Aargau" },
-  { code: "SG", label: "SG · St. Gallen" },
-  { code: "GE", label: "GE · Genève" },
-  { code: "VD", label: "VD · Lausanne" },
-  { code: "TI", label: "TI · Lugano" },
+  { code: "ALL", label: "Ganze Schweiz" },
+  { code: "ZG", label: "Zug" },
+  { code: "ZH", label: "Zürich" },
+  { code: "LU", label: "Luzern" },
+  { code: "BS", label: "Basel" },
+  { code: "BE", label: "Bern" },
+  { code: "AG", label: "Aargau" },
+  { code: "SG", label: "St. Gallen" },
+  { code: "GE", label: "Genève" },
+  { code: "VD", label: "Lausanne" },
+  { code: "TI", label: "Lugano" },
 ];
 
 const RUBRIC_TABS = [
@@ -305,10 +304,10 @@ export default function HomePage() {
 
   const pageClass =
     designTheme === "velvet"
-      ? "penthouse-page min-h-screen pb-16 text-[#FAF3E8]"
+      ? "penthouse-page min-h-screen pb-16 text-[#fbf1ec]"
       : designTheme === "vogue"
-      ? "penthouse-page min-h-screen pb-16 text-[#F5F0E8]"
-      : "penthouse-page min-h-screen pb-16 text-[#F2EADF]";
+      ? "penthouse-page min-h-screen pb-16 text-[#fbf1ec]"
+      : "penthouse-page min-h-screen pb-16 text-[#fbf1ec]";
 
   const consoleClass =
     designTheme === "vogue"
@@ -324,8 +323,8 @@ export default function HomePage() {
   const getEditionClass = (edition: DesignTheme) => {
     const active = designTheme === edition;
     return active
-      ? "shrink-0 cursor-pointer rounded-full border border-[#C8A97E]/45 bg-[#C8A97E]/10 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.08em] text-[#DEC393]"
-      : "shrink-0 cursor-pointer rounded-full border border-transparent px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.08em] text-[#71675B] transition hover:text-[#C8A97E]";
+      ? "shrink-0 cursor-pointer rounded-full border border-[#e8c98a]/45 bg-[#d6165f]/10 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.08em] text-[#e8c98a]"
+      : "shrink-0 cursor-pointer rounded-full border border-transparent px-3 py-1.5 font-mono text-xs uppercase tracking-[0.08em] text-[#cdb5be] transition hover:text-[#e8c98a]";
   };
 
   return (
@@ -339,244 +338,177 @@ export default function HomePage() {
       <LuxuryHeader />
 
       <main className="mx-auto max-w-7xl px-3 pb-8 pt-4 sm:px-6 sm:pt-6">
-        <section className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <section className="relative mb-10 grid items-center gap-10 py-6 lg:grid-cols-[1.1fr_0.9fr] lg:py-12">
           <div>
-            <div className="flex items-center gap-3">
-              <span className="h-px w-7 bg-[#C8A97E]/65" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#C8A97E]">
-                Private Swiss Index · {TOTAL_SOURCES} Quellen
-              </span>
-            </div>
-            <h1 className="mt-2 font-serif text-[25px] font-normal leading-tight tracking-[0.015em] text-[#F2EADF] sm:text-[34px]">
-              Die Schweiz.{" "}
-              <span className="brass-text italic">
-                Diskret kuratiert.
-              </span>
+            <p className="font-serif text-2xl italic text-[#e8c98a]">Schön, dass du da bist.</p>
+            <h1 className="mt-3 font-serif text-[56px] leading-[0.98] text-[#fbf1ec] sm:text-[84px]">
+              Wen suchst du <em className="text-[#e8c98a]">heute?</em>
             </h1>
+            <p className="mt-6 max-w-md text-xl leading-relaxed text-[#cdb5be]">
+              {activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")} echte Profile aus der ganzen Schweiz.
+              Ehrliche Preise, direkter Kontakt, keine Provision.
+            </p>
+            <a
+              href="#suche"
+              className="brass-button mt-8 inline-flex min-h-[60px] items-center rounded-full px-10 text-[17px]"
+            >
+              Los geht's
+            </a>
           </div>
-
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[8px] uppercase tracking-[0.08em] text-[#746A5D]">
-            <span className="inline-flex items-center gap-1.5 text-[#9BC7B2]">
-              <ShieldCheck size={12} />
-              0% Agentur-Provision
-            </span>
-            <span>Direkter +41 Kontakt</span>
-            <span className="tabular-nums text-[#C8A97E]">
-              {activeOffers.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'")} Dossiers · {TOTAL_CLUBS} Clubs
-            </span>
-          </div>
+          <HeroArches className="hidden sm:block" />
         </section>
-
-        <div className="no-scrollbar mb-3 flex items-center justify-between gap-3 overflow-x-auto border-y border-white/[0.045] py-2">
-          <div className="flex items-center gap-1">
-            <span className="mr-1 shrink-0 font-mono text-[8px] uppercase tracking-[0.15em] text-[#61584E]">
-              Atelier
-            </span>
-            <button
-              type="button"
-              onClick={() => switchTheme("audemars")}
-              className={getEditionClass("audemars")}
-            >
-              01 · Bahnhofstrasse
-            </button>
-            <button
-              type="button"
-              onClick={() => switchTheme("velvet")}
-              className={getEditionClass("velvet")}
-            >
-              02 · Velvet Noir
-            </button>
-            <button
-              type="button"
-              onClick={() => switchTheme("vogue")}
-              className={getEditionClass("vogue")}
-            >
-              03 · Editorial
-            </button>
-          </div>
-
-          <Link
-            href="/fantasy-preview"
-            className="inline-flex shrink-0 items-center gap-1.5 text-[9px] font-medium text-[#C8A97E] transition hover:text-[#DEC393]"
-          >
-            <Sparkles size={11} />
-            Voice-Avatar & 5s Preview
-            <ArrowRight size={11} />
-          </Link>
-        </div>
 
         <section
-          className={consoleClass}
-          aria-label="Steuer- und Filter-Cockpit"
+          id="suche"
+          className="mb-12 scroll-mt-24 rounded-[28px] border border-[#3d2231] bg-[#22101a] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.25),0_16px_40px_rgba(0,0,0,0.28)] sm:p-9"
+          aria-label="Suche"
         >
-          <div className="flex flex-col gap-2 border-b border-white/[0.055] p-2.5 xl:flex-row xl:items-center xl:justify-between">
-            <div className="no-scrollbar flex items-center gap-1 overflow-x-auto">
-              {RUBRIC_TABS.map((tab) => {
-                const active = rubricFilter === tab.id;
-                const tabClass = active
-                  ? "min-h-[33px] shrink-0 cursor-pointer rounded-[5px] border border-[#DEC393]/35 bg-[linear-gradient(135deg,rgba(222,195,147,0.18),rgba(135,102,51,0.1))] px-3.5 py-1.5 text-[10px] font-medium text-[#DEC393] shadow-[inset_0_1px_0_rgba(255,245,220,0.1)]"
-                  : "min-h-[33px] shrink-0 cursor-pointer rounded-[5px] border border-transparent px-3.5 py-1.5 text-[10px] font-medium text-[#81776A] transition hover:bg-white/[0.025] hover:text-[#D7C9B5]";
+          <div className="grid gap-9">
+            <div className="grid gap-3">
+              <h2 className="font-serif text-3xl text-[#fbf1ec]">1 · Wo bist du?</h2>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Stadt, PLZ oder Name"
+                  className="luxury-input"
+                  aria-label="Stadt, PLZ oder Name"
+                />
+              </div>
+              <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+                {CANTON_PILLS.map((canton) => {
+                  const active = cantonFilter === canton.code;
+                  return (
+                    <button
+                      key={canton.code}
+                      type="button"
+                      onClick={() => setCantonFilter(canton.code)}
+                      aria-pressed={active}
+                      className={
+                        "min-h-[44px] shrink-0 cursor-pointer rounded-full border px-5 text-[15px] font-semibold transition " +
+                        (active
+                          ? "border-[#e8c98a] bg-[#e8c98a] text-[#2a1408]"
+                          : "border-[#947683] text-[#fbf1ec] hover:border-[#e8c98a] hover:text-[#e8c98a]")
+                      }
+                    >
+                      {canton.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setRubricFilter(tab.id)}
-                    className={tabClass}
-                  >
-                    {tab.label}
+            <div className="grid gap-3">
+              <h2 className="font-serif text-3xl text-[#fbf1ec]">2 · Wann hast du Zeit?</h2>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { id: true, label: "Jetzt frei" },
+                  { id: false, label: "Egal" },
+                ].map((o) => {
+                  const active = onlyAvailable4h === o.id;
+                  return (
+                    <button
+                      key={o.label}
+                      type="button"
+                      onClick={() => setOnlyAvailable4h(o.id)}
+                      aria-pressed={active}
+                      className={
+                        "min-h-[44px] cursor-pointer rounded-full border px-5 text-[15px] font-semibold transition " +
+                        (active
+                          ? "border-[#e8c98a] bg-[#e8c98a] text-[#2a1408]"
+                          : "border-[#947683] text-[#fbf1ec] hover:border-[#e8c98a] hover:text-[#e8c98a]")
+                      }
+                    >
+                      {o.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="grid gap-3">
+              <h2 className="font-serif text-3xl text-[#fbf1ec]">3 · Wonach ist dir?</h2>
+              <div className="flex flex-wrap gap-2">
+                {RUBRIC_TABS.map((tab) => {
+                  const active = rubricFilter === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setRubricFilter(tab.id)}
+                      aria-pressed={active}
+                      className={
+                        "min-h-[44px] cursor-pointer rounded-full border px-5 text-[15px] font-semibold transition " +
+                        (active
+                          ? "border-[#e8c98a] bg-[#e8c98a] text-[#2a1408]"
+                          : "border-[#947683] text-[#fbf1ec] hover:border-[#e8c98a] hover:text-[#e8c98a]")
+                      }
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#3d2231] pt-6">
+              <div className="flex flex-wrap items-center gap-4 text-[#cdb5be]">
+                <span>{activeOffers.length} Profile passen zu dir</span>
+                <details className="group relative">
+                  <summary className="cursor-pointer list-none text-[#e8c98a] underline underline-offset-4">Mehr Optionen</summary>
+                  <div className="absolute left-0 top-9 z-20 grid w-72 gap-3 rounded-[24px] border border-[#3d2231] bg-[#2b1420] p-5 shadow-[0_28px_60px_rgba(0,0,0,0.5)]">
+                    <label className="grid gap-1 text-[15px] font-semibold text-[#fbf1ec]">
+                      Dein Budget
+                      <select value={maxRate60} onChange={(e) => setMaxRate60(Number(e.target.value))} className="luxury-select">
+                        <option value={1200}>Egal</option>
+                        <option value={250}>bis CHF 250</option>
+                        <option value={350}>bis CHF 350</option>
+                        <option value={500}>bis CHF 500</option>
+                      </select>
+                    </label>
+                    <label className="grid gap-1 text-[15px] font-semibold text-[#fbf1ec]">
+                      Sortierung
+                      <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)} className="luxury-select">
+                        <option value="recommended">Unsere Empfehlung</option>
+                        <option value="available">Jetzt frei</option>
+                        <option value="price_asc">Günstigste zuerst</option>
+                        <option value="price_desc">Teuerste zuerst</option>
+                      </select>
+                    </label>
+                  </div>
+                </details>
+                {hasActiveFilters && (
+                  <button type="button" onClick={resetFilters} className="cursor-pointer text-[#e8c98a] underline underline-offset-4">
+                    Zurücksetzen
                   </button>
-                );
-              })}
+                )}
+              </div>
+              <a href="#profile" className="brass-button inline-flex min-h-[60px] items-center rounded-full px-10 text-[17px]">
+                Zeig mir die Profile
+              </a>
             </div>
-
-            <div className="hidden items-center gap-2 font-mono text-[8px] uppercase tracking-[0.1em] text-[#6E6458] xl:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.45)]" />
-              Live Schweizer Index
-            </div>
-          </div>
-
-          <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto border-b border-white/[0.045] px-2.5 py-2.5">
-            {CANTON_PILLS.map((canton) => {
-              const active = cantonFilter === canton.code;
-              const pillClass = active
-                ? "min-h-[28px] shrink-0 cursor-pointer rounded-full border border-[#DEC393]/55 bg-[#C8A97E]/10 px-3 py-1 font-mono text-[9px] tabular-nums text-[#DEC393]"
-                : "min-h-[28px] shrink-0 cursor-pointer rounded-full border border-white/[0.065] bg-black/20 px-3 py-1 font-mono text-[9px] tabular-nums text-[#7E7467] transition hover:border-[#C8A97E]/35 hover:text-[#C8A97E]";
-
-              return (
-                <button
-                  key={canton.code}
-                  type="button"
-                  onClick={() => setCantonFilter(canton.code)}
-                  className={pillClass}
-                >
-                  {canton.label}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="grid gap-2 p-2.5 md:grid-cols-2 xl:grid-cols-[minmax(240px,1fr)_auto_180px_225px_auto_auto] xl:items-center">
-            <div className="relative md:col-span-2 xl:col-span-1">
-              <Search
-                size={14}
-                strokeWidth={1.5}
-                className="pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[#C8A97E]"
-              />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="PLZ, Stadt, Name oder Service"
-                className="luxury-input pl-9"
-                aria-label="Dossiers durchsuchen"
-              />
-            </div>
-
-            <div className="flex min-h-[42px] items-center">
-              <SwissDoorplate
-                state={onlyAvailable4h ? "FREI" : "RESERVIERT"}
-                roomNumber="FILTER"
-                customLabel={
-                  onlyAvailable4h ? "NUR FREI · 4H" : "NUR FREI · AUS"
-                }
-                size="md"
-                interactiveToggle={true}
-                onToggle={(next) =>
-                  setOnlyAvailable4h(next === "FREI")
-                }
-              />
-            </div>
-
-            <select
-              value={maxRate60}
-              onChange={(e) =>
-                setMaxRate60(Number(e.target.value))
-              }
-              className="luxury-select cursor-pointer font-mono tabular-nums"
-              aria-label="Maximales 60-Minuten-Honorar"
-            >
-              <option value={1200}>CHF · ALLE TARIFE</option>
-              <option value={250}>MAX. CHF 250 / 60M</option>
-              <option value={350}>MAX. CHF 350 / 60M</option>
-              <option value={500}>MAX. CHF 500 / 60M</option>
-            </select>
-
-            <div className="relative">
-              <ArrowUpDown
-                size={12}
-                className="pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[#C8A97E]"
-              />
-              <select
-                value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value as any)
-                }
-                className="luxury-select cursor-pointer pl-8 font-mono tabular-nums"
-                aria-label="Sortierung"
-              >
-                <option value="recommended">
-                  KURATIERT ({activeOffers.length})
-                </option>
-                <option value="available">FREI · 4H LIVE</option>
-                <option value="price_asc">CHF AUFSTEIGEND</option>
-                <option value="price_desc">CHF ABSTEIGEND</option>
-              </select>
-            </div>
-
-            <button
-              type="button"
-              onClick={toggleStudioNoir}
-              aria-pressed={studioNoir}
-              className={
-                studioNoir
-                  ? "inline-flex min-h-[42px] cursor-pointer items-center justify-center gap-2 rounded-[6px] border border-[#C8A97E]/40 bg-[#C8A97E]/[0.07] px-3 font-mono text-[8px] uppercase tracking-[0.08em] text-[#DEC393]"
-                  : "ghost-button inline-flex min-h-[42px] cursor-pointer items-center justify-center gap-2 rounded-[6px] px-3 font-mono text-[8px] uppercase tracking-[0.08em]"
-              }
-            >
-              <Sparkles size={12} />
-              Studio Noir {studioNoir ? "On" : "Off"}
-            </button>
-
-            <button
-              type="button"
-              onClick={resetFilters}
-              disabled={!hasActiveFilters}
-              className="ghost-button flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-[6px] disabled:cursor-default disabled:opacity-30"
-              title="Filter zurücksetzen"
-              aria-label="Filter zurücksetzen"
-            >
-              <RotateCcw size={14} strokeWidth={1.5} />
-            </button>
           </div>
         </section>
 
-        <div className="mb-4 mt-7 flex items-end justify-between gap-4 px-1">
-          <div>
-            <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#8F7958]">
-              La sélection
-            </div>
-            <h2 className="mt-1 font-serif text-xl font-normal text-[#E9DFD0]">
-              Private Dossiers
-            </h2>
-          </div>
-          <div className="font-mono text-[8px] tabular-nums text-[#6F6559]">
-            {Math.min(visibleLimit, activeOffers.length)} /{" "}
-            {activeOffers.length}
+        <div id="profile" className="mb-6 flex scroll-mt-24 items-end justify-between gap-4 px-1">
+          <h2 className="font-serif text-4xl text-[#fbf1ec] sm:text-5xl">
+            Profile <em className="text-[#e8c98a]">für dich</em>
+          </h2>
+          <div className="text-base text-[#cdb5be]">
+            {Math.min(visibleLimit, activeOffers.length)} von {activeOffers.length}
           </div>
         </div>
 
         {isLoading && (
           <div>
-            <p className="mb-4 text-center font-mono text-[9px] text-[#8E806E]">
-              {SWISS_DOORPLATE_TOKENS.microcopyDe.loadingState}
-            </p>
-            <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+            <p className="mb-4 text-center text-[#cdb5be]">Einen Moment, wir holen die Profile …</p>
+            <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {Array.from({ length: 8 }).map((_, index) => (
                 <div
                   key={index}
                   className="lux-skeleton skeleton-card"
-                  aria-label="Dossier wird geladen"
+                  aria-label="Profil wird geladen"
                 />
               ))}
             </section>
@@ -584,7 +516,7 @@ export default function HomePage() {
         )}
 
         {!isLoading && (
-          <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+          <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {activeOffers
               .slice(0, visibleLimit)
               .map((p: any, idx: number) => {
@@ -620,168 +552,92 @@ export default function HomePage() {
                 return (
                   <article
                     key={p.id}
-                    className="valentina-card group flex flex-col overflow-hidden"
+                    className="valentina-card group flex flex-col p-2.5 text-center"
                   >
-                    <div className={noirStageClass}>
-                      <div className="photo-fallback">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C8A97E]/35 font-serif text-base text-[#C8A97E]">
-                          CH
-                        </div>
-                        <div className="mt-3 max-w-full truncate font-serif text-xs text-[#D8CCBA]">
-                          {p.rawName}
-                        </div>
-                        <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.1em] text-[#7E6C52]">
-                          Original-Fotos im Dossier
-                        </div>
+                    <div className="arch">
+                      <div
+                        className="absolute inset-0 flex items-center justify-center"
+                        style={{ background: avatarGradient(String(p.id)) }}
+                      >
+                        <span className="font-serif text-7xl text-white/90">
+                          {cleanName(p.rawName).charAt(0).toUpperCase() || "·"}
+                        </span>
                       </div>
 
                       <Link
                         href={profileHref}
                         className="absolute inset-0 z-[1] block"
-                        aria-label={
-                          "Dossier von " + String(p.rawName) + " öffnen"
-                        }
+                        aria-label={"Profil von " + (cleanName(p.rawName) || "Profil") + " öffnen"}
                       >
                         {p.hasRealPhoto && (
                           <img
                             referrerPolicy="no-referrer"
                             src={p.cleanThumb}
-                            alt={String(p.rawName || "Profil")}
+                            alt={cleanName(p.rawName) || ("Profil in " + (String(p.city || "der Schweiz").split("/")[0]))}
                             loading={idx < 8 ? "eager" : "lazy"}
                             onError={(e) => {
-                              const target =
-                                e.currentTarget as HTMLImageElement;
-                              target.style.opacity = "0";
+                              (e.currentTarget as HTMLImageElement).style.opacity = "0";
                             }}
-                            className="noir-media scale-[1.06] object-cover object-top"
+                            className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105"
                           />
                         )}
-
-                        <div className="noir-vignette" />
-                        <div className="noir-floor" />
-
-                        <div className="absolute inset-x-0 bottom-0 z-[4] px-2.5 pb-3 text-center sm:px-4 sm:pb-4">
-                          <div className="engraved-type mx-auto line-clamp-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#B5A184] sm:text-[7px] sm:tracking-[0.11em]">
-                            {locationLine}
-                          </div>
-
-                          <div
-                            title={String(p.rawName || "")}
-                            className="dossier-name engraved-type mx-auto mt-1.5 min-h-[38px] font-serif text-[17px] font-medium uppercase leading-[1.08] tracking-[0.045em] text-[#F5EDE0] sm:min-h-[46px] sm:text-[22px]"
-                          >
-                            {p.rawName}
-                          </div>
-
-                          <div className="my-2 flex items-center justify-center gap-2 text-[#B38E52] sm:my-2.5">
-                            <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#B38E52]/75 sm:w-12" />
-                            <span className="text-[8px]">✦</span>
-                            <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#B38E52]/75 sm:w-12" />
-                          </div>
-
-                          <div className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#8C7C66] sm:text-[7px]">
-                            Starting at
-                          </div>
-                          <div className="mt-0.5 whitespace-nowrap font-mono text-[22px] font-medium tabular-nums tracking-[-0.04em] text-[#DEC393] sm:text-[29px]">
-                            <span className="mr-1 text-[9px] font-normal tracking-[0.04em] sm:text-[11px]">
-                              CHF
-                            </span>
-                            {p.rate60Chf}
-                          </div>
-                          <div className="mt-1 font-mono text-[6px] uppercase tracking-[0.08em] text-[#928575] sm:text-[7px]">
-                            Per hour · 30 min: CHF {p.rate30Chf}
-                          </div>
-                        </div>
                       </Link>
 
-                      <div className="pointer-events-none absolute left-2.5 top-2.5 z-20 flex max-w-[78%] items-center gap-1.5">
-                        <Crown
-                          size={13}
-                          strokeWidth={1.4}
-                          className="shrink-0 text-[#DEC393] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                        />
-                        <SwissDoorplate
-                          state={p.isAvail ? "FREI" : "EXTERN"}
-                          roomNumber={String(p.canton || "CH")}
-                          customLabel={
-                            p.isAvail
-                              ? "FREI · LIVE"
-                              : portalBadge
-                                  .slice(0, 12)
-                                  .toUpperCase()
-                          }
-                          size="sm"
-                        />
-                      </div>
+                      {p.isAvail && (
+                        <span className="pointer-events-none absolute bottom-3 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-[#13362b] px-3.5 py-1.5 text-sm font-semibold text-[#fbf1ec]">
+                          <span className="h-2 w-2 rounded-full bg-[#5fd3a5]" />
+                          Jetzt frei
+                        </span>
+                      )}
 
                       <button
                         type="button"
                         onClick={() => toggleFav(p.id)}
-                        className="glass-icon-button absolute right-2.5 top-2.5 z-30 h-8 w-8 cursor-pointer sm:h-9 sm:w-9"
-                        aria-label={
-                          isFav
-                            ? "Von Merkliste entfernen"
-                            : "Auf Merkliste speichern"
-                        }
+                        className="absolute right-4 top-14 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[#150810]/70 backdrop-blur transition hover:bg-[#150810]"
+                        aria-label={isFav ? "Von Merkliste entfernen" : "Auf Merkliste speichern"}
                       >
                         <Heart
-                          size={13}
-                          strokeWidth={1.5}
-                          className={
-                            isFav
-                              ? "fill-[#DEC393] text-[#DEC393]"
-                              : "text-[#D0C4B3]"
-                          }
+                          size={20}
+                          strokeWidth={1.8}
+                          className={isFav ? "fill-[#d6165f] text-[#d6165f]" : "text-white"}
                         />
                       </button>
-
-                      {p.isVerif && (
-                        <div className="absolute bottom-2 right-2 z-20 hidden text-[#C8A97E] sm:block">
-                          <ShieldCheck size={12} strokeWidth={1.4} />
-                        </div>
-                      )}
                     </div>
 
-                    <div className="relative z-[5] mt-auto grid grid-cols-2 gap-1.5 border-t border-[#C8A97E]/15 bg-[#0B0908] p-2">
-                      {cleanDigits ? (
-                        <a
-                          href={whatsAppHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="brass-pill inline-flex min-h-[39px] items-center justify-center gap-1 rounded-full px-1.5 font-mono text-[7px] uppercase tracking-[0.035em] sm:min-h-[42px] sm:gap-1.5 sm:text-[9px]"
-                        >
-                          <PhoneCall
-                            size={11}
-                            className="relative z-[1]"
-                          />
-                          <span className="relative z-[1]">
-                            WhatsApp
-                          </span>
-                        </a>
-                      ) : (
-                        <Link
-                          href={
-                            "/fantasy-preview?id=" +
-                            encodeURIComponent(p.id)
-                          }
-                          className="brass-pill inline-flex min-h-[39px] items-center justify-center gap-1 rounded-full px-1.5 font-mono text-[7px] uppercase tracking-[0.035em] sm:min-h-[42px] sm:text-[9px]"
-                        >
-                          <Sparkles
-                            size={11}
-                            className="relative z-[1]"
-                          />
-                          <span className="relative z-[1]">
-                            KI-Preview
-                          </span>
-                        </Link>
-                      )}
-
-                      <Link
-                        href={profileHref}
-                        className="emerald-pill inline-flex min-h-[39px] items-center justify-center gap-1 rounded-full px-1.5 font-mono text-[7px] uppercase tracking-[0.025em] sm:min-h-[42px] sm:gap-1.5 sm:text-[8px]"
-                      >
-                        <User size={11} strokeWidth={1.5} />
-                        <span>View Profile</span>
+                    <div className="flex flex-1 flex-col px-2 pb-3 pt-4">
+                      <Link href={profileHref} className="block">
+                        <h3 className="font-serif text-3xl leading-tight text-[#fbf1ec]">
+                          {cleanName(p.rawName) || ("Profil in " + (String(p.city || "der Schweiz").split("/")[0]))}
+                        </h3>
                       </Link>
+                      <p className="mt-1 text-[15px] text-[#cdb5be]">
+                        {String(p.city || "Schweiz")}
+                        {p.isVerif ? " · Geprüft" : ""}
+                      </p>
+                      <p className="mt-3 text-[16px] text-[#cdb5be]">
+                        ab <span className="font-serif text-3xl text-[#fbf1ec]">CHF {p.rate60Chf}</span>{" "}
+                        pro Stunde
+                      </p>
+
+                      <div className="mt-auto pt-4">
+                        {cleanDigits ? (
+                          <a
+                            href={whatsAppHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="brass-pill inline-flex min-h-[48px] items-center justify-center rounded-full px-8 text-[16px]"
+                          >
+                            Schreiben
+                          </a>
+                        ) : (
+                          <Link
+                            href={profileHref}
+                            className="brass-pill inline-flex min-h-[48px] items-center justify-center rounded-full px-8 text-[16px]"
+                          >
+                            Profil ansehen
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </article>
                 );
@@ -790,30 +646,20 @@ export default function HomePage() {
         )}
 
         {!isLoading && activeOffers.length === 0 && (
-          <section className="empty-state rounded-[18px] px-6 py-14 text-center">
-            <SwissDoorplate
-              state="BESETZT"
-              roomNumber="00"
-              customLabel="KEIN TREFFER"
-              size="lg"
-            />
-            <h2 className="mt-5 font-serif text-2xl font-normal text-[#E5DACA]">
-              Diskretion hat ihre Grenzen.
+          <section className="empty-state rounded-[28px] px-6 py-16 text-center">
+            <h2 className="font-serif text-4xl text-[#fbf1ec]">
+              Hier ist gerade <em className="text-[#e8c98a]">niemand</em>
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-xs font-light leading-6 text-[#8E8273]">
-              {searchQuery.trim()
-                ? SWISS_DOORPLATE_TOKENS.microcopyDe.zeroSearch
-                : SWISS_DOORPLATE_TOKENS.microcopyDe.emptyFilter}
+            <p className="mx-auto mt-3 max-w-xl text-lg leading-relaxed text-[#cdb5be]">
+              Mit diesen Wünschen finden wir leider keine Profile. Versuch es mit einer anderen
+              Stadt oder lass einzelne Wünsche weg.
             </p>
             <button
               type="button"
               onClick={resetFilters}
-              className="brass-button mt-6 inline-flex min-h-[42px] cursor-pointer items-center gap-2 rounded-full px-5 text-[10px] uppercase tracking-[0.07em]"
+              className="brass-button mt-8 inline-flex min-h-[56px] cursor-pointer items-center rounded-full px-9 text-[16px]"
             >
-              <RotateCcw size={13} className="relative z-[1]" />
-              <span className="relative z-[1]">
-                Filter zurücksetzen
-              </span>
+              Alles zurücksetzen
             </button>
           </section>
         )}
@@ -825,11 +671,11 @@ export default function HomePage() {
               onClick={() =>
                 setVisibleLimit((prev) => prev + 24)
               }
-              className="ghost-button group inline-flex min-h-[46px] cursor-pointer items-center gap-3 rounded-full px-6 py-3 font-mono text-[9px] uppercase tracking-[0.09em]"
+              className="ghost-button group inline-flex min-h-[56px] cursor-pointer items-center gap-3 rounded-full px-8 py-3 text-[16px] font-semibold"
             >
-              +24 weitere Dossiers
-              <span className="font-mono text-[8px] tabular-nums text-[#746857]">
-                {activeOffers.length - visibleLimit} verbleibend
+              24 weitere Profile zeigen
+              <span className="font-mono text-xs tabular-nums text-[#cdb5be]">
+                ({activeOffers.length - visibleLimit} weitere)
               </span>
               <ArrowRight
                 size={12}
@@ -838,6 +684,9 @@ export default function HomePage() {
             </button>
           </div>
         )}
+              <CityPlates />
+        <Steps />
+        <TrustBand />
       </main>
     </div>
   );
