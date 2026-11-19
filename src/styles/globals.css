@@ -1,68 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg-canvas: #0B0809;
-  --bg-warm: #140E10;
-  --text-cream: #F4EFEA;
-  --text-muted: #A69B95;
-  --accent-silk: #D9B38C;
-  --accent-rose: #9E3B4B;
+/* WELT 1: SOHO HOUSE DAYLIGHT ATELIER (Warmes Büttenpapier, Tinte, Terrakotta) */
+.world-atelier {
+  --bg-primary: #F3EDE2;
+  --bg-secondary: #E7DEC8;
+  --text-primary: #14110F;
+  --text-secondary: #5C534B;
+  --accent-main: #8C2D38;
+  --accent-soft: #C8A27A;
+  background-color: #F3EDE2;
+  color: #14110F;
+}
+
+/* WELT 2: SLIXA / TRYST FULL-BLEED CINEMA (Warmes Samt-Bordeaux, Champagner-Licht, 0% Header) */
+.world-cinema {
+  --bg-primary: #090607;
+  --bg-secondary: #160D10;
+  --text-primary: #F7F2EB;
+  --text-secondary: #B09E99;
+  --accent-main: #E0B589;
+  --accent-soft: #9E3347;
+  background-color: #090607;
+  color: #F7F2EB;
+}
+
+/* WELT 3: ZURICH AFTER-HOURS SPATIAL RADAR (Tiefes Nacht-Smaragd/Obsidian & Bernstein-Gold) */
+.world-radar {
+  --bg-primary: #06090B;
+  --bg-secondary: #0D1418;
+  --text-primary: #EFECE6;
+  --text-secondary: #8A99A1;
+  --accent-main: #D4A359;
+  --accent-soft: #1E4D45;
+  background-color: #06090B;
+  color: #EFECE6;
+}
+
+/* WELT 4: FEELD / ART-GALLERY BRUTALISM (Tiefschwarz, Seidenweiss & Riesen-Typografie) */
+.world-brutalist {
+  --bg-primary: #050505;
+  --bg-secondary: #121212;
+  --text-primary: #F5F3EF;
+  --text-secondary: #8E8A84;
+  --accent-main: #D94E34;
+  --accent-soft: #E5D3B3;
+  background-color: #050505;
+  color: #F5F3EF;
 }
 
 html, body {
-  background-color: var(--bg-canvas);
-  color: var(--text-cream);
   font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
   overflow-x: hidden;
-  selection-background-color: #D9B38C;
-  selection-color: #0B0809;
 }
 
 h1, h2, h3, .font-editorial {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
 }
 
-/* Echte analoge 35mm Film-Textur gegen den sterilen "Computer/AI"-Look */
-body::before {
+/* Echte analoge Körnung gegen den sterilen KI-/Computer-Look */
+body::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.038;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 9998;
+  opacity: 0.042;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Organische Bild-Masken & Asymmetrische Schnitte (Keine Standard-Boxen) */
-.shape-arch {
-  border-radius: 140px 140px 16px 16px;
+/* Extreme, menschliche Bildformen statt Standard-Rechtecken */
+.mask-arch {
+  border-radius: 180px 180px 18px 18px;
 }
-
-.shape-petal {
-  border-radius: 36px 8px 36px 8px;
+.mask-tear {
+  border-radius: 140px 18px 140px 18px;
 }
-
-.shape-pill-photo {
+.mask-oval {
   border-radius: 9999px;
 }
+.mask-editorial-tilt {
+  border-radius: 28px;
+  transform: rotate(-1.2deg);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mask-editorial-tilt:hover {
+  transform: rotate(0deg) scale(1.02);
+}
 
-/* Rahmenlose Gästebuch-Inputs statt Computer-Formular-Boxen */
-.input-human {
+/* Foto-gefüllte Riesen-Typografie */
+.photo-text-clip {
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Rahmenlose Handschrift-Linie statt Computer-Input-Box */
+.human-line-input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(244, 239, 234, 0.22);
+  border-bottom: 1.5px solid currentColor;
   border-radius: 0;
-  padding: 14px 4px;
-  color: #F4EFEA;
-  transition: border-color 0.3s ease;
+  padding: 12px 2px;
+  transition: opacity 0.3s ease;
 }
-.input-human:focus {
+.human-line-input:focus {
   outline: none;
-  border-bottom-color: #D9B38C;
 }
 
 .no-scrollbar::-webkit-scrollbar {
