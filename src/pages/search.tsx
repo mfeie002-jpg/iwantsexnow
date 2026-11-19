@@ -126,7 +126,7 @@ export default function DeepSearchPage() {
         tone="himmel"
         note="Verzeichnis"
         art="search"
-        title={<>{countLabel(results.length)} Einträge</>}
+        title={<>{metricsReady ? countLabel(results.length) + " Einträge" : "Suche"}</>}
         lead="Name, Stadt, Kanton, Art und Preisgrenze. Die Preise sind die 30- und 60-Minuten-Angaben aus dem Eintrag."
       />
 

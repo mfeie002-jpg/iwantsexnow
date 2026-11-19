@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
@@ -9,17 +9,38 @@ import offersData from "@/data/harvested-offers.json";
 
 export default function ContentFeed() {
   const [canton, setCanton] = useState("ALL");
+  const [serverStates, setServerStates] = useState<Record<string, any>>({});
+  const [blockedIds, setBlockedIds] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.states) setServerStates(d.states);
+        if (Array.isArray(d?.blockedIds)) setBlockedIds(d.blockedIds);
+      })
+      .catch(() => {})
+      .finally(() => setReady(true));
+  }, []);
+
   const rows = useMemo(() => {
+    if (!ready) return [];
+    const blocked = new Set(blockedIds);
     const list: ListingProfile[] = [];
     for (const o of (offersData as any[]) || []) {
+      const id = String(o.id || o.dedupClusterId || "");
+      if (!id || blocked.has(id)) continue;
+      const st = serverStates[id] || {};
+      if (st.paused || st.hidden || st.removedByReport) continue;
       if (canton !== "ALL" && String(o.canton || "").toUpperCase() !== canton) continue;
-      const item = toListing(o);
+      const item = toListing(o, st);
       if (!item || !item.photo) continue;
       list.push(item);
       if (list.length >= 12) break;
     }
     return list;
-  }, [canton]);
+  }, [canton, ready, serverStates, blockedIds]);
 
   return (
     <div className="min-h-screen pb-24">
@@ -48,7 +69,9 @@ export default function ContentFeed() {
             </select>
           </label>
         </form>
-        {rows.length === 0 ? (
+        {!ready ? (
+          <p className="listing-empty">Verfügbarkeit wird geprüft…</p>
+        ) : rows.length === 0 ? (
           <div className="empty-panel">
             <img src="/editorial/editorial-alps.jpg" alt="" />
             <div>

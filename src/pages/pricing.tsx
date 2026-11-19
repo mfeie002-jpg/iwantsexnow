@@ -9,7 +9,6 @@ import { ShieldCheck, Calculator } from "lucide-react";
 export default function SwissPricingCompassPage() {
   const [selectedCanton, setSelectedCanton] = useState("ZH");
   const [durationMins, setDurationMins] = useState(60);
-  const [visitType, setVisitType] = useState<"incall" | "outcall">("incall");
 
   const cantonStats = useMemo(() => {
     const raw = (offersData as any[]) || [];
@@ -69,7 +68,7 @@ export default function SwissPricingCompassPage() {
               <Calculator size={15} />
               <span>Interaktiver Schweizer Honorar-Rechner</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <select
                 value={selectedCanton}
                 onChange={(e) => setSelectedCanton(e.target.value)}
@@ -90,15 +89,6 @@ export default function SwissPricingCompassPage() {
                 <option value={30} className="bg-papier">Dauer: 30 Min. Express</option>
                 <option value={60} className="bg-papier">Dauer: 60 Min. Standard</option>
                 <option value={120} className="bg-papier">Dauer: 120 Min. Dinner</option>
-              </select>
-
-              <select
-                value={visitType}
-                onChange={(e) => setVisitType(e.target.value as any)}
-                className="rounded-full bg-white border border-kirsche/40 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none"
-              >
-                <option value="incall" className="bg-papier">Empfang in Suite (INCALL)</option>
-                <option value="outcall" className="bg-papier">HOTELBESUCH (OUTCALL)</option>
               </select>
             </div>
           </div>

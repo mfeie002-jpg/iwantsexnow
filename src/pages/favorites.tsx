@@ -67,8 +67,9 @@ export default function FavoritesPage() {
       </PageIntro>
 
       <main className="sheet">
-        {!ready ? <p className="listing-empty">Merkliste wird gelesen…</p> : null}
-        {ready && saved.length === 0 ? (
+        {!ready ? (
+          <p className="listing-empty">Merkliste wird gelesen…</p>
+        ) : saved.length === 0 ? (
           <div className="empty-panel">
             <img src="/editorial/editorial-alps.jpg" alt="" />
             <div>

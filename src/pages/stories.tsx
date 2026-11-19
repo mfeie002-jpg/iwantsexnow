@@ -25,24 +25,23 @@ export default function StoriesFeedPage() {
   }, []);
 
   const stories = useMemo(() => {
+    if (!loaded) return [];
     const blocked = new Set(blockedIds);
-    const rows: { item: ListingProfile; note: string }[] = [];
+    const rows: ListingProfile[] = [];
     for (const o of (offersData as any[]) || []) {
       const id = String(o.id || o.dedupClusterId || "");
       if (!id || blocked.has(id)) continue;
       const st = serverStates[id] || {};
       if (st.paused || st.hidden || st.removedByReport) continue;
+      if (!st.availabilityConfirmed) continue;
       if (cantonFilter !== "ALL" && String(o.canton || "").toUpperCase() !== cantonFilter) continue;
-      const note = String(st.statusMessage || "").trim();
-      const available = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
-      if (!note && !available) continue;
       const item = toListing(o, st);
       if (!item) continue;
-      rows.push({ item, note });
+      rows.push(item);
       if (rows.length >= 24) break;
     }
     return rows;
-  }, [serverStates, blockedIds, cantonFilter]);
+  }, [serverStates, blockedIds, cantonFilter, loaded]);
 
   const cantons = ["ALL", "ZG", "ZH", "LU", "BS", "BE", "GE", "VD", "TI"];
 
@@ -58,7 +57,7 @@ export default function StoriesFeedPage() {
         note="Nur bestätigte Angaben"
         art="search"
         title={<>Was gerade im Verzeichnis steht</>}
-        lead="Gezeigt werden Einträge mit bestätigter 4-Stunden-Verfügbarkeit oder einem Status, den die Anbieterin selbst gesetzt hat. Es werden keine Zeiten erfunden."
+        lead="Nur Profile, deren 4-Stunden-Fenster im Cockpit noch läuft. Abgelaufene Angaben aus dem Index zählen nicht."
       >
         <Link href="/register" className="brass-button">
           Eigenes Profil
@@ -77,37 +76,21 @@ export default function StoriesFeedPage() {
             </select>
           </label>
         </div>
-        {!loaded ? <p className="listing-empty">Status wird geladen…</p> : null}
-        {loaded && stories.length === 0 ? (
+        {!loaded ? (
+          <p className="listing-empty">Status wird geladen…</p>
+        ) : stories.length === 0 ? (
           <div className="empty-panel">
             <img src="/editorial/editorial-zurich.jpg" alt="" />
             <div>
               <h2>Im Moment keine bestätigte Verfügbarkeit.</h2>
-              <p className="dek">Das Verzeichnis selbst ist darunter in der Suche.</p>
+              <p className="dek">Das Verzeichnis selbst ist in der Suche.</p>
               <Link href="/search" className="text-link">
                 Alle Einträge
               </Link>
             </div>
           </div>
         ) : (
-          <>
-            <ul className="place-list">
-              {stories
-                .filter((row) => row.note)
-                .map((row) => (
-                  <li key={row.item.id}>
-                    <div>
-                      <p className="listing-place">
-                        {row.item.city} <span>{row.item.canton}</span>
-                      </p>
-                      <h2>{row.item.name}</h2>
-                      <p>{row.note}</p>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-            <ListingGrid profiles={stories.map((row) => row.item)} />
-          </>
+          <ListingGrid profiles={stories} />
         )}
       </main>
     </div>

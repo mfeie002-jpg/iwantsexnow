@@ -90,6 +90,6 @@ export function toListing(o: OfferLike, state?: OfferLike): ListingProfile | nul
     rate60,
     phone: String(st.phoneDisplay || o.rawPhone || o.phone || ""),
     photo: usablePhoto(o.cleanThumb || o.thumbnail),
-    available: Boolean(st.availabilityConfirmed || o.availabilityConfirmed || o.isAvail),
+    available: state !== undefined ? Boolean(state?.availabilityConfirmed) : Boolean(o.availabilityConfirmed || o.isAvail),
   };
 }
