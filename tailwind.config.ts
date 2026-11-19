@@ -1,8 +1,9 @@
 import type { Config } from "tailwindcss";
 
+/* Velvet Night: warm burgundy neutrals, inverted so legacy light classes stay readable on the dark ground */
 const COOL = {
-  50: "#f7f7fb", 100: "#efeff6", 200: "#e1e1ec", 300: "#c9c9db", 400: "#9c9dba",
-  500: "#73759a", 600: "#565980", 700: "#3f4268", 800: "#2b2e54", 900: "#1e2247", 950: "#141735",
+  50: "#22101a", 100: "#2b1420", 200: "#3d2231", 300: "#5a3a4a", 400: "#947683", 500: "#a98f9a",
+  600: "#cdb5be", 700: "#dccbd2", 800: "#ece0e4", 900: "#fbf1ec", 950: "#fff8f5",
 };
 
 /* cherry */
@@ -42,31 +43,41 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Figtree", "system-ui", "Helvetica", "Arial", "sans-serif"],
-        mono: ["Figtree", "system-ui", "Helvetica", "Arial", "sans-serif"],
-        serif: ["Bricolage Grotesque", "Figtree", "Arial", "sans-serif"],
-        display: ["Bricolage Grotesque", "Figtree", "Arial", "sans-serif"],
-        hand: ["Caveat", "Bradley Hand", "cursive"],
+        sans: ["Manrope", "system-ui", "-apple-system", "Helvetica", "Arial", "sans-serif"],
+        mono: ["Manrope", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        serif: ["Instrument Serif", "Times New Roman", "Georgia", "serif"],
+        display: ["Instrument Serif", "Times New Roman", "Georgia", "serif"],
+        hand: ["Instrument Serif", "Georgia", "serif"],
       },
       colors: {
-        /* roles kept from the previous system, re-pointed to the light palette */
-        nacht: "#fbfaf8",
-        tiefsee: "#ffffff",
-        fels: "#f1f0f6",
-        linie: "#e1e1ec",
-        gletscher: "#1e2247",
-        nebel: "#5b5f84",
-        glueh: "#d92b52",
-        bernstein: "#f5a800",
-        lago: "#1e8a64",
-        papier: "#fbfaf8",
-        tinte: "#1e2247",
-        kirsche: { DEFAULT: "#d92b52", tief: "#a81c3d" },
-        butter: "#ffe48a",
-        blush: "#ffd3dc",
-        minze: "#bfebd6",
-        himmel: "#c6dffa",
-        flieder: "#dcd3f7",
+        /* Velvet Night (iWantSexNow.ch design system v4); legacy names re-pointed */
+        nacht: "#150810",
+        tiefsee: "#22101a",
+        fels: "#2b1420",
+        linie: "#3d2231",
+        gletscher: "#fbf1ec",
+        nebel: "#cdb5be",
+        glueh: "#d6165f",
+        bernstein: "#e8c98a",
+        lago: "#5fd3a5",
+        papier: "#150810",
+        tinte: "#fbf1ec",
+        kirsche: { DEFAULT: "#d6165f", tief: "#ee3c7c" },
+        butter: "#e8c98a",
+        blush: "#3a1325",
+        minze: "#13362b",
+        himmel: "#22101a",
+        flieder: "#2b1420",
+        paper: "#150810",
+        surface: "#22101a",
+        raised: "#2b1420",
+        wine: "#3a1325",
+        ink: { DEFAULT: "#fbf1ec", soft: "#cdb5be" },
+        line: { DEFAULT: "#3d2231", strong: "#947683" },
+        ruby: { DEFAULT: "#d6165f", deep: "#ee3c7c" },
+        gold: { DEFAULT: "#e8c98a", on: "#2a1408" },
+        jade: "#13362b",
+        verified: "#5fd3a5",
         glow,
         sun,
         dusk,

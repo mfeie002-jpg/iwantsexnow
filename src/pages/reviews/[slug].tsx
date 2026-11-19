@@ -78,14 +78,14 @@ export default function SinglePortalReviewPage() {
             {/* Strengths & Known Limitations */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="p-6 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-3">
-                <h3 className="text-base font-extrabold text-[#2a9d86] flex items-center gap-2">
+                <h3 className="text-base font-extrabold text-[#5fd3a5] flex items-center gap-2">
                   <Check size={17} />
                   <span>Beobachtete Stärken</span>
                 </h3>
                 <ul className="space-y-2 text-[13px] sm:text-sm text-stone-700">
                   {report.pros.map((pro, i) => (
                     <li key={i} className="flex items-start gap-2 leading-relaxed">
-                      <span className="text-[#2a9d86] font-bold">•</span>
+                      <span className="text-[#5fd3a5] font-bold">•</span>
                       <span>{pro}</span>
                     </li>
                   ))}

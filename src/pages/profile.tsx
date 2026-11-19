@@ -294,9 +294,9 @@ export default function Profile() {
               <span className={`font-bold tracking-tight transition-all duration-300 ${
                 scrolled ? 'text-lg' : 'text-xl md:text-2xl'
               }`}>
-                <span className="text-[#1e2247] dark:text-white">iWant</span>
-                <span className="text-[#d92b52] dark:text-[#d92b52]">Sex</span>
-                <span className="text-[#1e2247] dark:text-white">Now</span>
+                <span className="text-[#fbf1ec] dark:text-white">iWant</span>
+                <span className="text-[#ee3c7c] dark:text-[#ee3c7c]">Sex</span>
+                <span className="text-[#fbf1ec] dark:text-white">Now</span>
                 <span className="text-gray-500 dark:text-gray-400 text-base">.ch</span>
               </span>
             </Link>

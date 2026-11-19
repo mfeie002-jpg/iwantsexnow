@@ -30,9 +30,9 @@ export function BrandMark({ size = 36, className }: { size?: number; className?:
 
 export function Wordmark({ className = "" }: { className?: string }) {
   return (
-    <span className={`font-display inline-flex items-baseline leading-none ${className}`} style={{ fontWeight: 800, letterSpacing: "-0.035em" }}>
-      <span>iwantsexnow</span>
-      <span style={{ color: PAL.glueh }}>.ch</span>
+    <span className={`font-display inline-flex items-baseline leading-none ${className}`} style={{ fontWeight: 400, letterSpacing: "-0.01em" }}>
+      <span>iWantSexNow</span>
+      <span style={{ color: "#E8C98A" }}>.ch</span>
     </span>
   );
 }

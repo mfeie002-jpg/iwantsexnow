@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         rate30Chf: r30,
         rawPhone: o.rawPhone || "",
         cleanThumb: rawThumb,
-        isAvail: Boolean(o.availabilityConfirmed),
+        isAvail: false,
       };
     });
 

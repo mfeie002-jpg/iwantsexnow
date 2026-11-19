@@ -43,7 +43,7 @@ export default function StoriesFeedPage() {
       if (cantonFilter !== "ALL" && String(o.canton || "").toUpperCase() !== cantonFilter) continue;
 
       const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
-      const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
+      const isAvail = Boolean(st.availabilityConfirmed);
       const statusText = st.statusMessage || STORY_CAPTIONS[i % STORY_CAPTIONS.length];
 
       list.push({

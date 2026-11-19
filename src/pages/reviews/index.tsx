@@ -77,7 +77,7 @@ export default function SwissPortalComparisonHubPage() {
                 onClick={() => setSelectedTopic(t)}
                 className={
                   selectedTopic === t
-                    ? "px-3.5 py-1.5 rounded-lg bg-[#a8382e] text-white font-bold cursor-pointer"
+                    ? "px-3.5 py-1.5 rounded-lg bg-[#d6165f] text-white font-bold cursor-pointer"
                     : "px-3.5 py-1.5 rounded-lg bg-white border border-kirsche text-tinte-soft font-semibold cursor-pointer hover:bg-blush"
                 }
               >
@@ -106,7 +106,7 @@ export default function SwissPortalComparisonHubPage() {
               Aktuelle Prüfberichte ({filteredReports.length})
             </h2>
 
-            <div className="divide-y divide-[#dcebe8] bg-white rounded-2xl border border-linie shadow-xs overflow-hidden">
+            <div className="divide-y divide-[#cdb5be] bg-white rounded-2xl border border-linie shadow-xs overflow-hidden">
               {filteredReports.map((rep) => {
                 const isSelected = selectedSlugs.includes(rep.slug);
                 return (
@@ -145,7 +145,7 @@ export default function SwissPortalComparisonHubPage() {
                         <span
                           className={
                             isSelected
-                              ? "w-5 h-5 rounded flex items-center justify-center bg-[#a8382e] text-white"
+                              ? "w-5 h-5 rounded flex items-center justify-center bg-[#d6165f] text-white"
                               : "w-5 h-5 rounded border border-tinte/20 bg-white"
                           }
                         >
@@ -175,7 +175,7 @@ export default function SwissPortalComparisonHubPage() {
               <p className="text-[13px] text-tinte-soft mt-0.5">Nachvollziehbare Methodik für alle 6 Portale</p>
             </div>
 
-            <div className="space-y-4 divide-y divide-[#dcebe8] text-[13px]">
+            <div className="space-y-4 divide-y divide-[#cdb5be] text-[13px]">
               <div className="pt-2 flex items-start gap-3">
                 <FileText size={18} className="text-kirsche-tief shrink-0 mt-0.5" />
                 <div className="space-y-1">
@@ -233,7 +233,7 @@ export default function SwissPortalComparisonHubPage() {
                   <th className="p-3.5">Kostenmodell & Kontrolle</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#dcebe8]">
+              <tbody className="divide-y divide-[#cdb5be]">
                 {(comparedPortals.length > 0 ? comparedPortals : SWISS_PORTAL_TOP10).map((p) => (
                   <tr key={p.slug} className="hover:bg-papier">
                     <td className="p-3.5 font-serif font-bold text-base text-tinte">

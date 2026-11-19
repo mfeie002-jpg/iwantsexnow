@@ -27,7 +27,7 @@ export default function NotificationsRadarPage() {
       .map((o, idx) => {
         const pid = o.id || o.dedupClusterId;
         const st = serverStates[pid] || {};
-        const isAvail = Boolean(st.availabilityConfirmed || o.availabilityConfirmed);
+        const isAvail = Boolean(st.availabilityConfirmed);
         const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
         return {
           id: pid,

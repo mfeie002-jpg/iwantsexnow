@@ -85,7 +85,7 @@ export function LivePortalSyncBanner({ totalProfiles = 180 }: { totalProfiles?: 
   ];
 
   return (
-    <div className="bg-[#060D16] border-y border-[#ff6b5e]/30 py-2.5 px-4 text-xs text-white">
+    <div className="bg-[#060D16] border-y border-[#ee3c7c]/30 py-2.5 px-4 text-xs text-white">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-mint-500/20 border border-mint-400/50 text-mint-300 font-black text-[11px]">
@@ -108,7 +108,7 @@ export function LivePortalSyncBanner({ totalProfiles = 180 }: { totalProfiles?: 
               <span className="text-gray-400">({p.ago})</span>
             </div>
           ))}
-          <div className="flex items-center gap-1 bg-[#ff6b5e]/15 border border-[#ff6b5e]/40 text-[#ff6b5e] font-mono font-bold px-2.5 py-0.5 rounded-lg text-[11px]">
+          <div className="flex items-center gap-1 bg-[#d6165f]/15 border border-[#ee3c7c]/40 text-[#ee3c7c] font-mono font-bold px-2.5 py-0.5 rounded-lg text-[11px]">
             <RefreshCw size={11} className="animate-spin" />
             Nächster Scan: {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
           </div>

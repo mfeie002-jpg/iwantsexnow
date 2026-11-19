@@ -25,10 +25,10 @@ export function AboutSection() {
   ];
 
   return (
-    <section className="py-16 bg-[#07141a] border-t border-[#ff6b5e]/20 text-white">
+    <section className="py-16 bg-[#150810] border-t border-[#ee3c7c]/20 text-white">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
-          <div className="text-xs font-bold uppercase tracking-widest text-[#ff6b5e]">
+          <div className="text-xs font-bold uppercase tracking-widest text-[#ee3c7c]">
             Warum iWantSexNow.ch?
           </div>
           <h2 className="text-2xl md:text-4xl font-serif font-black">
@@ -42,9 +42,9 @@ export function AboutSection() {
             return (
               <div
                 key={i}
-                className="p-6 rounded-2xl bg-[#07141a] border border-[#ff6b5e]/35 space-y-3 shadow-xl"
+                className="p-6 rounded-2xl bg-[#150810] border border-[#ee3c7c]/35 space-y-3 shadow-xl"
               >
-                <div className="w-11 h-11 rounded-xl bg-[#ff6b5e]/15 border border-[#ff6b5e]/40 flex items-center justify-center text-[#ff6b5e]">
+                <div className="w-11 h-11 rounded-xl bg-[#d6165f]/15 border border-[#ee3c7c]/40 flex items-center justify-center text-[#ee3c7c]">
                   <Icon size={20} />
                 </div>
                 <h3 className="text-base font-bold text-white">{p.title}</h3>

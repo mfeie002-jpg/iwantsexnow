@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
@@ -16,6 +16,16 @@ export default function DeepSearchPage() {
   const [maxPrice, setMaxPrice] = useState(1200);
   const [onlyFree, setOnlyFree] = useState(false);
   const [limit, setLimit] = useState(24);
+  const [liveStates, setLiveStates] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    fetch("/api/vault/metrics")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.states) setLiveStates(d.states);
+      })
+      .catch(() => {});
+  }, []);
 
   const results = useMemo(() => {
     const raw = (offersData as any[]) || [];
@@ -26,7 +36,7 @@ export default function DeepSearchPage() {
       if (!pid) continue;
       const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
       const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
-      const isAvail = Boolean(o.availabilityConfirmed);
+      const isAvail = Boolean(liveStates[pid]?.availabilityConfirmed);
       const rawThumb = String(o.thumbnail || "").trim();
       const hasRealPhoto =
         rawThumb.startsWith("http") &&
@@ -73,7 +83,7 @@ export default function DeepSearchPage() {
     });
 
     return list;
-  }, [query, canton, rubric, maxPrice, onlyFree]);
+  }, [liveStates, query, canton, rubric, maxPrice, onlyFree]);
 
   return (
     <div className="min-h-screen bg-papier text-tinte pb-24">
