@@ -146,7 +146,7 @@ export default function SwissPortalComparisonHubPage() {
                           className={
                             isSelected
                               ? "w-5 h-5 rounded flex items-center justify-center bg-[#a8382e] text-white"
-                              : "w-5 h-5 rounded border border-[#6f8c93] bg-white"
+                              : "w-5 h-5 rounded border border-tinte/20 bg-white"
                           }
                         >
                           {isSelected && <Check size={13} strokeWidth={3} />}

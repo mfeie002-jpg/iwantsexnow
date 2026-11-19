@@ -9,7 +9,6 @@ export default function NotFound() {
     <div className="min-h-screen bg-papier text-tinte">
       <Head>
         <title>Seite nicht gefunden | iwantsexnow.ch</title>
-        <meta name="robots" content="noindex" />
       </Head>
       <LuxuryHeader />
       <section className="field-blush relative isolate overflow-hidden">
