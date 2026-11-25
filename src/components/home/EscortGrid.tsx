@@ -40,7 +40,7 @@ export function EscortGrid({
                 Alle Profile mit bestätigter Identität, Originalfotos und direkter Kontaktmöglichkeit ohne Agentur-Gebühren.
               </p>
             </div>
-            <Link href="/compare-escorts" className="text-sm font-bold text-[#D5A021] hover:underline">
+            <Link href="/compare-escorts" className="text-sm font-bold text-[#e8c98a] hover:underline">
               Tabellarischen Preis- & Portalvergleich öffnen →
             </Link>
           </div>
@@ -49,8 +49,8 @@ export function EscortGrid({
             {escorts.map((escort) => (
               <Card
                 key={escort.id}
-                className={`overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-[#C69C6D]/50 ${
-                  escort.topAd ? 'border-2 border-[#C69C6D]/60 shadow-2xl shadow-black/40' : ''
+                className={`overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-[#e8c98a]/50 ${
+                  escort.topAd ? 'border-2 border-[#e8c98a]/60 shadow-2xl shadow-black/40' : ''
                 }`}
               >
                 <div className="flex flex-col md:flex-row gap-6 p-6">
@@ -62,7 +62,7 @@ export function EscortGrid({
                     />
                     {escort.topAd && (
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-[#C69C6D] text-[#0D1B2A] border-0 font-black text-xs px-3 py-1.5 shadow-xl">
+                        <Badge className="bg-[#d6165f] text-white border-0 font-black text-xs px-3 py-1.5 shadow-xl">
                           TOP VERIFIZIERT
                         </Badge>
                       </div>
@@ -113,7 +113,7 @@ export function EscortGrid({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 text-[#D5A021] text-sm mb-3 font-semibold">
+                      <div className="flex items-center gap-2 text-[#e8c98a] text-sm mb-3 font-semibold">
                         <MapPin size={15} />
                         <span>{escort.locations.join(" · ")}</span>
                         <span className="text-gray-400 font-normal">({escort.availability})</span>
@@ -146,7 +146,7 @@ export function EscortGrid({
                       <div>
                         <div className="text-xs text-gray-400">Direkt-Tarif (1 Std. inkl. Basis-Services)</div>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black text-[#D5A021]">CHF {escort.rate}</span>
+                          <span className="text-2xl font-black text-[#e8c98a]">CHF {escort.rate}</span>
                           {escort.portalAvgRate && (
                             <span className="text-xs text-gray-400 line-through">
                               Drittportale Ø CHF {escort.portalAvgRate}
@@ -168,7 +168,7 @@ export function EscortGrid({
                         </Button>
                         <Button
                           size="sm"
-                          className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold"
+                          className="bg-[#d6165f] hover:bg-[#d6165f] text-white font-bold"
                           asChild
                         >
                           <Link href={`/profile/${escort.id}`}>
@@ -189,7 +189,7 @@ export function EscortGrid({
               <Search size={64} className="mx-auto text-gray-500 mb-4" />
               <h3 className="text-2xl font-bold text-white mb-2">Keine passenden Profile für diesen Filter</h3>
               <p className="text-gray-400 mb-6">Setze die Filter zurück, um alle verifizierten Anbieterinnen in Zürich, Zug & Schweiz zu sehen.</p>
-              <Button onClick={resetFilters} className="bg-[#C69C6D] text-[#0D1B2A] font-bold hover:bg-[#b5895a]">
+              <Button onClick={resetFilters} className="bg-[#d6165f] text-white font-bold hover:bg-[#d6165f]">
                 Alle Filter zurücksetzen
               </Button>
             </Card>

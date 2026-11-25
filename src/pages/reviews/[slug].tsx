@@ -16,7 +16,7 @@ export default function SinglePortalReviewPage() {
     SWISS_PORTAL_TOP10[0];
 
   return (
-    <div className="min-h-screen bg-[#F6F5F1] text-[#141821] pb-20">
+    <div className="min-h-screen bg-[#fbf4f0] text-[#2a1408] pb-20">
       <SEO
         title={`${report.name} im Überblick: Funktionen, Kosten & Datenschutz | iwantsexnow.ch`}
         description={`Sachlicher Einzelbericht zu ${report.name} (${report.domain}): Funktionen, Kostenmodell, Prüfstatus und offene Fragen im transparenten Schweizer Vergleich.`}
@@ -26,7 +26,7 @@ export default function SinglePortalReviewPage() {
       <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-10">
         {/* Top Breadcrumb */}
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600">
-          <Link href="/reviews" className="inline-flex items-center gap-1.5 font-bold text-[#141821] hover:underline">
+          <Link href="/reviews" className="inline-flex items-center gap-1.5 font-bold text-[#2a1408] hover:underline">
             <ArrowLeft size={14} />
             <span>Zurück zur Portalvergleich-Übersicht</span>
           </Link>
@@ -35,10 +35,10 @@ export default function SinglePortalReviewPage() {
 
         {/* Hero Title */}
         <section className="space-y-3 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#E8DEC8] text-[#5C4722] text-[11px] font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#fbf4f0] text-[#2a1408] text-xs font-bold uppercase tracking-wider">
             <span>EINZELBERICHT · SCHWEIZER PORTALVERGLEICH</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#141821] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#2a1408] tracking-tight">
             {report.name} im Überblick: Was wirklich geprüft wurde.
           </h1>
           <p className="text-base sm:text-lg text-stone-600 leading-relaxed">
@@ -52,29 +52,29 @@ export default function SinglePortalReviewPage() {
           <div className="lg:col-span-8 space-y-6">
             {/* Key Criteria Card */}
             <div className="p-6 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5">
-              <h2 className="text-xl font-extrabold text-[#141821]">
+              <h2 className="text-xl font-extrabold text-[#2a1408]">
                 Geprüfte Kriterien für {report.name}
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
-                <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200/80 space-y-1">
-                  <div className="text-[11px] font-bold uppercase text-stone-500">1. Schwerpunkt & Zielgruppe</div>
-                  <div className="font-bold text-[#141821]">{report.bestFor}</div>
+                <div className="p-4 rounded-xl bg-[#fbf4f0] border border-stone-200/80 space-y-1">
+                  <div className="text-xs font-bold uppercase text-stone-500">1. Schwerpunkt & Zielgruppe</div>
+                  <div className="font-bold text-[#2a1408]">{report.bestFor}</div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200/80 space-y-1">
-                  <div className="text-[11px] font-bold uppercase text-stone-500">2. Veröffentlichtes Kostenmodell (Anbieter)</div>
-                  <div className="font-bold text-[#141821]">{report.avgCostForModelsChf}</div>
+                <div className="p-4 rounded-xl bg-[#fbf4f0] border border-stone-200/80 space-y-1">
+                  <div className="text-xs font-bold uppercase text-stone-500">2. Veröffentlichtes Kostenmodell (Anbieter)</div>
+                  <div className="font-bold text-[#2a1408]">{report.avgCostForModelsChf}</div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200/80 space-y-1">
-                  <div className="text-[11px] font-bold uppercase text-stone-500">3. Prüf- & Verifizierungs-Standard</div>
-                  <div className="font-bold text-[#141821]">{report.verificationStandard}</div>
+                <div className="p-4 rounded-xl bg-[#fbf4f0] border border-stone-200/80 space-y-1">
+                  <div className="text-xs font-bold uppercase text-stone-500">3. Prüf- & Verifizierungs-Standard</div>
+                  <div className="font-bold text-[#2a1408]">{report.verificationStandard}</div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#F6F5F1] border border-stone-200/80 space-y-1">
-                  <div className="text-[11px] font-bold uppercase text-stone-500">4. Kriterien-Bewertung (Redaktion)</div>
-                  <div className="font-bold text-[#141821]">
+                <div className="p-4 rounded-xl bg-[#fbf4f0] border border-stone-200/80 space-y-1">
+                  <div className="text-xs font-bold uppercase text-stone-500">4. Kriterien-Bewertung (Redaktion)</div>
+                  <div className="font-bold text-[#2a1408]">
                     Besucher-Nutzen: {report.visitorScore}/10 · Anbieter-Nutzen: {report.providerScore}/10
                   </div>
                 </div>
@@ -84,14 +84,14 @@ export default function SinglePortalReviewPage() {
             {/* Strengths & Known Limitations */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="p-6 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-3">
-                <h3 className="text-base font-extrabold text-[#146C32] flex items-center gap-2">
+                <h3 className="text-base font-extrabold text-[#2a1408] flex items-center gap-2">
                   <Check size={17} />
                   <span>Beobachtete Stärken</span>
                 </h3>
                 <ul className="space-y-2 text-xs sm:text-sm text-stone-700">
                   {report.pros.map((pro, i) => (
                     <li key={i} className="flex items-start gap-2 leading-relaxed">
-                      <span className="text-[#146C32] font-bold">•</span>
+                      <span className="text-[#2a1408] font-bold">•</span>
                       <span>{pro}</span>
                     </li>
                   ))}
@@ -99,14 +99,14 @@ export default function SinglePortalReviewPage() {
               </div>
 
               <div className="p-6 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-3">
-                <h3 className="text-base font-extrabold text-[#9A3412] flex items-center gap-2">
+                <h3 className="text-base font-extrabold text-[#cdb5be] flex items-center gap-2">
                   <AlertTriangle size={17} />
                   <span>Einschränkungen & Kritikpunkte</span>
                 </h3>
                 <ul className="space-y-2 text-xs sm:text-sm text-stone-700">
                   {report.cons.map((con, i) => (
                     <li key={i} className="flex items-start gap-2 leading-relaxed">
-                      <span className="text-[#9A3412] font-bold">•</span>
+                      <span className="text-[#cdb5be] font-bold">•</span>
                       <span>{con}</span>
                     </li>
                   ))}
@@ -116,7 +116,7 @@ export default function SinglePortalReviewPage() {
 
             {/* Direct Comparison Table with Other Evaluated Portals */}
             <div className="p-6 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-4">
-              <h3 className="text-lg font-extrabold text-[#141821]">
+              <h3 className="text-lg font-extrabold text-[#2a1408]">
                 {report.name} im direkten Vergleich mit anderen Schweizer Portalen
               </h3>
               <div className="overflow-x-auto">
@@ -133,16 +133,16 @@ export default function SinglePortalReviewPage() {
                     {SWISS_PORTAL_TOP10.map((other) => (
                       <tr
                         key={other.slug}
-                        className={other.slug === report.slug ? "bg-[#F3EFE6] font-bold" : ""}
+                        className={other.slug === report.slug ? "bg-[#fbf4f0] font-bold" : ""}
                       >
                         <td className="py-3 pr-3">{other.name}</td>
                         <td className="py-3 px-3 text-stone-600">{other.bestFor}</td>
                         <td className="py-3 px-3 text-stone-600">{other.avgCostForModelsChf}</td>
                         <td className="py-3 pl-3">
                           {other.slug === report.slug ? (
-                            <span className="text-[#8C6B32]">Aktueller Bericht</span>
+                            <span className="text-[#2a1408]">Aktueller Bericht</span>
                           ) : (
-                            <Link href={`/reviews/${other.slug}`} className="text-[#8C6B32] hover:underline font-bold">
+                            <Link href={`/reviews/${other.slug}`} className="text-[#2a1408] hover:underline font-bold">
                               Vergleichen →
                             </Link>
                           )}
@@ -158,15 +158,15 @@ export default function SinglePortalReviewPage() {
           {/* RIGHT 4 COLUMNS: "So ist der Bericht belegt" (Exakt nach Bild 6 / Bild 8!) */}
           <aside className="lg:col-span-4 p-6 rounded-2xl bg-white border border-stone-200/90 shadow-sm space-y-5 lg:sticky lg:top-24">
             <div>
-              <h2 className="text-xl font-serif font-bold text-[#141821]">So ist der Bericht belegt</h2>
+              <h2 className="text-xl font-serif font-bold text-[#2a1408]">So ist der Bericht belegt</h2>
               <p className="text-xs text-stone-500 mt-0.5">Beispiel: {report.name}</p>
             </div>
 
             <div className="space-y-4 divide-y divide-stone-200 text-xs">
               <div className="pt-2 flex items-start gap-3">
-                <FileText size={18} className="text-[#8C6B32] shrink-0 mt-0.5" />
+                <FileText size={18} className="text-[#2a1408] shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <div className="font-bold text-[#141821]">Quelle — Dokumentation des Portals</div>
+                  <div className="font-bold text-[#2a1408]">Quelle — Dokumentation des Portals</div>
                   <p className="text-stone-600 leading-relaxed">
                     Auswertung der öffentlich verfügbaren Informationen von <strong>{report.domain}</strong> wie AGB, Datenschutzerklärung, Hilfebereich und Preisübersichten (Stand: {report.lastAudited}).
                   </p>
@@ -174,9 +174,9 @@ export default function SinglePortalReviewPage() {
               </div>
 
               <div className="pt-4 flex items-start gap-3">
-                <Search size={18} className="text-[#8C6B32] shrink-0 mt-0.5" />
+                <Search size={18} className="text-[#2a1408] shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <div className="font-bold text-[#141821]">Prüfkriterien — Funktionen und Datenschutz</div>
+                  <div className="font-bold text-[#2a1408]">Prüfkriterien — Funktionen und Datenschutz</div>
                   <p className="text-stone-600 leading-relaxed">
                     Systematische Prüfung der beschriebenen Suchfunktionen, Filter, Kennzeichnungen, Kontoverwaltung und Meldewege.
                   </p>
@@ -184,9 +184,9 @@ export default function SinglePortalReviewPage() {
               </div>
 
               <div className="pt-4 flex items-start gap-3">
-                <HelpCircle size={18} className="text-[#8C6B32] shrink-0 mt-0.5" />
+                <HelpCircle size={18} className="text-[#2a1408] shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <div className="font-bold text-[#141821]">Offene Fragen — Noch nicht abschliessend beurteilt</div>
+                  <div className="font-bold text-[#2a1408]">Offene Fragen — Noch nicht abschliessend beurteilt</div>
                   <p className="text-stone-600 leading-relaxed">
                     Interne Moderationsprozesse, tatsächliche Reaktionszeiten des Supports und nicht-öffentliche Preisstaffeln nach Login konnten ohne verdeckten Testkauf nicht abschliessend geprüft werden.
                   </p>
@@ -194,7 +194,7 @@ export default function SinglePortalReviewPage() {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#F3EFE6] border border-[#DFD5C0] flex items-center gap-2.5 text-xs font-semibold text-[#5C4722]">
+            <div className="p-3.5 rounded-xl bg-[#fbf4f0] border border-[#e8c98a] flex items-center gap-2.5 text-xs font-semibold text-[#2a1408]">
               <Scale size={16} className="shrink-0" />
               <span>Aussagen bleiben nachvollziehbar.</span>
             </div>

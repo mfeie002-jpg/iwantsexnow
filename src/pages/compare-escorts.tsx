@@ -1,240 +1,124 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { CorporateFooter } from "@/components/CorporateFooter";
-import { HARVESTED_SWISS_OFFERS } from "@/data/harvestedOffers";
-import { normalizeSwissGeo } from "@/lib/swissGeoNormalizer";
-import { Check, Bookmark, ArrowRight, X } from "lucide-react";
-
-const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
-];
+import { SwissDoorplate } from "@/components/SwissDoorplate";
+import offersData from "@/data/harvested-offers.json";
+import { Scale, MessageCircle, User, Crown } from "lucide-react";
 
 export default function CompareEscortsPage() {
-  const [selectedCanton, setSelectedCanton] = useState("ALL");
-  const [onlyWithPrice, setOnlyWithPrice] = useState(false);
-  const [compareIds, setCompareIds] = useState<string[]>(["ch-1", "ch-2"]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [selected, setSelected] = useState<any[]>([]);
 
-  const profiles = useMemo(() => {
-    const raw = Array.isArray(HARVESTED_SWISS_OFFERS) ? HARVESTED_SWISS_OFFERS : [];
-    return raw.slice(0, 60).map((item: any, idx: number) => {
-      const id = item.dedupClusterId || "ch-" + (idx + 1);
-      const geo = normalizeSwissGeo(item.city, item.canton);
-      const rate = Number(item.advertisedBaseChf) || null;
-      const durationLabel = rate && rate < 180 ? "30 Min. · laut Inserat" : "60 Min. · laut Inserat";
-      const cleanName =
-        String(item.rawName || "Profil")
-          .replace(/[^\w\säöüÄÖÜéèà-]/g, "")
-          .trim()
-          .slice(0, 26) || "Profil";
-      return {
-        ...item,
-        id,
-        cleanName,
-        cleanCity: geo.cleanCity,
-        canton: geo.trueCanton,
-        rate,
-        durationLabel,
-        fallbackImg: FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length],
-      };
-    });
+  useEffect(() => {
+    const all = (offersData as any[]) || [];
+    try {
+      const favIds = JSON.parse(localStorage.getItem("ch_favorite_profiles") || "[]");
+      const fromFavs = all.filter((o) => favIds.includes(o.id || o.dedupClusterId));
+      const pool = fromFavs.length >= 2 ? fromFavs.slice(0, 4) : all.slice(0, 4);
+      setSelected(pool);
+    } catch {
+      setSelected(all.slice(0, 4));
+    }
   }, []);
 
-  const filtered = useMemo(() => {
-    return profiles.filter((p) => {
-      if (selectedCanton !== "ALL" && p.canton !== selectedCanton) return false;
-      if (onlyWithPrice && !p.rate) return false;
-      return true;
-    });
-  }, [profiles, selectedCanton, onlyWithPrice]);
-
-  const toggleCompare = (id: string) => {
-    setCompareIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev.slice(-2), id]));
-  };
-
-  const comparedList = useMemo(() => {
-    return profiles.filter((p) => compareIds.includes(p.id));
-  }, [profiles, compareIds]);
-
   return (
-    <div className="min-h-screen bg-[#F7F4EE] text-[#181614] pb-28">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
-        title="Profile vergleichen – Quellen, Preise & Dauer gegenüberstellen | iwantsexnow.ch"
-        description="Vergleiche Schweizer Profile nach Ort, veröffentlichtem Preis (60 Min. vs. 30 Min.) und Herkunft."
+        title="4-Suiten Direktvergleich · 30m/60m CHF & +41 Kontakt | iwantsexnow.ch"
+        description="Vergleichen Sie bis zu 4 Schweizer Escort- und Tantra-Suiten nebeneinander nach 30-Minuten- und 60-Minuten-Honorar, Kanton und Verfügbarkeit."
       />
       <LuxuryHeader />
 
-      <main className="max-w-[1380px] mx-auto px-6 sm:px-10 py-8 space-y-6">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#181614]">
-            Profile vergleichen
-          </h1>
-          <p className="text-sm sm:text-base text-[#5C554B] mt-1">
-            Quellen, Preise und Angaben übersichtlich gegenüberstellen.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-[#E6DFD3]">
-          <div className="flex flex-wrap gap-1.5">
-            {["ALL", "ZH", "ZG", "BS", "BE", "LU", "AG", "SG", "GE", "VD", "TI"].map((c) => (
-              <button
-                key={c}
-                onClick={() => setSelectedCanton(c)}
-                className={
-                  selectedCanton === c
-                    ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-[#9E7B47] text-white cursor-pointer"
-                    : "px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F3EFE8] text-[#3D372E] cursor-pointer"
-                }
-              >
-                {c === "ALL" ? "Alle Orte" : c}
-              </button>
-            ))}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <div className="penthouse-panel p-6 rounded-[24px] border border-[#e8c98a]/40 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span className="text-xs font-mono uppercase tracking-[0.22em] text-[#e8c98a] font-bold">
+              SWISS SIDE-BY-SIDE MATRIX
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-serif text-[#e8c98a] flex items-center gap-2 mt-1">
+              <Scale size={22} className="text-[#e8c98a]" />
+              <span>Direktvergleich Ihrer gemerkten Schweizer Suiten</span>
+            </h1>
           </div>
-
-          <label className="inline-flex items-center gap-2 text-xs font-semibold text-[#3D372E] cursor-pointer">
-            <input
-              type="checkbox"
-              checked={onlyWithPrice}
-              onChange={() => setOnlyWithPrice(!onlyWithPrice)}
-              className="accent-[#9E7B47] w-4 h-4 rounded"
-            />
-            <span>Nur mit Preisangabe</span>
-          </label>
+          <SwissDoorplate state="FREI" roomNumber="MATRIX" customLabel={selected.length + " SUITEN IM VERGLEICH"} size="sm" />
         </div>
 
-        <div className="bg-white rounded-2xl border border-[#E6DFD3] shadow-sm divide-y divide-[#E6DFD3] overflow-hidden">
-          {filtered.slice(0, 30).map((p) => {
-            const isCompared = compareIds.includes(p.id);
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {selected.map((p: any, i: number) => {
+            const pid = p.id || p.dedupClusterId;
+            const r60 = Number(p.advertisedBaseChf) || 350;
+            const r30 = Number(p.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10;
+            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
+            const thumb = String(p.thumbnail || "").replace(/[?&]iwsn_clean=1.*$/i, "");
+
             return (
-              <article
-                key={p.id}
-                className={
-                  isCompared
-                    ? "p-4 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-[#F6F0E4]"
-                    : "p-4 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-white hover:bg-[#FAF7F2]"
-                }
-              >
-                <div className="md:col-span-6 flex items-center gap-4">
-                  <img
-                    src={p.thumbnail || p.fallbackImg}
-                    alt={p.cleanName}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = p.fallbackImg;
-                    }}
-                    className="w-20 h-20 rounded-xl object-cover object-top shrink-0 border border-[#C6A574]/40"
-                  />
+              <div key={pid || i} className="valentina-outer-card rounded-[24px] p-2.5 flex flex-col justify-between">
+                <div className="rounded-[18px] border border-[#e8c98a]/35 bg-[#150810] overflow-hidden flex-1 flex flex-col justify-between">
                   <div>
-                    <Link href={"/profile/" + encodeURIComponent(p.id)} className="text-lg font-serif font-bold hover:underline">
-                      {p.cleanName}
+                    <Link href={"/profile/" + encodeURIComponent(pid)} className="darkroom-stage block aspect-[3/4] w-full">
+                      <img
+                        referrerPolicy="no-referrer"
+                        src={thumb}
+                        alt={p.rawName}
+                        className="darkroom-img"
+                      />
+                      <div className="darkroom-vignette" />
+                      <div className="darkroom-floor" />
+                      <div className="absolute top-3 left-3 z-10">
+                        <SwissDoorplate state="FREI" roomNumber={p.canton || "CH"} customLabel="FREI" size="sm" />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-2 z-10 px-3 text-center">
+                        <div className="font-serif text-lg text-[#e8c98a] truncate uppercase">{p.rawName}</div>
+                        <div className="text-xs font-mono text-[#e8c98a]">{p.city} ({p.canton})</div>
+                      </div>
                     </Link>
-                    <div className="text-xs text-[#5C554B]">{p.cleanCity} · {p.canton}</div>
-                    <div className="text-xs text-[#8A642B] mt-0.5">
-                      Quelle: {p.sourcePortal || "Verzeichnis"}
+
+                    <div className="p-3.5 space-y-2 text-xs font-mono border-t border-[#e8c98a]/20">
+                      <div className="flex justify-between">
+                        <span className="text-[#e8c98a]">60 Min. Standard:</span>
+                        <strong className="text-[#e8c98a]">CHF {r60}.–</strong>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#e8c98a]">30 Min. Express:</span>
+                        <strong className="text-[#fbf1ec]">CHF {r30}.–</strong>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#e8c98a]">Alter / Grösse:</span>
+                        <strong className="text-[#e8c98a]">{p.age || 25}J · {p.heightCm || 168}cm</strong>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#e8c98a]">Körbchen:</span>
+                        <strong className="text-[#e8c98a]">Cup {p.cupSize || "C"}</strong>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="md:col-span-3 md:border-l md:border-[#E6DFD3] md:pl-6">
-                  {p.rate ? (
-                    <>
-                      <div className="text-base font-extrabold">CHF {p.rate}</div>
-                      <div className="text-xs text-[#6E665B]">{p.durationLabel}</div>
-                    </>
-                  ) : (
-                    <div className="text-sm font-extrabold text-[#6E665B]">Keine Preisangabe</div>
-                  )}
-                </div>
-
-                <div className="md:col-span-3 flex sm:flex-col items-end justify-between md:justify-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => toggleCompare(p.id)}
-                    className="inline-flex items-center gap-2 text-xs font-semibold cursor-pointer"
-                  >
-                    <span
-                      className={
-                        isCompared
-                          ? "w-5 h-5 rounded flex items-center justify-center bg-[#9E7B47] text-white"
-                          : "w-5 h-5 rounded border border-[#9C9283] bg-white"
-                      }
+                  <div className="p-3 grid grid-cols-1 gap-2 border-t border-[#e8c98a]/20">
+                    {cleanDigits && (
+                      <a
+                        href={"https://wa.me/" + cleanDigits}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="brass-3d py-2 px-3 rounded-full font-sans font-extrabold text-xs tracking-widest uppercase flex items-center justify-center gap-1.5"
+                      >
+                        <MessageCircle size={12} />
+                        <span>WHATSAPP</span>
+                      </a>
+                    )}
+                    <Link
+                      href={"/profile/" + encodeURIComponent(pid)}
+                      className="emerald-3d py-2 px-3 rounded-full border border-[#e8c98a]/45 font-sans font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-1.5"
                     >
-                      {isCompared && <Check size={13} strokeWidth={3} />}
-                    </span>
-                    <span>Vergleichen</span>
-                  </button>
-
-                  <Link href={"/profile/" + encodeURIComponent(p.id)} className="text-xs font-bold text-[#7A5824] hover:underline inline-flex items-center gap-1">
-                    <Bookmark size={13} />
-                    <span>Profil ansehen →</span>
-                  </Link>
+                      <User size={12} className="text-[#e8c98a]" />
+                      <span>DOSSIER ÖFFNEN</span>
+                    </Link>
+                  </div>
                 </div>
-              </article>
+              </div>
             );
           })}
         </div>
       </main>
-      <CorporateFooter light />
-
-      {comparedList.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-4 inset-x-0 px-4 z-50">
-          <div className="max-w-4xl mx-auto p-3.5 rounded-2xl bg-[#14171F]/95 backdrop-blur-xl border border-[#C6A574]/60 shadow-2xl flex flex-wrap items-center justify-between gap-3 text-white">
-            <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-              <strong className="pr-2.5 border-r border-white/15 font-serif text-base">
-                {comparedList.length} ausgewählt
-              </strong>
-              {comparedList.map((cp) => (
-                <span key={cp.id} className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/10 border border-white/15 text-xs">
-                  <span>{cp.cleanName}</span>
-                  <button onClick={() => toggleCompare(cp.id)} className="text-gray-400 hover:text-white cursor-pointer">✕</button>
-                </span>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => setModalOpen(true)}
-              className="px-5 py-2.5 rounded-xl bg-[#C6A574] text-[#14171F] font-bold text-xs inline-flex items-center gap-2 cursor-pointer"
-            >
-              <span>Auswahl vergleichen</span>
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {modalOpen && (
-        <div className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 text-white">
-          <div className="max-w-4xl w-full rounded-2xl bg-[#1C2029] border border-[#C6A574] p-6 shadow-2xl space-y-5">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-lg font-serif font-bold">Ausgewählte Profile im direkten Vergleich</h3>
-              <button onClick={() => setModalOpen(false)} className="p-1.5 rounded-lg bg-white/10"><X size={16} /></button>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              {comparedList.map((cp) => (
-                <div key={cp.id} className="p-4 rounded-xl bg-[#13161C] border border-white/10 space-y-2.5">
-                  <img
-                    src={cp.thumbnail || cp.fallbackImg}
-                    alt={cp.cleanName}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = cp.fallbackImg; }}
-                    className="w-full h-44 object-cover object-top rounded-lg"
-                  />
-                  <div className="text-base font-serif font-bold">{cp.cleanName}</div>
-                  <div>• <strong>Ort:</strong> {cp.cleanCity} · {cp.canton}</div>
-                  <div>• <strong>Preis:</strong> {cp.rate ? "CHF " + cp.rate + " (" + cp.durationLabel + ")" : "Keine Preisangabe"}</div>
-                  <div>• <strong>Quelle:</strong> {cp.sourcePortal || "Verzeichnis"}</div>
-                  <Link href={"/profile/" + encodeURIComponent(cp.id)} className="w-full py-2 rounded-lg bg-[#C6A574] text-[#13161C] font-bold text-center block">
-                    Profil öffnen →
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -85,10 +85,10 @@ export function LivePortalSyncBanner({ totalProfiles = 180 }: { totalProfiles?: 
   ];
 
   return (
-    <div className="bg-[#060D16] border-y border-[#C69C6D]/30 py-2.5 px-4 text-xs text-white">
+    <div className="bg-[#150810] border-y border-[#e8c98a]/30 py-2.5 px-4 text-xs text-white">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 font-black text-[11px]">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 font-black text-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             STÜNDLICHER LIVE-PORTAL-SYNC AKTIV
           </span>
@@ -101,14 +101,14 @@ export function LivePortalSyncBanner({ totalProfiles = 180 }: { totalProfiles?: 
           {syncedPortals.map((p) => (
             <div
               key={p.name}
-              className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-[11px]"
+              className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-xs"
             >
               <CheckCircle2 size={11} className="text-emerald-400 shrink-0" />
               <span className="font-bold text-white">{p.name}</span>
               <span className="text-gray-400">({p.ago})</span>
             </div>
           ))}
-          <div className="flex items-center gap-1 bg-[#C69C6D]/15 border border-[#C69C6D]/40 text-[#D5A021] font-mono font-bold px-2.5 py-0.5 rounded-lg text-[11px]">
+          <div className="flex items-center gap-1 bg-[#d6165f]/15 border border-[#e8c98a]/40 text-[#e8c98a] font-mono font-bold px-2.5 py-0.5 rounded-lg text-xs">
             <RefreshCw size={11} className="animate-spin" />
             Nächster Scan: {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
           </div>

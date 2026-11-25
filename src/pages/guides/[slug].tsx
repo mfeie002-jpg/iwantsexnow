@@ -259,7 +259,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1623] text-white">
+    <div className="min-h-screen bg-[#150810] text-white">
       <SEO
         title={article.metaTitle}
         description={article.metaDescription}
@@ -267,7 +267,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
         type="article"
         structuredData={articleSchema}
       />
-      <header className="border-b border-[#C69C6D]/25 bg-[#07101A] py-4 sticky top-0 z-50">
+      <header className="border-b border-[#e8c98a]/25 bg-[#150810] py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Link href="/"><BrandLogo compact /></Link>
           <div className="hidden lg:block"><Navigation /></div>
@@ -276,13 +276,13 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
       </header>
 
       <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
-        <Link href="/guides" className="inline-flex items-center gap-2 text-xs text-[#D5A021] font-bold hover:underline">
+        <Link href="/guides" className="inline-flex items-center gap-2 text-xs text-[#e8c98a] font-bold hover:underline">
           <ArrowLeft size={14} /> Zurück zur Magazin- & Guide-Übersicht (/guides)
         </Link>
 
-        <article className="bg-[#09131E] border-2 border-[#C69C6D]/50 rounded-3xl p-6 md:p-10 space-y-6 shadow-2xl">
+        <article className="bg-[#150810] border-2 border-[#e8c98a]/50 rounded-3xl p-6 md:p-10 space-y-6 shadow-2xl">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <Badge className="bg-[#C69C6D]/20 text-[#D5A021] border border-[#C69C6D]/40">
+            <Badge className="bg-[#d6165f]/20 text-[#e8c98a] border border-[#e8c98a]/40">
               {article.category}
             </Badge>
             <span className="text-xs text-gray-400">{article.readTime} · Aktualisiert 2026</span>
@@ -292,14 +292,14 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
             {article.title}
           </h1>
 
-          <p className="text-sm sm:text-base text-amber-100/90 leading-relaxed bg-black/40 p-4 rounded-2xl border border-[#C69C6D]/30">
+          <p className="text-sm sm:text-base text-amber-100/90 leading-relaxed bg-black/40 p-4 rounded-2xl border border-[#e8c98a]/30">
             {article.heroIntro}
           </p>
 
           <div className="space-y-6 pt-2">
             {article.sections.map((sec, idx) => (
               <div key={idx} className="space-y-3">
-                <h2 className="text-xl font-serif font-black text-[#D5A021]">
+                <h2 className="text-xl font-serif font-black text-[#e8c98a]">
                   {sec.heading}
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
@@ -320,13 +320,13 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
           </div>
 
           {/* Targeted Long-Tail Keyword Tags */}
-          <div className="pt-4 border-t border-white/10 flex flex-wrap items-center gap-1.5 text-[11px]">
+          <div className="pt-4 border-t border-white/10 flex flex-wrap items-center gap-1.5 text-xs">
             <span className="text-gray-400 font-bold mr-1">Verwandte Themen & Suchen:</span>
             {article.targetKeywords.map((kw) => (
               <Link
                 key={kw}
                 href={`/search?q=${encodeURIComponent(kw.split(" ")[0])}`}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#C69C6D]/20 border border-white/10 text-gray-300"
+                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#d6165f]/20 border border-white/10 text-gray-300"
               >
                 #{kw}
               </Link>
@@ -335,7 +335,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
 
           <div className="pt-2">
             <Button
-              className="w-full bg-gradient-to-r from-[#C69C6D] via-[#F6E27A] to-[#C69C6D] text-[#0D1B2A] font-black py-6 text-sm shadow-xl"
+              className="w-full bg-gradient-to-r from-[#d6165f] via-[#d6165f] to-[#d6165f] text-[#2a1408] font-black py-6 text-sm shadow-xl"
               asChild
             >
               <Link href={article.ctaHref}>
@@ -346,8 +346,8 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
         </article>
 
         {/* Internal Cross-Links to all other Long-Tail Guides */}
-        <Card className="bg-[#09131E] border border-white/15 p-6 rounded-2xl text-white space-y-4">
-          <h3 className="text-lg font-serif font-black text-[#D5A021]">
+        <Card className="bg-[#150810] border border-white/15 p-6 rounded-2xl text-white space-y-4">
+          <h3 className="text-lg font-serif font-black text-[#e8c98a]">
             Weitere Schweizer Guides & Insider-Berichte:
           </h3>
           <div className="grid sm:grid-cols-2 gap-3 text-xs">
@@ -359,7 +359,7 @@ export default function GuideDetailPage({ slug }: { slug: string }) {
                   href={`/guides/${a.slug}`}
                   className="p-3.5 rounded-xl bg-black/40 hover:bg-white/10 border border-white/10 transition-all block"
                 >
-                  <div className="text-[10px] text-[#D5A021] font-bold">{a.category}</div>
+                  <div className="text-xs text-[#e8c98a] font-bold">{a.category}</div>
                   <div className="font-bold text-white mt-0.5 line-clamp-2">{a.title}</div>
                 </Link>
               ))}

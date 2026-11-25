@@ -146,9 +146,9 @@ export default function Branding() {
     {
       name: "Classic Pink (Solid)",
       description: "Clean, bold, no-nonsense pink - pure energy",
-      primary: "#EC4899",
-      secondary: "#DB2777",
-      accent: "#F472B6",
+      primary: "#ec4899",
+      secondary: "#cdb5be",
+      accent: "#cdb5be",
       background: "from-pink-50 via-white to-pink-50",
       gradient: "from-pink-600 to-pink-600",
       buttonClass: "bg-pink-600 hover:bg-pink-700",
@@ -158,9 +158,9 @@ export default function Branding() {
     {
       name: "Deep Purple (Solid)",
       description: "Sophisticated single purple - luxury and desire",
-      primary: "#9333EA",
-      secondary: "#7E22CE",
-      accent: "#A855F7",
+      primary: "#9333ea",
+      secondary: "#3d2231",
+      accent: "#cdb5be",
       background: "from-purple-50 via-white to-purple-50",
       gradient: "from-purple-600 to-purple-600",
       buttonClass: "bg-purple-600 hover:bg-purple-700",
@@ -170,9 +170,9 @@ export default function Branding() {
     {
       name: "Crimson Red (Solid)",
       description: "Passionate single red - intense attraction",
-      primary: "#DC2626",
-      secondary: "#B91C1C",
-      accent: "#EF4444",
+      primary: "#dc2626",
+      secondary: "#3d2231",
+      accent: "#ef4444",
       background: "from-red-50 via-white to-red-50",
       gradient: "from-red-600 to-red-600",
       buttonClass: "bg-red-600 hover:bg-red-700",
@@ -182,9 +182,9 @@ export default function Branding() {
     {
       name: "Teal Green (Solid)",
       description: "Sophisticated single teal - upscale and modern",
-      primary: "#14B8A6",
-      secondary: "#0D9488",
-      accent: "#2DD4BF",
+      primary: "#3d2231",
+      secondary: "#3d2231",
+      accent: "#cdb5be",
       background: "from-teal-50 via-white to-teal-50",
       gradient: "from-teal-600 to-teal-600",
       buttonClass: "bg-teal-600 hover:bg-teal-700",
@@ -194,9 +194,9 @@ export default function Branding() {
     {
       name: "Royal Blue (Solid)",
       description: "Trustworthy single blue - professional confidence",
-      primary: "#2563EB",
-      secondary: "#1D4ED8",
-      accent: "#3B82F6",
+      primary: "#cdb5be",
+      secondary: "#3d2231",
+      accent: "#cdb5be",
       background: "from-blue-50 via-white to-blue-50",
       gradient: "from-blue-600 to-blue-600",
       buttonClass: "bg-blue-600 hover:bg-blue-700",
@@ -206,9 +206,9 @@ export default function Branding() {
     {
       name: "Midnight Black (Solid)",
       description: "Premium single black - exclusive and elite",
-      primary: "#1F2937",
-      secondary: "#111827",
-      accent: "#374151",
+      primary: "#150810",
+      secondary: "#150810",
+      accent: "#22101a",
       background: "from-gray-50 via-white to-gray-50",
       gradient: "from-gray-800 to-gray-800",
       buttonClass: "bg-gray-800 hover:bg-gray-900",
@@ -219,9 +219,9 @@ export default function Branding() {
     {
       name: "Pink-Purple Gradient",
       description: "Classic dating app gradient - playful energy",
-      primary: "#EC4899",
-      secondary: "#9333EA",
-      accent: "#F472B6",
+      primary: "#ec4899",
+      secondary: "#9333ea",
+      accent: "#cdb5be",
       background: "from-pink-50 via-white to-purple-50",
       gradient: "from-pink-600 to-purple-600",
       buttonClass: "bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700",
@@ -231,9 +231,9 @@ export default function Branding() {
     {
       name: "Coral-Peach Gradient",
       description: "Warm, inviting sunset tones",
-      primary: "#FF6B6B",
-      secondary: "#FFB347",
-      accent: "#FF8B94",
+      primary: "#cdb5be",
+      secondary: "#d6165f",
+      accent: "#cdb5be",
       background: "from-orange-50 via-white to-pink-50",
       gradient: "from-orange-500 to-pink-500",
       buttonClass: "bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600",
@@ -243,9 +243,9 @@ export default function Branding() {
     {
       name: "Magenta-Lime Gradient",
       description: "Energetic pop of vibrant neon",
-      primary: "#D946EF",
-      secondary: "#84CC16",
-      accent: "#EC4899",
+      primary: "#cdb5be",
+      secondary: "#3d2231",
+      accent: "#ec4899",
       background: "from-fuchsia-50 via-white to-lime-50",
       gradient: "from-fuchsia-600 to-lime-500",
       buttonClass: "bg-gradient-to-r from-fuchsia-600 to-lime-500 hover:from-fuchsia-700 hover:to-lime-600",
@@ -255,9 +255,9 @@ export default function Branding() {
     {
       name: "Navy-Gold Gradient",
       description: "Premium luxury positioning",
-      primary: "#1E3A8A",
-      secondary: "#D97706",
-      accent: "#3B82F6",
+      primary: "#3d2231",
+      secondary: "#d6165f",
+      accent: "#cdb5be",
       background: "from-blue-50 via-white to-amber-50",
       gradient: "from-blue-900 to-amber-600",
       buttonClass: "bg-gradient-to-r from-blue-900 to-amber-600 hover:from-blue-950 hover:to-amber-700",
@@ -267,9 +267,9 @@ export default function Branding() {
     {
       name: "Turquoise-Orange Gradient",
       description: "Tropical, playful adventure",
-      primary: "#06B6D4",
-      secondary: "#F97316",
-      accent: "#22D3EE",
+      primary: "#3d2231",
+      secondary: "#d6165f",
+      accent: "#cdb5be",
       background: "from-cyan-50 via-white to-orange-50",
       gradient: "from-cyan-600 to-orange-600",
       buttonClass: "bg-gradient-to-r from-cyan-600 to-orange-600 hover:from-cyan-700 hover:to-orange-700",
@@ -279,9 +279,9 @@ export default function Branding() {
     {
       name: "Emerald-Teal Gradient",
       description: "Sophisticated jewel tones",
-      primary: "#059669",
-      secondary: "#14B8A6",
-      accent: "#10B981",
+      primary: "#3d2231",
+      secondary: "#3d2231",
+      accent: "#4fd6a0",
       background: "from-emerald-50 via-white to-teal-50",
       gradient: "from-emerald-600 to-teal-600",
       buttonClass: "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700",
@@ -299,9 +299,9 @@ export default function Branding() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold tracking-tight">
-              <span className="text-[#0D1B2A] dark:text-white">iWant</span>
-              <span className="text-[#C69C6D] dark:text-[#D5A021]">Sex</span>
-              <span className="text-[#0D1B2A] dark:text-white">Now</span>
+              <span className="text-[#2a1408] dark:text-white">iWant</span>
+              <span className="text-[#e8c98a] dark:text-[#e8c98a]">Sex</span>
+              <span className="text-[#2a1408] dark:text-white">Now</span>
               <span className="text-gray-500 dark:text-gray-400 text-lg">.ch</span>
             </span>
           </Link>

@@ -62,8 +62,8 @@ export default function LogoRedesigns() {
                       />
                       <defs>
                         <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style={{ stopColor: "#9333EA", stopOpacity: 1 }} />
-                          <stop offset="100%" style={{ stopColor: "#EC4899", stopOpacity: 1 }} />
+                          <stop offset="0%" style={{ stopColor: "#9333ea", stopOpacity: 1 }} />
+                          <stop offset="100%" style={{ stopColor: "#ec4899", stopOpacity: 1 }} />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -116,19 +116,19 @@ export default function LogoRedesigns() {
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <div className="h-20 bg-gray-900 dark:bg-white rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#0F0F0F</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#150810</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-purple-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#9333EA</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#9333ea</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-pink-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#EC4899</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#ec4899</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#F5F5F5</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#fbf4f0</p>
                   </div>
                 </div>
               </div>
@@ -163,11 +163,11 @@ export default function LogoRedesigns() {
                         fill="url(#gradient2)"
                         className="animate-pulse"
                       />
-                      <circle cx="70" cy="50" r="15" fill="#EF4444" opacity="0.8" />
+                      <circle cx="70" cy="50" r="15" fill="#ef4444" opacity="0.8" />
                       <defs>
                         <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style={{ stopColor: "#EF4444", stopOpacity: 1 }} />
-                          <stop offset="100%" style={{ stopColor: "#A855F7", stopOpacity: 1 }} />
+                          <stop offset="0%" style={{ stopColor: "#ef4444", stopOpacity: 1 }} />
+                          <stop offset="100%" style={{ stopColor: "#cdb5be", stopOpacity: 1 }} />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -220,15 +220,15 @@ export default function LogoRedesigns() {
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-red-500 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-400">#EF4444</p>
+                    <p className="text-xs text-center font-mono text-gray-400">#ef4444</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-purple-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-400">#A855F7</p>
+                    <p className="text-xs text-center font-mono text-gray-400">#cdb5be</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-white rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-400">#FFFFFF</p>
+                    <p className="text-xs text-center font-mono text-gray-400">#ffffff</p>
                   </div>
                 </div>
               </div>
@@ -254,18 +254,18 @@ export default function LogoRedesigns() {
                   <div className="mb-8 relative">
                     <svg width="160" height="160" viewBox="0 0 160 160">
                       {/* Swiss Cross Inspired */}
-                      <rect x="40" y="70" width="80" height="20" fill="#DC2626" />
-                      <rect x="70" y="40" width="20" height="80" fill="#DC2626" />
+                      <rect x="40" y="70" width="80" height="20" fill="#dc2626" />
+                      <rect x="70" y="40" width="20" height="80" fill="#dc2626" />
                       
                       {/* Geometric Frame */}
-                      <rect x="30" y="30" width="100" height="100" fill="none" stroke="#1F2937" strokeWidth="2" />
-                      <rect x="35" y="35" width="90" height="90" fill="none" stroke="#1F2937" strokeWidth="1" opacity="0.3" />
+                      <rect x="30" y="30" width="100" height="100" fill="none" stroke="#150810" strokeWidth="2" />
+                      <rect x="35" y="35" width="90" height="90" fill="none" stroke="#150810" strokeWidth="1" opacity="0.3" />
                       
                       {/* Corner Markers */}
-                      <circle cx="30" cy="30" r="3" fill="#DC2626" />
-                      <circle cx="130" cy="30" r="3" fill="#DC2626" />
-                      <circle cx="30" cy="130" r="3" fill="#DC2626" />
-                      <circle cx="130" cy="130" r="3" fill="#DC2626" />
+                      <circle cx="30" cy="30" r="3" fill="#dc2626" />
+                      <circle cx="130" cy="30" r="3" fill="#dc2626" />
+                      <circle cx="30" cy="130" r="3" fill="#dc2626" />
+                      <circle cx="130" cy="130" r="3" fill="#dc2626" />
                     </svg>
                   </div>
                   <h3 className="text-4xl font-bold tracking-tight mb-1 text-gray-900 dark:text-white">
@@ -322,19 +322,19 @@ export default function LogoRedesigns() {
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <div className="h-20 bg-gray-900 dark:bg-white rounded-lg mb-2 border border-gray-200 dark:border-gray-700"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#1F2937</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#150810</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-red-600 rounded-lg mb-2"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#DC2626</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#dc2626</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg mb-2 border border-gray-200 dark:border-gray-700"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#F3F4F6</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#fbf4f0</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-20 bg-white dark:bg-gray-900 rounded-lg mb-2 border border-gray-200 dark:border-gray-700"></div>
-                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#FFFFFF</p>
+                    <p className="text-xs text-center font-mono text-gray-600 dark:text-gray-400">#ffffff</p>
                   </div>
                 </div>
               </div>

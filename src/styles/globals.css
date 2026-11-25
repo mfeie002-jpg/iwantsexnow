@@ -1,83 +1,711 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Design system: elegant, human, adult. Black cherry, ruby, champagne gold.
+   Night is the default. Token names follow the design system artifact. */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 5%;
-  --card: 0 0% 98%;
-  --card-foreground: 0 0% 5%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 5%;
-  --primary: 0 0% 10%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 10%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 345 20% 25%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --ring: 0 0% 10%;
-  --chart-1: 345 20% 35%;
-  --chart-2: 345 15% 45%;
-  --chart-3: 345 10% 55%;
-  --chart-4: 345 8% 65%;
-  --chart-5: 345 5% 75%;
-  --radius: 0.5rem;
-}
+  --background: 328 52% 6%;
+  --foreground: 22 53% 94%;
+  --card: 328 38% 10%;
+  --card-foreground: 22 53% 94%;
+  --popover: 328 38% 10%;
+  --popover-foreground: 22 53% 94%;
+  --primary: 40 66% 71%;
+  --primary-foreground: 23 68% 10%;
+  --secondary: 328 33% 12%;
+  --secondary-foreground: 22 53% 94%;
+  --muted: 328 33% 12%;
+  --muted-foreground: 340 17% 76%;
+  --accent: 340 80% 45%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 345 70% 28%;
+  --destructive-foreground: 0 40% 94%;
+  --border: 332 28% 18%;
+  --input: 332 28% 18%;
+  --ring: 40 66% 71%;
+  --radius: 1.75rem;
 
-.dark {
-  --background: 0 0% 8%;
-  --foreground: 0 0% 95%;
-  --card: 0 0% 10%;
-  --card-foreground: 0 0% 95%;
-  --popover: 0 0% 8%;
-  --popover-foreground: 0 0% 95%;
-  --primary: 0 0% 95%;
-  --primary-foreground: 0 0% 10%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 95%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 345 15% 20%;
-  --accent-foreground: 0 0% 95%;
-  --destructive: 0 62% 50%;
-  --destructive-foreground: 0 0% 95%;
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 0 0% 83%;
-  --chart-1: 345 15% 25%;
-  --chart-2: 345 12% 35%;
-  --chart-3: 345 10% 45%;
-  --chart-4: 345 8% 55%;
-  --chart-5: 345 5% 65%;
+  --paper: #150810;
+  --surface: #22101a;
+  --raised: #2b1420;
+  --wine: #3a1325;
+  --ink: #fbf1ec;
+  --ink-soft: #cdb5be;
+  --line: #3d2231;
+  --line-strong: #947683;
+  --ruby: #d6165f;
+  --ruby-deep: #ee3c7c;
+  --on-ruby: #ffffff;
+  --gold: #e8c98a;
+  --on-gold: #2a1408;
+  --verified: #5fd3a5;
+  --jade: #13362b;
+  --scrim: rgba(10, 3, 8, 0.65);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mechanical: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-pillow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 16px 40px rgba(0, 0, 0, 0.28);
+  --shadow-float: 0 4px 12px rgba(0, 0, 0, 0.3), 0 28px 60px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 8px 28px rgba(214, 22, 95, 0.45);
 }
 
 * {
+  box-sizing: border-box;
   border-color: hsl(var(--border));
 }
 
+html {
+  min-height: 100%;
+  background: var(--paper);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+html,
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: 'Inter', sans-serif;
+  min-height: 100%;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
+body {
+  margin: 0;
+  background:
+    radial-gradient(60% 40% at 90% -8%, rgba(214, 22, 95, 0.2), transparent 70%),
+    radial-gradient(50% 40% at 0% 20%, rgba(58, 19, 37, 0.6), transparent 70%),
+    var(--paper);
+  color: var(--ink);
+  font-family: 'Manrope', system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-@layer base {
-  * {
-    @apply border-border;
+#__next {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Instrument Serif', 'Times New Roman', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+}
+
+.font-serif,
+.font-display {
+  font-family: 'Instrument Serif', 'Times New Roman', Georgia, serif !important;
+  font-weight: 400 !important;
+}
+
+.font-sans {
+  font-family: 'Manrope', system-ui, Helvetica, Arial, sans-serif !important;
+}
+
+/* Humane type: no monospace, no capitals, no tracking */
+.font-mono {
+  font-family: 'Manrope', system-ui, Helvetica, Arial, sans-serif !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.uppercase {
+  text-transform: none !important;
+}
+
+[class*="tracking-["] {
+  letter-spacing: 0 !important;
+}
+
+button,
+a,
+select {
+  touch-action: manipulation;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background: #22101a;
+  color: #fbf1ec;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+::selection {
+  background: rgba(232, 201, 138, 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--paper);
+  border-radius: 999px;
+  background: #5a3a49;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+.penthouse-page,
+.penthouse-page[data-edition] {
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* Surfaces */
+.luxury-console,
+.dossier-panel,
+.card-soft {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface);
+  box-shadow: var(--shadow-pillow);
+}
+
+.luxury-console::before,
+.dossier-panel::before {
+  content: none;
+}
+
+.luxury-hairline {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, rgba(232, 201, 138, 0.4), transparent);
+}
+
+.band {
+  border-radius: 40px;
+  background: var(--raised);
+}
+
+/* Fields: pills */
+.luxury-input,
+.luxury-select {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 1.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.luxury-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1.1rem 1.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 28px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.luxury-input::placeholder,
+.luxury-textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
+
+.luxury-input:hover,
+.luxury-select:hover,
+.luxury-textarea:hover {
+  border-color: var(--ink-soft);
+}
+
+.luxury-input:focus,
+.luxury-select:focus,
+.luxury-textarea:focus {
+  border-color: var(--gold);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(232, 201, 138, 0.28);
+}
+
+/* Buttons. Legacy class names are kept so every page restyles:
+   brass = the ruby action, emerald = gold, ghost = outline, bordeaux = wine. */
+.brass-button,
+.brass-pill {
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: var(--on-ruby);
+  background: var(--ruby);
+  box-shadow: var(--shadow-glow);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: transform 260ms var(--ease), background-color 150ms ease;
+}
+
+.brass-button:hover,
+.brass-pill:hover {
+  background: var(--ruby-deep);
+  transform: translateY(-1px);
+}
+
+.brass-button:active,
+.brass-pill:active {
+  transform: translateY(1px);
+}
+
+.emerald-button,
+.emerald-pill {
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: var(--on-gold);
+  background: var(--gold);
+  font-weight: 600;
+  transition: transform 260ms var(--ease), filter 150ms ease;
+}
+
+.emerald-button:hover,
+.emerald-pill:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.ghost-button {
+  cursor: pointer;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  background: transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.ghost-button:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.bordeaux-button {
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: #fff;
+  background: var(--wine);
+  transition: border-color 150ms ease;
+}
+
+.bordeaux-button:hover {
+  border-color: var(--gold);
+}
+
+/* Chips and prices */
+.luxury-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 32px;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--raised);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.price-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip {
+  display: inline-flex;
+  min-height: 44px;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  padding: 0 1.4rem;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.chip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--on-gold);
+}
+
+/* Gold italic aside (one per screen) */
+.note-tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: rgba(21, 8, 16, 0.55);
+  padding: 0.5rem 1.4rem;
+  color: var(--gold);
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  backdrop-filter: blur(6px);
+}
+
+/* Arch photo frame */
+.arch {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--gold);
+  border-radius: 999px 999px 22px 22px;
+  background: var(--wine);
+  isolation: isolate;
+}
+
+.arch > img,
+.arch > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Profile card */
+.valentina-card,
+.profile-card {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface);
+  box-shadow: var(--shadow-pillow);
+  transition: transform 260ms var(--ease), border-color 150ms ease, box-shadow 260ms ease;
+}
+
+.valentina-card:hover,
+.profile-card:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-float);
+  transform: translateY(-5px);
+}
+
+.valentina-card:hover .arch > img,
+.profile-card:hover .arch > img {
+  transform: scale(1.04);
+}
+
+.arch > img {
+  transition: transform 700ms ease;
+}
+
+.dossier-name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+.brass-text {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.glass-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(251, 241, 236, 0.25);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(21, 8, 16, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.glass-icon-button:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Photo stage (legacy pages) */
+.noir-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--wine), var(--paper));
+}
+
+.noir-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 700ms ease;
+}
+
+.noir-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.noir-floor {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--scrim) 0%, transparent 55%);
+}
+
+.noir-stage:hover .noir-media,
+.group:hover .noir-stage .noir-media {
+  transform: scale(1.04);
+}
+
+.photo-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  background: linear-gradient(160deg, var(--wine), #150810);
+}
+
+/* Rates */
+.honorar-table,
+.source-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.honorar-table th,
+.honorar-table td,
+.source-table th,
+.source-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.honorar-table th,
+.source-table th {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.honorar-table td,
+.source-table td {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.honorar-table tr:last-child td,
+.source-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.honorar-table .featured-rate {
+  background: rgba(214, 22, 95, 0.18);
+}
+
+.rate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--raised);
+  padding: 1rem 1.6rem;
+}
+
+.rate-row[data-featured="true"] {
+  border-color: transparent;
+  background: var(--ruby);
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+/* City plates */
+.city-plate {
+  position: relative;
+  display: block;
+  min-height: 240px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--wine);
+  padding: 22px 26px;
+  transition: transform 260ms var(--ease), border-color 150ms ease;
+}
+
+.city-plate:hover {
+  border-color: var(--gold);
+  transform: translateY(-5px);
+}
+
+/* Skeletons and empty states */
+.lux-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.lux-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(232, 201, 138, 0.1), transparent);
+  animation: lux-shimmer 1.6s infinite;
+}
+
+.skeleton-card {
+  aspect-ratio: 4 / 6;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+}
+
+@keyframes lux-shimmer {
+  100% {
+    transform: translateX(100%);
   }
-  body {
-    @apply bg-background text-foreground;
+}
+
+.empty-state {
+  border: 1px dashed var(--line-strong);
+  background: var(--surface);
+}
+
+.footer-link {
+  color: var(--ink-soft);
+  transition: color 150ms ease;
+}
+
+.footer-link:hover {
+  color: var(--gold);
+}
+
+.mobile-thumb-bar {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  background: rgba(21, 8, 16, 0.92);
+  box-shadow: var(--shadow-float);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.profile-mobile-cta {
+  bottom: calc(72px + env(safe-area-inset-bottom));
+  background: rgba(34, 16, 26, 0.96);
+  box-shadow: var(--shadow-float);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #5a3a49 var(--paper);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Discreet mode: photos stay blurred until tapped or hovered */
+html.discreet img:not([data-keep]) {
+  filter: blur(22px) saturate(0.6);
+  transition: filter 250ms ease;
+}
+
+html.discreet img:not([data-keep]):hover,
+html.discreet img:not([data-keep]):active {
+  filter: none;
+}
+
+@media screen and (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .valentina-card:hover,
+  .profile-card:hover,
+  .city-plate:hover,
+  .brass-button:hover,
+  .brass-pill:hover {
+    transform: none;
   }
 }

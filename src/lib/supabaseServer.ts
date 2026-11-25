@@ -128,7 +128,7 @@ export async function persistClaimAndNotify(claim: ClaimRecord): Promise<{
   }
 
   const telegramSent = await sendTelegramAlert([
-    `✨ *iWantSexNow.ch · Neuer B2B Profil-Claim (${claim.mode.toUpperCase()})*`,
+    `*iWantSexNow.ch · Neuer B2B Profil-Claim (${claim.mode.toUpperCase()})*`,
     `*Claim-ID:* \`${claim.claimCode}\``,
     `*Name / Studio:* ${claim.artistName}`,
     `*Rufnummer:* \`${claim.phone}\``,

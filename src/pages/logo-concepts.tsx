@@ -80,7 +80,7 @@ export default function LogoConcepts() {
                   <div className="text-lg font-black text-white tracking-tighter">
                     <span className="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">iWSN</span>
                   </div>
-                  <div className="text-[8px] text-gray-400 tracking-wider font-bold">.CH</div>
+                  <div className="text-xs text-gray-400 tracking-wider font-bold">.CH</div>
                 </div>
               </div>
               <div className="text-sm text-gray-400">Mobile / compact</div>
@@ -118,7 +118,7 @@ export default function LogoConcepts() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-white tracking-tight leading-tight">iWantSexNow</div>
-                    <div className="text-[10px] text-gray-400 tracking-wider">.CH</div>
+                    <div className="text-xs text-gray-400 tracking-wider">.CH</div>
                   </div>
                 </div>
               </div>
@@ -187,7 +187,7 @@ export default function LogoConcepts() {
                         <linearGradient id="hex1" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#f43f5e" />
                           <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#d6165f" />
                         </linearGradient>
                       </defs>
                       <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex1)" />
@@ -195,7 +195,7 @@ export default function LogoConcepts() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-white tracking-tight leading-tight">iWantSexNow</div>
-                    <div className="text-[10px] text-gray-400 tracking-wider">.CH</div>
+                    <div className="text-xs text-gray-400 tracking-wider">.CH</div>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@ export default function LogoConcepts() {
                         <linearGradient id="hex2" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#f43f5e" />
                           <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#d6165f" />
                         </linearGradient>
                       </defs>
                       <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex2)" />
@@ -233,7 +233,7 @@ export default function LogoConcepts() {
                       <linearGradient id="hex3" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#f43f5e" />
                         <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="100%" stopColor="#d6165f" />
                       </linearGradient>
                     </defs>
                     <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex3)" />
@@ -252,7 +252,7 @@ export default function LogoConcepts() {
                       <linearGradient id="hex4" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#f43f5e" />
                         <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="100%" stopColor="#d6165f" />
                       </linearGradient>
                     </defs>
                     <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="url(#hex4)" />
@@ -282,7 +282,7 @@ export default function LogoConcepts() {
                         <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#f43f5e" />
                           <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#d6165f" />
                         </linearGradient>
                       </defs>
                       <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave1)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -291,7 +291,7 @@ export default function LogoConcepts() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-white tracking-tight leading-tight">iWantSexNow</div>
-                    <div className="text-[10px] text-gray-400 tracking-wider">.CH</div>
+                    <div className="text-xs text-gray-400 tracking-wider">.CH</div>
                   </div>
                 </div>
               </div>
@@ -308,7 +308,7 @@ export default function LogoConcepts() {
                         <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#f43f5e" />
                           <stop offset="50%" stopColor="#ec4899" />
-                          <stop offset="100%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#d6165f" />
                         </linearGradient>
                       </defs>
                       <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave2)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -330,7 +330,7 @@ export default function LogoConcepts() {
                       <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#f43f5e" />
                         <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="100%" stopColor="#d6165f" />
                       </linearGradient>
                     </defs>
                     <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave3)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -350,7 +350,7 @@ export default function LogoConcepts() {
                       <linearGradient id="wave4" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#f43f5e" />
                         <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="100%" stopColor="#d6165f" />
                       </linearGradient>
                     </defs>
                     <path d="M20 50 Q35 20, 50 50 T80 50" stroke="url(#wave4)" strokeWidth="12" fill="none" strokeLinecap="round"/>
@@ -380,7 +380,7 @@ export default function LogoConcepts() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-white tracking-tight leading-tight">iWantSexNow</div>
-                    <div className="text-[10px] text-gray-400 tracking-wider">.CH</div>
+                    <div className="text-xs text-gray-400 tracking-wider">.CH</div>
                   </div>
                 </div>
               </div>

@@ -55,7 +55,7 @@ export function CityLinks() {
   ];
 
   return (
-    <section id="cities" className="py-20 bg-[#0D1B2A] border-y border-white/10">
+    <section id="cities" className="py-20 bg-[#150810] border-y border-white/10">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -73,20 +73,20 @@ export function CityLinks() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {regionalStats.map((region, idx) => (
               <Link key={idx} href={region.href}>
-                <Card className="p-6 bg-white/5 border-white/15 hover:border-[#C69C6D] transition-all duration-300 hover:-translate-y-1 cursor-pointer group text-white">
+                <Card className="p-6 bg-white/5 border-white/15 hover:border-[#e8c98a] transition-all duration-300 hover:-translate-y-1 cursor-pointer group text-white">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl font-black group-hover:text-[#D5A021] transition-colors">
+                    <h3 className="text-xl font-black group-hover:text-[#e8c98a] transition-colors">
                       {region.name}
                     </h3>
                     <ShieldCheck size={18} className="text-emerald-400" />
                   </div>
                   <div className="flex items-baseline gap-3 my-3">
                     <div>
-                      <div className="text-[11px] text-gray-400">Direkt-Endpreis Ø</div>
-                      <div className="text-2xl font-black text-[#D5A021]">{region.avgDirectChf}</div>
+                      <div className="text-xs text-gray-400">Direkt-Endpreis Ø</div>
+                      <div className="text-2xl font-black text-[#e8c98a]">{region.avgDirectChf}</div>
                     </div>
                     <div className="border-l border-white/10 pl-3">
-                      <div className="text-[11px] text-gray-400">Drittportale Ø</div>
+                      <div className="text-xs text-gray-400">Drittportale Ø</div>
                       <div className="text-sm font-semibold text-gray-400 line-through">{region.avgPortalChf}</div>
                     </div>
                   </div>

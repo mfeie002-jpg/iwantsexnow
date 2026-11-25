@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Zug & Baar Diskret-Studios (ZG)",
+    "canton": "ZG",
+    "city": "Zug",
+    "url": "https://www.fgirl.ch/de/girls/zug/",
+    "defaultRate60": 350,
+    "enabled": true
+  },
+  {
+    "name": "Zürich City & Kreis 4/5 Studios (ZH)",
+    "canton": "ZH",
+    "city": "Zürich",
+    "url": "https://www.fgirl.ch/de/girls/zurich/",
+    "defaultRate60": 350,
+    "enabled": true
+  },
+  {
+    "name": "Luzern & Zentralschweiz Studios (LU)",
+    "canton": "LU",
+    "city": "Luzern",
+    "url": "https://www.fgirl.ch/de/girls/lucerne/",
+    "defaultRate60": 320,
+    "enabled": true
+  },
+  {
+    "name": "Baden, Spreitenbach & Aargau Studios (AG)",
+    "canton": "AG",
+    "city": "Baden",
+    "url": "https://www.fgirl.ch/de/girls/aargau/",
+    "defaultRate60": 300,
+    "enabled": true
+  },
+  {
+    "name": "Basel & Dreiländereck Studios (BS)",
+    "canton": "BS",
+    "city": "Basel",
+    "url": "https://www.fgirl.ch/de/girls/basel/",
+    "defaultRate60": 320,
+    "enabled": true
+  },
+  {
+    "name": "Genève & Lausanne High-Class Directory (GE/VD)",
+    "canton": "GE",
+    "city": "Genève",
+    "url": "https://www.fgirl.ch/fr/filles/geneve/",
+    "defaultRate60": 400,
+    "enabled": true
+  }
+]

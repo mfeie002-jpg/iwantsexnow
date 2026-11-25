@@ -134,7 +134,7 @@ export default function AccountSettings() {
               <div>
                 <span className="text-2xl font-bold tracking-tight">
                   <span className="text-white">iWant</span>
-                  <span className="text-[#D5A021]">Sex</span>
+                  <span className="text-[#e8c98a]">Sex</span>
                   <span className="text-white">Now</span>
                   <span className="text-gray-400 text-xl">.ch</span>
                 </span>

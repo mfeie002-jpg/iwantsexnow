@@ -39,31 +39,31 @@ export function AgeVerificationGate() {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-      <div className="max-w-md w-full rounded-2xl bg-[#090A0F] border border-[#C8A97E]/45 p-7 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.95)] text-center space-y-6">
+      <div className="max-w-md w-full rounded-2xl bg-[#150810] border border-[#e8c98a]/45 p-7 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.95)] text-center space-y-6">
         {/* Top Architectural Stencil-X Emblem */}
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 rounded-xl bg-[#0F1C2E] border border-[#C8A97E]/50 flex items-center justify-center shadow-lg mb-3">
-            <StencilSerifX color="#C8A97E" className="w-10 h-8" />
+          <div className="w-16 h-16 rounded-xl bg-[#150810] border border-[#e8c98a]/50 flex items-center justify-center shadow-lg mb-3">
+            <StencilSerifX color="#e8c98a" className="w-10 h-8" />
           </div>
-          <div className="text-[10px] uppercase tracking-[0.24em] text-[#C8A97E] font-semibold">
+          <div className="text-xs uppercase tracking-[0.24em] text-[#e8c98a] font-semibold">
             SWISS ESCORT INDEX & DIRECT BOOKING
           </div>
         </div>
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#11131C] border border-[#C8A97E]/30 text-[11px] font-semibold text-[#C8A97E]">
-          <ShieldCheck size={14} className="text-[#C8A97E]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#150810] border border-[#e8c98a]/30 text-xs font-semibold text-[#e8c98a]">
+          <ShieldCheck size={14} className="text-[#e8c98a]" />
           <span>SCHWEIZER ALTERS- & DISKRETIONS-CHECK (18+)</span>
         </div>
 
         {/* Title with exact lowercase serif brand wordmark */}
         <div className="space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#F8F6F0] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#fbf1ec] tracking-tight">
             Willkommen auf{" "}
             <span className="inline-flex items-baseline">
               <span>iwantse</span>
               <StencilSerifX
-                color="#C8A97E"
+                color="#e8c98a"
                 className="w-[21px] h-[17px] mx-[0.5px] translate-y-[1.5px]"
               />
               <span>now.ch</span>
@@ -75,15 +75,15 @@ export function AgeVerificationGate() {
         </div>
 
         {/* Checklist */}
-        <div className="p-4 rounded-xl bg-[#11131C] border border-white/10 text-left space-y-2.5 text-xs text-gray-300">
+        <div className="p-4 rounded-xl bg-[#150810] border border-white/10 text-left space-y-2.5 text-xs text-gray-300">
           <div className="flex items-center gap-2.5">
-            <span className="w-4 h-4 rounded-full bg-[#C8A97E]/20 border border-[#C8A97E] text-[#C8A97E] flex items-center justify-center text-[10px] font-bold shrink-0">
+            <span className="w-4 h-4 rounded-full bg-[#d6165f]/20 border border-[#e8c98a] text-[#e8c98a] flex items-center justify-center text-xs font-bold shrink-0">
               ✓
             </span>
             <span>Ich bestätige, dass ich mindestens <strong>18 Jahre alt</strong> bin.</span>
           </div>
           <div className="flex items-center gap-2.5">
-            <Lock size={14} className="text-[#C8A97E] shrink-0" />
+            <Lock size={14} className="text-[#e8c98a] shrink-0" />
             <span>Diskreter Sitzungs-Modus ohne externes Werbe-Tracking.</span>
           </div>
         </div>
@@ -93,7 +93,7 @@ export function AgeVerificationGate() {
           <button
             type="button"
             onClick={handleConfirm}
-            className="w-full py-3.5 rounded-xl bg-[#C8A97E] hover:bg-[#d8b98e] text-[#090A0F] font-bold text-sm tracking-wide transition cursor-pointer shadow-lg"
+            className="w-full py-3.5 rounded-xl bg-[#d6165f] hover:bg-[#d6165f] text-white font-bold text-sm tracking-wide transition cursor-pointer shadow-lg"
           >
             Ich bin 18+ · Plattform betreten
           </button>
@@ -106,14 +106,14 @@ export function AgeVerificationGate() {
         </div>
 
         {/* Footer Legal Links */}
-        <div className="pt-2 border-t border-white/10 flex items-center justify-center gap-4 text-[11px] text-gray-400">
-          <Link href="/privacy" className="hover:text-[#C8A97E] underline">
+        <div className="pt-2 border-t border-white/10 flex items-center justify-center gap-4 text-xs text-gray-400">
+          <Link href="/privacy" className="hover:text-[#e8c98a] underline">
             Datenschutz (CH-DSG)
           </Link>
-          <Link href="/terms" className="hover:text-[#C8A97E] underline">
+          <Link href="/terms" className="hover:text-[#e8c98a] underline">
             Nutzungsbedingungen
           </Link>
-          <Link href="/for-clients" className="hover:text-[#C8A97E] underline">
+          <Link href="/for-clients" className="hover:text-[#e8c98a] underline">
             So funktioniert&apos;s
           </Link>
         </div>

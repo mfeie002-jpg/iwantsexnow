@@ -30,10 +30,10 @@ const marketplaceCategories = [
 
 export function ServiceCategories() {
   return (
-    <section id="services" className="bg-[#09131E] py-20 border-b border-white/10">
+    <section id="services" className="bg-[#150810] py-20 border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="mx-auto mb-12 max-w-3xl text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#D5A021]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#e8c98a]">
             Transparente Kategorien & Richtpreise
           </span>
           <h2 className="mt-2 text-3xl font-black text-white md:text-5xl">
@@ -48,16 +48,16 @@ export function ServiceCategories() {
             <Link
               key={cat.id}
               href={`/search?category=${cat.id}`}
-              className="group flex flex-col justify-between rounded-2xl border border-white/15 bg-white/5 p-7 text-white transition-all hover:-translate-y-1 hover:border-[#C69C6D] hover:bg-white/10"
+              className="group flex flex-col justify-between rounded-2xl border border-white/15 bg-white/5 p-7 text-white transition-all hover:-translate-y-1 hover:border-[#e8c98a] hover:bg-white/10"
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-[#C69C6D]/20 border border-[#C69C6D]/40 px-3 py-1 text-xs font-bold text-[#D5A021]">
+                  <span className="rounded-full bg-[#d6165f]/20 border border-[#e8c98a]/40 px-3 py-1 text-xs font-bold text-[#e8c98a]">
                     {cat.badge}
                   </span>
                   <ShieldCheck size={18} className="text-emerald-400" />
                 </div>
-                <h3 className="mt-5 text-2xl font-black group-hover:text-[#D5A021] transition-colors">
+                <h3 className="mt-5 text-2xl font-black group-hover:text-[#e8c98a] transition-colors">
                   {cat.title}
                 </h3>
                 <div className="mt-2 text-lg font-bold text-emerald-400">
@@ -69,7 +69,7 @@ export function ServiceCategories() {
               </div>
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
                 <span>{cat.stats}</span>
-                <span className="font-bold text-white group-hover:text-[#D5A021] flex items-center gap-1">
+                <span className="font-bold text-white group-hover:text-[#e8c98a] flex items-center gap-1">
                   Vergleichen <ArrowRight size={14} />
                 </span>
               </div>

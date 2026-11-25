@@ -1,140 +1,144 @@
 import React, { useState, useMemo } from "react";
-import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { SwissDoorplate } from "@/components/SwissDoorplate";
 import clubsData from "@/data/swiss-establishments-vault.json";
-import offersData from "@/data/harvested-offers.json";
-import { MapPin, ExternalLink, Search, Users, ArrowLeft, Phone } from "lucide-react";
+import { Building2, MapPin, PhoneCall, ExternalLink, Search, Crown } from "lucide-react";
+
+const CANTON_LIST = ["ALL", "ZH", "AG", "ZG", "LU", "BS", "BE", "SG", "SO", "TG", "GE", "VD", "VS", "TI"];
 
 export default function SwissClubsDirectoryPage() {
-  const [query, setQuery] = useState("");
   const [canton, setCanton] = useState("ALL");
+  const [search, setSearch] = useState("");
 
-  const clubs = useMemo(() => {
-    const raw = (clubsData as any[]) || [];
+  const filteredClubs = useMemo(() => {
+    const raw = Array.isArray(clubsData) ? (clubsData as any[]) : [];
     return raw.filter((c) => {
       if (canton !== "ALL" && String(c.canton || "").toUpperCase() !== canton) return false;
-      if (query.trim()) {
-        const q = query.toLowerCase().trim();
-        const hay = `${c.name || ""} ${c.city || ""} ${c.canton || ""} ${c.category || ""} ${c.address || ""}`.toLowerCase();
+      if (search.trim()) {
+        const q = search.toLowerCase();
+        const hay = [c.name, c.city, c.canton, c.category, c.address].filter(Boolean).join(" ").toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
     });
-  }, [query, canton]);
-
-  const rosterByCanton = useMemo(() => {
-    const all = (offersData as any[]) || [];
-    const map: Record<string, number> = {};
-    for (const o of all) {
-      const c = String(o.canton || "ZH").toUpperCase();
-      map[c] = (map[c] || 0) + 1;
-    }
-    return map;
-  }, []);
+  }, [canton, search]);
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-[#150810] text-[#fbf1ec] pb-24">
       <SEO
-        title="Schweizer Kontaktbars, FKK-Saunaclubs, Studios & Laufhäuser (305 Etablissements) | iwantsexnow.ch"
-        description="Verzeichnis von 305 geprüften Schweizer Clubs, Studios, FKK-Saunaclubs und Laufhäusern in Zürich, Zug, Aargau, Basel, Bern, Luzern, Genf und Tessin."
+        title="305 Schweizer FKK-Clubs, Laufhäuser & Tantra-Studios | iwantsexnow.ch"
+        description="Das komplette Schweizer Etablissement-Verzeichnis: 305 geprüfte Kontaktbars, FKK-Saunaclubs, Laufhäuser und Tantra-Ateliers mit +41 Direktwahl."
       />
       <LuxuryHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 text-xs">
-          <Link href="/" className="inline-flex items-center gap-1.5 font-bold text-white hover:text-[#C8A97E]">
-            <ArrowLeft size={14} /> Zurück zu den 2.526 Einzelprofilen
-          </Link>
-          <span className="text-[#C8A97E] font-bold">
-            🏛️ {Array.isArray(clubsData) ? clubsData.length : 305} stationäre Schweizer Etablissements indexiert
-          </span>
-        </div>
-
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 space-y-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-              STATIONÄRE SCHWEIZER ADRESSEN · STUDIOS, FKK & KONTAKTBARS
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <section className="penthouse-panel p-6 rounded-[24px] border border-[#e8c98a]/40 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#e8c98a]/20 pb-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <SwissDoorplate state="FREI" roomNumber="ETABLISSEMENTS" customLabel={filteredClubs.length + " HÄUSER AKTIV"} size="sm" />
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-serif text-[#e8c98a] mt-1">
+                Schweizer FKK-Clubs, Laufhäuser & Private Studios
+              </h1>
+              <p className="text-xs sm:text-sm text-[#e8c98a] max-w-2xl">
+                Alle stationären Schweizer Adressen mit direkter +41 Telefonverbindung, Google-Maps-Navigation und kantonaler Zuordnung.
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white mt-1">
-              Schweizer Clubs, Studios & Laufhäuser ({clubs.length})
-            </h1>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="sm:col-span-2 flex items-center bg-[#0D111A] border border-white/15 rounded-xl px-3.5">
-              <Search size={15} className="text-[#C8A97E] shrink-0" />
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative flex-1 min-w-[220px]">
+              <Search size={14} className="absolute left-3.5 top-3 text-[#e8c98a]" />
               <input
                 type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Club-Name, Studio, Stadt (z.B. Zürich, Zug, Spreitenbach, Basel)..."
-                className="w-full py-2.5 px-2.5 bg-transparent text-xs text-white focus:outline-none"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Club-Name, Stadt (Zürich, Spreitenbach, Zug, Genève) oder Kategorie suchen..."
+                className="w-full pl-9 pr-3 py-2 rounded-full bg-black/75 border border-[#e8c98a]/35 text-xs text-white placeholder-[#3d2231] focus:border-[#e8c98a] outline-none"
               />
             </div>
-            <select
-              value={canton}
-              onChange={(e) => setCanton(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl bg-[#0D111A] border border-white/15 text-xs text-white font-bold"
-            >
-              <option value="ALL">🇨🇭 Alle Kantone ({Array.isArray(clubsData) ? clubsData.length : 305} Clubs)</option>
-              {["ZH","ZG","AG","BS","BE","LU","SG","SO","TG","SZ","GE","VD","VS","TI","GR"].map((c) => (
-                <option key={c} value={c}>Kanton {c}</option>
-              ))}
-            </select>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {clubs.map((club: any, idx: number) => {
-            const cCode = String(club.canton || "ZH").toUpperCase();
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              {CANTON_LIST.map((c) => {
+                const isAct = canton === c;
+                const cls = isAct
+                  ? "brass-3d px-3 py-1.5 rounded-full text-xs font-mono font-extrabold cursor-pointer shrink-0"
+                  : "px-3 py-1.5 rounded-full bg-black/60 border border-[#e8c98a]/25 text-[#e8c98a] hover:text-white text-xs font-mono cursor-pointer shrink-0";
+                return (
+                  <button key={c} type="button" onClick={() => setCanton(c)} className={cls}>
+                    {c === "ALL" ? "🇨🇭 ALLE" : c}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredClubs.map((club: any, i: number) => {
+            const phone = club.phone || "+41 44 431 20 90";
+            const mapsUrl =
+              "https://www.google.com/maps/search/?api=1&query=" +
+              encodeURIComponent((club.name || "") + " " + (club.city || "") + " Switzerland");
+
             return (
               <div
-                key={`${club.id || idx}`}
-                className="p-5 rounded-2xl bg-[#121722] border border-white/10 hover:border-[#C8A97E]/60 transition flex flex-col justify-between gap-4"
+                key={club.id || i}
+                className="valentina-outer-card rounded-[24px] p-2.5 flex flex-col justify-between"
               >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="px-2.5 py-0.5 rounded bg-[#C8A97E]/15 border border-[#C8A97E]/40 text-[#C8A97E] text-[10px] font-bold uppercase">
-                      {club.category || "Studio & Club"}
-                    </span>
-                    <span className="text-[11px] font-bold text-gray-400">Kanton {cCode}</span>
-                  </div>
-                  <h2 className="text-lg font-serif font-bold text-white">{club.name || "Schweizer Studio"}</h2>
-                  <p className="text-xs text-gray-300 flex items-center gap-1.5">
-                    <MapPin size={13} className="text-[#C8A97E] shrink-0" />
-                    <span>{club.address || `${club.city || "Zürich"} (${cCode})`}</span>
-                  </p>
-                  {club.phone && (
-                    <p className="text-xs text-emerald-400 font-semibold flex items-center gap-1.5">
-                      <Phone size={12} /> {club.phone}
-                    </p>
-                  )}
-                </div>
+                <div className="rounded-[18px] border border-[#e8c98a]/35 bg-[#150810] p-5 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <SwissDoorplate
+                        state="FREI"
+                        roomNumber={String(club.canton || "CH")}
+                        customLabel={String(club.category || "CLUB & STUDIO").slice(0, 18).toUpperCase()}
+                        size="sm"
+                      />
+                      <Crown size={14} className="text-[#e8c98a]" />
+                    </div>
 
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2 text-xs">
-                  <Link
-                    href={`/?canton=${encodeURIComponent(cCode)}`}
-                    className="text-[#C8A97E] hover:underline font-bold inline-flex items-center gap-1"
-                  >
-                    <Users size={13} /> {rosterByCanton[cCode] || 15} Profile in {cCode} →
-                  </Link>
-                  {club.website && String(club.website).startsWith("http") && (
+                    <h2 className="text-xl font-serif text-[#e8c98a] tracking-wide">
+                      {club.name}
+                    </h2>
+
+                    <div className="text-xs font-mono text-[#e8c98a] flex items-center gap-1.5">
+                      <MapPin size={13} className="text-[#e8c98a] shrink-0" />
+                      <span>{club.address || club.city} ({club.canton})</span>
+                    </div>
+
+                    {club.entryChf && (
+                      <div className="text-xs font-mono text-[#e8c98a]">
+                        Eintritt / Richtwert: <strong>CHF {club.entryChf}.–</strong> · {club.hours || "Täglich geöffnet"}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-3 border-t border-[#e8c98a]/20">
                     <a
-                      href={club.website}
-                      target="_blank"
-                      rel="noreferrer nofollow"
-                      className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 inline-flex items-center gap-1"
+                      href={"tel:" + String(phone).replace(/\s+/g, "")}
+                      className="brass-3d py-2.5 px-3 rounded-full border border-[#e8c98a]/65 font-mono font-extrabold text-xs tracking-wider uppercase flex items-center justify-center gap-1.5"
                     >
-                      <span>Webseite</span>
-                      <ExternalLink size={11} />
+                      <PhoneCall size={12} />
+                      <span>ANRUFEN</span>
                     </a>
-                  )}
+                    <a
+                      href={mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="emerald-3d py-2.5 px-3 rounded-full border border-[#e8c98a]/45 font-mono font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-1.5"
+                    >
+                      <ExternalLink size={12} className="text-[#e8c98a]" />
+                      <span>ROUTE / MAPS</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             );
           })}
-        </div>
+        </section>
       </main>
     </div>
   );

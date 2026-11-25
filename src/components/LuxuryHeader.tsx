@@ -1,226 +1,151 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { StencilSerifX } from "@/components/BrandLogo";
-import { ChevronDown, Menu, X, Sparkles, Building2, Scale, UserCheck, Globe } from "lucide-react";
-
-const PROVIDER_MENU = [
-  { href: "/advertise", title: "Für Anbieter: Übersicht & Vorteile", sub: "Kostenlose Profilkontrolle, Statistik & Konditionen" },
-  { href: "/create-post", title: "Bestehendes Profil übernehmen", sub: "Eintrag bestätigen oder neues Profil anlegen" },
-  { href: "/creator-dashboard", title: "Anbieter-Cockpit öffnen", sub: "Angaben pflegen, Verfügbarkeit bestätigen & pausieren" },
-  { href: "/verify", title: "Identitätsprüfung beantragen", sub: "Dokumentiertes Prüfverfahren für Ihr Profil" },
-  { href: "/report", title: "Profil melden oder entfernen", sub: "Kostenloser Widerspruch ohne Registrierungspflicht" },
-];
-
-const LANGUAGE_HUBS = [
-  { code: "DE", label: "Deutsch (Schweiz)", href: "/" },
-  { code: "FR", label: "Français (Genève & Vaud)", href: "/escort-geneva" },
-  { code: "IT", label: "Italiano (Lugano & Ticino)", href: "/escort-lugano" },
-];
+import { BrandMark } from "@/components/visuals";
+import { LANGS, usePrefs } from "@/lib/prefs";
 
 export function LuxuryHeader() {
   const router = useRouter();
-  const [providerOpen, setProviderOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { lang, setLang, discreet, setDiscreet, t } = usePrefs();
+  const [favCount, setFavCount] = useState<number>(0);
 
-  const isActive = (path: string) => router.pathname === path || router.pathname.startsWith(path + "/");
-  const currentLang =
-    router.pathname.includes("geneva") || router.pathname.includes("lausanne") || router.asPath.includes("geneve")
-      ? "FR"
-      : router.pathname.includes("lugano") || router.asPath.includes("lugano")
-      ? "IT"
-      : "DE";
+  useEffect(() => {
+    const syncFavs = () => {
+      try {
+        const raw = localStorage.getItem("ch_favorite_profiles");
+        const arr = raw ? JSON.parse(raw) : [];
+        setFavCount(Array.isArray(arr) ? arr.length : 0);
+      } catch {
+        setFavCount(0);
+      }
+    };
+
+    syncFavs();
+    window.addEventListener("storage", syncFavs);
+    window.addEventListener("ch-favorites-updated", syncFavs);
+
+    return () => {
+      window.removeEventListener("storage", syncFavs);
+      window.removeEventListener("ch-favorites-updated", syncFavs);
+    };
+  }, []);
+
+  const items = [
+    { href: "/", label: t("discover"), active: router.pathname === "/" },
+    { href: "/#staedte", label: t("cities"), active: false },
+    { href: "/favorites", label: t("saved"), active: router.pathname === "/favorites", count: favCount },
+  ];
+
+  const linkClass = (active: boolean) =>
+    "inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 text-[16px] font-semibold transition " +
+    (active ? "bg-[#2b1420] text-[#fbf1ec]" : "text-[#fbf1ec] hover:bg-[#2b1420]");
 
   return (
-    <>
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#12151C]/95 backdrop-blur-xl text-white">
-        <div className="max-w-[1380px] mx-auto px-6 sm:px-10 h-14 sm:h-16 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-              <div className="w-9 h-9 rounded-lg bg-[#1A1E29] border border-[#C6A574]/50 flex items-center justify-center">
-                <StencilSerifX color="#C6A574" className="w-5 h-4" />
-              </div>
+    <header className="sticky top-0 z-40 border-b border-[#3d2231] bg-[#150810]/90 backdrop-blur-2xl">
+      <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
+        <Link
+          href="/"
+          className="group flex min-w-0 items-center gap-3"
+          aria-label="iWantSexNow.ch Startseite"
+        >
+          <BrandMark size={38} className="shrink-0" />
+          <span className="truncate font-serif text-[26px] leading-none text-[#fbf1ec] sm:text-[30px]">
+            iWantSexNow<span className="text-[#e8c98a]">.ch</span>
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptmenü">
+          {items.map((item) => (
+            <Link key={item.label} href={item.href} className={linkClass(item.active)}>
+              {item.label}
+              {typeof item.count === "number" && item.count > 0 && (
+                <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#e8c98a] px-1.5 text-sm font-bold text-[#2a1408]">
+                  {item.count}
+                </span>
+              )}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex shrink-0 items-center gap-2">
+          <details className="group relative">
+            <summary
+              className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 rounded-full border border-[#947683] px-4 text-[15px] font-semibold text-[#fbf1ec] transition hover:border-[#e8c98a] hover:text-[#e8c98a]"
+              aria-label={t("menu")}
+            >
+              {lang.toUpperCase()}
+              <span className="hidden sm:inline">·</span>
+              <span className="hidden sm:inline">{t("menu")}</span>
+            </summary>
+            <div className="absolute right-0 top-14 z-50 grid w-80 gap-5 rounded-[28px] border border-[#3d2231] bg-[#22101a] p-6 shadow-[0_28px_60px_rgba(0,0,0,0.5)]">
               <div>
-                <div className="text-lg sm:text-xl font-serif font-bold tracking-tight text-white flex items-baseline">
-                  <span>iwantse</span>
-                  <StencilSerifX color="#C6A574" className="w-[15px] h-[13px] mx-[0.5px] translate-y-[1px]" />
-                  <span>now.ch</span>
-                </div>
-                <div className="text-[10px] tracking-[0.14em] uppercase text-gray-400 leading-none mt-0.5">
-                  Schweizer Profilverzeichnis
+                <div className="mb-3 text-[15px] font-semibold text-[#cdb5be]">{t("language")}</div>
+                <div className="flex gap-2">
+                  {LANGS.map((l) => (
+                    <button
+                      key={l.code}
+                      type="button"
+                      onClick={() => setLang(l.code)}
+                      aria-pressed={lang === l.code}
+                      className={
+                        "min-h-[44px] flex-1 cursor-pointer rounded-full border text-[15px] font-semibold transition " +
+                        (lang === l.code
+                          ? "border-[#e8c98a] bg-[#e8c98a] text-[#2a1408]"
+                          : "border-[#947683] text-[#fbf1ec] hover:border-[#e8c98a]")
+                      }
+                    >
+                      {l.label}
+                    </button>
+                  ))}
                 </div>
               </div>
-            </Link>
 
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Hauptnavigation">
-              <Link
-                href="/"
-                className={
-                  router.pathname === "/" || router.pathname === "/search"
-                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
-                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
-                }
-              >
-                Profile
-              </Link>
-              <Link
-                href="/clubs"
-                className={
-                  isActive("/rankings")
-                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
-                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
-                }
-              >
-                Clubs & Studios
-              </Link>
-              <Link
-                href="/reviews"
-                className={
-                  isActive("/reviews")
-                    ? "py-5 border-b-2 transition border-[#C6A574] text-white font-semibold"
-                    : "py-5 border-b-2 transition border-transparent text-gray-300 hover:text-white"
-                }
-              >
-                Portalvergleich
-              </Link>
-            </nav>
-          </div>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setDiscreet(!discreet)}
+                  aria-pressed={discreet}
+                  className="flex w-full cursor-pointer items-center justify-between gap-4 text-left"
+                >
+                  <span>
+                    <span className="block text-[16px] font-semibold text-[#fbf1ec]">{t("discreet")}</span>
+                    <span className="mt-1 block text-[14px] leading-snug text-[#cdb5be]">
+                      {t("discreetHint")}
+                    </span>
+                  </span>
+                  <span
+                    className={
+                      "relative h-8 w-14 shrink-0 rounded-full transition " +
+                      (discreet ? "bg-[#5fd3a5]" : "bg-[#947683]")
+                    }
+                  >
+                    <span
+                      className={
+                        "absolute top-1 h-6 w-6 rounded-full bg-white transition-all " +
+                        (discreet ? "left-7" : "left-1")
+                      }
+                    />
+                  </span>
+                </button>
+              </div>
 
-          <div className="flex items-center gap-2.5">
-            <div
-              className="relative hidden sm:block"
-              onMouseEnter={() => setProviderOpen(true)}
-              onMouseLeave={() => setProviderOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setProviderOpen(!providerOpen)}
-                className="px-3.5 py-2 rounded-lg border border-[#C6A574]/50 bg-[#C6A574]/10 hover:bg-[#C6A574]/20 text-[#E5C99B] text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
-              >
-                <span>Für Anbieter</span>
-                <ChevronDown size={13} className={providerOpen ? "transition-transform rotate-180" : "transition-transform"} />
-              </button>
-
-              {providerOpen && (
-                <div className="absolute right-0 top-full pt-1.5 w-80 z-50">
-                  <div className="rounded-xl border border-white/15 bg-[#171A22] p-2 shadow-2xl divide-y divide-white/5">
-                    {PROVIDER_MENU.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setProviderOpen(false)}
-                        className="block px-3.5 py-2.5 rounded-lg hover:bg-white/5 transition"
-                      >
-                        <div className="text-xs font-bold text-white hover:text-[#C6A574]">{item.title}</div>
-                        <div className="text-[11px] text-gray-400 mt-0.5">{item.sub}</div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <div className="grid gap-1 border-t border-[#3d2231] pt-4 text-[15px]">
+                <Link href="/clubs" className="footer-link py-1">Clubs und Studios</Link>
+                <Link href="/how-it-works" className="footer-link py-1">So funktioniert&apos;s</Link>
+                <Link href="/safety" className="footer-link py-1">Sicherheit</Link>
+                <Link href="/contact" className="footer-link py-1">Kontakt</Link>
+              </div>
             </div>
+          </details>
 
-            <Link
-              href="/login"
-              className="px-3.5 py-2 rounded-lg border border-white/15 hover:border-white/30 bg-white/5 text-xs font-semibold text-gray-200 transition"
-            >
-              Login
-            </Link>
-
-            <div
-              className="relative hidden sm:block"
-              onMouseEnter={() => setLangOpen(true)}
-              onMouseLeave={() => setLangOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setLangOpen(!langOpen)}
-                className="px-2.5 py-2 rounded-lg border border-white/15 hover:border-white/30 bg-white/5 text-xs font-semibold text-gray-200 flex items-center gap-1 cursor-pointer"
-              >
-                <Globe size={13} className="text-[#C6A574]" />
-                <span>{currentLang}</span>
-                <ChevronDown size={12} />
-              </button>
-
-              {langOpen && (
-                <div className="absolute right-0 top-full pt-1.5 w-56 z-50">
-                  <div className="rounded-xl border border-white/15 bg-[#171A22] p-1.5 shadow-2xl space-y-0.5">
-                    {LANGUAGE_HUBS.map((l) => (
-                      <Link
-                        key={l.code}
-                        href={l.href}
-                        onClick={() => setLangOpen(false)}
-                        className={
-                          currentLang === l.code
-                            ? "block px-3 py-2 rounded-lg text-xs transition bg-[#C6A574] text-[#12151C] font-bold"
-                            : "block px-3 py-2 rounded-lg text-xs font-semibold transition text-gray-200 hover:bg-white/5"
-                        }
-                      >
-                        {l.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Menü"
-              className="md:hidden p-2 rounded-lg border border-white/15 bg-white/5 text-white"
-            >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
+          <Link
+            href="/advertise"
+            className="ghost-button inline-flex min-h-[44px] items-center rounded-full px-5 text-[15px] font-semibold"
+          >
+            {t("advertise")}
+          </Link>
         </div>
-
-        {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 bg-[#12151C] px-4 py-4 space-y-3 text-sm">
-            <div className="flex flex-col space-y-2">
-              <Link href="/" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-white border-b border-white/5">
-                Profile entdecken (DE)
-              </Link>
-              <Link href="/escort-geneva" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Français · Genève & Vaud (FR)
-              </Link>
-              <Link href="/escort-lugano" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Italiano · Lugano & Ticino (IT)
-              </Link>
-              <Link href="/clubs" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Clubs & Studios
-              </Link>
-              <Link href="/reviews" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-gray-200 border-b border-white/5">
-                Portalvergleich
-              </Link>
-              <Link href="/advertise" onClick={() => setMobileOpen(false)} className="py-2 font-semibold text-[#C6A574]">
-                Für Anbieter (Profil kostenlos verwalten)
-              </Link>
-            </div>
-          </div>
-        )}
-      </header>
-
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/15 bg-[#12151C]/95 backdrop-blur-xl px-1 pt-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))] grid grid-cols-4 gap-1 text-[10px] font-semibold text-gray-400">
-        <Link href="/" className={router.pathname === "/" ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <Sparkles size={16} />
-          <span className="mt-0.5">Profile</span>
-        </Link>
-        <Link href="/clubs" className={isActive("/rankings") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <Building2 size={16} />
-          <span className="mt-0.5">Clubs</span>
-        </Link>
-        <Link href="/reviews" className={isActive("/reviews") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <Scale size={16} />
-          <span className="mt-0.5">Vergleich</span>
-        </Link>
-        <Link href="/advertise" className={isActive("/advertise") ? "flex flex-col items-center py-1 text-[#C6A574] font-bold" : "flex flex-col items-center py-1"}>
-          <UserCheck size={16} />
-          <span className="mt-0.5">Für Anbieter</span>
-        </Link>
       </div>
-    </>
+    </header>
   );
 }
-export default LuxuryHeader;
