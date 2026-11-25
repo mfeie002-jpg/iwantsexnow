@@ -1,952 +1,238 @@
-import React, { useEffect, useMemo, useState } from "react";
-import type { GetServerSideProps } from "next";
+import React, { useMemo } from "react";
+import Head from "next/head";
 import Link from "next/link";
-import { SEO } from "@/components/SEO";
-import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
-import offersData from "@/data/harvested-offers.json";
-import {
-  MapPin,
-  Lock,
-  Heart,
-  Scale,
-  ArrowLeft,
-  ArrowRight,
-  ShieldCheck,
-  Sparkles,
-  Phone,
-  MessageCircle,
-  ExternalLink,
-  Video,
-} from "lucide-react";
+import { useRouter } from "next/router";
+import LuxuryHeader from "@/components/LuxuryHeader";
+import MobileBottomNav from "@/components/MobileBottomNav";
+import PostcardProfileCard, { cleanPostcardName, getPostcardImage } from "@/components/PostcardProfileCard";
+import harvestedData from "@/data/harvested-offers.json";
 
-const FALLBACK_IMAGE = "/images/escort-portrait-1.jpg";
+export default function PostcardProfileDetailPage() {
+  const router = useRouter();
+  const rawId = typeof router.query.id === "string" ? decodeURIComponent(router.query.id) : "";
 
-function normalizeSwissPhone(raw: any): string | null {
-  const digits = String(raw || "").replace(/\D/g, "");
-  if (!digits) return null;
+  const allOffers: any[] = useMemo(() => {
+    const d: any = harvestedData as any;
+    return Array.isArray(d) ? d : d?.offers || d?.listings || [];
+  }, []);
 
-  let local = "";
-  if (digits.startsWith("41") && digits.length === 11) {
-    local = "0" + digits.slice(2);
-  } else if (digits.startsWith("0041") && digits.length === 13) {
-    local = "0" + digits.slice(4);
-  } else if (digits.startsWith("0") && digits.length === 10) {
-    local = digits;
-  } else {
-    return null;
-  }
-
-  if (/(\d)\1{5,}|123456/.test(local)) return null;
-
-  return (
-    "+41 " +
-    local.slice(1, 3) +
-    " " +
-    local.slice(3, 6) +
-    " " +
-    local.slice(6, 8) +
-    " " +
-    local.slice(8, 10)
-  );
-}
-
-function suiteNumber(value: string) {
-  let score = 0;
-  for (let index = 0; index < value.length; index += 1) {
-    score = (score + value.charCodeAt(index) * (index + 3)) % 799;
-  }
-  return String(score + 101);
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const rawId = String(ctx.params?.id || "").trim();
-  const allOffers = (offersData as any[]) || [];
-
-  const found =
-    allOffers.find(
-      (o) => String(o.id || o.dedupClusterId) === rawId
-    ) ||
-    allOffers.find(
-      (o) =>
-        String(o.id || o.dedupClusterId || "").toLowerCase() === rawId.toLowerCase()
+  const { profile, profileIdx } = useMemo(() => {
+    if (!allOffers.length) return { profile: null, profileIdx: 0 };
+    const idx = allOffers.findIndex(
+      (o, i) =>
+        String(o?.id || "") === rawId ||
+        String(o?.dedupClusterId || "") === rawId ||
+        `ch-${i}` === rawId ||
+        String(i) === rawId
     );
+    return idx >= 0
+      ? { profile: allOffers[idx], profileIdx: idx }
+      : { profile: allOffers[0], profileIdx: 0 };
+  }, [allOffers, rawId]);
 
-  if (!found) {
-    return { notFound: true };
+  const similarOffers = useMemo(() => {
+    if (!profile) return [];
+    const sameCity = allOffers.filter(
+      (o) => o !== profile && String(o?.canton || "") === String(profile?.canton || "")
+    );
+    return (sameCity.length >= 4 ? sameCity : allOffers.filter((o) => o !== profile)).slice(0, 4);
+  }, [allOffers, profile]);
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-[#FFF8F6] text-[#1E2433]">
+        <LuxuryHeader />
+        <main className="max-w-4xl mx-auto px-4 py-20 text-center">
+          <h1 className="text-3xl font-black">Profil wird geladen…</h1>
+          <Link href="/" className="inline-block mt-6 px-6 py-3 rounded-full bg-[#E11D48] text-white font-bold border-2 border-[#1E2433] shadow-[0_4px_0_#1E2433] no-underline">
+            ← Zurück zur Übersicht
+          </Link>
+        </main>
+        <MobileBottomNav />
+      </div>
+    );
   }
 
-  const pid = String(
-    found.id || found.dedupClusterId || rawId
-  );
-  const r60 = Math.max(
-    100,
-    Math.min(
-      1200,
-      Number(found.advertisedBaseChf) || 350
-    )
-  );
-  const r30 = Math.max(
-    80,
-    Math.min(
-      800,
-      Number(found.rate30Chf) ||
-        Math.round((r60 * 0.6) / 10) * 10
-    )
-  );
-  const cleanPhone = normalizeSwissPhone(
-    found.rawPhone || found.phone
-  );
+  const displayName = cleanPostcardName(profile.rawName || profile.name || profile.title, profileIdx);
+  const city = profile.city || "Zürich";
+  const canton = profile.canton || "ZH";
+  const rate60 = Math.max(150, Math.min(1800, Number(profile.advertisedBaseChf || profile.rate60Chf || profile.priceChf) || 300));
+  const rate30 = Math.max(100, Number(profile.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10);
+  const { imgSrc, fallbackImg } = getPostcardImage(profile, profileIdx);
 
-  const related = allOffers
-    .filter(
-      (o) =>
-        (o.id || o.dedupClusterId) !== pid &&
-        o.canton === found.canton
-    )
-    .slice(0, 4)
-    .map((o) => ({
-      id: o.id || o.dedupClusterId,
-      rawName: o.rawName || "Verifiziertes Profil",
-      city: o.city || "Zürich",
-      canton: o.canton || "ZH",
-      rate60Chf: Math.max(
-        100,
-        Math.min(
-          1200,
-          Number(o.advertisedBaseChf) || 350
-        )
-      ),
-      thumbnail: o.thumbnail || FALLBACK_IMAGE,
-      age: Number(o.age) || 25,
-    }));
-
-  return {
-    props: {
-      profile: {
-        ...found,
-        id: pid,
-        rawName:
-          found.rawName || "Verifiziertes Schweizer Profil",
-        city: found.city || "Zug",
-        canton: found.canton || "ZG",
-        rate60Chf: r60,
-        rate30Chf: r30,
-        cleanPhone,
-        thumbnail: found.thumbnail || FALLBACK_IMAGE,
-        age: Number(found.age) || 25,
-        heightCm: Number(found.heightCm) || 168,
-        cupSize: found.cupSize || "C",
-        hairColor: found.hairColor || "Brünett",
-        includedTags: Array.isArray(found.includedTags)
-          ? found.includedTags
-          : [
-              "Direktkontakt",
-              "Diskreter Empfang",
-              "Girlfriend Experience",
-            ],
-      },
-      relatedProfiles: related,
-    },
-  };
-};
-
-export default function ProfileDetailPage({
-  profile,
-  relatedProfiles,
-}: any) {
-  const [liveState, setLiveState] = useState<any>({});
-  const [isFav, setIsFav] = useState(false);
-  const [vaultUnlocked, setVaultUnlocked] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(0);
-
-  useEffect(() => {
-    fetch("/api/vault/metrics")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d?.states && d.states[profile.id]) {
-          setLiveState(d.states[profile.id]);
-        }
-      })
-      .catch(() => {});
-
-    try {
-      const favs = JSON.parse(
-        localStorage.getItem("ch_favorite_profiles") || "[]"
-      );
-      setIsFav(
-        Array.isArray(favs) && favs.includes(profile.id)
-      );
-
-      const unlocked = JSON.parse(
-        localStorage.getItem("ch_unlocked_vaults") || "[]"
-      );
-      setVaultUnlocked(
-        Array.isArray(unlocked) && unlocked.includes(profile.id)
-      );
-    } catch {}
-
-    setSelectedPhoto(0);
-  }, [profile.id]);
-
-  const toggleFav = () => {
-    try {
-      const favs = JSON.parse(
-        localStorage.getItem("ch_favorite_profiles") || "[]"
-      );
-      const list = Array.isArray(favs) ? favs : [];
-      const next = list.includes(profile.id)
-        ? list.filter((x: string) => x !== profile.id)
-        : [profile.id, ...list];
-
-      localStorage.setItem(
-        "ch_favorite_profiles",
-        JSON.stringify(next)
-      );
-      setIsFav(next.includes(profile.id));
-      window.dispatchEvent(new Event("ch-favorites-updated"));
-    } catch {}
-  };
-
-  const rate60 = Math.max(
-    100,
-    Math.min(
-      1200,
-      Number(liveState.rate60Chf || profile.rate60Chf) || 350
-    )
-  );
-  const rate30 = Math.max(
-    80,
-    Math.min(
-      800,
-      Number(liveState.rate30Chf || profile.rate30Chf) ||
-        Math.round((rate60 * 0.6) / 10) * 10
-    )
-  );
-  const rate120 = Math.round((rate60 * 1.85) / 10) * 10;
-  const cleanPhone = normalizeSwissPhone(
-    liveState.phoneDisplay ||
-      profile.cleanPhone ||
-      profile.rawPhone
-  );
-  const isAvailable4h = Boolean(
-    liveState.availabilityConfirmed ||
-      profile.availabilityConfirmed
-  );
-  const isVerified = Boolean(
-    liveState.identityVerified || profile.identityVerified
-  );
-  const vaultPriceChf = Number(
-    liveState.vaultPriceChf || 29
-  );
-
-  const galleryPhotos: string[] = useMemo(() => {
-    const custom: string[] = Array.isArray(
-      liveState.customPhotos
-    )
-      ? liveState.customPhotos.filter(
-          (photo: any) => typeof photo === "string"
-        )
-      : [];
-
-    const base: string[] = [
-      profile.thumbnail || FALLBACK_IMAGE,
-      ...custom,
-      "/images/escort-portrait-2.jpg",
-      "/images/escort-portrait-3.jpg",
-    ];
-
-    return Array.from(new Set(base.filter(Boolean))).slice(0, 6);
-  }, [profile.thumbnail, liveState.customPhotos]);
-
-  const safePhotoIndex = Math.min(
-    selectedPhoto,
-    Math.max(0, galleryPhotos.length - 1)
-  );
-  const mainPhoto =
-    galleryPhotos[safePhotoIndex] || FALLBACK_IMAGE;
-
-  const sourceRows = useMemo(() => {
-    const collections = [
-      profile.sourceComparisons,
-      profile.portalSources,
-      profile.sources,
-    ];
-    const collection = collections.find((entry) =>
-      Array.isArray(entry)
-    );
-
-    const rows = Array.isArray(collection)
-      ? collection.map((source: any, index: number) => {
-          if (typeof source === "string") {
-            return {
-              id: "source-" + index,
-              name: source,
-              rate: null,
-              url: "",
-              status: "Indexquelle",
-            };
-          }
-
-          const numericRate = Number(
-            source?.rate60Chf ||
-              source?.advertisedBaseChf ||
-              source?.price60 ||
-              source?.price
-          );
-
-          return {
-            id: String(source?.id || source?.url || index),
-            name: String(
-              source?.sourcePortal ||
-                source?.portal ||
-                source?.name ||
-                "Portal " + (index + 1)
-            ),
-            rate:
-              Number.isFinite(numericRate) && numericRate > 0
-                ? numericRate
-                : null,
-            url: String(
-              source?.sourceUrl ||
-                source?.originalUrl ||
-                source?.url ||
-                ""
-            ),
-            status: String(
-              source?.status || "Übermittelter Quelleintrag"
-            ),
-          };
-        })
-      : [];
-
-    if (rows.length === 0) {
-      rows.push({
-        id: "current-index",
-        name: String(
-          profile.sourcePortal || "CH-Direktindex"
-        ),
-        rate: rate60,
-        url: String(
-          profile.sourceUrl || profile.originalUrl || ""
-        ),
-        status: "Aktuell harmonisierter Indexeintrag",
-      });
+  const galleryList: string[] = [];
+  if (Array.isArray(profile.galleryUrls)) {
+    for (const u of profile.galleryUrls) {
+      if (typeof u === "string" && u.startsWith("http") && !u.includes("placeholder")) {
+        galleryList.push(u.trim().replace(/[?&]iwsn_clean=1.*$/i, ""));
+      }
     }
+  }
 
-    return rows.slice(0, 6);
-  }, [profile, rate60]);
-
-  const checkoutHref =
-    "/checkout?profileId=" +
-    encodeURIComponent(profile.id) +
-    "&amount=" +
-    vaultPriceChf;
-  const previewHref =
-    "/fantasy-preview?id=" + encodeURIComponent(profile.id);
-  const cityHref =
-    "/orte/" +
-    String(profile.city || "zug").toLowerCase();
-  const phoneHref = cleanPhone
-    ? "tel:" + cleanPhone.replace(/\s+/g, "")
-    : "";
-  const whatsAppHref = cleanPhone
-    ? "https://wa.me/" + cleanPhone.replace(/\D/g, "")
-    : "";
-  const relatedList = Array.isArray(relatedProfiles)
-    ? relatedProfiles
-    : [];
-  const tags = Array.isArray(profile.includedTags)
-    ? profile.includedTags
-    : [];
-  const suite = suiteNumber(String(profile.id));
+  const rawPhone = String(profile.rawPhone || profile.phone || profile.unlockedPhone || "").trim();
+  const cleanWa = rawPhone.replace(/[^0-9+]/g, "").replace(/^00/, "+").replace(/^0([1-9])/, "+41$1");
 
   return (
-    <div className="penthouse-page min-h-screen pb-52 text-[#1e2247] lg:pb-16">
-      <SEO
-        title={
-          profile.rawName +
-          " in " +
-          profile.city +
-          " (" +
-          profile.canton +
-          ") · CHF " +
-          rate60 +
-          ".– / 60m | iwantsexnow.ch"
-        }
-        description={
-          profile.rawName +
-          " (" +
-          profile.age +
-          " J., " +
-          profile.heightCm +
-          " cm, Cup " +
-          profile.cupSize +
-          ") in " +
-          profile.city +
-          " (" +
-          profile.canton +
-          "). Honorar: CHF " +
-          rate60 +
-          ".– / 60 Min."
-        }
-        url={
-          "https://iwantsexnow.ch/profile/" +
-          encodeURIComponent(profile.id)
-        }
-        image={profile.thumbnail}
-      />
+    <div className="min-h-screen bg-gradient-to-b from-[#FFE4E9] via-[#F8FAFC] to-[#E0F2FE] text-[#1E2433]">
+      <Head>
+        <title>{displayName} in {city} ({canton}) — iwantsexnow.ch</title>
+      </Head>
 
       <LuxuryHeader />
 
-      <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-7">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2 text-[10px] text-[#5b5f84]">
-            <Link
-              href="/search"
-              className="group inline-flex min-h-[34px] items-center gap-1.5 transition hover:text-[#d92b52]"
-            >
-              <ArrowLeft
-                size={13}
-                className="transition-transform group-hover:-translate-x-1"
-              />
-              Zurück zur Suche
-            </Link>
-            <span className="text-[#f1f0f6]">/</span>
-            <Link
-              href={cityHref}
-              className="font-mono uppercase tracking-[0.08em] text-[#d92b52]"
-            >
-              {profile.canton} · {profile.city}
-            </Link>
-          </div>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-20">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border-2 border-[#1E2433] text-xs font-extrabold text-[#1E2433] shadow-[0_3px_0_#1E2433] hover:-translate-y-0.5 transition no-underline mb-8"
+        >
+          ← Zurück zu allen Schweizer Profilen
+        </Link>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={toggleFav}
-              className={
-                isFav
-                  ? "inline-flex min-h-[36px] cursor-pointer items-center gap-1.5 rounded-full border border-[#d92b52]/45 bg-[#d92b52]/10 px-3.5 text-[10px] text-[#d92b52]"
-                  : "ghost-button inline-flex min-h-[36px] cursor-pointer items-center gap-1.5 rounded-full px-3.5 text-[10px]"
-              }
-            >
-              <Heart
-                size={13}
-                className={isFav ? "fill-[#d92b52]" : ""}
-              />
-              {isFav ? "Gespeichert" : "Merken"}
-            </button>
-
-            <Link
-              href="/compare-escorts"
-              className="ghost-button inline-flex min-h-[36px] items-center gap-1.5 rounded-full px-3.5 text-[10px]"
-            >
-              <Scale size={13} className="text-[#d92b52]" />
-              Vergleichen
-            </Link>
-          </div>
-        </div>
-
-        <section className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
-          <div className="min-w-0 lg:col-span-7">
-            <div className="noir-stage group aspect-[3/4] rounded-[20px] border border-[#d92b52]/35 shadow-[0_30px_90px_rgba(0,0,0,0.48)] sm:aspect-[4/5]">
-              <img
-                referrerPolicy="no-referrer"
-                src={mainPhoto}
-                alt={String(profile.rawName)}
-                onError={(e) => {
-                  const image =
-                    e.currentTarget as HTMLImageElement;
-                  if (!image.src.endsWith(FALLBACK_IMAGE)) {
-                    image.src = FALLBACK_IMAGE;
-                  }
-                }}
-                className="noir-media scale-[1.06] object-cover object-top"
-              />
-              <div className="noir-vignette" />
-              <div className="noir-floor opacity-60" />
-
-              <div className="absolute left-4 top-4 z-10 max-w-[80%]">
-                <SwissDoorplate
-                  state={isAvailable4h ? "FREI" : "EXTERN"}
-                  roomNumber={"SUITE " + suite}
-                  customLabel={
-                    isAvailable4h ? "FREI · 4H LIVE" : "INDEX / EXTERN"
-                  }
-                  size="lg"
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Linke Spalte: Grosse gestempelte Polaroid-Postkarte */}
+          <div className="lg:col-span-5 space-y-5">
+            <div className="relative bg-[#FFFDF9] rounded-[28px] border-2 border-[#1E2433] p-3.5 shadow-[0_10px_0_#1E2433]">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-5 bg-[#FDE68A] border border-[#1E2433]/30 rotate-[-2deg] rounded-sm z-10" />
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[20px] bg-[#F4EFE6] border border-[#1E2433]/20">
+                <img
+                  referrerPolicy="no-referrer"
+                  src={imgSrc}
+                  alt={displayName}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = fallbackImg;
+                  }}
+                  className="w-full h-full object-cover object-top"
                 />
+                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#CCFBF1] text-[#0F5132] border-2 border-[#1E2433] text-xs font-extrabold">
+                  ● Heute frei in {city}
+                </div>
               </div>
-
-              <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2">
-                <span className="price-pill text-[9px]">
-                  {String(safePhotoIndex + 1).padStart(2, "0")} /{" "}
-                  {String(galleryPhotos.length).padStart(2, "0")}
+              <div className="pt-3 pb-1 px-2 flex items-center justify-between">
+                <span className="font-serif italic text-lg text-[#1E2433]">Gruss aus {city} ♥</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-[#E0F2FE] border border-[#1E2433] text-xs font-extrabold">
+                  Kanton {canton}
                 </span>
-                {isVerified && (
-                  <span className="luxury-badge">
-                    <ShieldCheck size={10} />
-                    Geprüft
-                  </span>
-                )}
-              </div>
-
-              <div className="price-pill absolute bottom-4 right-4 z-10 text-xs">
-                CHF {rate60}.– <span className="text-[8px]">/ 60M</span>
               </div>
             </div>
 
-            <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1">
-              {galleryPhotos.map((photo, index) => {
-                const active = safePhotoIndex === index;
-                const thumbClass = active
-                  ? "noir-stage relative h-24 w-[74px] shrink-0 cursor-pointer overflow-hidden rounded-[7px] border border-[#d92b52]"
-                  : "noir-stage relative h-24 w-[74px] shrink-0 cursor-pointer overflow-hidden rounded-[7px] border border-white/10 opacity-55 transition hover:opacity-90";
-
-                return (
-                  <button
-                    key={photo + "-" + index}
-                    type="button"
-                    onClick={() => setSelectedPhoto(index)}
-                    className={thumbClass}
-                    aria-label={"Bild " + (index + 1) + " anzeigen"}
-                  >
-                    <img
-                      referrerPolicy="no-referrer"
-                      src={photo}
-                      alt=""
-                      loading="lazy"
-                      onError={(e) => {
-                        const image =
-                          e.currentTarget as HTMLImageElement;
-                        if (!image.src.endsWith(FALLBACK_IMAGE)) {
-                          image.src = FALLBACK_IMAGE;
-                        }
-                      }}
-                      className="noir-media scale-[1.06] object-cover object-top"
-                    />
-                    <div className="noir-vignette opacity-60" />
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="min-w-0 space-y-5 lg:col-span-5">
-            <section className="dossier-panel rounded-[16px] p-5 sm:p-7">
-              <div className="flex items-center justify-between gap-3">
-                <div className="font-mono text-[8px] uppercase tracking-[0.23em] text-[#d92b52]">
-                  Dossier privé · {suite}
-                </div>
-                <span className="font-mono text-[8px] tabular-nums text-[#5b5f84]">
-                  ID {String(profile.id).slice(0, 18)}
-                </span>
-              </div>
-
-              <div className="mt-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.12em] text-[#d92b52]">
-                <MapPin size={13} className="text-[#d92b52]" />
-                Kanton {profile.canton} · {profile.city}
-              </div>
-
-              <h1 className="mt-3 break-words font-serif text-[29px] font-normal leading-[1.14] tracking-[0.012em] text-[#d92b52] sm:text-[38px]">
-                {profile.rawName}
-              </h1>
-
-              <div className="mt-3 flex items-center gap-3 text-[#a81c3d]">
-                <span className="h-px w-10 bg-[#a81c3d]/55" />
-                <span className="text-[8px]">✦</span>
-                <span className="h-px w-10 bg-[#a81c3d]/55" />
-              </div>
-
-              <p className="mt-4 text-[10px] font-light leading-6 text-[#5b5f84]">
-                {profile.age} Jahre · {profile.heightCm} cm · Cup{" "}
-                {profile.cupSize} · {profile.hairColor}
-              </p>
-
-              <div className="mt-6 overflow-hidden rounded-xl border border-[#d92b52]/20 bg-fels">
-                <table className="honorar-table">
-                  <thead>
-                    <tr>
-                      <th>Schweizer Honorar-Tafel</th>
-                      <th className="text-right">Tarif</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div className="text-[#d92b52]">
-                          30 Min. Express
-                        </div>
-                        <div className="mt-1 text-[8px] text-[#5b5f84]">
-                          Richtwert / Kennenlernen
-                        </div>
-                      </td>
-                      <td className="text-right font-mono text-base tabular-nums text-[#d92b52]">
-                        CHF {rate30}.–
-                      </td>
-                    </tr>
-                    <tr className="featured-rate">
-                      <td>
-                        <div className="text-[#d92b52]">
-                          60 Min. Standard
-                        </div>
-                        <div className="mt-1 text-[8px] text-[#a81c3d]">
-                          Empfohlener Direkttarif
-                        </div>
-                      </td>
-                      <td className="text-right font-mono text-xl tabular-nums text-[#d92b52]">
-                        CHF {rate60}.–
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="text-[#d92b52]">
-                          2 Std. Dinner / Outcall
-                        </div>
-                        <div className="mt-1 text-[8px] text-[#5b5f84]">
-                          Geschätzter Richtwert nach Vereinbarung
-                        </div>
-                      </td>
-                      <td className="text-right font-mono text-base tabular-nums text-[#d92b52]">
-                        CHF {rate120}.–
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="mt-5 rounded-[9px] border border-[#1e2247]/20 bg-[#f1f0f6]/45 p-4">
-                <div className="font-mono text-[8px] uppercase tracking-[0.14em] text-[#565980]">
-                  Direkter Schweizer +41 Kontakt · 0% Provision
-                </div>
-                <div className="mt-2 break-words font-mono text-[13px] tabular-nums text-[#d92b52]">
-                  {cleanPhone ||
-                    "Diskrete Termin-Anfrage über Direkt-Messenger"}
-                </div>
-
-                <div className="mt-4 hidden grid-cols-2 gap-2 sm:grid">
-                  {cleanPhone ? (
-                    <>
-                      <a
-                        href={phoneHref}
-                        className="ghost-button inline-flex min-h-[45px] items-center justify-center gap-2 rounded-full px-3 text-[10px]"
-                      >
-                        <Phone size={13} />
-                        Direkt anrufen
-                      </a>
-                      <a
-                        href={whatsAppHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="emerald-button inline-flex min-h-[45px] items-center justify-center gap-2 rounded-full px-3 text-[10px]"
-                      >
-                        <MessageCircle size={13} />
-                        WhatsApp
-                      </a>
-                    </>
-                  ) : (
-                    <Link
-                      href={
-                        "/messages?profileId=" +
-                        encodeURIComponent(profile.id)
-                      }
-                      className="emerald-button col-span-2 inline-flex min-h-[45px] items-center justify-center gap-2 rounded-full px-3 text-[10px]"
-                    >
-                      <MessageCircle size={13} />
-                      Diskrete Termin-Anfrage
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              <p className="mt-5 whitespace-pre-line font-serif text-[15px] font-normal leading-7 text-[#5b5f84]">
-                {profile.bio ||
-                  "Unabhängiges Schweizer Profil in " +
-                    profile.city +
-                    " (" +
-                    profile.canton +
-                    "). Diskreter Empfang nach Vereinbarung oder Hotelbesuch (Outcall). Bitte Verfügbarkeit, Ort und Honorar vor dem Treffen persönlich bestätigen."}
-              </p>
-
-              {tags.length > 0 && (
-                <div className="mt-5 flex flex-wrap gap-2 border-t border-white/[0.06] pt-5">
-                  {tags.slice(0, 10).map((tag: any, index: number) => (
-                    <span
-                      key={String(tag) + "-" + index}
-                      className="luxury-badge normal-case tracking-normal"
-                    >
-                      {String(tag)}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </section>
-
-            <Link
-              href={previewHref}
-              className="group dossier-panel flex items-center justify-between gap-4 rounded-[12px] p-5 transition hover:border-[#d92b52]/55"
-            >
-              <div className="flex items-center gap-3">
-                <span className="brass-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                  <Sparkles size={16} className="relative z-[1]" />
-                </span>
-                <div>
-                  <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#d92b52]">
-                    Lizenzierte KI-Interpretation
+            {galleryList.length > 1 && (
+              <div className="grid grid-cols-3 gap-3">
+                {galleryList.slice(1, 4).map((gUrl, i) => (
+                  <div key={i} className="bg-white p-1.5 rounded-2xl border-2 border-[#1E2433] shadow-[0_4px_0_#1E2433]">
+                    <div className="aspect-[3/4] overflow-hidden rounded-xl">
+                      <img
+                        referrerPolicy="no-referrer"
+                        src={`/api/img?s=${i + 10}&u=${encodeURIComponent(gUrl)}`}
+                        alt={`${displayName} ${i + 2}`}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = fallbackImg;
+                        }}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                  <div className="mt-1 font-serif text-base text-[#d92b52]">
-                    Voice-Avatar & 5s Preview
-                  </div>
-                </div>
-              </div>
-              <ArrowRight
-                size={15}
-                className="shrink-0 text-[#d92b52] transition-transform group-hover:translate-x-1"
-              />
-            </Link>
-          </div>
-        </section>
-
-        <section className="mt-7 grid gap-5 lg:grid-cols-2">
-          <div className="dossier-panel overflow-hidden rounded-[14px]">
-            <div className="border-b border-[#d92b52]/15 p-5">
-              <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#d92b52]">
-                Multi-Portal-Quellenvergleich
-              </div>
-              <h2 className="mt-2 font-serif text-xl font-normal text-[#d92b52]">
-                Herkunft statt Hörensagen.
-              </h2>
-              <p className="mt-2 text-[10px] font-light leading-5 text-[#5b5f84]">
-                Angezeigt werden ausschliesslich übermittelte Quellen- und
-                Tarifdaten. Keine erfundenen Live-Preise.
-              </p>
-            </div>
-
-            <div className="overflow-x-auto px-3">
-              <table className="source-table min-w-[480px]">
-                <thead>
-                  <tr>
-                    <th>Quelle</th>
-                    <th>Status</th>
-                    <th className="text-right">60 Min.</th>
-                    <th className="text-right">Link</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sourceRows.map((source: any) => (
-                    <tr key={source.id}>
-                      <td className="font-medium text-[#d92b52]">
-                        {source.name}
-                      </td>
-                      <td className="text-[#5b5f84]">
-                        {source.status}
-                      </td>
-                      <td className="text-right font-mono tabular-nums text-[#d92b52]">
-                        {source.rate
-                          ? "CHF " + source.rate + ".–"
-                          : "—"}
-                      </td>
-                      <td className="text-right">
-                        {source.url.startsWith("http") ? (
-                          <a
-                            href={source.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            referrerPolicy="no-referrer"
-                            className="inline-flex items-center gap-1 text-[#d92b52] hover:text-[#d92b52]"
-                          >
-                            Quelle
-                            <ExternalLink size={10} />
-                          </a>
-                        ) : (
-                          <span className="text-[#5b5f84]">Index</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {sourceRows.length < 2 && (
-              <div className="border-t border-white/[0.05] px-5 py-3 text-[9px] text-[#5b5f84]">
-                Aktuell liegt nur eine verwertbare Quelle vor. Weitere
-                Portale erscheinen erst nach Datenabgleich.
+                ))}
               </div>
             )}
           </div>
 
-          <div className="dossier-panel flex flex-col justify-between rounded-[14px] p-5 sm:p-6">
-            <div>
-              <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.15em] text-[#d92b52]">
-                <Lock size={13} />
-                Paid Vault · 80/20 Creator-Lizenz
-              </div>
-              <h2 className="mt-3 font-serif text-2xl font-normal text-[#d92b52]">
-                {vaultUnlocked
-                  ? "Ihr privater Tresor ist geöffnet."
-                  : "Private Galerie. Transparente Aufteilung."}
-              </h2>
-              <p className="mt-3 max-w-lg text-[11px] font-light leading-6 text-[#5b5f84]">
-                {vaultUnlocked
-                  ? "Der Tresor ist auf diesem Gerät freigeschaltet."
-                  : "CHF " +
-                    (vaultPriceChf * 0.8).toFixed(2) +
-                    " von CHF " +
-                    vaultPriceChf +
-                    ".– gehen direkt an " +
-                    profile.rawName +
-                    ". Die verbleibenden 20% decken Plattform und Betrieb."}
-              </p>
-            </div>
+          {/* Rechte Spalte: Notizblock-Steckbrief & Direktkontakt im selben Look wie der Suchkasten oben */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="relative bg-white rounded-[28px] border-2 border-[#1E2433] p-6 sm:p-8 shadow-[0_10px_0_#1E2433] space-y-6">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="inline-block px-3 py-1 rounded-full bg-[#FCE7F3] border border-[#1E2433] text-xs font-extrabold mb-2">
+                    📍 {city} ({canton}) · {profile.rubric || profile.category || "Escort & Massage"}
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl font-black text-[#1E2433] leading-tight">
+                    {displayName}
+                  </h1>
+                </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#d92b52]/15 pt-5">
-              <div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#5b5f84]">
-                  Einmaliger Zugang
-                </div>
-                <div className="mt-1 font-mono text-2xl tabular-nums text-[#d92b52]">
-                  CHF {vaultPriceChf}.–
+                <div className="px-4 py-2.5 rounded-2xl bg-[#FEF08A] border-2 border-[#1E2433] shadow-[0_4px_0_#1E2433] text-right">
+                  <div className="text-[11px] font-extrabold uppercase text-[#1E2433]/75">Richtpreis 60 Min.</div>
+                  <div className="text-2xl font-black text-[#1E2433]">CHF {rate60}</div>
                 </div>
               </div>
-              <Link
-                href={checkoutHref}
-                className="brass-button inline-flex min-h-[45px] items-center gap-2 rounded-full px-5 text-[10px] uppercase tracking-[0.06em]"
-              >
-                <Lock size={13} className="relative z-[1]" />
-                <span className="relative z-[1]">
-                  {vaultUnlocked ? "Tresor ansehen" : "Vault öffnen"}
-                </span>
-                <ArrowRight size={13} className="relative z-[1]" />
-              </Link>
+
+              {/* Freundliche Tarif-Kärtchen */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="p-3.5 rounded-2xl bg-[#F0FDF4] border-2 border-[#1E2433]">
+                  <div className="text-xs font-bold text-[#1E2433]/70">Kurzes Treffen (30m)</div>
+                  <div className="text-lg font-black text-[#1E2433]">ab CHF {rate30}</div>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-[#FEF9C3] border-2 border-[#1E2433]">
+                  <div className="text-xs font-bold text-[#1E2433]/70">Volle Stunde (60m)</div>
+                  <div className="text-lg font-black text-[#1E2433]">ab CHF {rate60}</div>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-[#E0F2FE] border-2 border-[#1E2433] col-span-2 sm:col-span-1">
+                  <div className="text-xs font-bold text-[#1E2433]/70">Vermittlung</div>
+                  <div className="text-lg font-black text-[#0F766E]">0% Aufpreis</div>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#FFFDF7] border border-[#1E2433]/20 text-sm leading-relaxed text-[#334155]">
+                {profile.description ||
+                  `${displayName} empfängt oder besucht dich im Raum ${city} (${canton}). Direkter Kontakt ohne Zwischenhändler – sprich Zeitpunkt, Wünsche und Honorar einfach kurz direkt ab.`}
+              </div>
+
+              {/* Grosse rote & weisse Direkt-Buttons */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                {rawPhone ? (
+                  <>
+                    <a
+                      href={`https://wa.me/${cleanWa.replace("+", "")}?text=${encodeURIComponent(`Hoi ${displayName}, ich habe dein Profil auf iwantsexnow.ch gesehen und wollte fragen, ob du heute in ${city} Zeit hast?`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 min-w-[210px] py-4 px-6 rounded-full bg-[#E11D48] hover:bg-[#BE123C] text-white border-2 border-[#1E2433] font-black text-sm text-center shadow-[0_5px_0_#1E2433] no-underline transition"
+                    >
+                      💬 Direkt per WhatsApp ({rawPhone})
+                    </a>
+                    <a
+                      href={`tel:${cleanWa}`}
+                      className="py-4 px-6 rounded-full bg-white hover:bg-[#FEF08A] text-[#1E2433] border-2 border-[#1E2433] font-black text-sm text-center shadow-[0_5px_0_#1E2433] no-underline transition"
+                    >
+                      📞 Anrufen
+                    </a>
+                  </>
+                ) : profile.sourceUrl ? (
+                  <a
+                    href={profile.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-4 px-6 rounded-full bg-[#E11D48] hover:bg-[#BE123C] text-white border-2 border-[#1E2433] font-black text-sm text-center shadow-[0_5px_0_#1E2433] no-underline transition"
+                  >
+                    Original-Inserat & Nummer öffnen ↗
+                  </a>
+                ) : null}
+              </div>
+
+              <div className="pt-3 border-t border-[#1E2433]/15 flex flex-wrap items-center justify-between gap-2 text-xs text-[#64748B]">
+                <span>Ist das dein eigenes Inserat?</span>
+                <Link href="/advertise" className="font-extrabold text-[#E11D48] hover:underline">
+                  Profil kostenlos selbst verwalten oder anpassen →
+                </Link>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {relatedList.length > 0 && (
-          <section className="mt-10">
-            <div className="mb-4 flex items-end justify-between">
-              <div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-[#d92b52]">
-                  Kanton {profile.canton}
-                </div>
-                <h2 className="mt-1 font-serif text-2xl font-normal text-[#d92b52]">
-                  Weitere Suiten in der Nähe
-                </h2>
-              </div>
-              <Link
-                href="/search"
-                className="text-[10px] text-[#d92b52] hover:text-[#d92b52]"
-              >
-                Alle ansehen →
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-5">
-              {relatedList.map((related: any) => (
-                <Link
-                  key={related.id}
-                  href={
-                    "/profile/" + encodeURIComponent(related.id)
-                  }
-                  className="valentina-card group block overflow-hidden"
-                >
-                  <div className="noir-stage aspect-[3/4]">
-                    <img
-                      referrerPolicy="no-referrer"
-                      src={related.thumbnail || FALLBACK_IMAGE}
-                      alt={String(related.rawName)}
-                      loading="lazy"
-                      onError={(e) => {
-                        const image =
-                          e.currentTarget as HTMLImageElement;
-                        if (!image.src.endsWith(FALLBACK_IMAGE)) {
-                          image.src = FALLBACK_IMAGE;
-                        }
-                      }}
-                      className="noir-media scale-[1.06] object-cover object-top"
-                    />
-                    <div className="noir-vignette" />
-                    <div className="noir-floor" />
-                    <div className="absolute inset-x-0 bottom-0 z-[4] p-3 text-center">
-                      <div className="font-mono text-[7px] uppercase tracking-[0.1em] text-[#d92b52]">
-                        {related.city} · {related.canton}
-                      </div>
-                      <div className="dossier-name mt-1 font-serif text-base text-[#d92b52]">
-                        {related.rawName}
-                      </div>
-                      <div className="mt-2 font-mono text-sm tabular-nums text-[#d92b52]">
-                        CHF {related.rate60Chf}.–
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+        {/* Weitere passende Postkarten aus demselben Kanton */}
+        {similarOffers.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-2xl font-black text-[#1E2433] mb-5">
+              Weitere Profile in {city} & Umgebung
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+              {similarOffers.map((sim, idx) => (
+                <PostcardProfileCard key={sim.id || idx} offer={sim} idx={idx + 4} />
               ))}
             </div>
           </section>
         )}
       </main>
 
-      <div className="profile-mobile-cta fixed inset-x-0 z-40 border-t border-[#d92b52]/25 px-3 py-2.5 lg:hidden">
-        <div className="mx-auto flex max-w-lg items-center gap-2">
-          <div className="hidden min-w-0 flex-1 sm:block">
-            <div className="truncate font-serif text-xs text-[#d92b52]">
-              {profile.rawName}
-            </div>
-            <div className="mt-1 font-mono text-[8px] tabular-nums text-[#d92b52]">
-              CHF {rate60}.– / 60M · CHF {rate30}.– / 30M
-            </div>
-          </div>
-
-          {cleanPhone ? (
-            <>
-              <a
-                href={phoneHref}
-                className="ghost-button flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full"
-                aria-label="Direkt anrufen"
-              >
-                <Phone size={15} />
-              </a>
-              <a
-                href={whatsAppHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="emerald-button inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-3 text-[10px]"
-              >
-                <MessageCircle size={14} />
-                WhatsApp
-              </a>
-            </>
-          ) : (
-            <Link
-              href={
-                "/messages?profileId=" +
-                encodeURIComponent(profile.id)
-              }
-              className="emerald-button inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-3 text-[10px]"
-            >
-              <MessageCircle size={14} />
-              Anfrage
-            </Link>
-          )}
-
-          <Link
-            href={previewHref}
-            className="ghost-button flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full text-[#d92b52]"
-            aria-label="Voice-Avatar und Video-Preview"
-          >
-            <Video size={15} />
-          </Link>
-
-          <Link
-            href={checkoutHref}
-            className="brass-button inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[9px] uppercase"
-          >
-            <Lock size={12} className="relative z-[1]" />
-            <span className="relative z-[1]">Vault 80%</span>
-          </Link>
-        </div>
-      </div>
+      <MobileBottomNav />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import PostcardProfileCard from "@/components/PostcardProfileCard";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
