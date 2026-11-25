@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "updatedAt": "2026-11-07T20:45:00.000Z",
+    "aiDisclosureLabel": "KI-Interpretation · Gemäss Schweizer Transparenz-Standard gekennzeichnet",
+    "revenueShareSplit": { "providerPercent": 80, "platformPercent": 20 },
+    "pricingChf": {
+      "freeTeaserMessages": 4,
+      "pack10MessagesChf": 2.5,
+      "monthlyUnlimitedChatChf": 9.9,
+      "providerAvatarPremiumMonthlyChf": 29.0,
+      "fantasyPreviewSingleChf": 5.0,
+      "fantasyPreviewBundle10Chf": 19.0
+    }
+  },
+  "archetypes": {
+    "seductress": {
+      "label": "Die Verführerin",
+      "openingDe": "Du hast dir meine Fotos ziemlich genau angesehen… Sag mir ehrlich: Was würdest du heute Abend als Erstes mit mir anstellen?",
+      "lockedTeaserDe": "Ich würde gerne noch tiefer ins Detail gehen… aber meine ungeteilte Aufmerksamkeit ist nicht gratis. Schalte 10 weitere Nachrichten (CHF 2.50) frei oder hol dir direkt mein echtes +41 WhatsApp. 🔒",
+      "quickReplies": ["Bist du heute in der Nähe frei?", "Was ist dein 60-Min.-Honorar?", "Kommst du auch ins Hotel?", "Zeig mir dein Fantasy-Preview 🔮"]
+    },
+    "listener": {
+      "label": "Die Zuhörerin",
+      "openingDe": "Schön, dass du da bist. Stressiger Tag im Büro oder suchst du heute einfach jemanden, bei dem du komplett abschalten kannst?",
+      "lockedTeaserDe": "Ich höre dir wirklich gerne zu… Lass uns ungestört weiterschreiben (CHF 2.50 für 10 Nachrichten) oder direkt unser echtes Treffen vereinbaren. 🔒",
+      "quickReplies": ["Ich brauche pure Entspannung", "Wie läuft ein erstes Date bei dir ab?", "Welche Massagen bietest du an?", "Direkt per WhatsApp anfragen"]
+    },
+    "dominant": {
+      "label": "Die Dominante",
+      "openingDe": "Du stehst vor meiner Studiotür. Bevor ich auf FREI schalte: Weisst du, wie man sich einer echten Lady gegenüber benimmt?",
+      "lockedTeaserDe": "Deine Gratis-Zeit an meiner Tür ist abgelaufen. Zeig mir, dass du es ernst meinst (CHF 2.50 Freischaltung) oder buche deine Session direkt. 🔒",
+      "quickReplies": ["Ich bin bereit für deine Regeln", "Welche Ausstattung hat dein Studio?", "Auch für Anfänger geeignet?", "Termin-Anfrage senden"]
+    },
+    "girlfriend": {
+      "label": "Die Girlfriend (GFE)",
+      "openingDe": "Hey du! Stell dir vor, wir starten mit einem Glas Champagner und vergessen die Uhr. Worauf hättest du heute am meisten Lust?",
+      "lockedTeaserDe": "Mit dir schreibt es sich viel zu gut, um jetzt aufzuhören… Schalte unser Gespräch frei (CHF 2.50) oder schreib mir direkt auf WhatsApp! 🔒",
+      "quickReplies": ["Dinner-Date & Übernachtung?", "30 oder 60 Minuten heute Abend?", "Wo kann man bei dir parkieren?", "Fantasy-Preview starten 🔮"]
+    },
+    "mystery": {
+      "label": "Die Unnahbare (Mystery)",
+      "openingDe": "Nicht jeder bekommt meine private Adresse in der Schweiz. Verrate mir in einem Klick, warum ausgerechnet du heute mein Gast sein solltest.",
+      "lockedTeaserDe": "Neugierig geworden? Das Geheimnis lüfte ich nur für Gentlemen, die den Schlüssel umdrehen (CHF 2.50 / 10 Nachrichten). 🔒",
+      "quickReplies": ["Diskretion & Niveau garantiert", "Treffen im 5-Sterne-Hotel", "Was macht dich besonders?", "Zugang freischalten"]
+    }
+  },
+  "licensedAvatars": [
+    {
+      "providerId": "ch-paradeplatz-vip",
+      "name": "Victoria · Zürich Paradeplatz",
+      "city": "Zürich",
+      "canton": "ZH",
+      "archetype": "seductress",
+      "voiceLang": "de-CH",
+      "elevenLabsVoiceId": "EXAVITQu4vr4xnSDxMaL",
+      "pricesChf": { "30m": 300, "60m": 500, "2h": 900 },
+      "services": ["Dinner Date", "GFE", "Hotel Outcall", "Overnight"],
+      "licenseConsent": {
+        "optInConfirmed": true,
+        "optInTimestamp": "2026-11-07T19:00:00Z",
+        "optOutActive": false,
+        "revenueSplitAccepted": "80/20",
+        "aiLabelVisible": true
+      }
+    },
+    {
+      "providerId": "ch-crypto-valley-zug",
+      "name": "Elena · Private Suite Zug",
+      "city": "Zug",
+      "canton": "ZG",
+      "archetype": "girlfriend",
+      "voiceLang": "de-CH",
+      "elevenLabsVoiceId": "21m00Tcm4TlvDq8ikWAM",
+      "pricesChf": { "30m": 250, "60m": 450, "2h": 800 },
+      "services": ["Incall Zug", "Tiefgarage direkt", "GFE", "Champagne Date"],
+      "licenseConsent": {
+        "optInConfirmed": true,
+        "optInTimestamp": "2026-11-07T19:00:00Z",
+        "optOutActive": false,
+        "revenueSplitAccepted": "80/20",
+        "aiLabelVisible": true
+      }
+    },
+    {
+      "providerId": "ch-geneve-champel",
+      "name": "Inès · Genève Champel",
+      "city": "Genève",
+      "canton": "GE",
+      "archetype": "mystery",
+      "voiceLang": "fr-CH",
+      "elevenLabsVoiceId": "AZnzlk1XvdvUeBnXmlld",
+      "pricesChf": { "30m": 250, "60m": 450, "2h": 850 },
+      "services": ["GFE", "Hôtels 5*", "Soirées Privées"],
+      "licenseConsent": {
+        "optInConfirmed": true,
+        "optInTimestamp": "2026-11-07T19:00:00Z",
+        "optOutActive": false,
+        "revenueSplitAccepted": "80/20",
+        "aiLabelVisible": true
+      }
+    }
+  ]
+}

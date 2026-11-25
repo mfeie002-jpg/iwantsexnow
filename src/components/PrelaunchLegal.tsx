@@ -56,20 +56,20 @@ const content: Record<Variant, {
 export default function PrelaunchLegal({ variant }: { variant: Variant }) {
   const page = content[variant];
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 px-4 py-16 text-white">
+    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-dusk-950 px-4 py-16 text-white">
       <div className="mx-auto max-w-3xl">
-        <p className="mb-3 text-xs font-bold uppercase tracking-widest text-amber-300">
+        <p className="mb-3 text-xs font-bold uppercase tracking-widest text-sun-300">
           iWantSexNow.ch · Entwicklungs-Vorschau · 18+
         </p>
         <h1 className="mb-5 text-3xl font-black md:text-4xl">{page.title}</h1>
-        <p className="mb-8 rounded-xl border border-amber-500/50 bg-amber-950/40 p-5 text-base text-amber-100">
+        <p className="mb-8 rounded-xl border border-sun-500/50 bg-sun-950/40 p-5 text-base text-sun-100">
           {page.lead}
         </p>
         <div className="space-y-5">
           {page.sections.map((section) => (
             <section key={section.heading} className="rounded-xl border border-white/10 bg-white/5 p-5">
               <h2 className="mb-3 text-xl font-bold">{section.heading}</h2>
-              <p className="leading-relaxed text-slate-200">{section.body}</p>
+              <p className="leading-relaxed text-gray-200">{section.body}</p>
             </section>
           ))}
         </div>

@@ -1,0 +1,12 @@
+{
+  "updatedAt": "2026-11-07T19:45:22.839Z",
+  "availableCreditsRemainingEst": 185998,
+  "creditsUsedInThisExtensionRun": 2,
+  "monthlyAllocationPlan": {
+    "monitor20UrlsDaily": 3000,
+    "alexandriaIntel": 2000,
+    "interactNewPortalsReserve": 10000,
+    "deltaCrawlingFallback": 5000,
+    "serpDiscoveryVips": 2000
+  }
+}

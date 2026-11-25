@@ -122,7 +122,7 @@ export function RegressionTestingTab() {
         </div>
         <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-purple-600 hover:bg-purple-700">
+            <Button className="bg-dusk-600 hover:bg-dusk-700">
               <Plus className="w-4 h-4 mr-2" />
               New Baseline
             </Button>
@@ -165,7 +165,7 @@ export function RegressionTestingTab() {
                   <h3 className="font-bold text-lg">{baseline.name}</h3>
                   <p className="text-sm text-gray-500">{baseline.url}</p>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <CheckCircle className="w-3 h-3 text-green-500" />
+                    <CheckCircle className="w-3 h-3 text-mint-500" />
                     Last checked: {baseline.last_checked_at ? new Date(baseline.last_checked_at).toLocaleString() : 'Never'}
                   </div>
                 </div>

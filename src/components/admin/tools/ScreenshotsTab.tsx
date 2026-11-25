@@ -165,7 +165,7 @@ export function ScreenshotsTab() {
         </Alert>
       )}
       {success && (
-        <Alert className="bg-green-50 text-green-900 border-green-200 dark:bg-green-950 dark:text-green-100">
+        <Alert className="bg-mint-50 text-mint-900 border-mint-200 dark:bg-mint-950 dark:text-mint-100">
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>
@@ -230,7 +230,7 @@ export function ScreenshotsTab() {
           <Button
             onClick={captureSingleScreenshot}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            className="w-full bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
           >
             {loading ? (
               <>
@@ -301,7 +301,7 @@ export function ScreenshotsTab() {
           <Button
             onClick={captureBulkScreenshots}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            className="w-full bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700"
           >
             {loading ? (
               <>

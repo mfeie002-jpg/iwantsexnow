@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
 import { ShieldAlert, CheckCircle2, ArrowLeft } from "lucide-react";
 
 export default function ReportAndOptOutPage() {
@@ -42,45 +43,47 @@ export default function ReportAndOptOutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
         title="Profil melden oder Eintrag sofort entfernen (Opt-Out ohne Login) | iWantSexNow.ch"
         description="Unkomplizierte Sofort-Ausblendung und Sperrliste (Do-Not-Import) nach Schweizer Datenschutzgesetz (revDSG)."
       />
       <LuxuryHeader />
+      <PageIntro
+        tone="himmel"
+        note="Dein Recht, ohne Umwege"
+        title="Eintrag entfernen oder Korrektur melden"
+        lead="Sofort-Ausblendung ohne Login, nach Schweizer Datenschutzgesetz (revDSG)."
+        art="verified"
+      >
+        <Link href="/" className="emerald-button"><ArrowLeft size={14} /> Zurück zur Übersicht</Link>
+      </PageIntro>
 
-      <main className="max-w-2xl mx-auto px-6 py-10 space-y-6">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-300 hover:text-white">
-          <ArrowLeft size={14} /> Zurück zur Übersicht
-        </Link>
-
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-white/10 space-y-6">
+      <main className="form-sheet">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
           <div>
-            <span className="text-[11px] uppercase tracking-widest text-rose-400 font-bold flex items-center gap-1.5">
-              <ShieldAlert size={13} /> SOFORT-AUSBLENDUNG OHNE LOGIN-PFLICHT (CH-DSG)
+            <span className="text-[13px] text-glow-700 font-bold flex items-center gap-1.5">
+              <ShieldAlert size={13} /> Sofort-Ausblendung ohne Login-Pflicht (CH-DSG)
             </span>
-            <h1 className="text-2xl font-serif font-bold text-white mt-1">
-              Eintrag entfernen (Opt-Out) oder Korrektur melden
-            </h1>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-[13px] text-gray-600 mt-1">
               Sobald du dieses Formular absendest, wird die angegebene Profil-ID sofort im öffentlichen Verzeichnis ausgeblendet und auf die interne Do-Not-Import-Sperrliste gesetzt.
             </p>
           </div>
 
           {caseId ? (
-            <div className="p-5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 space-y-2">
-              <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">
+            <div className="p-5 rounded-xl bg-mint-100/60 border border-mint-500/40 space-y-2">
+              <div className="flex items-center gap-2 text-mint-700 font-bold text-sm">
                 <CheckCircle2 size={18} />
                 <span>Eintrag wurde sofort ausgeblendet (Fall-Nr.: {caseId})</span>
               </div>
-              <p className="text-xs text-gray-300">
+              <p className="text-[13px] text-gray-700">
                 Das Profil <strong>{profileId}</strong> ist ab sofort öffentlich unsichtbar und für künftige Index-Läufe gesperrt.
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
                   Betroffene Profil-ID, Name oder Telefonnummer *
                 </label>
                 <input
@@ -89,16 +92,16 @@ export default function ReportAndOptOutPage() {
                   value={profileId}
                   onChange={(e) => setProfileId(e.target.value)}
                   placeholder="z.B. ch-a720e283e85f oder +41 79 ..."
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-2.5 text-sm text-white"
+                  className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Grund der Meldung</label>
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Grund der Meldung</label>
                 <select
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-2.5 text-sm text-white"
+                  className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte"
                 >
                   <option value="Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden">
                     Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden
@@ -109,30 +112,30 @@ export default function ReportAndOptOutPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Rückfrage-Kontakt (Optional)</label>
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Rückfrage-Kontakt (Optional)</label>
                 <input
                   type="text"
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
                   placeholder="E-Mail oder +41 Nummer für Bestätigung"
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 px-4 py-2.5 text-sm text-white"
+                  className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5">Zusätzliche Hinweise (Optional)</label>
+                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Zusätzliche Hinweise (Optional)</label>
                 <textarea
                   rows={3}
                   value={details}
                   onChange={(e) => setDetails(e.target.value)}
-                  className="w-full rounded-xl bg-[#0D111A] border border-white/15 p-3.5 text-sm text-white"
+                  className="w-full rounded-xl bg-papier border border-tinte/25 p-3.5 text-sm text-tinte"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs uppercase tracking-wider cursor-pointer"
+                className="w-full py-3.5 rounded-xl bg-glow-600 hover:bg-glow-500 text-white font-extrabold text-[13px] cursor-pointer"
               >
                 {loading ? "Blende Eintrag sofort aus..." : "Eintrag jetzt sofort ausblenden & sperren →"}
               </button>

@@ -1,28 +1,38 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import { Button } from "@/components/ui/button"
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import { LuxuryHeader } from "@/components/LuxuryHeader";
 
 export default function NotFound() {
   return (
-    <>
+    <div className="min-h-screen">
       <Head>
-        <title>404 - Page Not Found</title>
-        <meta name="description" content="Page not found" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Seite nicht gefunden | iwantsexnow.ch</title>
+        <meta name="robots" content="index,follow" />
       </Head>
-      
-      <main className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-gray-900">404</h1>
-          <p className="text-lg text-gray-600">Sorry, we couldn't find the page you requested. This page may have been moved, deleted, or never existed.</p>
-          <Button asChild>
-            <Link href="/">
-              Return to home page
-            </Link>
-          </Button>
+      <LuxuryHeader />
+      <header className="mast">
+        <div className="mast-grid mast-grid-photo">
+          <div>
+            <p className="kicker">404</p>
+            <h1>Diese Seite gibt es nicht.</h1>
+            <p className="dek">
+              Der Link ist veraltet oder die Adresse hat sich verschrieben. Suche und Städte führen zu jedem Profil und jedem Club, der im Verzeichnis steht.
+            </p>
+            <div className="mast-actions">
+              <Link href="/" className="brass-button">
+                Zur Startseite
+              </Link>
+              <Link href="/search" className="text-link">
+                Zur Suche
+              </Link>
+            </div>
+          </div>
+          <figure className="mast-figure">
+            <img src="/editorial/editorial-alps.jpg" alt="" loading="lazy" decoding="async" />
+          </figure>
         </div>
-      </main>
-    </>
-  )
+      </header>
+    </div>
+  );
 }

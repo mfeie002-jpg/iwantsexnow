@@ -94,7 +94,7 @@ export function ScheduledMonitoringTab() {
             <CardTitle className="text-sm font-medium text-gray-500">Success Rate (24h)</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">98%</div>
+            <div className="text-3xl font-bold text-mint-600">98%</div>
           </CardContent>
         </Card>
         <Card>
@@ -132,7 +132,7 @@ export function ScheduledMonitoringTab() {
                     {url.last_captured_at ? new Date(url.last_captured_at).toLocaleString() : '-'}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                    <Badge variant="outline" className="bg-mint-50 text-mint-700 border-mint-200">
                       Active
                     </Badge>
                   </TableCell>

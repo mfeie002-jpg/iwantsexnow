@@ -276,7 +276,7 @@ export function parseCatalogueFilters(query: Query): CatalogueFilters {
 }
 
 export function filterCatalogue(filters: CatalogueFilters): readonly DemoListing[] {
-  if (filters.invalid) return [];
+  if (filters.invalid || filters.view === "approved") return [];
   const terms = normalizeCatalogueText(filters.q).split(" ").filter(Boolean);
   return demoListings.filter(item => {
     const areaLabels = (item.serviceAreas ?? [item.city]).map(c => cityLabel(c)).join(" ");

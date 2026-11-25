@@ -1,5 +1,36 @@
 import type { Config } from "tailwindcss";
 
+const COOL = {
+  50: "#f7f4ee", 100: "#efeae2", 200: "#e3dcd0", 300: "#c9c0b2", 400: "#6f6a60",
+  500: "#5c564c", 600: "#4a453d", 700: "#3a352e", 800: "#2a261f", 900: "#1c1915", 950: "#12100d",
+};
+
+/* cherry */
+const glow = {
+  50: "#fff0f3", 100: "#ffdde5", 200: "#ffbfce", 300: "#ff94ac", 400: "#f7627f",
+  500: "#e8395e", 600: "#d92b52", 700: "#b51e42", 800: "#8f1935", 900: "#6e162e", 950: "#430a1b",
+};
+/* butter / amber */
+const sun = {
+  50: "#fffbea", 100: "#fff3c4", 200: "#ffe48a", 300: "#ffd34d", 400: "#ffc21f",
+  500: "#f5a800", 600: "#cc8400", 700: "#9c6300", 800: "#744a05", 900: "#523606", 950: "#2d1c00",
+};
+/* lilac */
+const dusk = {
+  50: "#f6f3fe", 100: "#ece6fc", 200: "#dcd3f7", 300: "#c3b5f0", 400: "#a590e6",
+  500: "#876dd8", 600: "#6c50c2", 700: "#553ca0", 800: "#413081", 900: "#2f2360", 950: "#1b1438",
+};
+/* mint green */
+const mint = {
+  50: "#eefbf5", 100: "#d6f5e7", 200: "#bfebd6", 300: "#93dbba", 400: "#5ec59b",
+  500: "#2faa7e", 600: "#1e8a64", 700: "#176d50", 800: "#145741", 900: "#114636", 950: "#08271e",
+};
+/* sky blue */
+const lake = {
+  50: "#f0f7ff", 100: "#dfeefe", 200: "#c6dffa", 300: "#98c6f5", 400: "#62a5eb",
+  500: "#3b86dc", 600: "#2a68bd", 700: "#245398", 800: "#20447a", 900: "#1f3a63", 950: "#12223d",
+};
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -10,7 +41,39 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Figtree", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        mono: ["Figtree", "system-ui", "Helvetica", "Arial", "sans-serif"],
+        serif: ["Bricolage Grotesque", "Figtree", "Arial", "sans-serif"],
+        display: ["Bricolage Grotesque", "Figtree", "Arial", "sans-serif"],
+        hand: ["Caveat", "Bradley Hand", "cursive"],
+      },
       colors: {
+        /* roles kept from the previous system, re-pointed to the light palette */
+        nacht: "#fbfaf8",
+        tiefsee: "#ffffff",
+        fels: "#f1f0f6",
+        linie: "#e1e1ec",
+        gletscher: "#1e2247",
+        nebel: "#5b5f84",
+        glueh: "#d92b52",
+        bernstein: "#f5a800",
+        lago: "#1e8a64",
+        papier: "#f3efe6",
+        tinte: "#1c1915",
+        kirsche: { DEFAULT: "#8e2f2a", tief: "#6c221f" },
+        butter: "#e6d3a4",
+        blush: "#efe4d8",
+        minze: "#d5e3d8",
+        himmel: "#d5e0ea",
+        flieder: "#e4dee6",
+        glow,
+        sun,
+        dusk,
+        mint,
+        lake,
+        gray: COOL,
+        stone: COOL,
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

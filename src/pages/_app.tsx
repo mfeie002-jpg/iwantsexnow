@@ -1,87 +1,96 @@
-import { Toaster } from "@/components/ui/toaster";
-import { SEO } from "@/components/SEO";
-import { AgeVerificationGate } from "@/components/AgeVerificationGate";
 import "@/styles/globals.css";
+import "@/styles/atelier.css";
 import type { AppProps } from "next/app";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import Link from "next/link";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { AgeVerificationGate } from "@/components/AgeVerificationGate";
+import clubsData from "@/data/swiss-establishments-vault.json";
+import { countLabel } from "@/lib/listing";
 
-const routeMeta: Record<string, { title: string; description: string }> = {
-  "/": {
-    title: "iWantSexNow.ch | Der Schweizer Escort-Index – Vergleichen & Direkt Buchen",
-    description: "Alle Schweizer Escorts, Studios und Portale in einer Suchmaschine: Echte Endpreise, automatischer Dubletten-Filter und verifizierte Direktbuchung in Zürich & Zug.",
-  },
-  "/search": {
-    title: "Erotik & Escort Suche Schweiz – Preis- & Portalvergleich | iWantSexNow.ch",
-    description: "Schweizweite Meta-Suche für Zürich, Zug, Cham und die ganze Schweiz mit transparentem Endpreis-Rechner.",
-  },
-  "/compare-escorts": {
-    title: "Schweizer Portale & Direktprofile im Endpreis-Vergleich | iWantSexNow.ch",
-    description: "Dubletten-Check, echte Endpreise und verifizierte Direktprofile im direkten Vergleich.",
-  },
-  "/escort-zurich": {
-    title: "Escort Zürich, Zug & Cham – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Geprüfte Profile in Zürich, Zug, Cham und Winterthur mit Echtzeit-Verfügbarkeit und Endpreis-Garantie.",
-  },
-  "/escort-geneva": {
-    title: "Escort Genève – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Exklusive Begleitung und geprüfte Profile in Genf.",
-  },
-  "/escort-basel": {
-    title: "Escort Basel – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Geprüfte Anbieterinnen, Studios und Direktprofile in Basel.",
-  },
-  "/escort-bern": {
-    title: "Escort Bern – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Diskrete Begleitung und verifizierte Profile in Bern.",
-  },
-  "/escort-lausanne": {
-    title: "Escort Lausanne – Verifizierte Direktprofile | iWantSexNow.ch",
-    description: "Geprüfte Profile und diskrete Direkt-Anfragen in Lausanne.",
-  },
-};
+const TOTAL_CLUBS = Array.isArray(clubsData) ? clubsData.length : 0;
 
-export const previewOnlyRoutes: Record<string, string> = {};
+const CANTON_LINKS: { href: string; label: string }[] = [
+  { href: "/orte/zug", label: "Zug" },
+  { href: "/escort-zurich", label: "Zürich" },
+  { href: "/orte/luzern", label: "Luzern" },
+  { href: "/escort-basel", label: "Basel" },
+  { href: "/escort-bern", label: "Bern" },
+  { href: "/orte/st-gallen", label: "St. Gallen" },
+  { href: "/escort-geneva", label: "Genève" },
+  { href: "/escort-lausanne", label: "Lausanne" },
+  { href: "/escort-lugano", label: "Lugano" },
+  { href: "/orte/baden", label: "Aargau" },
+];
+
+function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <div className="site-footer-grid">
+        <div>
+          <p className="wordmark">
+            iwantsexnow<span>.ch</span>
+          </p>
+          <p>
+            Unabhängiges Schweizer Verzeichnis für Escort, Tantra, Studios und {countLabel(TOTAL_CLUBS)} Clubs. Direktkontakt über die Nummer im Eintrag, 0% Provision auf diese Kontakte.
+          </p>
+        </div>
+        <div>
+          <h2>Orte</h2>
+          <ul>
+            {CANTON_LINKS.map((c) => (
+              <li key={c.href}>
+                <Link href={c.href}>{c.label}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2>Nachschlagen</h2>
+          <ul>
+            <li><Link href="/search">Suche</Link></li>
+            <li><Link href="/compare-escorts">Vergleich</Link></li>
+            <li><Link href="/clubs">Clubs</Link></li>
+            <li><Link href="/pricing">Preise</Link></li>
+            <li><Link href="/hotels">Hotel & Outcall</Link></li>
+            <li><Link href="/how-it-works">Ablauf</Link></li>
+            <li><Link href="/faq">Fragen</Link></li>
+            <li><Link href="/safety">Sicherheit, 18+</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Anbieterinnen</h2>
+          <ul>
+            <li><Link href="/register">Profil eintragen</Link></li>
+            <li><Link href="/create-post">Profil übernehmen</Link></li>
+            <li><Link href="/login">Anmelden</Link></li>
+            <li><Link href="/advertise">Für Anbieterinnen</Link></li>
+            <li><Link href="/report">Opt-Out oder melden</Link></li>
+            <li><Link href="/contact">Redaktion</Link></li>
+          </ul>
+        </div>
+      </div>
+      <div className="site-footer-base">
+        <span>© {new Date().getFullYear()} iwantsexnow.ch, Schweiz, ab 18</span>
+        <span>
+          <Link href="/imprint">Impressum</Link>
+          <Link href="/privacy">Datenschutz</Link>
+          <Link href="/terms">AGB</Link>
+          <Link href="/report">Opt-Out</Link>
+        </span>
+      </div>
+    </footer>
+  );
+}
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { pathname } = useRouter();
-  const fallbackName =
-    pathname
-      .split("/")
-      .filter((segment) => segment && !segment.startsWith("["))
-      .join(" / ")
-      .replace(/-/g, " ") || "Schweizer Escort-Index";
-
-  const meta = routeMeta[pathname] || {
-    title: fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1) + " | iWantSexNow.ch",
-    description: "Verifizierter Schweizer Escort- & Preisvergleich mit transparenten Endpreisen und diskreter Direktbuchung.",
-  };
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "iWantSexNow.ch",
-    url: "https://iwantsexnow.ch",
-    description: meta.description,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://iwantsexnow.ch/search?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  };
-
   return (
-    <>
-      <SEO title={meta.title} description={meta.description} />
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </Head>
+    <div className="flex min-h-screen flex-col text-tinte">
       <AgeVerificationGate />
-      <Component {...pageProps} />
-      <Toaster />
-    </>
+      <div className="flex-1">
+        <Component {...pageProps} />
+      </div>
+      <SiteFooter />
+      <MobileBottomNav />
+    </div>
   );
 }

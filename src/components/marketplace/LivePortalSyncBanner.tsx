@@ -85,11 +85,11 @@ export function LivePortalSyncBanner({ totalProfiles = 180 }: { totalProfiles?: 
   ];
 
   return (
-    <div className="bg-[#060D16] border-y border-[#C69C6D]/30 py-2.5 px-4 text-xs text-white">
+    <div className="bg-[#060D16] border-y border-[#ff6b5e]/30 py-2.5 px-4 text-xs text-white">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 font-black text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-mint-500/20 border border-mint-400/50 text-mint-300 font-black text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-mint-400 animate-ping" />
             STÜNDLICHER LIVE-PORTAL-SYNC AKTIV
           </span>
           <span className="text-gray-300 hidden sm:inline">
@@ -103,12 +103,12 @@ export function LivePortalSyncBanner({ totalProfiles = 180 }: { totalProfiles?: 
               key={p.name}
               className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-[11px]"
             >
-              <CheckCircle2 size={11} className="text-emerald-400 shrink-0" />
+              <CheckCircle2 size={11} className="text-mint-400 shrink-0" />
               <span className="font-bold text-white">{p.name}</span>
               <span className="text-gray-400">({p.ago})</span>
             </div>
           ))}
-          <div className="flex items-center gap-1 bg-[#C69C6D]/15 border border-[#C69C6D]/40 text-[#D5A021] font-mono font-bold px-2.5 py-0.5 rounded-lg text-[11px]">
+          <div className="flex items-center gap-1 bg-[#ff6b5e]/15 border border-[#ff6b5e]/40 text-[#ff6b5e] font-mono font-bold px-2.5 py-0.5 rounded-lg text-[11px]">
             <RefreshCw size={11} className="animate-spin" />
             Nächster Scan: {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
           </div>

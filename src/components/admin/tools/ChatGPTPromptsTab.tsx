@@ -217,7 +217,7 @@ export function ChatGPTPromptsTab() {
             <Card key={item.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">
-                  <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+                  <div className="p-2 bg-gradient-to-br from-dusk-500 to-glow-500 rounded-lg">
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <span className="text-xs text-gray-500 dark:text-gray-400">{item.duration}</span>
@@ -233,7 +233,7 @@ export function ChatGPTPromptsTab() {
                 >
                   {isCopied ? (
                     <>
-                      <Check className="w-4 h-4 mr-2 text-green-600" />
+                      <Check className="w-4 h-4 mr-2 text-mint-600" />
                       Copied!
                     </>
                   ) : (
@@ -249,7 +249,7 @@ export function ChatGPTPromptsTab() {
         })}
       </div>
 
-      <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+      <Card className="bg-lake-50 dark:bg-lake-950 border-lake-200 dark:border-lake-800">
         <CardHeader>
           <CardTitle className="text-lg">💡 Usage Tips</CardTitle>
         </CardHeader>

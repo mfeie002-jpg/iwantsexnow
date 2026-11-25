@@ -1,177 +1,131 @@
-import React, { useMemo } from "react";
-import Link from "next/link";
+import React, { useState, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
+import { PageIntro } from "@/components/PageIntro";
+import { SwissDoorplate } from "@/components/SwissDoorplate";
 import offersData from "@/data/harvested-offers.json";
-import { MapPin, CheckCircle2, ArrowRight, ShieldCheck, Info, Sparkles } from "lucide-react";
-
-const CANTON_NAMES: Record<string, string> = {
-  ZH: "Zürich",
-  ZG: "Zug & Cham",
-  GE: "Genève (Romandie)",
-  VD: "Lausanne & Waadt",
-  BS: "Basel-Stadt",
-  AG: "Aargau & Baden",
-  BE: "Bern & Biel",
-  LU: "Luzern",
-  SG: "St. Gallen",
-  TI: "Lugano & Tessin",
-  SO: "Solothurn & Olten",
-  VS: "Wallis",
-  TG: "Thurgau",
-  SZ: "Schwyz & Pfäffikon",
-};
+import { ShieldCheck, Calculator } from "lucide-react";
 
 export default function SwissPricingCompassPage() {
-  const cantonBenchmarks = useMemo(() => {
-    const all = (offersData as any[]) || [];
-    const grouped: Record<string, { count: number; sum30: number; sum60: number }> = {};
+  const [selectedCanton, setSelectedCanton] = useState("ZH");
+  const [durationMins, setDurationMins] = useState(60);
 
-    for (const o of all) {
+  const cantonStats = useMemo(() => {
+    const raw = (offersData as any[]) || [];
+    const map: Record<string, { count: number; sum60: number; sum30: number; min60: number; max60: number }> = {};
+
+    for (const o of raw) {
       const c = String(o.canton || "ZH").toUpperCase();
-      if (!grouped[c]) grouped[c] = { count: 0, sum30: 0, sum60: 0 };
-      const r60 = Number(o.advertisedBaseChf) || 350;
-      const r30 = Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10;
-      grouped[c].count += 1;
-      grouped[c].sum30 += r30;
-      grouped[c].sum60 += r60;
+      const r60 = Math.max(150, Math.min(1000, Number(o.advertisedBaseChf) || 350));
+      const r30 = Math.max(100, Math.min(600, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
+      if (!map[c]) map[c] = { count: 0, sum60: 0, sum30: 0, min60: 9999, max60: 0 };
+      map[c].count++;
+      map[c].sum60 += r60;
+      map[c].sum30 += r30;
+      if (r60 < map[c].min60) map[c].min60 = r60;
+      if (r60 > map[c].max60) map[c].max60 = r60;
     }
 
-    return Object.entries(grouped)
-      .filter(([_, v]) => v.count >= 5)
-      .map(([canton, v]) => ({
+    return Object.entries(map)
+      .map(([canton, st]) => ({
         canton,
-        label: CANTON_NAMES[canton] || `Kanton ${canton}`,
-        count: v.count,
-        avg30: Math.round(v.sum30 / v.count / 10) * 10,
-        avg60: Math.round(v.sum60 / v.count / 10) * 10,
-        avgOutcall: Math.round((v.sum60 / v.count + 70) / 10) * 10,
+        count: st.count,
+        avg60: Math.round(st.sum60 / st.count / 10) * 10,
+        avg30: Math.round(st.sum30 / st.count / 10) * 10,
+        min60: st.min60,
+        max60: st.max60,
       }))
       .sort((a, b) => b.count - a.count);
   }, []);
 
+  const currentStat = cantonStats.find((s) => s.canton === selectedCanton) || cantonStats[0] || { avg60: 350, avg30: 200 };
+  const baseCalc = durationMins === 30 ? currentStat.avg30 : durationMins === 60 ? currentStat.avg60 : Math.round((currentStat.avg60 * (durationMins / 60) * 0.9) / 10) * 10;
+  const finalEstimate = baseCalc;
+
   return (
-    <div className="min-h-screen bg-[#0D111A] text-[#F5F2EB] pb-24">
+    <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
-        title="Schweizer Escort Preise 2026: 30 Min. & 60 Min. CHF-Richtwerte nach Kanton | iwantsexnow.ch"
-        description="Was kostet ein Escort oder eine erotische Massage in Zürich, Zug, Basel, Bern, Genf und Lugano? Echter Schweizer Preisvergleich (30 Min. / 60 Min. / Hotel-Outcall) aus 2.526 Profilen."
-        url="https://iwantsexnow.ch/pricing"
+        title="Schweizer CHF-Honorar-Kompass (30 Min. / 60 Min. Richtpreise) | iwantsexnow.ch"
+        description="Live-Marktauswertung über 2'529+ Schweizer Escort- und Tantra-Profile nach Kanton (Zürich, Zug, Genf, Basel, Tessin) gemäss Preisbekanntgabeverordnung."
       />
       <LuxuryHeader />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        {/* Hero */}
-        <section className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 space-y-4">
-          <div className="text-[11px] uppercase tracking-widest text-[#C8A97E] font-bold">
-            TRANSPARENTER SCHWEIZER HONORAR-KOMPASS 2026 · DATENBASIS: 2.526 PROFILE
+      <PageIntro tone="butter" note="Ehrlich gerechnet" art="canton:zh" title={<>Schweizer CHF-Honorar-Kompass & Tarifrechner</>}
+        lead={<>Durchschnitt der 30- und 60-Minuten-Angaben im Verzeichnis, nach Kanton. Fahrtkosten bei einem Besuch stehen nicht in den Einträgen.</>}>
+        <div className="text-right font-mono text-[13px] text-mint-700 font-bold flex items-center gap-1.5">
+            <ShieldCheck size={15} />
+            <span>0 % BUCHUNGSKOMMISSION</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
-            Schweizer Escort- & Massage-Richtpreise im Kantonsvergleich (CHF)
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-3xl">
-            Auf herkömmlichen Schweizer Portalen fehlen oft klare Preisangaben für 30 vs. 60 Minuten oder Zuschläge für Hotelbesuche (Outcall). Diese Übersicht zeigt dir die real berechneten Durchschnittswerte aus 2.526 aktiven Schweizer Profilen – und daneben das 100 % kostenlose Selbstverwaltungs-Modell für Anbieterinnen.
-          </p>
-        </section>
+      </PageIntro>
 
-        {/* Kantonale Preis-Tabelle (SEO-Magnet für "Escort Zürich Preise" / "Escort Zug Kosten") */}
-        <section className="bg-[#121722] border border-white/10 rounded-2xl p-6 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-white">
-              1. Durchschnittliche Kunden-Honorare nach Schweizer Kanton (Incall vs. Hotel-Outcall)
-            </h2>
-            <span className="text-xs text-emerald-400 font-semibold">● Direktkontakt ohne Agentur-Provision</span>
-          </div>
+      <main className="guide">
+        
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-white/10 text-gray-400 uppercase text-[10px]">
-                  <th className="py-3 px-3">Kanton & Region</th>
-                  <th className="py-3 px-3">Aktive Profile</th>
-                  <th className="py-3 px-3">Ø 30 Min. (Privat / Incall)</th>
-                  <th className="py-3 px-3">Ø 60 Min. (Privat / Incall)</th>
-                  <th className="py-3 px-3">Ø 60 Min. (Hotel / Outcall)</th>
-                  <th className="py-3 px-3 text-right">Direktvergleich</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/10">
-                {cantonBenchmarks.map((row) => (
-                  <tr key={row.canton} className="hover:bg-white/5">
-                    <td className="py-3.5 px-3 font-bold text-white">
-                      <span className="px-2 py-0.5 rounded bg-[#C8A97E]/20 text-[#C8A97E] mr-2">{row.canton}</span>
-                      {row.label}
-                    </td>
-                    <td className="py-3.5 px-3 text-gray-300">{row.count} Profile</td>
-                    <td className="py-3.5 px-3 font-semibold text-gray-200">CHF {row.avg30}.–</td>
-                    <td className="py-3.5 px-3 font-extrabold text-[#C8A97E]">CHF {row.avg60}.–</td>
-                    <td className="py-3.5 px-3 text-gray-300">ca. CHF {row.avgOutcall}.– (inkl. Anfahrt)</td>
-                    <td className="py-3.5 px-3 text-right">
-                      <Link
-                        href={`/?canton=${encodeURIComponent(row.canton)}`}
-                        className="text-[#C8A97E] hover:underline font-bold inline-flex items-center gap-1"
-                      >
-                        Alle {row.count} in {row.canton} →
-                      </Link>
-                    </td>
-                  </tr>
+        {/* Interaktiver Schweizer Honorar-Rechner */}
+        <section className="penthouse-panel p-6 rounded-[24px] border border-kirsche/50 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="text-[13px] font-mono text-kirsche font-bold flex items-center gap-2">
+              <Calculator size={15} />
+              <span>Interaktiver Schweizer Honorar-Rechner</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <select
+                value={selectedCanton}
+                onChange={(e) => setSelectedCanton(e.target.value)}
+                className="rounded-full bg-white border border-kirsche/40 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none"
+              >
+                {cantonStats.map((s) => (
+                  <option key={s.canton} value={s.canton} className="bg-papier">
+                    KANTON {s.canton} ({s.count} Suiten)
+                  </option>
                 ))}
-              </tbody>
-            </table>
+              </select>
+
+              <select
+                value={durationMins}
+                onChange={(e) => setDurationMins(Number(e.target.value))}
+                className="rounded-full bg-white border border-kirsche/40 px-4 py-2.5 text-[13px] font-mono font-bold text-kirsche outline-none"
+              >
+                <option value={30} className="bg-papier">Dauer: 30 Min. Express</option>
+                <option value={60} className="bg-papier">Dauer: 60 Min. Standard</option>
+                <option value={120} className="bg-papier">Dauer: 120 Min. Dinner</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-white border border-kirsche text-center space-y-1">
+            <div className="text-[13px] font-mono text-tinte-soft">
+              MARKTÜBLICHER RICHTWERT ({selectedCanton})
+            </div>
+            <div className="font-serif font-mono text-3xl sm:text-4xl text-kirsche font-bold">
+              CHF {finalEstimate}.–
+            </div>
+            <div className="text-[13px] font-mono text-mint-700">
+              Direktzahlung vor Ort (Bar / TWINT)
+            </div>
           </div>
         </section>
 
-        {/* Für Anbieterinnen: 0 CHF Basisprofil + 80/20 Creator-Modell statt teurer Portal-Abos */}
-        <section className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-[#121722] border border-emerald-500/40 space-y-4 flex flex-col justify-between">
-            <div className="space-y-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold uppercase">
-                FÜR ANBIETERINNEN & STUDIOS · DAUERHAFT KOSTENLOS
-              </span>
-              <h3 className="text-xl font-serif font-bold text-white">
-                Selbstverwaltetes Direktprofil: CHF 0.– / Monat
-              </h3>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Anders als bei klassischen Inserateportalen zahlst du auf iwantsexnow.ch keine monatlichen Fixgebühren von CHF 150–400, nur um deine eigenen Fotos, Preise und deine Telefonnummer aktuell zu halten.
-              </p>
-              <ul className="space-y-1.5 text-xs text-gray-200 pt-2">
-                <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-400" /> Eigene +41 Nummer, 30m/60m Preise & Bio jederzeit ändern</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-400" /> 1-Klick „Jetzt für 4 Stunden verfügbar“-Echtzeitschalter</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-400" /> 0 % Provision auf deine direkten Treffen & WhatsApp-Kontakte</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-400" /> Kostenlose „✓ Identität geprüft“-Verifizierung</li>
-              </ul>
+        {/* Kantonale Preistafel */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {cantonStats.map((st) => (
+            <div key={st.canton} className="valentina-outer-card rounded-[20px] p-2">
+              <div className="rounded-[15px] border border-kirsche/30 bg-papier p-4 space-y-2.5 font-mono text-[13px]">
+                <div className="flex items-center justify-between">
+                  <SwissDoorplate state="FREI" roomNumber={st.canton} customLabel={st.count + " DOSSIERS"} size="sm" />
+                  <span className="text-kirsche font-bold">Ø CHF {st.avg60}.– / 60M</span>
+                </div>
+                <div className="flex justify-between text-[13px] text-tinte-soft pt-2 border-t border-tinte/20">
+                  <span>30 Min. Express Ø:</span>
+                  <strong className="text-tinte">CHF {st.avg30}.–</strong>
+                </div>
+                <div className="flex justify-between text-[13px] text-tinte-soft">
+                  <span>Bandbreite (60 Min.):</span>
+                  <strong className="text-kirsche">CHF {st.min60} – {st.max60}</strong>
+                </div>
+              </div>
             </div>
-            <Link
-              href="/create-post"
-              className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#07120B] font-extrabold text-xs uppercase tracking-wider text-center block"
-            >
-              Eigenes Profil jetzt kostenlos übernehmen oder anlegen →
-            </Link>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-[#121722] border border-[#C8A97E]/40 space-y-4 flex flex-col justify-between">
-            <div className="space-y-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-[#C8A97E]/20 text-[#C8A97E] text-[10px] font-extrabold uppercase">
-                OPTIONALER ZUSATZ-UMSATZ · 80 % AUSZAHLUNG AN DICH
-              </span>
-              <h3 className="text-xl font-serif font-bold text-white">
-                Paid-Content-Vault (PPV), 1:1 Live-Cam & Top-Spot
-              </h3>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Verdiene zusätzlich auch ohne physisches Treffen: Verkaufe gesperrte 4K-Videos & Foto-Sets oder biete diskrete 1:1 Video-Calls direkt über dein Profil an.
-              </p>
-              <ul className="space-y-1.5 text-xs text-gray-200 pt-2">
-                <li className="flex items-center gap-2"><Sparkles size={14} className="text-[#C8A97E]" /> <strong>80 % Netto-Auszahlung</strong> bei allen Paid-Content- & Video-Verkäufen</li>
-                <li className="flex items-center gap-2"><Sparkles size={14} className="text-[#C8A97E]" /> <strong>80 % Netto-Auszahlung</strong> bei 1:1 Live-Cam-Minuten (z.B. CHF 6/Min.)</li>
-                <li className="flex items-center gap-2"><Sparkles size={14} className="text-[#C8A97E]" /> <strong>30 Tage Gratis-Pilot-Boost</strong> für Top-Platzierungen in Zug & Zürich</li>
-              </ul>
-            </div>
-            <Link
-              href="/login"
-              className="w-full py-3.5 rounded-xl bg-[#C8A97E] hover:bg-[#b89566] text-[#0D111A] font-extrabold text-xs uppercase tracking-wider text-center block"
-            >
-              Ins Anbieter-Cockpit einloggen →
-            </Link>
-          </div>
+          ))}
         </section>
       </main>
     </div>

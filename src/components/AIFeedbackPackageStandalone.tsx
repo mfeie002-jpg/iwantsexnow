@@ -197,7 +197,7 @@ export function AIFeedbackPackageStandalone() {
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Package className="w-6 h-6 text-purple-600" />
+          <Package className="w-6 h-6 text-dusk-600" />
           AI Feedback Package Generator
         </CardTitle>
         <CardDescription>
@@ -306,14 +306,14 @@ export function AIFeedbackPackageStandalone() {
           </Alert>
         )}
         {success && (
-          <Alert className="bg-green-50 text-green-900 border-green-200">
+          <Alert className="bg-mint-50 text-mint-900 border-mint-200">
             <AlertTitle>Success</AlertTitle>
             <AlertDescription>{success}</AlertDescription>
           </Alert>
         )}
 
         <Button 
-          className="w-full h-12 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
+          className="w-full h-12 text-lg bg-gradient-to-r from-dusk-600 to-glow-600 hover:from-dusk-700 hover:to-glow-700" 
           onClick={generatePackage}
           disabled={loading}
         >

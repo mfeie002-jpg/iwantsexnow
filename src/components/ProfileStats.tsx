@@ -37,7 +37,7 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
     { name: "45+", value: 15 }
   ];
 
-  const COLORS = ["#EC4899", "#9333EA", "#F59E0B", "#10B981"];
+  const COLORS = ["#ff5a8a", "#8a7bff", "#ff6b5e", "#4fd1b0"];
 
   return (
     <div className="space-y-6">
@@ -45,11 +45,11 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-              <Eye className="text-blue-600" size={24} />
+            <div className="w-12 h-12 rounded-full bg-lake-100 flex items-center justify-center">
+              <Eye className="text-lake-600" size={24} />
             </div>
             <div>
-              <div className="text-2xl font-black text-blue-600">332</div>
+              <div className="text-2xl font-black text-lake-600">332</div>
               <div className="text-xs text-gray-600">Profile Views</div>
             </div>
           </div>
@@ -57,11 +57,11 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
 
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
-              <Heart className="text-pink-600" size={24} />
+            <div className="w-12 h-12 rounded-full bg-glow-100 flex items-center justify-center">
+              <Heart className="text-glow-600" size={24} />
             </div>
             <div>
-              <div className="text-2xl font-black text-pink-600">88</div>
+              <div className="text-2xl font-black text-glow-600">88</div>
               <div className="text-xs text-gray-600">Total Likes</div>
             </div>
           </div>
@@ -69,11 +69,11 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
 
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-              <MessageCircle className="text-purple-600" size={24} />
+            <div className="w-12 h-12 rounded-full bg-dusk-100 flex items-center justify-center">
+              <MessageCircle className="text-dusk-600" size={24} />
             </div>
             <div>
-              <div className="text-2xl font-black text-purple-600">85</div>
+              <div className="text-2xl font-black text-dusk-600">85</div>
               <div className="text-xs text-gray-600">Messages</div>
             </div>
           </div>
@@ -81,11 +81,11 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
 
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-              <Users className="text-green-600" size={24} />
+            <div className="w-12 h-12 rounded-full bg-mint-100 flex items-center justify-center">
+              <Users className="text-mint-600" size={24} />
             </div>
             <div>
-              <div className="text-2xl font-black text-green-600">23</div>
+              <div className="text-2xl font-black text-mint-600">23</div>
               <div className="text-xs text-gray-600">Matches</div>
             </div>
           </div>
@@ -99,18 +99,18 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
             <h3 className="text-xl font-bold">Weekly Activity</h3>
             <p className="text-sm text-gray-600">Profile views and likes over the past week</p>
           </div>
-          <TrendingUp className="text-green-600" size={24} />
+          <TrendingUp className="text-mint-600" size={24} />
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={profileViewsData}>
             <defs>
               <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#EC4899" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#EC4899" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#ff5a8a" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#ff5a8a" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorLikes" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#9333EA" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#9333EA" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#8a7bff" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#8a7bff" stopOpacity={0}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" />
@@ -118,8 +118,8 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Area type="monotone" dataKey="views" stroke="#EC4899" fillOpacity={1} fill="url(#colorViews)" name="Profile Views" />
-            <Area type="monotone" dataKey="likes" stroke="#9333EA" fillOpacity={1} fill="url(#colorLikes)" name="Likes" />
+            <Area type="monotone" dataKey="views" stroke="#ff5a8a" fillOpacity={1} fill="url(#colorViews)" name="Profile Views" />
+            <Area type="monotone" dataKey="likes" stroke="#8a7bff" fillOpacity={1} fill="url(#colorLikes)" name="Likes" />
           </AreaChart>
         </ResponsiveContainer>
       </Card>
@@ -128,7 +128,7 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
         {/* Peak Activity Hours */}
         <Card className="p-6">
           <div className="flex items-center gap-2 mb-6">
-            <Calendar className="text-pink-600" size={24} />
+            <Calendar className="text-glow-600" size={24} />
             <div>
               <h3 className="text-xl font-bold">Peak Activity Times</h3>
               <p className="text-sm text-gray-600">Best times to get noticed</p>
@@ -141,8 +141,8 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="views" fill="#EC4899" name="Profile Views" />
-              <Bar dataKey="messages" fill="#9333EA" name="Messages" />
+              <Bar dataKey="views" fill="#ff5a8a" name="Profile Views" />
+              <Bar dataKey="messages" fill="#8a7bff" name="Messages" />
             </BarChart>
           </ResponsiveContainer>
         </Card>
@@ -150,7 +150,7 @@ export function ProfileStats({ userId }: ProfileStatsProps) {
         {/* Viewer Demographics */}
         <Card className="p-6">
           <div className="flex items-center gap-2 mb-6">
-            <Users className="text-purple-600" size={24} />
+            <Users className="text-dusk-600" size={24} />
             <div>
               <h3 className="text-xl font-bold">Who Viewed Your Profile</h3>
               <p className="text-sm text-gray-600">Age distribution of viewers</p>

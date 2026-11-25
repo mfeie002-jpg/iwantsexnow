@@ -40,7 +40,7 @@ export function EscortGrid({
                 Alle Profile mit bestätigter Identität, Originalfotos und direkter Kontaktmöglichkeit ohne Agentur-Gebühren.
               </p>
             </div>
-            <Link href="/compare-escorts" className="text-sm font-bold text-[#D5A021] hover:underline">
+            <Link href="/compare-escorts" className="text-sm font-bold text-[#ff6b5e] hover:underline">
               Tabellarischen Preis- & Portalvergleich öffnen →
             </Link>
           </div>
@@ -49,8 +49,8 @@ export function EscortGrid({
             {escorts.map((escort) => (
               <Card
                 key={escort.id}
-                className={`overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-[#C69C6D]/50 ${
-                  escort.topAd ? 'border-2 border-[#C69C6D]/60 shadow-2xl shadow-black/40' : ''
+                className={`overflow-hidden bg-white/5 backdrop-blur-sm border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-[#ff6b5e]/50 ${
+                  escort.topAd ? 'border-2 border-[#ff6b5e]/60 shadow-2xl shadow-black/40' : ''
                 }`}
               >
                 <div className="flex flex-col md:flex-row gap-6 p-6">
@@ -62,37 +62,37 @@ export function EscortGrid({
                     />
                     {escort.topAd && (
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-[#C69C6D] text-[#0D1B2A] border-0 font-black text-xs px-3 py-1.5 shadow-xl">
+                        <Badge className="bg-[#ff6b5e] text-[#0d1f27] border-0 font-black text-xs px-3 py-1.5 shadow-xl">
                           TOP VERIFIZIERT
                         </Badge>
                       </div>
                     )}
                     <div className="absolute top-3 right-3">
-                      <Badge className="bg-black/80 text-amber-300 border border-amber-400/30 text-xs px-2.5 py-1">
+                      <Badge className="bg-black/80 text-sun-300 border border-sun-400/30 text-xs px-2.5 py-1">
                         {escort.portalsCount ? `Auf ${escort.portalsCount} Portalen · Bester Preis hier` : "Direktprofil"}
                       </Badge>
                     </div>
                     <div className="absolute bottom-3 left-3 right-3 flex gap-2 flex-wrap">
                       {escort.verified && (
-                        <Badge className="bg-emerald-600 border-0 text-xs text-white">
+                        <Badge className="bg-mint-600 border-0 text-xs text-white">
                           <Shield size={11} className="mr-1" />
                           ID Geprüft
                         </Badge>
                       )}
                       {escort.verifiedPhotos && (
-                        <Badge className="bg-blue-600 border-0 text-xs text-white">
+                        <Badge className="bg-lake-600 border-0 text-xs text-white">
                           <CheckCircle size={11} className="mr-1" />
                           100% Echte Fotos
                         </Badge>
                       )}
                       {escort.hasVideo && (
-                        <Badge className="bg-purple-600 border-0 text-xs text-white">
+                        <Badge className="bg-dusk-600 border-0 text-xs text-white">
                           <Play size={11} className="mr-1" />
                           Video-Check
                         </Badge>
                       )}
                       {escort.available && (
-                        <Badge className="bg-emerald-500 border-0 text-xs text-white">
+                        <Badge className="bg-mint-500 border-0 text-xs text-white">
                           <div className="w-2 h-2 bg-white rounded-full mr-1.5 animate-pulse" />
                           Heute verfügbar
                         </Badge>
@@ -113,7 +113,7 @@ export function EscortGrid({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 text-[#D5A021] text-sm mb-3 font-semibold">
+                      <div className="flex items-center gap-2 text-[#ff6b5e] text-sm mb-3 font-semibold">
                         <MapPin size={15} />
                         <span>{escort.locations.join(" · ")}</span>
                         <span className="text-gray-400 font-normal">({escort.availability})</span>
@@ -125,7 +125,7 @@ export function EscortGrid({
 
                       <div className="flex flex-wrap gap-2 mb-3">
                         {escort.services.map((service: string, idx: number) => (
-                          <Badge key={idx} variant="outline" className="border-emerald-500/40 bg-emerald-950/30 text-emerald-300 text-xs">
+                          <Badge key={idx} variant="outline" className="border-mint-500/40 bg-mint-950/30 text-mint-300 text-xs">
                             ✓ {service} inklusive
                           </Badge>
                         ))}
@@ -135,7 +135,7 @@ export function EscortGrid({
                         <span>Sprachen: <strong className="text-gray-200">{escort.languages.join(", ")}</strong></span>
                         <span>·</span>
                         <div className="flex items-center gap-1">
-                          <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                          <Star size={14} className="text-sun-500 fill-sun-500" />
                           <span className="text-white font-bold">{escort.rating.toFixed(1)}</span>
                           <span>({escort.reviews} verifizierte Bewertungen)</span>
                         </div>
@@ -146,7 +146,7 @@ export function EscortGrid({
                       <div>
                         <div className="text-xs text-gray-400">Direkt-Tarif (1 Std. inkl. Basis-Services)</div>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black text-[#D5A021]">CHF {escort.rate}</span>
+                          <span className="text-2xl font-black text-[#ff6b5e]">CHF {escort.rate}</span>
                           {escort.portalAvgRate && (
                             <span className="text-xs text-gray-400 line-through">
                               Drittportale Ø CHF {escort.portalAvgRate}
@@ -164,11 +164,11 @@ export function EscortGrid({
                             toggleFavorite(escort.id);
                           }}
                         >
-                          <Heart size={16} className={favorites.includes(escort.id) ? "fill-rose-600 text-rose-600" : ""} />
+                          <Heart size={16} className={favorites.includes(escort.id) ? "fill-glow-600 text-glow-600" : ""} />
                         </Button>
                         <Button
                           size="sm"
-                          className="bg-[#C69C6D] hover:bg-[#b5895a] text-[#0D1B2A] font-bold"
+                          className="bg-[#ff6b5e] hover:bg-[#e8564a] text-[#0d1f27] font-bold"
                           asChild
                         >
                           <Link href={`/profile/${escort.id}`}>
@@ -189,7 +189,7 @@ export function EscortGrid({
               <Search size={64} className="mx-auto text-gray-500 mb-4" />
               <h3 className="text-2xl font-bold text-white mb-2">Keine passenden Profile für diesen Filter</h3>
               <p className="text-gray-400 mb-6">Setze die Filter zurück, um alle verifizierten Anbieterinnen in Zürich, Zug & Schweiz zu sehen.</p>
-              <Button onClick={resetFilters} className="bg-[#C69C6D] text-[#0D1B2A] font-bold hover:bg-[#b5895a]">
+              <Button onClick={resetFilters} className="bg-[#ff6b5e] text-[#0d1f27] font-bold hover:bg-[#e8564a]">
                 Alle Filter zurücksetzen
               </Button>
             </Card>

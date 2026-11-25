@@ -62,10 +62,10 @@ export function RecentVisitors() {
     <Card className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Eye className="text-pink-600" size={24} />
+          <Eye className="text-glow-600" size={24} />
           <h3 className="text-xl font-bold">Recent Visitors</h3>
         </div>
-        <Badge className="bg-pink-600">{visitors.length} new</Badge>
+        <Badge className="bg-glow-600">{visitors.length} new</Badge>
       </div>
 
       <div className="space-y-3">
@@ -78,10 +78,10 @@ export function RecentVisitors() {
                 className="w-16 h-16 rounded-full object-cover"
               />
               {visitor.online && (
-                <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 bg-mint-500 rounded-full border-2 border-white" />
               )}
               {visitor.verified && (
-                <div className="absolute top-0 right-0 bg-blue-500 text-white rounded-full p-0.5">
+                <div className="absolute top-0 right-0 bg-lake-500 text-white rounded-full p-0.5">
                   <Star size={12} fill="white" />
                 </div>
               )}
@@ -90,7 +90,7 @@ export function RecentVisitors() {
               <div className="flex items-center gap-2 mb-1">
                 <h4 className="font-bold text-sm">{visitor.name}, {visitor.age}</h4>
                 {visitor.online && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
+                  <Badge variant="secondary" className="bg-mint-100 text-mint-700 text-xs">
                     Online
                   </Badge>
                 )}

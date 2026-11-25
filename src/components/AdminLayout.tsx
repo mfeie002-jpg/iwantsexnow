@@ -76,48 +76,26 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-purple-600 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Checking authentication...</p>
-        </div>
+      <div className="flex min-h-screen items-center justify-center bg-papier text-tinte">
+        <p>Anmeldung wird geprüft…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-purple-950 dark:to-pink-950">
-      {/* Admin Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Shield className="w-6 h-6 text-purple-600" />
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                Admin Panel
-              </h1>
-            </div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {userEmail}
-            </span>
-          </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleLogout}
-            className="gap-2"
-          >
-            <LogOut className="w-4 h-4" />
-            Logout
-          </Button>
+    <div className="min-h-screen bg-papier text-tinte">
+      <header className="site-header">
+        <div className="site-header-bar">
+          <p className="wordmark">
+            Verwaltung<span>.</span>
+          </p>
+          <span className="text-link">{userEmail}</span>
+          <button type="button" className="brass-button" onClick={handleLogout}>
+            Abmelden
+          </button>
         </div>
       </header>
-
-      {/* Content */}
-      <main>
-        {children}
-      </main>
+      <main className="cockpit">{children}</main>
     </div>
   );
 }
