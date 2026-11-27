@@ -1,3 +1,4 @@
+import { assertVerifiedAiOptIn } from "@/lib/supabaseAdmin";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const SCENE_TEMPLATES: Record<string, { title: string; prompt: string }> = {
