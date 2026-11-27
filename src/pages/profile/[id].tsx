@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Heart, ImageIcon, MapPin, Phone, Scale, ExternalLink, Flag } from "lucide-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { ArrowLeft, ArrowRight, Heart, ImageIcon, MapPin, Phone, Scale, ExternalLink, Flag, Expand, X } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
+import { stepPhotoIndex } from "@/components/night/profile-experience-model";
 import { cleanSwissPhone, getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate, isVisibleProfile, safeExternalUrl } from "@/lib/night-catalogue";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -22,7 +24,8 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
   const catalogue = useCatalogue();
   const offer = catalogue.visibleOffers.some(item => getProfileId(item) === profileId) ? profile : null;
   const [activePhoto, setActivePhoto] = useState(0);
-  useEffect(() => setActivePhoto(0), [profileId]);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  useEffect(() => { setActivePhoto(0); setGalleryOpen(false); }, [profileId]);
   if (!offer) return <section className="night-container night-section"><SEO title="Profil nicht verfügbar | iwantsexnow.ch" /><div className="night-empty"><h1>Profil nicht verfügbar</h1><p>Dieser Eintrag kann zurzeit nicht angezeigt werden.</p><Link href="/search" className="night-button">Zur Übersicht</Link></div></section>;
 
   const state = catalogue.states[profileId] || {};
@@ -41,10 +44,19 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
   return <main id="main" className="night-container night-section night-profile-page">
     <SEO title={`${name} · ${city} | iwantsexnow.ch`} description={`Informationen zu ${name}: Standort, vorhandene Bildquellen und Kontaktangaben im Schweizer Verzeichnis.`} url={canonical} />
     <div className="night-row night-profile-breadcrumb"><Link href="/search" className="night-text-button"><ArrowLeft size={16} /> Zur Übersicht</Link><Link href={`/report?id=${encodeURIComponent(profileId)}`} className="night-text-button"><Flag size={15} /> Eintrag melden</Link></div>
+    <nav className="night-profile-jump" aria-label="Auf dieser Profilseite"><a href="#profile-photos">Bilder</a><a href="#profile-details">Angaben</a><a href="#contact-title">Kontakt</a></nav>
     {catalogue.error && <p className="night-note" role="status">{catalogue.error}</p>}
     <div className="night-profile-layout">
-      <section className="night-gallery" aria-label="Profilbilder">
-        <div className="night-gallery-main"><ProfileImage key={`${profileId}-${photo || "none"}`} photos={photo ? [photo, ...photos.filter(candidate => candidate !== photo)] : []} alt={`Profilfoto zu ${name}`} eager /></div>
+      <section className="night-gallery" id="profile-photos" aria-label="Profilbilder">
+        <Dialog.Root open={galleryOpen} onOpenChange={setGalleryOpen}>
+          <div className="night-gallery-main"><ProfileImage key={`${profileId}-${photo || "none"}`} photos={photo ? [photo] : []} alt={`Profilfoto zu ${name}`} eager />{photos.length > 0 && <Dialog.Trigger asChild><button type="button" className="night-gallery-expand"><Expand size={17} aria-hidden="true" /> Bilder gross ansehen <span>{photos.length}</span></button></Dialog.Trigger>}</div>
+          <Dialog.Portal><Dialog.Overlay className="night-gallery-overlay"/><Dialog.Content className="night-gallery-dialog" onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); setActivePhoto(current => stepPhotoIndex(current, event.key === 'ArrowLeft' ? -1 : 1, photos.length)); } }}>
+            <div className="night-gallery-dialog-heading"><div><Dialog.Title>Profilbilder</Dialog.Title><Dialog.Description>{name} · Bilder aus hinterlegten Quellen</Dialog.Description></div><Dialog.Close className="night-icon-button" aria-label="Bilderansicht schliessen"><X aria-hidden="true"/></Dialog.Close></div>
+            <div className="night-gallery-stage"><ProfileImage key={`expanded-${profileId}-${photo || 'none'}`} photos={photo ? [photo] : []} alt={`Profilfoto ${Math.min(activePhoto + 1, photos.length)} zu ${name}`} eager/></div>
+            <div className="night-gallery-controls"><button type="button" className="night-icon-button" disabled={photos.length < 2} aria-label="Vorheriges Bild" onClick={() => setActivePhoto(current => stepPhotoIndex(current, -1, photos.length))}><ArrowLeft aria-hidden="true"/></button><p aria-live="polite" aria-atomic="true">Bild <strong>{Math.min(activePhoto + 1, photos.length)}</strong> von {photos.length}</p><button type="button" className="night-icon-button" disabled={photos.length < 2} aria-label="Nächstes Bild" onClick={() => setActivePhoto(current => stepPhotoIndex(current, 1, photos.length))}><ArrowRight aria-hidden="true"/></button></div>
+            <p className="night-gallery-disclaimer">Die Bildzuordnung ist keine Identitätsprüfung. Nicht erreichbare Bilder bleiben als fehlend gekennzeichnet.</p>
+          </Dialog.Content></Dialog.Portal>
+        </Dialog.Root>
         {photos.length > 1 && <div className="night-gallery-thumbs">{photos.map((url, index) => <button type="button" key={url} className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} aria-pressed={index === activePhoto} aria-label={`Bild ${index + 1} ansehen`}><ProfileImage photos={[url]} alt="" compact /></button>)}</div>}
         <p className="night-note"><ImageIcon size={14} aria-hidden="true" /> {photos.length ? "Bilder aus den hinterlegten Quellen. Die Zuordnung ist keine Identitätsprüfung." : "Für diesen Eintrag steht derzeit kein zugeordnetes Profilfoto bereit."}</p>
       </section>
@@ -71,7 +83,7 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
         </div></section>
       </section>
     </div>
-    <div className="night-profile-information">
+    <div className="night-profile-information" id="profile-details">
       <section className="night-surface"><p className="night-eyebrow">Hinterlegte Angaben</p><h2>Beschreibung & Einordnung</h2><p className="night-description">{description || "Für diesen Eintrag ist keine Beschreibung hinterlegt."}</p><p className="night-note">Importierte Angaben können sich ändern. Massgeblich ist die aktuelle Auskunft der Anbieterin oder des Anbieters.</p>{tags.length > 0 && <div className="night-chips">{tags.map((tag: string) => <span className="night-chip" key={tag}>{tag}</span>)}</div>}</section>
       <section className="night-surface"><p className="night-eyebrow">Auf einen Blick</p><h2>Weitere Angaben</h2><dl className="night-detail-list"><div><dt>Ort</dt><dd>{city}</dd></div><div><dt>Sprachen laut Eintrag</dt><dd>{languages.length ? languages.join(", ") : "Nicht angegeben"}</dd></div><div><dt>Identitätsprüfung</dt><dd>Kein bestätigter Nachweis angezeigt</dd></div></dl><Link href={`/report?id=${encodeURIComponent(profileId)}`} className="night-text-button">Eine Angabe korrigieren <ArrowRight size={16} /></Link></section>
     </div>

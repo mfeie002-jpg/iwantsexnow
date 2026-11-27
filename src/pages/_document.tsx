@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import { IMAGE_VISIBILITY_BOOTSTRAP } from "@/lib/night-image-visibility";
 
 export default function Document() {
   return (
@@ -24,6 +25,7 @@ export default function Document() {
         <meta name="msapplication-TileImage" content="/logo_256x256.png" />
       </Head>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: IMAGE_VISIBILITY_BOOTSTRAP }} />
         <Main />
         <NextScript />
       </body>
