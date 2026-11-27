@@ -95,7 +95,7 @@ const ZERO_TYPING_CHIPS = [
   { label: "🔥 Zürich · Direkt +41 WhatsApp", canton: "ZH", q: "", wa: true, max: 0 },
   { label: "💎 Zug & Cham · Sofort-Auswahl", canton: "ZG", q: "", wa: false, max: 0 },
   { label: "🪷 Sinnliche Tantra-Massage", canton: "ALL", q: "massage", wa: false, max: 0 },
-  { label: "🥂 Honorar bis CHF 300", canton: "ALL", q: "", wa: false, max: 300 },
+  { label: "🥂 Index-Richtwert bis CHF 300*", canton: "ALL", q: "", wa: false, max: 300 },
   { label: "⛓️ Domina & Fetisch", canton: "ALL", q: "bdsm", wa: false, max: 0 }
 ];
 
@@ -115,7 +115,7 @@ export default function HomePage() {
   const [searchFocused, setSearchFocused] = useState(false);
   const [limit, setLimit] = useState(28);
   const [xeniaReply, setXeniaReply] = useState<string>(
-    "Wähle oben einfach Stadt oder Stimmung per Fingertipp – ich filtere dir sofort echte Schweizer Profile mit klaren 30/60-Min.-Preisen heraus."
+    "Wähle Region und Thema per Fingertipp. Ich zeige passende Verzeichniseinträge; importierte Honorarwerte sind nicht automatisch bestätigte Anbieterpreise."
   );
 
   useEffect(() => {
@@ -167,8 +167,8 @@ export default function HomePage() {
       if (canton !== "ALL" && String(st?.canton || o?.canton || "").toUpperCase() !== canton) return false;
       if (onlyWhatsapp && cleanSwissDigits(st?.phoneDisplay || o?.rawPhone || "").length < 10) return false;
       if (onlyLive && !Boolean(st?.availabilityConfirmed || o?.availabilityConfirmed)) return false;
-      const r60 = Number(st?.rate60Chf || o?.advertisedBaseChf || 350);
-      if (maxChf > 0 && r60 > maxChf) return false;
+      const r60 = Number(st?.rate60Chf || o?.advertisedBaseChf || 0);
+      if (maxChf > 0 && (!Number.isFinite(r60) || r60 <= 0 || r60 > maxChf)) return false;
       if (q) {
         const hay = [
           st?.displayName,
@@ -200,7 +200,7 @@ export default function HomePage() {
         <title>iwantsexnow.ch — Dein Erotik-, Escort- & Massage-Guide für die ganze Schweiz</title>
         <meta
           name="description"
-          content={`${allOffers.length.toLocaleString("de-CH")}+ echte Schweizer Escort-, Massage- & Studio-Profile, Top-10 Portalvergleich und Zero-Typing KI-Concierge Xenia. 0% Provision & +41 Direktkontakt.`}
+          content="Schweizer Verzeichnis für Escort-, Massage- und Studio-Angebote mit regionaler Auswahl, Quellenübersicht und Xenia als optionaler Auswahlhilfe."
         />
       </Head>
 
@@ -286,7 +286,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-sm sm:text-base text-[#E5D6DC] max-w-2xl leading-relaxed">
-              Finde, vergleiche und kontaktiere geprüfte Direktprofile, Tantra-Ateliers und Clubs ohne Umwege – geführt durch unsere Zero-Typing KI <strong className="text-[#E2B887]">Xenia</strong>, ohne ein einziges Wort tippen zu müssen.
+              Entdecke regionale Verzeichniseinträge und vergleiche die angegebenen Quellen. <strong className="text-[#E2B887]">Xenia</strong> führt dich durch die Auswahl, auch ohne Tastatur. Angaben zu Preisen und Verfügbarkeit werden nicht automatisch bestätigt.
             </p>
 
             {/* 3-Spalten Auswahlbar wie im Mockup (0 Buchstaben nötig!) */}
