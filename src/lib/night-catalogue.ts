@@ -1,6 +1,11 @@
 export type Offer = Record<string, any>;
 export type ProfileState = Record<string, any>;
-export type CatalogueFilters = { canton?: string; category?: string; q?: string; max?: number; under60?: number; price?: string; available?: boolean; wa?: boolean; sort?: string; invalid?: boolean };
+export type CatalogueFilters = { canton?: string; category?: string; service?: string; q?: string; max?: number; under60?: number; price?: string; available?: boolean; wa?: boolean; sort?: string; invalid?: boolean };
+
+export const CATALOGUE_SERVICES: Record<string,string> = {
+  gfe: 'Girlfriend Experience', outcall: 'Haus- & Hotelbesuche',
+  dinner: 'Dinner & Begleitung', couples: 'Begleitung für Paare',
+};
 
 export const REGIONS = [
   { name: 'Zürich', canton: 'ZH', slug: 'zuerich', image: 'city-zuerich.webp', href: '/escort-zurich' },
@@ -71,6 +76,18 @@ export function isVisibleProfile(offer: Offer, states: Record<string, ProfileSta
   }
   return !!id && !blockedIds.includes(id) && !state.hidden && !state.paused && !state.removedByReport && !offer?.hidden && !offer?.paused;
 }
+export function matchesCatalogueService(offer: Offer, service?: string): boolean {
+  if (!service) return true;
+  if (!Object.hasOwn(CATALOGUE_SERVICES, service)) return false;
+  if (Array.isArray(offer.services)) return offer.services.includes(service);
+  if (service === 'outcall') return offer.outcall === true;
+  const text = [offer.rawName,offer.bio,...(Array.isArray(offer.includedTags)?offer.includedTags:[])]
+    .filter(Boolean).join(' ');
+  if (service === 'gfe') return /\bgfe\b|girlfriend/i.test(text);
+  if (service === 'dinner') return /dinner|abendbegleitung/i.test(text);
+  return /paare|couples|bisex/i.test(text);
+}
+
 export function filterOffers(offers: Offer[], filters: CatalogueFilters = {}, states: Record<string, ProfileState> = {}, blockedIds: string[] = []): Offer[] {
   if (filters.invalid) return [];
   const tokens = normalizeCatalogueText(filters.q || '').split(/\s+/).filter(Boolean);
@@ -80,6 +97,7 @@ export function filterOffers(offers: Offer[], filters: CatalogueFilters = {}, st
     if (!isVisibleProfile(o, states, blockedIds)) return false;
     if (filters.canton && filters.canton !== 'ALL' && String(st.canton || o.canton || '').toUpperCase() !== filters.canton.toUpperCase()) return false;
     if (category !== 'all' && category !== 'ALL' && String(o.rubric || '') !== category) return false;
+    if (filters.service && !matchesCatalogueService(o, filters.service)) return false;
     if (filters.available && !isConfirmedAvailable(st)) return false;
     if (filters.wa && !/^41(?:7[5-9]|[2-6]\d)\d{7}$/.test(cleanSwissPhone(st.phoneDisplay || o.rawPhone))) return false;
     const rate = getProfileRate(st, 60);
@@ -108,6 +126,7 @@ export function searchHref(filters: CatalogueFilters = {}): string {
   if (filters.invalid) params.set('invalid','1');
   if (filters.canton && filters.canton !== 'ALL') params.set('canton',filters.canton);
   if (filters.category && !['all','ALL'].includes(filters.category)) params.set('category',filters.category);
+  if (filters.service) params.set('service',filters.service);
   if (filters.q) params.set('q',filters.q);
   if (filters.max && filters.max > 0) params.set('max',String(filters.max));
   if (filters.under60 && filters.under60 > 0) params.set('under60',String(filters.under60));
@@ -127,9 +146,11 @@ export function filtersFromQuery(query: Record<string, string | string[] | undef
   const timeAlias = str('now');
   const timeSelected = timeAlias === '1' || timeAlias === 'true';
   const canton = str('canton').toUpperCase();
-  const invalid = ['canton','category','q','max','max60','under60','price','available','now','wa','sort','invalid'].some(key=>Array.isArray(query[key]))
+  const service = str('service');
+  const invalid = ['canton','category','service','q','max','max60','under60','price','available','now','wa','sort','invalid'].some(key=>Array.isArray(query[key]))
     || (!!canton && canton !== 'ALL' && !CANTONS.includes(canton))
     || (!!str('category') && !['ALL',...CATEGORIES.map(c=>c.id)].includes(str('category')))
+    || (!!service && !Object.hasOwn(CATALOGUE_SERVICES, service))
     || str('q').length > 150 || !Number.isFinite(max) || max < 0
     || (query.under60 !== undefined && !validHourlyAmount(strict))
     || (query.max60 !== undefined && !validHourlyAmount(maxAlias))
@@ -144,6 +165,7 @@ export function filtersFromQuery(query: Record<string, string | string[] | undef
   return {
     canton: CANTONS.includes(canton) ? canton : 'ALL',
     category: CATEGORIES.some(c => c.id === str('category')) ? str('category') : 'all',
+    ...(service && Object.hasOwn(CATALOGUE_SERVICES, service) ? {service} : {}),
     q: str('q').slice(0,150),
     max: Number.isFinite(max) && max > 0 ? max : 0,
     ...(validHourlyAmount(strict) ? {under60:Number(strict)} : {}),
@@ -153,4 +175,18 @@ export function filtersFromQuery(query: Record<string, string | string[] | undef
     sort: ['region','price'].includes(str('sort')) ? str('sort') : 'default',
     ...(invalid ? {invalid:true} : {})
   };
+}
+
+/** Next puts the regional page's [service] slug in query.service. Only the explicit query string is a visitor selection. */
+export function discoveryFiltersFromRoute(
+  query: Record<string, string | string[] | undefined>, forced: CatalogueFilters = {}, asPath = ''
+): CatalogueFilters {
+  if (asPath.startsWith('/kategorie/')) {
+    const url = new URL(asPath, 'https://catalogue.invalid');
+    const selections = url.searchParams.getAll('service');
+    query = {...query, service:selections.length > 1 ? selections : selections[0]};
+  }
+  const selected = filtersFromQuery(query);
+  const contradictoryService = forced.service && selected.service && forced.service !== selected.service;
+  return {...selected, ...forced, ...(contradictoryService ? {invalid:true} : {})};
 }

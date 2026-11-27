@@ -10,7 +10,7 @@ import {useAvailabilityRefresh} from './use-availability-refresh';
 import {catalogueBudgetChoices} from '@/lib/night-guide-model';
 import type {InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {MAX_SAVED_SEARCHES,parseSavedSearches,removeSavedSearch,saveSearch,SAVED_SEARCH_KEY,SavedSearch} from './saved-searches';
-import {brandAsset,CANTONS,CATEGORIES,REGIONS,CatalogueFilters,filterOffers,filtersFromQuery,getProfileId,searchHref,Offer} from '@/lib/night-catalogue';
+import {brandAsset,CANTONS,CATEGORIES,CATALOGUE_SERVICES,REGIONS,CatalogueFilters,discoveryFiltersFromRoute,filterOffers,getProfileId,searchHref,Offer} from '@/lib/night-catalogue';
 
 export function RegionCards(){return <div className="night-region-grid">{REGIONS.map(r=><Link className="night-region-card" key={r.canton} href={r.href}><img src={brandAsset(r.image)} alt={`Illustration: ${r.name} am Abend`} loading="lazy"/><span><MapPin size={16}/>{r.name}</span></Link>)}</div>;}
 export function ProfileGrid({offers,limit=24,density='detail'}:{offers:Offer[];limit?:number;density?:'detail'|'compact'}){
@@ -32,16 +32,6 @@ export const serviceConfigs:Record<string,{name:string;category?:string;service?
  'trans-escort':{name:'Trans Escort',category:'trans',image:'category-trans.webp'},
  'paare-und-bisex':{name:'Begleitung für Paare',service:'couples',image:'category-clubs.webp'},
 };
-export function serviceMatches(o:Offer,service?:string){
- if(!service)return true;
- if(Array.isArray(o.services))return o.services.includes(service);
- const terms=[o.rawName,o.bio,...(Array.isArray(o.includedTags)?o.includedTags:[])].filter(Boolean).join(' ');
- if(service==='outcall')return o.outcall===true;
- if(service==='gfe')return /\bgfe\b|girlfriend/i.test(terms);
- if(service==='dinner')return /dinner|abendbegleitung/i.test(terms);
- if(service==='couples')return /paare|couples|bisex/i.test(terms);
- return false;
-}
 export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageData?:InitialPageData}){
  const router=useRouter();const {visibleOffers,states,blockedIds,loading,error,registerPage}=useCatalogue();
  const [density,setDensity]=useState<'detail'|'compact'>('detail');
@@ -66,8 +56,7 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
   const sync=(event:StorageEvent)=>{if(event.key===SAVED_SEARCH_KEY||event.key===null)read();};
   read();window.addEventListener('storage',sync);return()=>window.removeEventListener('storage',sync);
  },[]);
- const queryFilters=filtersFromQuery(router.query);
- const filters:CatalogueFilters={...queryFilters,...(config?.canton?{canton:config.canton}:{}),...(config?.category?{category:config.category}:{}),...(config?.q?{q:config.q}:{})};
+ const filters=pageData?.filters ?? discoveryFiltersFromRoute(router.query,config ?? {},router.asPath);
  const refreshAvailability=async()=>{
    const href=router.asPath;
    if(pendingCheck.current===href)return;
@@ -87,11 +76,12 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    router.asPath,pageData?.nextAvailabilityExpiry,refreshAvailability);
  const confirming=!!filters.available&&availabilityCheck!=='ready';
  const budget=catalogueBudgetChoices(filters);
- const results=useMemo(()=>filterOffers(visibleOffers,filters,states,blockedIds).filter(o=>serviceMatches(o,config?.service)),[visibleOffers,states,blockedIds,JSON.stringify(filters),config?.service]);
+ const results=useMemo(()=>filterOffers(visibleOffers,filters,states,blockedIds),[visibleOffers,states,blockedIds,JSON.stringify(filters)]);
  const change=(next:Partial<CatalogueFilters>)=>router.push(searchHref({...filters,...next,invalid:false}));
  const activeFilters:{id:string;label:string;reset:Partial<CatalogueFilters>}[]=[];
  if(filters.canton&&filters.canton!=='ALL')activeFilters.push({id:'canton',label:REGIONS.find(r=>r.canton===filters.canton)?.name||filters.canton,reset:{canton:'ALL'}});
  if(filters.category&&filters.category!=='all')activeFilters.push({id:'category',label:CATEGORIES.find(c=>c.id===filters.category)?.label||filters.category,reset:{category:'all'}});
+ if(filters.service)activeFilters.push({id:'service',label:CATALOGUE_SERVICES[filters.service],reset:{service:''}});
  if(filters.under60)activeFilters.push({id:'under60',label:budget.label,reset:{under60:0}});
  if(filters.max)activeFilters.push({id:'max',label:`Bis CHF ${filters.max} / 60 Min.`,reset:{max:0}});
  if(filters.price==='missing')activeFilters.push({id:'price',label:'Preis auf Anfrage',reset:{price:''}});
@@ -99,8 +89,8 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
  if(filters.wa)activeFilters.push({id:'wa',label:'Schweizer Kontaktnummer',reset:{wa:false}});
  if(filters.q)activeFilters.push({id:'q',label:`Suche: ${filters.q}`,reset:{q:''}});
  const saveCurrent=()=>{
-  const href=config?.service?router.asPath:searchHref(filters);
-  const label=[...(config?.service?[config.title]:[]),...activeFilters.map(filter=>filter.label),filters.sort==='region'?'Nach Ort':filters.sort==='price'?'Preis aufsteigend':''].filter(Boolean).join(' · ')||'Ganze Schweiz · Alle Bereiche';
+  const href=searchHref(filters);
+  const label=[...activeFilters.map(filter=>filter.label),filters.sort==='region'?'Nach Ort':filters.sort==='price'?'Preis aufsteigend':''].filter(Boolean).join(' · ')||'Ganze Schweiz · Alle Bereiche';
   try{const result=saveSearch(localStorage,{href,label});setSavedSearches(result.entries);setStorageMessage({saved:'Auswahl auf diesem Gerät gespeichert.',exists:'Diese Auswahl ist bereits auf diesem Gerät gespeichert.',full:'Fünf Suchen sind gespeichert. Entferne zuerst eine Auswahl.',invalid:'Diese Auswahl konnte nicht gespeichert werden. Setze ungültige Filter zuerst zurück.'}[result.outcome]);}catch{setStorageMessage('Speichern nicht möglich: Dein Browser hat den lokalen Speicher abgelehnt. Es wurde nichts als gespeichert bestätigt.');}
  };
  const removeSaved=(href:string)=>{try{setSavedSearches(removeSavedSearch(localStorage,href));setStorageMessage('Gespeicherte Auswahl von diesem Gerät entfernt.');}catch{setStorageMessage('Entfernen nicht möglich: Dein Browser hat den lokalen Speicher abgelehnt.');}};
@@ -112,7 +102,6 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    const params=new URLSearchParams(searchHref(filters).split('?')[1]||'');
    params.set('offset',String(requestedOffset));
    params.set('limit',String(pageData.limit));
-   if(config?.service)params.set('service',config.service);
    try{
      const response=await fetch('/api/catalogue/page?'+params.toString(),{cache:'no-store'});
      if(!response.ok)throw new Error('HTTP '+response.status);
@@ -149,7 +138,7 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
  <label>Reihenfolge<select value={filters.sort} onChange={e=>change({sort:e.target.value})}><option value="default">Reihenfolge im Verzeichnis</option><option value="region">Nach Ort</option><option value="price">Bestätigter Preis aufsteigend</option></select></label></div>
  <div className="night-row"><label style={{display:'flex',alignItems:'center',gap:10,flex:'none'}}><input type="checkbox" checked={!!filters.available} onChange={e=>change({available:e.target.checked})}/> Nur zeitlich bestätigte Verfügbarkeit</label><Link className="night-text-button" href="/search">Filter zurücksetzen</Link></div>
  <details><summary className="night-note" style={{cursor:'pointer'}}>Namen oder Ort eingeben (optional)</summary><form className="night-row" onSubmit={e=>{e.preventDefault();const d=new FormData(e.currentTarget);change({q:String(d.get('q')||'')});}}><label>Name oder Ort<input name="q" type="search" defaultValue={filters.q} key={filters.q} maxLength={150} placeholder="Zum Beispiel Zürich"/></label><button className="night-button-secondary" type="submit">Anwenden</button></form></details></div></details>
- {(activeFilters.length>0||config?.service)&&<div className="night-active-filters" role="group" aria-label="Aktive Filter entfernen"><span>Deine Auswahl</span>{activeFilters.map(filter=><button type="button" className="night-chip" key={filter.id} onClick={()=>change(filter.reset)} aria-label={`Filter entfernen: ${filter.label}`}>{filter.label}<X size={14} aria-hidden="true"/></button>)}{config?.service&&<Link className="night-chip" href={searchHref(filters)} aria-label={`Bereich entfernen: ${config.title}`}>{config.title}<X size={14} aria-hidden="true"/></Link>}<Link href="/search" className="night-text-button">Alles öffnen</Link></div>}
+ {activeFilters.length>0&&<div className="night-active-filters" role="group" aria-label="Aktive Filter entfernen"><span>Deine Auswahl</span>{activeFilters.map(filter=><button type="button" className="night-chip" key={filter.id} onClick={()=>change(filter.reset)} aria-label={`Filter entfernen: ${filter.label}`}>{filter.label}<X size={14} aria-hidden="true"/></button>)}<Link href="/search" className="night-text-button">Alles öffnen</Link></div>}
  <div id="discovery-results" tabIndex={-1} className="night-section-title night-results-heading"><div><h2>{config?'Profile in deiner Auswahl':'Profile entdecken'}</h2><p className="night-count" aria-live="polite">{resultCount}</p></div><div className="night-density-control" role="group" aria-label="Profildarstellung"><button type="button" aria-pressed={density==='detail'} onClick={()=>setDensity('detail')}><Grid2X2 size={17} aria-hidden="true"/><span>Detail</span></button><button type="button" aria-pressed={density==='compact'} onClick={()=>setDensity('compact')}><LayoutGrid size={17} aria-hidden="true"/><span>Kompakt</span></button></div></div>
  {error&&<p className="night-note" role="status">{error}</p>}
  {filters.invalid&&<p role="alert">Diese Filteradresse enthält eine ungültige oder mehrfache Auswahl. Wähle die Filter neu oder setze sie zurück.</p>}
@@ -160,8 +149,7 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    {pageData?.alternatives?.length && !filters.invalid && !error ? <>
      <p>Welche Bedingung möchtest du ändern?</p>
      <div className="night-row">{pageData.alternatives.map(choice => {
-       const search = searchHref(choice.filters);
-       const href = config ? router.asPath.split(/[?#]/)[0] + search.slice('/search'.length) : search;
+       const href = searchHref(choice.filters);
        return <Link key={href} className="night-button-secondary" href={href}>{choice.label} · {choice.total.toLocaleString('de-CH')} Treffer</Link>;
      })}</div>
    </> : <p>Für diese Auswahl liegen keine passenden Angaben vor. Du kannst die Filter oben einzeln ändern.</p>}

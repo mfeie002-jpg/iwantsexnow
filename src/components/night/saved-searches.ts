@@ -23,7 +23,7 @@ export function safeSavedSearchHref(value: unknown): string | null {
   try {
     const url = new URL(value, 'https://local.invalid');
     if (url.origin !== 'https://local.invalid' || value.split('?')[0] !== url.pathname || !isSavedDiscoveryPath(url.pathname)) return null;
-    const keys = ['canton','category','q','max','max60','under60','price','available','now','wa','sort'];
+    const keys = ['canton','category','service','q','max','max60','under60','price','available','now','wa','sort'];
     for (const key of url.searchParams.keys()) {
       if (!keys.includes(key) || url.searchParams.getAll(key).length !== 1) return null;
     }

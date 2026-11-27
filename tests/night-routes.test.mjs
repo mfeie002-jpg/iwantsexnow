@@ -22,6 +22,29 @@ test('unknown profile and geographic slugs are 404 instead of invented Zurich co
 test('existing regional and category URLs still return indexable pages',async()=>{
  for(const path of ['/escort-basel','/escort-bern','/escort-lausanne','/escort-lugano','/orte/luzern','/orte/winterthur','/kategorie/zug/tantra-massage']){const r=await fetch(BASE+path);assert.equal(r.status,200);assert.match(await r.text(),/index,follow/);}
 });
+test('the Zürich dinner page, its shared search and Xenia count all describe the same entries', async () => {
+  async function pageProps(path) {
+    const response = await fetch(BASE + path);
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    const data = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    assert.ok(data, 'Page includes the Next.js data used for hydration');
+    return JSON.parse(data[1]).props.pageProps;
+  }
+  const query = 'canton=ZH&service=dinner';
+  const [landing, shared, countResponse] = await Promise.all([
+    pageProps('/kategorie/zuerich/dinner-date'),
+    pageProps('/search?' + query),
+    fetch(BASE + '/api/catalogue/page?count=1&' + query)
+  ]);
+  assert.equal(countResponse.status, 200);
+  const count = await countResponse.json();
+  assert.ok(landing.cataloguePage.total > 0, 'The reference catalogue contains Zürich dinner entries');
+  assert.ok(landing.catalogue.offers.every(offer => offer.services.includes('dinner')));
+  assert.deepEqual(shared.catalogue.offers.map(o => o.id), landing.catalogue.offers.map(o => o.id));
+  assert.equal(shared.cataloguePage.total, landing.cataloguePage.total);
+  assert.equal(count.total, landing.cataloguePage.total);
+});
 test('robots preserves public crawling and sitemap retains all real profiles',async()=>{
  const robots=await(await fetch(BASE+'/robots.txt')).text();assert.match(robots,/Allow: \/profile\//);assert.doesNotMatch(robots,/Disallow: \/\s*\n/);
  const xml=await(await fetch(BASE+'/sitemap.xml')).text();

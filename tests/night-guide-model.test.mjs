@@ -1,7 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { catalogueBudgetChoices, guideFilters, skipGuideStep, quickRoutes, QUICK_ROUTES } from '../src/lib/night-guide-model.ts';
-import { filterOffers, searchHref } from '../src/lib/night-catalogue.ts';
+import { discoveryFiltersFromRoute, filterOffers, searchHref } from '../src/lib/night-catalogue.ts';
+
+test('a regional dinner selection survives the Xenia steps, budget changes and a different canton', () => {
+  const filters = discoveryFiltersFromRoute({city:'zuerich',service:'dinner-date'}, {canton:'ZH',service:'dinner'}, '/kategorie/zuerich/dinner-date');
+  const choice = guideFilters(filters);
+  assert.equal(searchHref(choice), '/search?canton=ZH&service=dinner');
+  for (const step of [0,1,2]) assert.equal(skipGuideStep(choice,step).service,'dinner');
+  const cap = catalogueBudgetChoices(choice).options.find(option=>option.value==='under-300').changes;
+  assert.equal(searchHref({...choice,...cap,canton:'ZG'}), '/search?canton=ZG&service=dinner&under60=300');
+  assert.equal(searchHref({...choice,service:''}), '/search?canton=ZH');
+});
 
 test('an invalid starting URL begins a fresh guide selection', () => {
   const result = guideFilters({ canton:'ZG', category:'massage', max:400, q:'hidden text', available:true, wa:true, sort:'price', invalid:true });

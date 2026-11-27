@@ -18,6 +18,18 @@ test('strict and inclusive budget links stay distinct, and time aliases share on
    assert.equal(safeSavedSearchHref('/search?'+query),null,query);
  }
 });
+
+test('saving and restoring a regional service preserves it independently of region and budget',()=>{
+ const local=storage();
+ const href='/search?service=dinner&under60=300&canton=ZH';
+ const label='Zürich · Dinner & Begleitung · Unter CHF 300';
+ assert.equal(saveSearch(local,{href,label}).outcome,'saved');
+ assert.deepEqual(parseSavedSearches(local.read()),[{href:'/search?canton=ZH&service=dinner&under60=300',label}]);
+ assert.equal(saveSearch(local,{href:'/search?under60=300&canton=ZH&service=dinner',label}).outcome,'exists');
+ assert.equal(saveSearch(local,{href:'/search?canton=ZH&under60=300',label:'Zürich ohne Leistungsauswahl'}).outcome,'saved');
+ assert.equal(safeSavedSearchHref('/search?service=unbekannt'),null);
+ assert.equal(safeSavedSearchHref('/search?service=dinner&service=outcall'),null);
+});
 test('saved search restoration rejects external and non-discovery destinations',()=>{
  for(const input of ['https://evil.example/search','//evil.example/search','/\\evil.example/search','/login','/search#fragment','/search?canton=ZH&canton=ZG','/search?redirect=https://evil.example','/search\n'])assert.equal(safeSavedSearchHref(input),null,input);
  assert.equal(safeSavedSearchHref('/search?category=massage&canton=ZH'),'/search?canton=ZH&category=massage');

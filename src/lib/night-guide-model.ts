@@ -10,6 +10,7 @@ export function guideFilters(filters: CatalogueFilters = {}): CatalogueFilters {
     price: filters.price === 'missing' ? 'missing' : '',
   };
   if (filters.invalid) return selection;
+  if (filters.service) selection.service = filters.service;
   if (filters.under60 && !selection.max && !selection.price) selection.under60 = filters.under60;
   if (filters.available) selection.available = true;
   if (filters.q) selection.q = filters.q;
