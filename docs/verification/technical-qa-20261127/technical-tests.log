@@ -1,0 +1,98 @@
+✔ expired Supabase JWT prevents any Edge action (6.6157ms)
+✔ non-admin JWT is verified then denied, without any Edge call (4.7643ms)
+✔ authorized admin gets only an allowlisted Edge function with USER bearer (3.1657ms)
+(node:39764) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/lib/marketplace/analyzer-proxy-policy.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ only narrowly allowed internal analyzer functions can be invoked (3.2931ms)
+✔ rejects no input (0.4181ms)
+✔ rejects empty body (0.1788ms)
+✔ rejects malformed name (0.1691ms)
+✔ rejects unknown function (0.1819ms)
+✔ rejects path injection (0.1486ms)
+✔ rejects array payload (0.1438ms)
+✔ rejects null payload (1.234ms)
+✔ rejects huge payload (0.8649ms)
+✔ payload can be omitted and becomes an empty object (0.4417ms)
+✔ missing or malformed Authorization is never interpreted as a bearer (0.4003ms)
+✔ long bearer token is parsed without trimming or expansion (0.1917ms)
+✔ hidden, blocked and orphan states cannot expose private edits through public snapshots (41.429ms)
+✔ database failure rejects the public snapshot rather than publishing stale local records (26.6292ms)
+✔ club projection removes blocked and hidden studios before serialization and exposes only public fields (23.4222ms)
+✔ Tailwind and nested CSS resolve the patched selector parser (5.0032ms)
+✔ Tailwind retains responsive, hover, group, peer and arbitrary-value utilities (763.9448ms)
+✔ flat repeated-class selectors parse intact (11.1048ms)
+✔ Next image dependency resizes and encodes WebP and AVIF (219.4346ms)
+✔ Next resolves patched PostCSS and preserves CSS processing (74.3402ms)
+✔ Homepage renders a single footer (510.8566ms)
+✔ Image proxy denies missing, unknown and private targets (69.7032ms)
+✔ Image proxy denies unsupported methods (4.7652ms)
+(node:38700) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/lib/image-file.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ real raster signatures are accepted for their matching MIME type (1.6865ms)
+✔ HTML, SVG and mismatched payloads cannot pass an image MIME label (0.6042ms)
+(node:41388) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/integrations/supabase/client.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ integration import is safe on a build server without runtime configuration (199.7947ms)
+✔ browser auth fails closed when managed configuration is absent (0.4197ms)
+(node:42160) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/lib/marketplace/publication.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ reject no policy (1.8645ms)
+✔ reject empty policy (0.2692ms)
+✔ reject not an object (0.172ms)
+✔ reject raw imported profile (0.1724ms)
+✔ reject fake demo profile (1.4855ms)
+✔ reject draft (0.29ms)
+✔ reject submitted (0.1944ms)
+✔ reject no media rights (0.1939ms)
+✔ reject owner self-approved (0.2267ms)
+✔ reject missing moderation (0.2888ms)
+✔ reject missing evidence (0.2137ms)
+✔ reject expired proof (0.3448ms)
+✔ reject future proof (0.139ms)
+✔ reject old review (0.0967ms)
+✔ reject wrong consent policy (0.1409ms)
+✔ reject missing public alias (0.138ms)
+✔ reject empty description (0.0786ms)
+✔ approved first-party record requires named legal version (0.1397ms)
+✔ projection never leaks personal records (1.2062ms)
+(node:28280) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/lib/night-image-visibility.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ a saved hidden-image preference is applied before page content (4.7826ms)
+✔ image preference bootstrap does not enable hiding without explicit preference (3.3665ms)
+✔ denied session storage does not break page rendering (2.1997ms)
+(node:31284) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/components/night/profile-image-model.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ an image that failed before hydration becomes neutral without a new error event (4.9709ms)
+✔ a pre-hydration failure advances to the next original source (1.4544ms)
+✔ a pending lazy image is not mistaken for a failed image (1.5042ms)
+✔ a successfully loaded image remains visible after hydration (1.5374ms)
+✔ later and duplicate errors exhaust only the supplied originals before neutral fallback (1.6921ms)
+✔ Public metrics cannot expose administrative or owner content (411.6598ms)
+✔ Former hard-coded PIN must not grant administrative access (72.9109ms)
+✔ Query-string credentials never grant owner/admin access (63.7324ms)
+✔ Anonymous legacy claim cannot create or reveal ownership token (29.87ms)
+✔ Anonymous direct profile changes are refused (30.7425ms)
+✔ Legacy self-registration cannot publish fabricated profile (4.8766ms)
+✔ Client-supplied payment receipt cannot unlock anything (3.7568ms)
+✔ Incomplete anonymous reports cannot create a case (22.6362ms)
+✔ Report page cannot promise removal before confirmation (8.9875ms)
+ℹ tests 66
+ℹ suites 0
+ℹ pass 66
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 942.3403

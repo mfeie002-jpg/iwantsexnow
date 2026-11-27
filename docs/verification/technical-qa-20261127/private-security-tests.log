@@ -1,0 +1,59 @@
+(node:33316) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/lib/marketplace/admin-read-auth.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ legacy search shares visibility and real price evidence with the public catalogue (109.9955ms)
+✔ legacy search rejects invalid requests and fails closed on a status outage (24.7806ms)
+✔ admin read authentication rejects old PINs, missing secrets and alternate credentials (0.3998ms)
+✔ legacy routes redirect before shipping obsolete raw-data interfaces (138.9711ms)
+✔ anonymous admin endpoints reveal no records and the old admin page ships no pilot inventory (28.2427ms)
+✔ disabled or incomplete configuration returns 404 before any backend access (4.0327ms)
+✔ sign-in uses the existing auth backend and returns only a secure server cookie (18.4149ms)
+✔ wrong credentials, unconfirmed and non-allowlisted accounts cannot sign in (12.2764ms)
+✔ missing, expired and non-allowlisted sessions cannot access drafts (5.475ms)
+✔ owner creates, reloads and edits a private draft through the compiled API (10.7571ms)
+✔ foreign, missing and locked drafts share the same not-found response (11.1045ms)
+✔ ownership/state injection, invalid IDs, arrays and extra fields are rejected (7.8237ms)
+✔ cross-origin and unsupported requests fail before backend access (1.3381ms)
+✔ storage failures are sanitized and never reported as saved (3.2152ms)
+✔ logout clears the cookie and invokes only local session sign-out (3.3622ms)
+✔ public-key validation refuses service credentials and headers cannot replace the cookie (2.913ms)
+✔ session errors, logout failure and text payloads never expose secrets or saved status (2.5726ms)
+✔ login attempt backstop stops outbound requests when exhausted (17.4619ms)
+✔ session accepts only a server-confirmed UUID, not a success-looking response (3.5909ms)
+✔ sign-in uses private same-origin POST and returns no token (1.7604ms)
+✔ save sends only allowed draft fields, never ownership or approval (2.7585ms)
+✔ missing session and invalid fields cause no save request (0.6709ms)
+✔ foreign, published, mismatched and malformed records cannot become a saved state (0.8704ms)
+✔ backend failure is never a successful save or logout (1.2123ms)
+✔ opening requires a valid draft ID and preserves its identity (0.5355ms)
+✔ local draft parsing does not restore forged tokens or account evidence (0.2839ms)
+✔ reports require the backend 202 receipt and a valid case ID (1.3027ms)
+✔ AI gate rejects spoofed consent, paid flags and opt-in mutations before any effects (23.6334ms)
+✔ provider UI contains no legacy claim, URL token or fabricated payment flow (2.4216ms)
+✔ legacy enquiry route cannot send personal data or claim delivery (7.1439ms)
+✔ configured DB failure never publishes stale local states (62.5644ms)
+✔ metrics exposes only explicit price evidence and carries DB expiry (32.9792ms)
+✔ anonymous metrics enquiry has no storage or notification side effect (39.6559ms)
+✔ all five provider pages and shared component parse as TSX (144.7528ms)
+(node:35748) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/thest/Documents/GitHub/rearea/iwantsexnow-qa-20261127/src/lib/marketplace/supabase-drafts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\C:\Users\thest\Documents\GitHub\rearea\iwantsexnow-qa-20261127\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ storage cannot be used before server verification (31.8675ms)
+✔ invalid session never reaches the database (3.9571ms)
+✔ create maps fields and forwards verified user JWT, never approval fields (7.0614ms)
+✔ read is constrained by id, verified owner and draft state (3.1731ms)
+✔ update atomically checks owner and draft state without pre-read (2.4312ms)
+✔ missing or inaccessible records have the same response (3.4314ms)
+✔ foreign storage records are rejected even if RLS is misconfigured (1.5372ms)
+✔ database refusal fails closed (1.3345ms)
+✔ reject service credentials and unsafe backend URLs (1.0657ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 43
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 937.8988
