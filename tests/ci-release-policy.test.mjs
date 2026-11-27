@@ -1,18 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-const workflow = readFileSync(new URL('../.github/workflows/production-check.yml', import.meta.url), 'utf8');
+import fs from 'node:fs';
 
-test('the production check runs on main pushes, pull requests and manual dispatch', () => {
-  for (const trigger of ['push', 'pull_request']) {
-    assert.match(workflow, new RegExp('^  ' + trigger + ':\\s*\\n\\s*branches: *\\[main\\]', 'm'));
-  }
-  assert.match(workflow, /^  workflow_dispatch:/m);
+const workflow = fs.readFileSync(new URL('../.github/workflows/production-check.yml', import.meta.url), 'utf8');
+
+test('CI runs on main pushes, pull requests and manual dispatch', () => {
+  assert.match(workflow, /push:\s*\n\s*branches:\s*\[main\]/);
+  assert.match(workflow, /pull_request:\s*\n\s*branches:\s*\[main\]/);
+  assert.match(workflow, /workflow_dispatch:/);
 });
 
-test('installation, build and regression failures propagate to the GitHub check', () => {
-  assert.match(workflow, /^\s*run: npm ci --legacy-peer-deps\s*$/m);
-  assert.match(workflow, /^\s*run: npm run build\s*$/m);
-  assert.match(workflow, /^\s*node --test tests\/\*\.test\.mjs\s*$/m);
+test('CI installation, lint, typecheck and build must never ignore failures', () => {
+  for (const command of [
+    'npm ci --legacy-peer-deps',
+    'npm run lint -- --quiet',
+    './node_modules/.bin/tsc --noEmit --pretty false',
+    'npm run build',
+    'node --test tests/*.test.mjs'
+  ]) assert.ok(workflow.includes(command), 'required quality step missing: ' + command);
+  assert.doesNotMatch(workflow, /npm\s+(?:ci|install|run\s+(?:build|lint))[^\n]*\|\|\s*true/i);
+  assert.doesNotMatch(workflow, /node\s+--test[^\n]*\|\|\s*true/i);
   assert.doesNotMatch(workflow, /continue-on-error:\s*true/i);
 });

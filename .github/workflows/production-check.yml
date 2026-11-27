@@ -1,4 +1,4 @@
-name: Production Build Check
+name: Production Quality Gate
 
 on:
   push:

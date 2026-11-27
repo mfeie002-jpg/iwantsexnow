@@ -3,8 +3,24 @@ import crypto from "crypto";
 import harvestedOffers from "@/data/harvested-offers.json";
 import establishments from "@/data/swiss-establishments-vault.json";
 import { isSupabaseConfigured, supaFetch, readSafeJson, writeSafeJson, sendTelegramPing } from "@/lib/supabaseAdmin";
+import { isReportSubmissionKey, validateReportInput } from "@/lib/marketplace/report-input";
 
 const ADMIN_PIN = process.env.ADMIN_PIN || "";
+
+function reportCaseId(submissionKey: string): string {
+  // Domain-separated one-way mapping: knowing the public receipt does not grant
+  // the capability to check or replay its submission. Keep this namespace stable.
+  const bytes = crypto.createHash("sha256").update("iwsn-private-report-v1:" + submissionKey.toLowerCase()).digest();
+  bytes[6] = (bytes[6] & 0x0f) | 0x80;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = bytes.subarray(0, 16).toString("hex");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+function reportReceipt(caseId: string) {
+  // Acknowledges initial intake, never the current moderation state.
+  return { ok: true, caseId, status: "RECEIVED", preliminarilyHidden: false };
+}
 
 function secureAdminMatch(provided: string): boolean {
   // Legacy hard-coded PINs and credentials in URLs are never accepted.
@@ -118,6 +134,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const body = req.body || {};
   const action = String(body.action || "").trim();
 
+  if (action === "report_receipt") {
+    if (!isReportSubmissionKey(body.submissionKey)) return res.status(400).json({ ok: false, error: "Die Meldekennung fehlt oder ist ungültig." });
+    if (!isSupabaseConfigured()) return res.status(503).json({ ok: false, error: "Vertraulicher Meldeweg vorübergehend nicht verfügbar." });
+    const caseId = reportCaseId(body.submissionKey);
+    const found = await supaFetch(`iwsn_report_cases?case_id=eq.${caseId}&select=case_id`, { timeoutMs: 10000 });
+    if (!found.ok || !Array.isArray(found.data)) return res.status(503).json({ ok: false, error: "Der Meldeeingang konnte nicht bestätigt werden." });
+    if (found.data.length === 1 && found.data[0]?.case_id === caseId) return res.status(202).json(reportReceipt(caseId));
+    // An earlier request may still commit later; absence is not proof of failure.
+    return res.status(404).json({ ok: false, code: "REPORT_UNCONFIRMED", error: "Noch kein Eingang bestätigt. Bitte behalte die Meldekennung für einen erneuten Versuch." });
+  }
+
   if (["track_view", "track_click", "track_contact", "track_source_out"].includes(action) && profileId) {
     const cur = metrics[profileId] || { views: 0, detailOpens: 0, contactClicks: 0, sourceClicks: 0 };
     if (action === "track_view") cur.views += 1;
@@ -136,30 +163,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (["submit_takedown", "report_profile", "opt_out", "report_issue", "dmca_takedown"].includes(action)) {
-    const reason = [body.reason, body.details].filter(Boolean).map((x) => String(x).trim()).join(" | ").slice(0, 500);
-    const contact = String(body.contact || "").trim().slice(0, 120);
-    const sourceUrl = String(body.sourceUrl || "").trim().slice(0, 500);
-    if (!reason || reason.length < 5 || (!profileId && !sourceUrl)) {
-      return res.status(400).json({ ok: false, error: "Bitte Grund und Profilbezug angeben." });
-    }
+    const reportProfileId = req.query.profileId !== undefined ? req.query.profileId : body.profileId !== undefined ? body.profileId : body.id;
+    const parsed = validateReportInput({ ...body, profileId: reportProfileId });
+    if (parsed.ok === false) return res.status(400).json({ ok: false, field: parsed.field, error: parsed.message });
+    if (!isReportSubmissionKey(body.submissionKey)) return res.status(400).json({ ok: false, error: "Die Meldekennung fehlt oder ist ungültig. Bitte lade das Meldeformular erneut." });
+    const { profileId: reportId, sourceUrl, reason, contact } = parsed.value;
     if (!isSupabaseConfigured()) {
       return res.status(503).json({ ok: false, error: "Vertraulicher Meldeweg vorübergehend nicht verfügbar.", next: "/contact" });
     }
-    const caseId = crypto.randomUUID();
+    const caseId = reportCaseId(body.submissionKey);
     const record = {
       case_id: caseId,
-      profile_id: profileId || null,
+      profile_id: reportId || null,
       source_url: sourceUrl || null,
       reason,
       contact,
       status: "RECEIVED"
     };
-    const saved = await supaFetch("iwsn_report_cases", { method: "POST", body: record });
-    if (!saved.ok) {
-      return res.status(503).json({ ok: false, error: "Meldung nicht gespeichert. Bitte erneut versuchen.", next: "/contact" });
+    // The existing primary key is the atomic concurrency guard. Never merge or
+    // overwrite a previous report, including its later moderation state.
+    const started = performance.now();
+    const saved = await supaFetch("iwsn_report_cases?on_conflict=case_id", {
+      method: "POST", body: record, prefer: "resolution=ignore-duplicates,return=representation", timeoutMs: 10000
+    });
+    const unconfirmed = () => res.status(503).json({ ok: false, error: "Der Meldeeingang konnte nicht bestätigt werden. Bitte prüfe den Eingang erneut oder sende dieselbe Meldung nochmals ab.", next: "/contact" });
+    if (!saved.ok || !Array.isArray(saved.data)) return unconfirmed();
+    let row = saved.data.length === 1 ? saved.data[0] : null;
+    const created = saved.data.length === 1;
+    if (saved.data.length === 0) {
+      // Duplicate INSERT returns no row. Read the committed original within the
+      // same total database budget; no automatic second write is attempted.
+      const remaining = Math.floor(10000 - (performance.now() - started));
+      if (remaining <= 0) return unconfirmed();
+      const found = await supaFetch(`iwsn_report_cases?case_id=eq.${caseId}&select=case_id,profile_id,source_url,reason,contact`, { timeoutMs: remaining });
+      if (!found.ok || !Array.isArray(found.data) || found.data.length !== 1) return unconfirmed();
+      row = found.data[0];
     }
-    await sendTelegramPing(["Neuer IWSN-Meldefall: " + caseId]);
-    return res.status(202).json({ ok: true, caseId, status: "RECEIVED", preliminarilyHidden: false });
+    if (!row || row.case_id !== caseId || (created && row.status !== "RECEIVED")) return unconfirmed();
+    if (row.profile_id !== record.profile_id || row.source_url !== record.source_url || row.reason !== record.reason || row.contact !== record.contact) {
+      if (created) return unconfirmed();
+      return res.status(409).json({ ok: false, code: "REPORT_CONTENT_CONFLICT", error: "Diese Meldekennung gehört bereits zu anderen Angaben. Bitte prüfe den früheren Eingang. Die gespeicherte Meldung wurde nicht verändert." });
+    }
+    if (created) {
+      try { await sendTelegramPing(["Neuer IWSN-Meldefall: " + caseId]); } catch {
+        // A notification failure cannot invalidate the confirmed private receipt.
+      }
+    }
+    return res.status(202).json(reportReceipt(caseId));
   }
 
   if (["login_or_claim", "register_new_profile", "request_claim"].includes(action)) {

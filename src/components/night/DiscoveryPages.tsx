@@ -1,3 +1,4 @@
+import {formatSwissCount} from '@/lib/format-swiss-count';
 import React,{useEffect,useMemo,useRef,useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -120,7 +121,7 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    }
  };
  const title=config?.title||'Deine Auswahl. Dein Moment.';
- const resultCount=confirming?'Trefferzahl offen':loading&&!results.length?'Einträge werden geladen …':`${(pageData?totalCount:results.length).toLocaleString('de-CH')} Einträge`;
+ const resultCount=confirming?'Trefferzahl offen':loading&&!results.length?'Einträge werden geladen …':`${formatSwissCount(pageData?totalCount:results.length)} Einträge`;
  return <main id="main" className="night-page night-discovery-page"><SEO title={`${title} | iwantsexnow.ch`} description={config?.description||'Schweizer Profile nach Region und Bereich entdecken. Quellen und bestätigte Preisangaben transparent vergleichen.'}/>
  {config?<section className="night-region-hero"><img src={brandAsset(config.image||'hero-tram.webp')} alt="Illustratives regionales Abendmotiv"/><div className="night-container night-section"><div className="night-breadcrumb"><Link href="/">Start</Link><span>/</span><Link href="/search">Entdecken</Link><span>/ {config.canton||'Thema'}</span></div><p className="night-kicker">Dein Überblick</p><h1>{title}</h1><p className="night-lead">{config.description}</p><span className="night-note">Illustratives Titelbild · Verfügbarkeit nur bei gültiger Bestätigung</span></div></section>:<section className="flagship-page-hero"><div className="night-container"><p className="flagship-eyebrow">SUCHE & ERGEBNISSE · SCHWEIZ</p><h1>Entdecken, vergleichen,<br/> verstehen.</h1><p>Wähle Region und Thema mit wenigen Berührungen. Die Ergebnisse zeigen nur Angaben, die in den Einträgen tatsächlich vorliegen.</p></div></section>}
  <section className="night-container night-section night-discovery-content"><TouchSearch filters={filters}/>
@@ -150,7 +151,7 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
      <p>Welche Bedingung möchtest du ändern?</p>
      <div className="night-row">{pageData.alternatives.map(choice => {
        const href = searchHref(choice.filters);
-       return <Link key={href} className="night-button-secondary" href={href}>{choice.label} · {choice.total.toLocaleString('de-CH')} Treffer</Link>;
+       return <Link key={href} className="night-button-secondary" href={href}>{choice.label} · {formatSwissCount(choice.total)} Treffer</Link>;
      })}</div>
    </> : <p>Für diese Auswahl liegen keine passenden Angaben vor. Du kannst die Filter oben einzeln ändern.</p>}
  </div>:<ProfileGrid offers={results} limit={pageData?99999:24} density={density}/>}

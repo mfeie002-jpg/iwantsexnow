@@ -1,3 +1,4 @@
+import {formatSwissCount} from '@/lib/format-swiss-count';
 import React,{createContext,useContext,useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -96,7 +97,7 @@ export function NightShell({children,initialFilters}:{children:React.ReactNode;i
    </>}
    {choice.service&&<button type="button" className="night-chip" aria-label={`Filter entfernen: ${CATALOGUE_SERVICES[choice.service]}`} onClick={()=>setChoice(previous=>({...previous,service:''}))}>{CATALOGUE_SERVICES[choice.service]}<X size={14} aria-hidden="true"/></button>}
    {retainedCriteria.length>0&&<p className="night-note">Weitere Auswahl · {retainedCriteria.join(' · ')}</p>}
-   <div className="night-guide-result" aria-live="polite"><span className="night-guide-result-number">{matchCount===null?(countLoading?'…':'—'):matchCount.toLocaleString('de-CH')}</span><span>{matchCount===null?'Katalogdaten noch nicht verfügbar':'Einträge in deiner Auswahl'}<small>{choice.available?'Mit aktuell bestätigtem Zeitfenster':'Zeitfenster offen'}</small></span></div>
+   <div className="night-guide-result" aria-live="polite"><span className="night-guide-result-number">{matchCount===null?(countLoading?'…':'—'):formatSwissCount(matchCount)}</span><span>{matchCount===null?'Katalogdaten noch nicht verfügbar':'Einträge in deiner Auswahl'}<small>{choice.available?'Mit aktuell bestätigtem Zeitfenster':'Zeitfenster offen'}</small></span></div>
    {countError&&<div className="night-row" role="alert"><p className="night-note">{countError}</p><button type="button" className="night-text-button" onClick={()=>setCountRetry(n=>n+1)}>Erneut versuchen</button></div>}
    {step===3?(matchCount!==null?<><Link href={searchHref(choice)} className="night-button night-guide-submit">{matchCount?'Auswahl ansehen':'Auswahl und Filter ansehen'} <ArrowRight size={18}/></Link>{matchCount===0&&<p className="night-note">Diese Kombination hat keine Treffer. Du kannst deine Filter bearbeiten.</p>}</>:<button type="button" disabled className="night-button night-guide-submit">{countLoading?'Katalog wird geprüft …':'Katalog derzeit nicht verfügbar'}</button>):<div className="night-row night-guide-controls">{step>0&&<button className="night-text-button" onClick={()=>setStep(s=>s-1)}>← Zurück</button>}<button className="night-text-button" onClick={skip}>Diesen Schritt offenlassen</button></div>}
    <p className="night-note">Für diese Auswahl brauchst du keine Standortfreigabe.</p>

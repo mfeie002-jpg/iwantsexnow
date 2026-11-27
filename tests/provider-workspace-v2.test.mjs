@@ -16,7 +16,7 @@ const fields = { displayAlias:'Eigener Entwurf', city:'Zug', description:'Eigene
 function load(relative) {
   const source = fs.readFileSync(path.join(root, relative), 'utf8');
   const compiled = ts.transpileModule(source, { compilerOptions: { target:ts.ScriptTarget.ES2022, module:ts.ModuleKind.CommonJS } });
-  const context = { exports:{}, AbortSignal, URL, fetch(){throw Error('Unexpected live request');} };
+  const context = { exports:{}, AbortSignal, URL, fetch(){throw Error('Unexpected live request');}, require(name){if(name==='./report-input')return load('src/lib/marketplace/report-input.ts');throw Error('Unexpected dependency '+name);} };
   vm.runInNewContext(compiled.outputText, context, { filename:relative });
   return context.exports;
 }
@@ -66,11 +66,27 @@ test('local draft parsing does not restore forged tokens or account evidence',()
   assert.deepEqual(JSON.parse(JSON.stringify(draft)),fields);assert.equal(lib.safeDraftFields([]),null);assert.equal(lib.safeDraftFields({...fields,photoRightsConfirmed:'yes'}),null);
 });
 test('reports require the backend 202 receipt and a valid case ID',async()=>{
-  const body={profileId:'catalogue-id',sourceUrl:'',reason:'Falsche Angabe',contact:''};
+  const body={submissionKey:id,profileId:'catalogue-id',sourceUrl:'',reason:'Falsche Angabe',contact:''};
   for(const status of [200,400,503]) await assert.rejects(lib.submitProviderReport(body,async()=>response({ok:true,status:'RECEIVED',caseId:id},status)));
   await assert.rejects(lib.submitProviderReport(body,async()=>response({ok:true,status:'RECEIVED',caseId:'invented'},202)));
   assert.equal(await lib.submitProviderReport(body,async()=>response({ok:true,status:'RECEIVED',caseId:id},202)),id);
   let calls=0;await assert.rejects(lib.submitProviderReport({...body,profileId:''},async()=>{calls++;}));assert.equal(calls,0);
+});
+test('report client rejects invalid references and oversize text without sending or truncating them',async()=>{
+  const body={submissionKey:id,profileId:'synthetic',sourceUrl:'',reason:'Falsche Angabe',contact:''};
+  let calls=0;
+  for(const patch of [{profileId:'x'.repeat(151)},{sourceUrl:'https://user:secret@example.invalid'},{sourceUrl:'file:///private'},{reason:'x'.repeat(501)},{contact:'x'.repeat(121)},{profileId:[]}]) {
+    await assert.rejects(lib.submitProviderReport({...body,...patch},async()=>{calls++;}),error=>error instanceof lib.WorkspaceError&&error.status===400);
+  }
+  assert.equal(calls,0);
+});
+test('report client omits account credentials and treats malformed receipts as unconfirmed',async()=>{
+  const body={submissionKey:id,profileId:' synthetic ',sourceUrl:'',reason:' Falsche Angabe ',contact:''};
+  let request;
+  assert.equal(await lib.submitProviderReport(body,async(url,options)=>{request={url,options};return response({ok:true,status:'RECEIVED',caseId:id},202);}),id);
+  assert.equal(request.options.credentials,'omit');assert.equal(request.options.cache,'no-store');
+  assert.deepEqual(JSON.parse(request.options.body),{action:'report_profile',submissionKey:id,profileId:'synthetic',sourceUrl:'',reason:'Falsche Angabe',contact:''});
+  await assert.rejects(lib.submitProviderReport(body,async()=>({status:202,json:async()=>{throw Error('Malformed JSON');}})),error=>error instanceof lib.WorkspaceError&&error.status===502);
 });
 test('AI gate rejects spoofed consent, paid flags and opt-in mutations before any effects',()=>{
   const {denyUnverifiedAiFeature}=load('src/lib/marketplace/consent-feature-gate.ts');
@@ -100,7 +116,7 @@ function metricsHandler({configured=true,db={ok:false,data:null}}={}) {
     writeSafeJson:()=>effects.push('write'),sendTelegramPing:async()=>effects.push('message')};
   const source=fs.readFileSync(path.join(root,'src/pages/api/vault/metrics.ts'),'utf8');
   const compiled=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,esModuleInterop:true}}).outputText;
-  const context={exports:{},process:{env:{}},Buffer,require(name){if(name==='crypto')return crypto;if(name==='@/lib/supabaseAdmin')return admin;if(name==='@/data/harvested-offers.json')return [{id:'synthetic'}];if(name==='@/data/swiss-establishments-vault.json')return [];throw Error('Unexpected dependency '+name);}};
+  const context={exports:{},process:{env:{}},Buffer,require(name){if(name==='crypto')return crypto;if(name==='@/lib/supabaseAdmin')return admin;if(name==='@/lib/marketplace/report-input')return load('src/lib/marketplace/report-input.ts');if(name==='@/data/harvested-offers.json')return [{id:'synthetic'}];if(name==='@/data/swiss-establishments-vault.json')return [];throw Error('Unexpected dependency '+name);}};
   vm.runInNewContext(compiled,context);return{handler:context.exports.default,effects};
 }
 async function metricsCall(handler,method='GET',body={}) {
