@@ -11,7 +11,7 @@ Date: 2026-11-27. Scope: technical quality, confidential report intake, accessib
 - The technical tree was reconciled without conflicts. This branch is intentionally based directly on main and contains the 24 reviewed technical files, without the local raw logs from intermediate commits.
 - Tested staged tree (before this documentation-only addition): 52f3dcd6608b43b2e9988c6f18c93b85a8d08f5f.
 
-## Fresh local QA
+## Fresh local QA of the initial integration
 
 Windows, Node 26.4.0, isolated worktree, no production service credentials.
 
@@ -26,6 +26,12 @@ Windows, Node 26.4.0, isolated worktree, no production service credentials.
 | git diff --cached --check | Exit 0 |
 
 Test server stopped after QA. Raw logs are retained locally, not published. Added-line secret pattern screening flagged only three intentionally invalid credential-shaped test URLs using example.invalid; no confirmed secret hit. No profile datasets or media changed.
+
+## Technical follow-up
+
+The isolated review retained the stronger existing CI checks and reconciled the newer technical workflow changes from 135063e: invoke the installed TypeScript binary directly, track the actual Next server process, bound each readiness request to five seconds, and reject `continue-on-error: true`. The unrelated visitor-search changes from that branch are excluded.
+
+A fresh production dependency audit reported three moderate advisories against the single Next.js dependency at 15.5.28. Next.js and its ESLint configuration are updated together to 15.5.29; only their matched framework packages change in the lockfile. Existing PostCSS and selector-parser overrides are preserved. The vendor identifies this patch in its [November security release](https://nextjs.org/blog/november-2026-security-release). This is dependency remediation, not evidence of an exploited application vulnerability. The initial QA table above predates this follow-up; the PR records the final commit's fresh installation, build, tests, audit and CI results.
 
 ## Remaining release gates
 
