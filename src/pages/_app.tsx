@@ -21,7 +21,7 @@ function UnifiedSwissFooter() {
             </span>
           </Link>
           <p className="leading-relaxed text-[#A8949D]">
-            Dein Schweizer Erotik-, Escort-, Massage- & Studio-Index mit Zero-Typing KI-Begleitung, 30/60 Min. CHF-Transparenz und direktem +41 Kontakt (0% Provision).
+            Schweizer Verzeichnis mit regionaler Suche, Quellenhinweisen und Xenias freiwilliger Auswahlhilfe. Preise und Status werden nur nach belegtem Stand angezeigt.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ function UnifiedSwissFooter() {
           <div className="flex flex-col gap-1.5">
             <Link href="/search" className="hover:text-white no-underline text-[#C9B8BF]">Schweizweite Detail-Suche</Link>
             <Link href="/clubs" className="hover:text-white no-underline text-[#C9B8BF]">{TOTAL_CLUBS} Clubs & Studios</Link>
-            <Link href="/reviews" className="hover:text-white no-underline text-[#C9B8BF]">Top-10 Schweizer Portalvergleich</Link>
+            <Link href="/reviews" className="hover:text-white no-underline text-[#C9B8BF]">Portalübersicht & Vergleichsmethodik</Link>
             <Link href="/pricing" className="hover:text-white no-underline text-[#C9B8BF]">CHF Honorar-Kompass</Link>
             <Link href="/hotels" className="hover:text-white no-underline text-[#C9B8BF]">Diskrete Outcall- & Day-Use-Hotels</Link>
             <Link href="/fantasy-preview" className="text-[#E2B887] hover:underline no-underline">✨ KI-Voice & Preview Suite</Link>
@@ -77,7 +77,7 @@ function UnifiedSwissFooter() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px] text-[#85717A]">
         <span>© {new Date().getFullYear()} iwantsexnow.ch — Unabhängiges Schweizer Verzeichnis & Meta-Vergleich (Zutritt strikt ab 18 Jahren).</span>
-        <span>0% Vermittlungsprovision · CH-revDSG konform</span>
+        <span>Quellen · Datenschutz · Meldeweg</span>
       </div>
     </footer>
   );

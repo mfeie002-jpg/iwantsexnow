@@ -14,6 +14,7 @@ export default function ReportAndOptOutPage() {
   const [details, setDetails] = useState("");
   const [caseId, setCaseId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     const qId = String(router.query.id || router.query.profileId || router.query.name || "").trim();
@@ -23,6 +24,7 @@ export default function ReportAndOptOutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setSubmitError(null);
     try {
       const res = await fetch("/api/vault/metrics", {
         method: "POST",
@@ -32,11 +34,16 @@ export default function ReportAndOptOutPage() {
           profileId: profileId.trim(),
           reason,
           contact: contact.trim(),
-          details: details.trim(),
-        }),
+          details: details.trim()
+        })
       });
       const data = await res.json();
-      setCaseId(data?.caseId || "CASE-" + Date.now().toString().slice(-6));
+      if (!res.ok || !data?.ok || !data?.caseId) {
+        throw new Error(String(data?.error || "Meldung konnte nicht sicher gespeichert werden."));
+      }
+      setCaseId(data.caseId);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Meldung nicht gespeichert.");
     } finally {
       setLoading(false);
     }
@@ -45,15 +52,15 @@ export default function ReportAndOptOutPage() {
   return (
     <div className="min-h-screen bg-papier text-tinte pb-24">
       <SEO
-        title="Profil melden oder Eintrag sofort entfernen (Opt-Out ohne Login) | iWantSexNow.ch"
-        description="Unkomplizierte Sofort-Ausblendung und Sperrliste (Do-Not-Import) nach Schweizer Datenschutzgesetz (revDSG)."
+        title="Profil melden oder Entfernung beantragen | iwantsexnow.ch"
+        description="Vertraulicher Meldeweg für Korrekturen, Identitätsmissbrauch und Entfernungsanträge."
       />
       <LuxuryHeader />
       <PageIntro
         tone="himmel"
         note="Dein Recht, ohne Umwege"
         title="Eintrag entfernen oder Korrektur melden"
-        lead="Sofort-Ausblendung ohne Login, nach Schweizer Datenschutzgesetz (revDSG)."
+        lead="Vertraulich melden und den Bearbeitungsstatus nachvollziehen, ohne voreilige Erfolgsversprechen."
         art="verified"
       >
         <Link href="/" className="emerald-button"><ArrowLeft size={14} /> Zurück zur Übersicht</Link>
@@ -63,21 +70,23 @@ export default function ReportAndOptOutPage() {
         <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
           <div>
             <span className="text-[13px] text-glow-700 font-bold flex items-center gap-1.5">
-              <ShieldAlert size={13} /> Sofort-Ausblendung ohne Login-Pflicht (CH-DSG)
+              <ShieldAlert size={13} /> Vertrauliche Meldung ohne Konto
             </span>
             <p className="text-[13px] text-gray-600 mt-1">
-              Sobald du dieses Formular absendest, wird die angegebene Profil-ID sofort im öffentlichen Verzeichnis ausgeblendet und auf die interne Do-Not-Import-Sperrliste gesetzt.
+              Wir prüfen Meldungen zu eigenen Daten, unautorisierten Bildern und falschen Angaben. Eine Annahmebestätigung bedeutet nicht, dass die Entfernung bereits erfolgt ist.
             </p>
           </div>
+
+          {submitError && <div role="alert" className="p-4 rounded-xl border border-red-300 bg-red-50 text-red-800 text-sm"><strong>Meldung nicht gespeichert:</strong> {submitError} <Link className="underline font-semibold" href="/contact">Kontakt öffnen</Link></div>}
 
           {caseId ? (
             <div className="p-5 rounded-xl bg-mint-100/60 border border-mint-500/40 space-y-2">
               <div className="flex items-center gap-2 text-mint-700 font-bold text-sm">
                 <CheckCircle2 size={18} />
-                <span>Eintrag wurde sofort ausgeblendet (Fall-Nr.: {caseId})</span>
+                <span>Meldung eingegangen (Fall-Nr.: {caseId})</span>
               </div>
               <p className="text-[13px] text-gray-700">
-                Das Profil <strong>{profileId}</strong> ist ab sofort öffentlich unsichtbar und für künftige Index-Läufe gesperrt.
+                Wir haben dein Anliegen zu <strong>{profileId}</strong> erfasst; der Status lautet eingegangen, nicht entfernt.
               </p>
             </div>
           ) : (
@@ -137,7 +146,7 @@ export default function ReportAndOptOutPage() {
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl bg-glow-600 hover:bg-glow-500 text-white font-extrabold text-[13px] cursor-pointer"
               >
-                {loading ? "Blende Eintrag sofort aus..." : "Eintrag jetzt sofort ausblenden & sperren →"}
+                {loading ? "Meldung wird gespeichert..." : "Vertrauliche Meldung einreichen →"}
               </button>
             </form>
           )}

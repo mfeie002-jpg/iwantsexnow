@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-const BASE = (process.env.IWSN_TEST_BASE_URL || "http://127.0.0.1:3130").replace(/\/$/, "");
+const BASE = (process.env.IWSN_TEST_BASE_URL || "http://127.0.0.1:3131").replace(/\/$/, "");
 
 test("Homepage renders a single footer", async () => {
   const response = await fetch(BASE + "/", { signal: AbortSignal.timeout(15000) });

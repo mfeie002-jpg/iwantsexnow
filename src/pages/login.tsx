@@ -4,7 +4,7 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { KeyRound, ArrowRight, Sparkles, Lock } from "lucide-react";
+import { ArrowRight, Sparkles, Lock } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,24 +35,12 @@ export default function LoginPage() {
         }
         router.push(data.cockpitUrl);
       } else {
-        setErrorMsg("Profil konnte nicht geladen werden. Bitte prüfe deine +41 Nummer oder Profil-ID.");
+        setErrorMsg(data?.error || "Ein verifizierter Anbieter-Zugang ist erforderlich.");
       }
     } catch {
       setErrorMsg("Verbindungsfehler zum Server.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleAdminLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (adminPin.trim() === "SWISS-BOSS-2026") {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("iwsn_admin_pin", "SWISS-BOSS-2026");
-      }
-      router.push("/admin-dashboard");
-    } else {
-      setErrorMsg("Ungültiger Admin-PIN.");
     }
   };
 
@@ -84,7 +72,7 @@ export default function LoginPage() {
               <input type="text" required value={query} onChange={(e) => setQuery(e.target.value)} placeholder="z.B. +41 78 807 34 79 oder ch-a720e283e85f" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
             </div>
             <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl bg-kirsche hover:bg-kirsche-tief text-white font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer shadow-lg">
-              <span>{loading ? "Öffne Cockpit..." : "Mein Anbieter-Cockpit öffnen"}</span>
+              <span>{loading ? "Öffne Cockpit..." : "Verifizierten Zugang prüfen"}</span>
               <ArrowRight size={15} />
             </button>
             <div className="pt-4 border-t border-tinte/20 text-center space-y-2">
@@ -95,19 +83,16 @@ export default function LoginPage() {
             </div>
           </form>
         ) : (
-          <form onSubmit={handleAdminLogin} className="p-6 sm:p-8 rounded-2xl bg-white border border-kirsche/40 space-y-5">
+          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-kirsche/40 space-y-5">
             <div>
               <span className="text-[13px] text-mint-700 font-bold flex items-center gap-1.5"><Lock size={12} /> Geschützte Plattform-Steuerung</span>
-              <h1 className="text-2xl font-serif font-bold text-tinte mt-1">Master-Steuerpult (Admin)</h1>
+              <h2 className="text-2xl font-serif font-bold text-tinte mt-1">Administration</h2>
             </div>
-            <div>
-              <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Admin-PIN</label>
-              <input type="password" required value={adminPin} onChange={(e) => setAdminPin(e.target.value)} placeholder="Admin-PIN" className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-3 text-sm text-tinte focus:border-kirsche outline-none" />
-            </div>
-            <button type="submit" className="w-full py-3.5 rounded-xl bg-mint-500 hover:bg-mint-400 text-tinte font-extrabold text-[13px] flex items-center justify-center gap-2 cursor-pointer">
-              <KeyRound size={15} /> Master-Steuerpult entsperren →
-            </button>
-          </form>
+            <p className="text-sm text-gray-700">Die Zugriffsprüfung erfolgt ausschliesslich auf dem Server, nicht über einen im Browser hinterlegten PIN.</p>
+            <Link href="/admin-dashboard" className="w-full py-3.5 rounded-xl bg-mint-500 hover:bg-mint-400 text-tinte font-extrabold text-[13px] flex items-center justify-center gap-2 no-underline">
+              Geschützten Admin-Zugang öffnen →
+            </Link>
+          </div>
         )}
       </main>
     </div>

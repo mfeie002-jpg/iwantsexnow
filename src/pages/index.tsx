@@ -114,6 +114,12 @@ export default function HomePage() {
   const [maxChf, setMaxChf] = useState<number>(0);
   const [searchFocused, setSearchFocused] = useState(false);
   const [limit, setLimit] = useState(28);
+  const [nowMs, setNowMs] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNowMs(Date.now()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
   const [xeniaReply, setXeniaReply] = useState<string>(
     "Wähle Region und Thema per Fingertipp. Ich zeige passende Verzeichniseinträge; importierte Honorarwerte sind nicht automatisch bestätigte Anbieterpreise."
   );
@@ -149,24 +155,29 @@ export default function HomePage() {
 
   const cantonCounts = useMemo(() => {
     const m: Record<string, number> = {};
+    const blocked = new Set(blockedIds);
     for (const o of allOffers) {
-      const c = String(o?.canton || "ZH").toUpperCase();
+      const pid = String(o?.id || o?.dedupClusterId || "");
+      const st = liveStates[pid];
+      if (!pid || blocked.has(pid) || st?.hidden || st?.paused) continue;
+      const c = String(st?.canton || o?.canton || "").toUpperCase();
+      if (!c) continue;
       m[c] = (m[c] || 0) + 1;
     }
     return m;
-  }, [allOffers]);
+  }, [allOffers, blockedIds, liveStates]);
 
   const filtered = useMemo(() => {
     const blocked = new Set(blockedIds);
     const q = query.trim().toLowerCase();
     return allOffers.filter((o) => {
       const pid = String(o?.id || o?.dedupClusterId || "");
-      if (blocked.has(pid)) return false;
+      if (!pid || blocked.has(pid)) return false;
       const st = liveStates[pid];
       if (st?.hidden || st?.paused) return false;
       if (canton !== "ALL" && String(st?.canton || o?.canton || "").toUpperCase() !== canton) return false;
       if (onlyWhatsapp && cleanSwissDigits(st?.phoneDisplay || o?.rawPhone || "").length < 10) return false;
-      if (onlyLive && !Boolean(st?.availabilityConfirmed || o?.availabilityConfirmed)) return false;
+      if (onlyLive && !(st?.availabilityConfirmed && Number.isFinite(Date.parse(String(st.availableUntil || ""))) && Date.parse(String(st.availableUntil)) > nowMs)) return false;
       const r60 = Number(st?.rate60Chf || o?.advertisedBaseChf || 0);
       if (maxChf > 0 && (!Number.isFinite(r60) || r60 <= 0 || r60 > maxChf)) return false;
       if (q) {
@@ -187,7 +198,7 @@ export default function HomePage() {
       }
       return true;
     });
-  }, [allOffers, liveStates, blockedIds, canton, onlyWhatsapp, onlyLive, maxChf, query]);
+  }, [allOffers, liveStates, blockedIds, canton, onlyWhatsapp, onlyLive, maxChf, query, nowMs]);
 
   const scrollToGrid = () => {
     const el = document.getElementById("profiles-anchor");
@@ -223,7 +234,7 @@ export default function HomePage() {
 
           <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-[#DECED4]">
             <a href="#profiles-anchor" className="text-white hover:text-[#E2B887] no-underline">
-              Profile ({allOffers.length.toLocaleString("de-CH")})
+              Einträge ({allOffers.length.toLocaleString("de-CH")})
             </a>
             <a href="#regions-anchor" className="hover:text-[#E2B887] no-underline">
               Regionen
@@ -275,7 +286,7 @@ export default function HomePage() {
           <div className="max-w-3xl space-y-5">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E11D48]/20 border border-[#FB7185]/40 text-[#FDA4AF] text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              Schweizweit gebündelt · {allOffers.length.toLocaleString("de-CH")} Profile · {totalClubs} Clubs & Studios
+              Schweizweit gebündelt · {allOffers.length.toLocaleString("de-CH")} Einträge · {totalClubs} Clubs & Studios
             </div>
 
             <h1 className="text-3xl sm:text-6xl font-serif font-bold text-white leading-[1.08]">
@@ -402,7 +413,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">Beliebte Regionen in der Schweiz</h2>
             <p className="text-xs sm:text-sm text-[#BBA7B0] mt-0.5">
-              Ein Fingertipp auf deine Stadt filtert alle verfügbaren Profile ohne Tippen.
+              Wähle eine Region per Fingertipp und entdecke passende Verzeichniseinträge.
             </p>
           </div>
           {canton !== "ALL" && (
@@ -655,14 +666,14 @@ export default function HomePage() {
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
               So einfach funktioniert <span className="text-[#E11D48]">iwantsexnow.ch</span>
             </h2>
-            <p className="text-xs sm:text-sm text-[#BBA7B0] mt-1">In drei Berührungen ohne Tippen zum verifizierten Direktkontakt.</p>
+            <p className="text-xs sm:text-sm text-[#BBA7B0] mt-1">In drei einfachen Auswahlschritten zur regionalen Übersicht, ohne Tastatur.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              ["1", "Antippen statt Tippen", "Wähle deinen Kanton und deine Wunsch-Kategorie per Bildkachel oder lass dich von KI-Begleiterin Xenia führen."],
-              ["2", "Ehrlich vergleichen in CHF", "Sieh 30-Min.- und 60-Min.-Richtwerte, gebündelte Portal-Quellen und echte 4-Stunden-Live-Freigaben auf einen Blick."],
-              ["3", "Direkt per +41 kontaktieren", "Schreibe direkt per Schweizer +41 WhatsApp oder rufe ohne Vermittlungsgebühr und ohne Zwischenhändler an."]
+              ["1", "Antippen statt Tippen", "Wähle Region und Thema per Bildkachel oder nutze Xenias freiwillige Auswahlhilfe."],
+              ["2", "Ehrlich vergleichen in CHF", "Sieh Quellen, gemeldete Honorarangaben und den Unterschied zwischen bestätigtem und unbekanntem Status."],
+              ["3", "Direkt per +41 kontaktieren", "Nutze die angegebenen Kontaktwege, nachdem du Quellen, Honorar und Verfügbarkeit selbst geprüft hast."]
             ].map(([num, title, text]) => (
               <div key={num} className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
                 <span className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E11D48] to-[#9F1239] text-white font-extrabold text-sm flex items-center justify-center shrink-0">
@@ -684,15 +695,15 @@ export default function HomePage() {
         <div className="lg:col-span-7 rounded-3xl bg-gradient-to-br from-[#230E1C] via-[#170B14] to-[#11080F] border border-[#E2B887]/45 p-6 sm:p-8 flex flex-col justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
             <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#E2B887] shadow-[0_0_30px_rgba(225,29,72,0.4)] shrink-0">
-              <img src="/images/ai/xenia-avatar.webp" alt="Xenia KI Begleiterin" className="w-full h-full object-cover" />
+              <img src="/images/ai/xenia-avatar.webp" alt="Xenia – visuelle Auswahlhilfe" className="w-full h-full object-cover" />
             </div>
             <div className="space-y-1.5">
-              <span className="text-[11px] uppercase tracking-widest text-[#E2B887] font-bold">Zero-Typing KI-Begleiterin</span>
+              <span className="text-[11px] uppercase tracking-widest text-[#E2B887] font-bold">Zero-Typing Auswahlhilfe</span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
                 <span className="text-[#FB7185]">Xenia</span> – dein smarter Schweizer Lotse.
               </h2>
               <p className="text-xs sm:text-sm text-[#DFCFD6] leading-relaxed">
-                Tippe einfach eine Frage an – Xenia antwortet sofort mit echten Schweizer Marktdaten oder filtert dir die passenden Profile heraus:
+                Tippe eine Frage an: Xenia erklärt Begriffe, führt zu passenden Filtern und kennzeichnet, welche Daten nicht bestätigt sind.
               </p>
             </div>
           </div>
@@ -708,7 +719,7 @@ export default function HomePage() {
                 () => {
                   setCanton("ZH");
                   setOnlyWhatsapp(true);
-                  setXeniaReply(`Ich habe dir ${cantonCounts["ZH"] || 900}+ Einträge im Raum Zürich auf direkte +41 Erreichbarkeit gefiltert – scrolle einfach hoch oder klicke auf 'Zum Grid'.`);
+                  setXeniaReply(`Ich habe dir ${cantonCounts["ZH"] || 0} regionale Einträge für Zürich ausgewählt. Ob Kontaktdaten und Verfügbarkeit aktuell sind, muss beim Anbieter geprüft werden.`);
                   scrollToGrid();
                 }
               ],
@@ -723,7 +734,7 @@ export default function HomePage() {
                 "Welche Honorare sind in Zug & Zürich üblich?",
                 () =>
                   setXeniaReply(
-                    "In Zürich und Zug liegen geprüfte Direkt-Honorare bei CHF 150–250 (30 Min.) und CHF 300–450 (60 Min.). Im Honorar-Kompass unter /pricing findest du alle 26 Kantone live berechnet."
+                    "Importierte CHF-Angaben sind teils Richtwerte oder Berechnungen und keine bestätigten Anbieterpreise. Der Honorar-Kompass erklärt, welche Angaben vorliegen und welche offen sind."
                   )
               ]
             ].map(([label, fn], idx) => (
@@ -746,10 +757,10 @@ export default function HomePage() {
               <span className="text-[11px] uppercase tracking-widest text-emerald-400 font-bold">0% Buchungsprovision</span>
               <h3 className="text-2xl font-serif font-bold text-white">Du bietest an? Dein Profil, deine Preise.</h3>
               <ul className="space-y-1.5 text-xs text-[#D8C5CD] pt-1">
-                <li>✓ Bestehendes Profil in 30 Sek. gratis übernehmen (Claim)</li>
-                <li>✓ 1-Tap „Jetzt für 4h FREI“-Schalter auf dem Smartphone</li>
-                <li>✓ 80% Auszahlung bei eigenem Paid-Vault & KI-Opt-In</li>
-                <li>✓ Jederzeit kostenloses 1-Klick Opt-Out ohne Account-Zwang</li>
+                <li>✓ Profilübernahme erst nach berechtigtem Eigentumsnachweis</li>
+                <li>✓ Verfügbarkeit nur mit nachgewiesener Gültigkeitsdauer</li>
+                <li>✓ KI-Funktionen nur nach ausdrücklicher Freigabe</li>
+                <li>✓ Vertraulicher Melde- und Korrekturweg ohne Login</li>
               </ul>
             </div>
             <img
@@ -765,13 +776,13 @@ export default function HomePage() {
               href="/create-post"
               className="flex-1 py-3 px-4 rounded-full bg-[#E2B887] hover:opacity-95 text-[#140B12] font-extrabold text-xs text-center no-underline"
             >
-              Profil gratis aufgeben / übernehmen →
+              Sichere Profilverwaltung prüfen →
             </Link>
             <Link
               href="/report"
               className="py-3 px-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold text-rose-300 no-underline"
             >
-              1-Klick Opt-Out
+              Eintrag melden / entfernen lassen
             </Link>
           </div>
         </div>

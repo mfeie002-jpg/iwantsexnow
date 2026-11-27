@@ -160,9 +160,13 @@ async function scrapeSingleProfileUrl(targetUrl: string, fallbackCanton: string,
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const adminPin = process.env.ADMIN_PIN || "";
-  const providedPin = String(req.headers["x-admin-pin"] || req.body?.adminPin || "").trim();
+  const providedPin = String(req.headers["x-admin-pin"] || "").trim();
+  const expected = Buffer.from(adminPin);
+  const submitted = Buffer.from(providedPin);
+  const isAdmin = adminPin.length >= 16 && submitted.length === expected.length &&
+    crypto.timingSafeEqual(submitted, expected);
 
-  if (!adminPin || adminPin.length < 10 || providedPin !== adminPin) {
+  if (!isAdmin) {
     return res.status(403).json({
       ok: false,
       error: "Zugriff verweigert: Gültiger Server-Admin-PIN erforderlich.",
