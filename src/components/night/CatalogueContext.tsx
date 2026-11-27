@@ -3,7 +3,7 @@ import {filterOffers,getProfileId,Offer,ProfileState} from '@/lib/night-catalogu
 import {COMPARISON_KEY,FAVORITES_KEY,readSelection,toggleSelection,writeSelection} from './selection-persistence';
 
 type Snapshot={states:Record<string,ProfileState>;blockedIds:string[];offers:Offer[];clubs:Offer[]};
-type Catalogue=Snapshot&{offers:Offer[];visibleOffers:Offer[];loading:boolean;error:string;ensureLoaded:()=>void;favorites:string[];compareIds:string[];selectionNotice:string;dismissSelectionNotice:()=>void;toggleFavorite:(id:string)=>void;toggleCompare:(id:string)=>void};
+type Catalogue=Snapshot&{offers:Offer[];visibleOffers:Offer[];loading:boolean;loaded:boolean;error:string;ensureLoaded:()=>void;favorites:string[];compareIds:string[];selectionNotice:string;dismissSelectionNotice:()=>void;toggleFavorite:(id:string)=>void;toggleCompare:(id:string)=>void};
 const Context=createContext<Catalogue|null>(null);
 export function CatalogueProvider({children,initial}:{children:React.ReactNode;initial?:Snapshot}) {
   const [snapshot,setSnapshot]=useState<Snapshot>(initial||{states:{},blockedIds:[],offers:[],clubs:[]});
@@ -72,6 +72,6 @@ export function CatalogueProvider({children,initial}:{children:React.ReactNode;i
     if(persist(key,result.ids))setSelectionNotice(result.outcome==='added'?(favorite?'Zur Merkliste hinzugefügt und in diesem Browser gespeichert.':'Zur Vergleichsauswahl hinzugefügt und in diesem Browser gespeichert.'):(favorite?'Aus der Merkliste entfernt.':'Aus dem Vergleich entfernt.'));
     else setSelectionNotice(favorite?'Die Änderung an deiner Merkliste gilt nur für diesen Besuch. Dein Browser konnte sie nicht speichern.':'Die Änderung an deiner Vergleichsauswahl gilt nur für diesen Besuch. Dein Browser konnte sie nicht speichern.');
   };
-  return <Context.Provider value={{...snapshot,offers,visibleOffers,loading,error,ensureLoaded,favorites,compareIds,selectionNotice,dismissSelectionNotice:()=>setSelectionNotice(''),toggleFavorite:id=>toggle(FAVORITES_KEY,favoriteRef,setFavorites,id),toggleCompare:id=>toggle(COMPARISON_KEY,comparisonRef,setCompare,id,3)}}>{children}</Context.Provider>;
+  return <Context.Provider value={{...snapshot,offers,visibleOffers,loading,loaded:ready,error,ensureLoaded,favorites,compareIds,selectionNotice,dismissSelectionNotice:()=>setSelectionNotice(''),toggleFavorite:id=>toggle(FAVORITES_KEY,favoriteRef,setFavorites,id),toggleCompare:id=>toggle(COMPARISON_KEY,comparisonRef,setCompare,id,3)}}>{children}</Context.Provider>;
 }
 export function useCatalogue(){const value=useContext(Context);if(!value)throw new Error('CatalogueProvider missing');return value;}
