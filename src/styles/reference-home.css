@@ -1,0 +1,96 @@
+/* Selected Swiss Night reference: homepage-scoped composition.
+   Existing data, navigation routes and shared components stay intact. */
+.night-reference-home{--ref-pink:#ff568e;--ref-line:#a760826b;--ref-muted:#e1cddc;--ref-panel:#231626;background:radial-gradient(ellipse at 52% 63%,#3e193125,transparent 65%);padding-bottom:18px}
+.night-reference-home>.night-container{width:min(1680px,calc(100% - 64px))}
+.night-reference-home .night-hero{width:min(1710px,calc(100% - 32px));margin:0 auto 0;min-height:clamp(430px,37.5vw,615px);border-radius:34px;border:1px solid #a35b795e;align-items:center;background:#251426}
+.night-reference-home .night-hero:before{background:linear-gradient(90deg,#1c1121f2 0%,#201224b8 28%,#20122439 53%,transparent 76%),linear-gradient(0deg,#3513296b,transparent 30%)}
+.night-reference-home .night-hero-art{object-position:center 48%}
+.night-reference-home .night-hero-content{width:calc(100% - 88px);max-width:none;padding:clamp(34px,3.2vw,55px) 0 56px}
+.night-reference-home .night-hero-edition{gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.night-reference-home .night-hero-edition .night-kicker{font-size:clamp(10px,1.04vw,14px);color:#ffc2d9;letter-spacing:.14em}
+.night-reference-home .night-edition-tag{font-size:11px;color:#f5dce8;padding:7px 15px;text-transform:uppercase;white-space:nowrap}
+.night-reference-home .night-hero h1{font-size:clamp(55px,6.2vw,96px);line-height:.96;font-weight:780;letter-spacing:-.065em;margin:0 0 18px;max-width:60%;text-wrap:initial}
+.night-reference-home .night-hero h1 em{background:linear-gradient(100deg,#ff9ac2,#ff3f80 76%);background-clip:text;-webkit-text-fill-color:transparent}
+.night-reference-home .night-hero .night-lead{max-width:41%;font-size:clamp(13px,1.28vw,18px);line-height:1.45;margin:0;color:#fff0fa}
+.reference-hero-principles{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:19px;font-size:clamp(10px,.9vw,13px);color:#fff0f6;max-width:56%}
+.reference-hero-principles>span{display:flex;align-items:center;gap:8px}
+.reference-hero-principles svg{width:24px;height:24px;color:var(--ref-pink);flex-shrink:0}
+.night-reference-home .night-hero-actions{margin:24px 0 0;gap:14px;flex-wrap:wrap}
+.night-reference-home .reference-primary,.night-reference-home .reference-outline{border-radius:99px;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 25px;font-weight:750;font-size:14px}
+.night-reference-home .reference-primary{background:linear-gradient(#ff6ca0,#e31b60 60%,#f14584);box-shadow:0 5px 28px #e8266b55,inset 0 1px #ffd1e4;border-color:#ff9abd}
+.night-reference-home .reference-outline{border:1px solid #e9c2dbb0;background:#2416258c;color:#fff8f9}
+.reference-xenia{position:absolute;z-index:2;right:13%;bottom:24px;width:clamp(248px,28vw,425px);display:flex;align-items:center;gap:13px;padding:12px 16px;border:1px solid #ffbdd2aa;border-radius:50px;background:linear-gradient(120deg,#572538db,#2c1529dc);box-shadow:0 3px 0 #df678b36,0 12px 28px #18081877;backdrop-filter:blur(14px);color:#fff!important}
+.reference-xenia-mark{width:56px;height:56px;display:grid;place-items:center;border:1px solid #ffd2e9;border-radius:50%;flex-shrink:0;background:radial-gradient(circle at top left,#b74c78,#31192c);color:#ffd4e8}
+.reference-xenia strong{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:750}
+.reference-xenia small{display:block;color:#f1dce9;font-size:11px;line-height:1.4;margin-top:4px}
+.reference-xenia>svg{flex-shrink:0;color:#ffb9d2}
+.reference-art-credit{position:absolute;bottom:5px;right:20px;z-index:1;font-size:9px;color:#f5dce8;background:#21102377;padding:2px 5px;border-radius:4px}
+.reference-entry-section{padding:18px 0 4px}
+.reference-entry-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.reference-entry-card{position:relative;isolation:isolate;min-width:0;overflow:hidden;border:1px solid var(--ref-line);border-radius:18px;min-height:158px;background:#241725;color:#fff5fa!important;display:flex;align-items:center}
+.reference-entry-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.reference-entry-card:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#201323f5,#241525dd 34%,#24152544 100%),linear-gradient(0deg,#1d1224a1,transparent 50%)}
+.reference-entry-card>div{padding:19px 20px;width:100%}
+.reference-entry-card h2{font-size:clamp(17px,1.75vw,23px);font-weight:730;letter-spacing:-.04em;margin:7px 0 5px;line-height:1.1;text-wrap:initial}
+.reference-entry-card p{font-size:12px;line-height:1.4;color:#f2dce8;max-width:75%;margin:0 0 9px}
+.reference-entry-card svg{color:var(--ref-pink)}
+.reference-entry-card div>svg:last-child{color:#fff5fa}
+.night-reference-home .night-section{padding-block:18px}
+.night-reference-home .night-section-title{margin-bottom:14px;gap:16px}
+.night-reference-home .night-section-title h2{font-size:clamp(23px,2.3vw,32px);font-weight:740;letter-spacing:-.04em;margin:0 0 5px}
+.night-reference-home .night-section-title .night-kicker{margin-bottom:6px!important;font-size:9px}
+.night-reference-home .night-section-title p{font-size:12px;color:#e1cedd}
+.night-reference-home .night-section-link{color:#ff83b0;font-weight:650}
+.night-reference-home .night-load-more{padding:16px 0 0}
+.night-reference-home .night-region-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.night-reference-home .night-region-card{aspect-ratio:1.67;border-radius:14px;border-color:#be779c88}
+.night-reference-home .night-region-card span{font-size:clamp(13px,1.4vw,18px)}
+.reference-editorial-grid{display:grid;grid-template-columns:1.18fr 1fr;gap:18px;padding-block:18px}
+.reference-portal-panel,.reference-knowledge-panel{position:relative;overflow:hidden;border:1px solid var(--ref-line);border-radius:23px;background:linear-gradient(130deg,#412034b0,#241825);min-width:0;padding:22px}
+.reference-portal-panel{display:grid;grid-template-columns:28% 1fr;gap:19px;align-items:center}
+.reference-portal-panel>img{width:100%;height:100%;max-height:195px;object-fit:cover;object-position:left;border-radius:15px}
+.reference-portal-panel h2,.reference-knowledge-panel h2{font-size:clamp(20px,1.9vw,27px);line-height:1.12;letter-spacing:-.04em;font-weight:720;margin:0 0 6px}
+.reference-portal-panel p,.reference-knowledge-panel p{font-size:12px;line-height:1.45;color:#eddae8;margin:0 0 9px}
+.reference-portal-panel .night-row{gap:5px;flex-wrap:wrap;margin:10px 0}
+.reference-portal-panel .night-pill{background:#f9eef4;color:#3b1b32;font-size:10px;font-weight:700;padding:5px 8px}
+.reference-portal-panel .night-button{border-radius:99px;min-height:44px;font-size:12px;padding:10px 20px}
+.reference-editorial-heading{display:flex;gap:14px;align-items:start;margin-bottom:10px}
+.reference-editorial-heading>svg,.reference-knowledge-links svg,.reference-principles svg{color:var(--ref-pink);flex-shrink:0}
+.reference-knowledge-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.reference-knowledge-links a{display:grid;position:relative;align-content:center;gap:10px;min-height:92px;border:1px solid #b473936d;border-radius:16px;background:linear-gradient(150deg,#5c2b46,#291a2b);padding:12px;color:#fff0f7!important}
+.reference-knowledge-links strong{font-size:12px;line-height:1.35}
+.reference-knowledge-links a>svg:last-child{position:absolute;right:10px;top:10px;width:13px;color:#f4dbe9}
+.reference-principles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:12px 0 21px}
+.reference-principles>div{display:flex;gap:10px;align-items:center;min-width:0;border-right:1px solid #b97f9d69;padding-right:8px}
+.reference-principles>div:last-child{border-right:0}
+.reference-principles strong{display:block;font-size:clamp(12px,1.1vw,15px);font-weight:700;line-height:1.3;color:#fff4fa}
+.reference-principles small{display:block;font-size:11px;line-height:1.4;color:#e2cbdc;margin-top:3px}
+.reference-end-banner{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:35px;min-height:145px;border:1px solid #b76c9a83;border-radius:26px;padding:28px 36px;background:#43203c}
+.reference-end-banner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2}
+.reference-end-banner:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#2a1529a6,#4a1936b3,#2a152988)}
+.reference-end-banner h2{font-size:clamp(25px,2.5vw,35px);font-weight:760;letter-spacing:-.045em;margin:0 0 6px;color:white}
+.reference-end-banner h2 em{font-style:normal;color:#ff79a9}
+.reference-end-banner p{font-size:13px;color:#f8e4f1;margin:0}
+.reference-end-banner .night-button{flex-shrink:0;border-radius:99px;min-height:48px}
+.night-reference-home a:focus-visible{outline:3px solid #ffd1e5;outline-offset:3px}
+@media(max-width:1100px){.reference-xenia{right:5%;bottom:24px}.reference-entry-card>div{padding:16px 14px}.reference-entry-card p{max-width:90%}.reference-editorial-grid{gap:12px}.reference-portal-panel,.reference-knowledge-panel{padding:16px}.reference-portal-panel{grid-template-columns:24% 1fr;gap:12px}.reference-principles{gap:10px}}
+@media(max-width:760px){
+.night-reference-home>.night-container{width:calc(100% - 24px)}
+.night-reference-home .night-hero{width:calc(100% - 16px);margin-top:8px;border-radius:23px;min-height:0;display:flex;flex-direction:column;align-items:stretch}
+.night-reference-home .night-hero-art{object-position:80% top;object-fit:cover;height:100%}
+.night-reference-home .night-hero:before{background:linear-gradient(0deg,#1d1223 0%,#201124f2 30%,#201224c4 49%,#21112549 77%,transparent)}
+.night-reference-home .night-hero-content{width:calc(100% - 32px);padding:185px 0 18px}
+.night-reference-home .night-hero-edition{gap:7px;margin-bottom:14px}.night-reference-home .night-hero-edition .night-kicker{font-size:9px}.night-reference-home .night-edition-tag{font-size:8px;padding:5px 9px}
+.night-reference-home .night-hero h1{font-size:clamp(40px,9.2vw,66px);max-width:100%;margin-bottom:13px}
+.night-reference-home .night-hero .night-lead{font-size:14px;max-width:100%}
+.reference-hero-principles{max-width:100%;font-size:10px;gap:9px 13px;margin-top:15px}.reference-hero-principles svg{width:18px;height:18px}
+.night-reference-home .night-hero-actions{gap:9px;margin-top:16px}.night-reference-home .reference-primary,.night-reference-home .reference-outline{font-size:12px;padding:10px 14px;min-height:44px}
+.reference-xenia{position:relative;inset:auto;margin:0 16px 25px;width:auto;border-radius:22px;padding:10px 12px}.reference-xenia-mark{width:44px;height:44px}.reference-xenia strong{font-size:12px}.reference-xenia small{font-size:10px}.reference-art-credit{font-size:8px;right:12px;bottom:5px}
+.reference-entry-section{padding:12px 0 3px}.reference-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.reference-entry-card{min-height:140px;border-radius:15px}.reference-entry-card h2{font-size:17px;overflow-wrap:anywhere}.reference-entry-card>div{padding:14px 12px}.reference-entry-card p{font-size:11px;max-width:100%}
+.night-reference-home .night-section{padding-block:15px}.night-reference-home .night-section-title{margin-bottom:13px}.night-reference-home .night-section-title h2{font-size:24px}.night-reference-home .night-section-title .night-section-link{font-size:11px;white-space:normal;max-width:105px;text-align:right;flex-shrink:0}
+.night-reference-home .night-region-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.night-reference-home .night-region-card span{font-size:15px}
+.reference-editorial-grid{grid-template-columns:1fr;gap:12px;padding-block:10px}.reference-portal-panel,.reference-knowledge-panel{padding:16px;border-radius:19px}.reference-portal-panel{grid-template-columns:27% 1fr}.reference-portal-panel h2,.reference-knowledge-panel h2{font-size:22px}.reference-knowledge-links{gap:7px}.reference-knowledge-links a{padding:10px;min-height:91px}.reference-knowledge-links strong{font-size:11px;overflow-wrap:anywhere}
+.reference-principles{grid-template-columns:1fr 1fr;gap:15px 10px;padding:13px 0 20px}.reference-principles>div:nth-child(even){border-right:0}.reference-principles svg{width:24px;height:24px}.reference-principles small{font-size:10px}
+.reference-end-banner{flex-direction:column;gap:14px;text-align:center;padding:26px 18px;border-radius:21px}.reference-end-banner h2{font-size:27px}.reference-end-banner .night-button{min-height:44px}
+}
+@media(max-width:360px){.reference-hero-principles{gap:7px 9px}.night-reference-home .night-hero-content{padding-top:160px}.reference-entry-card h2{font-size:15px}.reference-entry-card p{font-size:10px}.reference-knowledge-links{grid-template-columns:1fr}.reference-knowledge-links a{min-height:52px;grid-template-columns:27px 1fr;align-items:center}.reference-portal-panel{grid-template-columns:1fr}.reference-portal-panel>img{max-height:105px}}
