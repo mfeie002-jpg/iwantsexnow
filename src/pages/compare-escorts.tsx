@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Scale, X } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { useCatalogue } from "@/components/night/CatalogueContext";
+import { useCatalogue, useSelectedCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
 import { chooseComparisonProfile, reconcileComparisonPair, resolveSelectedProfiles } from "@/components/night/profile-image-model";
 import { ComparisonValue, showComparisonRow } from "@/components/night/profile-experience-model";
 import { getProfileId, getProfileName, getProfilePhotos, getProfileRate, Offer } from "@/lib/night-catalogue";
-export { getServerSideProps } from "@/lib/night-catalogue-server";
+import type {GetServerSideProps} from 'next';
+export const getServerSideProps:GetServerSideProps=async()=>({props:{
+ catalogue:{states:{},blockedIds:[],offers:[],clubs:[],partial:true}
+}});
 
 export default function CompareEscortsPage() {
   const catalogue = useCatalogue();
+  const savedHydration = useSelectedCatalogue('compare');
   const selected = resolveSelectedProfiles(catalogue.visibleOffers, catalogue.compareIds, getProfileId).slice(0, 3);
   const ids = selected.map(getProfileId);
   const [pair, setPair] = useState<string[]>([]);
@@ -48,7 +52,8 @@ export default function CompareEscortsPage() {
     <SEO title="Profile vergleichen · Deine Auswahl | iwantsexnow.ch" description="Vergleiche selbst ausgewählte Profile nach Ort, hinterlegten Quellen und bestätigten Preisangaben." url="https://iwantsexnow.ch/compare-escorts" />
     <div className="night-page-intro"><p className="night-eyebrow">Deine Auswahl. Ein gemeinsamer Blick.</p><h1>Was unterscheidet die Profile?</h1><p className="night-lead">Bis zu drei Einträge nebeneinander. Fehlende Angaben bleiben sichtbar, damit dein Vergleich nachvollziehbar bleibt.</p></div>
     {catalogue.error && <p className="night-note" role="status">{catalogue.error}</p>}
-    {selected.length === 0 ? <section className="night-empty"><Scale size={32} aria-hidden="true" /><h2>Dein Vergleich beginnt mit deiner Auswahl.</h2><p>Wähle bei einem Profil „Vergleichen“. Hier erscheinen nur die von dir ausgewählten, weiterhin sichtbaren Einträge.</p><Link href="/search" className="night-button">Profile ansehen <ArrowRight size={17} /></Link></section> : <>
+    {savedHydration.error && <p className="night-note" role="alert">{savedHydration.error} <button type="button" className="night-text-button" onClick={savedHydration.retry}>Erneut versuchen</button></p>}
+    {!savedHydration.ready ? <section className="night-empty" role="status"><h2>Dein Vergleich wird abgeglichen …</h2></section> : savedHydration.error ? null : selected.length === 0 ? <section className="night-empty"><Scale size={32} aria-hidden="true" /><h2>{catalogue.compareIds.length?'Gespeicherte Vergleichseinträge sind derzeit nicht sichtbar.':'Dein Vergleich beginnt mit deiner Auswahl.'}</h2><p>Wähle bei einem Profil „Vergleichen“. Hier erscheinen nur die von dir ausgewählten, weiterhin sichtbaren Einträge.</p>{catalogue.compareIds.length>0&&<button type="button" className="night-text-button" onClick={()=>catalogue.compareIds.forEach(id=>catalogue.toggleCompare(id))}>Nicht sichtbare Vergleichsauswahl entfernen</button>}<Link href="/search" className="night-button">Profile ansehen <ArrowRight size={17} /></Link></section> : <>
       <div className="night-selection-bar"><span>{selected.length} von 3 Profilen ausgewählt</span><Link href="/search" className="night-text-button">Weiter auswählen <ArrowRight size={16} /></Link></div>
       <div className="night-comparison-tools"><label className="night-difference-switch"><input type="checkbox" checked={differencesOnly} disabled={selected.length < 2} onChange={event => setDifferencesOnly(event.target.checked)}/><span>Nur Unterschiede</span></label><p aria-live="polite">{shownCriteria.length} von {criteria.length} Kriterien sichtbar. Offene Angaben bleiben sichtbar.</p></div>
       {selected.length > 2 && <div className="night-compare-mobile-selectors">{[0, 1].map(slot => <label key={slot}><span>{slot === 0 ? "Linkes Profil" : "Rechtes Profil"}</span><select value={visiblePair[slot] || ""} onChange={event => setPair(current => chooseComparisonProfile(ids, current, slot, event.target.value))}>{ordered.map(offer => <option key={getProfileId(offer)} value={getProfileId(offer)}>{getProfileName(offer, catalogue.states[getProfileId(offer)])}</option>)}</select></label>)}</div>}

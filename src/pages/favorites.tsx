@@ -3,16 +3,20 @@ import Link from "next/link";
 import { ArrowRight, Heart, MapPin, Scale, Undo2, X } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import LuxuryPhotoCard from "@/components/LuxuryPhotoCard";
-import { useCatalogue } from "@/components/night/CatalogueContext";
+import { useCatalogue, useSelectedCatalogue } from "@/components/night/CatalogueContext";
 import { resolveSelectedProfiles } from "@/components/night/profile-image-model";
 import { FavoriteOrder, favoriteRegionCounts, selectFavorites } from "@/components/night/favorites-model";
 import { CANTONS, REGIONS, getProfileId, getProfileName, Offer } from "@/lib/night-catalogue";
-export { getServerSideProps } from "@/lib/night-catalogue-server";
+import type {GetServerSideProps} from 'next';
+export const getServerSideProps:GetServerSideProps=async()=>({props:{
+ catalogue:{states:{},blockedIds:[],offers:[],clubs:[],partial:true}
+}});
 
 const regionLabel = (key: string) => key === 'unknown' ? 'Ohne Regionsangabe' : REGIONS.find(region => region.canton === key)?.name || key;
 
 export default function FavoritesPage() {
   const catalogue = useCatalogue();
+  const savedHydration = useSelectedCatalogue('favorites');
   const [removed, setRemoved] = useState<{ id: string; name: string } | null>(null);
   const [region, setRegion] = useState('all');
   const [order, setOrder] = useState<FavoriteOrder>('saved');
@@ -40,9 +44,10 @@ export default function FavoritesPage() {
     <div className="night-page-intro"><p className="night-eyebrow">Deine Auswahl bleibt deine.</p><h1>Deine Favoriten. Dein Überblick.</h1><p className="night-lead">Nach Region ordnen, in Ruhe wiederfinden und selbst vergleichen.</p></div>
     <p className="night-favorites-privacy"><Heart size={15} aria-hidden="true" /> In diesem Browser gespeichert. Auf gemeinsam genutzten Geräten für andere sichtbar.</p>
     {catalogue.error && <p className="night-note" role="status">{catalogue.error}</p>}
+    {savedHydration.error && <p className="night-note" role="alert">{savedHydration.error} <button type="button" className="night-text-button" onClick={savedHydration.retry}>Erneut versuchen</button></p>}
     {removed && !catalogue.favorites.includes(removed.id) && <div className="night-favorite-undo"><p role="status">{removed.name} wurde aus deiner Merkliste entfernt.{!canRestore && ' Dieser Eintrag ist derzeit nicht sichtbar.'}</p><button ref={undoButton} type="button" className="night-text-button" disabled={!canRestore} onClick={() => { if (canRestore && !catalogue.favorites.includes(removed.id)) catalogue.toggleFavorite(removed.id); setRemoved(null); }}><Undo2 size={16} aria-hidden="true" /> Rückgängig</button></div>}
-    {unavailableCount > 0 && !catalogue.loading && <p className="night-note">{unavailableCount} gemerkte {unavailableCount === 1 ? "Eintrag ist" : "Einträge sind"} derzeit nicht sichtbar.</p>}
-    {saved.length ? <>
+    {unavailableCount > 0 && savedHydration.ready && !savedHydration.error && <p className="night-note">{unavailableCount} gemerkte {unavailableCount === 1 ? "Eintrag ist" : "Einträge sind"} derzeit nicht sichtbar.</p>}
+    {!savedHydration.ready ? <section className="night-empty" role="status"><h2>Deine Merkliste wird abgeglichen …</h2></section> : savedHydration.error ? null : saved.length ? <>
       <section className="night-favorites-tools" aria-label="Merkliste ordnen">
         <div className="night-favorites-tools-top"><div><span className="night-kicker">Deine persönliche Auswahl</span><p role="status">{shown.length} von {saved.length} {saved.length === 1 ? 'gespeichertem Profil' : 'gespeicherten Profilen'}</p></div><Link href="/compare-escorts" className="night-button secondary"><Scale size={16} aria-hidden="true" /> Vergleich öffnen ({catalogue.compareIds.length})</Link></div>
         <div className="night-favorites-regions" role="group" aria-label="Merkliste nach Region filtern"><button type="button" className="night-chip" aria-pressed={region === 'all'} onClick={() => setRegion('all')}>Alle Regionen <span>{saved.length}</span></button>{regions.map(item => <button type="button" className="night-chip" key={item.key} aria-pressed={region === item.key} onClick={() => setRegion(item.key)}><MapPin size={14} aria-hidden="true" /> {regionLabel(item.key)} <span>{item.count}</span></button>)}</div>

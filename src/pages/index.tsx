@@ -6,8 +6,10 @@ import {brandAsset,CATEGORIES,REGIONS,searchHref} from '@/lib/night-catalogue';
 import {useCatalogue} from '@/components/night/CatalogueContext';
 import {GuideButton,TouchSearch} from '@/components/night/NightShell';
 import {ProfileGrid,RegionCards} from '@/components/night/DiscoveryPages';
-export {getServerSideProps} from '@/lib/night-catalogue-server';
-export default function Home(){
+import {getPaginatedCatalogueProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
+import type {GetServerSideProps} from 'next';
+export const getServerSideProps:GetServerSideProps=ctx=>getPaginatedCatalogueProps(ctx,{},4);
+export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
  const {visibleOffers,error,favorites,compareIds}=useCatalogue();
  return <main id="main" className="night-home-2027">
  <SEO title="Eine Suche für die ganze Schweiz. | iwantsexnow.ch" description="Entdecke Schweizer Profile, Regionen und Quellen. Ein klarer Überblick für deine persönliche Wahl." image="https://iwantsexnow.ch/images/brand/v2/hero-night-v2.png"/>
@@ -32,7 +34,7 @@ export default function Home(){
   <nav className="night-city-shortcuts" aria-label="Direkt in eine Region"><span>Wo beginnt’s?</span>{REGIONS.slice(0,5).map(r=><Link key={r.canton} href={r.href}>{r.name}<ArrowUpRight size={13}/></Link>)}<a href="#regionen">Alle Regionen <ArrowDown size={13}/></a></nav>
  </section>
  <section className="night-container night-section" id="profile-entdecken">
-  <div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">01 /</span> Entdecken</p><h2>Menschen. Möglichkeiten.</h2><p>{visibleOffers.length.toLocaleString('de-CH')} vorhandene Einträge. Quellen und Fotohinweise direkt am Profil.</p></div><Link className="night-section-link" href="/search">Alle Profile <ArrowUpRight size={18}/></Link></div>
+  <div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">01 /</span> Entdecken</p><h2>Menschen. Möglichkeiten.</h2><p>{(cataloguePage?.total ?? visibleOffers.length).toLocaleString('de-CH')} vorhandene Einträge. Quellen und Fotohinweise direkt am Profil.</p></div><Link className="night-section-link" href="/search">Alle Profile <ArrowUpRight size={18}/></Link></div>
   {error&&<p className="night-note" role="status">{error}</p>}<ProfileGrid offers={visibleOffers.slice(0,8)} limit={4}/>
   <div className="night-load-more"><Link className="night-button-secondary" href="/search">Deine Auswahl verfeinern <ArrowRight size={17}/></Link></div>
  </section>

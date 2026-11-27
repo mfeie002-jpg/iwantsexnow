@@ -5,7 +5,12 @@ import {MapPin,ExternalLink,Building2} from 'lucide-react';
 import {SEO} from '@/components/SEO';
 import {brandAsset,CANTONS,REGIONS,safeExternalUrl} from '@/lib/night-catalogue';
 import {useCatalogue} from '@/components/night/CatalogueContext';
-export {getServerSideProps} from '@/lib/night-catalogue-server';
+import type {GetServerSideProps} from 'next';
+import {getCatalogueSnapshot} from '@/lib/night-catalogue-server';
+export const getServerSideProps:GetServerSideProps=async()=>{
+ const snapshot=await getCatalogueSnapshot();
+ return {props:{catalogue:{states:{},blockedIds:[],offers:[],clubs:snapshot.clubs,partial:true}}};
+};
 export default function ClubsPage(){
  const router=useRouter();const {blockedIds,states,clubs:clubsData}=useCatalogue();const [limit,setLimit]=useState(18);
  const canton=typeof router.query.canton==='string'&&CANTONS.includes(router.query.canton)?router.query.canton:'ALL';

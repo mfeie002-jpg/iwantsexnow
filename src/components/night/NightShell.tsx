@@ -1,9 +1,9 @@
-import React,{createContext,useContext,useEffect,useMemo,useRef,useState} from 'react';
+import React,{createContext,useContext,useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import * as Dialog from '@radix-ui/react-dialog';
 import {ArrowRight,Heart,MapPin,Menu,Search,SlidersHorizontal,Sparkles,X} from 'lucide-react';
-import {brandAsset,CANTONS,CATEGORIES,REGIONS,filterOffers,filtersFromQuery,searchHref,CatalogueFilters} from '@/lib/night-catalogue';
+import {brandAsset,CANTONS,CATEGORIES,REGIONS,filtersFromQuery,searchHref,CatalogueFilters} from '@/lib/night-catalogue';
 import {guideFilters,skipGuideStep} from '@/lib/night-guide-model';
 import {NightTools,QuickActionsButton} from './NightTools';
 export {QuickActionsButton} from './NightTools';
@@ -13,16 +13,45 @@ export const useNightGuide=()=>useContext(GuideContext);
 function Wordmark(){return <Link href="/" className="night-wordmark" aria-label="iwantsexnow.ch Startseite"><X aria-hidden="true"/><span>iwantsexnow<span>.ch</span></span></Link>;}
 const nav=[['/search','Profile'],['/clubs','Clubs & Studios'],['/reviews','Portalvergleich'],['/safety','Gut zu wissen']];
 export function NightShell({children}:{children:React.ReactNode}) {
- const router=useRouter();const {favorites,compareIds,visibleOffers,states,blockedIds,loading,loaded,error,ensureLoaded,selectionNotice,dismissSelectionNotice}=useCatalogue();
+ const router=useRouter();const {favorites,compareIds,selectionNotice,dismissSelectionNotice}=useCatalogue();
  const [open,setOpen]=useState(false),[menu,setMenu]=useState(false),[step,setStep]=useState(0);
  const [choice,setChoice]=useState<CatalogueFilters>({canton:'ALL',category:'all',max:0});
  const guideOpener=useRef<HTMLElement|null>(null);
  const menuOpener=useRef<HTMLElement|null>(null);
- const openGuide=(start=0,filters?:CatalogueFilters)=>{ensureLoaded();guideOpener.current=document.activeElement as HTMLElement;setChoice(guideFilters({...filtersFromQuery(router.query),...filters}));setStep(Math.min(3,Math.max(0,start)));setMenu(false);setOpen(true);};
+ const openGuide=(start=0,filters?:CatalogueFilters)=>{guideOpener.current=document.activeElement as HTMLElement;setChoice(guideFilters({...filtersFromQuery(router.query),...filters}));setStep(Math.min(3,Math.max(0,start)));setMenu(false);setOpen(true);};
  useEffect(()=>{setOpen(false);setMenu(false);},[router.asPath]);
  const select=(next:CatalogueFilters)=>{setChoice(c=>({...c,...next,invalid:false}));setStep(s=>Math.min(3,s+1));};
  const skip=()=>{setChoice(c=>skipGuideStep(c,step));setStep(s=>Math.min(3,s+1));};
- const matchCount=useMemo(()=>filterOffers(visibleOffers,choice,states,blockedIds).length,[visibleOffers,choice,states,blockedIds]);
+ const [matchCount,setMatchCount]=useState<number|null>(null);
+ const [countLoading,setCountLoading]=useState(false);
+ const [countError,setCountError]=useState('');
+ const [countRetry,setCountRetry]=useState(0);
+ // The guide needs an accurate filtered count, not the first 24 visible cards.
+ useEffect(()=>{
+   if(!open)return;
+   const controller=new AbortController();
+   let active=true;
+   setMatchCount(null);setCountLoading(true);setCountError('');
+   const timer=setTimeout(async()=>{
+     const params=new URLSearchParams(searchHref(choice).split('?')[1]||'');
+     params.set('count','1');
+     try{
+       const response=await fetch('/api/catalogue/page?'+params.toString(),{
+         signal:controller.signal,cache:'no-store'
+       });
+       if(!response.ok)throw new Error('Catalogue unavailable');
+       const answer=await response.json();
+       if(!Number.isSafeInteger(answer.total)||answer.total<0)throw new Error('Invalid count');
+       if(active){setMatchCount(answer.total);setCountLoading(false);}
+     }catch{
+       if(active&&!controller.signal.aborted){
+         setCountError('Die aktuelle Anzahl kann gerade nicht ermittelt werden.');
+         setCountLoading(false);
+       }
+     }
+   },120);
+   return()=>{active=false;clearTimeout(timer);controller.abort();};
+ },[open,choice.canton,choice.category,choice.max,choice.price,choice.q,choice.available,choice.wa,choice.sort,countRetry]);
  const region=REGIONS.find(r=>r.canton===choice.canton)?.name||(choice.canton==='ALL'?'Ganze Schweiz':choice.canton);
  return <GuideContext.Provider value={{openGuide}}><NightTools onGuide={()=>openGuide()}><div className="swiss-night">
   <a className="night-skip" href="#main">Zum Inhalt</a>
@@ -44,9 +73,9 @@ export function NightShell({children}:{children:React.ReactNode}) {
    {step===1&&<div className="night-options">{CATEGORIES.map(c=><button key={c.id} onClick={()=>select({category:c.id})}>{c.label}</button>)}<Link href="/clubs" className="night-button-secondary">Clubs & Studios <ArrowRight size={16}/></Link></div>}
    {step===2&&<><div className="night-options"><button onClick={()=>select({max:0,price:''})}>Offen</button><button onClick={()=>select({max:0,price:'missing'})}>Preis auf Anfrage</button>{[200,400].map(max=><button key={max} onClick={()=>select({max,price:''})}>Bis CHF {max} / 60 Min.</button>)}</div><p className="night-note">Preisfilter berücksichtigen nur ausdrücklich bestätigte Beträge. Fehlende Preise werden nicht geschätzt.</p></>}
    {step===3&&<div className="night-guide-summary">{[['Region',region],['Bereich',CATEGORIES.find(c=>c.id===choice.category)?.label],['Rahmen',choice.max?`Bis CHF ${choice.max} / 60 Min.`:choice.price==='missing'?'Preis auf Anfrage':'Rahmen offen']].map(([label,value],i)=><button type="button" key={label} onClick={()=>setStep(i)}><span>{label}<strong>{value}</strong></span><span>Ändern <ArrowRight size={15}/></span></button>)}</div>}
-   <div className="night-guide-result" aria-live="polite"><span className="night-guide-result-number">{!loaded?(loading?'…':'—'):matchCount.toLocaleString('de-CH')}</span><span>{loaded?'Einträge in deiner Auswahl':'Katalogdaten noch nicht verfügbar'}<small>Kein Nachweis aktueller Verfügbarkeit</small></span></div>
-   {error&&<div className="night-row" role="alert"><p className="night-note">{error}</p><button type="button" className="night-text-button" onClick={ensureLoaded}>Erneut versuchen</button></div>}
-   {step===3?(loaded?<><Link href={searchHref(choice)} className="night-button night-guide-submit">{matchCount?'Auswahl ansehen':'Auswahl und Filter ansehen'} <ArrowRight size={18}/></Link>{!matchCount&&<p className="night-note">Diese Kombination hat keine Treffer. Öffne den Rahmen oder ändere die Region.</p>}</>:<button type="button" disabled className="night-button night-guide-submit">{loading?'Katalog wird geladen …':'Katalog derzeit nicht verfügbar'}</button>):<div className="night-row night-guide-controls">{step>0&&<button className="night-text-button" onClick={()=>setStep(s=>s-1)}>← Zurück</button>}<button className="night-text-button" onClick={skip}>Diesen Schritt offenlassen</button></div>}
+   <div className="night-guide-result" aria-live="polite"><span className="night-guide-result-number">{matchCount===null?(countLoading?'…':'—'):matchCount.toLocaleString('de-CH')}</span><span>{matchCount===null?'Katalogdaten noch nicht verfügbar':'Einträge in deiner Auswahl'}<small>Kein Nachweis aktueller Verfügbarkeit</small></span></div>
+   {countError&&<div className="night-row" role="alert"><p className="night-note">{countError}</p><button type="button" className="night-text-button" onClick={()=>setCountRetry(n=>n+1)}>Erneut versuchen</button></div>}
+   {step===3?(matchCount!==null?<><Link href={searchHref(choice)} className="night-button night-guide-submit">{matchCount?'Auswahl ansehen':'Auswahl und Filter ansehen'} <ArrowRight size={18}/></Link>{matchCount===0&&<p className="night-note">Diese Kombination hat keine Treffer. Öffne den Rahmen oder ändere die Region.</p>}</>:<button type="button" disabled className="night-button night-guide-submit">{countLoading?'Katalog wird geprüft …':'Katalog derzeit nicht verfügbar'}</button>):<div className="night-row night-guide-controls">{step>0&&<button className="night-text-button" onClick={()=>setStep(s=>s-1)}>← Zurück</button>}<button className="night-text-button" onClick={skip}>Diesen Schritt offenlassen</button></div>}
    <p className="night-note">Freiwillige Auswahlhilfe · Keine Standortfreigabe nötig · Neue Auswahl aus Region, Bereich und Rahmen</p>
   </Dialog.Content></Dialog.Portal></Dialog.Root>
   <Dialog.Root open={menu} onOpenChange={setMenu}><Dialog.Portal><Dialog.Overlay className="night-dialog-overlay"/><Dialog.Content className="night-dialog" onCloseAutoFocus={event=>{event.preventDefault();if(menuOpener.current?.isConnected)menuOpener.current.focus();}}><Dialog.Close className="night-icon-button night-dialog-close" aria-label="Menü schliessen"><X/></Dialog.Close><Dialog.Title>Dein Überblick.</Dialog.Title><Dialog.Description>Entdecken und deinen Auftritt verwalten.</Dialog.Description><nav className="night-menu-links">{[...nav,['/login','Anmelden'],['/advertise','Für Anbieter'],['/creator-dashboard','Arbeitsbereich']].map(([url,label])=><Link key={url} href={url}>{label}<ArrowRight size={18}/></Link>)}</nav></Dialog.Content></Dialog.Portal></Dialog.Root>

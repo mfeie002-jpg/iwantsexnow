@@ -1,3 +1,5 @@
 import {DiscoveryPage} from '@/components/night/DiscoveryPages';
-export {getServerSideProps} from '@/lib/night-catalogue-server';
-export default function SearchPage(){return <DiscoveryPage/>;}
+import type {GetServerSideProps} from 'next';
+import {getPaginatedCatalogueProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
+export const getServerSideProps:GetServerSideProps=ctx=>getPaginatedCatalogueProps(ctx);
+export default function SearchPage({cataloguePage}:{cataloguePage:InitialPageData}){return <DiscoveryPage pageData={cataloguePage}/>;}

@@ -1,4 +1,4 @@
-import React,{useEffect,useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useRef,useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {ArrowDown,ArrowRight,Bookmark,Grid2X2,Info,LayoutGrid,MapPin,SlidersHorizontal,Trash2,X} from 'lucide-react';
@@ -6,6 +6,7 @@ import {SEO} from '@/components/SEO';
 import LuxuryPhotoCard from '@/components/LuxuryPhotoCard';
 import {useCatalogue} from './CatalogueContext';
 import {TouchSearch} from './NightShell';
+import type {InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {MAX_SAVED_SEARCHES,parseSavedSearches,removeSavedSearch,saveSearch,SAVED_SEARCH_KEY,SavedSearch} from './saved-searches';
 import {brandAsset,CANTONS,CATEGORIES,REGIONS,CatalogueFilters,filterOffers,filtersFromQuery,getProfileId,searchHref,Offer} from '@/lib/night-catalogue';
 
@@ -39,11 +40,21 @@ export function serviceMatches(o:Offer,service?:string){
  if(service==='couples')return /paare|couples|bisex/i.test(terms);
  return false;
 }
-export function DiscoveryPage({config}:{config?:DiscoveryConfig}){
- const router=useRouter();const {visibleOffers,states,blockedIds,loading,error}=useCatalogue();
+export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageData?:InitialPageData}){
+ const router=useRouter();const {visibleOffers,states,blockedIds,loading,error,registerPage}=useCatalogue();
  const [density,setDensity]=useState<'detail'|'compact'>('detail');
  const [filtersOpen,setFiltersOpen]=useState(false);
  const [savedSearches,setSavedSearches]=useState<SavedSearch[]>([]),[storageMessage,setStorageMessage]=useState('');
+ const [nextOffset,setNextOffset]=useState<number|null>(pageData?.nextOffset??null);
+ const [totalCount,setTotalCount]=useState(pageData?.total??0);
+ const [loadingMore,setLoadingMore]=useState(false),[moreError,setMoreError]=useState('');
+ const routeVersion=useRef(0);
+ useEffect(()=>{
+   routeVersion.current+=1;
+   setNextOffset(pageData?.nextOffset??null);
+   setTotalCount(pageData?.total??0);
+   setLoadingMore(false);setMoreError('');
+ },[router.asPath,pageData?.total,pageData?.nextOffset]);
  useEffect(()=>{setFiltersOpen(window.matchMedia('(min-width: 761px)').matches);},[]);
  useEffect(()=>{
   const read=()=>{try{setSavedSearches(parseSavedSearches(localStorage.getItem(SAVED_SEARCH_KEY)));}catch{setStorageMessage('Dein Browser erlaubt hier keinen lokalen Speicher. Die Suche funktioniert weiterhin.');}};
@@ -68,8 +79,34 @@ export function DiscoveryPage({config}:{config?:DiscoveryConfig}){
   try{const result=saveSearch(localStorage,{href,label});setSavedSearches(result.entries);setStorageMessage({saved:'Auswahl auf diesem Gerät gespeichert.',exists:'Diese Auswahl ist bereits auf diesem Gerät gespeichert.',full:'Fünf Suchen sind gespeichert. Entferne zuerst eine Auswahl.',invalid:'Diese Auswahl konnte nicht gespeichert werden. Setze ungültige Filter zuerst zurück.'}[result.outcome]);}catch{setStorageMessage('Speichern nicht möglich: Dein Browser hat den lokalen Speicher abgelehnt. Es wurde nichts als gespeichert bestätigt.');}
  };
  const removeSaved=(href:string)=>{try{setSavedSearches(removeSavedSearch(localStorage,href));setStorageMessage('Gespeicherte Auswahl von diesem Gerät entfernt.');}catch{setStorageMessage('Entfernen nicht möglich: Dein Browser hat den lokalen Speicher abgelehnt.');}};
+ const loadMore=async()=>{
+   if(!pageData||loadingMore||nextOffset===null)return;
+   const version=routeVersion.current;
+   const requestedOffset=nextOffset;
+   setLoadingMore(true);setMoreError('');
+   const params=new URLSearchParams(searchHref(filters).split('?')[1]||'');
+   params.set('offset',String(requestedOffset));
+   params.set('limit',String(pageData.limit));
+   if(config?.service)params.set('service',config.service);
+   try{
+     const response=await fetch('/api/catalogue/page?'+params.toString(),{cache:'no-store'});
+     if(!response.ok)throw new Error('HTTP '+response.status);
+     const payload=await response.json();
+     if(!Array.isArray(payload.offers)||!payload.states||typeof payload.total!=='number'
+       ||(payload.nextOffset!==null&&(!Number.isSafeInteger(payload.nextOffset)||payload.nextOffset<=requestedOffset)))
+       throw new Error('Ungültige Serverantwort');
+     if(version!==routeVersion.current)return;
+     registerPage(payload.offers,payload.states);
+     setNextOffset(payload.nextOffset);
+     setTotalCount(payload.total);
+   }catch{
+     if(version===routeVersion.current)setMoreError('Weitere Einträge konnten nicht geladen werden. Deine bisherige Auswahl bleibt erhalten.');
+   }finally{
+     if(version===routeVersion.current)setLoadingMore(false);
+   }
+ };
  const title=config?.title||'Deine Auswahl. Dein Moment.';
- const resultCount=loading&&!results.length?'Einträge werden geladen …':`${results.length.toLocaleString('de-CH')} Einträge`;
+ const resultCount=loading&&!results.length?'Einträge werden geladen …':`${(pageData?totalCount:results.length).toLocaleString('de-CH')} Einträge`;
  return <main id="main" className="night-page night-discovery-page"><SEO title={`${title} | iwantsexnow.ch`} description={config?.description||'Schweizer Profile nach Region und Bereich entdecken. Quellen und bestätigte Preisangaben transparent vergleichen.'}/>
  {config?<section className="night-region-hero"><img src={brandAsset(config.image||'hero-tram.webp')} alt="Illustratives regionales Abendmotiv"/><div className="night-container night-section"><div className="night-breadcrumb"><Link href="/">Start</Link><span>/</span><Link href="/search">Entdecken</Link><span>/ {config.canton}</span></div><p className="night-kicker">Dein regionaler Überblick</p><h1>{title}</h1><p className="night-lead">{config.description}</p><span className="night-note">Regionale Auswahl im Kanton {config.canton} · Titelbild: KI-Illustration</span></div></section>:<div className="night-container night-page-intro"><p className="night-kicker">Entdecken · Schweiz</p><h1>{title}</h1><p>Wähle, was dir wichtig ist. Der nächste Schritt gehört dir.</p></div>}
  <section className="night-container night-section night-discovery-content"><TouchSearch filters={filters}/>
@@ -86,6 +123,12 @@ export function DiscoveryPage({config}:{config?:DiscoveryConfig}){
  <div id="discovery-results" tabIndex={-1} className="night-section-title night-results-heading"><div><h2>{config?'Profile in deiner Auswahl':'Profile entdecken'}</h2><p className="night-count" aria-live="polite">{resultCount}</p></div><div className="night-density-control" role="group" aria-label="Profildarstellung"><button type="button" aria-pressed={density==='detail'} onClick={()=>setDensity('detail')}><Grid2X2 size={17} aria-hidden="true"/><span>Detail</span></button><button type="button" aria-pressed={density==='compact'} onClick={()=>setDensity('compact')}><LayoutGrid size={17} aria-hidden="true"/><span>Kompakt</span></button></div></div>
  {error&&<p className="night-note" role="status">{error}</p>}
  {filters.invalid&&<p role="alert">Diese Filteradresse enthält eine ungültige oder mehrfache Auswahl. Wähle die Filter neu oder setze sie zurück.</p>}
- {!loading&&!results.length?<div className="night-empty"><h2>Hier ist die Auswahl noch leer.</h2><p>Für diese Kombination liegen keine passenden Angaben vor. Du kannst den Preisrahmen öffnen oder eine andere Region wählen.</p><Link className="night-button" href={searchHref({canton:filters.canton,category:filters.category})}>Preis und Verfügbarkeit offenlassen</Link><p className="night-note" style={{marginTop:16}}>Unbestätigte Preise und Statusangaben werden nicht ergänzt.</p></div>:<ProfileGrid offers={results} density={density}/>}
+ {!loading&&!results.length?<div className="night-empty"><h2>Hier ist die Auswahl noch leer.</h2><p>Für diese Kombination liegen keine passenden Angaben vor. Du kannst den Preisrahmen öffnen oder eine andere Region wählen.</p><Link className="night-button" href={searchHref({canton:filters.canton,category:filters.category})}>Preis und Verfügbarkeit offenlassen</Link><p className="night-note" style={{marginTop:16}}>Unbestätigte Preise und Statusangaben werden nicht ergänzt.</p></div>:<ProfileGrid offers={results} limit={pageData?99999:24} density={density}/>}
+ {pageData&&nextOffset!==null&&<div className="night-load-more">
+   <button type="button" className="night-button-secondary" disabled={loadingMore} onClick={loadMore}>
+     {loadingMore?'Weitere Einträge werden geladen …':`Weitere Einträge anzeigen (${Math.max(0,totalCount-results.length)} verbleibend)`}
+   </button>
+ </div>}
+ {moreError&&<p role="alert" className="night-note">{moreError} <button type="button" className="night-text-button" onClick={loadMore}>Erneut versuchen</button></p>}
  </section><section className="night-container night-section"><div className="night-section-title"><h2>Ein anderer Ort. Neue Möglichkeiten.</h2></div><RegionCards/></section></main>;
 }

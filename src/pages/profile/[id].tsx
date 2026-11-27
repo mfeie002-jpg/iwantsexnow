@@ -17,7 +17,17 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const offer = (rawOffers as any[]).find(item => getProfileId(item) === id);
   if (!offer || !isVisibleProfile(offer, catalogue.states, catalogue.blockedIds)) return { notFound: true };
   const profile={id,rawName:offer.rawName||'',city:offer.city||'',canton:offer.canton||'',sourcePortal:offer.sourcePortal||'',sourceUrl:offer.sourceUrl||'',rawPhone:offer.rawPhone||'',bio:offer.bio||'',gallery:getProfilePhotos(offer,catalogue.states[id]),includedTags:offer.includedTags||[],languages:offer.languages||[]};
-  return { props: { profileId: id, profile, catalogue } };
+  const publicOffer = catalogue.offers.find(item => getProfileId(item) === id);
+  if (!publicOffer) return {notFound:true};
+  const state = catalogue.states[id];
+  const scopedCatalogue = {
+    states: state ? {[id]:state} : {},
+    blockedIds: [],
+    offers: [publicOffer],
+    clubs: [],
+    partial: true
+  };
+  return {props:{profileId:id,profile,catalogue:scopedCatalogue}};
 };
 
 export default function ProfileDetailPage({ profileId, profile }: { profileId: string; profile:any }) {
