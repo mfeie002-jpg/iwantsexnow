@@ -34,7 +34,7 @@ jobs:
         run: npm run lint -- --quiet
 
       - name: Check TypeScript
-        run: npx tsc --noEmit --pretty false
+        run: ./node_modules/.bin/tsc --noEmit --pretty false
 
       - name: Production build
         run: npm run build
@@ -42,20 +42,20 @@ jobs:
       - name: Start built server and run regression suite
         shell: bash
         run: |
-          npm run start -- -H 127.0.0.1 -p 4181 > "$RUNNER_TEMP/iwsn-next.log" 2>&1 &
+          node ./node_modules/next/dist/bin/next start -H 127.0.0.1 -p 4181 > "$RUNNER_TEMP/iwsn-next.log" 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
 
           ready=0
           for attempt in $(seq 1 60); do
-            if curl --fail --silent --show-error http://127.0.0.1:4181/ > /dev/null 2>&1; then
-              ready=1
-              break
-            fi
             if ! kill -0 "$server_pid" 2>/dev/null; then
               echo "Next.js process stopped before becoming ready"
               cat "$RUNNER_TEMP/iwsn-next.log"
               exit 1
+            fi
+            if curl --fail --silent --show-error --max-time 5 "$IWSN_TEST_BASE_URL/" > /dev/null 2>&1; then
+              ready=1
+              break
             fi
             sleep 2
           done

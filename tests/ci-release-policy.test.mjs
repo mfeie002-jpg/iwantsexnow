@@ -14,10 +14,11 @@ test('CI installation, lint, typecheck and build must never ignore failures', ()
   for (const command of [
     'npm ci --legacy-peer-deps',
     'npm run lint -- --quiet',
-    'npx tsc --noEmit --pretty false',
+    './node_modules/.bin/tsc --noEmit --pretty false',
     'npm run build',
     'node --test tests/*.test.mjs'
   ]) assert.ok(workflow.includes(command), 'required quality step missing: ' + command);
   assert.doesNotMatch(workflow, /npm\s+(?:ci|install|run\s+(?:build|lint))[^\n]*\|\|\s*true/i);
   assert.doesNotMatch(workflow, /node\s+--test[^\n]*\|\|\s*true/i);
+  assert.doesNotMatch(workflow, /continue-on-error:\s*true/i);
 });
