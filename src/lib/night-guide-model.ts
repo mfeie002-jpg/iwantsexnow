@@ -1,20 +1,52 @@
 import type { CatalogueFilters } from './night-catalogue';
 
-// The three-step guide starts a fresh, explicit selection. Hidden text, phone
-// and availability filters must not silently constrain its displayed count.
+// An invalid link starts a fresh selection. Valid links retain their other
+// search criteria, which the guide displays alongside its choices.
 export function guideFilters(filters: CatalogueFilters = {}): CatalogueFilters {
-  return {
+  const selection: CatalogueFilters = {
     canton: filters.canton || 'ALL',
     category: filters.category || 'all',
     max: filters.price === 'missing' ? 0 : filters.max || 0,
     price: filters.price === 'missing' ? 'missing' : '',
   };
+  if (filters.invalid) return selection;
+  if (filters.under60 && !selection.max && !selection.price) selection.under60 = filters.under60;
+  if (filters.available) selection.available = true;
+  if (filters.q) selection.q = filters.q;
+  if (filters.wa) selection.wa = true;
+  if (filters.sort && filters.sort !== 'default') selection.sort = filters.sort;
+  return selection;
+}
+
+export function catalogueBudgetChoices(filters: CatalogueFilters) {
+  const current = filters.price === 'missing' ? 'missing'
+    : filters.under60 ? 'under-' + filters.under60 : String(filters.max || 0);
+  const lowerThan = (amount: number) => ({
+    value: 'under-' + amount, label: `Unter CHF ${amount} / 60 Min.`,
+    changes: {under60: amount, max: 0, price: ''},
+  });
+  const atMost = (amount: number) => ({
+    value: String(amount), label: `Bis CHF ${amount} / 60 Min.`,
+    changes: {under60: 0, max: amount, price: ''},
+  });
+  const options = [
+    {value: '0', label: 'Budget offen', changes: {under60: 0, max: 0, price: ''}},
+    {value: 'missing', label: 'Preis auf Anfrage', changes: {under60: 0, max: 0, price: 'missing'}},
+    atMost(200), lowerThan(300), atMost(400),
+  ];
+  if (!options.some(option => option.value === current)) {
+    options.push(filters.under60 ? lowerThan(filters.under60) : atMost(filters.max));
+  }
+  return {current, options, label: options.find(option => option.value === current)!.label};
 }
 
 export function skipGuideStep(filters: CatalogueFilters, step: number): CatalogueFilters {
   if (step === 0) return { ...filters, canton: 'ALL' };
   if (step === 1) return { ...filters, category: 'all' };
-  if (step === 2) return { ...filters, max: 0, price: '' };
+  if (step === 2) {
+    const { under60, ...rest } = filters;
+    return { ...rest, max: 0, price: '' };
+  }
   return { ...filters };
 }
 

@@ -1,6 +1,6 @@
 export type Offer = Record<string, any>;
 export type ProfileState = Record<string, any>;
-export type CatalogueFilters = { canton?: string; category?: string; q?: string; max?: number; price?: string; available?: boolean; wa?: boolean; sort?: string; invalid?: boolean };
+export type CatalogueFilters = { canton?: string; category?: string; q?: string; max?: number; under60?: number; price?: string; available?: boolean; wa?: boolean; sort?: string; invalid?: boolean };
 
 export const REGIONS = [
   { name: 'Zürich', canton: 'ZH', slug: 'zuerich', image: 'city-zuerich.webp', href: '/escort-zurich' },
@@ -40,19 +40,35 @@ export function getProfilePhotos(offer: Offer, state: ProfileState = {}): string
     return !!safeExternalUrl(v);
   })));
 }
-export function getProfileRate(state: ProfileState = {}, duration: 30 | 60): number | null {
+export function getProfileRate(state: ProfileState = {}, duration: 30 | 60, now = Date.now()): number | null {
   // Legacy import scripts populated rates. Only a dated, explicit price confirmation qualifies.
   const confirmed = state.priceConfirmed === true || state.rateConfirmed === true;
   const date = Date.parse(String(state.priceConfirmedAt || state.rateUpdatedAt || ''));
-  const rate = Number(state[duration === 30 ? 'rate30Chf' : 'rate60Chf']);
-  return confirmed && Number.isFinite(date) && Number.isFinite(rate) && rate > 0 ? rate : null;
+  const value = state[duration === 30 ? 'rate30Chf' : 'rate60Chf'];
+  const rate = typeof value === 'number' || typeof value === 'string' ? Number(value) : NaN;
+  return confirmed && date <= now && Number.isFinite(rate) && rate > 0 ? rate : null;
 }
 export function isConfirmedAvailable(state: ProfileState = {}, now = Date.now()): boolean {
   const until = Date.parse(String(state.availableUntil || ''));
-  return state.availabilityConfirmed === true && Number.isFinite(until) && until > now && !state.hidden && !state.paused;
+  if (state.availabilityConfirmed !== true || !(until > now) || state.hidden || state.paused || state.removedByReport) return false;
+  const fourHours = 4 * 60 * 60 * 1000;
+  // Earlier managed records have only a flag and an expiry. A withdrawal
+  // needs a later, dated confirmation before it can be superseded.
+  if (state.availabilityConfirmedAt == null) return state.availabilityWithdrawnAt == null && until - now <= fourHours;
+  const start = Date.parse(String(state.availabilityConfirmedAt));
+  if (!(start <= now && until - start <= fourHours)) return false;
+  return state.availabilityWithdrawnAt == null || Date.parse(String(state.availabilityWithdrawnAt)) < start;
 }
 export function isVisibleProfile(offer: Offer, states: Record<string, ProfileState> = {}, blockedIds: string[] = []): boolean {
   const id = getProfileId(offer), state = states[id] || {};
+  if (/^w4-/i.test(id) || /^w4-/i.test(String(offer?.dedupClusterId || ''))) return false;
+  if (typeof offer?.sourceUrl === 'string' && offer.sourceUrl) {
+    try {
+      if (new URL(offer.sourceUrl, 'https://catalogue.invalid').hostname.replace(/\.$/, '') === 'example.com') return false;
+    } catch {
+      // An unparseable source is not evidence that the listing is a test record.
+    }
+  }
   return !!id && !blockedIds.includes(id) && !state.hidden && !state.paused && !state.removedByReport && !offer?.hidden && !offer?.paused;
 }
 export function filterOffers(offers: Offer[], filters: CatalogueFilters = {}, states: Record<string, ProfileState> = {}, blockedIds: string[] = []): Offer[] {
@@ -68,6 +84,7 @@ export function filterOffers(offers: Offer[], filters: CatalogueFilters = {}, st
     if (filters.wa && !/^41(?:7[5-9]|[2-6]\d)\d{7}$/.test(cleanSwissPhone(st.phoneDisplay || o.rawPhone))) return false;
     const rate = getProfileRate(st, 60);
     if (filters.max && (!rate || rate > filters.max)) return false;
+    if (filters.under60 && (rate === null || rate >= filters.under60)) return false;
     if (filters.price === 'missing' && rate !== null) return false;
     const text = normalizeCatalogueText([getProfileName(o, st), getProfileCity(o, st), st.canton || o.canton, o.rubric, ...(Array.isArray(o.includedTags) ? o.includedTags : [])].join(' '));
     if (!tokens.every(token => text.includes(token))) return false;
@@ -93,6 +110,7 @@ export function searchHref(filters: CatalogueFilters = {}): string {
   if (filters.category && !['all','ALL'].includes(filters.category)) params.set('category',filters.category);
   if (filters.q) params.set('q',filters.q);
   if (filters.max && filters.max > 0) params.set('max',String(filters.max));
+  if (filters.under60 && filters.under60 > 0) params.set('under60',String(filters.under60));
   if (filters.price === 'missing') params.set('price','missing');
   if (filters.available) params.set('available','1');
   if (filters.wa) params.set('wa','1');
@@ -101,14 +119,38 @@ export function searchHref(filters: CatalogueFilters = {}): string {
 }
 export function filtersFromQuery(query: Record<string, string | string[] | undefined>): CatalogueFilters {
   const str = (key: string) => typeof query[key] === 'string' ? String(query[key]) : '';
-  const max = Number(str('max'));
+  const maxAlias = str('max60');
+  const strict = str('under60');
+  const max = Number(str('max') || maxAlias);
+  const validHourlyAmount = (value: string) =>
+    /^\d+(?:\.\d{1,2})?$/.test(value) && Number(value) > 0 && Number(value) <= 100000;
+  const timeAlias = str('now');
+  const timeSelected = timeAlias === '1' || timeAlias === 'true';
   const canton = str('canton').toUpperCase();
-  const invalid = ['canton','category','q','max','price','available','wa','sort','invalid'].some(key=>Array.isArray(query[key]))
+  const invalid = ['canton','category','q','max','max60','under60','price','available','now','wa','sort','invalid'].some(key=>Array.isArray(query[key]))
     || (!!canton && canton !== 'ALL' && !CANTONS.includes(canton))
     || (!!str('category') && !['ALL',...CATEGORIES.map(c=>c.id)].includes(str('category')))
     || str('q').length > 150 || !Number.isFinite(max) || max < 0
+    || (query.under60 !== undefined && !validHourlyAmount(strict))
+    || (query.max60 !== undefined && !validHourlyAmount(maxAlias))
+    || (!!maxAlias && !!str('max') && Number(maxAlias) !== max)
+    || (!!strict && (!!maxAlias || !!str('max')))
+    || ((!!strict || !!maxAlias) && str('price') === 'missing')
     || !['','missing'].includes(str('price')) || !['','0','1'].includes(str('available'))
+    || !['','0','1','true','false'].includes(timeAlias)
+    || (!!str('available') && !!timeAlias && (str('available') === '1') !== timeSelected)
     || !['','0','1'].includes(str('wa')) || !['','default','region','price'].includes(str('sort'))
     || !!str('invalid');
-  return { canton: CANTONS.includes(canton) ? canton : 'ALL', category: CATEGORIES.some(c=>c.id===str('category')) ? str('category') : 'all', q:str('q').slice(0,150), max:Number.isFinite(max)&&max>0?max:0, price:str('price')==='missing'?'missing':'',available:str('available')==='1',wa:str('wa')==='1',sort:['region','price'].includes(str('sort'))?str('sort'):'default', ...(invalid?{invalid:true}:{}) };
+  return {
+    canton: CANTONS.includes(canton) ? canton : 'ALL',
+    category: CATEGORIES.some(c => c.id === str('category')) ? str('category') : 'all',
+    q: str('q').slice(0,150),
+    max: Number.isFinite(max) && max > 0 ? max : 0,
+    ...(validHourlyAmount(strict) ? {under60:Number(strict)} : {}),
+    price: str('price') === 'missing' ? 'missing' : '',
+    available: str('available') === '1' || timeSelected,
+    wa: str('wa') === '1',
+    sort: ['region','price'].includes(str('sort')) ? str('sort') : 'default',
+    ...(invalid ? {invalid:true} : {})
+  };
 }

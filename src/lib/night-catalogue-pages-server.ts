@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext } from 'next';
 import { getCatalogueSnapshot } from './night-catalogue-server';
 import { filtersFromQuery, type CatalogueFilters } from './night-catalogue';
 import {
-  CATALOGUE_PAGE_SIZE, createPublicCataloguePage, type PageOptions
+  CATALOGUE_PAGE_SIZE, createPublicCataloguePage, type CatalogueAlternative, type PageOptions
 } from './night-catalogue-page';
 
 export type InitialPageData = {
@@ -10,6 +10,8 @@ export type InitialPageData = {
   limit: number;
   offset: number;
   nextOffset: number | null;
+  nextAvailabilityExpiry?: number;
+  alternatives?: CatalogueAlternative[];
 };
 
 export async function getPaginatedCatalogueProps(
@@ -26,7 +28,9 @@ export async function getPaginatedCatalogueProps(
     props: {
       catalogue: {states:page.states,blockedIds:[],offers:page.offers,clubs:[],partial:true},
       cataloguePage: {
-        total:page.total,limit:page.limit,offset:page.offset,nextOffset:page.nextOffset
+        total:page.total,limit:page.limit,offset:page.offset,nextOffset:page.nextOffset,
+        ...(page.nextAvailabilityExpiry !== undefined ? { nextAvailabilityExpiry: page.nextAvailabilityExpiry } : {}),
+        ...(page.alternatives ? { alternatives: page.alternatives } : {})
       } satisfies InitialPageData
     }
   };

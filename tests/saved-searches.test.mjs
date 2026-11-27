@@ -7,6 +7,17 @@ function storage(initial='[]') {
  let value=initial;
  return {getItem:key=>key===SAVED_SEARCH_KEY?value:null,setItem:(key,next)=>{assert.equal(key,SAVED_SEARCH_KEY);value=next;},read:()=>value};
 }
+test('strict and inclusive budget links stay distinct, and time aliases share one saved entry',()=>{
+ const local=storage();
+ const href='/search?canton=ZH&under60=300&now=1';
+ assert.equal(saveSearch(local,{href,label:'Unter CHF 300'}).outcome,'saved');
+ assert.equal(safeSavedSearchHref(href),'/search?available=1&canton=ZH&under60=300');
+ assert.equal(saveSearch(local,{href:'/search?available=1&under60=300&canton=ZH',label:'Same'}).outcome,'exists');
+ assert.equal(saveSearch(local,{href:'/search?max60=300&now=true&canton=ZH',label:'Bis CHF 300'}).outcome,'saved');
+ for(const query of ['under60=300&max60=300','under60=banane','available=0&now=1','under60=300&under60=200']){
+   assert.equal(safeSavedSearchHref('/search?'+query),null,query);
+ }
+});
 test('saved search restoration rejects external and non-discovery destinations',()=>{
  for(const input of ['https://evil.example/search','//evil.example/search','/\\evil.example/search','/login','/search#fragment','/search?canton=ZH&canton=ZG','/search?redirect=https://evil.example','/search\n'])assert.equal(safeSavedSearchHref(input),null,input);
  assert.equal(safeSavedSearchHref('/search?category=massage&canton=ZH'),'/search?canton=ZH&category=massage');

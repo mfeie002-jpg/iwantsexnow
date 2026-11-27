@@ -24,5 +24,13 @@ test('existing regional and category URLs still return indexable pages',async()=
 });
 test('robots preserves public crawling and sitemap retains all real profiles',async()=>{
  const robots=await(await fetch(BASE+'/robots.txt')).text();assert.match(robots,/Allow: \/profile\//);assert.doesNotMatch(robots,/Disallow: \/\s*\n/);
- const xml=await(await fetch(BASE+'/sitemap.xml')).text();const urls=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);assert.equal(new Set(urls).size,urls.length);assert.equal(urls.filter(u=>u.includes('/profile/')).length,2590);
+ const xml=await(await fetch(BASE+'/sitemap.xml')).text();
+ const urls=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
+ assert.equal(new Set(urls).size,urls.length);
+ const fixtures=inventory.filter(offer=>[offer.id,offer.dedupClusterId].some(id=>/^w4-/i.test(id)) || new URL(offer.sourceUrl).hostname==='example.com');
+ const fixtureIds=new Set(fixtures.map(offer=>offer.id));
+ const expected=inventory.filter(offer=>!fixtureIds.has(offer.id)).map(offer=>offer.id);
+ const actual=urls.filter(url=>new URL(url).pathname.startsWith('/profile/')).map(url=>decodeURIComponent(new URL(url).pathname.slice('/profile/'.length)));
+ assert.deepEqual(actual.sort(),expected.sort());
+ assert.equal((await fetch(BASE+'/profile/'+encodeURIComponent(fixtures[0].id))).status,404);
 });
