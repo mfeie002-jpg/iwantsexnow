@@ -1,7 +1,3 @@
-
-> softgen-starter@2.4.4 lint
-> next lint --quiet
-
 `next lint` is deprecated and will be removed in Next.js 16.
 For new projects, use create-next-app to choose your preferred linter.
 For existing projects, migrate to the ESLint CLI:

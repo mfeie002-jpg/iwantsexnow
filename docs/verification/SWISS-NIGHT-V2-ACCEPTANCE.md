@@ -60,7 +60,7 @@ Alle 20 Seiten wurden bei 1440 × 1000 und 390 × 844 im Browser kontrolliert: j
 | `npm run build` | Exit 0, Next.js 15.5.28; TypeScript-Fehler werden nicht ignoriert |
 | `npm run lint -- --quiet` | Exit 0, keine Lintfehler |
 | `npx tsc --noEmit --pretty false` | Exit 0 |
-| `node --test tests/*.test.mjs` | 166 bestanden, 0 fehlgeschlagen, 0 übersprungen |
+| `node --test tests/*.test.mjs` | 171 bestanden, 0 fehlgeschlagen, 0 übersprungen |
 | `git diff --check` | Exit 0 |
 | Client-Bundle-Stichprobe | 101 JavaScript-Chunks auf die ersten 20 eindeutigen Rohquell-URLs geprüft; keine Treffer |
 
@@ -104,3 +104,14 @@ Die 2'590 vorhandenen Profil-URLs bleiben indexierbar; die Sitemap enthält alle
 4. Externe Originalbilder bleiben von der Erreichbarkeit ihrer Quellen abhängig.
 
 Lokaler Build, automatisierte Tests und responsive Review sind abgeschlossen. GitHub-CI, Merge, produktives Deployment und produktive Abnahme wurden nicht durchgeführt.
+
+## Abschliessende Screenshot-Abnahme vom 27. November 2026
+
+- Alle 20 Seiten wurden aus dem erneut gebauten lokalen Stand als JPEG aufgenommen: Desktop 1440 px links, Mobile 390 px rechts. Dateien: `output/playwright/swiss-night-20/01-desktop-mobile.jpg` bis `20-desktop-mobile.jpg`.
+- Die Aufnahmen zeigen gekennzeichnete obere Seitenausschnitte. Startseite und Katalogseiten haben längere Ausschnitte, damit vorhandene Profile auch auf Mobile sichtbar sind. Es handelt sich um Browseraufnahmen der Anwendung, nicht um generierte Mockups.
+- Die zusätzliche Bildkontrolle fand einen internen Überlauf auf der mobilen Profilseite, obwohl der Dokumentüberlauf verdeckt war. `min-width: 0` auf der Profilspalte lässt Überschrift, Fakten und Galerie korrekt in der mobilen Spalte umbrechen. Der 390-px-Iframe wurde anhand der tatsächlichen Elementgrenzen geprüft; eine separate 320-px-Abnahme wird nicht behauptet.
+- Ein bereits vor der React-Hydrierung fehlgeschlagenes Bild konnte sein Fehlerereignis verlieren. Die Bildkomponente erkennt nun auch fertig geladene Bilder mit `naturalWidth === 0`, versucht weitere Originalquellen und zeigt anschliessend gegebenenfalls den neutralen Bildhinweis. Fünf Regressionstests prüfen diesen Ablauf.
+- Nach diesen beiden Korrekturen: Produktionsbuild Exit 0, 171 Tests bestanden, Lint und TypeScript jeweils Exit 0. HTTP-Tests liefen mit `IWSN_TEST_BASE_URL=http://127.0.0.1:4181`.
+- Vor jeder finalen Aufnahme wurden die passenden Seitenüberschriften und alle sichtbaren Bilder in beiden Ansichten geprüft: keine ausstehenden oder defekten sichtbaren img-Elemente. Nicht verfügbare Originalbilder erscheinen als neutraler Hinweis; keine Ersatzpersonen wurden erfunden.
+- Merkliste und Vergleich zeigen für die Aufnahmen zwei vorhandene Originalprofile. Die eigene Auswahl wurde danach wieder entfernt. Anbieterzugänge zeigen den tatsächlichen lokalen Zugangsstatus; keine Anmeldung oder Veröffentlichung wurde simuliert.
+- Keine Änderungen am Rohkatalog, kein Push, kein Merge und kein produktives Deployment.
