@@ -1,3 +1,4 @@
+import {formatSwissCount} from '@/lib/format-swiss-count';
 import React from 'react';
 import Link from 'next/link';
 import {ArrowDown, ArrowRight, ArrowUpRight, Heart, MapPin, Scale, Sparkles} from 'lucide-react';
@@ -34,7 +35,7 @@ export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
   <nav className="night-city-shortcuts" aria-label="Direkt in eine Region"><span>Wo beginnt’s?</span>{REGIONS.slice(0,5).map(r=><Link key={r.canton} href={r.href}>{r.name}<ArrowUpRight size={13}/></Link>)}<a href="#regionen">Alle Regionen <ArrowDown size={13}/></a></nav>
  </section>
  <section className="night-container night-section" id="profile-entdecken">
-  <div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">01 /</span> Entdecken</p><h2>Menschen. Möglichkeiten.</h2><p>{(cataloguePage?.total ?? visibleOffers.length).toLocaleString('de-CH')} vorhandene Einträge. Quellen und Fotohinweise direkt am Profil.</p></div><Link className="night-section-link" href="/search">Alle Profile <ArrowUpRight size={18}/></Link></div>
+  <div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">01 /</span> Entdecken</p><h2>Menschen. Möglichkeiten.</h2><p>{formatSwissCount(cataloguePage?.total ?? visibleOffers.length)} vorhandene Einträge. Quellen und Fotohinweise direkt am Profil.</p></div><Link className="night-section-link" href="/search">Alle Profile <ArrowUpRight size={18}/></Link></div>
   {error&&<p className="night-note" role="status">{error}</p>}<ProfileGrid offers={visibleOffers.slice(0,8)} limit={4}/>
   <div className="night-load-more"><Link className="night-button-secondary" href="/search">Deine Auswahl verfeinern <ArrowRight size={17}/></Link></div>
  </section>
