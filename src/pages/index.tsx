@@ -1,4 +1,5 @@
 import React from 'react';
+import {formatSwissCount} from '@/lib/format-swiss-count';
 import Link from 'next/link';
 import type {GetServerSideProps} from 'next';
 import {ArrowRight,ArrowUpRight,BookOpen,CheckCircle2,Clock3,Heart,MapPin,ShieldCheck,Sparkles} from 'lucide-react';
@@ -56,7 +57,7 @@ export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
   </div></section>
 
   <section className="night-container flagship-section">
-   <XeniaContext question="Welche Filter sind für deine Wahl relevant?"/><div className="flagship-section-head"><div><span className="flagship-eyebrow">03 · ECHTE EINTRÄGE</span><h2>Passende Verzeichniseinträge</h2><p>{count.toLocaleString('de-CH')} Einträge im aktuellen Verzeichnis. Keine erfundene Live-Verfügbarkeit und keine geschätzten Honorarangaben.</p></div><Link href="/suche">Alle Einträge <ArrowRight size={17}/></Link></div>
+   <XeniaContext question="Welche Filter sind für deine Wahl relevant?"/><div className="flagship-section-head"><div><span className="flagship-eyebrow">03 · ECHTE EINTRÄGE</span><h2>Passende Verzeichniseinträge</h2><p>{formatSwissCount(count)} Einträge im aktuellen Verzeichnis. Keine erfundene Live-Verfügbarkeit und keine geschätzten Honorarangaben.</p></div><Link href="/suche">Alle Einträge <ArrowRight size={17}/></Link></div>
    {error&&<p role="status" className="flagship-caption">{error}</p>}
    <ProfileGrid offers={visibleOffers.slice(0,4)} limit={4}/>
    <div className="flagship-centered"><Link className="flagship-primary" href="/suche">Ergebnisse filtern <ArrowRight size={16}/></Link></div>
