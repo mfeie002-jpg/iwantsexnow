@@ -1,118 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { ArrowRight, Scale, X } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { PageIntro } from "@/components/PageIntro";
-import { SwissDoorplate } from "@/components/SwissDoorplate";
-import offersData from "@/data/harvested-offers.json";
-import { Scale, MessageCircle, User, Crown } from "lucide-react";
+import { useCatalogue } from "@/components/night/CatalogueContext";
+import { ProfileImage } from "@/components/night/ProfileImage";
+import { chooseComparisonProfile, reconcileComparisonPair, resolveSelectedProfiles } from "@/components/night/profile-image-model";
+import { getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate } from "@/lib/night-catalogue";
+export { getServerSideProps } from "@/lib/night-catalogue-server";
 
 export default function CompareEscortsPage() {
-  const [selected, setSelected] = useState<any[]>([]);
-
-  useEffect(() => {
-    const all = (offersData as any[]) || [];
-    try {
-      const favIds = JSON.parse(localStorage.getItem("ch_favorite_profiles") || "[]");
-      const fromFavs = all.filter((o) => favIds.includes(o.id || o.dedupClusterId));
-      const pool = fromFavs.length >= 2 ? fromFavs.slice(0, 4) : all.slice(0, 4);
-      setSelected(pool);
-    } catch {
-      setSelected(all.slice(0, 4));
-    }
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-papier text-tinte pb-24">
-      <SEO
-        title="4-Suiten Direktvergleich · 30m/60m CHF & +41 Kontakt | iwantsexnow.ch"
-        description="Vergleichen Sie bis zu 4 Schweizer Escort- und Tantra-Suiten nebeneinander nach 30-Minuten- und 60-Minuten-Honorar, Kanton und Verfügbarkeit."
-      />
-      <LuxuryHeader />
-
-      <PageIntro tone="flieder" note="Zwei Profile, ein Blick" art="compare" title={<><Scale size={22} className="text-kirsche" /> <span>Direktvergleich Ihrer gemerkten Schweizer Suiten</span></>}>
-        <SwissDoorplate state="FREI" roomNumber="MATRIX" customLabel={selected.length + " Suiten im Vergleich"} size="sm" />
-      </PageIntro>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {selected.map((p: any, i: number) => {
-            const pid = p.id || p.dedupClusterId;
-            const r60 = Number(p.advertisedBaseChf) || 350;
-            const r30 = Number(p.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10;
-            const cleanDigits = p.rawPhone ? String(p.rawPhone).replace(/\D/g, "") : "";
-            const thumb = String(p.thumbnail || "").replace(/[?&]iwsn_clean=1.*$/i, "");
-
-            return (
-              <div key={pid || i} className="valentina-outer-card rounded-[24px] p-2.5 flex flex-col justify-between">
-                <div className="rounded-[18px] border border-kirsche/35 bg-papier overflow-hidden flex-1 flex flex-col justify-between">
-                  <div>
-                    <Link href={"/profile/" + encodeURIComponent(pid)} className="darkroom-stage block aspect-[3/4] w-full">
-                      <img
-                        referrerPolicy="no-referrer"
-                        src={thumb}
-                        alt={p.rawName}
-                        className="darkroom-img"
-                      />
-                      <div className="darkroom-vignette" />
-                      <div className="darkroom-floor" />
-                      <div className="absolute top-3 left-3 z-10">
-                        <SwissDoorplate state="FREI" roomNumber={p.canton || "CH"} customLabel="FREI" size="sm" />
-                      </div>
-                      <div className="absolute inset-x-0 bottom-2 z-10 px-3 text-center">
-                        <div className="font-serif text-lg text-butter truncate ">{p.rawName}</div>
-                        <div className="text-[13px] font-mono text-white/80">{p.city} ({p.canton})</div>
-                      </div>
-                    </Link>
-
-                    <div className="p-3.5 space-y-2 text-[13px] font-mono border-t border-kirsche/20">
-                      <div className="flex justify-between">
-                        <span className="text-white/80">60 Min. Standard:</span>
-                        <strong className="text-butter">CHF {r60}.–</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-white/80">30 Min. Express:</span>
-                        <strong className="text-tinte">CHF {r30}.–</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-white/80">Alter / Grösse:</span>
-                        <strong className="text-butter">{p.age || 25}J · {p.heightCm || 168}cm</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-tinte-soft">Körbchen:</span>
-                        <strong className="text-kirsche">Cup {p.cupSize || "C"}</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3 grid grid-cols-1 gap-2 border-t border-kirsche/20">
-                    {cleanDigits && (
-                      <a
-                        href={"https://wa.me/" + cleanDigits}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="brass-3d py-2 px-3 rounded-full font-sans font-extrabold text-[13px] flex items-center justify-center gap-1.5"
-                      >
-                        <MessageCircle size={12} />
-                        <span>WHATSAPP</span>
-                      </a>
-                    )}
-                    <Link
-                      href={"/profile/" + encodeURIComponent(pid)}
-                      className="emerald-3d py-2 px-3 rounded-full border border-kirsche/45 font-sans font-bold text-[13px] flex items-center justify-center gap-1.5"
-                    >
-                      <User size={12} className="text-kirsche" />
-                      <span>Dossier Öffnen</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
-    </div>
-  );
+  const catalogue = useCatalogue();
+  const selected = resolveSelectedProfiles(catalogue.visibleOffers, catalogue.compareIds, getProfileId).slice(0, 3);
+  const ids = selected.map(getProfileId);
+  const [pair, setPair] = useState<string[]>([]);
+  const identity = ids.join("\u0000");
+  useEffect(() => setPair(current => reconcileComparisonPair(ids, current)), [identity]);
+  const visiblePair = reconcileComparisonPair(ids, pair);
+  const ordered = [...visiblePair,...ids.filter(id=>!visiblePair.includes(id))].map(id=>selected.find(offer=>getProfileId(offer)===id)!);
+  const cellClass = (id: string) => visiblePair.includes(id) ? "" : "night-compare-mobile-hidden";
+  const value = (offer: any, field: string) => {
+    const state = catalogue.states[getProfileId(offer)] || {};
+    if (field === "city") return getProfileCity(offer, state);
+    if (field === "source") return String(offer.sourcePortal || "Nicht angegeben");
+    if (field === "languages") return Array.isArray(offer.languages) && offer.languages.length ? offer.languages.join(", ") : "Nicht angegeben";
+    if (field === "availability") return "Direkt abklären";
+    const rate = getProfileRate(state, field === "30" ? 30 : 60);
+    return rate === null ? "Nicht bestätigt" : `CHF ${rate.toLocaleString("de-CH")}`;
+  };
+  return <main id="main" className="night-container night-section">
+    <SEO title="Profile vergleichen · Deine Auswahl | iwantsexnow.ch" description="Vergleiche selbst ausgewählte Profile nach Ort, hinterlegten Quellen und bestätigten Preisangaben." url="https://iwantsexnow.ch/compare-escorts" />
+    <div className="night-page-intro"><p className="night-eyebrow">Deine Auswahl. Ein gemeinsamer Blick.</p><h1>Was unterscheidet die Profile?</h1><p className="night-lead">Bis zu drei Einträge nebeneinander. Fehlende Angaben bleiben sichtbar, damit dein Vergleich nachvollziehbar bleibt.</p></div>
+    {catalogue.error && <p className="night-note" role="status">{catalogue.error}</p>}
+    {selected.length === 0 ? <section className="night-empty"><Scale size={32} aria-hidden="true" /><h2>Dein Vergleich beginnt mit deiner Auswahl.</h2><p>Wähle bei einem Profil „Vergleichen“. Hier erscheinen nur die von dir ausgewählten, weiterhin sichtbaren Einträge.</p><Link href="/search" className="night-button">Profile ansehen <ArrowRight size={17} /></Link></section> : <>
+      <div className="night-selection-bar"><span>{selected.length} von 3 Profilen ausgewählt</span><Link href="/search" className="night-text-button">Weiter auswählen <ArrowRight size={16} /></Link></div>
+      {selected.length > 2 && <div className="night-compare-mobile-selectors">{[0, 1].map(slot => <label key={slot}><span>{slot === 0 ? "Linkes Profil" : "Rechtes Profil"}</span><select value={visiblePair[slot] || ""} onChange={event => setPair(current => chooseComparisonProfile(ids, current, slot, event.target.value))}>{ordered.map(offer => <option key={getProfileId(offer)} value={getProfileId(offer)}>{getProfileName(offer, catalogue.states[getProfileId(offer)])}</option>)}</select></label>)}</div>}
+      <div className="night-compare-wrap"><table className="night-compare-table"><caption className="sr-only">Vergleich deiner ausgewählten Profile anhand vorhandener Angaben</caption><thead><tr><th scope="col">Deine Kriterien</th>{ordered.map(offer => { const id = getProfileId(offer), state = catalogue.states[id] || {}, name = getProfileName(offer, state); return <th scope="col" key={id} className={cellClass(id)}><div className="night-compare-image"><ProfileImage photos={getProfilePhotos(offer, state)} alt={`Profilfoto zu ${name}`} compact /><button type="button" className="night-icon-button" aria-label={`${name} aus dem Vergleich entfernen`} onClick={() => catalogue.toggleCompare(id)}><X size={16} /></button></div><Link href={`/profile/${encodeURIComponent(id)}`}>{name}</Link></th>; })}</tr></thead><tbody>
+        {[["city", "Ort"], ["30", "30 Minuten"], ["60", "60 Minuten"], ["availability", "Verfügbarkeit"], ["languages", "Sprachen laut Eintrag"], ["source", "Quelle"]].map(([field, label]) => <tr key={field}><th scope="row">{label}</th>{ordered.map(offer => <td key={getProfileId(offer)} className={cellClass(getProfileId(offer))}>{value(offer, field)}</td>)}</tr>)}
+        <tr><th scope="row">Details</th>{ordered.map(offer => <td key={getProfileId(offer)} className={cellClass(getProfileId(offer))}><Link href={`/profile/${encodeURIComponent(getProfileId(offer))}`} className="night-button secondary">Profil ansehen</Link></td>)}</tr>
+      </tbody></table></div>
+      <p className="night-note">Der Vergleich bewertet keine Personen. Ein fehlender Preis wird weder geschätzt noch als günstiger eingeordnet.</p>
+    </>}
+  </main>;
 }

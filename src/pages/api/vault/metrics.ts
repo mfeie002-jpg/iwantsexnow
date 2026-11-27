@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 import harvestedOffers from "@/data/harvested-offers.json";
+import establishments from "@/data/swiss-establishments-vault.json";
 import { isSupabaseConfigured, supaFetch, readSafeJson, writeSafeJson, sendTelegramPing } from "@/lib/supabaseAdmin";
 
 const ADMIN_PIN = process.env.ADMIN_PIN || "";
@@ -14,6 +15,7 @@ function secureAdminMatch(provided: string): boolean {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader("Cache-Control", "no-store");
   const adminHeader = String(req.headers["x-admin-pin"] || "").trim();
   const isAdmin = secureAdminMatch(adminHeader);
   const profileId = String(req.query.profileId || req.body?.profileId || req.body?.id || "").trim();
@@ -39,6 +41,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "GET") {
     if (isSupabaseConfigured()) {
       const dbStates = await supaFetch<any[]>("managed_profile_states?select=*");
+      if (!dbStates.ok || !Array.isArray(dbStates.data)) {
+        return res.status(503).json({ ok: false, code: "PROFILE_STATE_UNAVAILABLE", error: "Aktueller Profilstatus ist vorübergehend nicht verfügbar." });
+      }
       for (const r of dbStates.data || []) {
         states[r.profile_id] = {
           ...(states[r.profile_id] || {}),
@@ -48,10 +53,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           canton: r.canton,
           rate30Chf: r.rate30_chf,
           rate60Chf: r.rate60_chf,
+          priceConfirmed: r.price_confirmed === true,
+          rateConfirmed: r.rate_confirmed === true,
+          priceConfirmedAt: typeof r.price_confirmed_at === "string" ? r.price_confirmed_at : null,
+          rateUpdatedAt: typeof r.rate_updated_at === "string" ? r.rate_updated_at : null,
           claimed: r.claimed,
           identityVerified: r.identity_verified,
           aiOptIn: r.ai_opt_in,
           availabilityConfirmed: Boolean(r.availability_confirmed && r.available_until && new Date(r.available_until).getTime() > now),
+          availableUntil: typeof r.available_until === "string" ? r.available_until : null,
           hidden: Boolean(r.hidden || r.paused || r.removed_by_report),
           paused: Boolean(r.paused || r.hidden),
         };
@@ -59,7 +69,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const publicStates: Record<string, any> = {};
+    const publicIds = new Set([...harvestedOffers,...establishments].map((o:any)=>o.id||o.dedupClusterId));
+    const excludedIds = new Set(blockedList.map((b:any)=>typeof b==='string'?b:b?.profileId));
     for (const [pid, st] of Object.entries<any>(states)) {
+      if(!publicIds.has(pid))continue;
+      if(st.hidden||st.paused||st.removedByReport||excludedIds.has(pid)){publicStates[pid]={profileId:pid,hidden:true,paused:true};continue;}
       publicStates[pid] = {
         profileId: pid,
         displayName: st.displayName,
@@ -67,6 +81,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         canton: st.canton,
         rate30Chf: st.rate30Chf,
         rate60Chf: st.rate60Chf,
+        priceConfirmed: st.priceConfirmed === true,
+        rateConfirmed: st.rateConfirmed === true,
+        priceConfirmedAt: typeof st.priceConfirmedAt === "string" ? st.priceConfirmedAt : null,
+        rateUpdatedAt: typeof st.rateUpdatedAt === "string" ? st.rateUpdatedAt : null,
         thumbnail: st.thumbnail,
         claimed: Boolean(st.claimed),
         identityVerified: false, // existing legacy flags lack auditable verification evidence
@@ -113,20 +131,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (action === "create_enquiry" && profileId) {
-    const newLead = {
-      id: "lead-" + Date.now(),
-      profileId,
-      providerName: String(body.providerName || profileId).trim(),
-      clientContact: String(body.clientContact || "").trim(),
-      desiredTime: String(body.desiredTime || "").trim(),
-      duration: String(body.duration || "60 Min.").trim(),
-      status: "NEW",
-      createdAt: new Date().toISOString(),
-    };
-    enquiries.unshift(newLead);
-    writeSafeJson("private-enquiries.json", enquiries);
-    await sendTelegramPing([`📬 Neue Anfrage: ${newLead.providerName} (${profileId})`, `Kontakt: ${newLead.clientContact} · ${newLead.desiredTime}`]);
-    return res.status(200).json({ ok: true, enquiry: newLead });
+    return res.status(503).json({ ok: false, code: "VERIFIED_ENQUIRY_DELIVERY_REQUIRED",
+      error: "Interne Anfragen sind derzeit nicht verfügbar. Eine bestätigte Zustellung an die zuständige Anbieterin ist noch nicht eingerichtet." });
   }
 
   if (["submit_takedown", "report_profile", "opt_out", "report_issue", "dmca_takedown"].includes(action)) {

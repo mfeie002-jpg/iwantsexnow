@@ -1,50 +1,78 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseCatalogueFilters as parse, filterCatalogue as filter, demoListings, catalogueHref, normalizeCatalogueText } from "../src/lib/marketplace/catalogue.ts";
+import { filtersFromQuery as parse, filterOffers, searchHref } from "../src/lib/night-catalogue.ts";
 
-test("demo inventory is explicit and all fixture IDs are unique", () => {
-  assert.equal(filter(parse({})).length, 8);
-  assert(demoListings.every(item => item.demo === true && item.id.startsWith("demo-")));
-  assert.equal(new Set(demoListings.map(item => item.id)).size, demoListings.length);
+// Test-only records, supplied explicitly to the real catalogue engine. They are
+// never imported by a page, bundled with the app, or used as fallback inventory.
+const inventory = Object.freeze([
+  Object.freeze({ id: "ch-test-zh-female", rawName: "Fixture A", city: "Zürich", canton: "ZH", rubric: "female", includedTags: ["Begleitung"] }),
+  Object.freeze({ id: "ch-test-zh-massage", rawName: "Fixture B", city: "Zürich", canton: "ZH", rubric: "massage", includedTags: ["Ruhe"] }),
+  Object.freeze({ id: "ch-test-bs-female", rawName: "Fixture C", city: "Basel", canton: "BS", rubric: "female", includedTags: ["Begleitung"] }),
+  Object.freeze({ id: "ch-test-ge-female", rawName: "Fixture D", city: "Genève", canton: "GE", rubric: "female", includedTags: ["Begleitung"] }),
+]);
+const filter = (query, states = {}, blocked = []) => filterOffers(inventory, parse(query), states, blocked);
+const ids = rows => rows.map(row => row.id);
+
+test("catalogue uses only caller-supplied inventory and never seeds replacements", () => {
+  assert.deepEqual(filterOffers([], parse({})), []);
+  assert.deepEqual(filterOffers([], parse({ canton: "ZH", category: "female" })), []);
+  assert.deepEqual(ids(filter({})), inventory.map(row => row.id));
+  assert(filter({}).every(row => inventory.includes(row)));
 });
-test("city and category combine with AND", () => {
-  assert.deepEqual(filter(parse({city:"zurich",category:"escort"})).map(x=>x.id), ["demo-zurich-escort"]);
-  assert.equal(filter(parse({city:"basel",category:"escort"})).length, 0);
+
+test("canton and category combine with AND", () => {
+  assert.deepEqual(ids(filter({ canton: "ZH", category: "female" })), ["ch-test-zh-female"]);
+  assert.deepEqual(filter({ canton: "BS", category: "massage" }), []);
 });
-test("category spans cities while city includes several categories", () => {
-  assert.equal(filter(parse({category:"escort"})).length, 3);
-  assert.equal(filter(parse({city:"zurich"})).length, 2);
+
+test("category spans cantons while a canton contains several categories", () => {
+  assert.equal(filter({ category: "female" }).length, 3);
+  assert.equal(filter({ canton: "ZH" }).length, 2);
 });
-test("text query actually filters and combines with city/category", () => {
-  assert.equal(filter(parse({q:"Begleitung"})).length, 3);
-  assert.equal(filter(parse({q:"Begleitung",city:"zurich"})).length, 1);
-  assert.equal(filter(parse({q:"Begleitung",city:"zurich",category:"escort"})).length, 0);
-  assert.equal(filter(parse({q:"zzzz-no-match"})).length, 0);
+
+test("optional text search combines with touch filters", () => {
+  assert.equal(filter({ q: "BEGLEITUNG" }).length, 3);
+  assert.deepEqual(ids(filter({ q: "Begleitung", canton: "ZH" })), ["ch-test-zh-female"]);
+  assert.deepEqual(filter({ q: "Begleitung", canton: "ZH", category: "massage" }), []);
+  assert.deepEqual(filter({ q: "zzzz-no-match" }), []);
 });
-test("Swiss city spellings, accents and whitespace are normalized", () => {
-  for(const q of ["Zürich","Zurich","Zuerich","  ZÜRICH  "]) assert.equal(filter(parse({q})).length,2,q);
-  for(const q of ["Genève","Geneve","Genf","Geneva"]) assert.equal(filter(parse({q})).length,1,q);
-  assert.equal(normalizeCatalogueText("Genève Zürich"),"geneve zurich");
+
+test("Swiss city spellings, accents and whitespace retain the existing search contract", () => {
+  for (const q of ["Zürich", "Zurich", "Zuerich", "  ZÜRICH  "]) assert.equal(filter({ q }).length, 2, q);
+  for (const q of ["Genève", "Geneve", "Genf", "Geneva"]) assert.equal(filter({ q }).length, 1, q);
 });
-test("all text tokens must match", () => {
-  assert.equal(filter(parse({q:"zurich begleitung"})).length,1);
-  assert.equal(filter(parse({q:"zurich basel"})).length,0);
+
+test("all search tokens match regardless of field or token order", () => {
+  assert.deepEqual(ids(filter({ q: "zuerich begleitung" })), ["ch-test-zh-female"]);
+  assert.deepEqual(ids(filter({ q: "begleitung geneva" })), ["ch-test-ge-female"]);
+  assert.deepEqual(filter({ q: "zurich basel" }), []);
 });
-test("unknown and duplicated filters fail closed rather than showing everything", () => {
-  for(const query of [{city:"unknown"},{category:"unknown"},{view:"private"},{city:["zurich","basel"]},{category:["escort"]},{q:["a","b"]},{view:["demo","approved"]},{q:"x".repeat(101)}]) {
-    assert.equal(parse(query).invalid,true);
-    assert.equal(filter(parse(query)).length,0);
+
+test("invalid or duplicated selectors never silently broaden the requested result", () => {
+  const invalid = [
+    { canton: "unknown" }, { category: "unknown" },
+    { canton: ["ZH", "BS"] }, { category: ["female"] }, { q: ["a", "b"] },
+    { max: ["100", "200"] }, { available: ["1", "0"] },
+    { q: "x".repeat(151) }, { max: "Infinity" }, { max: "-1" },
+  ];
+  for (const query of invalid) assert.deepEqual(filter(query), [], JSON.stringify(query));
+});
+
+test("hidden, paused, reported or blocked entries never receive fallback inventory", () => {
+  for (const state of [{ hidden: true }, { paused: true }, { removedByReport: true }]) {
+    assert.deepEqual(filter({ canton: "ZH", category: "female" }, { "ch-test-zh-female": state }), []);
   }
+  assert.deepEqual(filter({ canton: "ZH", category: "female" }, {}, ["ch-test-zh-female"]), []);
+  const before = JSON.stringify(inventory);
+  filter({ sort: "region" });
+  assert.equal(JSON.stringify(inventory), before, "search and sorting do not mutate source entries");
 });
-test("approved inventory never falls back to demo data", () => {
-  for(const query of [{view:"approved"},{view:"approved",city:"zurich"},{view:"approved",category:"escort",q:"demo"}]) assert.equal(filter(parse(query)).length,0);
-});
-test("filter links round-trip with safe query encoding", () => {
-  const filters=parse({city:"geneva",category:"escort",q:'Genève & <demo>'});
-  const href=catalogueHref(filters);
+
+test("filter links round-trip all supported touch choices with safe query encoding", () => {
+  const filters = parse({ canton: "GE", category: "female", q: "Genève & <test>", max: "400", available: "1", wa: "1", sort: "price" });
+  const href = searchHref(filters);
   assert(href.startsWith("/search?"));
   assert(!href.includes("<"));
-  assert.deepEqual(parse(Object.fromEntries(new URL(href,"https://preview.invalid").searchParams)),filters);
-  assert.equal(catalogueHref(parse({})), "/search");
-  assert.equal(catalogueHref(parse({view:"approved"})), "/search?view=approved");
+  assert.deepEqual(parse(Object.fromEntries(new URL(href, "https://preview.invalid").searchParams)), filters);
+  assert.equal(searchHref(parse({})), "/search");
 });

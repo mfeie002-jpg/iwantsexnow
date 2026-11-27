@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Swiss Night V2 · Lokale Review-Galerie</title>
+  <style>
+    :root{--bg:#09080f;--panel:#12101c;--surface:#1a1524;--line:#302637;--text:#f7eff5;--muted:#b7a6b7;--pink:#ff4d99;--gold:#edc896;--radius:18px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 45% -30%,#3a1634 0,transparent 60%),var(--bg);color:var(--text);min-height:100vh}button,a,select{font:inherit}button,a,select{touch-action:manipulation}a{color:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.4}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:4px}button{border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--text);padding:11px 14px;min-height:44px}button:hover:not(:disabled){border-color:#925370;background:#251c31}.topbar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 30px;border-bottom:1px solid var(--line);background:#100b17e8}.brand{display:flex;align-items:center;gap:13px}.mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid #ff4d9966;border-radius:13px;color:var(--pink);font-size:30px;font-weight:850;background:linear-gradient(135deg,#5c173e,#1b1025)}.brand strong{display:block;font-size:17px;letter-spacing:-.03em}.brand span:last-child{display:block;color:var(--muted);font-size:12px;margin-top:4px}.local-label{display:flex;gap:9px;align-items:center;font-size:12px;color:#e2d4df;border:1px solid #57402f;background:#251b19;padding:9px 12px;border-radius:100px}.local-label:before{content:"";width:7px;height:7px;background:var(--gold);border-radius:50%;box-shadow:0 0 12px #edc89655}.layout{display:grid;grid-template-columns:244px minmax(0,1fr);max-width:2200px;margin:auto}.sidebar{padding:28px 16px 32px 22px;border-right:1px solid var(--line);min-width:0}.eyebrow{margin:0 0 12px;color:var(--pink);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.18em}.sidebar h2{font-size:16px;margin:0 0 18px}.route-list{display:grid;gap:5px}.route{display:flex;align-items:center;gap:11px;text-align:left;border-color:transparent;background:transparent;padding:10px;border-radius:10px;min-height:44px;width:100%}.route-index{font-size:10px;font-variant-numeric:tabular-nums;color:#91798e;min-width:19px}.route-name{font-size:12px;line-height:1.4}.route[aria-current="page"]{background:linear-gradient(100deg,#56203d,#271828);border-color:#75425b}.route[aria-current="page"] .route-index{color:var(--pink)}.sidebar-note{font-size:11px;line-height:1.7;color:var(--muted);margin:24px 10px 0}.content{padding:30px 28px 28px;min-width:0}.intro{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}.intro h1{font-size:clamp(24px,2.5vw,38px);line-height:1.1;letter-spacing:-.05em;margin:0 0 10px}.intro p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}.page-counter{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#15101d;border:1px solid var(--line);padding:10px;border-radius:15px;margin-bottom:20px}.switch{display:flex;gap:4px}.switch button{padding:9px 13px;border-color:transparent;font-size:12px;background:transparent}.switch button[aria-pressed="true"]{background:#3b2340;border-color:#725068;color:#fff}.tools{display:flex;gap:8px;flex-wrap:wrap}.tools button,.tools a{font-size:12px;white-space:nowrap}.open-link{text-decoration:none;padding:11px 15px;border-radius:10px;background:var(--pink);color:#190b15;font-weight:750;min-height:44px;display:inline-flex;align-items:center}.open-link:hover{background:#ff75b0}.mobile-select{display:none}.frames{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:20px;align-items:start}.frame-card{background:#110d18;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;min-width:0;box-shadow:0 16px 50px #0003}.frame-header{display:flex;align-items:center;justify-content:space-between;padding:15px 17px;border-bottom:1px solid var(--line);gap:10px}.frame-label{font-size:12px;font-weight:700}.frame-size{font-size:10px;color:var(--muted);margin-top:4px}.dots{display:flex;gap:5px}.dots span{width:6px;height:6px;border-radius:50%;background:#5e445b}.dots span:first-child{background:var(--pink)}.frame-stage{position:relative;overflow:hidden;background:#0d070c;height:740px}.frame-stage iframe{display:block;border:0;transform-origin:0 0;max-width:none;background:#0d070c}.frame-foot{padding:11px 16px;border-top:1px solid var(--line);font-size:10px;color:var(--muted);overflow-wrap:anywhere}.frames[data-view="desktop"]{grid-template-columns:minmax(0,1fr)}.frames[data-view="mobile"]{grid-template-columns:minmax(280px,420px);justify-content:center}.frames[data-view="desktop"] .mobile-card,.frames[data-view="mobile"] .desktop-card{display:none}.page-bottom{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-top:22px}.page-bottom p{font-size:11px;color:var(--muted);line-height:1.6;max-width:620px;margin:0}.pager{display:flex;gap:8px}.pager button{font-size:12px}.frame-loading{color:var(--gold)}.mobile-card .frame-stage{border-left:6px solid #201722;border-right:6px solid #201722}.mobile-card .frame-header:before{content:"";width:24px;height:5px;border-radius:10px;background:#5a3e51;margin-right:2px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(min-width:1850px){.frames{grid-template-columns:minmax(0,1fr) 400px}.frame-stage{height:850px}}
+    @media(max-width:1180px){.layout{grid-template-columns:205px minmax(0,1fr)}.content{padding:25px 18px}.sidebar{padding-left:12px}.frames{grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:14px}.frame-header{padding:13px}.frame-stage{height:680px}.topbar{padding:18px 23px}.tools{gap:5px}}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.content{padding:24px 20px}.mobile-select{display:block;margin:0 0 20px}.mobile-select label{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}.mobile-select select{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);min-height:48px}.frames{grid-template-columns:minmax(0,1fr) minmax(220px,32%)}.intro{margin-bottom:18px}.frame-stage{height:690px}}
+    @media(max-width:640px){.topbar{padding:16px;align-items:flex-start;gap:12px;flex-direction:column}.local-label{font-size:10px}.content{padding:22px 14px}.intro{align-items:flex-start;gap:10px}.intro h1{font-size:29px}.page-counter{font-size:10px;padding-top:4px}.toolbar{gap:10px}.switch{width:100%}.switch button{flex:1}.tools{width:100%}.tools .open-link{flex:1;justify-content:center}.frames{grid-template-columns:1fr}.frame-stage{height:650px}.mobile-card{max-width:420px;width:100%;justify-self:center}.page-bottom{align-items:flex-start;flex-direction:column}.pager{width:100%}.pager button{flex:1}.frame-header{padding:13px 15px}.frame-size{font-size:10px}}
+    @media(prefers-reduced-motion:no-preference){button,a{transition:background .15s,border-color .15s}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="mark" aria-hidden="true">X</div><div><strong>Swiss Night V2</strong><span>Die implementierte Website · 20 Seiten im Review</span></div></div>
+    <div class="local-label">Lokaler isolierter Branch / kein Produktivdeploy</div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar"><p class="eyebrow">Seitenübersicht</p><h2>Ein Produkt. 20 Ansichten.</h2><nav id="route-list" class="route-list" aria-label="Review-Seiten"></nav><p class="sidebar-note">Die Ansichten laden die echte laufende Next.js-Website auf diesem Computer. Keine kopierte Oberfläche und keine Demo-Profile.</p></aside>
+    <main class="content">
+      <div class="intro"><div><p class="eyebrow">Responsive Review</p><h1 id="page-title">Startseite</h1><p id="page-description">Schweizer Nachtwelt und Einstieg in die Suche.</p></div><div class="page-counter" id="page-counter">01 / 20</div></div>
+      <div class="mobile-select"><label for="page-select">Seite auswählen</label><select id="page-select"></select></div>
+      <div class="toolbar">
+        <div class="switch" role="group" aria-label="Ansichten auswählen"><button type="button" data-view="both" aria-pressed="true">Beide Ansichten</button><button type="button" data-view="desktop" aria-pressed="false">Desktop</button><button type="button" data-view="mobile" aria-pressed="false">Mobil</button></div>
+        <div class="tools"><button type="button" id="reload">↻ Neu laden</button><a class="open-link" id="open-page" href="http://127.0.0.1:4181/" target="_blank" rel="noopener">Echte Seite öffnen ↗</a></div>
+      </div>
+      <section class="frames" id="frames" data-view="both" aria-label="Website-Vorschau">
+        <article class="frame-card desktop-card"><div class="frame-header"><div><div class="frame-label">Desktop</div><div class="frame-size">1440 px · interaktive Website</div></div><div class="dots" aria-hidden="true"><span></span><span></span><span></span></div></div><div class="frame-stage" id="desktop-stage"><iframe id="desktop-frame" title="Desktopansicht der ausgewählten Seite" width="1440" height="1000" src="about:blank" referrerpolicy="no-referrer"></iframe></div><div class="frame-foot" id="desktop-path">http://127.0.0.1:4181/</div></article>
+        <article class="frame-card mobile-card"><div class="frame-header"><div><div class="frame-label">Mobil</div><div class="frame-size">390 px · Touch-Flows</div></div><div class="dots" aria-hidden="true"><span></span><span></span><span></span></div></div><div class="frame-stage" id="mobile-stage"><iframe id="mobile-frame" title="Mobilansicht der ausgewählten Seite" width="390" height="850" src="about:blank" referrerpolicy="no-referrer"></iframe></div><div class="frame-foot" id="mobile-path">http://127.0.0.1:4181/</div></article>
+      </section>
+      <div class="page-bottom"><p>In beiden Ansichten lässt sich scrollen und klicken. «Neu laden» kehrt zur gewählten Seite zurück. Profile, Merklisten und Formulare gehören zur laufenden lokalen Anwendung. Die Galerie selbst speichert oder sendet keine Eingaben.</p><div class="pager"><button type="button" id="previous">← Vorherige</button><button type="button" id="next">Nächste →</button></div></div>
+      <p class="sr-only" role="status" aria-live="polite" id="status"></p>
+      <noscript><p>Für die Seitenauswahl benötigt diese lokale Galerie JavaScript. <a href="http://127.0.0.1:4181/">Die echte Startseite öffnen.</a></p></noscript>
+    </main>
+  </div>
+  <script>
+    'use strict';
+    const SITE = 'http://127.0.0.1:4181';
+    const pages = [
+      {path:'/',name:'Startseite',description:'Schweizer Nachtwelt und Einstieg in die Suche.'},
+      {path:'/search',name:'Suche & Filter',description:'Die reale Übersicht mit Regions- und Kategorieauswahl.'},
+      {path:'/escort-zurich',name:'Region Zürich',description:'Bestehende regionale Seite mit echten Einträgen.'},
+      {path:'/orte/zug',name:'Region Zug',description:'Ortsseite im gemeinsamen Swiss-Night-Auftritt.'},
+      {path:'/escort-geneva',name:'Region Genève',description:'Westschweizer Regionsseite mit bestehender URL.'},
+      {path:'/clubs',name:'Clubs & Studios',description:'Die bestehende Übersicht der Betriebe.'},
+      {path:'/profile/ch-f62306bf1ed6',name:'Echtes Profil',description:'Bestehender Datensatz mit aktuellen Quellbildern; kein Demo-Profil.'},
+      {path:'/compare-escorts',name:'Profile vergleichen',description:'Vergleichsansicht mit den Angaben der vorhandenen Einträge.'},
+      {path:'/favorites',name:'Merkliste',description:'Die persönliche Auswahl im lokalen Browser.'},
+      {path:'/reviews',name:'Portalvergleich',description:'Zehn ausgewählte Websites mit Quellenstand und sichtbaren Grenzen.'},
+      {path:'/reviews/and6',name:'and6 · Einzelbericht',description:'Beobachtete Funktionen, Betreiberangaben und offene Fragen.'},
+      {path:'/pricing',name:'Preis-Klarheit',description:'Interaktive Prüfliste für Betrag, Umfang, Dauer und Zusatzkosten.'},
+      {path:'/safety',name:'Vertrauen & Sicherheit',description:'Begriffe einordnen und die freiwillige Prüfliste bedienen.'},
+      {path:'/how-it-works',name:'So funktioniert es',description:'Der geführte Einstieg in drei verständlichen Schritten.'},
+      {path:'/advertise',name:'Für Anbieterinnen',description:'Profilvorbereitung, eigene Angaben und Korrekturwege.'},
+      {path:'/register',name:'Zugang vorbereiten',description:'Der aktuelle Zugangsablauf ohne erfundene Freischaltung.'},
+      {path:'/login',name:'Anmelden',description:'Der reale Einstieg in den geschützten Bereich.'},
+      {path:'/creator-dashboard',name:'Arbeitsbereich',description:'Zugang und Status des Anbieterbereichs.'},
+      {path:'/create-post',name:'Profilentwurf',description:'Zugang zum bestehenden Entwurfsablauf.'},
+      {path:'/report',name:'Meldungen & Korrekturen',description:'Der Meldeweg für falsche Angaben, Bilder und Entfernungswünsche.'}
+    ];
+    const byId = id => document.getElementById(id);
+    const frames = [
+      {frame:byId('desktop-frame'),stage:byId('desktop-stage'),width:1440},
+      {frame:byId('mobile-frame'),stage:byId('mobile-stage'),width:390}
+    ];
+    let activeIndex = 0;
+    let activeView = 'both';
+    const nav = byId('route-list');
+    const select = byId('page-select');
+    pages.forEach((page,index) => {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'route'; button.dataset.index = String(index);
+      const number = document.createElement('span'); number.className = 'route-index'; number.textContent = String(index+1).padStart(2,'0');
+      const label = document.createElement('span'); label.className = 'route-name'; label.textContent = page.name;
+      button.append(number,label); button.addEventListener('click',()=>choosePage(index)); nav.append(button);
+      const option = document.createElement('option'); option.value = String(index); option.textContent = `${String(index+1).padStart(2,'0')} · ${page.name}`; select.append(option);
+    });
+    function scaleFrames() {
+      frames.forEach(({frame,stage,width}) => {
+        const usableWidth = stage.clientWidth;
+        if(!usableWidth) return;
+        const scale = usableWidth / width;
+        frame.style.width = `${width}px`;
+        frame.style.height = `${Math.ceil(stage.clientHeight / scale)}px`;
+        frame.style.transform = `scale(${scale})`;
+      });
+    }
+    function updateHash() {
+      const query = new URLSearchParams({page:pages[activeIndex].path,view:activeView});
+      history.replaceState(null,'',`#${query.toString()}`);
+    }
+    function choosePage(index,writeHash=true) {
+      if(!Number.isInteger(index) || index < 0 || index >= pages.length) return;
+      activeIndex = index;
+      const page = pages[index]; const url = SITE + page.path;
+      byId('page-title').textContent = page.name;
+      byId('page-description').textContent = page.description;
+      byId('page-counter').textContent = `${String(index+1).padStart(2,'0')} / ${pages.length}`;
+      byId('open-page').href = url;
+      byId('desktop-path').textContent = url;
+      byId('mobile-path').textContent = url;
+      select.value = String(index);
+      nav.querySelectorAll('button').forEach((button,i) => { if(i===index) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current'); });
+      frames.forEach(({frame}) => { frame.src = url; });
+      byId('previous').disabled = index===0;
+      byId('next').disabled = index===pages.length-1;
+      byId('status').textContent = `${page.name}, Seite ${index+1} von ${pages.length}, wird in der lokalen Website geladen.`;
+      document.title = `${page.name} · Swiss Night V2 Review`;
+      if(writeHash) updateHash();
+      requestAnimationFrame(scaleFrames);
+    }
+    function setView(view,writeHash=true) {
+      if(!['both','desktop','mobile'].includes(view)) return;
+      activeView = view; byId('frames').dataset.view = view;
+      document.querySelectorAll('.switch button').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.view===view)));
+      if(writeHash) updateHash();
+      requestAnimationFrame(scaleFrames);
+    }
+    function restoreHash() {
+      const query = new URLSearchParams(location.hash.slice(1));
+      const index = pages.findIndex(page => page.path===query.get('page'));
+      setView(query.get('view') || 'both',false);
+      choosePage(index >= 0 ? index : 0,false);
+    }
+    select.addEventListener('change',()=>choosePage(Number(select.value)));
+    byId('previous').addEventListener('click',()=>choosePage(activeIndex-1));
+    byId('next').addEventListener('click',()=>choosePage(activeIndex+1));
+    byId('reload').addEventListener('click',()=>choosePage(activeIndex));
+    document.querySelectorAll('.switch button').forEach(button => button.addEventListener('click',()=>setView(button.dataset.view)));
+    window.addEventListener('hashchange',restoreHash);
+    window.addEventListener('resize',scaleFrames);
+    const observer = new ResizeObserver(scaleFrames); frames.forEach(({stage})=>observer.observe(stage));
+    frames.forEach(({frame})=>frame.addEventListener('load',scaleFrames));
+    restoreHash();
+  </script>
+</body>
+</html>

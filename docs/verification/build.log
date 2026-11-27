@@ -1,0 +1,123 @@
+
+> softgen-starter@2.4.4 build
+> next build
+
+   ▲ Next.js 15.5.28
+
+   Skipping linting
+   Checking validity of types ...
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 6.3s
+   Collecting page data ...
+   Generating static pages (0/47) ...
+   Generating static pages (11/47)
+   Generating static pages (23/47)
+   Generating static pages (35/47)
+ ✓ Generating static pages (47/47)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (pages)                                 Size  First Load JS
+┌ ƒ /                                      2.66 kB         112 kB
+├   /_app                                      0 B         102 kB
+├ ○ /404                                   2.29 kB         114 kB
+├ ○ /about                                 2.44 kB         118 kB
+├ ○ /account-settings                      8.89 kB         131 kB
+├ ○ /admin-dashboard (317 ms)              2.56 kB         104 kB
+├ ○ /admin/login (878 ms)                  3.29 kB         181 kB
+├ ○ /admin/tools (878 ms)                   207 kB         407 kB
+├ ○ /advertise (878 ms)                      239 B         115 kB
+├ ƒ /api/admin/health                          0 B         102 kB
+├ ƒ /api/admin/overview                        0 B         102 kB
+├ ƒ /api/avatar-chat/[providerId]              0 B         102 kB
+├ ƒ /api/catalogue                             0 B         102 kB
+├ ƒ /api/claims/create                         0 B         102 kB
+├ ƒ /api/enquiries/create                      0 B         102 kB
+├ ƒ /api/fantasy-preview/generate              0 B         102 kB
+├ ƒ /api/hello                                 0 B         102 kB
+├ ƒ /api/img                                   0 B         102 kB
+├ ƒ /api/indexer/cron                          0 B         102 kB
+├ ƒ /api/indexer/import                        0 B         102 kB
+├ ƒ /api/private/provider-drafts               0 B         102 kB
+├ ƒ /api/private/provider-session              0 B         102 kB
+├ ƒ /api/supabase-function                     0 B         102 kB
+├ ƒ /api/vault/metrics                         0 B         102 kB
+├ ƒ /api/vault/search                          0 B         102 kB
+├ ƒ /api/vault/semantic-search                 0 B         102 kB
+├ ƒ /api/vault/unlock                          0 B         102 kB
+├ ○ /booking-confirmation                  2.48 kB         104 kB
+├ ○ /boost                                 5.03 kB         117 kB
+├ ○ /branding                              7.14 kB         116 kB
+├ ƒ /checkout                                248 B         102 kB
+├ ƒ /clubs                                    4 kB         106 kB
+├ ƒ /compare-escorts                       2.01 kB         108 kB
+├ ○ /contact                               2.18 kB         117 kB
+├ ○ /content-feed (878 ms)                 6.67 kB         134 kB
+├ ○ /create-post                             277 B         110 kB
+├ ○ /creator-dashboard                       282 B         110 kB
+├ ○ /design-concept-1                      2.48 kB         104 kB
+├ ○ /design-concept-2                      2.48 kB         104 kB
+├ ○ /design-concept-3                      2.48 kB         104 kB
+├ ƒ /escort-basel                            408 B         110 kB
+├ ƒ /escort-bern                             407 B         110 kB
+├ ƒ /escort-geneva                           414 B         110 kB
+├ ƒ /escort-lausanne                         411 B         110 kB
+├ ƒ /escort-lugano                           410 B         110 kB
+├ ƒ /escort-zurich                           416 B         110 kB
+├ ƒ /events                                  248 B         102 kB
+├ ƒ /fantasy-preview                         255 B         102 kB
+├ ○ /faq                                   2.38 kB         118 kB
+├ ƒ /favorites                              2.2 kB         108 kB
+├ ○ /for-clients                           3.47 kB         119 kB
+├ ○ /forgot-password                       2.43 kB         118 kB
+├ ƒ /gifts                                   248 B         102 kB
+├ ○ /guides                                3.27 kB         134 kB
+├ ƒ /guides/[slug]                           235 B         120 kB
+├ ○ /hotels                                5.88 kB         118 kB
+├ ○ /how-it-works                            240 B         115 kB
+├ ○ /imprint                               2.46 kB         118 kB
+├ ƒ /kategorie/[city]/[service]              310 B         110 kB
+├ ƒ /live-cam                                250 B         102 kB
+├ ○ /login                                   274 B         110 kB
+├ ○ /logo-concepts                         5.88 kB         114 kB
+├ ○ /logo-redesigns                        7.87 kB         116 kB
+├ ƒ /matches                                 249 B         102 kB
+├ ƒ /members                                 249 B         102 kB
+├ ƒ /messages                                249 B         102 kB
+├ ƒ /notifications                           251 B         102 kB
+├ ƒ /orte/[slug]                             300 B         110 kB
+├ ○ /premium                               4.49 kB         116 kB
+├ ○ /pricing                                 237 B         115 kB
+├ ○ /privacy                               2.44 kB         118 kB
+├ ƒ /private/provider-draft                2.93 kB         105 kB
+├ ○ /profile (878 ms)                       130 kB         247 kB
+├ ƒ /profile/[id]                          3.09 kB         109 kB
+├ ƒ /rankings                                249 B         102 kB
+├ ○ /register                              3.37 kB         105 kB
+├ ○ /report                                2.13 kB         107 kB
+├ ○ /reviews                                 237 B         115 kB
+├ ● /reviews/[slug]                          260 B         115 kB
+├   ├ /reviews/and6
+├   ├ /reviews/and6-review
+├   ├ /reviews/xdate-review
+├   └ [+3 more paths]
+├ ƒ /robots.txt                              250 B         102 kB
+├ ○ /safety                                  237 B         115 kB
+├ ƒ /search                                  278 B         110 kB
+├ ○ /search-atlas                          4.64 kB         117 kB
+├ ƒ /sitemap.xml                             252 B         102 kB
+├ ƒ /stories                                 249 B         102 kB
+├ ○ /terms                                 2.27 kB         118 kB
+├ ○ /upload-photos (878 ms)                4.89 kB         117 kB
+├ ○ /verify (879 ms)                       5.46 kB         117 kB
+└ ○ /web-analyzer (878 ms)                 11.6 kB         211 kB
++ First Load JS shared by all               134 kB
+  ├ chunks/framework-b9fd9bcc3ecde907.js   44.8 kB
+  ├ chunks/main-be7b250e01c3e2fa.js        34.7 kB
+  ├ chunks/pages/_app-e88a1c78357d5772.js  20.4 kB
+  ├ css/ebe6b254d2c6e038.css               31.7 kB
+  └ other shared chunks (total)            1.86 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
