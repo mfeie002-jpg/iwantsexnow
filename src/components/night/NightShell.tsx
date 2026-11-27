@@ -13,12 +13,12 @@ export const useNightGuide=()=>useContext(GuideContext);
 function Wordmark(){return <Link href="/" className="night-wordmark" aria-label="iwantsexnow.ch Startseite"><X aria-hidden="true"/><span>iwantsexnow<span>.ch</span></span></Link>;}
 const nav=[['/search','Profile'],['/clubs','Clubs & Studios'],['/reviews','Portalvergleich'],['/safety','Gut zu wissen']];
 export function NightShell({children}:{children:React.ReactNode}) {
- const router=useRouter();const {favorites,compareIds,visibleOffers,states,blockedIds,loading,error,selectionNotice,dismissSelectionNotice}=useCatalogue();
+ const router=useRouter();const {favorites,compareIds,visibleOffers,states,blockedIds,loading,error,ensureLoaded,selectionNotice,dismissSelectionNotice}=useCatalogue();
  const [open,setOpen]=useState(false),[menu,setMenu]=useState(false),[step,setStep]=useState(0);
  const [choice,setChoice]=useState<CatalogueFilters>({canton:'ALL',category:'all',max:0});
  const guideOpener=useRef<HTMLElement|null>(null);
  const menuOpener=useRef<HTMLElement|null>(null);
- const openGuide=(start=0,filters?:CatalogueFilters)=>{guideOpener.current=document.activeElement as HTMLElement;setChoice(guideFilters({...filtersFromQuery(router.query),...filters}));setStep(Math.min(3,Math.max(0,start)));setMenu(false);setOpen(true);};
+ const openGuide=(start=0,filters?:CatalogueFilters)=>{ensureLoaded();guideOpener.current=document.activeElement as HTMLElement;setChoice(guideFilters({...filtersFromQuery(router.query),...filters}));setStep(Math.min(3,Math.max(0,start)));setMenu(false);setOpen(true);};
  useEffect(()=>{setOpen(false);setMenu(false);},[router.asPath]);
  const select=(next:CatalogueFilters)=>{setChoice(c=>({...c,...next,invalid:false}));setStep(s=>Math.min(3,s+1));};
  const skip=()=>{setChoice(c=>skipGuideStep(c,step));setStep(s=>Math.min(3,s+1));};
