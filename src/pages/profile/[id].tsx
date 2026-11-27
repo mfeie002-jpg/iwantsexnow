@@ -37,6 +37,7 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
   const digits = cleanSwissPhone(state.phoneDisplay || offer.rawPhone);
   const hasPhone = /^41(?:7[5-9]|[2-6]\d)\d{7}$/.test(digits);
   const saved = catalogue.favorites.includes(profileId), compared = catalogue.compareIds.includes(profileId);
+  const comparisonFull = !compared && catalogue.compareIds.length >= 3;
   const tags = Array.isArray(offer.includedTags) ? offer.includedTags.filter((tag: unknown) => typeof tag === "string" && tag.trim()).slice(0, 16) : [];
   const languages = Array.isArray(offer.languages) ? offer.languages.filter((value: unknown) => typeof value === "string" && value.trim()) : [];
   const description = typeof state.bio === "string" && state.bio.trim() ? state.bio.trim() : typeof offer.bio === "string" ? offer.bio.trim() : "";
@@ -66,8 +67,9 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
         <p className="night-lead">Eintrag aus {String(offer.sourcePortal || "dem Quellenindex")}.</p>
         <div className="night-row night-profile-actions">
           <button type="button" className={`night-button ${saved ? "" : "secondary"}`} aria-pressed={saved} onClick={() => catalogue.toggleFavorite(profileId)}><Heart size={17} fill={saved ? "currentColor" : "none"} /> {saved ? "Gemerkt" : "Merken"}</button>
-          <button type="button" className="night-button secondary" aria-pressed={compared} disabled={!compared && catalogue.compareIds.length >= 3} onClick={() => catalogue.toggleCompare(profileId)}><Scale size={17} /> {compared ? "Im Vergleich" : "Vergleichen"}</button>
+          <button type="button" className="night-button secondary" aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? 'profile-comparison-limit' : undefined} onClick={() => catalogue.toggleCompare(profileId)}><Scale size={17} /> {compared ? "Im Vergleich" : "Vergleichen"}</button>
         </div>
+        {comparisonFull && <p className="night-comparison-limit" id="profile-comparison-limit"><span>3/3 Profile ausgewählt. Entferne zuerst ein Profil.</span><Link href="/compare-escorts">Vergleich bearbeiten <ArrowRight size={14} aria-hidden="true" /></Link></p>}
         <div className="night-profile-facts">
           <div><span>30 Minuten</span><strong>{rate30 === null ? "Nicht bestätigt" : `CHF ${rate30.toLocaleString("de-CH")}`}</strong></div>
           <div><span>60 Minuten</span><strong>{rate60 === null ? "Nicht bestätigt" : `CHF ${rate60.toLocaleString("de-CH")}`}</strong></div>

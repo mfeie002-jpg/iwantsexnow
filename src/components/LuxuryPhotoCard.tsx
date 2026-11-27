@@ -41,11 +41,12 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
       <h3><Link href={href}>{name}</Link></h3>
       <p className="night-note">{rate !== null ? `CHF ${rate.toLocaleString("de-CH")} / 60 Min. · bestätigte Angabe` : "Honorar nicht bestätigt"}</p>
       <div className="night-profile-bottom">
-        <button type="button" className={`night-text-button ${compared ? "active" : ""}`} aria-pressed={compared} disabled={comparisonFull} title={comparisonFull ? "Drei Profile sind ausgewählt. Entferne zuerst eines im Vergleich." : undefined} onClick={() => catalogue.toggleCompare(id)}>
+        <button type="button" className={`night-text-button ${compared ? "active" : ""}`} aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? `comparison-limit-${id}` : undefined} onClick={() => catalogue.toggleCompare(id)}>
           <Scale size={15} aria-hidden="true" /> {compared ? "Im Vergleich" : "Vergleichen"}
         </button>
         <Link href={href} className="night-text-button">Details <ArrowRight size={15} aria-hidden="true" /></Link>
       </div>
+      {comparisonFull && <p className="night-comparison-limit" id={`comparison-limit-${id}`}><span>3/3 ausgewählt</span><Link href="/compare-escorts">Auswahl ändern <ArrowRight size={13} aria-hidden="true" /></Link></p>}
     </div>
   </article>;
 }
