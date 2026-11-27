@@ -14,7 +14,7 @@ Der Katalog wird auf relevanten Next.js-Seiten bereits über `getServerSideProps
 - Bereits als `pageProps.catalogue` übertragene Katalogdaten werden direkt verwendet, ohne zweiten Browser-Abruf.
 - Seiten ohne initiales Katalogobjekt laden die Daten bei Bedarf, wenn ein Nutzer den Xenia-Guide öffnet.
 - Der Xenia-Guide zeigt während des Ladevorgangs einen Ladezustand und behält die bestehenden Filter.
-- Fehler auf einem öffentlichen Katalogabruf bleiben sichtbar; es wird kein erfundener Trefferbestand eingesetzt.
+- Fehler auf einem öffentlichen Katalogabruf bleiben sichtbar; der Guide zeigt **keine irreführenden 0 Treffer**, blockiert den Ergebnis-Link und bietet ausdrücklich **«Erneut versuchen»**. Eine spätere erfolgreiche Antwort stellt die normale Auswahl wieder her.
 - Die vorhandenen 20 Seiten, Profil-IDs, Daten-, Preis-, Quellen-, Verfügbarkeits- und Rechteprüfungen wurden nicht verändert.
 
 ## Geprüfte Resultate
@@ -31,6 +31,8 @@ Der Katalog wird auf relevanten Next.js-Seiten bereits über `getServerSideProps
 | `/safety` nach explizitem Öffnen von Xenia | **genau 1 Request**, HTTP 200 |
 | Transfer dieses Katalog-Requests | **270'408 Byte** im Browserlauf |
 | Footer auf Startseite | 1 |
+| Erzwungener Katalog-Ausfall | «Katalogdaten noch nicht verfügbar», Ergebnis-Link deaktiviert, Wiederholen verfügbar |
+| Wiederherstellung nach Freigabe des Netzwerks | Erneuter Abruf erfolgreich, Ergebnisstatus wiederhergestellt |
 | Unbehandelte Runtime-Ausnahmen im Browserlauf | 0 |
 
 Der alte unnötige zusätzliche Katalogabruf auf SSR-Seiten wurde damit eliminiert. **Die tatsächlichen Endnutzer-Ladezeiten wurden nicht gemessen**; 270'408 Byte beschreiben den beobachteten kodierten Netztransfer eines Katalog-Abrufs, nicht eine garantierte Einsparung bei jedem Besucher.
