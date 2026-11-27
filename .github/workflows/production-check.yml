@@ -1,16 +1,69 @@
-﻿name: Production Build Check
+name: Production Quality Gate
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build-check:
+  build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      IWSN_TEST_BASE_URL: "http://127.0.0.1:4181"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node for TS-aware tests
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - run: npm install --legacy-peer-deps || true
-      - run: npm run build || true
+          node-version: "26"
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Lint
+        run: npm run lint -- --quiet
+
+      - name: Check TypeScript
+        run: npx tsc --noEmit --pretty false
+
+      - name: Production build
+        run: npm run build
+
+      - name: Start built server and run regression suite
+        shell: bash
+        run: |
+          npm run start -- -H 127.0.0.1 -p 4181 > "$RUNNER_TEMP/iwsn-next.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          ready=0
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent --show-error http://127.0.0.1:4181/ > /dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo "Next.js process stopped before becoming ready"
+              cat "$RUNNER_TEMP/iwsn-next.log"
+              exit 1
+            fi
+            sleep 2
+          done
+
+          if [ "$ready" -ne 1 ]; then
+            echo "Next.js server did not become ready"
+            cat "$RUNNER_TEMP/iwsn-next.log"
+            exit 1
+          fi
+
+          node --test tests/*.test.mjs

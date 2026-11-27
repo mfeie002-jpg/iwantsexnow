@@ -24,6 +24,7 @@ export async function sendTelegramPing(lines: string[]): Promise<void> {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text: lines.join("\n") }),
+      signal: AbortSignal.timeout(3000),
     });
   } catch {
     // non-blocking
@@ -59,10 +60,13 @@ export function writeSafeJson(filename: string, data: any): void {
 
 export async function supaFetch<T = any>(
   tableAndQuery: string,
-  options: { method?: "GET" | "POST" | "PATCH" | "DELETE"; body?: any; prefer?: string } = {}
+  options: { method?: "GET" | "POST" | "PATCH" | "DELETE"; body?: any; prefer?: string; timeoutMs?: number } = {}
 ): Promise<{ ok: boolean; data: T | null; error?: string }> {
   if (!isSupabaseConfigured()) return { ok: false, data: null, error: "HYBRID_LOCAL_MODE" };
+  let deadline: AbortSignal | undefined;
   try {
+    // Opt-in only: the reporting path bounds both connection and response-body reads.
+    deadline = options.timeoutMs === undefined ? undefined : AbortSignal.timeout(options.timeoutMs);
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${tableAndQuery}`, {
       method: options.method || "GET",
       headers: {
@@ -72,12 +76,13 @@ export async function supaFetch<T = any>(
         Prefer: options.prefer || "return=representation",
       },
       body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+      ...(deadline ? { signal: deadline } : {}),
     });
     if (!res.ok) return { ok: false, data: null, error: await res.text() };
     const text = await res.text();
     return { ok: true, data: text ? (JSON.parse(text) as T) : null };
   } catch (e: any) {
-    return { ok: false, data: null, error: e?.message || "Supabase error" };
+    return { ok: false, data: null, error: deadline?.aborted ? "UPSTREAM_TIMEOUT" : e?.message || "Supabase error" };
   }
 }
 

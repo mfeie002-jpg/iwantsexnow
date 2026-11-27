@@ -14,7 +14,7 @@ export default function CorporateInfoPage() {
       <PageIntro tone="himmel" note="Die Spielregeln" art="none" title={<>Nutzungsbedingungen (AGB)</>}
         lead={<>Grundregeln für die Nutzung des Schweizer Profilverzeichnisses und Portalvergleichs.</>} />
 
-      <main className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
+      <main id="main" tabIndex={-1} className="max-w-[1380px] w-full mx-auto px-6 sm:px-10 py-10 space-y-8">
         
 
         <div className="max-w-4xl space-y-5">

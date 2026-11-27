@@ -23,3 +23,13 @@ test("Next resolves patched PostCSS and preserves CSS processing", async () => {
   assert.ok(output.css.includes("var(--accent)"));
   assert.equal(output.warnings().length, 0);
 });
+
+test('Recharts has an explicit compatible runtime react-is dependency', () => {
+  const manifest = require('../package.json');
+  const reactVersion = require('react/package.json').version;
+  const rechartsRequire = createRequire(require.resolve('recharts/package.json'));
+  assert.ok(manifest.dependencies['react-is']);
+  assert.equal(rechartsRequire('react-is/package.json').version, reactVersion);
+  assert.equal(rechartsRequire('react-is').isElement(require('react').createElement('div')), true);
+  assert.ok(require('recharts').AreaChart);
+});

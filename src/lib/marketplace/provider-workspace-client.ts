@@ -1,4 +1,5 @@
 import type { DraftFields, PrivateDraft } from "./drafts";
+import { isReportSubmissionKey, validateReportInput } from "./report-input";
 export const LOCAL_DRAFT_KEY = "iwsn-night-local-draft-v2";
 export const emptyDraft = (): DraftFields => ({ displayAlias: "", city: "", description: "", photoRightsConfirmed: false });
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -51,15 +52,23 @@ export function createProviderWorkspaceClient(fetcher: typeof fetch = fetch) {
     }
   };
 }
-export async function submitProviderReport(body: { profileId: string; sourceUrl: string; reason: string; contact: string }, fetcher: typeof fetch = fetch) {
-  if ((!body.profileId.trim() && !body.sourceUrl.trim()) || body.reason.trim().length < 5) throw new WorkspaceError(400);
+async function requestReportReceipt(body: Record<string, string>, fetcher: typeof fetch) {
   let response: Response;
-  try { response = await fetcher("/api/vault/metrics", { method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "report_profile", profileId: body.profileId.trim().slice(0,150), sourceUrl: body.sourceUrl.trim().slice(0,500),
-      reason: body.reason.trim().slice(0,500), contact: body.contact.trim().slice(0,120) }), signal: AbortSignal.timeout(20000) }); }
+  try { response = await fetcher("/api/vault/metrics", { method: "POST", credentials: "omit", cache: "no-store", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body), signal: AbortSignal.timeout(20000) }); }
   catch { throw new WorkspaceError(0); }
   if (response.status !== 202) throw new WorkspaceError(response.status);
-  const data = await response.json();
+  let data: any;
+  try { data = await response.json(); } catch { throw new WorkspaceError(502); }
   if (data?.ok !== true || data.status !== "RECEIVED" || typeof data.caseId !== "string" || !uuid.test(data.caseId)) throw new WorkspaceError(502);
   return data.caseId as string;
+}
+export async function submitProviderReport(body: { profileId: string; sourceUrl: string; reason: string; contact: string; submissionKey: string }, fetcher: typeof fetch = fetch) {
+  const parsed = validateReportInput(body);
+  if (parsed.ok === false || !isReportSubmissionKey(body.submissionKey)) throw new WorkspaceError(400);
+  return requestReportReceipt({ action: "report_profile", ...parsed.value, submissionKey: body.submissionKey.toLowerCase() }, fetcher);
+}
+export async function checkProviderReportReceipt(submissionKey: string, fetcher: typeof fetch = fetch) {
+  if (!isReportSubmissionKey(submissionKey)) throw new WorkspaceError(400);
+  return requestReportReceipt({ action: "report_receipt", submissionKey: submissionKey.toLowerCase() }, fetcher);
 }
