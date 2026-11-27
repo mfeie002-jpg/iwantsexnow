@@ -31,8 +31,8 @@ test('reopening a valid guide link preserves its budget, time and other visible 
     assert.equal(next.available,true);
     assert.ok(!(next.under60 && next.max));
   }
-  assert.equal(skipGuideStep(choice,2).under60,undefined);
-  assert.equal(skipGuideStep(choice,2).available,true);
+  assert.equal(skipGuideStep(choice,2).under60,300);
+  assert.equal(skipGuideStep(choice,2).available,false);
 });
 
 test('a custom shared budget remains visible and selectable under both kinds of limit',()=>{
@@ -51,13 +51,13 @@ test('skipping a populated step clears its actual restriction without clearing o
   const input = { canton:'ZG', category:'massage', max:400, price:'missing' };
   assert.deepEqual(skipGuideStep(input,0), { ...input, canton:'ALL' });
   assert.deepEqual(skipGuideStep(input,1), { ...input, category:'all' });
-  assert.deepEqual(skipGuideStep(input,2), { ...input, max:0, price:'' });
+  assert.deepEqual(skipGuideStep(input,2), { ...input, available:false });
   assert.equal(input.canton, 'ZG');
 });
 
-test('opening the price step restores real matches without fabricating confirmed prices', () => {
+test('skipping the Xenia time step removes only confirmed-availability filtering', () => {
   const offers = [{id:'ch-one',canton:'ZG',rubric:'massage'},{id:'ch-two',canton:'ZH',rubric:'massage'},{id:'ch-three',canton:'ZG',rubric:'female'}];
-  const filtered = guideFilters({canton:'ZG',category:'massage',max:400});
+  const filtered = guideFilters({canton:'ZG',category:'massage',available:true});
   assert.equal(filterOffers(offers,filtered).length,0);
   assert.equal(filterOffers(offers,skipGuideStep(filtered,2)).length,1);
 });

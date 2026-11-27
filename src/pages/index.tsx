@@ -1,51 +1,81 @@
 import React from 'react';
 import Link from 'next/link';
-import {ArrowDown, ArrowRight, ArrowUpRight, Heart, MapPin, Scale, Sparkles} from 'lucide-react';
+import type {GetServerSideProps} from 'next';
+import {ArrowRight,ArrowUpRight,BookOpen,CheckCircle2,Clock3,Heart,MapPin,ShieldCheck,Sparkles} from 'lucide-react';
 import {SEO} from '@/components/SEO';
 import {brandAsset,CATEGORIES,REGIONS,searchHref} from '@/lib/night-catalogue';
 import {useCatalogue} from '@/components/night/CatalogueContext';
-import {GuideButton,TouchSearch} from '@/components/night/NightShell';
 import {ProfileGrid,RegionCards} from '@/components/night/DiscoveryPages';
+import {TouchSearch,useNightGuide} from '@/components/night/NightShell';
 import {getPaginatedCatalogueProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
-import type {GetServerSideProps} from 'next';
+import {XeniaContext} from '@/components/flagship/FlagshipEditorial';
+
 export const getServerSideProps:GetServerSideProps=ctx=>getPaginatedCatalogueProps(ctx,{},4);
+
+const categories=[
+ {title:'Escort & Begleitung',description:'Verzeichnis & Quellen',image:'category-escort.webp',href:searchHref({category:'female'})},
+ {title:'Massage',description:'Angebote sachlich einordnen',image:'category-tantra.webp',href:'/massage'},
+ {title:'Tantra',description:'Herkunft und Bedingungen',image:'category-tantra.webp',href:'/tantra'},
+ {title:'Clubs & Studios',description:'Orte und Informationen',image:'category-clubs.webp',href:'/studios'},
+ {title:'Domina & BDSM',description:'Beschreibung und Grenzen',image:'category-bdsm.webp',href:searchHref({category:'bdsm'})},
+ {title:'High-Class',description:'Angaben statt Werbeversprechen',image:'category-vip.webp',href:'/high-class'}
+];
+
 export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
- const {visibleOffers,error,favorites,compareIds}=useCatalogue();
- return <main id="main" className="night-home-2027">
- <SEO title="Eine Suche für die ganze Schweiz. | iwantsexnow.ch" description="Entdecke Schweizer Profile, Regionen und Quellen. Ein klarer Überblick für deine persönliche Wahl." image="https://iwantsexnow.ch/images/brand/v2/hero-night-v2.png"/>
- <section className="night-hero">
-  <img className="night-hero-art" src={brandAsset('hero-night-v2.png')} alt="Illustrative Abendstimmung in Zürich mit einer fiktiven Person im roten Abendkleid" loading="eager"/>
-  <div className="night-hero-orbit" aria-hidden="true"/>
-  <div className="night-container night-hero-content">
-   <div className="night-hero-edition"><span className="night-kicker">Die Schweiz. Nach deinem Gefühl.</span><span className="night-edition-tag">SWISS AFTER HOURS</span></div>
-   <h1>Dein Moment.<br/><em>Deine Wahl.</em></h1>
-   <p className="night-lead">Escort, Massage, Clubs & Studios in der ganzen Schweiz. Du entscheidest, wo es beginnt.</p>
-   <div className="night-hero-actions"><GuideButton>Meinen Moment finden</GuideButton><a href="#profile-entdecken" className="night-hero-browse">Direkt entdecken <ArrowDown size={17}/></a></div>
-   <div className="night-hero-search"><span className="night-micro-label">Oder wähle direkt</span><TouchSearch/></div>
-  </div>
-  <div className="night-hero-caption"><MapPin size={14}/><span>Zürich · Blaue Stunde</span><span>Titelmotiv: KI-Illustration · kein Anbieterprofil</span></div>
- </section>
- <section className="night-container night-launch-section" aria-label="Dein Einstieg">
-  <div className="night-launch-grid">
-   <div className="night-launch-card night-launch-main"><span className="night-orb-icon" aria-hidden="true"><Sparkles size={25}/></span><div><p className="night-kicker">Weniger suchen. Mehr entdecken.</p><h2>Ein paar Berührungen.<br/>Dein eigener Weg.</h2><p>Region, Bereich, Rahmen. Alles lässt sich ändern.</p></div><GuideButton>Auswahl starten</GuideButton></div>
-   <Link className="night-launch-card night-launch-small" href="/favorites"><Heart size={22}/><span className="night-launch-count">{favorites.length.toString().padStart(2,'0')}</span><div><h2>Deine Merkliste</h2><p>Behalten, was dich anspricht.</p></div><ArrowUpRight className="night-corner-arrow" size={22}/></Link>
-   <Link className="night-launch-card night-launch-small" href="/compare-escorts"><Scale size={22}/><span className="night-launch-count">{compareIds.length}<small> / 3</small></span><div><h2>Auf einen Blick</h2><p>Deine Auswahl vergleichen.</p></div><ArrowUpRight className="night-corner-arrow" size={22}/></Link>
-  </div>
-  <nav className="night-city-shortcuts" aria-label="Direkt in eine Region"><span>Wo beginnt’s?</span>{REGIONS.slice(0,5).map(r=><Link key={r.canton} href={r.href}>{r.name}<ArrowUpRight size={13}/></Link>)}<a href="#regionen">Alle Regionen <ArrowDown size={13}/></a></nav>
- </section>
- <section className="night-container night-section" id="profile-entdecken">
-  <div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">01 /</span> Entdecken</p><h2>Menschen. Möglichkeiten.</h2><p>{(cataloguePage?.total ?? visibleOffers.length).toLocaleString('de-CH')} vorhandene Einträge. Quellen und Fotohinweise direkt am Profil.</p></div><Link className="night-section-link" href="/search">Alle Profile <ArrowUpRight size={18}/></Link></div>
-  {error&&<p className="night-note" role="status">{error}</p>}<ProfileGrid offers={visibleOffers.slice(0,8)} limit={4}/>
-  <div className="night-load-more"><Link className="night-button-secondary" href="/search">Deine Auswahl verfeinern <ArrowRight size={17}/></Link></div>
- </section>
- <section className="night-container night-section" id="regionen"><div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">02 /</span> Die Schweiz entdecken</p><h2>Andere Stadt. Neues Gefühl.</h2><p>Von der Limmat bis zum Lago. Dein nächster Einstieg.</p></div><Link className="night-section-link" href="/search">Alle Regionen <ArrowUpRight size={18}/></Link></div><RegionCards/></section>
- <section className="night-band"><div className="night-container night-section"><div className="night-section-title"><div><p className="night-kicker"><span className="night-section-number">03 /</span> Dein Bereich</p><h2>Was spricht dich an?</h2><p>Ein Bild als Einstieg. Du bestimmst den Rahmen.</p></div></div><div className="night-category-grid">{[...CATEGORIES.filter(c=>c.id!=='all'),{id:'clubs',label:'Clubs & Studios',image:'category-clubs.webp'}].map((c,i)=><Link className="night-category-card" key={c.id} href={c.id==='clubs'?'/clubs':searchHref({category:c.id})}><img src={brandAsset(c.image)} alt="" loading="lazy"/><b className="night-category-number" aria-hidden="true">0{i+1}</b><span>{c.label} <ArrowUpRight size={18}/></span></Link>)}</div><p className="night-note" style={{marginTop:12}}>Kategorie- und Regionalmotive sind Illustrationen.</p></div></section>
- <section className="night-container night-section"><div className="night-compare-banner"><img src={brandAsset('compare-night-v2.png')} alt="Illustratives Fernglas vor einer Schweizer Berglandschaft" loading="lazy"/><p className="night-kicker">Perspektive statt Versprechen</p><h2>Ein klarer Blick.<br/><em>Über die Portale hinweg.</em></h2><p>Zehn Portale, ihre Funktionen und die Quellen dazu. Damit du selbst entscheiden kannst.</p><div className="night-row">{['and6.com','6navi.ch','sex.ch','ladies.ch','+ 6 weitere'].map(n=><span className="night-pill" key={n}>{n}</span>)}</div><div><Link className="night-button-secondary" href="/reviews">Portale vergleichen <ArrowUpRight size={17}/></Link></div></div></section>
- <section className="night-container night-section"><div className="night-steps"><div><p className="night-kicker" style={{color:'#b71c50'}}>Dein Weg</p><h2>So einfach<br/>geht’s.</h2><Link className="night-text-button" style={{color:'#a41b49'}} href="/how-it-works">Mehr erfahren →</Link></div>{[
- ['step-discover-v2.png','Entdecken','Region und Bereich berühren. Deine Auswahl beginnt sofort.'],
- ['step-compare-v2.png','Vergleichen','Bis zu drei Profile mit Quellen und bekannten Angaben nebeneinander.'],
- ['step-decide-v2.png','Selbst entscheiden','Details prüfen und selbst zum angegebenen Kontakt oder zur Quelle wechseln.'],
- ].map(([img,title,body],i)=><div className="night-step" key={title}><img src={brandAsset(img)} alt="" loading="lazy"/><h3><b>{i+1}</b>{title}</h3><p>{body}</p></div>)}</div></section>
- <section className="night-container night-section"><div className="night-provider-banner"><img src={brandAsset('anbieter.webp')} alt="Illustratives Türmotiv mit rotem Anhänger" loading="lazy"/><div><p className="night-kicker">Für Anbieterinnen und Anbieter</p><h2>Dein Profil.<br/>Deine Entscheidung.</h2><p>Bereite deinen Auftritt vor und prüfe deine Angaben. Die Veröffentlichung setzt die nötigen Nachweise voraus.</p><Link className="night-button" href="/advertise">Deinen Auftritt vorbereiten <ArrowUpRight size={17}/></Link></div></div></section>
+ const {openGuide}=useNightGuide();
+ const {visibleOffers,error}=useCatalogue();
+ const count=cataloguePage?.total??visibleOffers.length;
+ return <main id="main" className="flagship-home">
+  <SEO title="Finde, was zu dir passt | iwantsexnow.ch" description="Entdecke Schweizer Regionen, Escort- und Massage-Angebote, Clubs und Studios. Xenia führt dich freiwillig mit wenigen Berührungen zu Quellen und Einträgen." image="https://iwantsexnow.ch/images/brand/v2/hero-night-v2.png"/>
+  <section className="flagship-hero">
+   <img className="flagship-hero-photo" src={brandAsset('hero-night-v2.png')} alt="Illustrative Schweizer Abendstadt mit einer fiktiven Person im Abendkleid" loading="eager"/>
+   <div className="flagship-hero-shade" aria-hidden="true"/>
+   <div className="night-container flagship-hero-inner">
+    <p className="flagship-eyebrow">SCHWEIZER ESCORT-, MASSAGE- & STUDIO-VERZEICHNIS · 18+</p>
+    <h1>Finde, was <em>zu dir<br className="flagship-desktop-break"/> passt.</em></h1>
+    <p className="flagship-hero-lead">Entdecke Orte und Angebote, verstehe Quellen und entscheide selbst. Xenia führt dich mit wenigen Berührungen durch die Auswahl.</p>
+    <button type="button" className="flagship-xenia-bubble" onClick={()=>openGuide(0)} aria-label="Xenia öffnen und die Suche mit Region beginnen"><span aria-hidden="true"><Sparkles size={20}/></span><span><strong>Hoi, ich bin Xenia ✧</strong><small>Beginne ohne Tastatur mit Region, Thema und Zeit.</small></span><ArrowRight size={17}/></button>
+    <div className="flagship-hero-choices" role="group" aria-label="Drei Schritte mit Xenia">
+     <button type="button" onClick={()=>openGuide(0)}><strong><MapPin size={13}/> Wo?</strong><small>Ganze Schweiz</small></button>
+     <button type="button" onClick={()=>openGuide(1)}><strong><Heart size={13}/> Was?</strong><small>Alle Angebote</small></button>
+     <button type="button" onClick={()=>openGuide(2)}><strong><Clock3 size={13}/> Wann?</strong><small>Flexibel</small></button>
+    </div>
+    <button type="button" className="flagship-primary" onClick={()=>openGuide(0)}>Mit Xenia entdecken <ArrowRight size={17}/></button>
+    <div className="flagship-hero-proof"><span><CheckCircle2 size={13}/> Schweizer Regionen</span><span><ShieldCheck size={13}/> Verständliche Quellen</span><span><Clock3 size={13}/> Status ohne Versprechen</span></div>
+   </div>
+  </section>
+
+  <section className="night-container flagship-section" id="regionen"><div className="flagship-section-head"><div><span className="flagship-eyebrow">01 · SCHWEIZ ENTDECKEN</span><h2>Beliebte Regionen in der Schweiz</h2><p>Einfach nach Ort einsteigen und lokale Angebote einordnen.</p></div><Link href="/regionen">Alle Orte entdecken <ArrowRight size={17}/></Link></div>
+   <div className="flagship-region-tiles">{REGIONS.slice(0,5).map(region=><Link key={region.canton} href={region.href} className="flagship-region-tile"><img src={brandAsset(region.image)} alt="" loading="lazy"/><span>{region.name}</span><ArrowUpRight size={18}/></Link>)}</div>
+   <p className="flagship-caption">Stadtmotive: KI-Illustrationen. Keine Personen- oder Verfügbarkeitsnachweise.</p>
+  </section>
+
+  <section className="flagship-soft-section"><div className="night-container flagship-section">
+   <div className="flagship-section-head"><div><span className="flagship-eyebrow">02 · THEMEN ENTDECKEN</span><h2>Welches Erlebnis passt heute?</h2><p>Sechs mögliche Einstiege, mit nachvollziehbaren Angaben.</p></div><Link href="/kategorien">Alle Kategorien <ArrowRight size={17}/></Link></div>
+   <div className="flagship-category-tiles">{categories.map(c=><Link key={c.title} href={c.href} className="flagship-category-tile"><img src={brandAsset(c.image)} alt="" loading="lazy"/><span><strong>{c.title}</strong><small>{c.description}</small></span></Link>)}</div>
+  </div></section>
+
+  <section className="night-container flagship-section">
+   <XeniaContext question="Welche Filter sind für deine Wahl relevant?"/><div className="flagship-section-head"><div><span className="flagship-eyebrow">03 · ECHTE EINTRÄGE</span><h2>Passende Verzeichniseinträge</h2><p>{count.toLocaleString('de-CH')} Einträge im aktuellen Verzeichnis. Keine erfundene Live-Verfügbarkeit und keine geschätzten Honorarangaben.</p></div><Link href="/suche">Alle Einträge <ArrowRight size={17}/></Link></div>
+   {error&&<p role="status" className="flagship-caption">{error}</p>}
+   <ProfileGrid offers={visibleOffers.slice(0,4)} limit={4}/>
+   <div className="flagship-centered"><Link className="flagship-primary" href="/suche">Ergebnisse filtern <ArrowRight size={16}/></Link></div>
+  </section>
+
+  <section className="flagship-soft-section"><div className="night-container flagship-section">
+   <div className="flagship-section-head"><div><span className="flagship-eyebrow">04 · DEIN WEG</span><h2>Entdecken. Vergleichen. Selbst entscheiden.</h2><p>Einfach orientieren, ohne die Verantwortung für deine Wahl abzugeben.</p></div></div>
+   <div className="flagship-how-grid">{[
+     ['guide-suchen.webp','01','Entdecken','Region und Bereich in wenigen Berührungen auswählen.'],
+     ['guide-vergleichen.webp','02','Vergleichen','Quellen und bestätigte Angaben nebeneinander prüfen.'],
+     ['guide-kontakt.webp','03','Selbst entscheiden','Details ansehen und eigenständig zur Originalquelle wechseln.']
+   ].map(([img,n,title,text])=><div key={title} className="flagship-how-card"><img src={brandAsset(img)} alt="" loading="lazy"/><span>{n}</span><h3>{title}</h3><p>{text}</p></div>)}</div>
+   <div className="flagship-centered"><Link className="flagship-outline" href="/ratgeber">Zum Ratgeber <ArrowRight size={16}/></Link></div>
+  </div></section>
+
+  <section className="night-container flagship-section">
+   <div className="flagship-comparison"><img src={brandAsset('compare-night-v2.png')} alt="" loading="lazy"/><div><span className="flagship-eyebrow">QUELLEN · METHODIK</span><h2>Portale vergleichen.<br/><em>Ohne erfundene Rankings.</em></h2><p>Unterschiede bei Herkunft, Suchfunktionen und publizierten Informationen verstehen.</p><Link className="flagship-primary" href="/portalvergleich">Zum Portalvergleich <ArrowRight size={16}/></Link></div></div>
+  </section>
+
+  <section className="flagship-soft-section"><div className="night-container flagship-section"><div className="flagship-provider"><img src={brandAsset('anbieter.webp')} alt="" loading="lazy"/><div><span className="flagship-eyebrow">FÜR ANBIETERINNEN UND ANBIETER</span><h2>Dein Eintrag.<br/>Deine Kontrolle.</h2><p>Bereite Angaben vor und kläre Rechte oder Korrekturen. Veröffentlichung erfordert die nötigen Nachweise.</p><Link className="flagship-primary" href="/anbieter">Deinen Auftritt vorbereiten <ArrowRight size={16}/></Link></div></div></div></section>
  </main>;
 }

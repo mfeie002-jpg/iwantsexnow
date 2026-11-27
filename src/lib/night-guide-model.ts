@@ -44,10 +44,7 @@ export function catalogueBudgetChoices(filters: CatalogueFilters) {
 export function skipGuideStep(filters: CatalogueFilters, step: number): CatalogueFilters {
   if (step === 0) return { ...filters, canton: 'ALL' };
   if (step === 1) return { ...filters, category: 'all' };
-  if (step === 2) {
-    const { under60, ...rest } = filters;
-    return { ...rest, max: 0, price: '' };
-  }
+  if (step === 2) return { ...filters, available: false };
   return { ...filters };
 }
 
