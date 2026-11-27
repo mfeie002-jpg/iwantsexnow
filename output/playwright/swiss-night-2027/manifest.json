@@ -1,0 +1,38 @@
+[
+  {
+    "number": 1,
+    "name": "Startseite",
+    "path": "/",
+    "file": "01-desktop-mobile.jpg",
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "source": "http://127.0.0.1:4181/",
+    "scope": "upper page excerpt",
+    "branch": "feat/swiss-night-v2-20261127",
+    "commit": "042f20f6131f32fde3cacbe2343fddc69b086013"
+  },
+  {
+    "number": 2,
+    "name": "Suche und Filter",
+    "path": "/search",
+    "file": "02-desktop-mobile.jpg",
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "source": "http://127.0.0.1:4181/search",
+    "scope": "upper page excerpt",
+    "branch": "feat/swiss-night-v2-20261127",
+    "commit": "042f20f6131f32fde3cacbe2343fddc69b086013"
+  },
+  {
+    "number": 8,
+    "name": "Profile vergleichen",
+    "path": "/compare-escorts",
+    "file": "08-desktop-mobile.jpg",
+    "desktopWidth": 1440,
+    "mobileWidth": 390,
+    "source": "http://127.0.0.1:4181/compare-escorts",
+    "scope": "upper page excerpt",
+    "branch": "feat/swiss-night-v2-20261127",
+    "commit": "042f20f6131f32fde3cacbe2343fddc69b086013"
+  }
+]

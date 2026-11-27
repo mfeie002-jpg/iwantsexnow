@@ -1,36 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { persistEnquiryAndNotify } from "@/lib/supabaseServer";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader("Cache-Control", "no-store");
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
-
-  const body = req.body || {};
-  const referenceCode = `IW-${Math.floor(100000 + Math.random() * 900000)}`;
-
-  const record = {
-    referenceCode,
-    providerName: String(body.providerName || "Sophia"),
-    duration: Number(body.duration || 60),
-    extras: Array.isArray(body.extras) ? body.extras : ["GFE"],
-    guaranteedTotalChf: Number(body.guaranteedTotalChf || 450),
-    requestedTime: String(body.requestedTime || "Heute, 20:30 Uhr"),
-    city: String(body.city || "Zürich / Zug"),
-    contact: String(body.contact || "Nicht angegeben"),
-    notes: String(body.notes || ""),
-  };
-
-  const delivery = await persistEnquiryAndNotify(record);
-
-  return res.status(200).json({
-    status: "ok",
-    referenceCode,
-    receivedAt: new Date().toISOString(),
-    delivery,
-    enquiry: {
-      ...record,
-      status: "transmitted_to_provider",
-    },
-  });
+  return res.status(503).json({ ok: false, code: "VERIFIED_ENQUIRY_DELIVERY_REQUIRED",
+    error: "Interne Anfragen sind derzeit nicht verfügbar. Eine bestätigte Zustellung an die zuständige Anbieterin ist noch nicht eingerichtet." });
 }

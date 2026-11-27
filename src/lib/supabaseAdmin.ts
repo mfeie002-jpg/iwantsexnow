@@ -85,15 +85,12 @@ export async function assertVerifiedAiOptIn(providerId: string): Promise<{ allow
   if (!providerId) return { allowed: false, reason: "Profil-ID fehlt." };
   if (isSupabaseConfigured()) {
     const check = await supaFetch<any[]>(
-      `managed_profile_states?profile_id=eq.${encodeURIComponent(providerId)}&select=claimed,ai_opt_in,hidden,removed_by_report`
+      `managed_profile_states?profile_id=eq.${encodeURIComponent(providerId)}&select=claimed,identity_verified,ai_opt_in,hidden,removed_by_report`
     );
     const row = check.data?.[0];
-    if (row?.claimed && row?.ai_opt_in && !row?.hidden && !row?.removed_by_report) return { allowed: true };
-  } else {
-    const states = readSafeJson<Record<string, any>>("managed-profile-states.json", {});
-    const st = states[providerId];
-    if (st?.claimed && st?.aiOptIn && !st?.hidden && !st?.paused) return { allowed: true };
+    if (row?.claimed && row?.identity_verified && row?.ai_opt_in && !row?.hidden && !row?.removed_by_report) return { allowed: true };
   }
+  // Legacy local flags do not establish verified identity; deny consent-sensitive AI by default.
   return {
     allowed: false,
     reason: "KI-Voice & Fantasy-Preview sind exklusiv bei verifizierten Direkt-Profilen mit aktiver Anbieter-Freigabe (Opt-In) verfügbar.",

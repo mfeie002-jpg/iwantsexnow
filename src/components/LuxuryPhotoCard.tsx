@@ -1,190 +1,52 @@
 import React from "react";
 import Link from "next/link";
+import { ArrowRight, Heart, MapPin, Scale } from "lucide-react";
+import { useCatalogue } from "@/components/night/CatalogueContext";
+import { ProfileImage } from "@/components/night/ProfileImage";
+import { NEUTRAL_PROFILE_IMAGE, profileImageSource } from "@/components/night/profile-image-model";
+import { cleanSwissPhone, getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate } from "@/lib/night-catalogue";
 
-const BAD_IMG_TOKENS = ["bg_blur", "example.com", "placeholder", "escort-portrait", ".svg"];
-
-export function getLocalAiPortrait(seed: string): string {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return `/images/ai/portraits/p${(h % 8) + 1}.webp`;
-}
-
-export function extractPhotoUrls(offer: any): string[] {
-  const raw = [
-    offer?.thumbnail,
-    offer?.photoUrl,
-    offer?.imageUrl,
-    ...(Array.isArray(offer?.gallery) ? offer.gallery : []),
-    ...(Array.isArray(offer?.galleryUrls) ? offer.galleryUrls : [])
-  ];
-  const out: string[] = [];
-  for (const item of raw) {
-    if (typeof item !== "string") continue;
-    let s = item.trim();
-    const qIdx = s.indexOf("?iwsn_clean=");
-    if (qIdx > 0) s = s.slice(0, qIdx);
-    if (!s) continue;
-    const low = s.toLowerCase();
-    if (BAD_IMG_TOKENS.some((b) => low.includes(b))) continue;
-    if (s.startsWith("/images/ai/") || s.startsWith("http://") || s.startsWith("https://")) {
-      if (!out.includes(s)) out.push(s);
-    }
-  }
-  return out;
-}
-
-export function toProxiedImg(url: string, seed: string): string {
-  if (!url) return getLocalAiPortrait(seed);
-  if (url.startsWith("/images/")) return url;
-  if (!url.startsWith("http")) return getLocalAiPortrait(seed);
-  return `/api/img?s=${encodeURIComponent(seed)}&u=${encodeURIComponent(url)}`;
-}
-
-export function getSeedFallback(seed: string): string {
-  return getLocalAiPortrait(seed);
-}
-
-export function cleanSwissDigits(rawPhone: string): string {
-  const s = String(rawPhone || "");
-  let d = "";
-  for (let i = 0; i < s.length; i++) {
-    const c = s.charCodeAt(i);
-    if (c >= 48 && c <= 57) d += s[i];
-  }
-  if (d.startsWith("0041")) d = "41" + d.slice(4);
-  else if (d.startsWith("0")) d = "41" + d.slice(1);
-  return d;
-}
+// Compatibility exports for older routes; every fallback is deliberately non-personal.
+export const extractPhotoUrls = (offer: any): string[] => getProfilePhotos(offer);
+export const cleanSwissDigits = cleanSwissPhone;
+export const getSeedFallback = (_seed: string): string => NEUTRAL_PROFILE_IMAGE;
+export const getLocalAiPortrait = getSeedFallback;
+export const toProxiedImg = (url: string, _seed = ""): string => profileImageSource(url) || NEUTRAL_PROFILE_IMAGE;
 
 export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: any; idx?: number; liveState?: any }) {
-  const pid = String(offer?.id || offer?.dedupClusterId || `ch-${idx}`);
-  const rawTitle = String(liveState?.displayName || offer?.displayName || offer?.rawName || "Begleiterin").trim();
-  const cleanTitle = rawTitle.split("|")[0].trim();
-  const name = cleanTitle.length > 30 ? cleanTitle.slice(0, 30).trim() + "…" : cleanTitle;
-
-  const city = String(liveState?.city || offer?.city || "Zürich").split("/")[0].trim() || "Zürich";
-  const canton = String(liveState?.canton || offer?.canton || "ZH").slice(0, 2).toUpperCase();
-  // Imported base prices and 30-minute values may be generated estimates.
-  // Show a duration-specific rate only if it was explicitly saved in managed state.
-  const saved60 = Number(liveState?.rate60Chf);
-  const saved30 = Number(liveState?.rate30Chf);
-  const rate60 = Number.isFinite(saved60) && saved60 > 0 ? saved60 : null;
-  const rate30 = Number.isFinite(saved30) && saved30 > 0 ? saved30 : null;
-
-  const photos = extractPhotoUrls(liveState?.thumbnail ? { ...offer, thumbnail: liveState.thumbnail } : offer);
-  const [photoAttempt, setPhotoAttempt] = React.useState(0);
-  React.useEffect(() => setPhotoAttempt(0), [pid, liveState?.thumbnail]);
-  const primarySrc = photoAttempt < photos.length ? toProxiedImg(photos[photoAttempt], pid) : null;
-
-  const digits = cleanSwissDigits(liveState?.phoneDisplay || offer?.rawPhone || "");
-  const expiryTime = Date.parse(String(liveState?.availableUntil || ""));
-  const isLiveConfirmed = Boolean(liveState?.availabilityConfirmed && Number.isFinite(expiryTime) && expiryTime > Date.now());
-  const portalName = String(offer?.sourcePortal || "CH-Index").replace("www.", "");
-  const sourceCount = Array.isArray(offer?.sources) ? Math.max(1, offer.sources.length) : 1;
-
-  const waHref =
-    digits.length >= 10
-      ? `https://wa.me/${digits}?text=${encodeURIComponent(`Hoi ${name}, ich habe dein Profil in ${city} auf iwantsexnow.ch gesehen. Hast du heute Zeit?`)}`
-      : `/profile/${encodeURIComponent(pid)}`;
-
-  return (
-    <article className="group relative flex flex-col rounded-2xl overflow-hidden bg-[#140D13] border border-white/10 hover:border-[#E2B887]/75 shadow-[0_14px_34px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1">
-      <Link href={`/profile/${encodeURIComponent(pid)}`} className="relative aspect-[3/4] w-full block overflow-hidden bg-[#1D121B] no-underline">
-        {primarySrc ? (
-          <img
-            key={primarySrc}
-            referrerPolicy="no-referrer"
-            src={primarySrc}
-            alt={`${name} – ${city}`}
-            loading={idx < 8 ? "eager" : "lazy"}
-            onError={() => setPhotoAttempt((attempt) => attempt + 1)}
-            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 contrast-[1.03] saturate-[1.04]"
-          />
-        ) : (
-          <div
-            role="img"
-            aria-label="Originalfoto derzeit nicht verfügbar"
-            className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(ellipse_at_30%_25%,#985266_0%,#52283B_38%,#261722_75%,#160E18_100%)]"
-          >
-            <div className="absolute inset-5 rounded-[35%_65%_51%_49%] border border-[#E2B887]/25 rotate-[-18deg]" />
-            <div className="relative max-w-[80%] px-4 py-3 border-y border-[#E2B887]/40 text-center text-xs sm:text-sm font-semibold tracking-wide text-[#FFF0E4]">
-              Originalfoto derzeit nicht verfügbar
-            </div>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D070C] via-[#0D070C]/20 to-black/20 pointer-events-none" />
-
-        {/* Schweizer Türschild Status oben links */}
-        <div className="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5">
-          {isLiveConfirmed ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-[#E2B887] to-[#C69660] text-[#0D070C] text-[10px] font-black uppercase tracking-wider shadow-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-900 animate-ping" />
-              FREI · 4H LIVE
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md border border-[#E2B887]/35 text-[#F5E6D3] text-[10px] font-bold uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              {canton} · Index
-            </span>
-          )}
-
-        </div>
-
-        {/* Foto-Zähler oben rechts */}
-        <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-white/15 text-white/90 text-[10px] font-semibold">
-          {primarySrc ? `📸 ${photos.length}` : "Foto fehlt"}
-        </div>
-
-        {/* Name, Stadt & 60m CHF unten im Bild */}
-        <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-2">
-          <div className="min-w-0">
-            <h3 className="text-[15px] font-bold text-white leading-tight truncate drop-shadow">{name}</h3>
-            <p className="text-[11px] text-[#E6D8DC] mt-0.5 truncate">
-              📍 {city} ({canton}) · <span className="text-[#E2B887]">{portalName}</span>
-            </p>
-          </div>
-          <div className="shrink-0 px-2.5 py-1 rounded-xl bg-[#0D070C]/90 border border-[#E2B887]/55 text-right">
-            <span className="block text-[9px] uppercase text-[#C7B4BA] leading-none">{rate60 ? "60 Min. gemeldet" : "Honorar"}</span>
-            <span className="text-xs font-extrabold text-[#E2B887]">{rate60 ? `CHF ${rate60}` : "auf Anfrage"}</span>
-          </div>
-        </div>
+  const catalogue = useCatalogue();
+  const id = getProfileId(offer);
+  if (!id) return null;
+  const state = liveState || catalogue.states[id] || {};
+  const name = getProfileName(offer, state);
+  const city = getProfileCity(offer, state);
+  const photos = getProfilePhotos(offer, state);
+  const rate = getProfileRate(state, 60);
+  const saved = catalogue.favorites.includes(id);
+  const compared = catalogue.compareIds.includes(id);
+  const comparisonFull = !compared && catalogue.compareIds.length >= 3;
+  const href = `/profile/${encodeURIComponent(id)}`;
+  return <article className="night-profile-card">
+    <div className="night-profile-media">
+      <Link href={href} aria-label={`Profil ansehen: ${name}`}>
+        <ProfileImage key={id} photos={photos} alt={`Profilfoto zu ${name}`} eager={idx < 4} />
       </Link>
-
-      {/* Point-of-Doubt Transparenzzeile + 1-Tap Kontakt */}
-      <div className="p-3 bg-[#140D13] flex flex-col gap-2">
-        <div className="flex items-center justify-between text-[11px] text-[#B9A5AD]">
-          <span>{rate30 ? `30 Min. gemeldet: CHF ${rate30}` : "30 Min.: nicht angegeben"}</span>
-          <span className="truncate">
-            {sourceCount > 1 ? `⚡ ${sourceCount} Portale gebündelt` : digits.length >= 10 ? "✓ +41 Direkt" : "Quellen-Dossier"}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-2 gap-1.5">
-          {digits.length >= 10 ? (
-            <a
-              href={waHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="py-2 px-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebe5d] text-[#05150B] font-extrabold text-xs text-center no-underline transition"
-            >
-              WhatsApp
-            </a>
-          ) : (
-            <Link
-              href={`/profile/${encodeURIComponent(pid)}`}
-              className="py-2 px-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-extrabold text-xs text-center no-underline transition"
-            >
-              Anfragen
-            </Link>
-          )}
-          <Link
-            href={`/profile/${encodeURIComponent(pid)}`}
-            className="py-2 px-2.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-white font-semibold text-xs text-center no-underline transition"
-          >
-            Dossier →
-          </Link>
-        </div>
+      <button type="button" className={`night-icon-button night-save ${saved ? "active" : ""}`} aria-pressed={saved} aria-label={saved ? `${name} aus der Merkliste entfernen` : `${name} merken`} onClick={() => catalogue.toggleFavorite(id)}>
+        <Heart size={19} fill={saved ? "currentColor" : "none"} aria-hidden="true" />
+      </button>
+      <span className="night-profile-source">{String(offer.sourcePortal || "Quellenindex")}</span>
+    </div>
+    <div className="night-profile-meta">
+      <p className="night-eyebrow"><MapPin size={12} aria-hidden="true" /> {city}</p>
+      <h3><Link href={href}>{name}</Link></h3>
+      <p className="night-note">{rate !== null ? `CHF ${rate.toLocaleString("de-CH")} / 60 Min. · bestätigte Angabe` : "Honorar nicht bestätigt"}</p>
+      <div className="night-profile-bottom">
+        <button type="button" className={`night-text-button ${compared ? "active" : ""}`} aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? `comparison-limit-${id}` : undefined} onClick={() => catalogue.toggleCompare(id)}>
+          <Scale size={15} aria-hidden="true" /> {compared ? "Im Vergleich" : "Vergleichen"}
+        </button>
+        <Link href={href} className="night-text-button">Details <ArrowRight size={15} aria-hidden="true" /></Link>
       </div>
-    </article>
-  );
+      {comparisonFull && <p className="night-comparison-limit" id={`comparison-limit-${id}`}><span>3/3 ausgewählt</span><Link href="/compare-escorts">Auswahl ändern <ArrowRight size={13} aria-hidden="true" /></Link></p>}
+    </div>
+  </article>;
 }

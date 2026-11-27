@@ -1,148 +1,29 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { SEO } from "@/components/SEO";
-import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { PageIntro } from "@/components/PageIntro";
-import { ShieldAlert, CheckCircle2, ArrowLeft } from "lucide-react";
-
-export default function ReportAndOptOutPage() {
+import SEO from "@/components/SEO";
+import { submitProviderReport, WorkspaceError } from "@/lib/marketplace/provider-workspace-client";
+const reasons = ["Falsche Angabe", "Eigenes Bild oder Profil", "Entfernung beantragen", "Unpassender Inhalt", "Anderer Hinweis"];
+const inputStyle = { width: "100%", padding: "14px 16px", borderRadius: 10, border: "1px solid var(--night-border, #55404e)", background: "var(--night-panel, #20171f)", color: "inherit", minHeight: 48 };
+export default function ReportPage() {
   const router = useRouter();
-  const [profileId, setProfileId] = useState("");
-  const [reason, setReason] = useState("Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden");
-  const [contact, setContact] = useState("");
-  const [details, setDetails] = useState("");
-  const [caseId, setCaseId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const qId = String(router.query.id || router.query.profileId || router.query.name || "").trim();
-    if (qId) setProfileId(qId);
-  }, [router.query]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("/api/vault/metrics", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "submit_takedown",
-          profileId: profileId.trim(),
-          reason,
-          contact: contact.trim(),
-          details: details.trim(),
-        }),
-      });
-      const data = await res.json();
-      setCaseId(data?.caseId || "CASE-" + Date.now().toString().slice(-6));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-papier text-tinte pb-24">
-      <SEO
-        title="Profil melden oder Eintrag sofort entfernen (Opt-Out ohne Login) | iWantSexNow.ch"
-        description="Unkomplizierte Sofort-Ausblendung und Sperrliste (Do-Not-Import) nach Schweizer Datenschutzgesetz (revDSG)."
-      />
-      <LuxuryHeader />
-      <PageIntro
-        tone="himmel"
-        note="Dein Recht, ohne Umwege"
-        title="Eintrag entfernen oder Korrektur melden"
-        lead="Sofort-Ausblendung ohne Login, nach Schweizer Datenschutzgesetz (revDSG)."
-        art="verified"
-      >
-        <Link href="/" className="emerald-button"><ArrowLeft size={14} /> Zurück zur Übersicht</Link>
-      </PageIntro>
-
-      <main className="-mt-6 relative z-10 max-w-2xl mx-auto px-4 sm:px-6 pb-10 space-y-6">
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-tinte shadow-[0_5px_0_rgba(30,34,71,0.9)] space-y-6">
-          <div>
-            <span className="text-[13px] text-glow-700 font-bold flex items-center gap-1.5">
-              <ShieldAlert size={13} /> Sofort-Ausblendung ohne Login-Pflicht (CH-DSG)
-            </span>
-            <p className="text-[13px] text-gray-600 mt-1">
-              Sobald du dieses Formular absendest, wird die angegebene Profil-ID sofort im öffentlichen Verzeichnis ausgeblendet und auf die interne Do-Not-Import-Sperrliste gesetzt.
-            </p>
-          </div>
-
-          {caseId ? (
-            <div className="p-5 rounded-xl bg-mint-100/60 border border-mint-500/40 space-y-2">
-              <div className="flex items-center gap-2 text-mint-700 font-bold text-sm">
-                <CheckCircle2 size={18} />
-                <span>Eintrag wurde sofort ausgeblendet (Fall-Nr.: {caseId})</span>
-              </div>
-              <p className="text-[13px] text-gray-700">
-                Das Profil <strong>{profileId}</strong> ist ab sofort öffentlich unsichtbar und für künftige Index-Läufe gesperrt.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
-                  Betroffene Profil-ID, Name oder Telefonnummer *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={profileId}
-                  onChange={(e) => setProfileId(e.target.value)}
-                  placeholder="z.B. ch-a720e283e85f oder +41 79 ..."
-                  className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Grund der Meldung</label>
-                <select
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte"
-                >
-                  <option value="Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden">
-                    Opt-Out: Ich möchte meinen Eintrag dauerhaft ausblenden
-                  </option>
-                  <option value="Urheberrecht / Bildberechtigung">Urheberrecht / Unautorisierte Bildnutzung</option>
-                  <option value="Veraltete Preis- oder Ortsangabe">Veraltete Preis- oder Ortsangabe</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Rückfrage-Kontakt (Optional)</label>
-                <input
-                  type="text"
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  placeholder="E-Mail oder +41 Nummer für Bestätigung"
-                  className="w-full rounded-xl bg-papier border border-tinte/25 px-4 py-2.5 text-sm text-tinte"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Zusätzliche Hinweise (Optional)</label>
-                <textarea
-                  rows={3}
-                  value={details}
-                  onChange={(e) => setDetails(e.target.value)}
-                  className="w-full rounded-xl bg-papier border border-tinte/25 p-3.5 text-sm text-tinte"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3.5 rounded-xl bg-glow-600 hover:bg-glow-500 text-white font-extrabold text-[13px] cursor-pointer"
-              >
-                {loading ? "Blende Eintrag sofort aus..." : "Eintrag jetzt sofort ausblenden & sperren →"}
-              </button>
-            </form>
-          )}
-        </div>
-      </main>
-    </div>
-  );
+  const [profileId, setProfileId] = useState(""); const [sourceUrl, setSourceUrl] = useState("");
+  const [reason, setReason] = useState(reasons[0]); const [details, setDetails] = useState(""); const [contact, setContact] = useState("");
+  const [busy, setBusy] = useState(false); const [error, setError] = useState(""); const [caseId, setCaseId] = useState("");
+  useEffect(() => { if (!router.isReady) return; const raw = router.query.id || router.query.profileId; if (typeof raw === "string") setProfileId(raw.slice(0,150)); const url = router.query.sourceUrl; if (typeof url === "string") setSourceUrl(url.slice(0,500)); }, [router.isReady, router.query.id, router.query.profileId, router.query.sourceUrl]);
+  async function submit(event: FormEvent) {
+    event.preventDefault(); setBusy(true); setError(""); setCaseId("");
+    try { setCaseId(await submitProviderReport({ profileId, sourceUrl, reason: reason + (details.trim() ? ": " + details.trim() : ""), contact })); }
+    catch (cause) { setError(cause instanceof WorkspaceError && cause.status === 400 ? "Bitte gib das betroffene Profil oder eine Quellenadresse an." : "Deine Meldung wurde nicht als gespeichert bestätigt. Der vertrauliche Meldeweg ist möglicherweise vorübergehend nicht verfügbar. Bitte versuche es erneut oder nutze die Kontaktseite."); }
+    finally { setBusy(false); }
+  }
+  return <main id="main" className="night-page"><SEO title="Vertrauliche Meldung | iwantsexnow.ch" description="Fehler, Bildrechte oder Entfernung eines Eintrags nachvollziehbar melden." noindex /><div className="night-container">
+    <section className="night-section"><p className="night-kicker">Korrektur · Bildrechte · Kontrolle</p><h1 className="night-title">Etwas stimmt nicht?<br />Sag uns, wo.</h1><p className="night-lead">Wähle einen Grund und die betroffene Stelle. Teile nur die Informationen, die zur Prüfung nötig sind.</p></section>
+    <section className="night-section night-grid night-grid-2" style={{ alignItems: "start" }}><div className="night-panel"><h2>Ein klarer Meldeweg.</h2><p className="night-muted">Eine Meldung wird vertraulich zur Prüfung gespeichert, sofern der Dienst verfügbar ist. Der Eingang bestätigt weder eine Entfernung noch die Inhaberschaft eines Profils.</p><p className="night-muted">Keine Ausweiskopie, Bankangaben oder besonders privaten Zusatzinformationen in dieses Formular eingeben.</p><Link className="night-button-secondary" href="/contact">Kontaktinformationen</Link><Link className="night-button-secondary" href="/safety">Umgang mit Vertrauen</Link></div>
+      <form className="night-panel night-form" onSubmit={submit} aria-label="Vertrauliche Meldung einreichen"><fieldset disabled={busy || Boolean(caseId)} style={{ border: 0, padding: 0 }}><legend><h2>Vertrauliche Meldung einreichen</h2></legend><div role="group" aria-label="Meldegrund" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{reasons.map(value => <button key={value} className={reason === value ? "night-button" : "night-button-secondary"} type="button" aria-pressed={reason === value} onClick={() => setReason(value)}>{value}</button>)}</div>
+        <label>Betroffene Profil-ID<input style={inputStyle} value={profileId} maxLength={150} onChange={event => setProfileId(event.target.value)} /></label><label>Oder Link zur betroffenen Seite<input style={inputStyle} type="url" value={sourceUrl} maxLength={500} placeholder="https://…" onChange={event => setSourceUrl(event.target.value)} /></label>
+        <label>Kurze Erläuterung, falls nötig<textarea style={inputStyle} value={details} maxLength={400} rows={5} onChange={event => setDetails(event.target.value)} /></label><label>Rückkontakt, freiwillig<input style={inputStyle} value={contact} maxLength={120} autoComplete="off" onChange={event => setContact(event.target.value)} /></label>
+        <p className="night-muted">Die Meldung wird erst mit dem folgenden Button übermittelt. Kein Konto nötig.</p><button className="night-button" type="submit">{busy ? "Meldung wird übermittelt …" : "Vertrauliche Meldung einreichen"}</button></fieldset>
+        {error && <p className="night-help" role="alert">{error}</p>}{caseId && <div className="night-help" role="status"><h3>Meldung gespeichert.</h3><p>Fallnummer: <span style={{ overflowWrap: "anywhere" }}>{caseId}</span></p><p>Der Eingang ist bestätigt. Eine Entfernung oder andere Massnahme wurde damit noch nicht bestätigt.</p></div>}
+      </form></section></div></main>;
 }
