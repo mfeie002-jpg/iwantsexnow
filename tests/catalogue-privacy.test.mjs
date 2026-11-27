@@ -22,6 +22,72 @@ test('database failure rejects the public snapshot rather than publishing stale 
  await assert.rejects(server.getCatalogueSnapshot(),/Catalogue status unavailable/);
 });
 
+test('a managed correction on an excluded test record never reaches the visitor snapshot', async () => {
+ const server = moduleAt('src/lib/night-catalogue-server.ts', {
+   '@/data/harvested-offers.json':[{id:'sample',sourceUrl:'https://example.com/sample'}, {id:'real'}],
+   '@/data/swiss-establishments-vault.json':[],'./night-catalogue':catalogue,
+   '@/lib/supabaseAdmin':{isSupabaseConfigured:()=>false,readSafeJson:(name,fallback)=>
+     name==='managed-profile-states.json'?{sample:{displayName:'fixture correction'}}:fallback}
+ });
+ const snapshot = await server.getCatalogueSnapshot();
+ assert.deepEqual(Array.from(snapshot.offers, o=>o.id),['real']);
+ assert.equal('sample' in snapshot.states,false);
+});
+
+test('the visitor snapshot honours withdrawals and reads every page of managed confirmations', async () => {
+ const time = Date.now();
+ const iso = minutes => new Date(time + minutes * 60_000).toISOString();
+ const ids = ['first','future','hidden','late','stale','withdrawn'];
+ const source = ids.map(id => ({id,rawName:id}));
+ const local = {hidden:{paused:true},stale:{priceConfirmed:true,priceConfirmedAt:iso(-60),rate60Chf:125,
+   availabilityConfirmed:true,availableUntil:iso(40)}};
+ const initial = {availability_confirmed:true,availability_confirmed_at:iso(-20),available_until:iso(40),
+   price_confirmed:true,price_confirmed_at:iso(-60),rate60_chf:275};
+ const pages = [
+   [{...initial,profile_id:'first'}, {...initial,profile_id:'future',price_confirmed_at:iso(5),availability_confirmed_at:iso(5)}],
+   [{...initial,profile_id:'hidden'}, {...initial,profile_id:'late',availability_withdrawn_at:iso(-30)}],
+   [{...initial,profile_id:'withdrawn',availability_withdrawn_at:iso(-2)}], []
+ ];
+ const requests = [];
+ const server = moduleAt('src/lib/night-catalogue-server.ts', {
+   '@/data/harvested-offers.json':source,'@/data/swiss-establishments-vault.json':[],'./night-catalogue':catalogue,
+   '@/lib/supabaseAdmin':{isSupabaseConfigured:()=>true,readSafeJson:(name,fallback)=>name==='managed-profile-states.json'?local:fallback,
+     supaFetch: async query => {requests.push(query);return {ok:true,data:pages.shift()};}}
+ });
+ const result = await server.getCatalogueSnapshot();
+ assert.equal(requests.length,4);
+ assert.match(requests[1],/profile_id=gt\.future/);
+ assert.match(requests[3],/profile_id=gt\.withdrawn/);
+ assert.equal(result.states.first.rate60Chf,275);
+ assert.equal(result.states.first.availabilityConfirmed,true);
+ assert.equal(result.states.future?.rate60Chf,undefined);
+ assert.equal(result.states.future?.availabilityConfirmed,undefined);
+ assert.equal(result.states.late.availabilityConfirmed,true);
+ assert.equal(result.states.withdrawn.availabilityConfirmed,undefined);
+ assert.equal(result.states.withdrawn.rate60Chf,275);
+ assert.equal(result.states.stale?.rate60Chf,undefined);
+ assert.equal(result.states.stale?.availabilityConfirmed,undefined);
+ assert.equal(result.offers.some(o=>o.id==='stale'),true);
+ assert.equal(result.offers.some(o=>o.id==='hidden'),false);
+});
+
+test('the visitor catalogue validates confirmation dates, withdrawal ordering and the four-hour window', () => {
+ const now = Date.parse('2026-01-10T12:00:00Z');
+ const iso = minutes => new Date(now + minutes * 60_000).toISOString();
+ const active = {availabilityConfirmed:true,availabilityConfirmedAt:iso(-60),availableUntil:iso(180)};
+ assert.equal(catalogue.isConfirmedAvailable(active,now),true);
+ for (const change of [{availableUntil:iso(181)},{availableUntil:iso(0)},{availabilityConfirmedAt:iso(1)},
+   {availabilityWithdrawnAt:iso(-60)},{availabilityWithdrawnAt:'invalid'},{removedByReport:true}]) {
+   assert.equal(catalogue.isConfirmedAvailable({...active,...change},now),false);
+ }
+ assert.equal(catalogue.isConfirmedAvailable({...active,availabilityWithdrawnAt:iso(-61)},now),true);
+ assert.equal(catalogue.isConfirmedAvailable({availabilityConfirmed:true,availableUntil:iso(60)},now),true);
+ assert.equal(catalogue.isConfirmedAvailable({availabilityConfirmed:true,availableUntil:iso(60),availabilityWithdrawnAt:iso(-5)},now),false);
+ assert.equal(catalogue.getProfileRate({priceConfirmed:true,priceConfirmedAt:iso(1),rate60Chf:175},60,now),null);
+ assert.equal(catalogue.getProfileRate({rateConfirmed:true,rateUpdatedAt:iso(-1),rate60Chf:'175.50'},60,now),175.5);
+ assert.equal(catalogue.getProfileRate({priceConfirmed:true,priceConfirmedAt:iso(-1),rate60Chf:true},60,now),null);
+});
+
 test('club projection removes blocked and hidden studios before serialization and exposes only public fields',async()=>{
  const clubs=[{id:'club-visible',name:'Public studio',ownerToken:'PRIVATE-TOKEN'}, {id:'club-hidden',name:'PRIVATE-HIDDEN-STUDIO'}, {id:'club-blocked',name:'PRIVATE-BLOCKED-STUDIO'}];
  const server=moduleAt('src/lib/night-catalogue-server.ts',{'@/data/harvested-offers.json':[],'@/data/swiss-establishments-vault.json':clubs,'./night-catalogue':catalogue,'@/lib/supabaseAdmin':{isSupabaseConfigured:()=>false,readSafeJson:(n,f)=>n==='managed-profile-states.json'?{'club-hidden':{paused:true}}:n==='do-not-import.json'?['club-blocked']:f}});

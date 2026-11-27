@@ -2,27 +2,47 @@ import type { GetServerSideProps } from 'next';
 import { readSafeJson, isSupabaseConfigured, supaFetch } from '@/lib/supabaseAdmin';
 import rawOffers from '@/data/harvested-offers.json';
 import establishments from '@/data/swiss-establishments-vault.json';
-import {getProfilePhotos,getProfileId,isVisibleProfile} from './night-catalogue';
-const sourceById=new Map((rawOffers as Record<string,any>[]).map(o=>[getProfileId(o),o]));
-const establishmentIds=new Set((establishments as Record<string,any>[]).map(o=>o.id));
+import {getProfilePhotos,getProfileId,getProfileRate,isConfirmedAvailable,isVisibleProfile} from './night-catalogue';
+const sourceById = new Map((rawOffers as Record<string,any>[])
+  .filter(offer => isVisibleProfile(offer)).map(offer => [getProfileId(offer), offer]));
+const establishmentIds = new Set((establishments as Record<string,any>[])
+  .filter(offer => isVisibleProfile(offer)).map(offer => offer.id));
 
 export async function getCatalogueSnapshot() {
   const raw = readSafeJson<Record<string, any>>('managed-profile-states.json', {});
-  if (isSupabaseConfigured()) {
-    const result = await supaFetch<any[]>('managed_profile_states?select=*');
-    if (!result.ok || !Array.isArray(result.data)) throw new Error('Catalogue status unavailable');
-    for (const row of result.data) {
-      raw[row.profile_id] = {...raw[row.profile_id], displayName:row.display_name, city:row.city, canton:row.canton,
-        hidden:Boolean(row.hidden || row.paused || row.removed_by_report), paused:Boolean(row.paused),
-        rate30Chf:row.rate30_chf, rate60Chf:row.rate60_chf,
-        priceConfirmed:row.price_confirmed === true, rateConfirmed:row.rate_confirmed === true,
-        priceConfirmedAt:row.price_confirmed_at || null, rateUpdatedAt:row.rate_updated_at || null,
-        availabilityConfirmed:row.availability_confirmed === true, availableUntil:row.available_until || null};
+  const fromDatabase = isSupabaseConfigured();
+  const managedIds = new Set<string>();
+  if (fromDatabase) {
+    let cursor = '';
+    while (true) {
+      const after = cursor ? '&profile_id=gt.' + encodeURIComponent(cursor) : '';
+      const result = await supaFetch<any[]>('managed_profile_states?select=*&order=profile_id.asc&limit=500' + after);
+      if (!result.ok || !Array.isArray(result.data)) throw new Error('Catalogue status unavailable');
+      if (!result.data.length) break;
+      for (const row of result.data) {
+        const id = row?.profile_id;
+        if (typeof id !== 'string' || !id || managedIds.has(id)) throw new Error('Catalogue status unavailable');
+        managedIds.add(id);
+        cursor = id;
+        if (!sourceById.has(id) && !establishmentIds.has(id)) continue;
+        const local = raw[id] || {};
+        raw[id] = {
+          ...local, displayName:row.display_name, city:row.city, canton:row.canton,
+          hidden:Boolean(local.hidden || local.paused || local.removedByReport || row.hidden || row.paused || row.removed_by_report),
+          paused:Boolean(row.paused),
+          rate30Chf:row.rate30_chf, rate60Chf:row.rate60_chf,
+          priceConfirmed:row.price_confirmed === true, rateConfirmed:row.rate_confirmed === true,
+          priceConfirmedAt:row.price_confirmed_at || null, rateUpdatedAt:row.rate_updated_at || null,
+          availabilityConfirmed:row.availability_confirmed === true, availableUntil:row.available_until || null,
+          availabilityConfirmedAt:row.availability_confirmed_at, availabilityWithdrawnAt:row.availability_withdrawn_at
+        };
+      }
     }
   }
   const blocked = readSafeJson<any[]>('do-not-import.json', []);
   const blockedIds = blocked.map(b=> typeof b==='string'?b:b?.profileId).filter((id):id is string=>typeof id==='string');
   const states: Record<string, any> = {};
+  const now = Date.now();
   for (const [id, st] of Object.entries(raw)) {
     if(!sourceById.has(id)&&!establishmentIds.has(id))continue;
     if(st.hidden||st.paused||st.removedByReport||blockedIds.includes(id)){states[id]={hidden:true};continue;}
@@ -30,8 +50,18 @@ export async function getCatalogueSnapshot() {
     const source=sourceById.get(id)||{},state:Record<string,any>={};
     for(const key of ['displayName','city','canton'])if(st[key]&&st[key]!== (key==='displayName'?source.displayName||source.rawName:source[key]))state[key]=st[key];
     if(st.thumbnail&&st.thumbnail!==source.thumbnail)state.thumbnail=st.thumbnail;
-    if(st.priceConfirmed===true||st.rateConfirmed===true)Object.assign(state,{priceConfirmed:st.priceConfirmed===true,rateConfirmed:st.rateConfirmed===true,priceConfirmedAt:st.priceConfirmedAt||null,rateUpdatedAt:st.rateUpdatedAt||null,rate30Chf:st.rate30Chf||null,rate60Chf:st.rate60Chf||null});
-    if(st.availabilityConfirmed===true&&Date.parse(st.availableUntil)>Date.now())Object.assign(state,{availabilityConfirmed:true,availableUntil:st.availableUntil});
+    if (!fromDatabase || managedIds.has(id)) {
+      const rate30Chf = getProfileRate(st, 30, now);
+      const rate60Chf = getProfileRate(st, 60, now);
+      if (rate30Chf !== null || rate60Chf !== null) {
+        Object.assign(state, {priceConfirmed:st.priceConfirmed===true,rateConfirmed:st.rateConfirmed===true,
+          priceConfirmedAt:st.priceConfirmedAt||null,rateUpdatedAt:st.rateUpdatedAt||null,rate30Chf,rate60Chf});
+      }
+      if (isConfirmedAvailable(st, now)) {
+        Object.assign(state, {availabilityConfirmed:true, availableUntil:st.availableUntil});
+        if (st.availabilityConfirmedAt != null) state.availabilityConfirmedAt = st.availabilityConfirmedAt;
+      }
+    }
     if(Object.keys(state).length)states[id]=state;
   }
   // Keep raw import metadata and the full galleries out of the shared browser bundle.

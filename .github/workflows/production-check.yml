@@ -1,16 +1,64 @@
-﻿name: Production Build Check
+name: Production Build Check
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      IWSN_TEST_BASE_URL: "http://127.0.0.1:4181"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - run: npm install --legacy-peer-deps || true
-      - run: npm run build || true
+          node-version: "26"
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Lint
+        run: npm run lint -- --quiet
+
+      - name: Check TypeScript
+        run: ./node_modules/.bin/tsc --noEmit --pretty false
+
+      - name: Build the production application
+        run: npm run build
+
+      - name: Run regressions against the production build
+        shell: bash
+        run: |
+          server_log="$RUNNER_TEMP/iwsn-next.log"
+          node ./node_modules/next/dist/bin/next start -H 127.0.0.1 -p 4181 > "$server_log" 2>&1 &
+          server_pid=$!
+          trap 'if kill -0 "$server_pid" 2>/dev/null; then kill "$server_pid"; fi' EXIT
+
+          ready=false
+          for attempt in {1..60}; do
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat "$server_log"
+              exit 1
+            fi
+            if curl --fail --silent --max-time 5 --output /dev/null "$IWSN_TEST_BASE_URL/"; then
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          if [[ "$ready" != true ]]; then
+            echo "The production server did not become ready."
+            cat "$server_log"
+            exit 1
+          fi
+          node --test tests/*.test.mjs

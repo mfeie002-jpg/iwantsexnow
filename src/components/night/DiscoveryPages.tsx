@@ -6,9 +6,11 @@ import {SEO} from '@/components/SEO';
 import LuxuryPhotoCard from '@/components/LuxuryPhotoCard';
 import {useCatalogue} from './CatalogueContext';
 import {TouchSearch} from './NightShell';
+import {useAvailabilityRefresh} from './use-availability-refresh';
+import {catalogueBudgetChoices} from '@/lib/night-guide-model';
 import type {InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {MAX_SAVED_SEARCHES,parseSavedSearches,removeSavedSearch,saveSearch,SAVED_SEARCH_KEY,SavedSearch} from './saved-searches';
-import {brandAsset,CANTONS,CATEGORIES,REGIONS,CatalogueFilters,filterOffers,filtersFromQuery,getProfileId,searchHref,Offer} from '@/lib/night-catalogue';
+import {brandAsset,CANTONS,CATEGORIES,CATALOGUE_SERVICES,REGIONS,CatalogueFilters,discoveryFiltersFromRoute,filterOffers,getProfileId,searchHref,Offer} from '@/lib/night-catalogue';
 
 export function RegionCards(){return <div className="night-region-grid">{REGIONS.map(r=><Link className="night-region-card" key={r.canton} href={r.href}><img src={brandAsset(r.image)} alt={`Illustration: ${r.name} am Abend`} loading="lazy"/><span><MapPin size={16}/>{r.name}</span></Link>)}</div>;}
 export function ProfileGrid({offers,limit=24,density='detail'}:{offers:Offer[];limit?:number;density?:'detail'|'compact'}){
@@ -30,16 +32,6 @@ export const serviceConfigs:Record<string,{name:string;category?:string;service?
  'trans-escort':{name:'Trans Escort',category:'trans',image:'category-trans.webp'},
  'paare-und-bisex':{name:'Begleitung für Paare',service:'couples',image:'category-clubs.webp'},
 };
-export function serviceMatches(o:Offer,service?:string){
- if(!service)return true;
- if(Array.isArray(o.services))return o.services.includes(service);
- const terms=[o.rawName,o.bio,...(Array.isArray(o.includedTags)?o.includedTags:[])].filter(Boolean).join(' ');
- if(service==='outcall')return o.outcall===true;
- if(service==='gfe')return /\bgfe\b|girlfriend/i.test(terms);
- if(service==='dinner')return /dinner|abendbegleitung/i.test(terms);
- if(service==='couples')return /paare|couples|bisex/i.test(terms);
- return false;
-}
 export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageData?:InitialPageData}){
  const router=useRouter();const {visibleOffers,states,blockedIds,loading,error,registerPage}=useCatalogue();
  const [density,setDensity]=useState<'detail'|'compact'>('detail');
@@ -48,34 +40,57 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
  const [nextOffset,setNextOffset]=useState<number|null>(pageData?.nextOffset??null);
  const [totalCount,setTotalCount]=useState(pageData?.total??0);
  const [loadingMore,setLoadingMore]=useState(false),[moreError,setMoreError]=useState('');
+ const [availabilityCheck,setAvailabilityCheck]=useState<'ready'|'loading'|'failed'>('ready');
+ const pendingCheck=useRef<string|null>(null);
  const routeVersion=useRef(0);
  useEffect(()=>{
    routeVersion.current+=1;
    setNextOffset(pageData?.nextOffset??null);
    setTotalCount(pageData?.total??0);
    setLoadingMore(false);setMoreError('');
- },[router.asPath,pageData?.total,pageData?.nextOffset]);
+   setAvailabilityCheck('ready');pendingCheck.current=null;
+ },[router.asPath,pageData]);
  useEffect(()=>{setFiltersOpen(window.matchMedia('(min-width: 761px)').matches);},[]);
  useEffect(()=>{
   const read=()=>{try{setSavedSearches(parseSavedSearches(localStorage.getItem(SAVED_SEARCH_KEY)));}catch{setStorageMessage('Dein Browser erlaubt hier keinen lokalen Speicher. Die Suche funktioniert weiterhin.');}};
   const sync=(event:StorageEvent)=>{if(event.key===SAVED_SEARCH_KEY||event.key===null)read();};
   read();window.addEventListener('storage',sync);return()=>window.removeEventListener('storage',sync);
  },[]);
- const queryFilters=filtersFromQuery(router.query);
- const filters:CatalogueFilters={...queryFilters,...(config?.canton?{canton:config.canton}:{}),...(config?.category?{category:config.category}:{}),...(config?.q?{q:config.q}:{})};
- const results=useMemo(()=>filterOffers(visibleOffers,filters,states,blockedIds).filter(o=>serviceMatches(o,config?.service)),[visibleOffers,states,blockedIds,JSON.stringify(filters),config?.service]);
+ const filters=pageData?.filters ?? discoveryFiltersFromRoute(router.query,config ?? {},router.asPath);
+ const refreshAvailability=async()=>{
+   const href=router.asPath;
+   if(pendingCheck.current===href)return;
+   pendingCheck.current=href;
+   routeVersion.current+=1;
+   setAvailabilityCheck('loading');
+   try{
+     const updated=await router.replace(href,undefined,{scroll:false});
+     if(pendingCheck.current===href)setAvailabilityCheck(updated?'ready':'failed');
+   }catch{
+     if(pendingCheck.current===href)setAvailabilityCheck('failed');
+   }finally{
+     if(pendingCheck.current===href)pendingCheck.current=null;
+   }
+ };
+ useAvailabilityRefresh(router.isReady&&!!pageData&&!!filters.available&&!filters.invalid,
+   router.asPath,pageData?.nextAvailabilityExpiry,refreshAvailability);
+ const confirming=!!filters.available&&availabilityCheck!=='ready';
+ const budget=catalogueBudgetChoices(filters);
+ const results=useMemo(()=>filterOffers(visibleOffers,filters,states,blockedIds),[visibleOffers,states,blockedIds,JSON.stringify(filters)]);
  const change=(next:Partial<CatalogueFilters>)=>router.push(searchHref({...filters,...next,invalid:false}));
  const activeFilters:{id:string;label:string;reset:Partial<CatalogueFilters>}[]=[];
  if(filters.canton&&filters.canton!=='ALL')activeFilters.push({id:'canton',label:REGIONS.find(r=>r.canton===filters.canton)?.name||filters.canton,reset:{canton:'ALL'}});
  if(filters.category&&filters.category!=='all')activeFilters.push({id:'category',label:CATEGORIES.find(c=>c.id===filters.category)?.label||filters.category,reset:{category:'all'}});
+ if(filters.service)activeFilters.push({id:'service',label:CATALOGUE_SERVICES[filters.service],reset:{service:''}});
+ if(filters.under60)activeFilters.push({id:'under60',label:budget.label,reset:{under60:0}});
  if(filters.max)activeFilters.push({id:'max',label:`Bis CHF ${filters.max} / 60 Min.`,reset:{max:0}});
  if(filters.price==='missing')activeFilters.push({id:'price',label:'Preis auf Anfrage',reset:{price:''}});
  if(filters.available)activeFilters.push({id:'available',label:'Bestätigte Verfügbarkeit',reset:{available:false}});
  if(filters.wa)activeFilters.push({id:'wa',label:'Schweizer Kontaktnummer',reset:{wa:false}});
  if(filters.q)activeFilters.push({id:'q',label:`Suche: ${filters.q}`,reset:{q:''}});
  const saveCurrent=()=>{
-  const href=config?.service?router.asPath:searchHref(filters);
-  const label=[...(config?.service?[config.title]:[]),...activeFilters.map(filter=>filter.label),filters.sort==='region'?'Nach Ort':filters.sort==='price'?'Preis aufsteigend':''].filter(Boolean).join(' · ')||'Ganze Schweiz · Alle Bereiche';
+  const href=searchHref(filters);
+  const label=[...activeFilters.map(filter=>filter.label),filters.sort==='region'?'Nach Ort':filters.sort==='price'?'Preis aufsteigend':''].filter(Boolean).join(' · ')||'Ganze Schweiz · Alle Bereiche';
   try{const result=saveSearch(localStorage,{href,label});setSavedSearches(result.entries);setStorageMessage({saved:'Auswahl auf diesem Gerät gespeichert.',exists:'Diese Auswahl ist bereits auf diesem Gerät gespeichert.',full:'Fünf Suchen sind gespeichert. Entferne zuerst eine Auswahl.',invalid:'Diese Auswahl konnte nicht gespeichert werden. Setze ungültige Filter zuerst zurück.'}[result.outcome]);}catch{setStorageMessage('Speichern nicht möglich: Dein Browser hat den lokalen Speicher abgelehnt. Es wurde nichts als gespeichert bestätigt.');}
  };
  const removeSaved=(href:string)=>{try{setSavedSearches(removeSavedSearch(localStorage,href));setStorageMessage('Gespeicherte Auswahl von diesem Gerät entfernt.');}catch{setStorageMessage('Entfernen nicht möglich: Dein Browser hat den lokalen Speicher abgelehnt.');}};
@@ -87,7 +102,6 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    const params=new URLSearchParams(searchHref(filters).split('?')[1]||'');
    params.set('offset',String(requestedOffset));
    params.set('limit',String(pageData.limit));
-   if(config?.service)params.set('service',config.service);
    try{
      const response=await fetch('/api/catalogue/page?'+params.toString(),{cache:'no-store'});
      if(!response.ok)throw new Error('HTTP '+response.status);
@@ -106,7 +120,7 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    }
  };
  const title=config?.title||'Deine Auswahl. Dein Moment.';
- const resultCount=loading&&!results.length?'Einträge werden geladen …':`${(pageData?totalCount:results.length).toLocaleString('de-CH')} Einträge`;
+ const resultCount=confirming?'Trefferzahl offen':loading&&!results.length?'Einträge werden geladen …':`${(pageData?totalCount:results.length).toLocaleString('de-CH')} Einträge`;
  return <main id="main" className="night-page night-discovery-page"><SEO title={`${title} | iwantsexnow.ch`} description={config?.description||'Schweizer Profile nach Region und Bereich entdecken. Quellen und bestätigte Preisangaben transparent vergleichen.'}/>
  {config?<section className="night-region-hero"><img src={brandAsset(config.image||'hero-tram.webp')} alt="Illustratives regionales Abendmotiv"/><div className="night-container night-section"><div className="night-breadcrumb"><Link href="/">Start</Link><span>/</span><Link href="/search">Entdecken</Link><span>/ {config.canton}</span></div><p className="night-kicker">Dein regionaler Überblick</p><h1>{title}</h1><p className="night-lead">{config.description}</p><span className="night-note">Regionale Auswahl im Kanton {config.canton} · Titelbild: KI-Illustration</span></div></section>:<div className="night-container night-page-intro"><p className="night-kicker">Entdecken · Schweiz</p><h1>{title}</h1><p>Wähle, was dir wichtig ist. Der nächste Schritt gehört dir.</p></div>}
  <section className="night-container night-section night-discovery-content"><TouchSearch filters={filters}/>
@@ -115,16 +129,32 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
  {storageMessage&&<p className="night-storage-message" role="status"><Info size={16} aria-hidden="true"/>{storageMessage}</p>}
  <details className="night-filter-disclosure" open={filtersOpen} onToggle={event=>setFiltersOpen(event.currentTarget.open)}><summary><SlidersHorizontal size={18} aria-hidden="true"/><span>{filtersOpen?'Filter verbergen':'Weitere Filter'}<small>Bereich, Preis und Reihenfolge</small></span></summary><div className="night-filter-panel"><div className="night-row" role="group" aria-label="Bereich wählen">{CATEGORIES.map(c=><button className="night-chip" type="button" key={c.id} aria-pressed={filters.category===c.id} onClick={()=>change({category:c.id})}>{c.label}</button>)}</div><div className="night-row">
  <label>Region<select aria-label="Region filtern" value={filters.canton} onChange={e=>change({canton:e.target.value})}><option value="ALL">Ganze Schweiz</option>{CANTONS.map(c=><option key={c} value={c}>{REGIONS.find(r=>r.canton===c)?.name||c} ({c})</option>)}</select></label>
- <label>Preisrahmen<select aria-label="Preis filtern" value={filters.price==='missing'?'missing':String(filters.max||0)} onChange={e=>change({price:e.target.value==='missing'?'missing':'',max:Number(e.target.value)||0})}><option value="0">Alle Preisangaben</option><option value="missing">Preis auf Anfrage</option><option value="200">Bis CHF 200 / 60 Min.</option><option value="400">Bis CHF 400 / 60 Min.</option></select></label>
+ <label>Preisrahmen<select aria-label="Preis filtern" value={budget.current} onChange={event=>{
+   const option=budget.options.find(item=>item.value===event.target.value);
+   if(option) void change(option.changes);
+ }}>
+   {budget.options.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}
+ </select></label>
  <label>Reihenfolge<select value={filters.sort} onChange={e=>change({sort:e.target.value})}><option value="default">Reihenfolge im Verzeichnis</option><option value="region">Nach Ort</option><option value="price">Bestätigter Preis aufsteigend</option></select></label></div>
  <div className="night-row"><label style={{display:'flex',alignItems:'center',gap:10,flex:'none'}}><input type="checkbox" checked={!!filters.available} onChange={e=>change({available:e.target.checked})}/> Nur zeitlich bestätigte Verfügbarkeit</label><Link className="night-text-button" href="/search">Filter zurücksetzen</Link></div>
  <details><summary className="night-note" style={{cursor:'pointer'}}>Namen oder Ort eingeben (optional)</summary><form className="night-row" onSubmit={e=>{e.preventDefault();const d=new FormData(e.currentTarget);change({q:String(d.get('q')||'')});}}><label>Name oder Ort<input name="q" type="search" defaultValue={filters.q} key={filters.q} maxLength={150} placeholder="Zum Beispiel Zürich"/></label><button className="night-button-secondary" type="submit">Anwenden</button></form></details></div></details>
- {(activeFilters.length>0||config?.service)&&<div className="night-active-filters" role="group" aria-label="Aktive Filter entfernen"><span>Deine Auswahl</span>{activeFilters.map(filter=><button type="button" className="night-chip" key={filter.id} onClick={()=>change(filter.reset)} aria-label={`Filter entfernen: ${filter.label}`}>{filter.label}<X size={14} aria-hidden="true"/></button>)}{config?.service&&<Link className="night-chip" href={searchHref(filters)} aria-label={`Bereich entfernen: ${config.title}`}>{config.title}<X size={14} aria-hidden="true"/></Link>}<Link href="/search" className="night-text-button">Alles öffnen</Link></div>}
+ {activeFilters.length>0&&<div className="night-active-filters" role="group" aria-label="Aktive Filter entfernen"><span>Deine Auswahl</span>{activeFilters.map(filter=><button type="button" className="night-chip" key={filter.id} onClick={()=>change(filter.reset)} aria-label={`Filter entfernen: ${filter.label}`}>{filter.label}<X size={14} aria-hidden="true"/></button>)}<Link href="/search" className="night-text-button">Alles öffnen</Link></div>}
  <div id="discovery-results" tabIndex={-1} className="night-section-title night-results-heading"><div><h2>{config?'Profile in deiner Auswahl':'Profile entdecken'}</h2><p className="night-count" aria-live="polite">{resultCount}</p></div><div className="night-density-control" role="group" aria-label="Profildarstellung"><button type="button" aria-pressed={density==='detail'} onClick={()=>setDensity('detail')}><Grid2X2 size={17} aria-hidden="true"/><span>Detail</span></button><button type="button" aria-pressed={density==='compact'} onClick={()=>setDensity('compact')}><LayoutGrid size={17} aria-hidden="true"/><span>Kompakt</span></button></div></div>
  {error&&<p className="night-note" role="status">{error}</p>}
  {filters.invalid&&<p role="alert">Diese Filteradresse enthält eine ungültige oder mehrfache Auswahl. Wähle die Filter neu oder setze sie zurück.</p>}
- {!loading&&!results.length?<div className="night-empty"><h2>Hier ist die Auswahl noch leer.</h2><p>Für diese Kombination liegen keine passenden Angaben vor. Du kannst den Preisrahmen öffnen oder eine andere Region wählen.</p><Link className="night-button" href={searchHref({canton:filters.canton,category:filters.category})}>Preis und Verfügbarkeit offenlassen</Link><p className="night-note" style={{marginTop:16}}>Unbestätigte Preise und Statusangaben werden nicht ergänzt.</p></div>:<ProfileGrid offers={results} limit={pageData?99999:24} density={density}/>}
- {pageData&&nextOffset!==null&&<div className="night-load-more">
+ {confirming?<div role="status" className="night-empty">
+   {availabilityCheck==='loading'?'Bestätigte Zeitfenster werden aktualisiert.':<>Zeitfenster sind gerade nicht abrufbar. <button type="button" className="night-text-button" onClick={refreshAvailability}>Erneut versuchen</button></>}
+ </div>:!loading&&!results.length?<div className="night-empty">
+   <h2>Hier ist die Auswahl noch leer.</h2>
+   {pageData?.alternatives?.length && !filters.invalid && !error ? <>
+     <p>Welche Bedingung möchtest du ändern?</p>
+     <div className="night-row">{pageData.alternatives.map(choice => {
+       const href = searchHref(choice.filters);
+       return <Link key={href} className="night-button-secondary" href={href}>{choice.label} · {choice.total.toLocaleString('de-CH')} Treffer</Link>;
+     })}</div>
+   </> : <p>Für diese Auswahl liegen keine passenden Angaben vor. Du kannst die Filter oben einzeln ändern.</p>}
+ </div>:<ProfileGrid offers={results} limit={pageData?99999:24} density={density}/>}
+ {!confirming&&pageData&&nextOffset!==null&&<div className="night-load-more">
    <button type="button" className="night-button-secondary" disabled={loadingMore} onClick={loadMore}>
      {loadingMore?'Weitere Einträge werden geladen …':`Weitere Einträge anzeigen (${Math.max(0,totalCount-results.length)} verbleibend)`}
    </button>

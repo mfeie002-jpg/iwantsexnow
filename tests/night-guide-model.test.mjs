@@ -1,12 +1,46 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { guideFilters, skipGuideStep, quickRoutes, QUICK_ROUTES } from '../src/lib/night-guide-model.ts';
-import { filterOffers, searchHref } from '../src/lib/night-catalogue.ts';
+import { catalogueBudgetChoices, guideFilters, skipGuideStep, quickRoutes, QUICK_ROUTES } from '../src/lib/night-guide-model.ts';
+import { discoveryFiltersFromRoute, filterOffers, searchHref } from '../src/lib/night-catalogue.ts';
 
-test('a fresh guide includes only visible region, category and price choices', () => {
+test('a regional dinner selection survives the Xenia steps, budget changes and a different canton', () => {
+  const filters = discoveryFiltersFromRoute({city:'zuerich',service:'dinner-date'}, {canton:'ZH',service:'dinner'}, '/kategorie/zuerich/dinner-date');
+  const choice = guideFilters(filters);
+  assert.equal(searchHref(choice), '/search?canton=ZH&service=dinner');
+  for (const step of [0,1,2]) assert.equal(skipGuideStep(choice,step).service,'dinner');
+  const cap = catalogueBudgetChoices(choice).options.find(option=>option.value==='under-300').changes;
+  assert.equal(searchHref({...choice,...cap,canton:'ZG'}), '/search?canton=ZG&service=dinner&under60=300');
+  assert.equal(searchHref({...choice,service:''}), '/search?canton=ZH');
+});
+
+test('an invalid starting URL begins a fresh guide selection', () => {
   const result = guideFilters({ canton:'ZG', category:'massage', max:400, q:'hidden text', available:true, wa:true, sort:'price', invalid:true });
   assert.deepEqual(result, { canton:'ZG', category:'massage', max:400, price:'' });
   assert.equal(searchHref(result), '/search?canton=ZG&category=massage&max=400');
+});
+
+test('reopening a valid guide link preserves its budget, time and other visible criteria', () => {
+  const inherited={canton:'ZH',category:'massage',q:'Zürich',under60:300,available:true,wa:true,sort:'price'};
+  const choice=guideFilters(inherited);
+  assert.equal(searchHref(choice),searchHref(inherited));
+  const budget=catalogueBudgetChoices(choice);
+  assert.equal(budget.label,'Unter CHF 300 / 60 Min.');
+  for(const value of ['0','missing','200','under-300','400']){
+    const next={...choice,...budget.options.find(option=>option.value===value).changes};
+    assert.equal(catalogueBudgetChoices(next).current,value);
+    assert.equal(next.available,true);
+    assert.ok(!(next.under60 && next.max));
+  }
+  assert.equal(skipGuideStep(choice,2).under60,undefined);
+  assert.equal(skipGuideStep(choice,2).available,true);
+});
+
+test('a custom shared budget remains visible and selectable under both kinds of limit',()=>{
+  for(const [filters,label] of [[{max:275},'Bis CHF 275 / 60 Min.'],[{under60:250.5},'Unter CHF 250.5 / 60 Min.']]){
+    const budget=catalogueBudgetChoices(filters);
+    assert.equal(budget.label,label);
+    assert.equal(budget.options.filter(option=>option.value===budget.current).length,1);
+  }
 });
 
 test('price on request clears an incompatible inherited maximum', () => {

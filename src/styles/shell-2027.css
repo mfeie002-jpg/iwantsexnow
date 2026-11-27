@@ -37,6 +37,9 @@ body[data-night-images-hidden=true] img{visibility:hidden!important}
 .night-guide-steps button>span{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#ffffff0e;font-size:10px;flex-shrink:0}
 .night-guide-steps button[aria-current=step]{background:#a52c553d;border-color:#ed719d;color:#ffe7f0}.night-guide-steps button[aria-current=step]>span{background:#e92c70;color:white}
 .night-guide-summary{display:grid;gap:9px}
+.night-guide-time{border:0;margin:16px 0 0;padding:0;min-width:0}
+.night-guide-time legend{margin-bottom:8px;color:#e7d0e2;font-size:13px}
+.night-guide-2027 .night-options button[aria-pressed=true]{border-color:#ed719d;background:#a52c553d;color:#ffe7f0}
 .night-guide-summary button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:15px;text-align:left;padding:16px;background:#ffffff06;border:1px solid #ffffff22;color:#c9b2c8;border-radius:14px;font-size:11px}
 .night-guide-summary strong{display:block;color:#fff0f4;font-size:15px;margin-top:5px}.night-guide-summary button>span:last-child{display:flex;align-items:center;gap:6px;color:#ffa3c1;font-size:11px;white-space:nowrap}
 .night-guide-result{display:flex;align-items:center;gap:16px;border-top:1px solid #ffffff1c;padding:20px 0 14px;margin-top:22px;font-size:12px;color:#e7d0e2}
