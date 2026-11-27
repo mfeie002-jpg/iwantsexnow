@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import rawOffers from "@/data/harvested-offers.json";
-import { cleanSwissDigits, extractPhotoUrls, toProxiedImg, getLocalAiPortrait } from "@/components/LuxuryPhotoCard";
+import { cleanSwissDigits, extractPhotoUrls, toProxiedImg } from "@/components/LuxuryPhotoCard";
 
 const QUICK_CANTONS = [
   { code: "ALL", label: "Ganze Schweiz" },
@@ -61,6 +61,7 @@ export function XeniaConcierge() {
   const [onlyWhatsapp, setOnlyWhatsapp] = useState(true);
   const [maxChf, setMaxChf] = useState<number>(0);
   const [activeTopic, setActiveTopic] = useState<string>("");
+  const [previewImageFailures, setPreviewImageFailures] = useState<Record<string, boolean>>({});
 
   const offers: any[] = useMemo(() => (Array.isArray(rawOffers) ? (rawOffers as any[]) : []), []);
 
@@ -70,7 +71,7 @@ export function XeniaConcierge() {
       .filter((o) => {
         if (canton !== "ALL" && String(o?.canton || "").toUpperCase() !== canton) return false;
         if (onlyWhatsapp && cleanSwissDigits(o?.rawPhone || "").length < 10) return false;
-        const rate = Number(o?.advertisedBaseChf || o?.rate60Chf || 350);
+        const rate = Number(o?.advertisedBaseChf || o?.rate60Chf || 0);
         if (maxChf > 0 && rate > maxChf) return false;
         if (q) {
           const hay = [o?.rawName, o?.rubric, o?.bio, ...(o?.includedTags || [])].filter(Boolean).join(" ").toLowerCase();
@@ -219,8 +220,8 @@ export function XeniaConcierge() {
                 </button>
                 {[
                   [0, "Alle Preise"],
-                  [300, "Bis CHF 300"],
-                  [400, "Bis CHF 400"]
+                  [300, "Index-Richtwert bis CHF 300*"],
+                  [400, "Index-Richtwert bis CHF 400*"]
                 ].map(([val, lbl]) => (
                   <button
                     key={String(val)}
@@ -238,7 +239,9 @@ export function XeniaConcierge() {
               </div>
             </div>
 
-            {/* Sofortige Mini-Vorschau der besten 3 Treffer direkt in Xenia */}
+            <p className="text-[11px] text-[#B9A5AD]">* Importierte CHF-Richtwerte sind nicht automatisch bestätigte Anbieterpreise.</p>
+
+            {/* Sofortige Mini-Vorschau aus den gesetzten Filtern */}
             <div className="space-y-2 pt-1">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-white">Sofort-Empfehlungen für deine Auswahl:</span>
@@ -255,8 +258,8 @@ export function XeniaConcierge() {
                 {topMatches.map((m, idx) => {
                   const pid = String(m.id || m.dedupClusterId || idx);
                   const pics = extractPhotoUrls(m);
-                  const fb = getLocalAiPortrait(pid);
-                  const src = pics.length > 0 ? toProxiedImg(pics[0], pid) : fb;
+                  const src = pics.length > 0 ? toProxiedImg(pics[0], pid) : null;
+                  const showPreviewImage = Boolean(src && !previewImageFailures[pid]);
                   return (
                     <Link
                       key={pid}
@@ -264,19 +267,27 @@ export function XeniaConcierge() {
                       onClick={() => setOpen(false)}
                       className="group relative aspect-[3/4] rounded-xl overflow-hidden border border-white/15 no-underline"
                     >
-                      <img
-                        src={src}
-                        alt={m.rawName || "Profil"}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = fb;
-                        }}
-                        className="w-full h-full object-cover object-top"
-                      />
+                      {showPreviewImage ? (
+                        <img
+                          src={src || ""}
+                          alt={m.rawName || "Profil"}
+                          onError={() => setPreviewImageFailures((prev) => ({ ...prev, [pid]: true }))}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      ) : (
+                        <div
+                          role="img"
+                          aria-label="Originalfoto derzeit nicht verfügbar"
+                          className="absolute inset-0 flex items-center justify-center p-2 bg-[radial-gradient(circle_at_30%_25%,#985266,#52283B_45%,#261722_100%)] text-center text-[11px] font-semibold text-[#FFF0E4]"
+                        >
+                          Foto nicht verfügbar
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
                       <div className="absolute bottom-2 left-2 right-2">
                         <div className="text-[11px] font-bold text-white truncate">{m.rawName}</div>
                         <div className="text-[10px] text-[#E2B887] font-extrabold">
-                          {m.city} · CHF {m.advertisedBaseChf || 350}
+                          {m.city} · {m.advertisedBaseChf ? `Richtwert CHF ${m.advertisedBaseChf}*` : "Honorar offen"}
                         </div>
                       </div>
                     </Link>

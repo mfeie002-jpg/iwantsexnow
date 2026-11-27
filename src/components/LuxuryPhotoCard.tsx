@@ -64,17 +64,21 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
 
   const city = String(liveState?.city || offer?.city || "Zürich").split("/")[0].trim() || "Zürich";
   const canton = String(liveState?.canton || offer?.canton || "ZH").slice(0, 2).toUpperCase();
-  const rate60 = Math.max(150, Math.min(1200, Number(liveState?.rate60Chf || offer?.advertisedBaseChf || offer?.rate60Chf) || 350));
-  const rate30 = Math.max(100, Number(liveState?.rate30Chf || offer?.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10);
+  // Imported base prices and 30-minute values may be generated estimates.
+  // Show a duration-specific rate only if it was explicitly saved in managed state.
+  const saved60 = Number(liveState?.rate60Chf);
+  const saved30 = Number(liveState?.rate30Chf);
+  const rate60 = Number.isFinite(saved60) && saved60 > 0 ? saved60 : null;
+  const rate30 = Number.isFinite(saved30) && saved30 > 0 ? saved30 : null;
 
   const photos = extractPhotoUrls(liveState?.thumbnail ? { ...offer, thumbnail: liveState.thumbnail } : offer);
-  const backupSrc = getLocalAiPortrait(pid);
-  const primarySrc = photos.length > 0 ? toProxiedImg(photos[0], pid) : backupSrc;
+  const [photoAttempt, setPhotoAttempt] = React.useState(0);
+  React.useEffect(() => setPhotoAttempt(0), [pid, liveState?.thumbnail]);
+  const primarySrc = photoAttempt < photos.length ? toProxiedImg(photos[photoAttempt], pid) : null;
 
   const digits = cleanSwissDigits(liveState?.phoneDisplay || offer?.rawPhone || "");
-  const isLiveConfirmed = Boolean(liveState?.availabilityConfirmed || offer?.availabilityConfirmed);
-  const isVerified = Boolean(liveState?.identityVerified || offer?.verified);
-  const isDirect = Boolean(liveState?.claimed || offer?.directAuthorized);
+  const expiryTime = Date.parse(String(liveState?.availableUntil || ""));
+  const isLiveConfirmed = Boolean(liveState?.availabilityConfirmed && Number.isFinite(expiryTime) && expiryTime > Date.now());
   const portalName = String(offer?.sourcePortal || "CH-Index").replace("www.", "");
   const sourceCount = Array.isArray(offer?.sources) ? Math.max(1, offer.sources.length) : 1;
 
@@ -86,19 +90,28 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
   return (
     <article className="group relative flex flex-col rounded-2xl overflow-hidden bg-[#140D13] border border-white/10 hover:border-[#E2B887]/75 shadow-[0_14px_34px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1">
       <Link href={`/profile/${encodeURIComponent(pid)}`} className="relative aspect-[3/4] w-full block overflow-hidden bg-[#1D121B] no-underline">
-        <img
-          referrerPolicy="no-referrer"
-          src={primarySrc}
-          alt={`${name} – ${city}`}
-          loading={idx < 8 ? "eager" : "lazy"}
-          onError={(e) => {
-            const el = e.currentTarget as HTMLImageElement;
-            if (el.src !== window.location.origin + backupSrc && !el.src.endsWith(backupSrc)) {
-              el.src = backupSrc;
-            }
-          }}
-          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 contrast-[1.03] saturate-[1.04]"
-        />
+        {primarySrc ? (
+          <img
+            key={primarySrc}
+            referrerPolicy="no-referrer"
+            src={primarySrc}
+            alt={`${name} – ${city}`}
+            loading={idx < 8 ? "eager" : "lazy"}
+            onError={() => setPhotoAttempt((attempt) => attempt + 1)}
+            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 contrast-[1.03] saturate-[1.04]"
+          />
+        ) : (
+          <div
+            role="img"
+            aria-label="Originalfoto derzeit nicht verfügbar"
+            className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(ellipse_at_30%_25%,#985266_0%,#52283B_38%,#261722_75%,#160E18_100%)]"
+          >
+            <div className="absolute inset-5 rounded-[35%_65%_51%_49%] border border-[#E2B887]/25 rotate-[-18deg]" />
+            <div className="relative max-w-[80%] px-4 py-3 border-y border-[#E2B887]/40 text-center text-xs sm:text-sm font-semibold tracking-wide text-[#FFF0E4]">
+              Originalfoto derzeit nicht verfügbar
+            </div>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D070C] via-[#0D070C]/20 to-black/20 pointer-events-none" />
 
         {/* Schweizer Türschild Status oben links */}
@@ -111,19 +124,15 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
           ) : (
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md border border-[#E2B887]/35 text-[#F5E6D3] text-[10px] font-bold uppercase tracking-wider">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              {canton} · {isDirect ? "Direkt" : "Index"}
+              {canton} · Index
             </span>
           )}
-          {isVerified && (
-            <span className="px-2 py-0.5 rounded-md bg-emerald-500/90 text-black text-[10px] font-extrabold">
-              ✓ Geprüft
-            </span>
-          )}
+
         </div>
 
         {/* Foto-Zähler oben rechts */}
         <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-white/15 text-white/90 text-[10px] font-semibold">
-          📸 {Math.max(1, photos.length)}
+          {primarySrc ? `📸 ${photos.length}` : "Foto fehlt"}
         </div>
 
         {/* Name, Stadt & 60m CHF unten im Bild */}
@@ -131,12 +140,12 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
           <div className="min-w-0">
             <h3 className="text-[15px] font-bold text-white leading-tight truncate drop-shadow">{name}</h3>
             <p className="text-[11px] text-[#E6D8DC] mt-0.5 truncate">
-              📍 {city} ({canton}) · <span className="text-[#E2B887]">{isDirect ? "0% Direktprofil" : portalName}</span>
+              📍 {city} ({canton}) · <span className="text-[#E2B887]">{portalName}</span>
             </p>
           </div>
           <div className="shrink-0 px-2.5 py-1 rounded-xl bg-[#0D070C]/90 border border-[#E2B887]/55 text-right">
-            <span className="block text-[9px] uppercase text-[#C7B4BA] leading-none">60 Min.</span>
-            <span className="text-xs font-extrabold text-[#E2B887]">CHF {rate60}</span>
+            <span className="block text-[9px] uppercase text-[#C7B4BA] leading-none">{rate60 ? "60 Min. gemeldet" : "Honorar"}</span>
+            <span className="text-xs font-extrabold text-[#E2B887]">{rate60 ? `CHF ${rate60}` : "auf Anfrage"}</span>
           </div>
         </div>
       </Link>
@@ -144,7 +153,7 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
       {/* Point-of-Doubt Transparenzzeile + 1-Tap Kontakt */}
       <div className="p-3 bg-[#140D13] flex flex-col gap-2">
         <div className="flex items-center justify-between text-[11px] text-[#B9A5AD]">
-          <span>30 Min. ~ CHF {rate30}</span>
+          <span>{rate30 ? `30 Min. gemeldet: CHF ${rate30}` : "30 Min.: nicht angegeben"}</span>
           <span className="truncate">
             {sourceCount > 1 ? `⚡ ${sourceCount} Portale gebündelt` : digits.length >= 10 ? "✓ +41 Direkt" : "Quellen-Dossier"}
           </span>
