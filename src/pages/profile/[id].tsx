@@ -1,193 +1,103 @@
-import React, { useState, useEffect, useMemo } from "react";
-import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import type { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import rawOffers from "@/data/harvested-offers.json";
-import { extractPhotoUrls, toProxiedImg, getSeedFallback, cleanSwissDigits } from "@/components/LuxuryPhotoCard";
+import * as Dialog from "@radix-ui/react-dialog";
+import { ArrowLeft, ArrowRight, Heart, ImageIcon, MapPin, Phone, Scale, ExternalLink, Flag, Expand, X } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import { useCatalogue } from "@/components/night/CatalogueContext";
+import { ProfileImage } from "@/components/night/ProfileImage";
+import { stepPhotoIndex } from "@/components/night/profile-experience-model";
+import { cleanSwissPhone, getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate, isVisibleProfile, safeExternalUrl } from "@/lib/night-catalogue";
 
-export default function ProfileDetailPage() {
-  const router = useRouter();
-  const id = String(router.query.id || "").trim();
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const id = typeof params?.id === "string" ? params.id : "";
+  const { default: rawOffers } = await import("@/data/harvested-offers.json");
+  const { getCatalogueSnapshot } = await import("@/lib/night-catalogue-server");
+  const catalogue = await getCatalogueSnapshot();
+  const offer = (rawOffers as any[]).find(item => getProfileId(item) === id);
+  if (!offer || !isVisibleProfile(offer, catalogue.states, catalogue.blockedIds)) return { notFound: true };
+  const profile={id,rawName:offer.rawName||'',city:offer.city||'',canton:offer.canton||'',sourcePortal:offer.sourcePortal||'',sourceUrl:offer.sourceUrl||'',rawPhone:offer.rawPhone||'',bio:offer.bio||'',gallery:getProfilePhotos(offer,catalogue.states[id]),includedTags:offer.includedTags||[],languages:offer.languages||[]};
+  const publicOffer = catalogue.offers.find(item => getProfileId(item) === id);
+  if (!publicOffer) return {notFound:true};
+  const state = catalogue.states[id];
+  const scopedCatalogue = {
+    states: state ? {[id]:state} : {},
+    blockedIds: [],
+    offers: [publicOffer],
+    clubs: [],
+    partial: true
+  };
+  return {props:{profileId:id,profile,catalogue:scopedCatalogue}};
+};
 
-  const allOffers: any[] = useMemo(() => (Array.isArray(rawOffers) ? (rawOffers as any[]) : []), []);
-  const offer = useMemo(
-    () => allOffers.find((o) => String(o?.id || o?.dedupClusterId) === id) || null,
-    [allOffers, id]
-  );
+export default function ProfileDetailPage({ profileId, profile }: { profileId: string; profile:any }) {
+  const catalogue = useCatalogue();
+  const offer = catalogue.visibleOffers.some(item => getProfileId(item) === profileId) ? profile : null;
+  const [activePhoto, setActivePhoto] = useState(0);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  useEffect(() => { setActivePhoto(0); setGalleryOpen(false); }, [profileId]);
+  if (!offer) return <section className="night-container night-section"><SEO title="Profil nicht verfügbar | iwantsexnow.ch" /><div className="night-empty"><h1>Profil nicht verfügbar</h1><p>Dieser Eintrag kann zurzeit nicht angezeigt werden.</p><Link href="/search" className="night-button">Zur Übersicht</Link></div></section>;
 
-  const [liveState, setLiveState] = useState<any>(null);
-  const [activePhoto, setActivePhoto] = useState<number>(0);
-
-  useEffect(() => {
-    setActivePhoto(0);
-    if (!id) return;
-    fetch("/api/vault/metrics")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d?.states?.[id]) setLiveState(d.states[id]);
-      })
-      .catch(() => {});
-  }, [id]);
-
-  if (!router.isReady) {
-    return <div className="min-h-screen bg-[#0B0E14] text-white flex items-center justify-center">Profil wird geladen…</div>;
-  }
-
-  if (!offer || liveState?.hidden) {
-    return (
-      <div className="min-h-screen bg-[#0B0E14] text-white flex flex-col items-center justify-center p-6 text-center space-y-4">
-        <h1 className="text-2xl font-serif font-bold">Profil nicht verfügbar</h1>
-        <p className="text-sm text-gray-400">Dieser Eintrag existiert nicht mehr oder wurde per Opt-Out ausgeblendet.</p>
-        <Link href="/" className="px-5 py-2.5 rounded-xl bg-[#C8A97E] text-black font-bold text-xs no-underline">← Zurück zu allen Profilen</Link>
-      </div>
-    );
-  }
-
-  const pid = String(offer.id || offer.dedupClusterId);
-  const name = String(liveState?.displayName || offer.rawName || "Profil").trim();
-  const city = String(liveState?.city || offer.city || "Zürich");
-  const canton = String(liveState?.canton || offer.canton || "ZH").toUpperCase();
-  const rate60 = Math.max(120, Math.min(1200, Number(liveState?.rate60Chf || offer.advertisedBaseChf) || 350));
-  const rate30 = Math.max(80, Number(liveState?.rate30Chf || offer.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10);
-
-  const rawGallery = extractPhotoUrls(liveState?.thumbnail ? { ...offer, thumbnail: liveState.thumbnail } : offer);
-  const fallback = getSeedFallback(pid);
-  const gallery = rawGallery.length > 0 ? rawGallery.map((u, i) => toProxiedImg(u, `${pid}-${i}`)) : [fallback];
-  const currentImg = gallery[activePhoto] || gallery[0];
-
-  const phoneRaw = String(liveState?.phoneDisplay || offer.rawPhone || "").trim();
-  const digits = cleanSwissDigits(phoneRaw);
-  const tags: string[] = Array.isArray(offer.includedTags) ? offer.includedTags : ["GFE", "Incall", "Outcall"];
-
-  return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#F5F2EB] pb-16">
-      <Head>
-        <title>{`${name} in ${city} (${canton}) · CHF ${rate60} | iwantsexnow.ch`}</title>
-      </Head>
-
-      <header className="bg-[#0B0E14]/95 border-b border-white/10 px-4 sm:px-6 h-16 flex items-center justify-between max-w-6xl mx-auto">
-        <Link href="/" className="text-sm font-bold text-[#C8A97E] no-underline">← Alle Schweizer Profile</Link>
-        <Link href={`/report?id=${encodeURIComponent(pid)}&name=${encodeURIComponent(name)}`} className="text-xs text-gray-400 hover:text-rose-300 no-underline">
-          Opt-Out / Profil melden
-        </Link>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Linke Spalte: Grosse Foto-Galerie */}
-        <div className="lg:col-span-6 space-y-3">
-          <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[#151A26] border border-white/10">
-            <img
-              referrerPolicy="no-referrer"
-              src={currentImg}
-              alt={name}
-              onError={(e) => {
-                const el = e.currentTarget as HTMLImageElement;
-                if (el.src !== fallback) el.src = fallback;
-              }}
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
-
-          {gallery.length > 1 && (
-            <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
-              {gallery.map((g, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActivePhoto(i)}
-                  className={`aspect-[3/4] rounded-xl overflow-hidden border cursor-pointer ${activePhoto === i ? "border-2 border-[#C8A97E]" : "border-white/15 opacity-75 hover:opacity-100"}`}
-                >
-                  <img
-                    referrerPolicy="no-referrer"
-                    src={g}
-                    alt={`${name} ${i + 1}`}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = fallback; }}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
+  const state = catalogue.states[profileId] || {};
+  const name = getProfileName(offer, state), city = getProfileCity(offer, state);
+  const photos = getProfilePhotos(offer, state);
+  const photo = photos[Math.min(activePhoto, Math.max(0, photos.length - 1))];
+  const rate30 = getProfileRate(state, 30), rate60 = getProfileRate(state, 60);
+  const source = safeExternalUrl(offer.sourceUrl);
+  const digits = cleanSwissPhone(state.phoneDisplay || offer.rawPhone);
+  const hasPhone = /^41(?:7[5-9]|[2-6]\d)\d{7}$/.test(digits);
+  const saved = catalogue.favorites.includes(profileId), compared = catalogue.compareIds.includes(profileId);
+  const comparisonFull = !compared && catalogue.compareIds.length >= 3;
+  const tags = Array.isArray(offer.includedTags) ? offer.includedTags.filter((tag: unknown) => typeof tag === "string" && tag.trim()).slice(0, 16) : [];
+  const languages = Array.isArray(offer.languages) ? offer.languages.filter((value: unknown) => typeof value === "string" && value.trim()) : [];
+  const description = typeof state.bio === "string" && state.bio.trim() ? state.bio.trim() : typeof offer.bio === "string" ? offer.bio.trim() : "";
+  const canonical = `https://iwantsexnow.ch/profile/${encodeURIComponent(profileId)}`;
+  return <main id="main" className="night-container night-section night-profile-page">
+    <SEO title={`${name} · ${city} | iwantsexnow.ch`} description={`Informationen zu ${name}: Standort, vorhandene Bildquellen und Kontaktangaben im Schweizer Verzeichnis.`} url={canonical} />
+    <div className="night-row night-profile-breadcrumb"><Link href="/search" className="night-text-button"><ArrowLeft size={16} /> Zur Übersicht</Link><Link href={`/report?id=${encodeURIComponent(profileId)}`} className="night-text-button"><Flag size={15} /> Eintrag melden</Link></div>
+    <nav className="night-profile-jump" aria-label="Auf dieser Profilseite"><a href="#profile-photos">Bilder</a><a href="#profile-details">Angaben</a><a href="#contact-title">Kontakt</a></nav>
+    {catalogue.error && <p className="night-note" role="status">{catalogue.error}</p>}
+    <div className="night-profile-layout">
+      <section className="night-gallery" id="profile-photos" aria-label="Profilbilder">
+        <Dialog.Root open={galleryOpen} onOpenChange={setGalleryOpen}>
+          <div className="night-gallery-main"><ProfileImage key={`${profileId}-${photo || "none"}`} photos={photo ? [photo] : []} alt={`Profilfoto zu ${name}`} eager />{photos.length > 0 && <Dialog.Trigger asChild><button type="button" className="night-gallery-expand"><Expand size={17} aria-hidden="true" /> Bilder gross ansehen <span>{photos.length}</span></button></Dialog.Trigger>}</div>
+          <Dialog.Portal><Dialog.Overlay className="night-gallery-overlay"/><Dialog.Content className="night-gallery-dialog" onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); setActivePhoto(current => stepPhotoIndex(current, event.key === 'ArrowLeft' ? -1 : 1, photos.length)); } }}>
+            <div className="night-gallery-dialog-heading"><div><Dialog.Title>Profilbilder</Dialog.Title><Dialog.Description>{name} · Bilder aus hinterlegten Quellen</Dialog.Description></div><Dialog.Close className="night-icon-button" aria-label="Bilderansicht schliessen"><X aria-hidden="true"/></Dialog.Close></div>
+            <div className="night-gallery-stage"><ProfileImage key={`expanded-${profileId}-${photo || 'none'}`} photos={photo ? [photo] : []} alt={`Profilfoto ${Math.min(activePhoto + 1, photos.length)} zu ${name}`} eager/></div>
+            <div className="night-gallery-controls"><button type="button" className="night-icon-button" disabled={photos.length < 2} aria-label="Vorheriges Bild" onClick={() => setActivePhoto(current => stepPhotoIndex(current, -1, photos.length))}><ArrowLeft aria-hidden="true"/></button><p aria-live="polite" aria-atomic="true">Bild <strong>{Math.min(activePhoto + 1, photos.length)}</strong> von {photos.length}</p><button type="button" className="night-icon-button" disabled={photos.length < 2} aria-label="Nächstes Bild" onClick={() => setActivePhoto(current => stepPhotoIndex(current, 1, photos.length))}><ArrowRight aria-hidden="true"/></button></div>
+            <p className="night-gallery-disclaimer">Die Bildzuordnung ist keine Identitätsprüfung. Nicht erreichbare Bilder bleiben als fehlend gekennzeichnet.</p>
+          </Dialog.Content></Dialog.Portal>
+        </Dialog.Root>
+        {photos.length > 1 && <div className="night-gallery-thumbs">{photos.map((url, index) => <button type="button" key={url} className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} aria-pressed={index === activePhoto} aria-label={`Bild ${index + 1} ansehen`}><ProfileImage photos={[url]} alt="" compact /></button>)}</div>}
+        <p className="night-note"><ImageIcon size={14} aria-hidden="true" /> {photos.length ? "Bilder aus den hinterlegten Quellen. Die Zuordnung ist keine Identitätsprüfung." : "Für diesen Eintrag steht derzeit kein zugeordnetes Profilfoto bereit."}</p>
+      </section>
+      <section className="night-profile-details">
+        <p className="night-eyebrow"><MapPin size={14} aria-hidden="true" /> {city}{state.canton || offer.canton ? ` · ${String(state.canton || offer.canton).toUpperCase()}` : ""}</p>
+        <h1>{name}</h1>
+        <p className="night-lead">Eintrag aus {String(offer.sourcePortal || "dem Quellenindex")}.</p>
+        <div className="night-row night-profile-actions">
+          <button type="button" className={`night-button ${saved ? "" : "secondary"}`} aria-pressed={saved} onClick={() => catalogue.toggleFavorite(profileId)}><Heart size={17} fill={saved ? "currentColor" : "none"} /> {saved ? "Gemerkt" : "Merken"}</button>
+          <button type="button" className="night-button secondary" aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? 'profile-comparison-limit' : undefined} onClick={() => catalogue.toggleCompare(profileId)}><Scale size={17} /> {compared ? "Im Vergleich" : "Vergleichen"}</button>
         </div>
-
-        {/* Rechte Spalte: Schweizer Honorartafel, Attribute & Direktkontakt */}
-        <div className="lg:col-span-6 space-y-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/15 text-xs text-emerald-300 font-bold">
-              📍 {city} ({canton}) · Quelle: {offer.sourcePortal || "CH-Direkt"}
-            </div>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">{name}</h1>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-4 rounded-2xl bg-[#141926] border border-white/10">
-              <div className="text-xs text-gray-400">30 Minuten Richtwert</div>
-              <div className="text-2xl font-extrabold text-white mt-1">CHF {rate30}</div>
-            </div>
-            <div className="p-4 rounded-2xl bg-[#141926] border border-[#C8A97E]/50">
-              <div className="text-xs text-[#C8A97E]">60 Minuten Honorar (0% Provision)</div>
-              <div className="text-2xl font-extrabold text-[#C8A97E] mt-1">CHF {rate60}</div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-            {offer.age && <div className="p-3 rounded-xl bg-white/5 border border-white/10"><span className="text-gray-400 block">Alter</span><strong>{offer.age} Jahre</strong></div>}
-            {offer.heightCm && <div className="p-3 rounded-xl bg-white/5 border border-white/10"><span className="text-gray-400 block">Grösse</span><strong>{offer.heightCm} cm</strong></div>}
-            {offer.cupSize && <div className="p-3 rounded-xl bg-white/5 border border-white/10"><span className="text-gray-400 block">Körbchen</span><strong>Cup {offer.cupSize}</strong></div>}
-            {offer.hairColor && <div className="p-3 rounded-xl bg-white/5 border border-white/10"><span className="text-gray-400 block">Haare</span><strong>{offer.hairColor}</strong></div>}
-          </div>
-
-          <div className="space-y-2.5">
-            {digits.length >= 10 && (
-              <a
-                href={`https://wa.me/${digits}?text=${encodeURIComponent(`Hoi ${name}, ich habe dein Profil in ${city} auf iwantsexnow.ch gesehen. Hast du heute Zeit?`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-4 rounded-2xl bg-[#25D366] hover:bg-[#1ebe5d] text-[#05140B] font-extrabold text-sm text-center no-underline shadow-lg"
-              >
-                💬 Direkt per WhatsApp schreiben ({phoneRaw})
-              </a>
-            )}
-            {digits.length >= 10 && (
-              <a
-                href={`tel:+${digits}`}
-                className="block w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-bold text-sm text-center no-underline"
-              >
-                📞 Direkt anrufen ({phoneRaw})
-              </a>
-            )}
-            {offer.sourceUrl && (
-              <a
-                href={offer.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-xs font-semibold text-center no-underline"
-              >
-                Original-Inserat auf {offer.sourcePortal || "Quellportal"} prüfen ↗
-              </a>
-            )}
-          </div>
-
-          <div className="p-5 rounded-2xl bg-[#141926] border border-white/10 space-y-3">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#C8A97E]">Beschreibung & Services</h2>
-            <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
-              {liveState?.bio || offer.bio || `${name} in ${city} (${canton}). Direkte Terminvereinbarung ohne Plattform-Provision.`}
-            </p>
-            <div className="flex flex-wrap gap-1.5 pt-2">
-              {tags.map((t, i) => (
-                <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-200">{t}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <span className="text-gray-300">Bist du {name}? Übernimm dein Profil kostenlos (Live-Status & 80/20 Vault).</span>
-            <Link href={`/login?claim=${encodeURIComponent(pid)}`} className="px-4 py-2 rounded-xl bg-[#C8A97E] text-black font-extrabold no-underline">
-              Profil gratis übernehmen →
-            </Link>
-          </div>
+        {comparisonFull && <p className="night-comparison-limit" id="profile-comparison-limit"><span>3/3 Profile ausgewählt. Entferne zuerst ein Profil.</span><Link href="/compare-escorts">Vergleich bearbeiten <ArrowRight size={14} aria-hidden="true" /></Link></p>}
+        <div className="night-profile-facts">
+          <div><span>30 Minuten</span><strong>{rate30 === null ? "Nicht bestätigt" : `CHF ${rate30.toLocaleString("de-CH")}`}</strong></div>
+          <div><span>60 Minuten</span><strong>{rate60 === null ? "Nicht bestätigt" : `CHF ${rate60.toLocaleString("de-CH")}`}</strong></div>
+          <div><span>Verfügbarkeit</span><strong>Direkt abklären</strong></div>
+          <div><span>Quelle</span><strong>{String(offer.sourcePortal || "Nicht angegeben")}</strong></div>
         </div>
-      </main>
+        <p className="night-note">Fehlende Preise und aktuelle Verfügbarkeit werden nicht geschätzt.</p>
+        <section className="night-surface night-contact-panel" aria-labelledby="contact-title"><h2 id="contact-title">Kontakt laut Eintrag</h2><p className="night-note">Prüfe die aktuellen Angaben in der Quelle, bevor du Kontakt aufnimmst.</p><div className="night-stack">
+          {source && <a href={source} target="_blank" rel="noopener noreferrer" className="night-button">Original-Inserat prüfen <ExternalLink size={16} /></a>}
+          {hasPhone && <a href={`tel:+${digits}`} className="night-button secondary"><Phone size={16} /> +{digits}</a>}
+          {hasPhone && <a href={`https://wa.me/${digits}`} target="_blank" rel="noopener noreferrer" className="night-button secondary">WhatsApp öffnen <ArrowRight size={16} /></a>}
+          {!source && !hasPhone && <p>Kein nutzbarer Kontaktweg im Eintrag hinterlegt.</p>}
+        </div></section>
+      </section>
     </div>
-  );
+    <div className="night-profile-information" id="profile-details">
+      <section className="night-surface"><p className="night-eyebrow">Hinterlegte Angaben</p><h2>Beschreibung & Einordnung</h2><p className="night-description">{description || "Für diesen Eintrag ist keine Beschreibung hinterlegt."}</p><p className="night-note">Importierte Angaben können sich ändern. Massgeblich ist die aktuelle Auskunft der Anbieterin oder des Anbieters.</p>{tags.length > 0 && <div className="night-chips">{tags.map((tag: string) => <span className="night-chip" key={tag}>{tag}</span>)}</div>}</section>
+      <section className="night-surface"><p className="night-eyebrow">Auf einen Blick</p><h2>Weitere Angaben</h2><dl className="night-detail-list"><div><dt>Ort</dt><dd>{city}</dd></div><div><dt>Sprachen laut Eintrag</dt><dd>{languages.length ? languages.join(", ") : "Nicht angegeben"}</dd></div><div><dt>Identitätsprüfung</dt><dd>Kein bestätigter Nachweis angezeigt</dd></div></dl><Link href={`/report?id=${encodeURIComponent(profileId)}`} className="night-text-button">Eine Angabe korrigieren <ArrowRight size={16} /></Link></section>
+    </div>
+  </main>;
 }

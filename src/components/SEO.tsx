@@ -15,7 +15,7 @@ interface SEOProps {
 }
 
 const ORIGIN = "https://iwantsexnow.ch";
-const DEFAULT_IMAGE = ORIGIN + "/images/ai/hero-swiss-night.webp";
+const DEFAULT_IMAGE = ORIGIN + "/images/brand/v2/hero-night-v2.png";
 
 export function SEO({
   title = "iwantsexnow.ch — Schweizer Escort-, Massage- & Studio-Verzeichnis",

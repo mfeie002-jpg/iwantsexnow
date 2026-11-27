@@ -1,211 +1,59 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { ArrowRight, Heart, MapPin, Scale, Undo2, X } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { LuxuryHeader } from "@/components/LuxuryHeader";
-import { PageIntro } from "@/components/PageIntro";
-import offersData from "@/data/harvested-offers.json";
-import { Heart, Trash2, Scale, Plus, ArrowRight, Sparkles } from "lucide-react";
+import LuxuryPhotoCard from "@/components/LuxuryPhotoCard";
+import { useCatalogue, useSelectedCatalogue } from "@/components/night/CatalogueContext";
+import { resolveSelectedProfiles } from "@/components/night/profile-image-model";
+import { FavoriteOrder, favoriteRegionCounts, selectFavorites } from "@/components/night/favorites-model";
+import { CANTONS, REGIONS, getProfileId, getProfileName, Offer } from "@/lib/night-catalogue";
+import type {GetServerSideProps} from 'next';
+export const getServerSideProps:GetServerSideProps=async()=>({props:{
+ catalogue:{states:{},blockedIds:[],offers:[],clubs:[],partial:true}
+}});
+
+const regionLabel = (key: string) => key === 'unknown' ? 'Ohne Regionsangabe' : REGIONS.find(region => region.canton === key)?.name || key;
 
 export default function FavoritesPage() {
-  const [favIds, setFavIds] = useState<string[]>([]);
-  const [cantonFilter, setCantonFilter] = useState<string>("ALL");
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem("ch_favorite_profiles") || "[]";
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        setFavIds(parsed);
-      } else {
-        // Initialisiere mit 3 Top-Profilen aus ZG/ZH als Start-Inspiration, falls leer
-        const starter = ((offersData as any[]) || []).slice(0, 3).map((o) => o.id || o.dedupClusterId);
-        setFavIds(starter);
-        localStorage.setItem("ch_favorite_profiles", JSON.stringify(starter));
-      }
-    } catch {}
-  }, []);
-
-  const updateFavs = (next: string[]) => {
-    setFavIds(next);
-    try {
-      localStorage.setItem("ch_favorite_profiles", JSON.stringify(next));
-      window.dispatchEvent(new Event("ch-favorites-updated"));
-    } catch {}
+  const catalogue = useCatalogue();
+  const savedHydration = useSelectedCatalogue('favorites');
+  const [removed, setRemoved] = useState<{ id: string; name: string } | null>(null);
+  const [region, setRegion] = useState('all');
+  const [order, setOrder] = useState<FavoriteOrder>('saved');
+  const undoButton = useRef<HTMLButtonElement>(null);
+  const saved = resolveSelectedProfiles(catalogue.visibleOffers, catalogue.favorites, getProfileId);
+  const entries = saved.map(offer => {
+    const id = getProfileId(offer), state = catalogue.states[id] || {};
+    const canton = String(state.canton || offer.canton || '').trim().toUpperCase();
+    return { id, offer, name: getProfileName(offer, state), city: String(state.city || offer.city || '').trim(), canton: CANTONS.includes(canton) ? canton : '' };
+  });
+  const regions = favoriteRegionCounts(entries).sort((a, b) => regionLabel(a.key).localeCompare(regionLabel(b.key), 'de-CH'));
+  const shown = selectFavorites(entries, region, order);
+  const unavailableCount = catalogue.favorites.length - saved.length;
+  const canRestore = removed && catalogue.visibleOffers.some(offer => getProfileId(offer) === removed.id);
+  const remove = (offer: Offer) => {
+    const id = getProfileId(offer);
+    if (!catalogue.favorites.includes(id)) return;
+    catalogue.toggleFavorite(id);
+    setRemoved({ id, name: getProfileName(offer, catalogue.states[id]) });
   };
+  useEffect(() => { if (removed) undoButton.current?.focus({ preventScroll: true }); }, [removed]);
 
-  const toggleFav = (id: string) => {
-    if (favIds.includes(id)) {
-      updateFavs(favIds.filter((x) => x !== id));
-    } else {
-      updateFavs([id, ...favIds]);
-    }
-  };
-
-  const allProfiles = useMemo(() => {
-    return ((offersData as any[]) || []).slice(0, 120).map((o) => {
-      const r60 = Math.max(100, Math.min(1200, Number(o.advertisedBaseChf) || 350));
-      const r30 = Math.max(80, Math.min(800, Number(o.rate30Chf) || Math.round((r60 * 0.6) / 10) * 10));
-      return {
-        ...o,
-        id: o.id || o.dedupClusterId,
-        rate60Chf: r60,
-        rate30Chf: r30,
-      };
-    });
-  }, []);
-
-  const savedProfiles = useMemo(
-    () => allProfiles.filter((p) => favIds.includes(p.id)),
-    [allProfiles, favIds]
-  );
-
-  const suggestions = useMemo(() => {
-    return allProfiles
-      .filter((p) => !favIds.includes(p.id) && (cantonFilter === "ALL" || p.canton === cantonFilter))
-      .slice(0, 12);
-  }, [allProfiles, favIds, cantonFilter]);
-
-  return (
-    <div className="min-h-screen bg-papier text-tinte pb-24">
-      <SEO
-        title="Meine Schweizer Favoriten & Merkliste (Zero-Trace lokal gespeichert) | iwantsexnow.ch"
-        description="Verwalte deine gespeicherten Schweizer Escort- & Massage-Favoriten anonym auf deinem Gerät und vergleiche Honorare & Attribute mit 1 Klick."
-        url="https://iwantsexnow.ch/favorites"
-      />
-      <LuxuryHeader />
-
-      <PageIntro tone="blush" note="Deine Merkliste" art="none" title={<>Deine gespeicherten Favoriten & Schnellvergleich</>}
-        lead={<>100 % lokal auf deinem Gerät gespeichert (kein Account erforderlich).</>} />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-10">
-        <section className="p-6 rounded-2xl bg-white border border-kirsche/40 flex flex-wrap items-center justify-between gap-4">
-          
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href="/compare-escorts"
-              className="px-4 py-2.5 rounded-xl bg-kirsche text-white text-[13px] font-extrabold inline-flex items-center gap-1.5"
-            >
-              <Scale size={14} /> 4-Profil Direktvergleich öffnen →
-            </Link>
-            {savedProfiles.length > 0 && (
-              <button
-                type="button"
-                onClick={() => updateFavs([])}
-                className="px-3.5 py-2.5 rounded-xl bg-glow-500/15 border border-glow-500/30 text-glow-700 text-[13px] font-bold cursor-pointer"
-              >
-                Liste leeren
-              </button>
-            )}
-          </div>
-        </section>
-
-        {/* Gespeicherte Favoriten */}
-        {savedProfiles.length === 0 ? (
-          <div className="p-10 rounded-2xl bg-white border border-tinte/20 text-center space-y-3">
-            <p className="text-sm text-gray-700 font-semibold">Deine Merkliste ist aktuell leer.</p>
-            <p className="text-[13px] text-gray-600">Füge unten mit 1 Klick Profile aus deinem Kanton hinzu.</p>
-          </div>
-        ) : (
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {savedProfiles.map((p: any) => (
-              <div key={p.id} className="rounded-2xl bg-white border border-kirsche/60 overflow-hidden flex flex-col justify-between">
-                <div>
-                  <div className="relative h-60 bg-papier">
-                    <img
-                      src={p.thumbnail || "/images/escort-portrait-1.jpg"}
-                      alt={p.rawName}
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                      className="w-full h-full object-cover object-top"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => toggleFav(p.id)}
-                      className="absolute top-3 right-3 p-2 rounded-full bg-black/80 text-glow-400 hover:bg-glow-500 hover:text-white cursor-pointer"
-                      title="Aus Merkliste entfernen"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                    <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-black/80 border border-tinte/25 text-[13px] font-extrabold text-kirsche">
-                      CHF {p.rate60Chf}.– / 60m
-                    </div>
-                  </div>
-                  <div className="p-4 space-y-1.5">
-                    <div className="flex items-center justify-between text-[13px]">
-                      <span className="font-bold text-kirsche">{p.canton} · {p.city}</span>
-                      <span className="text-gray-600">30 Min.: CHF {p.rate30Chf}.–</span>
-                    </div>
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="block text-base font-serif font-bold text-tinte hover:text-kirsche truncate">
-                      {p.rawName}
-                    </Link>
-                    <div className="text-[13px] text-gray-700">
-                      {p.age || 25} J. · {p.heightCm || 168} cm · Cup {p.cupSize || "C"} · {p.hairColor || "Brünett"}
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4 pt-0">
-                  <Link
-                    href={`/profile/${encodeURIComponent(p.id)}`}
-                    className="block w-full py-2.5 px-3 rounded-xl bg-kirsche text-white font-extrabold text-[13px] text-center"
-                  >
-                    Profil & +41 Kontakt öffnen →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </section>
-        )}
-
-        {/* Weitere Empfehlungen nach Kanton zum 1-Klick-Merken */}
-        <section className="space-y-4 pt-6 border-t border-tinte/20">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-serif font-bold text-tinte">
-              Weitere Top-Profile nach Kanton zur Merkliste hinzufügen
-            </h2>
-            <div className="flex flex-wrap gap-1.5">
-              {["ALL", "ZG", "ZH", "LU", "AG", "BS", "BE", "GE"].map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setCantonFilter(c)}
-                  className={`px-3 py-1 rounded-lg text-[13px] font-extrabold cursor-pointer ${
-                    cantonFilter === c ? "bg-kirsche text-white" : "bg-white text-tinte border border-tinte/20 hover:bg-blush"
-                  }`}
-                >
-                  {c === "ALL" ? "Alle" : c}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {suggestions.map((p: any) => (
-              <div key={p.id} className="p-4 rounded-2xl bg-white border border-tinte/20 flex flex-col justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={p.thumbnail || "/images/escort-portrait-1.jpg"}
-                    alt={p.rawName}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/escort-portrait-1.jpg"; }}
-                    className="w-12 h-12 rounded-xl object-cover object-top"
-                  />
-                  <div className="min-w-0">
-                    <Link href={`/profile/${encodeURIComponent(p.id)}`} className="text-[13px] font-bold text-tinte hover:text-kirsche truncate block">
-                      {p.rawName}
-                    </Link>
-                    <div className="text-[13px] text-gray-600">{p.city} ({p.canton}) · CHF {p.rate60Chf}.–</div>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => toggleFav(p.id)}
-                  className="w-full py-2 rounded-xl bg-tinte/[0.04] hover:bg-kirsche text-tinte hover:text-white border border-tinte/20 text-[13px] font-extrabold cursor-pointer transition"
-                >
-                  ♥ Auf Merkliste speichern
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
-  );
+  return <main id="main" className="night-container night-section night-favorites-page">
+    <SEO title="Deine Merkliste | iwantsexnow.ch" description="Finde deine selbst gemerkten Profile wieder und wähle Einträge für einen nachvollziehbaren Vergleich." url="https://iwantsexnow.ch/favorites" />
+    <div className="night-page-intro"><p className="night-eyebrow">Deine Auswahl bleibt deine.</p><h1>Deine Favoriten. Dein Überblick.</h1><p className="night-lead">Nach Region ordnen, in Ruhe wiederfinden und selbst vergleichen.</p></div>
+    <p className="night-favorites-privacy"><Heart size={15} aria-hidden="true" /> In diesem Browser gespeichert. Auf gemeinsam genutzten Geräten für andere sichtbar.</p>
+    {catalogue.error && <p className="night-note" role="status">{catalogue.error}</p>}
+    {savedHydration.error && <p className="night-note" role="alert">{savedHydration.error} <button type="button" className="night-text-button" onClick={savedHydration.retry}>Erneut versuchen</button></p>}
+    {removed && !catalogue.favorites.includes(removed.id) && <div className="night-favorite-undo"><p role="status">{removed.name} wurde aus deiner Merkliste entfernt.{!canRestore && ' Dieser Eintrag ist derzeit nicht sichtbar.'}</p><button ref={undoButton} type="button" className="night-text-button" disabled={!canRestore} onClick={() => { if (canRestore && !catalogue.favorites.includes(removed.id)) catalogue.toggleFavorite(removed.id); setRemoved(null); }}><Undo2 size={16} aria-hidden="true" /> Rückgängig</button></div>}
+    {unavailableCount > 0 && savedHydration.ready && !savedHydration.error && <p className="night-note">{unavailableCount} gemerkte {unavailableCount === 1 ? "Eintrag ist" : "Einträge sind"} derzeit nicht sichtbar.</p>}
+    {!savedHydration.ready ? <section className="night-empty" role="status"><h2>Deine Merkliste wird abgeglichen …</h2></section> : savedHydration.error ? null : saved.length ? <>
+      <section className="night-favorites-tools" aria-label="Merkliste ordnen">
+        <div className="night-favorites-tools-top"><div><span className="night-kicker">Deine persönliche Auswahl</span><p role="status">{shown.length} von {saved.length} {saved.length === 1 ? 'gespeichertem Profil' : 'gespeicherten Profilen'}</p></div><Link href="/compare-escorts" className="night-button secondary"><Scale size={16} aria-hidden="true" /> Vergleich öffnen ({catalogue.compareIds.length})</Link></div>
+        <div className="night-favorites-regions" role="group" aria-label="Merkliste nach Region filtern"><button type="button" className="night-chip" aria-pressed={region === 'all'} onClick={() => setRegion('all')}>Alle Regionen <span>{saved.length}</span></button>{regions.map(item => <button type="button" className="night-chip" key={item.key} aria-pressed={region === item.key} onClick={() => setRegion(item.key)}><MapPin size={14} aria-hidden="true" /> {regionLabel(item.key)} <span>{item.count}</span></button>)}</div>
+        <div className="night-favorites-order"><label htmlFor="favorite-order">Reihenfolge<select id="favorite-order" value={order} onChange={event => setOrder(event.target.value as FavoriteOrder)}><option value="saved">Wie gemerkt</option><option value="name">Nach Name</option><option value="place">Nach Ort</option></select></label><span className="night-note">Filtern und Sortieren ändern deine gespeicherte Auswahl nicht.</span></div>
+      </section>
+      {shown.length ? <div className="night-profile-grid">{shown.map(({ offer, id }, index) => <div className="night-favorite-item" key={id}><LuxuryPhotoCard offer={offer} idx={index} liveState={catalogue.states[id]} /><button type="button" className="night-text-button" aria-label={`${getProfileName(offer, catalogue.states[id])} entfernen und Rückgängig anbieten`} onClick={() => remove(offer)}><X size={15} aria-hidden="true" /> Aus Merkliste entfernen</button></div>)}</div> : <section className="night-empty"><MapPin size={30} aria-hidden="true" /><h2>Hier ist gerade nichts gemerkt.</h2><p>Für {regionLabel(region)} enthält deine sichtbare Merkliste keinen Eintrag. Deine übrigen Favoriten bleiben erhalten.</p><button type="button" className="night-button" onClick={() => setRegion('all')}>Alle Favoriten anzeigen <ArrowRight size={17} aria-hidden="true" /></button></section>}
+    </> : <section className="night-empty"><Heart size={34} aria-hidden="true" /><h2>{unavailableCount ? 'Deine gemerkten Profile sind derzeit nicht sichtbar.' : 'Deine Merkliste ist noch leer.'}</h2><p>{unavailableCount ? 'Deine Auswahl bleibt erhalten. Du kannst weitere Profile entdecken.' : 'Das Herz an einem Profil fügt es deiner Auswahl hinzu. Es werden keine Profile automatisch eingetragen.'}</p><Link href="/search" className="night-button">Profile entdecken <ArrowRight size={17} aria-hidden="true" /></Link></section>}
+  </main>;
 }

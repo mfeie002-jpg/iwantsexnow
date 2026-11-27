@@ -1,22 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 import harvestedOffers from "@/data/harvested-offers.json";
-import { isSupabaseConfigured, supaFetch, readSafeJson, writeSafeJson, hashSwissPhone, sendTelegramPing } from "@/lib/supabaseAdmin";
+import establishments from "@/data/swiss-establishments-vault.json";
+import { isSupabaseConfigured, supaFetch, readSafeJson, writeSafeJson, sendTelegramPing } from "@/lib/supabaseAdmin";
 
-const SECRET = process.env.CLAIM_TOKEN_SECRET || process.env.OWNER_TOKEN_SECRET || "iwsn-swiss-secret-2026";
-const ADMIN_PIN = process.env.ADMIN_PIN || "SWISS-BOSS-2026";
+const ADMIN_PIN = process.env.ADMIN_PIN || "";
 
-export function makeOwnerToken(profileId: string): string {
-  return crypto.createHmac("sha256", SECRET).update(String(profileId).trim().toLowerCase()).digest("hex").slice(0, 28);
+function secureAdminMatch(provided: string): boolean {
+  // Legacy hard-coded PINs and credentials in URLs are never accepted.
+  if (!ADMIN_PIN || ADMIN_PIN.length < 16 || !provided) return false;
+  const a = Buffer.from(ADMIN_PIN);
+  const b = Buffer.from(provided);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const adminHeader = String(req.headers["x-admin-pin"] || req.query.adminPin || req.body?.adminPin || "").trim();
-  const isAdmin = Boolean(ADMIN_PIN && adminHeader === ADMIN_PIN);
-
+  res.setHeader("Cache-Control", "no-store");
+  const adminHeader = String(req.headers["x-admin-pin"] || "").trim();
+  const isAdmin = secureAdminMatch(adminHeader);
   const profileId = String(req.query.profileId || req.body?.profileId || req.body?.id || "").trim();
-  const providedToken = String(req.headers["x-owner-token"] || req.query.token || req.body?.ownerToken || req.body?.token || "").trim();
-  const isOwner = Boolean(profileId && providedToken && providedToken === makeOwnerToken(profileId));
+
+  // Legacy deterministic owner tokens and URL query credentials may have been exposed.
+  // Owner actions remain disabled here until verified sessions replace the legacy flow.
+  const isOwner = false;
 
   const states = readSafeJson<Record<string, any>>("managed-profile-states.json", {});
   const metrics = readSafeJson<Record<string, any>>("profile-metrics.json", {});
@@ -35,6 +41,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "GET") {
     if (isSupabaseConfigured()) {
       const dbStates = await supaFetch<any[]>("managed_profile_states?select=*");
+      if (!dbStates.ok || !Array.isArray(dbStates.data)) {
+        return res.status(503).json({ ok: false, code: "PROFILE_STATE_UNAVAILABLE", error: "Aktueller Profilstatus ist vorübergehend nicht verfügbar." });
+      }
       for (const r of dbStates.data || []) {
         states[r.profile_id] = {
           ...(states[r.profile_id] || {}),
@@ -44,10 +53,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           canton: r.canton,
           rate30Chf: r.rate30_chf,
           rate60Chf: r.rate60_chf,
+          priceConfirmed: r.price_confirmed === true,
+          rateConfirmed: r.rate_confirmed === true,
+          priceConfirmedAt: typeof r.price_confirmed_at === "string" ? r.price_confirmed_at : null,
+          rateUpdatedAt: typeof r.rate_updated_at === "string" ? r.rate_updated_at : null,
           claimed: r.claimed,
           identityVerified: r.identity_verified,
           aiOptIn: r.ai_opt_in,
           availabilityConfirmed: Boolean(r.availability_confirmed && r.available_until && new Date(r.available_until).getTime() > now),
+          availableUntil: typeof r.available_until === "string" ? r.available_until : null,
           hidden: Boolean(r.hidden || r.paused || r.removed_by_report),
           paused: Boolean(r.paused || r.hidden),
         };
@@ -55,7 +69,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const publicStates: Record<string, any> = {};
+    const publicIds = new Set([...harvestedOffers,...establishments].map((o:any)=>o.id||o.dedupClusterId));
+    const excludedIds = new Set(blockedList.map((b:any)=>typeof b==='string'?b:b?.profileId));
     for (const [pid, st] of Object.entries<any>(states)) {
+      if(!publicIds.has(pid))continue;
+      if(st.hidden||st.paused||st.removedByReport||excludedIds.has(pid)){publicStates[pid]={profileId:pid,hidden:true,paused:true};continue;}
       publicStates[pid] = {
         profileId: pid,
         displayName: st.displayName,
@@ -63,9 +81,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         canton: st.canton,
         rate30Chf: st.rate30Chf,
         rate60Chf: st.rate60Chf,
+        priceConfirmed: st.priceConfirmed === true,
+        rateConfirmed: st.rateConfirmed === true,
+        priceConfirmedAt: typeof st.priceConfirmedAt === "string" ? st.priceConfirmedAt : null,
+        rateUpdatedAt: typeof st.rateUpdatedAt === "string" ? st.rateUpdatedAt : null,
         thumbnail: st.thumbnail,
         claimed: Boolean(st.claimed),
-        identityVerified: Boolean(st.identityVerified),
+        identityVerified: false, // existing legacy flags lack auditable verification evidence
         aiOptIn: Boolean(st.aiOptIn),
         sponsored: Boolean(st.sponsored),
         availabilityConfirmed: Boolean(st.availabilityConfirmed),
@@ -109,92 +131,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (action === "create_enquiry" && profileId) {
-    const newLead = {
-      id: "lead-" + Date.now(),
-      profileId,
-      providerName: String(body.providerName || profileId).trim(),
-      clientContact: String(body.clientContact || "").trim(),
-      desiredTime: String(body.desiredTime || "").trim(),
-      duration: String(body.duration || "60 Min.").trim(),
-      status: "NEW",
-      createdAt: new Date().toISOString(),
-    };
-    enquiries.unshift(newLead);
-    writeSafeJson("private-enquiries.json", enquiries);
-    await sendTelegramPing([`📬 Neue Anfrage: ${newLead.providerName} (${profileId})`, `Kontakt: ${newLead.clientContact} · ${newLead.desiredTime}`]);
-    return res.status(200).json({ ok: true, enquiry: newLead });
+    return res.status(503).json({ ok: false, code: "VERIFIED_ENQUIRY_DELIVERY_REQUIRED",
+      error: "Interne Anfragen sind derzeit nicht verfügbar. Eine bestätigte Zustellung an die zuständige Anbieterin ist noch nicht eingerichtet." });
   }
 
   if (["submit_takedown", "report_profile", "opt_out", "report_issue", "dmca_takedown"].includes(action)) {
-    const caseId = "CASE-" + Date.now().toString().slice(-6);
-    const offers = (harvestedOffers as any[]) || [];
-    const matched = offers.find((o: any) => o.id === profileId);
-    const phoneHash = hashSwissPhone(body.phone || matched?.rawPhone || "");
-
-    const entry = {
-      caseId,
-      profileId: profileId || null,
-      reason: String(body.reason || "Opt-Out").slice(0, 500),
-      contact: String(body.contact || "").slice(0, 120),
-      status: "HIDDEN_IMMEDIATELY",
-      createdAt: new Date().toISOString(),
-    };
-    takedowns.unshift(entry);
-    writeSafeJson("dmca-takedowns.json", takedowns);
-
-    if (profileId) {
-      states[profileId] = { ...(states[profileId] || {}), paused: true, hidden: true, removedByReport: true, aiOptIn: false, updatedAt: new Date().toISOString() };
-      writeSafeJson("managed-profile-states.json", states);
-      blockedList.push({ profileId, phoneHash, reason: "opt-out", createdAt: new Date().toISOString() });
-      writeSafeJson("do-not-import.json", blockedList);
+    const reason = [body.reason, body.details].filter(Boolean).map((x) => String(x).trim()).join(" | ").slice(0, 500);
+    const contact = String(body.contact || "").trim().slice(0, 120);
+    const sourceUrl = String(body.sourceUrl || "").trim().slice(0, 500);
+    if (!reason || reason.length < 5 || (!profileId && !sourceUrl)) {
+      return res.status(400).json({ ok: false, error: "Bitte Grund und Profilbezug angeben." });
     }
-    await sendTelegramPing([`🛡️ Opt-Out / Takedown (${caseId})`, `Profil: ${profileId}`, `Kontakt: ${entry.contact}`]);
-    return res.status(200).json({ ok: true, caseId, caseNumber: caseId, preliminarilyHidden: Boolean(profileId) });
+    if (!isSupabaseConfigured()) {
+      return res.status(503).json({ ok: false, error: "Vertraulicher Meldeweg vorübergehend nicht verfügbar.", next: "/contact" });
+    }
+    const caseId = crypto.randomUUID();
+    const record = {
+      case_id: caseId,
+      profile_id: profileId || null,
+      source_url: sourceUrl || null,
+      reason,
+      contact,
+      status: "RECEIVED"
+    };
+    const saved = await supaFetch("iwsn_report_cases", { method: "POST", body: record });
+    if (!saved.ok) {
+      return res.status(503).json({ ok: false, error: "Meldung nicht gespeichert. Bitte erneut versuchen.", next: "/contact" });
+    }
+    await sendTelegramPing(["Neuer IWSN-Meldefall: " + caseId]);
+    return res.status(202).json({ ok: true, caseId, status: "RECEIVED", preliminarilyHidden: false });
   }
 
   if (["login_or_claim", "register_new_profile", "request_claim"].includes(action)) {
-    const offers = (harvestedOffers as any[]) || [];
-    const rawQuery = String(body.query || body.phone || body.displayName || profileId || "").trim();
-    const cleanDigits = rawQuery.replace(/\D/g, "").replace(/^0041/, "41").replace(/^0/, "41");
-    const matchedOffer = offers.find(
-      (o: any) =>
-        o.id === rawQuery ||
-        o.dedupClusterId === rawQuery ||
-        (cleanDigits.length >= 9 && String(o.rawPhone || "").replace(/\D/g, "").includes(cleanDigits.slice(-8)))
-    );
-
-    const targetId = matchedOffer
-      ? matchedOffer.id || matchedOffer.dedupClusterId
-      : profileId || "ch-new-" + crypto.createHash("sha1").update(rawQuery + Date.now()).digest("hex").slice(0, 10);
-
-    const token = makeOwnerToken(targetId);
-    if (states[targetId]?.claimed && providedToken && providedToken !== token && !isAdmin) {
-      return res.status(403).json({ ok: false, error: "Dieses Profil ist bereits geschützt." });
-    }
-
-    const cleanName = String(body.displayName || matchedOffer?.rawName || rawQuery || "Direktprofil").trim();
-    states[targetId] = {
-      ...(states[targetId] || {}),
-      profileId: targetId,
-      displayName: cleanName,
-      city: String(body.city || matchedOffer?.city || "Zürich").trim(),
-      canton: String(body.canton || matchedOffer?.canton || "ZH").toUpperCase().trim(),
-      phoneDisplay: String(body.phoneDisplay || body.phone || matchedOffer?.rawPhone || "").trim(),
-      rate30Chf: Math.max(80, Math.min(800, Number(body.rate30Chf || matchedOffer?.rate30Chf || 200))),
-      rate60Chf: Math.max(100, Math.min(1200, Number(body.rate60Chf || matchedOffer?.advertisedBaseChf || 350))),
-      bio: String(body.bio || matchedOffer?.bio || `${cleanName} – Direktkontakt.`).trim(),
-      thumbnail: String(body.thumbnail || matchedOffer?.thumbnail || "").trim(),
-      claimed: true,
-      updatedAt: new Date().toISOString(),
-    };
-    writeSafeJson("managed-profile-states.json", states);
-
-    return res.status(200).json({
-      ok: true,
-      profileId: targetId,
-      ownerToken: token,
-      cockpitUrl: `/creator-dashboard?id=${encodeURIComponent(targetId)}&token=${encodeURIComponent(token)}`,
-      state: states[targetId],
+    return res.status(403).json({
+      ok: false,
+      code: "VERIFIED_PROVIDER_SESSION_REQUIRED",
+      error: "Profilübernahme und Anmeldung erfordern eine verifizierte Anbietersitzung.",
+      next: "/private/provider-draft"
     });
   }
 

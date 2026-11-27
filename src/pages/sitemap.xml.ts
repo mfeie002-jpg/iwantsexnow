@@ -1,5 +1,7 @@
 import type { GetServerSideProps } from "next";
 import offersData from "@/data/harvested-offers.json";
+import {getCatalogueSnapshot} from '@/lib/night-catalogue-server';
+import {isVisibleProfile} from '@/lib/night-catalogue';
 
 const CITIES = ["zug", "zuerich", "luzern", "baden", "basel", "bern", "st-gallen", "winterthur", "geneve", "lausanne", "lugano"];
 const SERVICES = [
@@ -37,11 +39,13 @@ const STATIC_PATHS = [
   "/guides",
   "/faq",
   "/safety",
+  "/escort-zurich", "/escort-basel", "/escort-bern", "/escort-geneva", "/escort-lausanne", "/escort-lugano",
+  "/how-it-works", "/advertise",
 ];
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const baseUrl = "https://iwantsexnow.ch";
-  const now = new Date().toISOString();
+  const catalogue = await getCatalogueSnapshot();
 
   const urls: { loc: string; priority: string; changefreq: string }[] = [];
 
@@ -56,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     }
   }
 
-  const rawOffers = ((offersData as any[]) || []).slice(0, 1000);
+  const rawOffers = ((offersData as any[]) || []).filter(o=>isVisibleProfile(o,catalogue.states,catalogue.blockedIds));
   for (const o of rawOffers) {
     const pid = o.id || o.dedupClusterId;
     if (pid) {
@@ -70,11 +74,10 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
+${Array.from(new Map(urls.map(u=>[u.loc,u])).values())
   .map(
     (u) => `  <url>
     <loc>${u.loc}</loc>
-    <lastmod>${now}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`

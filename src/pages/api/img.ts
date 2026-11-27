@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import {matchesRasterSignature} from '@/lib/image-file';
 
 const IMAGE_HOSTS = new Set([
   "images.xdate.ch",
@@ -71,9 +72,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         signal: ctrl.signal,
         redirect: "manual",
         headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36",
-          Accept: "image/avif,image/webp,image/png,image/jpeg,image/gif",
-          Referer: url.origin + "/"
+          "User-Agent": "iwantsexnow.ch image proxy/1.0 (+https://iwantsexnow.ch/contact)",
+          Accept: "image/avif,image/webp,image/png,image/jpeg,image/gif"
         }
       });
       if ([301, 302, 303, 307, 308].includes(upstream.status)) {
@@ -109,13 +109,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       chunks.push(Buffer.from(value));
     }
 
-    if (size < 3500) return unavailable(res);
+    const image = Buffer.concat(chunks);
+    if (size < 3500 || !matchesRasterSignature(image,contentType)) return unavailable(res);
 
     res.setHeader("Content-Type", contentType);
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800");
     if (req.method === "HEAD") return res.status(200).end();
-    return res.status(200).send(Buffer.concat(chunks));
+    return res.status(200).send(image);
   } catch {
     return unavailable(res);
   } finally {
