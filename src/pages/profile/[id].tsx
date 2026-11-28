@@ -14,6 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = typeof params?.id === "string" ? params.id : "";
   const { default: rawOffers } = await import("@/data/harvested-offers.json");
   const { getCatalogueSnapshot } = await import("@/lib/night-catalogue-server");
+  const { publicCatalogueFacts } = await import("@/lib/public-catalogue-facts");
   const catalogue = await getCatalogueSnapshot();
   const offer = (rawOffers as any[]).find(item => getProfileId(item) === id);
   if (!offer || !isVisibleProfile(offer, catalogue.states, catalogue.blockedIds)) return { notFound: true };
@@ -31,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     clubs: [],
     partial: true
   };
-  return {props:{profileId:id,profile,catalogue:scopedCatalogue}};
+  return {props:{profileId:id,profile,catalogue:scopedCatalogue,standLabel:publicCatalogueFacts().standLabel}};
 };
 
 export default function ProfileDetailPage({ profileId, profile }: { profileId: string; profile:any }) {

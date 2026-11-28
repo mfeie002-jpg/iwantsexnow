@@ -92,11 +92,10 @@ export function countEstablishments(rows: unknown): number {
   }).length;
 }
 
-const SCRAPE_KEYS = ["lastDeltaScrapeAt", "lastCantonHarvestAt", "lastStudioCrawlAt", "lastDeepNightAuditAt"] as const;
-
-export function latestDataStandIso(record: Record<string, unknown> | null | undefined, extra: unknown[] = []): string | null {
-  const stamps = [...SCRAPE_KEYS.map((key) => record?.[key]), ...extra]
-    .map((value) => (typeof value === "string" ? Date.parse(value) : NaN))
+export function latestOfferHarvestIso(rows: readonly { scrapedAt?: unknown; scrapedAtIso?: unknown }[] | null | undefined): string | null {
+  if (!Array.isArray(rows)) return null;
+  const stamps = rows
+    .map((row) => Date.parse(String(row?.scrapedAtIso || row?.scrapedAt || "")))
     .filter((value) => Number.isFinite(value));
   if (!stamps.length) return null;
   return new Date(Math.max(...stamps)).toISOString();

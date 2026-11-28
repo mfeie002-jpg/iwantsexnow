@@ -1,6 +1,6 @@
-import stats from "../data/index-stats.json";
+import offers from "../data/harvested-offers.json";
 import establishments from "../data/swiss-establishments-vault.json";
-import { countEstablishments, formatStandDate, latestDataStandIso } from "./honesty";
+import { countEstablishments, formatStandDate, latestOfferHarvestIso } from "./honesty";
 
 export type PublicCatalogueFacts = {
   clubCount: number;
@@ -9,7 +9,7 @@ export type PublicCatalogueFacts = {
 };
 
 export function publicCatalogueFacts(): PublicCatalogueFacts {
-  const standIso = latestDataStandIso(stats as Record<string, unknown>);
+  const standIso = latestOfferHarvestIso(offers as { scrapedAt?: unknown; scrapedAtIso?: unknown }[]);
   return {
     clubCount: countEstablishments(establishments),
     standIso,

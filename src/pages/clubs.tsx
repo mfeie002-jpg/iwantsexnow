@@ -9,9 +9,10 @@ import {formatSwissCount} from '@/lib/format-swiss-count';
 import {useCatalogue} from '@/components/night/CatalogueContext';
 import type {GetServerSideProps} from 'next';
 import {getCatalogueSnapshot} from '@/lib/night-catalogue-server';
+import {publicCatalogueFacts} from '@/lib/public-catalogue-facts';
 export const getServerSideProps:GetServerSideProps=async()=>{
  const snapshot=await getCatalogueSnapshot();
- return {props:{catalogue:{states:{},blockedIds:[],offers:[],clubs:snapshot.clubs,partial:true}}};
+ return {props:{catalogue:{states:{},blockedIds:[],offers:[],clubs:snapshot.clubs,partial:true},standLabel:publicCatalogueFacts().standLabel}};
 };
 export default function ClubsPage(){
  const router=useRouter();const {blockedIds,states,clubs:clubsData}=useCatalogue();const [limit,setLimit]=useState(18);

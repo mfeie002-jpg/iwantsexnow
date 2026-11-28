@@ -1,12 +1,10 @@
-import stats from "@/data/index-stats.json";
-import { formatStandDate, latestDataStandIso } from "@/lib/honesty";
+import React, { createContext, useContext } from "react";
 
-export function dataStandLabel(): string {
-  return formatStandDate(latestDataStandIso(stats as Record<string, unknown>));
-}
+export const StandLabelContext = createContext("");
 
-export function DataStandNote({ className = "night-note" }: { className?: string }) {
-  const label = dataStandLabel();
-  if (!label) return null;
-  return <p className={className}>Datenstand {label}. Der Zeitpunkt stammt aus dem letzten erfassten Harvest der Verzeichnisdaten.</p>;
+export function DataStandNote({ className = "night-note", label }: { className?: string; label?: string }) {
+  const fromPage = useContext(StandLabelContext);
+  const text = label || fromPage;
+  if (!text) return null;
+  return <p className={className}>Jüngster Erfassungszeitstempel in den Einträgen: {text}.</p>;
 }

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { buildPortalFacts, countEstablishments, halfHourPriceLine, hourlyPriceLine, isDefaultHourly, isDerivedHalfHour, latestDataStandIso } from "../src/lib/honesty.ts";
+import { buildPortalFacts, countEstablishments, formatStandDate, halfHourPriceLine, hourlyPriceLine, isDefaultHourly, isDerivedHalfHour, latestOfferHarvestIso } from "../src/lib/honesty.ts";
 
 const read = (path) => fs.readFileSync(new URL(path, import.meta.url), "utf8");
 
@@ -23,11 +23,14 @@ test("default hourly and derived half-hour prices are marked geschätzt", () => 
   assert.match(hourlyPriceLine({ harvested: 180, halfHour: 110 }).label, /nicht bestätigt/);
 });
 
-test("data stand uses a scrape timestamp from the stats file", () => {
+test("visible stand uses the newest offer harvest timestamp, not the stats-script clock", () => {
+  const offers = JSON.parse(read("../src/data/harvested-offers.json"));
   const stats = JSON.parse(read("../src/data/index-stats.json"));
-  const latest = ["lastDeltaScrapeAt", "lastCantonHarvestAt", "lastStudioCrawlAt", "lastDeepNightAuditAt"]
-    .map((key) => stats[key]).sort().at(-1);
-  assert.equal(latestDataStandIso(stats), latest);
+  const iso = latestOfferHarvestIso(offers);
+  assert.equal(iso, "2026-11-06T02:01:27.525Z");
+  assert.equal(formatStandDate(iso), "6. November 2026");
+  assert.notEqual(iso, stats.lastDeltaScrapeAt);
+  assert.notEqual(iso, stats.lastStudioCrawlAt);
 });
 
 test("portal comparison has ten names, no rating, and statements only with a date", () => {
