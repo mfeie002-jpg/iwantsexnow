@@ -51,6 +51,7 @@ export function AgeVerificationGate() {
 
   if (!mounted || verified) return null;
 
+  const french = router.pathname.startsWith("/fr/");
   const openLegalpaths = ["/privacy", "/terms", "/imprint", "/report"];
   if (openLegalpaths.includes(router.pathname)) return null;
 
@@ -73,31 +74,31 @@ export function AgeVerificationGate() {
 
           <div className="space-y-3">
             <h2 id="age-gate-title" className="text-[2rem] text-tinte">
-              Erst kurz: bist du 18?
+              {french ? "Avez-vous 18 ans ou plus ?" : "Erst kurz: bist du 18?"}
             </h2>
             <p className="leading-7 text-tinte/80">
-              Diese Plattform ist nur für Erwachsene. Deine Angaben behandeln wir nach dem Schweizer Datenschutzgesetz (revDSG), ohne Werbe-Tracking von Dritten.
+              {french ? "Ce répertoire est réservé aux adultes." : "Diese Plattform ist nur für Erwachsene. Deine Angaben behandeln wir nach dem Schweizer Datenschutzgesetz (revDSG), ohne Werbe-Tracking von Dritten."}
             </p>
           </div>
 
           <div className="space-y-3">
             <button type="button" onClick={handleConfirm} className="brass-button min-h-[54px] w-full cursor-pointer px-6 text-base">
-              Ja, ich bin 18 oder älter
+              {french ? "Oui, j’ai 18 ans ou plus" : "Ja, ich bin 18 oder älter"}
             </button>
             <a href="https://www.sbb.ch" className="block text-center text-sm font-semibold text-tinte/70 underline decoration-2 underline-offset-4 hover:text-tinte">
-              Nein, ich bin unter 18
+              {french ? "Non, j’ai moins de 18 ans" : "Nein, ich bin unter 18"}
             </a>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t-2 border-dotted border-tinte/20 pt-4 text-sm text-tinte/70">
             <Link href="/privacy" className="hover:text-tinte hover:underline">
-              Datenschutz
+              {french ? "Confidentialité (allemand)" : "Datenschutz"}
             </Link>
             <Link href="/terms" className="hover:text-tinte hover:underline">
-              Nutzungsbedingungen
+              {french ? "Conditions d’utilisation (allemand)" : "Nutzungsbedingungen"}
             </Link>
             <Link href="/for-clients" className="hover:text-tinte hover:underline">
-              So funktioniert&apos;s
+              {french ? "Comment ça marche (allemand)" : "So funktioniert's"}
             </Link>
           </div>
         </div>

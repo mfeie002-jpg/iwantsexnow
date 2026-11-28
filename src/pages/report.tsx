@@ -6,7 +6,7 @@ import { checkProviderReportReceipt, submitProviderReport, WorkspaceError } from
 import { validateReportInput } from "@/lib/marketplace/report-input";
 import { clearReportSubmissionKey, ensureReportSubmissionKey, readReportSubmissionKey, ReportSessionError } from "@/lib/marketplace/report-session";
 
-const reasons = ["Falsche Angabe", "Eigenes Bild oder Profil", "Entfernung beantragen", "Unpassender Inhalt", "Anderer Hinweis"];
+const reasons = ["Falsche Angabe", "Eigenes Bild oder Profil", "Profilübernahme anfragen", "Entfernung beantragen", "Unpassender Inhalt", "Anderer Hinweis"];
 const inputStyle = { width: "100%", padding: "14px 16px", borderRadius: 10, border: "1px solid var(--night-border, #55404e)", background: "var(--night-panel, #20171f)", color: "inherit", minHeight: 48 };
 type ReportError = { message: string; field?: "profileId" | "sourceUrl" | "reason" | "contact" | "form" };
 const fieldIds = { profileId: "report-profile", sourceUrl: "report-source", reason: "report-details", contact: "report-contact", form: "report-profile" };
@@ -37,9 +37,10 @@ export default function ReportPage() {
     if (!router.isReady) return;
     const raw = router.query.id || router.query.profileId;
     if (typeof raw === "string") setProfileId(raw);
+    setReason(router.query.request === "removal" ? "Entfernung beantragen" : router.query.request === "claim" ? "Profilübernahme anfragen" : reasons[0]);
     const url = router.query.sourceUrl;
     if (typeof url === "string") setSourceUrl(url);
-  }, [router.isReady, router.query.id, router.query.profileId, router.query.sourceUrl]);
+  }, [router.isReady, router.query.id, router.query.profileId, router.query.sourceUrl, router.query.request]);
 
   useEffect(() => {
     const feedback = error ? feedbackRef.current : busy || caseId ? statusRef.current : null;
@@ -54,6 +55,10 @@ export default function ReportPage() {
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (inFlight.current || caseId) return;
+    if (reason === "Profilübernahme anfragen" && !contact.trim()) {
+      setError({ field: "contact", message: "Gib bitte einen Rückkontakt für die Prüfung deiner Anfrage an." });
+      return;
+    }
     const checked = validateReportInput({ profileId, sourceUrl, reason: reason + (details.trim() ? ": " + details.trim() : ""), contact });
     if (checked.ok === false) {
       setError({ message: checked.message, field: checked.field });
@@ -129,10 +134,11 @@ export default function ReportPage() {
             <legend><h2>Vertrauliche Meldung einreichen</h2></legend>
             <div role="group" aria-label="Meldegrund" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{reasons.map(value => <button key={value} className={reason === value ? "night-button" : "night-button-secondary"} type="button" aria-pressed={reason === value} onClick={() => { setReason(value); setError(null); }}>{value}</button>)}</div>
             <p id="report-reference-help" className="night-help">Mindestens eine Angabe ist nötig: Profil-ID oder vollständiger Link mit https:// oder http://. Links dürfen keine Zugangsdaten enthalten.</p>
+            {reason === "Profilübernahme anfragen" && <p className="night-note">Gib einen Rückkontakt für die Prüfung an. Die Bearbeitung deines Profils wird erst nach einem Nachweis deiner Berechtigung freigeschaltet. Lade hier keine Ausweisdokumente hoch.</p>}
             <label htmlFor="report-profile">Betroffene Profil-ID<input id="report-profile" ref={profileRef} style={inputStyle} value={profileId} maxLength={150} autoComplete="off" aria-invalid={invalid("profileId")} aria-describedby={describedBy("profileId", "report-reference-help")} onChange={event => { setProfileId(event.target.value); setError(null); }} /></label>
             <label htmlFor="report-source">Oder Link zur betroffenen Seite<input id="report-source" style={inputStyle} type="url" value={sourceUrl} maxLength={500} autoComplete="off" placeholder="https://…" aria-invalid={invalid("sourceUrl")} aria-describedby={describedBy("sourceUrl", "report-reference-help")} onChange={event => { setSourceUrl(event.target.value); setError(null); }} /></label>
             <label htmlFor="report-details">Kurze Erläuterung, falls nötig<textarea id="report-details" style={inputStyle} value={details} maxLength={400} rows={5} aria-invalid={invalid("reason")} aria-describedby={describedBy("reason")} onChange={event => { setDetails(event.target.value); setError(null); }} /></label>
-            <label htmlFor="report-contact">Rückkontakt, freiwillig<input id="report-contact" style={inputStyle} value={contact} maxLength={120} autoComplete="off" aria-invalid={invalid("contact")} aria-describedby={describedBy("contact")} onChange={event => { setContact(event.target.value); setError(null); }} /></label>
+            <label htmlFor="report-contact">{reason === "Profilübernahme anfragen" ? "Rückkontakt für die Übernahmeprüfung" : "Rückkontakt, freiwillig"}<input id="report-contact" style={inputStyle} value={contact} maxLength={120} autoComplete="off" aria-invalid={invalid("contact")} aria-describedby={describedBy("contact")} onChange={event => { setContact(event.target.value); setError(null); }} /></label>
             <p className="night-muted">Die Meldung wird erst mit dem folgenden Button übermittelt. Kein Konto nötig. Für sichere Wiederholungen bleibt eine zufällige Kennung in diesem Tab gespeichert, auch nach einer Bestätigung.</p>
             <button className="night-button" type="submit">{busy ? checking ? "Eingang wird geprüft …" : "Meldung wird übermittelt …" : "Vertrauliche Meldung einreichen"}</button>
           </fieldset>

@@ -73,7 +73,7 @@ function xmlEscape(value: string): string {
 /** Dark tile with a gold initial. Served by the proxy and used when that request fails in the browser. */
 export function profilePhotoSvg(name: string): string {
   const initial = xmlEscape(nameInitial(name));
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" role="img"><rect width="480" height="640" fill="#0D111A"/><text x="240" y="300" text-anchor="middle" fill="#C8A97E" font-family="Georgia, 'Times New Roman', serif" font-size="132">${initial}</text><text x="240" y="390" text-anchor="middle" fill="#C8A97E" font-family="Georgia, 'Times New Roman', serif" font-size="28">Foto folgt</text></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" role="img"><rect width="480" height="640" fill="#0D111A"/><text x="240" y="300" text-anchor="middle" fill="#C8A97E" font-family="Georgia, 'Times New Roman', serif" font-size="132">${initial}</text><text x="240" y="390" text-anchor="middle" fill="#C8A97E" font-family="Georgia, 'Times New Roman', serif" font-size="28">Kein Profilfoto verfügbar</text></svg>`;
 }
 
 export function profilePhotoPlaceholder(name: string): string {

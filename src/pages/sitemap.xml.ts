@@ -40,7 +40,7 @@ const STATIC_PATHS = [
   "/faq",
   "/safety",
   "/escort-zurich", "/escort-basel", "/escort-bern", "/escort-geneva", "/escort-lausanne", "/escort-lugano",
-  "/how-it-works", "/advertise",
+  "/how-it-works", "/advertise", "/fr/geneve/escort",
 ];
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
