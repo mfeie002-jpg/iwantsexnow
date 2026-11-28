@@ -20,6 +20,11 @@ export type InitialPageData = {
 
 export type CatalogueFactsProps = { catalogueFacts: PublicCatalogueFacts };
 
+export async function getHomeCatalogueProps() {
+  const result = await getPaginatedCatalogueProps({ query: {}, resolvedUrl: '/' } as GetServerSidePropsContext, {}, 4);
+  return { ...result, revalidate: 21600 };
+}
+
 export async function getPaginatedCatalogueProps(
   ctx: GetServerSidePropsContext,
   forced: CatalogueFilters = {},

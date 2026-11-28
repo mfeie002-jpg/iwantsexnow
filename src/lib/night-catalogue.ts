@@ -94,7 +94,7 @@ export function filterOffers(offers: Offer[], filters: CatalogueFilters = {}, st
   const category = filters.category || 'all';
   const list = offers.filter(o => {
     const id = getProfileId(o), st = states[id] || {};
-    if (!isVisibleProfile(o, states, blockedIds)) return false;
+    if (!isVisibleProfile(o, states, blockedIds) || o.hideFromListing) return false;
     if (filters.canton && filters.canton !== 'ALL' && String(st.canton || o.canton || '').toUpperCase() !== filters.canton.toUpperCase()) return false;
     if (category !== 'all' && category !== 'ALL' && String(o.rubric || '') !== category) return false;
     if (filters.service && !matchesCatalogueService(o, filters.service)) return false;
@@ -116,6 +116,73 @@ export function normalizeCatalogueText(value: string): string {
   return value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('de-CH')
     .replace(/\bzuerich\b/g, 'zurich').replace(/\b(?:genf|geneva)\b/g, 'geneve').trim();
 }
+const LISTING_PHONE = /^41(?:7[5-9]|[2-6]\d)\d{7}$/;
+const RICHNESS_KEYS = ['rawName', 'displayName', 'city', 'canton', 'sourcePortal', 'sourceUrl', 'bio', 'rubric', 'priceLabel', 'rawPhone', 'advertisedBaseChf', 'rate30Chf', 'age', 'heightCm'];
+
+export type AlsoListed = { id: string; sourcePortal: string; sourceUrl: string };
+export type ListingRole = { hideFromListing: boolean; alsoListed: AlsoListed[] };
+
+export function listingPhone(offer: Offer): string {
+  const digits = cleanSwissPhone(offer?.rawPhone || offer?.phone || offer?.phoneDisplay || '');
+  return LISTING_PHONE.test(digits) ? digits : '';
+}
+
+function richness(offer: Offer): number {
+  let score = 0;
+  for (const key of RICHNESS_KEYS) {
+    const value = offer?.[key];
+    if (typeof value === 'string' && value.trim()) score += 1;
+    else if (typeof value === 'number' && Number.isFinite(value) && value > 0) score += 1;
+  }
+  if (Array.isArray(offer?.includedTags)) score += Math.min(offer.includedTags.length, 4);
+  if (Array.isArray(offer?.languages) && offer.languages.length) score += 1;
+  if (offer?.incall === true) score += 1;
+  if (offer?.outcall === true) score += 1;
+  const photos = getProfilePhotos(offer);
+  if (photos.length) score += 8 + Math.min(photos.length, 4);
+  return score;
+}
+
+function listedRef(offer: Offer): AlsoListed {
+  return {
+    id: getProfileId(offer),
+    sourcePortal: String(offer?.sourcePortal || 'Quelle'),
+    sourceUrl: typeof offer?.sourceUrl === 'string' ? offer.sourceUrl : '',
+  };
+}
+
+/** Group the same normalised Swiss number. Listings keep the fullest entry with a working photo. */
+export function phoneListingRoles(offers: readonly Offer[]): Map<string, ListingRole> {
+  const roles = new Map<string, ListingRole>();
+  const groups = new Map<string, Offer[]>();
+  for (const offer of offers) {
+    const id = getProfileId(offer);
+    if (!id) continue;
+    const phone = listingPhone(offer);
+    if (!phone) {
+      roles.set(id, { hideFromListing: false, alsoListed: [] });
+      continue;
+    }
+    const bucket = groups.get(phone) || [];
+    bucket.push(offer);
+    groups.set(phone, bucket);
+  }
+  for (const bucket of groups.values()) {
+    const ranked = [...bucket].sort((a, b) => richness(b) - richness(a) || getProfileId(a).localeCompare(getProfileId(b), 'de-CH'));
+    const [primary, ...rest] = ranked;
+    const others = rest.map(listedRef);
+    roles.set(getProfileId(primary), { hideFromListing: false, alsoListed: others });
+    const primaryRef = listedRef(primary);
+    for (const duplicate of rest) {
+      roles.set(getProfileId(duplicate), {
+        hideFromListing: true,
+        alsoListed: [primaryRef, ...others.filter((item) => item.id !== getProfileId(duplicate))],
+      });
+    }
+  }
+  return roles;
+}
+
 export function cleanSwissPhone(input: unknown): string {
   let d = String(input || '').replace(/\D/g, '');
   if (d.startsWith('0041')) d = d.slice(2); else if (d.startsWith('0')) d = '41' + d.slice(1);

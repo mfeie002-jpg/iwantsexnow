@@ -1,17 +1,17 @@
 import React from 'react';
 import {formatSwissCount} from '@/lib/format-swiss-count';
 import Link from 'next/link';
-import type {GetServerSideProps} from 'next';
+import type {GetStaticProps} from 'next';
 import {ArrowRight,ArrowUpRight,BookOpen,CheckCircle2,Clock3,Heart,MapPin,ShieldCheck,Sparkles} from 'lucide-react';
 import {SEO} from '@/components/SEO';
 import {brandAsset,CATEGORIES,REGIONS,searchHref} from '@/lib/night-catalogue';
 import {useCatalogue} from '@/components/night/CatalogueContext';
 import {CityTileArt,ProfileGrid} from '@/components/night/DiscoveryPages';
 import {TouchSearch,useNightGuide} from '@/components/night/NightShell';
-import {getPaginatedCatalogueProps,type CatalogueFactsProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
+import {getHomeCatalogueProps,type CatalogueFactsProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {XeniaContext} from '@/components/flagship/FlagshipEditorial';
 
-export const getServerSideProps:GetServerSideProps=ctx=>getPaginatedCatalogueProps(ctx,{},4);
+export const getStaticProps:GetStaticProps=()=>getHomeCatalogueProps();
 
 const categories=[
  {title:'Escort & Begleitung',description:'Verzeichnis & Quellen',image:'category-escort.webp',href:searchHref({category:'female'})},

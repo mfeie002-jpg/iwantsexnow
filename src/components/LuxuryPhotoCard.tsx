@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Heart, MapPin, Scale } from "lucide-react";
+import { AlsoListed } from "@/components/AlsoListed";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
 import { NEUTRAL_PROFILE_IMAGE, profileImageSource, profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
@@ -44,6 +45,7 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
       <p className="night-eyebrow"><MapPin size={12} aria-hidden="true" /> {city}</p>
       <h3><Link href={href}>{name}</Link></h3>
       <p className="night-note">{hourly.label}</p>
+      <AlsoListed items={offer.alsoListed} total={offer.alsoListedCount} />
       <div className="night-profile-bottom">
         <button type="button" className={`night-text-button ${compared ? "active" : ""}`} aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? `comparison-limit-${id}` : undefined} onClick={() => catalogue.toggleCompare(id)}>
           <Scale size={15} aria-hidden="true" /> {compared ? "Im Vergleich" : "Vergleichen"}
