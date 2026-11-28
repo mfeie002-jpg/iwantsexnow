@@ -2,7 +2,7 @@ import type { GetServerSideProps } from 'next';
 import { readSafeJson, isSupabaseConfigured, supaFetch } from '@/lib/supabaseAdmin';
 import rawOffers from '@/data/harvested-offers.json';
 import establishments from '@/data/swiss-establishments-vault.json';
-import {getProfilePhotos,getProfileId,getProfileRate,isConfirmedAvailable,isVisibleProfile} from './night-catalogue';
+import {getProfilePhotos,getProfileId,getProfileRate,isConfirmedAvailable,isVisibleProfile,phoneListingRoles} from './night-catalogue';
 const sourceById = new Map((rawOffers as Record<string,any>[])
   .filter(offer => isVisibleProfile(offer)).map(offer => [getProfileId(offer), offer]));
 const establishmentIds = new Set((establishments as Record<string,any>[])
@@ -65,13 +65,16 @@ export async function getCatalogueSnapshot() {
     if(Object.keys(state).length)states[id]=state;
   }
   // Keep raw import metadata and the full galleries out of the shared browser bundle.
-  const offers=(rawOffers as Record<string,any>[]).filter(o=>isVisibleProfile(o,states,blockedIds)).map(o=>{
+  const visibleRaw=(rawOffers as Record<string,any>[]).filter(o=>isVisibleProfile(o,states,blockedIds));
+  const roles=phoneListingRoles(visibleRaw);
+  const offers=visibleRaw.map(o=>{
     const text=[o.rawName,o.bio,...(o.includedTags||[])].join(' ');
     const services=[/\bgfe\b|girlfriend/i.test(text)?'gfe':'',o.outcall===true?'outcall':'',/dinner|abendbegleitung/i.test(text)?'dinner':'',/paare|couples|bisex/i.test(text)?'couples':''].filter(Boolean);
     const hourly = Number(o.advertisedBaseChf);
     const halfHour = Number(o.rate30Chf);
     const scrapedAt = typeof o.scrapedAtIso === 'string' && o.scrapedAtIso ? o.scrapedAtIso : (typeof o.scrapedAt === 'string' ? o.scrapedAt : '');
-    return {id:getProfileId(o),rawName:o.rawName||'',city:o.city||'',canton:o.canton||'',rubric:o.rubric||'',sourcePortal:o.sourcePortal||'',sourceUrl:o.sourceUrl||'',rawPhone:o.rawPhone||'',gallery:getProfilePhotos(o,states[getProfileId(o)]).slice(0,2),includedTags:o.includedTags||[],languages:o.languages||[],incall:o.incall===true,outcall:o.outcall===true,services,advertisedBaseChf:Number.isFinite(hourly)&&hourly>0?hourly:null,rate30Chf:Number.isFinite(halfHour)&&halfHour>0?halfHour:null,scrapedAt};
+    const role=roles.get(getProfileId(o))||{hideFromListing:false,alsoListed:[]};
+    return {id:getProfileId(o),rawName:o.rawName||'',city:o.city||'',canton:o.canton||'',rubric:o.rubric||'',sourcePortal:o.sourcePortal||'',sourceUrl:o.sourceUrl||'',rawPhone:o.rawPhone||'',gallery:getProfilePhotos(o,states[getProfileId(o)]).slice(0,2),includedTags:o.includedTags||[],languages:o.languages||[],incall:o.incall===true,outcall:o.outcall===true,services,advertisedBaseChf:Number.isFinite(hourly)&&hourly>0?hourly:null,rate30Chf:Number.isFinite(halfHour)&&halfHour>0?halfHour:null,scrapedAt,hideFromListing:role.hideFromListing,alsoListed:role.alsoListed.slice(0,4).map(item=>({id:item.id,sourcePortal:item.sourcePortal})),alsoListedCount:role.alsoListed.length};
   });
   const clubs=(establishments as Record<string,any>[]).filter(o=>isVisibleProfile(o,states,blockedIds)).map(o=>({
     id:getProfileId(o),name:o.name||'',city:o.city||'',canton:o.canton||'',type:o.type||'',sourcePortal:o.sourcePortal||'',sourceUrl:o.sourceUrl||''

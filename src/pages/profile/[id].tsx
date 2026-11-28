@@ -3,6 +3,7 @@ import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowLeft, ArrowRight, Heart, ImageIcon, MapPin, Phone, Scale, ExternalLink, Flag, Expand, X } from "lucide-react";
+import { AlsoListed } from "@/components/AlsoListed";
 import { SEO } from "@/components/SEO";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
@@ -21,8 +22,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const hourly = Number(offer.advertisedBaseChf);
   const halfHour = Number(offer.rate30Chf);
   const scrapedAt = typeof offer.scrapedAtIso === "string" && offer.scrapedAtIso ? offer.scrapedAtIso : (typeof offer.scrapedAt === "string" ? offer.scrapedAt : "");
-  const profile={id,rawName:offer.rawName||'',city:offer.city||'',canton:offer.canton||'',sourcePortal:offer.sourcePortal||'',sourceUrl:offer.sourceUrl||'',rawPhone:offer.rawPhone||'',bio:offer.bio||'',gallery:getProfilePhotos(offer,catalogue.states[id]),includedTags:offer.includedTags||[],languages:offer.languages||[],advertisedBaseChf:Number.isFinite(hourly)&&hourly>0?hourly:null,rate30Chf:Number.isFinite(halfHour)&&halfHour>0?halfHour:null,scrapedAt};
   const publicOffer = catalogue.offers.find(item => getProfileId(item) === id);
+  const profile={id,rawName:offer.rawName||'',city:offer.city||'',canton:offer.canton||'',sourcePortal:offer.sourcePortal||'',sourceUrl:offer.sourceUrl||'',rawPhone:offer.rawPhone||'',bio:offer.bio||'',gallery:getProfilePhotos(offer,catalogue.states[id]),includedTags:offer.includedTags||[],languages:offer.languages||[],advertisedBaseChf:Number.isFinite(hourly)&&hourly>0?hourly:null,rate30Chf:Number.isFinite(halfHour)&&halfHour>0?halfHour:null,scrapedAt,alsoListed:publicOffer?.alsoListed||[],alsoListedCount:publicOffer?.alsoListedCount||0};
   if (!publicOffer) return {notFound:true};
   const state = catalogue.states[id];
   const scopedCatalogue = {
@@ -37,7 +38,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 export default function ProfileDetailPage({ profileId, profile }: { profileId: string; profile:any }) {
   const catalogue = useCatalogue();
-  const offer = catalogue.visibleOffers.some(item => getProfileId(item) === profileId) ? profile : null;
+  const present = catalogue.offers.some(item => getProfileId(item) === profileId);
+  const blocked = catalogue.blockedIds.includes(profileId) || catalogue.states[profileId]?.hidden;
+  const offer = present && !blocked ? profile : null;
   const [activePhoto, setActivePhoto] = useState(0);
   const [galleryOpen, setGalleryOpen] = useState(false);
   useEffect(() => { setActivePhoto(0); setGalleryOpen(false); }, [profileId]);
@@ -80,6 +83,7 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
         <p className="night-eyebrow"><MapPin size={14} aria-hidden="true" /> {city}{state.canton || offer.canton ? ` · ${String(state.canton || offer.canton).toUpperCase()}` : ""}</p>
         <h1>{name}</h1>
         <p className="night-lead">Eintrag aus {String(offer.sourcePortal || "dem Quellenindex")}.</p>
+        <AlsoListed items={offer.alsoListed} total={offer.alsoListedCount} />
         <div className="night-row night-profile-actions">
           <button type="button" className={`night-button ${saved ? "" : "secondary"}`} aria-pressed={saved} onClick={() => catalogue.toggleFavorite(profileId)}><Heart size={17} fill={saved ? "currentColor" : "none"} /> {saved ? "Gemerkt" : "Merken"}</button>
           <button type="button" className="night-button secondary" aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? 'profile-comparison-limit' : undefined} onClick={() => catalogue.toggleCompare(profileId)}><Scale size={17} /> {compared ? "Im Vergleich" : "Vergleichen"}</button>
