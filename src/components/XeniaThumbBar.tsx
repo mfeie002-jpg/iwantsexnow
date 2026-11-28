@@ -1,69 +1,87 @@
-import React, { useEffect, useId, useRef, useState } from "react";
-import Link from "next/link";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { CATEGORIES, REGIONS } from "@/lib/night-catalogue";
 import {
-  XENIA_BUDGETS, XENIA_STORAGE_KEY, emptyXeniaChoice, parseXeniaChoice, xeniaContextChips, xeniaSearchHref,
-  type XeniaBudget, type XeniaChoice,
+  XENIA_BUDGETS, XENIA_DEVICE_KEY, emptyXeniaChoice, restoreXeniaChoice, storeXeniaChoice, xeniaSearchHref,
+  type XeniaChoice,
 } from "@/lib/xenia-guide";
-function remember(choice: XeniaChoice) {
-  try { localStorage.setItem(XENIA_STORAGE_KEY, JSON.stringify(choice)); } catch { /* The choice still works for this visit. */ }
-}
 
-export function XeniaThumbBar() {
+const QuickContext = createContext({ choice: emptyXeniaChoice(), openStep: (_step: number) => {} });
+export const useQuickXenia = () => useContext(QuickContext);
+
+export function XeniaThumbBar({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const titleId = useId();
-  const opener = useRef<HTMLButtonElement | null>(null);
+  const opener = useRef<HTMLElement | null>(null);
   const [choice, setChoice] = useState<XeniaChoice>(emptyXeniaChoice);
-  const [open, setOpen] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [storageNote, setStorageNote] = useState("");
   const [step, setStep] = useState(0);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    try { setChoice(parseXeniaChoice(localStorage.getItem(XENIA_STORAGE_KEY))); } catch { setChoice(emptyXeniaChoice()); }
-  }, [router.asPath]);
-  const save = (next: XeniaChoice) => { setChoice(next); remember(next); };
-  const city = choice.canton === "ALL" ? "Ganze Schweiz" : (REGIONS.find((item) => item.canton === choice.canton)?.name || choice.canton);
-  const desire = CATEGORIES.find((item) => item.id === choice.category)?.label || "Alle Bereiche";
-  const budget = XENIA_BUDGETS.find((item) => item.id === choice.budget)?.label || "Budget offen";
-  const chips = xeniaContextChips(router.pathname);
-  const go = (next: XeniaChoice) => { save(next); setOpen(false); void router.push(xeniaSearchHref(next)); };
-  return <>
-    <nav className="xenia-bar" aria-label="Xenia">
-      <div className="xenia-bar-row">
-        <button ref={opener} type="button" className="xenia-mark" onClick={() => { setStep(0); setOpen(true); }} aria-haspopup="dialog">
-          <i aria-hidden="true" />Xenia
-        </button>
-        <button type="button" onClick={() => { setStep(0); setOpen(true); }}>Stadt: {city}</button>
-        <button type="button" onClick={() => { setStep(1); setOpen(true); }}>Lust: {desire}</button>
-        <button type="button" onClick={() => { setStep(2); setOpen(true); }}>Budget: {budget}</button>
-        <Link href={xeniaSearchHref(choice)}>Zeigen</Link>
-      </div>
-      <div className="xenia-chips" aria-label="Passende nächste Schritte">
-        {chips.map((chip) => <Link key={chip.href + chip.label} href={chip.href}>{chip.label}</Link>)}
-      </div>
-    </nav>
+    const restore = () => {
+      const saved = restoreXeniaChoice(window);
+      setChoice(saved.choice);
+      setRemember(saved.remember);
+    };
+    restore();
+    const changed = (event: StorageEvent) => {
+      if (event.key === XENIA_DEVICE_KEY || event.key === null) restore();
+    };
+    window.addEventListener("storage", changed);
+    return () => window.removeEventListener("storage", changed);
+  }, []);
+  useEffect(() => { setOpen(false); }, [router.asPath]);
+
+  function openStep(next: number) {
+    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setStep(next);
+    setStorageNote("");
+    setOpen(true);
+  }
+  function save(next: XeniaChoice, persist = remember) {
+    setChoice(next);
+    const saved = storeXeniaChoice(window, next, persist);
+    setRemember(persist && saved);
+    setStorageNote(saved ? "" : "Die Speichereinstellung konnte nicht übernommen werden. Prüfe die Website-Daten deines Browsers.");
+  }
+  function select(next: XeniaChoice) {
+    save(next);
+    if (step < 2) setStep(step + 1);
+    else {
+      setOpen(false);
+      void router.push(xeniaSearchHref(next));
+    }
+  }
+  return <QuickContext.Provider value={{ choice, openStep }}>
+    {children}
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay style={{ position: "fixed", inset: 0, background: "#2b211280", zIndex: 75 }} />
-        <Dialog.Content className="xenia-sheet" aria-labelledby={titleId} onCloseAutoFocus={(event) => { event.preventDefault(); opener.current?.focus(); }}>
-          <p>Xenia · ohne Tippen</p>
-          <Dialog.Title id={titleId}>{["Wo?", "Worauf?", "Budget und Zeit"][step]}</Dialog.Title>
-          <Dialog.Description>{["Wähle eine Stadt.", "Wähle eine Kategorie.", "Wähle ein Budget. Die Zeit bleibt offen, weil niemand ein Zeitfenster bestätigt hat."][step]}</Dialog.Description>
+        <Dialog.Overlay className="discovery-overlay" />
+        <Dialog.Content className="xenia-sheet" onCloseAutoFocus={event => {
+          event.preventDefault();
+          if (opener.current?.isConnected) opener.current.focus();
+        }}>
+          <p className="discovery-kicker">Xenia · {step + 1} / 3</p>
+          <Dialog.Title>{["Ort wählen", "Kategorie wählen", "Budget wählen"][step]}</Dialog.Title>
+          <Dialog.Description>{["In welchem Kanton möchtest du suchen?", "Welcher Bereich interessiert dich?", "Der Preisfilter berücksichtigt bestätigte Honorare für 60 Minuten."][step]}</Dialog.Description>
           <div className="xenia-options">
-            {step === 0 && <>
-              <button type="button" onClick={() => { save({ ...choice, canton: "ALL" }); setStep(1); }}>Ganze Schweiz</button>
-              {REGIONS.map((region) => <button type="button" key={region.canton} onClick={() => { save({ ...choice, canton: region.canton }); setStep(1); }}>{region.name}</button>)}
-            </>}
-            {step === 1 && CATEGORIES.map((item) => <button type="button" key={item.id} onClick={() => { save({ ...choice, category: item.id }); setStep(2); }}>{item.label}</button>)}
-            {step === 2 && XENIA_BUDGETS.map((item) => <button type="button" key={item.id} onClick={() => go({ ...choice, budget: item.id as XeniaBudget })}>{item.label}</button>)}
+            {step === 0 && [{ name: "Ganze Schweiz", canton: "ALL" }, ...REGIONS].map(region =>
+              <button key={region.canton} aria-pressed={choice.canton === region.canton} onClick={() => select({ ...choice, canton: region.canton })}>{region.name}</button>)}
+            {step === 1 && CATEGORIES.map(item =>
+              <button key={item.id} aria-pressed={choice.category === item.id} onClick={() => select({ ...choice, category: item.id })}>{item.label}</button>)}
+            {step === 2 && XENIA_BUDGETS.map(item =>
+              <button key={item.id} aria-pressed={choice.budget === item.id} onClick={() => select({ ...choice, budget: item.id })}>{item.label}</button>)}
           </div>
-          {step === 2 && <p>Zeit: offen. «Heute frei 4 Std.» gibt es hier nicht, weil keine bestätigte Anbieter-Meldung vorliegt.</p>}
+          <label className="discovery-remember"><input type="checkbox" checked={remember} onChange={event => save(choice, event.target.checked)} /> Auf diesem Gerät merken</label>
+          <p className="discovery-storage">{storageNote || (remember ? "Auch bei deinem nächsten Besuch verfügbar." : "Deine Auswahl gilt für diesen Tab.")}</p>
           <div className="xenia-options">
-            {step > 0 && <button type="button" onClick={() => setStep((value) => value - 1)}>Zurück</button>}
-            <Dialog.Close className="xenia-mark">Schliessen</Dialog.Close>
+            {step > 0 && <button onClick={() => setStep(step - 1)}>Zurück</button>}
+            <Dialog.Close>Schliessen</Dialog.Close>
           </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
-  </>;
+  </QuickContext.Provider>;
 }

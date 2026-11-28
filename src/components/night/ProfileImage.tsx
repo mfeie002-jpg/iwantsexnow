@@ -25,7 +25,7 @@ export function ProfileImage({ photos = [], profileId, name = "", photoIndex, al
   }, [src, markFailed]);
   if (!src) {
     if (proxied) {
-      return <img src={profilePhotoPlaceholder(name)} alt={alt || "Foto folgt"} className={`night-image ${className}`} />;
+      return <img src={profilePhotoPlaceholder(name)} alt={alt ? "Kein Profilfoto verfügbar" : ""} className={`night-image ${className}`} />;
     }
     return <div className={`night-image-unavailable ${compact ? "compact" : ""} ${className}`} role="img" aria-label="Profilfoto derzeit nicht verfügbar">
       <ImageOff size={compact ? 22 : 34} aria-hidden="true" />

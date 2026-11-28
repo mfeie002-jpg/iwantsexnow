@@ -62,7 +62,7 @@ test('a private DNS answer is not fetched', async () => {
     resolveHost: async () => ['169.254.169.254'],
     request: async () => { throw new Error('private target was fetched'); }
   });
-  assert.match(result.body.toString(), /Foto folgt/);
+  assert.match(result.body.toString(), /Kein Profilfoto verfügbar/);
   assert.match(result.body.toString(), />A</);
 });
 
@@ -80,7 +80,7 @@ test('redirects to a host outside the profile allowlist are not followed', async
     }
   });
   assert.deepEqual(seen, ['images.xdate.ch']);
-  assert.match(result.body.toString(), /Foto folgt/);
+  assert.match(result.body.toString(), /Kein Profilfoto verfügbar/);
 });
 
 test('dead image URLs stay cached for six hours', async () => {
@@ -125,12 +125,12 @@ test('an unknown profile is not an open image fetch', async () => {
   assert.equal(result.status, 404);
 });
 
-test('the placeholder is a dark tile with the gold initial and Foto folgt', () => {
+test('the placeholder is a dark tile with the gold initial and Kein Profilfoto verfügbar', () => {
   const svg = profilePhotoSvg('élodie Example');
   assert.match(svg, /#0D111A/);
   assert.match(svg, /#C8A97E/);
   assert.match(svg, />É</);
-  assert.match(svg, /Foto folgt/);
+  assert.match(svg, /Kein Profilfoto verfügbar/);
   assert.match(profilePhotoPlaceholder('élodie Example'), /^data:image\/svg\+xml,/);
 });
 

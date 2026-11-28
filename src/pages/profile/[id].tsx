@@ -83,7 +83,7 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
       <section className="night-profile-details">
         <p className="night-eyebrow"><MapPin size={14} aria-hidden="true" /> {city}{state.canton || offer.canton ? ` · ${String(state.canton || offer.canton).toUpperCase()}` : ""}</p>
         <h1>{name}</h1>
-        <p className="night-lead">Eintrag aus {String(offer.sourcePortal || "dem Quellenindex")}.</p>
+        <p className="night-lead">Importierter Eintrag aus {String(offer.sourcePortal || "dem Quellenindex")}.</p>
         <AlsoListed items={offer.alsoListed} total={offer.alsoListedCount} />
         <div className="night-row night-profile-actions">
           <button type="button" className={`night-button ${saved ? "" : "secondary"}`} aria-pressed={saved} onClick={() => catalogue.toggleFavorite(profileId)}><Heart size={17} fill={saved ? "currentColor" : "none"} /> {saved ? "Gemerkt" : "Merken"}</button>
@@ -91,8 +91,8 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
         </div>
         {comparisonFull && <p className="night-comparison-limit" id="profile-comparison-limit"><span>3/3 Profile ausgewählt. Entferne zuerst ein Profil.</span><Link href="/compare-escorts">Vergleich bearbeiten <ArrowRight size={14} aria-hidden="true" /></Link></p>}
         <div className="night-profile-facts">
-          <div><span>30 Minuten</span><strong>{rate30.label}</strong><SourceHint source={String(offer.sourcePortal || "")} date={typeof offer.scrapedAt === "string" ? offer.scrapedAt : undefined} /></div>
-          <div><span>60 Minuten</span><strong>{rate60.label}</strong><SourceHint source={String(offer.sourcePortal || "")} date={typeof offer.scrapedAt === "string" ? offer.scrapedAt : undefined} /></div>
+          <div><span>30 Minuten</span><strong>{rate30.label}</strong>{rate30.amount !== null && <SourceHint kind={rate30.confirmed ? "confirmed" : rate30.estimated ? "estimate" : "source"} source={offer.sourcePortal} date={rate30.confirmed ? state.priceConfirmedAt || state.rateUpdatedAt : offer.scrapedAt} />}</div>
+          <div><span>60 Minuten</span><strong>{rate60.label}</strong>{rate60.amount !== null && <SourceHint kind={rate60.confirmed ? "confirmed" : rate60.estimated ? "estimate" : "source"} source={offer.sourcePortal} date={rate60.confirmed ? state.priceConfirmedAt || state.rateUpdatedAt : offer.scrapedAt} />}</div>
           <div><span>Verfügbarkeit</span><strong>Direkt abklären</strong></div>
           <div><span>Quelle</span><strong>{String(offer.sourcePortal || "Nicht angegeben")}</strong></div>
         </div>
@@ -107,7 +107,7 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
     </div>
     <div className="night-profile-information" id="profile-details">
       <section className="night-surface"><p className="night-eyebrow">Hinterlegte Angaben</p><h2>Beschreibung & Einordnung</h2><p className="night-description">{description || "Für diesen Eintrag ist keine Beschreibung hinterlegt."}</p><p className="night-note">Importierte Angaben können sich ändern. Massgeblich ist die aktuelle Auskunft der Anbieterin oder des Anbieters.</p>{tags.length > 0 && <div className="night-chips">{tags.map((tag: string) => <span className="night-chip" key={tag}>{tag}</span>)}</div>}</section>
-      <section className="night-surface"><p className="night-eyebrow">Auf einen Blick</p><h2>Weitere Angaben</h2><dl className="night-detail-list"><div><dt>Ort</dt><dd>{city}</dd></div><div><dt>Sprachen laut Eintrag</dt><dd>{languages.length ? languages.join(", ") : "Nicht angegeben"}</dd></div><div><dt>Identitätsprüfung</dt><dd>Kein bestätigter Nachweis angezeigt</dd></div></dl><Link href={`/report?id=${encodeURIComponent(profileId)}`} className="night-text-button">Eine Angabe korrigieren <ArrowRight size={16} /></Link></section>
+      <section className="night-surface"><p className="night-eyebrow">Auf einen Blick</p><h2>Weitere Angaben</h2><dl className="night-detail-list"><div><dt>Ort</dt><dd>{city}</dd></div><div><dt>Sprachen laut Eintrag</dt><dd>{languages.length ? languages.join(", ") : "Nicht angegeben"}</dd></div><div><dt>Identitätsprüfung</dt><dd>Kein bestätigter Nachweis angezeigt</dd></div></dl><Link href={`/report?id=${encodeURIComponent(profileId)}`} className="night-text-button">Eine Angabe korrigieren <ArrowRight size={16} /></Link><Link href={{pathname:'/report',query:{id:profileId,request:'claim'}}} className="night-text-button">Eigenes Profil übernehmen <ArrowRight size={16}/></Link><Link href={{pathname:'/opt-out',query:{id:profileId}}} className="night-text-button">Entfernung beantragen <ArrowRight size={16}/></Link></section>
     </div>
   </main>;
 }

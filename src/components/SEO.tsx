@@ -8,6 +8,7 @@ interface SEOProps {
   description?: string;
   url?: string;
   image?: string;
+  locale?: string;
   type?: string;
   noindex?: boolean;
   schemaJson?: Schema | Schema[];
@@ -23,6 +24,7 @@ export function SEO({
   url,
   image = DEFAULT_IMAGE,
   type = "website",
+  locale = "de-CH",
   noindex = false,
   schemaJson,
   structuredData
@@ -57,12 +59,12 @@ export function SEO({
       <meta name="description" content={description} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="canonical" href={cleanUrl} />
-      <link rel="alternate" hrefLang="de-CH" href={cleanUrl} />
+      <link rel="alternate" hrefLang={locale} href={cleanUrl} />
       <link rel="alternate" hrefLang="x-default" href={cleanUrl} />
       <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large,max-snippet:-1"} />
       <meta property="og:type" content={ogType} />
       <meta property="og:site_name" content="iwantsexnow.ch" />
-      <meta property="og:locale" content="de_CH" />
+      <meta property="og:locale" content={locale.replace("-", "_")} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={cleanUrl} />

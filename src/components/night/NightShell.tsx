@@ -7,7 +7,7 @@ import {ArrowRight,MapPin,Menu,Search,SlidersHorizontal,Sparkles,X} from 'lucide
 import {brandAsset,CANTONS,CATEGORIES,CATALOGUE_SERVICES,REGIONS,filtersFromQuery,searchHref,CatalogueFilters} from '@/lib/night-catalogue';
 import {catalogueBudgetChoices,guideFilters,skipGuideStep} from '@/lib/night-guide-model';
 import {StandLabelContext} from '@/components/DataStandNote';
-import {XeniaThumbBar} from '@/components/XeniaThumbBar';
+import {useQuickXenia} from '@/components/XeniaThumbBar';
 import {NightTools,QuickActionsButton} from './NightTools';
 export {QuickActionsButton} from './NightTools';
 import {useCatalogue} from './CatalogueContext';
@@ -17,6 +17,7 @@ export const useNightGuide=()=>useContext(GuideContext);
 function Wordmark(){return <Link href="/" className="night-wordmark" aria-label="iwantsexnow.ch Startseite"><X aria-hidden="true"/><span>iwantsexnow<span>.ch</span></span></Link>;}
 const nav=[['/suche','Entdecken'],['/regionen','Regionen'],['/portalvergleich','Portale vergleichen'],['/ratgeber','Ratgeber'],['/anbieter','Für Anbieterinnen']];
 export function NightShell({children,initialFilters}:{children:React.ReactNode;initialFilters?:CatalogueFilters}) {
+ const {openStep}=useQuickXenia();
  const router=useRouter();const {favorites,compareIds,selectionNotice,dismissSelectionNotice}=useCatalogue();
  const standLabel=useContext(StandLabelContext);
  const [open,setOpen]=useState(false),[menu,setMenu]=useState(false),[step,setStep]=useState(0);
@@ -72,18 +73,18 @@ export function NightShell({children,initialFilters}:{children:React.ReactNode;i
  const region=REGIONS.find(r=>r.canton===choice.canton)?.name||(choice.canton==='ALL'?'Ganze Schweiz':choice.canton);
  return <GuideContext.Provider value={{openGuide}}><NightTools onGuide={()=>openGuide()}><div className="swiss-night">
   <a className="night-skip" href="#main">Zum Inhalt</a>
-  <header className="night-header"><div className="night-container night-header-inner"><Wordmark/>
+  <header className="night-header" lang="de-CH"><div className="night-container night-header-inner"><Wordmark/>
    <nav className="night-desktop-nav" aria-label="Hauptnavigation">{nav.map(([url,label])=><Link key={url} href={url} aria-current={router.pathname===url?'page':undefined}>{label}</Link>)}</nav>
-   <div className="night-header-actions"><button type="button" className="flagship-header-xenia night-desktop-only" onClick={()=>openGuide(0)}><Sparkles size={14}/> Xenia</button><Link href="/eintrag" className="flagship-header-insert night-desktop-only">+ Inserieren</Link><Link href="/login" className="flagship-header-login night-desktop-only">Anmelden</Link><button type="button" className="night-icon-button night-mobile-only" onClick={event=>{menuOpener.current=event.currentTarget;setMenu(true);}} aria-label="Menü öffnen"><Menu/></button></div>
+   <div className="night-header-actions"><button type="button" className="flagship-header-xenia night-desktop-only" onClick={()=>initialFilters && router.pathname!=='/' ? openGuide(0) : openStep(0)}><Sparkles size={14}/> Xenia</button><Link href="/eintrag" className="flagship-header-insert night-desktop-only">+ Inserieren</Link><Link href="/login" className="flagship-header-login night-desktop-only">Anmelden</Link><button type="button" className="night-icon-button night-mobile-only" onClick={event=>{menuOpener.current=event.currentTarget;setMenu(true);}} aria-label="Menü öffnen"><Menu/></button></div>
   </div></header>
   {children}
   {selectionNotice&&<div className="night-selection-notice" role="status"><span>{selectionNotice}</span><button type="button" className="night-icon-button" aria-label="Auswahlhinweis schliessen" onClick={dismissSelectionNotice}><X size={18}/></button></div>}
-  <footer className="night-footer"><div className="night-footer-scene"><img src={brandAsset('footer.webp')} alt="Illustrative Schweizer Abendlandschaft" loading="lazy"/><span>Die Schweiz. Dein Moment.</span></div><div className="night-container"><div className="night-footer-grid"><div><Wordmark/><p>Dein Moment. Deine Wahl.<br/>Das Schweizer Verzeichnis für einen selbstbestimmten Überblick.</p><span className="night-pill">Zugang ab 18 Jahren</span></div>{[
+  <footer className="night-footer" lang="de-CH"><div className="night-footer-scene"><img src={brandAsset('footer.webp')} alt="Illustrative Schweizer Abendlandschaft" loading="lazy"/><span>Die Schweiz. Dein Moment.</span></div><div className="night-container"><div className="night-footer-grid"><div><Wordmark/><p>Dein Moment. Deine Wahl.<br/>Das Schweizer Verzeichnis für einen selbstbestimmten Überblick.</p><span className="night-pill">Zugang ab 18 Jahren</span></div>{[
    ['Entdecken',['/search','Alle Profile'],['/escort-zurich','Zürich'],['/orte/zug','Zug & Umgebung'],['/clubs','Clubs & Studios'],['/favorites','Meine Merkliste']],
-   ['Klarheit',['/how-it-works','So funktioniert es'],['/reviews','Portalvergleich'],['/pricing','Preise verstehen'],['/safety','Sicherheit & Vertrauen'],['/report','Eintrag melden']],
+   ['Klarheit',['/how-it-works','So funktioniert es'],['/reviews','Portalvergleich'],['/pricing','Preise verstehen'],['/safety','Sicherheit & Vertrauen'],['/report','Eintrag melden'],['/opt-out','Entfernung beantragen']],
    ['Dein Auftritt',['/advertise','Für Anbieter'],['/register','Profil vorbereiten'],['/creator-dashboard','Arbeitsbereich'],['/privacy','Datenschutz'],['/imprint','Kontakt & Impressum'],['/terms','AGB']],
   ].map(([title,...links]:any)=><div key={title}><h2>{title}</h2>{links.map(([url,label]:string[])=><Link key={url} href={url}>{label}</Link>)}</div>)}</div><div className="night-footer-bottom"><span>© {new Date().getFullYear()} iwantsexnow.ch</span>{standLabel&&<span>Jüngster Erfassungszeitstempel: {standLabel}</span>}<span>Quellenangaben sind keine Identitätsprüfung.</span></div></div></footer>
-  <XeniaThumbBar/>
+  {router.pathname!=='/'&&<button className="discovery-launcher" type="button" aria-haspopup="dialog" onClick={()=>initialFilters ? openGuide(0) : openStep(0)}><Sparkles size={16} aria-hidden="true"/> Xenia</button>}
   <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Portal><Dialog.Overlay className="night-dialog-overlay"/><Dialog.Content className="night-dialog night-guide-2027" onCloseAutoFocus={event=>{event.preventDefault();if(guideOpener.current?.isConnected)guideOpener.current.focus();}}><Dialog.Close className="night-icon-button night-dialog-close" aria-label="Auswahl schliessen"><X/></Dialog.Close><p className="night-kicker">Mit Xenia entdecken</p><Dialog.Title>{['Deine Region.','Dein Bereich.','Deine Zeit.','Deine Auswahl steht.'][step]}</Dialog.Title><Dialog.Description>{['Wo beginnt dein Moment?','Was möchtest du näher kennenlernen?','Wann möchtest du dich umsehen?','Jeden Teil deiner Auswahl kannst du direkt bearbeiten.'][step]}</Dialog.Description>
    <nav className="night-guide-steps" aria-label="Auswahlschritte">{['Region','Bereich','Zeit'].map((label,i)=><button type="button" key={label} onClick={()=>setStep(i)} aria-current={step===i?'step':undefined}><span>{i+1}</span>{label}</button>)}</nav>
    {step===0&&<div className="night-options"><button onClick={()=>select({canton:'ALL'})}>Ganze Schweiz</button>{REGIONS.map(r=><button key={r.canton} onClick={()=>select({canton:r.canton})}>{r.name}</button>)}<details className="night-more-cantons"><summary>Weitere Kantone</summary><div className="night-options">{CANTONS.filter(c=>!REGIONS.some(r=>r.canton===c)).map(c=><button key={c} onClick={()=>select({canton:c})}>{c}</button>)}</div></details></div>}

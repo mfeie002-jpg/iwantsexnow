@@ -33,7 +33,7 @@ export function catalogueBudgetChoices(filters: CatalogueFilters) {
   const options = [
     {value: '0', label: 'Budget offen', changes: {under60: 0, max: 0, price: ''}},
     {value: 'missing', label: 'Preis auf Anfrage', changes: {under60: 0, max: 0, price: 'missing'}},
-    atMost(200), lowerThan(300), atMost(400),
+    atMost(200), atMost(250), lowerThan(300), atMost(400),
   ];
   if (!options.some(option => option.value === current)) {
     options.push(filters.under60 ? lowerThan(filters.under60) : atMost(filters.max));
