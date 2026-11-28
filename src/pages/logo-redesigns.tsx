@@ -408,15 +408,6 @@ export default function LogoRedesigns() {
             </p>
           </div>
         </main>
-
-        {/* Footer */}
-        <footer className="border-t border-gray-200 dark:border-gray-800 mt-24 py-12">
-          <div className="container mx-auto px-4 text-center">
-            <p className="text-gray-600 dark:text-gray-400">
-              © 2025 iWantSexNow.ch - Brand Exploration & Design Concepts
-            </p>
-          </div>
-        </footer>
       </div>
     </>
   );

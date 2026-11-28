@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ImageOff } from "lucide-react";
-import { nextProfileImage, profileImageCandidates } from "./profile-image-model";
+import { nextProfileImage, profileImageCandidates, profilePhotoPlaceholder, profilePhotoSrc } from "./profile-image-model";
 
-type Props = { photos: readonly string[]; alt: string; className?: string; eager?: boolean; compact?: boolean };
+type Props = { photos?: readonly string[]; profileId?: string; name?: string; photoIndex?: number; alt: string; className?: string; eager?: boolean; compact?: boolean };
 
-export function ProfileImage({ photos, alt, className = "", eager = false, compact = false }: Props) {
-  const candidates = useMemo(() => profileImageCandidates(photos), [photos]);
+export function ProfileImage({ photos = [], profileId, name = "", photoIndex, alt, className = "", eager = false, compact = false }: Props) {
+  const proxied = Boolean(profileId);
+  const candidates = useMemo(
+    () => proxied && profileId ? [profilePhotoSrc(profileId, photoIndex)] : profileImageCandidates(photos),
+    [photos, profileId, photoIndex, proxied]
+  );
   const [failed, setFailed] = useState<Set<string>>(() => new Set());
   const src = nextProfileImage(candidates, failed);
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -20,6 +24,9 @@ export function ProfileImage({ photos, alt, className = "", eager = false, compa
     if (src && image?.complete && image.naturalWidth === 0) markFailed();
   }, [src, markFailed]);
   if (!src) {
+    if (proxied) {
+      return <img src={profilePhotoPlaceholder(name)} alt={alt || "Foto folgt"} className={`night-image ${className}`} />;
+    }
     return <div className={`night-image-unavailable ${compact ? "compact" : ""} ${className}`} role="img" aria-label="Profilfoto derzeit nicht verfügbar">
       <ImageOff size={compact ? 22 : 34} aria-hidden="true" />
       {!compact && <span>Profilfoto derzeit<br />nicht verfügbar</span>}

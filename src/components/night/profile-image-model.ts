@@ -59,3 +59,29 @@ export function chooseComparisonProfile(ids: readonly string[], current: readonl
 }
 
 export const NEUTRAL_PROFILE_IMAGE = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640"><rect width="480" height="640" fill="#211722"/><rect x="175" y="240" width="130" height="100" rx="12" fill="none" stroke="#a57b91" stroke-width="3"/><path d="m190 320 35-35 24 22 27-38 18 51" fill="none" stroke="#a57b91" stroke-width="3"/><text x="240" y="385" text-anchor="middle" fill="#d8bdcc" font-family="Arial,sans-serif" font-size="17">Profilfoto nicht verfügbar</text></svg>');
+
+/** First letter of a profile name, for the neutral photo tile. */
+export function nameInitial(name: string): string {
+  const match = String(name || "").match(/\p{L}/u);
+  return (match ? match[0] : "·").toLocaleUpperCase("de-CH");
+}
+
+function xmlEscape(value: string): string {
+  return value.replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" }[ch] || ch));
+}
+
+/** Dark tile with a gold initial. Served by the proxy and used when that request fails in the browser. */
+export function profilePhotoSvg(name: string): string {
+  const initial = xmlEscape(nameInitial(name));
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" role="img"><rect width="480" height="640" fill="#0D111A"/><text x="240" y="300" text-anchor="middle" fill="#C8A97E" font-family="Georgia, 'Times New Roman', serif" font-size="132">${initial}</text><text x="240" y="390" text-anchor="middle" fill="#C8A97E" font-family="Georgia, 'Times New Roman', serif" font-size="28">Foto folgt</text></svg>`;
+}
+
+export function profilePhotoPlaceholder(name: string): string {
+  return "data:image/svg+xml," + encodeURIComponent(profilePhotoSvg(name));
+}
+
+export function profilePhotoSrc(id: string, index?: number): string {
+  const params = new URLSearchParams({ id });
+  if (index !== undefined && Number.isInteger(index) && index >= 0) params.set("n", String(index));
+  return "/api/img?" + params.toString();
+}

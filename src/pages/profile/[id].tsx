@@ -41,7 +41,6 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
   const state = catalogue.states[profileId] || {};
   const name = getProfileName(offer, state), city = getProfileCity(offer, state);
   const photos = getProfilePhotos(offer, state);
-  const photo = photos[Math.min(activePhoto, Math.max(0, photos.length - 1))];
   const rate30 = getProfileRate(state, 30), rate60 = getProfileRate(state, 60);
   const source = safeExternalUrl(offer.sourceUrl);
   const digits = cleanSwissPhone(state.phoneDisplay || offer.rawPhone);
@@ -60,15 +59,15 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
     <div className="night-profile-layout">
       <section className="night-gallery" id="profile-photos" aria-label="Profilbilder">
         <Dialog.Root open={galleryOpen} onOpenChange={setGalleryOpen}>
-          <div className="night-gallery-main"><ProfileImage key={`${profileId}-${photo || "none"}`} photos={photo ? [photo] : []} alt={`Profilfoto zu ${name}`} eager />{photos.length > 0 && <Dialog.Trigger asChild><button type="button" className="night-gallery-expand"><Expand size={17} aria-hidden="true" /> Bilder gross ansehen <span>{photos.length}</span></button></Dialog.Trigger>}</div>
+          <div className="night-gallery-main"><ProfileImage key={`${profileId}-${activePhoto}`} profileId={profileId} name={name} photoIndex={photos.length ? Math.min(activePhoto, photos.length - 1) : 0} alt={`Profilfoto zu ${name}`} eager />{photos.length > 0 && <Dialog.Trigger asChild><button type="button" className="night-gallery-expand"><Expand size={17} aria-hidden="true" /> Bilder gross ansehen <span>{photos.length}</span></button></Dialog.Trigger>}</div>
           <Dialog.Portal><Dialog.Overlay className="night-gallery-overlay"/><Dialog.Content className="night-gallery-dialog" onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); setActivePhoto(current => stepPhotoIndex(current, event.key === 'ArrowLeft' ? -1 : 1, photos.length)); } }}>
             <div className="night-gallery-dialog-heading"><div><Dialog.Title>Profilbilder</Dialog.Title><Dialog.Description>{name} · Bilder aus hinterlegten Quellen</Dialog.Description></div><Dialog.Close className="night-icon-button" aria-label="Bilderansicht schliessen"><X aria-hidden="true"/></Dialog.Close></div>
-            <div className="night-gallery-stage"><ProfileImage key={`expanded-${profileId}-${photo || 'none'}`} photos={photo ? [photo] : []} alt={`Profilfoto ${Math.min(activePhoto + 1, photos.length)} zu ${name}`} eager/></div>
+            <div className="night-gallery-stage"><ProfileImage key={`expanded-${profileId}-${activePhoto}`} profileId={profileId} name={name} photoIndex={photos.length ? Math.min(activePhoto, photos.length - 1) : 0} alt={`Profilfoto ${Math.min(activePhoto + 1, photos.length)} zu ${name}`} eager/></div>
             <div className="night-gallery-controls"><button type="button" className="night-icon-button" disabled={photos.length < 2} aria-label="Vorheriges Bild" onClick={() => setActivePhoto(current => stepPhotoIndex(current, -1, photos.length))}><ArrowLeft aria-hidden="true"/></button><p aria-live="polite" aria-atomic="true">Bild <strong>{Math.min(activePhoto + 1, photos.length)}</strong> von {photos.length}</p><button type="button" className="night-icon-button" disabled={photos.length < 2} aria-label="Nächstes Bild" onClick={() => setActivePhoto(current => stepPhotoIndex(current, 1, photos.length))}><ArrowRight aria-hidden="true"/></button></div>
             <p className="night-gallery-disclaimer">Die Bildzuordnung ist keine Identitätsprüfung. Nicht erreichbare Bilder bleiben als fehlend gekennzeichnet.</p>
           </Dialog.Content></Dialog.Portal>
         </Dialog.Root>
-        {photos.length > 1 && <div className="night-gallery-thumbs">{photos.map((url, index) => <button type="button" key={url} className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} aria-pressed={index === activePhoto} aria-label={`Bild ${index + 1} ansehen`}><ProfileImage photos={[url]} alt="" compact /></button>)}</div>}
+        {photos.length > 1 && <div className="night-gallery-thumbs">{photos.map((url, index) => <button type="button" key={`${url}-${index}`} className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} aria-pressed={index === activePhoto} aria-label={`Bild ${index + 1} ansehen`}><ProfileImage profileId={profileId} name={name} photoIndex={index} alt="" compact /></button>)}</div>}
         <p className="night-note"><ImageIcon size={14} aria-hidden="true" /> {photos.length ? "Bilder aus den hinterlegten Quellen. Die Zuordnung ist keine Identitätsprüfung." : "Für diesen Eintrag steht derzeit kein zugeordnetes Profilfoto bereit."}</p>
       </section>
       <section className="night-profile-details">

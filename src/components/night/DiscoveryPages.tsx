@@ -12,8 +12,14 @@ import {catalogueBudgetChoices} from '@/lib/night-guide-model';
 import type {InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {MAX_SAVED_SEARCHES,parseSavedSearches,removeSavedSearch,saveSearch,SAVED_SEARCH_KEY,SavedSearch} from './saved-searches';
 import {brandAsset,CANTONS,CATEGORIES,CATALOGUE_SERVICES,REGIONS,CatalogueFilters,discoveryFiltersFromRoute,filterOffers,getProfileId,searchHref,Offer} from '@/lib/night-catalogue';
+type CityTileSources={GE?:string|null;BE?:string|null};
 
-export function RegionCards(){return <div className="night-region-grid">{REGIONS.map(r=><Link className="night-region-card" key={r.canton} href={r.href}><img src={brandAsset(r.image)} alt={`Illustration: ${r.name} am Abend`} loading="lazy"/><span><MapPin size={16}/>{r.name}</span></Link>)}</div>;}
+export function CityTileArt({canton,image,localSrc}:{canton:string;image:string;localSrc?:string|null}){
+ if((canton==='GE'||canton==='BE')&&localSrc)return <img src={localSrc} alt="" loading="lazy"/>;
+ if(canton==='GE'||canton==='BE')return <div className="city-tile-fallback" aria-hidden="true"/>;
+ return <img src={brandAsset(image)} alt="" loading="lazy"/>;
+}
+export function RegionCards({cityTiles}:{cityTiles?:CityTileSources}={}){return <div className="night-region-grid">{REGIONS.map(r=>{const local=r.canton==='GE'||r.canton==='BE'?cityTiles?.[r.canton]:null;return <Link className="night-region-card" key={r.canton} href={r.href}><CityTileArt canton={r.canton} image={r.image} localSrc={local}/><span><MapPin size={16}/>{r.name}</span></Link>;})}</div>;}
 export function ProfileGrid({offers,limit=24,density='detail'}:{offers:Offer[];limit?:number;density?:'detail'|'compact'}){
  const catalogue=useCatalogue();const [shown,setShown]=useState(limit);
  const key=offers.map(getProfileId).join(',');useEffect(()=>setShown(limit),[key,limit]);
@@ -161,5 +167,5 @@ export function DiscoveryPage({config,pageData}:{config?:DiscoveryConfig;pageDat
    </button>
  </div>}
  {moreError&&<p role="alert" className="night-note">{moreError} <button type="button" className="night-text-button" onClick={loadMore}>Erneut versuchen</button></p>}
- </section><section className="night-container night-section"><div className="night-section-title"><h2>Ein anderer Ort. Neue Möglichkeiten.</h2></div><RegionCards/></section></main>;
+ </section><section className="night-container night-section"><div className="night-section-title"><h2>Ein anderer Ort. Neue Möglichkeiten.</h2></div><RegionCards cityTiles={pageData?.cityTiles}/></section></main>;
 }

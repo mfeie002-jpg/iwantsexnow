@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MapPin, MessageCircle, Star, Shield, CheckCircle, Play, Search } from "lucide-react";
 import Link from "next/link";
+import { profilePhotoPlaceholder } from "@/components/night/profile-image-model";
 
 interface EscortGridProps {
   escorts: any[];
@@ -56,8 +57,9 @@ export function EscortGrid({
                 <div className="flex flex-col md:flex-row gap-6 p-6">
                   <div className="relative w-full md:w-80 flex-shrink-0 group">
                     <img
-                      src={escort.thumbnail}
+                      src={escort.thumbnail && !/unsplash\.|pexels\.|pixabay\.|bg_blur/i.test(String(escort.thumbnail)) ? escort.thumbnail : profilePhotoPlaceholder(escort.name || "")}
                       alt={escort.name}
+                      onError={(event) => { const img = event.currentTarget; if (img.dataset.fallback === "1") return; img.dataset.fallback = "1"; img.src = profilePhotoPlaceholder(escort.name || ""); }}
                       className="w-full h-80 object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
                     />
                     {escort.topAd && (

@@ -1,4 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
+import { cityTileSources, type CityTileSources } from './city-tiles';
 import { getCatalogueSnapshot } from './night-catalogue-server';
 import { discoveryFiltersFromRoute, type CatalogueFilters } from './night-catalogue';
 import {
@@ -13,6 +14,7 @@ export type InitialPageData = {
   nextOffset: number | null;
   nextAvailabilityExpiry?: number;
   alternatives?: CatalogueAlternative[];
+  cityTiles?: CityTileSources;
 };
 
 export async function getPaginatedCatalogueProps(
@@ -30,7 +32,8 @@ export async function getPaginatedCatalogueProps(
       cataloguePage: {
         filters,total:page.total,limit:page.limit,offset:page.offset,nextOffset:page.nextOffset,
         ...(page.nextAvailabilityExpiry !== undefined ? { nextAvailabilityExpiry: page.nextAvailabilityExpiry } : {}),
-        ...(page.alternatives ? { alternatives: page.alternatives } : {})
+        ...(page.alternatives ? { alternatives: page.alternatives } : {}),
+        cityTiles: cityTileSources()
       } satisfies InitialPageData
     }
   };

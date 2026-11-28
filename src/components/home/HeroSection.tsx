@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { INITIAL_RAW_SWISS_FEED, deduplicateScrapedOffers } from "@/lib/marketplace/indexer";
+import { profilePhotoPlaceholder } from "@/components/night/profile-image-model";
 
 interface HeroSectionProps {
   searchQuery: string;
@@ -148,7 +149,7 @@ export function HeroSection({
                         className="flex items-center justify-between gap-3 p-3 hover:bg-white/10 transition-colors"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <img src={p.thumbnail} alt={p.displayName} className="w-11 h-11 rounded-lg object-cover shrink-0 border border-[#ff6b5e]/40" />
+                          <img src={p.thumbnail && !/unsplash\.|pexels\.|pixabay\.|bg_blur/i.test(p.thumbnail) ? p.thumbnail : profilePhotoPlaceholder(p.displayName)} alt={p.displayName} onError={(event) => { const img = event.currentTarget; if (img.dataset.fallback === "1") return; img.dataset.fallback = "1"; img.src = profilePhotoPlaceholder(p.displayName); }} className="w-11 h-11 rounded-lg object-cover shrink-0 border border-[#ff6b5e]/40" />
                           <div className="min-w-0">
                             <div className="text-xs font-black text-white truncate">
                               {p.displayName}, {p.age} · <span className="text-[#ff6b5e]">{p.primaryCity} ({p.canton})</span>

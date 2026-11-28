@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Heart, MessageCircle, Lock, DollarSign, Eye, Share2, Gift, Star, TrendingUp, Clock, Filter } from "lucide-react";
 import Link from "next/link";
+import { profilePhotoPlaceholder } from "@/components/night/profile-image-model";
 
 export default function ContentFeed() {
   const [filter, setFilter] = useState<"all" | "subscribed" | "free">("all");
@@ -14,7 +15,7 @@ export default function ContentFeed() {
     {
       id: 1,
       creator: "Sarah",
-      creatorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      creatorImage: profilePhotoPlaceholder("Sarah"),
       subscriptionPrice: 19.90,
       isSubscribed: true,
       isVerified: true,
@@ -32,7 +33,7 @@ export default function ContentFeed() {
     {
       id: 2,
       creator: "Emma",
-      creatorImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop",
+      creatorImage: profilePhotoPlaceholder("Emma"),
       subscriptionPrice: 24.90,
       isSubscribed: false,
       isVerified: true,
@@ -51,7 +52,7 @@ export default function ContentFeed() {
     {
       id: 3,
       creator: "Mia",
-      creatorImage: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop",
+      creatorImage: profilePhotoPlaceholder("Mia"),
       subscriptionPrice: 29.90,
       isSubscribed: true,
       isVerified: true,
@@ -68,13 +69,13 @@ export default function ContentFeed() {
     {
       id: 4,
       creator: "Nina",
-      creatorImage: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=100&h=100&fit=crop",
+      creatorImage: profilePhotoPlaceholder("Nina"),
       subscriptionPrice: 15.90,
       isSubscribed: false,
       isVerified: false,
       timestamp: "1 day ago",
       type: "photo",
-      preview: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=400&fit=crop",
+      preview: profilePhotoPlaceholder("Nina"),
       isLocked: true,
       pricing: "ppv",
       ppvPrice: 9.90,

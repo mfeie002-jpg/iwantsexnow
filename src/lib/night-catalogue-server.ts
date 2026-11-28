@@ -49,7 +49,7 @@ export async function getCatalogueSnapshot() {
     if(!sourceById.has(id))continue;
     const source=sourceById.get(id)||{},state:Record<string,any>={};
     for(const key of ['displayName','city','canton'])if(st[key]&&st[key]!== (key==='displayName'?source.displayName||source.rawName:source[key]))state[key]=st[key];
-    if(st.thumbnail&&st.thumbnail!==source.thumbnail)state.thumbnail=st.thumbnail;
+    if(st.thumbnail&&st.thumbnail!==source.thumbnail&&!/(?:bg_blur|unsplash\.|pexels\.|pixabay\.)/i.test(String(st.thumbnail)))state.thumbnail=st.thumbnail;
     if (!fromDatabase || managedIds.has(id)) {
       const rate30Chf = getProfileRate(st, 30, now);
       const rate60Chf = getProfileRate(st, 60, now);

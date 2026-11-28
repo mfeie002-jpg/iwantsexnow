@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 
 export default function CorporateInfoPage() {
   return (
@@ -35,8 +34,6 @@ export default function CorporateInfoPage() {
         </section>
         </div>
       </main>
-
-      <CorporateFooter light />
     </div>
   );
 }
