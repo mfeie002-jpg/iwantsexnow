@@ -4,6 +4,7 @@ import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowLeft, ArrowRight, Heart, ImageIcon, MapPin, Phone, Scale, ExternalLink, Flag, Expand, X } from "lucide-react";
 import { AlsoListed } from "@/components/AlsoListed";
+import { SourceHint } from "@/components/SourceHint";
 import { SEO } from "@/components/SEO";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
@@ -90,8 +91,8 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
         </div>
         {comparisonFull && <p className="night-comparison-limit" id="profile-comparison-limit"><span>3/3 Profile ausgewählt. Entferne zuerst ein Profil.</span><Link href="/compare-escorts">Vergleich bearbeiten <ArrowRight size={14} aria-hidden="true" /></Link></p>}
         <div className="night-profile-facts">
-          <div><span>30 Minuten</span><strong>{rate30.label}</strong></div>
-          <div><span>60 Minuten</span><strong>{rate60.label}</strong></div>
+          <div><span>30 Minuten</span><strong>{rate30.label}</strong><SourceHint source={String(offer.sourcePortal || "")} date={typeof offer.scrapedAt === "string" ? offer.scrapedAt : undefined} /></div>
+          <div><span>60 Minuten</span><strong>{rate60.label}</strong><SourceHint source={String(offer.sourcePortal || "")} date={typeof offer.scrapedAt === "string" ? offer.scrapedAt : undefined} /></div>
           <div><span>Verfügbarkeit</span><strong>Direkt abklären</strong></div>
           <div><span>Quelle</span><strong>{String(offer.sourcePortal || "Nicht angegeben")}</strong></div>
         </div>
