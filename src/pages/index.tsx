@@ -8,7 +8,7 @@ import {brandAsset,CATEGORIES,REGIONS,searchHref} from '@/lib/night-catalogue';
 import {useCatalogue} from '@/components/night/CatalogueContext';
 import {CityTileArt,ProfileGrid} from '@/components/night/DiscoveryPages';
 import {TouchSearch,useNightGuide} from '@/components/night/NightShell';
-import {getPaginatedCatalogueProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
+import {getPaginatedCatalogueProps,type CatalogueFactsProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {XeniaContext} from '@/components/flagship/FlagshipEditorial';
 
 export const getServerSideProps:GetServerSideProps=ctx=>getPaginatedCatalogueProps(ctx,{},4);
@@ -22,7 +22,7 @@ const categories=[
  {title:'High-Class',description:'Angaben statt Werbeversprechen',image:'category-vip.webp',href:'/high-class'}
 ];
 
-export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
+export default function Home({cataloguePage,catalogueFacts}:{cataloguePage?:InitialPageData;catalogueFacts?:CatalogueFactsProps['catalogueFacts']}){
  const {openGuide}=useNightGuide();
  const {visibleOffers,error}=useCatalogue();
  const count=cataloguePage?.total??visibleOffers.length;
@@ -52,12 +52,12 @@ export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
   </section>
 
   <section className="flagship-soft-section"><div className="night-container flagship-section">
-   <div className="flagship-section-head"><div><span className="flagship-eyebrow">02 · THEMEN ENTDECKEN</span><h2>Welches Erlebnis passt heute?</h2><p>Sechs mögliche Einstiege, mit nachvollziehbaren Angaben.</p></div><Link href="/kategorien">Alle Kategorien <ArrowRight size={17}/></Link></div>
+   <div className="flagship-section-head"><div><span className="flagship-eyebrow">02 · THEMEN ENTDECKEN</span><h2>Welches Erlebnis passt heute?</h2><p>{formatSwissCount(categories.length)} mögliche Einstiege, mit nachvollziehbaren Angaben.</p></div><Link href="/kategorien">Alle Kategorien <ArrowRight size={17}/></Link></div>
    <div className="flagship-category-tiles">{categories.map(c=><Link key={c.title} href={c.href} className="flagship-category-tile"><img src={brandAsset(c.image)} alt="" loading="lazy"/><span><strong>{c.title}</strong><small>{c.description}</small></span></Link>)}</div>
   </div></section>
 
   <section className="night-container flagship-section">
-   <XeniaContext question="Welche Filter sind für deine Wahl relevant?"/><div className="flagship-section-head"><div><span className="flagship-eyebrow">03 · ECHTE EINTRÄGE</span><h2>Passende Verzeichniseinträge</h2><p>{formatSwissCount(count)} Einträge im aktuellen Verzeichnis. Keine erfundene Live-Verfügbarkeit und keine geschätzten Honorarangaben.</p></div><Link href="/suche">Alle Einträge <ArrowRight size={17}/></Link></div>
+   <XeniaContext question="Welche Filter sind für deine Wahl relevant?"/><div className="flagship-section-head"><div><span className="flagship-eyebrow">03 · ECHTE EINTRÄGE</span><h2>Passende Verzeichniseinträge</h2><p>{formatSwissCount(count)} Einträge im aktuellen Verzeichnis. {catalogueFacts ? `${formatSwissCount(catalogueFacts.clubCount)} Clubs und Studios im Adressverzeichnis. ` : ''}{catalogueFacts?.standLabel ? `Datenstand ${catalogueFacts.standLabel}. ` : ''}Keine erfundene Live-Verfügbarkeit. Geschätzte Honorare sind gekennzeichnet.</p></div><Link href="/suche">Alle Einträge <ArrowRight size={17}/></Link></div>
    {error&&<p role="status" className="flagship-caption">{error}</p>}
    <ProfileGrid offers={visibleOffers.slice(0,4)} limit={4}/>
    <div className="flagship-centered"><Link className="flagship-primary" href="/suche">Ergebnisse filtern <ArrowRight size={16}/></Link></div>

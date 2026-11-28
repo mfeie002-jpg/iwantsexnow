@@ -96,21 +96,15 @@ export const SWISS_LONG_TAIL_ARTICLES: Record<string, LongTailArticle> = {
       "laufhaus preise schweiz",
       "xdate vs fgirl preise",
     ],
-    heroIntro: "Auf Schweizer Portalen stehen oft Preise ab CHF 200 oder CHF 250 – doch vor Ort zahlen Kunden plötzlich CHF 550 oder mehr. Unser Daten-Report aus über 260 bereinigten Schweizer Profilen zeigt die echten Endpreise nach Stadt und Dauer.",
+    heroIntro: "Ein Betrag im Verzeichnis ist nur so verlässlich wie seine Herkunft. Standardwerte und abgeleitete 30-Minuten-Preise sind als geschätzt markiert. Einen Marktdurchschnitt veröffentlichen wir nicht.",
     sections: [
       {
-        heading: "1. Die echten Durchschnittspreise nach Dauer (Studio vs. Hotel-Outcall)",
-        body: "In den Wirtschaftszentren Zürich, Zug, Cham, Pfäffikon SZ, Basel und Genf haben sich im Jahr 2026 klare Richtwerte für seriöse, unabhängige Direktprofile etabliert:",
-        bullets: [
-          "30 Minuten Studio-Besuch (Incall): CHF 200 bis CHF 300 (in Kontakthäusern wie Haus Aphrodite oder Haus Zeus ab CHF 140–150).",
-          "60 Minuten Direktbuchung inkl. GFE & Französisch: CHF 350 bis CHF 500 (bei Agenturen oft CHF 600+ für exakt dieselbe Leistung).",
-          "2 Stunden Dinner-Date oder entspanntes Hotel-Outcall: CHF 700 bis CHF 950.",
-          "Overnight (10–12 Stunden Begleitung): CHF 1,800 bis CHF 3,500.",
-        ],
+        heading: "1. Kein Durchschnitt ohne belegte Einzelpreise",
+        body: "Stadt, Dauer und Leistung unterscheiden sich. Deshalb steht auf den Profilen der einzelne Betrag mit Herkunft, nicht eine erfundene Spanne für die ganze Schweiz.",
       },
       {
-        heading: "2. Die Kostenfalle mit den 'versteckten Extras' vermeiden",
-        body: "Auf klassischen Portalen werden Zungenküsse (ZK), Französisch ohne (FO), Position 69 oder die Anfahrt ins Hotel oft einzeln mit je CHF 50 bis CHF 100 nachberechnet. Mit dem iWantSexNow.ch Endpreis-Rechner wählst du alle gewünschten Leistungen vorab per Klick aus und frierst den Komplettpreis mit deinem Swiss-Shield-Zertifikat (#IW-Code) verbindlich ein.",
+        heading: "2. Was «geschätzt» bedeutet",
+        body: "CHF 400 als Ersatz für einen fehlenden Stundenpreis und ein 30-Minuten-Betrag, der nur aus der anderen Dauer gerechnet wurde, sind Schätzungen. Sie sind keine bestätigte Offerte.",
       },
     ],
     ctaLabel: "Jetzt echte Endpreise im Live-Rechner vergleichen",

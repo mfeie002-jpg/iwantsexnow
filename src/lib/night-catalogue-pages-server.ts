@@ -2,6 +2,7 @@ import type { GetServerSidePropsContext } from 'next';
 import { cityTileSources, type CityTileSources } from './city-tiles';
 import { getCatalogueSnapshot } from './night-catalogue-server';
 import { discoveryFiltersFromRoute, type CatalogueFilters } from './night-catalogue';
+import { publicCatalogueFacts, type PublicCatalogueFacts } from './public-catalogue-facts';
 import {
   CATALOGUE_PAGE_SIZE, createPublicCataloguePage, type CatalogueAlternative, type PageOptions
 } from './night-catalogue-page';
@@ -16,6 +17,8 @@ export type InitialPageData = {
   alternatives?: CatalogueAlternative[];
   cityTiles?: CityTileSources;
 };
+
+export type CatalogueFactsProps = { catalogueFacts: PublicCatalogueFacts };
 
 export async function getPaginatedCatalogueProps(
   ctx: GetServerSidePropsContext,
@@ -34,7 +37,8 @@ export async function getPaginatedCatalogueProps(
         ...(page.nextAvailabilityExpiry !== undefined ? { nextAvailabilityExpiry: page.nextAvailabilityExpiry } : {}),
         ...(page.alternatives ? { alternatives: page.alternatives } : {}),
         cityTiles: cityTileSources()
-      } satisfies InitialPageData
+      } satisfies InitialPageData,
+      catalogueFacts: publicCatalogueFacts()
     }
   };
 }

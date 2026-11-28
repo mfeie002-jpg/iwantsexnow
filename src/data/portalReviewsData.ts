@@ -1,3 +1,4 @@
+/** Not for display. Scores in this file are not verified and must not be rendered. */
 export interface PortalReviewItem {
   rank: number;
   slug: string;

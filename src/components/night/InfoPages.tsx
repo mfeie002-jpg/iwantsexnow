@@ -1,31 +1,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
+import { DataStandNote } from "@/components/DataStandNote";
+import { COMPARISON_PORTALS, type PortalFact } from "@/lib/portal-facts";
 
-const OBSERVED_AT = "27.11.2026";
 const ART = "/images/brand/v2/";
-type Portal = {
-  name: string;
-  domain: string;
-  url?: string;
-  status: string;
-  readable: boolean;
-  discovery: string;
-  evidence: string;
-};
-
-export const COMPARISON_PORTALS: readonly Portal[] = [
-  { name: "and6", domain: "and6.com", url: "https://www.and6.com/de", status: "Startseite gelesen", readable: true, discovery: "Regionen, Kategorien, Filter und Sortierung sind sichtbar.", evidence: "Der Betreiber beschreibt eine redaktionelle Prüfung. Deren Durchführung haben wir nicht unabhängig untersucht." },
-  { name: "6navi", domain: "6navi.ch", url: "https://6navi.ch/", status: "Startseite gelesen", readable: true, discovery: "Region, Rubrik und weitere Filter strukturieren den Einstieg.", evidence: "Mehrere Verifizierungsstufen werden angezeigt. Der jeweilige Prüfprozess bleibt in dieser Sicht offen." },
-  { name: "sex.ch", domain: "sex.ch", url: "https://sex.ch/", status: "Nicht auswertbar", readable: false, discovery: "Beim dokumentierten Abruf erhielten wir keine belastbar auswertbare Oberfläche.", evidence: "Das ist keine Aussage über die generelle Erreichbarkeit, Qualität oder Nutzung der Website." },
-  { name: "ladies.ch", domain: "ladies.ch", url: "https://ladies.ch/", status: "Nicht auswertbar", readable: false, discovery: "Beim dokumentierten Abruf erhielten wir keine belastbar auswertbare Oberfläche.", evidence: "Aussagen zu Prüfverfahren, Bedienung oder aktuellen Inseraten bleiben offen." },
-  { name: "Choice", domain: "saferchoice.ch", url: "https://saferchoice.ch/", status: "Dokumente gelesen", readable: true, discovery: "Die Startseite war im Textabruf nicht auswertbar. Ausgewertet wurden öffentliche Erklär- und Datenschutztexte.", evidence: "Ein Betreibertext beschreibt eine Identitätsprüfung mit Ausweis und Selfie. Dies ist eine Selbstauskunft, keine unabhängige Bestätigung." },
-  { name: "Lolla", domain: "lolla.ch", url: "https://www.lolla.ch/", status: "Nur Einstieg gelesen", readable: false, discovery: "Ein Erwachsenenhinweis mit Eintritt war sichtbar.", evidence: "Filter, Datenschutzabläufe und Prüfverfahren hinter diesem Einstieg wurden nicht beurteilt." },
-  { name: "Megaescort", domain: "megaescort.ch", url: "https://megaescort.ch/", status: "Nicht auswertbar", readable: false, discovery: "Die Primärseite konnte bei diesem Abruf nicht ausgewertet werden.", evidence: "Ältere Beschreibungen Dritter ersetzen keine Beobachtung der aktuellen Oberfläche." },
-  { name: "Target Escorts", domain: "target-escort.ch", status: "Domain unbestätigt", readable: false, discovery: "Die Zuordnung von Markenname, Domain und Betreiber ist nicht bestätigt.", evidence: "target-escort.ch bleibt ein unbestätigter Rechercheansatz. Deshalb wird die Domain hier nicht als bestätigte Portalquelle verlinkt." },
-  { name: "La Dama", domain: "ladama-escort.ch", url: "https://ladama-escort.ch/", status: "Startseite gelesen", readable: true, discovery: "Eigenständige Bereiche für Orte, Preise und Magazin sowie ein klassisches Anfrageformular sind sichtbar.", evidence: "Ein Identitätsprüfverfahren ist in unserer Quellenbasis nicht belegt. Daraus folgt keine Aussage, dass keines existiert." },
-  { name: "Girls Deluxe", domain: "girls-deluxe.ch", url: "https://girls-deluxe.ch/", status: "Startseite gelesen", readable: true, discovery: "Die Navigation gliedert sich unter anderem nach Orten, Preisen und Ambiente.", evidence: "Datenschutzlink und Einwilligungsfeld waren sichtbar. Die technische Umsetzung wurde nicht geprüft." },
-];
 
 const LEGACY_REPORTS: Record<string, { name: string; domain: string }> = {
   "xdate-review": { name: "xdate.ch", domain: "xdate.ch" },
@@ -35,11 +14,12 @@ const LEGACY_REPORTS: Record<string, { name: string; domain: string }> = {
 };
 
 export function resolvePortalReport(slug: string): string | null {
-  if (slug === "and6" || slug === "and6-review") return "and6-review";
+  if (COMPARISON_PORTALS.some((item) => item.id === slug)) return slug;
+  if (slug === "and6-review") return "and6-review";
   return Object.prototype.hasOwnProperty.call(LEGACY_REPORTS, slug) ? slug : null;
 }
 
-export const PORTAL_REPORT_SLUGS = ["and6", "and6-review", ...Object.keys(LEGACY_REPORTS)];
+export const PORTAL_REPORT_SLUGS = [...COMPARISON_PORTALS.map((item) => item.id), "and6-review", ...Object.keys(LEGACY_REPORTS)];
 
 function Page({ title, description, path, children }: { title: string; description: string; path: string; children: React.ReactNode }) {
   return <main id="main" className="night-page">
@@ -56,73 +36,56 @@ function Actions({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-wrap gap-3 mt-6">{children}</div>;
 }
 
-function Source({ href, children }: { href: string; children: React.ReactNode }) {
-  return <a href={href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{children}<span className="sr-only"> (externe Quelle, neuer Tab)</span> ↗</a>;
-}
-
 function MethodHelp() {
   return <details className="night-help">
     <summary>Wie lese ich die Quellenangaben?</summary>
     <div className="night-grid night-grid-3 mt-5">
-      <div><h3>Beobachtet</h3><p>Eine Navigation, ein Feld oder ein Text war im dokumentierten Abruf sichtbar. Das sagt noch nichts über die Funktion dahinter aus.</p></div>
-      <div><h3>Vom Betreiber beschrieben</h3><p>Eine Website erklärt einen eigenen Ablauf. Ohne unabhängige Prüfung übernehmen wir daraus kein Gütesiegel.</p></div>
-      <div><h3>Offen</h3><p>Ein Beleg fehlt oder die Seite liess sich nicht auswerten. Offen bedeutet weder schlecht noch widerlegt.</p></div>
+      <div><h3>Mit Datum</h3><p>Die Zahl nennt Einträge, deren Quelle und Erfassungszeitstempel im Verzeichnis stehen.</p></div>
+      <div><h3>in Prüfung</h3><p>Ohne Quelle und Datum gibt es keine Aussage und keine Note.</p></div>
+      <div><h3>Keine Note</h3><p>Auch ein datierter Eintrag ist keine Qualitäts-, Reichweiten- oder Sicherheitsbewertung.</p></div>
     </div>
   </details>;
 }
 
-export function PortalComparisonPage() {
-  const [filter, setFilter] = useState<"all" | "readable" | "open">("all");
-  const visible = COMPARISON_PORTALS.filter(portal => filter === "all" || (filter === "readable" ? portal.readable : !portal.readable));
-  return <Page title="Schweizer Portalvergleich mit Quellen" description="Zehn ausgewählte Websites nach denselben Fragen betrachtet: Orientierung, Transparenz und belegbare Aussagen. Quellenstand 27.11.2026." path="/reviews">
+export function PortalComparisonPage({ portalFacts = [] }: { portalFacts?: PortalFact[] }) {
+  const [filter, setFilter] = useState<"all" | "dated" | "open">("all");
+  const visible = portalFacts.filter((portal) => filter === "all" || (filter === "dated" ? portal.statement : !portal.statement));
+  return <Page title="Schweizer Portalvergleich mit Quellen" description="Zehn Portale. Nur Aussagen mit Quelle und Datum. Ohne Note, solange die Prüfung offen ist." path="/reviews">
     <section className="night-section night-grid night-grid-2">
-      <div><p className="night-kicker">Der offene Vergleich · Stand {OBSERVED_AT}</p><h1 className="night-title">Weniger Versprechen.<br />Mehr Durchblick.</h1><p className="night-lead">Zehn ausgewählte Websites. Dieselben Fragen. Und ein klares «offen», wenn ein Beleg fehlt.</p><Actions><Link className="night-button" href="/reviews/and6">and6-Analyse lesen</Link><a className="night-button-secondary" href="#portalvergleich">Alle zehn ansehen</a></Actions></div>
-      <Art file="compare-night-v2.png" alt="Illustration eines Fernglases vor einer Schweizer Berglandschaft im Abendlicht" caption="Illustrative Markenwelt · Die Auswahl ist kein Markt-, Qualitäts- oder Traffic-Ranking." />
-    </section>
-    <section className="night-section night-grid night-grid-3" aria-label="Vergleichskriterien">
-      <article className="night-panel"><p className="night-kicker">01 / Orientierung</p><h2>Wie beginnt die Suche?</h2><p className="night-muted">Sichtbare Ortswahl, Kategorien und Filter zeigen, wie ein Einstieg ohne lange Texteingabe möglich wird.</p></article>
-      <article className="night-panel"><p className="night-kicker">02 / Transparenz</p><h2>Was ist nachvollziehbar?</h2><p className="night-muted">Preisstruktur, Herkunft und verständliche Datenschutzinformationen helfen, Angaben einzuordnen.</p></article>
-      <article className="night-panel"><p className="night-kicker">03 / Belege</p><h2>Was bleibt offen?</h2><p className="night-muted">Ein Prüfzeichen ist nur so aussagekräftig wie sein erklärter Umfang. Wir trennen Werbeversprechen von Beobachtung.</p></article>
+      <div><p className="night-kicker">Portalvergleich · ohne Note</p><h1 className="night-title">Zehn Portale.<br />Keine erfundene Wertung.</h1><p className="night-lead">Jedes Portal steht auf «in Prüfung». Eine Zahl erscheint nur, wenn im Verzeichnis Quelle und Erfassungsdatum zusammen vorliegen.</p><DataStandNote /><Actions><a className="night-button" href="#portalvergleich">Alle zehn ansehen</a><Link className="night-button-secondary" href="/report">Angabe korrigieren</Link></Actions></div>
+      <Art file="compare-night-v2.png" alt="Illustration eines Fernglases vor einer Schweizer Berglandschaft im Abendlicht" caption="Illustration. Die Reihenfolge ist keine Rangliste." />
     </section>
     <section className="night-section" id="portalvergleich">
-      <p className="night-kicker">Zehn Websites aus der Projektauswahl</p><h2>Eine Übersicht mit sichtbaren Grenzen.</h2>
-      <p className="night-muted">Öffentliche Seiten und Dokumente wurden am {OBSERVED_AT} gelesen. Es gab keine Kontotests, Kontaktanfragen, technische Datenschutzprüfung oder repräsentative Nutzungsstudie.</p>
-      <div className="flex flex-wrap gap-3 my-6" role="group" aria-label="Quellenstatus filtern">
-        {([{ value: "all", label: "Alle zehn" }, { value: "readable", label: "Auswertbare Quellen" }, { value: "open", label: "Offene Quellenlage" }] as const).map(item => <button type="button" key={item.value} className={filter === item.value ? "night-button" : "night-button-secondary"} aria-pressed={filter === item.value} onClick={() => setFilter(item.value)}>{item.label}</button>)}
+      <p className="night-kicker">Zehn Namen aus der Auswahl</p><h2>Quelle und Datum, oder offen.</h2>
+      <div className="flex flex-wrap gap-3 my-6" role="group" aria-label="Portale filtern">
+        {([{ value: "all", label: "Alle zehn" }, { value: "dated", label: "Mit Zeitstempel" }, { value: "open", label: "Ohne Beleg" }] as const).map(item => <button type="button" key={item.value} className={filter === item.value ? "night-button" : "night-button-secondary"} aria-pressed={filter === item.value} onClick={() => setFilter(item.value)}>{item.label}</button>)}
       </div>
-      <p role="status" aria-live="polite" className="night-muted mb-5">{visible.length} von 10 Websites angezeigt</p>
-      <div className="night-grid night-grid-2">{visible.map(portal => <article className="night-panel" key={portal.name}>
-        <p className="night-kicker">{portal.status}</p><h3>{portal.name}</h3><p>{portal.discovery}</p><p className="night-muted mt-3">{portal.evidence}</p>
-        {portal.name === "Choice" && <p className="night-muted mt-3"><Source href="https://saferchoice.ch/learn/inclusivity/exploring-bdsm-and-sex-positive-coaching-with-choice-a-safe-introduction-to-kink-for-the-curious">Erklärtext des Betreibers</Source> · <Source href="https://saferchoice.ch/privacy-policy">Datenschutzerklärung</Source></p>}
-        <div className="flex flex-wrap gap-4 mt-5">{portal.url ? <Source href={portal.url}>Quelle: {portal.domain}</Source> : <span className="night-muted">Recherchekandidat: {portal.domain} · unbestätigt</span>}{portal.name === "and6" && <Link href="/reviews/and6-review" className="underline underline-offset-4">Analyse lesen</Link>}</div>
+      <p role="status" aria-live="polite" className="night-muted mb-5">{visible.length} von {portalFacts.length || 10} Portalen angezeigt</p>
+      <div className="night-grid night-grid-2">{visible.map(portal => <article className="night-panel" key={portal.id}>
+        <p className="night-kicker">{portal.status} · keine Note</p><h3>{portal.name}</h3>
+        {portal.statement ? <p>{portal.statement}</p> : <p>Keine geprüfte Aussage mit Quelle und Datum. Deshalb keine Bewertung.</p>}
+        <p className="night-muted mt-3">Domain im Datenabgleich: {portal.domains[0]}</p>
+        <div className="flex flex-wrap gap-4 mt-5"><Link href={`/reviews/${portal.id}`} className="underline underline-offset-4">Einzelansicht</Link></div>
       </article>)}</div>
     </section>
     <section className="night-section"><MethodHelp /></section>
-    <section className="night-section night-panel"><details><summary>Frühere Berichtsseiten weiterhin aufrufen</summary><p className="night-muted mt-4">Diese vorhandenen Adressen bleiben erreichbar. Ihre frühere Bewertung wird mangels dokumentierter aktueller Belege nicht übernommen; sie gehören nicht zur oben genannten Zehnerauswahl.</p><div className="flex flex-wrap gap-4 mt-4">{Object.entries(LEGACY_REPORTS).map(([slug, report]) => <Link key={slug} href={`/reviews/${slug}`} className="underline underline-offset-4">{report.name} · Quellenstand offen</Link>)}</div></details></section>
-    <section className="night-section night-panel"><p className="night-kicker">Unser eigenes Interesse bleibt sichtbar</p><h2>Auch wir müssen uns erklären.</h2><p className="night-muted">Diese Übersicht erscheint auf iwantsexnow.ch. Wir betreiben selbst ein Verzeichnis und vergeben uns deshalb weder eine Vergleichsnote noch einen eigenen Testsieg. Die Reihenfolge der zehn Websites drückt keine Empfehlung aus.</p><Actions><Link href="/report" className="night-button-secondary">Eine Quellenangabe korrigieren</Link><Link href="/safety" className="night-button-secondary">Vertrauen verstehen</Link></Actions></section>
+    <section className="night-section night-panel"><details><summary>Ältere Berichtsadressen</summary><p className="night-muted mt-4">Diese Adressen bleiben erreichbar. Alte Noten werden nicht angezeigt.</p><div className="flex flex-wrap gap-4 mt-4">{Object.entries(LEGACY_REPORTS).map(([slug, report]) => <Link key={slug} href={`/reviews/${slug}`} className="underline underline-offset-4">{report.name} · in Prüfung</Link>)}</div></details></section>
+    <section className="night-section night-panel"><p className="night-kicker">Eigenes Verzeichnis</p><h2>Wir vergeben uns keine Note.</h2><p className="night-muted">iwantsexnow.ch steht nicht in dieser Zehnerliste und erhält keine Bewertung. Die Reihenfolge ist keine Empfehlung.</p><Actions><Link href="/report" className="night-button-secondary">Eine Quellenangabe korrigieren</Link><Link href="/safety" className="night-button-secondary">Vertrauen verstehen</Link></Actions></section>
   </Page>;
 }
 
-export function PortalReportPage({ reportKey }: { reportKey: string }) {
-  const isAnd6 = reportKey === "and6-review";
+export function PortalReportPage({ reportKey, portalFacts = [] }: { reportKey: string; portalFacts?: PortalFact[] }) {
+  const slot = portalFacts.find((item) => item.id === reportKey || (reportKey === "and6-review" && item.id === "and6"));
   const legacy = LEGACY_REPORTS[reportKey];
-  if (!isAnd6 && !legacy) return null;
-  const name = isAnd6 ? "and6.com" : legacy.name;
-  return <Page title={`${name}: Quellenstand und offene Fragen`} description={`Nachvollziehbarer Quellenstand zu ${name}: beobachtete Funktionen, Betreiberangaben und offene Fragen, ohne unbelegte Rangliste oder Bewertung.`} path={`/reviews/${reportKey}`}>
+  if (!slot && !legacy && reportKey !== "and6-review") return null;
+  const name = slot?.name || (reportKey === "and6-review" ? "and6" : legacy.name);
+  return <Page title={`${name}: in Prüfung`} description={`${name} ist in Prüfung. Keine Note. Nur Aussagen mit Quelle und Datum.`} path={`/reviews/${reportKey}`}>
     <section className="night-section">
       <Link href="/reviews" className="night-muted underline underline-offset-4">← Zum Portalvergleich</Link>
-      <div className="night-grid night-grid-2 mt-8"><div><p className="night-kicker">Quellenstand · {OBSERVED_AT}</p><h1 className="night-title">{name}<br />klar eingeordnet.</h1><p className="night-lead">{isAnd6 ? "Was die sichtbare Oberfläche zeigt. Was der Betreiber beschreibt. Und was damit noch nicht bestätigt ist." : "Diese Berichtseite bleibt erreichbar. Ihre bisherigen Wertungen werden nur mit nachvollziehbaren Belegen weitergeführt."}</p></div><Art file="guide-vergleichen.webp" alt="Illustratives Motiv zum sorgfältigen Vergleichen von Informationen" caption="Illustration · Keine Bewertung einer realen Person" /></div>
+      <div className="night-grid night-grid-2 mt-8"><div><p className="night-kicker">in Prüfung · keine Note</p><h1 className="night-title">{name}</h1><p className="night-lead">{slot?.statement || "Für diesen Namen liegt kein Eintrag mit Quelle und Erfassungsdatum vor. Deshalb gibt es keine Bewertung."}</p><DataStandNote /></div><Art file="guide-vergleichen.webp" alt="Illustratives Motiv zum Vergleichen von Informationen" caption="Illustration. Keine Note." /></div>
     </section>
-    {isAnd6 ? <>
-      <section className="night-section night-grid night-grid-3">
-        <article className="night-panel"><p className="night-kicker">Beobachtet</p><h2>Mehrere Wege hinein</h2><p className="night-muted">Regionen, Kategorien, Filter und Sortierung sind auf der gelesenen Startseite erkennbar. Sie bieten sichtbare Auswahlmöglichkeiten.</p><p className="mt-4"><Source href="https://www.and6.com/de">Startseite von and6</Source></p></article>
-        <article className="night-panel"><p className="night-kicker">Betreiberangabe</p><h2>Redaktionelle Prüfung</h2><p className="night-muted">and6 beschreibt eine redaktionelle Prüfung von Bildern und Texten. Umfang und Durchführung wurden von uns nicht unabhängig kontrolliert.</p><p className="mt-4"><Source href="https://www.and6.com/de">Eigendarstellung auf and6</Source></p></article>
-        <article className="night-panel"><p className="night-kicker">Nicht geprüft</p><h2>Wirkung im Alltag</h2><p className="night-muted">Keine Aussage zu Reaktionszeiten, tatsächlicher Verfügbarkeit, Identität einzelner Personen oder Qualität einer Dienstleistung.</p></article>
-      </section>
-      <section className="night-section night-grid night-grid-2"><article className="night-panel"><h2>Was der Einstieg erkennen lässt</h2><p>Die sichtbaren Kategorien und Ortsbereiche ermöglichen eine erste Eingrenzung. Weitere Filter können die Auswahl präzisieren.</p><p className="night-muted mt-4">Wie schnell Menschen damit ans Ziel kommen, wurde nicht mit Nutzertests gemessen. Aus einer sichtbaren Funktion folgt kein nachgewiesener Bedienungsvorteil.</p></article><article className="night-panel"><h2>Welche Fragen offenbleiben</h2><ul className="list-disc pl-5 space-y-3"><li>Wie werden Prüfzeichen erklärt und regelmässig erneuert?</li><li>Welche Angaben sind aktuell, und woran lässt sich das erkennen?</li><li>Wie funktionieren Korrektur, Löschung und Datenkontrolle im eingeloggten Bereich?</li><li>Wie vollständig sind Kosten vor einer verbindlichen Entscheidung erklärt?</li></ul></article></section>
-    </> : <section className="night-section night-panel"><p className="night-kicker">Beleglage offen</p><h2>Keine Note ohne nachvollziehbare Grundlage.</h2><p className="night-muted">Für {name} liegt in dieser Überarbeitung keine ausreichend dokumentierte aktuelle Prüfung vor. Frühere Zahlen zu Reichweite, Inseraten, Marktstellung und Bewertungen werden deshalb hier nicht als Fakten ausgegeben.</p><p className="night-muted mt-4">Die bestehende Adresse bleibt als Quellenstand erreichbar. Der aktuelle Vergleich umfasst zehn separat benannte Websites und dokumentiert für jede, was gelesen werden konnte.</p><Actions><Link href="/reviews" className="night-button">Zum dokumentierten Vergleich</Link><Link href="/report" className="night-button-secondary">Hinweis zur Quelle melden</Link></Actions></section>}
+    <section className="night-section night-panel"><h2>Was hier nicht steht.</h2><p className="night-muted">Keine Sterne, keine Reichweite, keine Behauptung über die Startseite und keine Prüfung von Identität oder Verfügbarkeit.</p><Actions><Link href="/reviews" className="night-button">Zum Vergleich</Link><Link href="/report" className="night-button-secondary">Hinweis melden</Link></Actions></section>
     <section className="night-section"><MethodHelp /></section>
-    <section className="night-section night-help"><h2>Aus einer Beobachtung wird kein Gütesiegel.</h2><p>Ein Vergleich erklärt Funktionen und Informationslücken. Er ersetzt keine individuelle Prüfung und bewertet keine reale Person.</p><Actions><Link href="/pricing" className="night-button-secondary">Preisangaben einordnen</Link><Link href="/safety" className="night-button-secondary">Prüfliste öffnen</Link></Actions></section>
   </Page>;
 }
 

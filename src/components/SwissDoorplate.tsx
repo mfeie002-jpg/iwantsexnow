@@ -15,7 +15,7 @@ interface SwissDoorplateProps {
 }
 
 export function SwissDoorplate({
-  state = "FREI",
+  state = "EXTERN",
   customLabel,
   roomNumber,
   size = "sm",

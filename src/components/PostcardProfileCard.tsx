@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
+import { hourlyPriceLine } from "@/lib/honesty";
 
 export function cleanPostcardName(raw: any, idx = 0): string {
   const str = String(raw || "")
@@ -39,7 +40,12 @@ export function PostcardProfileCard({ offer, idx, isFav = false, onToggleFav }: 
   const displayName = cleanPostcardName(offer?.rawName || offer?.name || offer?.title, idx);
   const city = offer?.city || "Zürich";
   const canton = offer?.canton || "ZH";
-  const rate = Math.max(150, Math.min(1800, Number(offer?.advertisedBaseChf || offer?.rate60Chf || offer?.priceChf) || 300));
+  const harvested = Number(offer?.advertisedBaseChf || offer?.rate60Chf || offer?.priceChf);
+  const halfHour = Number(offer?.rate30Chf);
+  const hourly = hourlyPriceLine({
+    harvested: Number.isFinite(harvested) && harvested > 0 ? harvested : null,
+    halfHour: Number.isFinite(halfHour) ? halfHour : null,
+  });
   const { imgSrc, fallbackImg } = getPostcardImage(offer, idx);
 
   const rawPhone = String(offer?.rawPhone || offer?.phone || offer?.unlockedPhone || "").trim();
@@ -72,10 +78,8 @@ export function PostcardProfileCard({ offer, idx, isFav = false, onToggleFav }: 
         {/* Sanfter Verlauf nur ganz unten für Orts-Stempel */}
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#1E2433]/75 via-[#1E2433]/20 to-transparent pointer-events-none" />
 
-        {/* Oben links: Freundliches Mint-Verfügbarkeits-Badge */}
-        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#CCFBF1] text-[#0F5132] border border-[#1E2433] text-[10px] font-extrabold uppercase tracking-wide shadow-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-          Heute frei
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-[#1E2433] border border-[#1E2433] text-[10px] font-extrabold uppercase tracking-wide shadow-sm">
+          Status offen
         </div>
 
         {/* Oben rechts: Merklisten-Herz */}
@@ -114,8 +118,8 @@ export function PostcardProfileCard({ offer, idx, isFav = false, onToggleFav }: 
             {displayName}
           </Link>
           <div className="shrink-0 px-2.5 py-1 rounded-lg bg-[#FEF08A] border border-[#1E2433] text-right leading-none shadow-[0_2px_0_#1E2433]">
-            <span className="block text-[9px] font-bold uppercase text-[#1E2433]/70">ab</span>
-            <span className="text-xs font-black text-[#1E2433]">CHF {rate}</span>
+            <span className="block text-[9px] font-bold uppercase text-[#1E2433]/70">{hourly.estimated ? "geschätzt" : "60 Min."}</span>
+            <span className="text-xs font-black text-[#1E2433]">{hourly.amount === null ? "offen" : `CHF ${hourly.amount}`}</span>
           </div>
         </div>
 

@@ -15,9 +15,7 @@ interface MoneyPageSeoProps {
 export function MoneyPageSeoContent({
   cityOrRegion = "Zürich, Zug, Cham, Basel, Bern & Genf",
   canton = "CH",
-  minRateChf = 350,
-  avgRateChf = 450,
-  profileCount = 260,
+  profileCount,
 }: MoneyPageSeoProps) {
   const [lang, setLang] = useState<"de" | "en">("de");
 
@@ -73,7 +71,9 @@ export function MoneyPageSeoContent({
                 Wer in <strong>{cityOrRegion}</strong> nach einer erstklassigen Begleiterin (High-Class Escort), einer sinnlichen <strong>Tantra- & Erotik-Massage</strong>, einem kultivierten <strong>Gigolo / Callboy für Damen und Paare</strong> oder einem diskreten <strong>Hotel-Outcall</strong> sucht, stösst auf klassischen Schweizer Inserate-Portalen (`xdate.ch`, `fgirl.ch`, `and6.com`, `sex4u.ch`) oft auf dasselbe Problem: Identische Profile werden unter verschiedenen Künstlernamen mehrfach geschaltet, und angegebene Basispreise entpuppen sich vor Ort als Lockvogel-Angebote ohne Extras.
               </p>
               <p>
-                Die <strong>Swiss Shield Meta-Engine von iWantSexNow.ch</strong> scannt deshalb stündlich über <strong>{profileCount} aktive Schweizer Profile</strong>, bündelt identische <code>+41 79 / 078 / 076</code> Rufnummern zu einem einzigen geprüften Cluster und berechnet dir vorab den <strong>verbindlichen Komplettpreis inklusive deiner Wunsch-Services</strong> (wie <em>Girlfriend Experience GFE, Französisch Pur FO, Zungenküsse ZK, 69, Dinner-Date oder Overnight</em>).
+                {typeof profileCount === "number"
+                  ? <>Im Verzeichnis liegen <strong>{profileCount} Einträge</strong>. Ein nicht bestätigter Preis ist keine Offerte.</>
+                  : <>Eine Profilzahl oder eine Preisspanne steht hier nur, wenn sie aus den Verzeichnisdaten kommt. Ein nicht bestätigter Preis ist keine Offerte.</>}
               </p>
 
               <h3 className="text-lg font-serif font-bold text-white pt-2">
@@ -88,30 +88,9 @@ export function MoneyPageSeoContent({
             <div className="lg:col-span-5 space-y-4">
               <Card className="bg-[#07141a] border border-[#ff6b5e]/45 p-5 rounded-2xl text-white space-y-3">
                 <h3 className="text-base font-serif font-black text-[#ff6b5e] flex items-center gap-2">
-                  <Coins size={16} /> Offizielle Richtpreise in {cityOrRegion} (2026)
+                  <Coins size={16} /> Preise in {cityOrRegion}
                 </h3>
-                <div className="divide-y divide-white/10 text-xs">
-                  <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">30 Min. Express / Studio-Visit (Incall):</span>
-                    <strong className="text-mint-400">ab CHF {Math.round(minRateChf * 0.65)} – {Math.round(avgRateChf * 0.7)}</strong>
-                  </div>
-                  <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">60 Min. Direktbuchung (inkl. GFE):</span>
-                    <strong className="text-mint-400">ab CHF {minRateChf} (Ø CHF {avgRateChf})</strong>
-                  </div>
-                  <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">2 Stunden VIP Dinner- oder Hotel-Date:</span>
-                    <strong className="text-[#ff6b5e]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
-                  </div>
-                  <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">Overnight (10–12 Std. inkl. Frühstück):</span>
-                    <strong className="text-white">CHF 1,800 – 3,500</strong>
-                  </div>
-                  <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">3-Minuten 1:1 Live-Cam Vibe-Check vorab:</span>
-                    <strong className="text-glow-300">CHF 29 (CHF 20 Date-Gutschrift!)</strong>
-                  </div>
-                </div>
+                <p className="text-xs text-gray-300">Keine Richtpreise. Beträge stehen beim jeweiligen Eintrag, geschätzte Werte sind dort gekennzeichnet.</p>
               </Card>
 
               <div className="bg-black/40 border border-white/10 rounded-2xl p-4 text-xs space-y-2">
@@ -147,11 +126,13 @@ export function MoneyPageSeoContent({
                 Visiting <strong>{cityOrRegion}</strong> for business, banking, crypto conferences in <strong>Zug</strong>, the <strong>WEF in Davos</strong>, <strong>Art Basel</strong>, or a luxury holiday in <strong>Zurich, Geneva, St. Moritz, or Zermatt</strong>? Traditional Swiss adult directories (`xdate.ch`, `fgirl.ch`, `and6.com`) are often only in German/French, filled with duplicate agency ads, and notorious for surprise upcharges once the companion arrives at your hotel room.
               </p>
               <p>
-                <strong>iWantSexNow.ch</strong> is Switzerland’s official meta-index and direct-booking platform: We scan and deduplicate over <strong>{profileCount} verified companions, female escorts, male gigolos (for women & couples), and VIP trans models</strong> every hour by their Swiss <code>+41</code> phone number.
+                {typeof profileCount === "number"
+                  ? <>The directory currently lists <strong>{profileCount} entries</strong>. An unconfirmed price is not an offer.</>
+                  : <>A profile count appears here only when it is computed from the directory. An unconfirmed price is not an offer.</>}
               </p>
               <ul className="space-y-1.5 text-mint-300 font-medium">
                 <li>✓ <strong>100% Fixed-Price Guarantee (Swiss Shield Certificate):</strong> Select your duration (30m, 60m, 2h, Overnight) and desired services (GFE, Dinner Date, Hotel Outcall, Massage) upfront—zero price negotiation in your hotel room.</li>
-                <li>✓ <strong>3-Minute 1:1 Live-Cam Vibe-Check (CHF 29):</strong> Verify that your companion looks 100% like her photos via a private browser video call before booking (includes a CHF 20 credit toward your date!).</li>
+                <li>✓ <strong>No live-availability claim:</strong> A scraped listing is not a confirmation that someone is free.</li>
                 <li>✓ <strong>5-Star Hotel Outcall & Crypto Friendly:</strong> Discreet outcalls to all major Swiss luxury hotels (Dolder Grand, Baur au Lac, Park Hyatt, Park Hotel Zug, Kameha Grand, Mandarin Oriental, Badrutt’s Palace). Cash (CHF/EUR/USD), TWINT, and USDT/Crypto accepted.</li>
               </ul>
             </div>
@@ -167,12 +148,8 @@ export function MoneyPageSeoContent({
                     <strong className="text-mint-400">100% Legal & Regulated (18+)</strong>
                   </div>
                   <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">60 Min. Verified Direct Rate:</span>
-                    <strong className="text-mint-400">from CHF {minRateChf} (avg. CHF {avgRateChf})</strong>
-                  </div>
-                  <div className="py-2 flex justify-between">
-                    <span className="text-gray-300">2 Hours Dinner / Hotel Outcall:</span>
-                    <strong className="text-[#ff6b5e]">CHF {Math.round(avgRateChf * 1.75)} – {Math.round(avgRateChf * 2)}</strong>
+                    <span className="text-gray-300">Published rates:</span>
+                    <strong className="text-mint-400">per entry, estimates marked</strong>
                   </div>
                   <div className="py-2 flex justify-between">
                     <span className="text-gray-300">Accepted Currencies:</span>

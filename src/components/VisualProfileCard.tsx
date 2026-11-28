@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
+import { halfHourPriceLine, hourlyPriceLine } from "@/lib/honesty";
+import { getProfileRate } from "@/lib/night-catalogue";
 
 export const CARD_FALLBACKS: string[] = [];
 
@@ -38,8 +40,18 @@ export function VisualProfileCard(props: any) {
   const name = formatCleanName(liveState?.displayName || offer?.displayName || offer?.rawName || offer?.name);
   const city = String(liveState?.city || offer?.city || "Zürich").split("/")[0].trim() || "Zürich";
   const canton = String(liveState?.canton || offer?.canton || "ZH").slice(0, 2).toUpperCase();
-  const rate60 = Math.max(150, Math.min(1500, Number(liveState?.rate60Chf || offer?.rate60Chf || offer?.advertisedBaseChf) || 350));
-  const rate30 = Math.max(100, Number(liveState?.rate30Chf || offer?.rate30Chf) || Math.round((rate60 * 0.6) / 10) * 10);
+  const harvested60 = Number(liveState?.rate60Chf || offer?.rate60Chf || offer?.advertisedBaseChf);
+  const harvested30 = Number(liveState?.rate30Chf || offer?.rate30Chf);
+  const hourly = hourlyPriceLine({
+    confirmed: getProfileRate(liveState, 60),
+    harvested: Number.isFinite(harvested60) ? harvested60 : null,
+    halfHour: Number.isFinite(harvested30) ? harvested30 : null,
+  });
+  const halfHour = halfHourPriceLine({
+    confirmed: getProfileRate(liveState, 30),
+    harvested: Number.isFinite(harvested30) ? harvested30 : null,
+    hourly: Number.isFinite(harvested60) ? harvested60 : null,
+  });
 
   const { primarySrc, backupSrc, photoCount } = resolveProfilePhoto(
     liveState?.thumbnail ? { ...offer, thumbnail: liveState.thumbnail } : offer,
@@ -60,7 +72,6 @@ export function VisualProfileCard(props: any) {
       ? `https://wa.me/${digits}?text=${encodeURIComponent(`Hoi ${name}, ich habe dein Profil in ${city} auf iwantsexnow.ch gesehen. Hast du heute Zeit?`)}`
       : `/profile/${encodeURIComponent(pid)}`;
 
-  const isLiveConfirmed = Boolean(liveState?.availabilityConfirmed || offer?.availabilityConfirmed);
   const isClaimed = Boolean(liveState?.claimed || offer?.directAuthorized);
   const portalLabel = String(offer?.sourcePortal || "CH-Index").replace(/^www\./, "");
 
@@ -81,19 +92,10 @@ export function VisualProfileCard(props: any) {
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E16] via-[#0B0E16]/20 to-black/25 pointer-events-none" />
 
-        {/* Oben links: Live / Kanton Türschild-Badge */}
         <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5">
-          {isLiveConfirmed ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500 text-black text-[10px] font-extrabold uppercase tracking-wider shadow">
-              <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
-              FREI · 4H LIVE
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-emerald-300 text-[10px] font-bold uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              {canton} · Aktiv
-            </span>
-          )}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-white text-[10px] font-bold uppercase tracking-wider">
+            {canton} · Status offen
+          </span>
         </div>
 
         {/* Oben rechts: Foto-Zähler & Quelle */}
@@ -113,7 +115,7 @@ export function VisualProfileCard(props: any) {
           </div>
           <div className="shrink-0 px-2.5 py-1 rounded-xl bg-black/85 border border-[#C8A97E]/50 text-right">
             <span className="block text-[9px] uppercase text-gray-400 leading-none">60 Min.</span>
-            <span className="text-xs font-extrabold text-[#C8A97E]">CHF {rate60}</span>
+            <span className="text-xs font-extrabold text-[#C8A97E]">{hourly.amount === null ? "offen" : `CHF ${hourly.amount}${hourly.estimated ? " · geschätzt" : ""}`}</span>
           </div>
         </div>
       </Link>
@@ -121,7 +123,7 @@ export function VisualProfileCard(props: any) {
       {/* Kompakter Aktions-Fuss */}
       <div className="p-3 bg-[#121621] flex flex-col gap-2.5">
         <div className="flex items-center justify-between text-[11px] text-gray-400">
-          <span>30 Min. ab CHF {rate30}</span>
+          <span>{halfHour.amount === null ? "30 Min. nicht angegeben" : `30 Min. CHF ${halfHour.amount}${halfHour.estimated ? " · geschätzt" : ""}`}</span>
           {digits.length >= 10 ? (
             <span className="text-emerald-400 font-semibold">✓ +41 WhatsApp direkt</span>
           ) : (

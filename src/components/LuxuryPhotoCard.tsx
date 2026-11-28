@@ -4,6 +4,7 @@ import { ArrowRight, Heart, MapPin, Scale } from "lucide-react";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
 import { NEUTRAL_PROFILE_IMAGE, profileImageSource, profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
+import { hourlyPriceLine } from "@/lib/honesty";
 import { cleanSwissPhone, getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate } from "@/lib/night-catalogue";
 
 // Compatibility exports for older routes; every fallback is deliberately non-personal.
@@ -20,7 +21,11 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
   const state = liveState || catalogue.states[id] || {};
   const name = getProfileName(offer, state);
   const city = getProfileCity(offer, state);
-  const rate = getProfileRate(state, 60);
+  const hourly = hourlyPriceLine({
+    confirmed: getProfileRate(state, 60),
+    harvested: typeof offer.advertisedBaseChf === "number" ? offer.advertisedBaseChf : null,
+    halfHour: typeof offer.rate30Chf === "number" ? offer.rate30Chf : null,
+  });
   const saved = catalogue.favorites.includes(id);
   const compared = catalogue.compareIds.includes(id);
   const comparisonFull = !compared && catalogue.compareIds.length >= 3;
@@ -38,7 +43,7 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
     <div className="night-profile-meta">
       <p className="night-eyebrow"><MapPin size={12} aria-hidden="true" /> {city}</p>
       <h3><Link href={href}>{name}</Link></h3>
-      <p className="night-note">{rate !== null ? `CHF ${rate.toLocaleString("de-CH")} / 60 Min. · bestätigte Angabe` : "Honorar nicht bestätigt"}</p>
+      <p className="night-note">{hourly.label}</p>
       <div className="night-profile-bottom">
         <button type="button" className={`night-text-button ${compared ? "active" : ""}`} aria-pressed={compared} disabled={comparisonFull} aria-describedby={comparisonFull ? `comparison-limit-${id}` : undefined} onClick={() => catalogue.toggleCompare(id)}>
           <Scale size={15} aria-hidden="true" /> {compared ? "Im Vergleich" : "Vergleichen"}
