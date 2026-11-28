@@ -6,7 +6,7 @@ import {ArrowRight,ArrowUpRight,BookOpen,CheckCircle2,Clock3,Heart,MapPin,Shield
 import {SEO} from '@/components/SEO';
 import {brandAsset,CATEGORIES,REGIONS,searchHref} from '@/lib/night-catalogue';
 import {useCatalogue} from '@/components/night/CatalogueContext';
-import {ProfileGrid,RegionCards} from '@/components/night/DiscoveryPages';
+import {CityTileArt,ProfileGrid} from '@/components/night/DiscoveryPages';
 import {TouchSearch,useNightGuide} from '@/components/night/NightShell';
 import {getPaginatedCatalogueProps,type InitialPageData} from '@/lib/night-catalogue-pages-server';
 import {XeniaContext} from '@/components/flagship/FlagshipEditorial';
@@ -47,7 +47,7 @@ export default function Home({cataloguePage}:{cataloguePage?:InitialPageData}){
   </section>
 
   <section className="night-container flagship-section" id="regionen"><div className="flagship-section-head"><div><span className="flagship-eyebrow">01 · SCHWEIZ ENTDECKEN</span><h2>Beliebte Regionen in der Schweiz</h2><p>Einfach nach Ort einsteigen und lokale Angebote einordnen.</p></div><Link href="/regionen">Alle Orte entdecken <ArrowRight size={17}/></Link></div>
-   <div className="flagship-region-tiles">{REGIONS.slice(0,5).map(region=><Link key={region.canton} href={region.href} className="flagship-region-tile"><img src={brandAsset(region.image)} alt="" loading="lazy"/><span>{region.name}</span><ArrowUpRight size={18}/></Link>)}</div>
+   <div className="flagship-region-tiles">{REGIONS.slice(0,5).map(region=>{const local=region.canton==='GE'||region.canton==='BE'?cataloguePage?.cityTiles?.[region.canton]:null;return <Link key={region.canton} href={region.href} className="flagship-region-tile"><CityTileArt canton={region.canton} image={region.image} localSrc={local}/><span>{region.name}</span><ArrowUpRight size={18}/></Link>;})}</div>
    <p className="flagship-caption">Stadtmotive: KI-Illustrationen. Keine Personen- oder Verfügbarkeitsnachweise.</p>
   </section>
 

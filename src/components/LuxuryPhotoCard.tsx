@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Heart, MapPin, Scale } from "lucide-react";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
-import { NEUTRAL_PROFILE_IMAGE, profileImageSource } from "@/components/night/profile-image-model";
+import { NEUTRAL_PROFILE_IMAGE, profileImageSource, profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
 import { cleanSwissPhone, getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate } from "@/lib/night-catalogue";
 
 // Compatibility exports for older routes; every fallback is deliberately non-personal.
@@ -11,7 +11,7 @@ export const extractPhotoUrls = (offer: any): string[] => getProfilePhotos(offer
 export const cleanSwissDigits = cleanSwissPhone;
 export const getSeedFallback = (_seed: string): string => NEUTRAL_PROFILE_IMAGE;
 export const getLocalAiPortrait = getSeedFallback;
-export const toProxiedImg = (url: string, _seed = ""): string => profileImageSource(url) || NEUTRAL_PROFILE_IMAGE;
+export const toProxiedImg = (url: string, seed = ""): string => seed ? profilePhotoSrc(seed) : profileImageSource(url) || profilePhotoPlaceholder("");
 
 export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: any; idx?: number; liveState?: any }) {
   const catalogue = useCatalogue();
@@ -20,7 +20,6 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
   const state = liveState || catalogue.states[id] || {};
   const name = getProfileName(offer, state);
   const city = getProfileCity(offer, state);
-  const photos = getProfilePhotos(offer, state);
   const rate = getProfileRate(state, 60);
   const saved = catalogue.favorites.includes(id);
   const compared = catalogue.compareIds.includes(id);
@@ -29,7 +28,7 @@ export default function LuxuryPhotoCard({ offer, idx = 0, liveState }: { offer: 
   return <article className="night-profile-card">
     <div className="night-profile-media">
       <Link href={href} aria-label={`Profil ansehen: ${name}`}>
-        <ProfileImage key={id} photos={photos} alt={`Profilfoto zu ${name}`} eager={idx < 4} />
+        <ProfileImage key={id} profileId={id} name={name} alt={`Profilfoto zu ${name}`} eager={idx < 4} />
       </Link>
       <button type="button" className={`night-icon-button night-save ${saved ? "active" : ""}`} aria-pressed={saved} aria-label={saved ? `${name} aus der Merkliste entfernen` : `${name} merken`} onClick={() => catalogue.toggleFavorite(id)}>
         <Heart size={19} fill={saved ? "currentColor" : "none"} aria-hidden="true" />

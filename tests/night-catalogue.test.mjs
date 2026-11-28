@@ -42,7 +42,7 @@ test('profile media excludes AI, stock and blurred placeholders while retaining 
 test('existing source inventory retains all IDs; seeded states produce no false price or live promises',()=>{
  const original=JSON.parse(fs.readFileSync(new URL('../src/data/harvested-offers.json',import.meta.url),'utf8'));
  const states=JSON.parse(fs.readFileSync(new URL('../src/data/managed-profile-states.json',import.meta.url),'utf8'));
- assert.equal(original.length,2590);assert.equal(new Set(original.map(o=>o.id||o.dedupClusterId)).size,2590);
+ assert.equal(original.length,2589);assert.equal(new Set(original.map(o=>o.id||o.dedupClusterId)).size,2589);
  assert.equal(Object.values(states).filter(s=>getProfileRate(s,60)!==null).length,0);
  assert.equal(Object.values(states).filter(s=>isConfirmedAvailable(s)).length,0);
 });

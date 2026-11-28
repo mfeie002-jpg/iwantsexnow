@@ -1,12 +1,6 @@
 import React from "react";
 import Link from "next/link";
-
-const FALLBACK_PORTRAITS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=80"
-];
+import { profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
 
 export function cleanPostcardName(raw: any, idx = 0): string {
   const str = String(raw || "")
@@ -27,28 +21,10 @@ export function cleanPostcardName(raw: any, idx = 0): string {
 }
 
 export function getPostcardImage(offer: any, idx = 0): { imgSrc: string; fallbackImg: string } {
-  const fallbackImg = FALLBACK_PORTRAITS[idx % FALLBACK_PORTRAITS.length];
-  const rawCandidate = String(
-    offer?.thumbnail ||
-    offer?.photoUrl ||
-    offer?.image ||
-    (Array.isArray(offer?.galleryUrls) && offer.galleryUrls[0]) ||
-    (Array.isArray(offer?.photos) && offer.photos[0]) ||
-    ""
-  )
-    .trim()
-    .replace(/[?&]iwsn_clean=1.*$/i, "");
-
-  const isRealHttp =
-    rawCandidate.startsWith("http") &&
-    !rawCandidate.includes("placeholder") &&
-    !rawCandidate.includes("escort-portrait") &&
-    !rawCandidate.endsWith(".svg");
-
-  return {
-    imgSrc: isRealHttp ? `/api/img?s=${idx}&u=${encodeURIComponent(rawCandidate)}` : fallbackImg,
-    fallbackImg
-  };
+  const name = cleanPostcardName(offer?.rawName || offer?.name || offer?.title, idx);
+  const fallbackImg = profilePhotoPlaceholder(name);
+  const id = String(offer?.id || offer?.dedupClusterId || "");
+  return { imgSrc: id ? profilePhotoSrc(id) : fallbackImg, fallbackImg };
 }
 
 interface PostcardProfileCardProps {

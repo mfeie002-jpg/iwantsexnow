@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 import { ShieldCheck, Clock, HelpCircle, Scale, Check, AlertCircle } from "lucide-react";
 
 export default function SafetyAndBeginnerGuidePage() {
@@ -90,7 +89,6 @@ export default function SafetyAndBeginnerGuidePage() {
           </div>
         </section>
       </main>
-      <CorporateFooter light />
     </div>
   );
 }

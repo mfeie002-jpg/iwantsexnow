@@ -3,7 +3,6 @@ import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 
 export default function ForgotPasswordPage() {
   return (
@@ -53,8 +52,6 @@ export default function ForgotPasswordPage() {
           </div>
         </section>
       </main>
-
-      <CorporateFooter light />
     </div>
   );
 }

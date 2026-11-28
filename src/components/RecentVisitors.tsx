@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Star, Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { profilePhotoPlaceholder } from "@/components/night/profile-image-model";
 
 export function RecentVisitors() {
   const visitors = [
@@ -11,7 +12,7 @@ export function RecentVisitors() {
       name: "Emma",
       age: 28,
       location: "Basel",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Emma"),
       visitTime: "2 minutes ago",
       online: true,
       verified: true
@@ -21,7 +22,7 @@ export function RecentVisitors() {
       name: "Mia",
       age: 24,
       location: "Genève",
-      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Mia"),
       visitTime: "15 minutes ago",
       online: true,
       verified: true
@@ -31,7 +32,7 @@ export function RecentVisitors() {
       name: "Sophie",
       age: 23,
       location: "Zürich",
-      image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Sophie"),
       visitTime: "1 hour ago",
       online: false,
       verified: true
@@ -41,7 +42,7 @@ export function RecentVisitors() {
       name: "Nina",
       age: 27,
       location: "Lausanne",
-      image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Nina"),
       visitTime: "3 hours ago",
       online: true,
       verified: false
@@ -51,7 +52,7 @@ export function RecentVisitors() {
       name: "Laura",
       age: 25,
       location: "Bern",
-      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Laura"),
       visitTime: "5 hours ago",
       online: false,
       verified: false

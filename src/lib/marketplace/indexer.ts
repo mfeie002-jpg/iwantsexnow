@@ -164,8 +164,7 @@ export function deduplicateScrapedOffers(offers: readonly RawScrapedOffer[]): De
       )
     );
 
-    const validThumb =
-      allGallery[0] || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop";
+    const validThumb = allGallery.find((url) => !/(?:unsplash\.|pexels\.|pixabay\.|bg_blur)/i.test(url)) || "";
 
     const longestBio =
       group
@@ -277,10 +276,10 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
     scrapedAtIso: "Gerade eben",
     directAuthorized: true,
     bio: "Charmanter, akademisch gebildeter Schweizer Gentleman & Gigolo (29, 186 cm, athletisch) für anspruchsvolle Damen, stilvolle Dinner-Dates, Wellness-Wochenenden und diskrete Paare (MMF) in Zürich, Zug und schweizweit.",
-    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop",
+    thumbnail: "",
     gallery: [
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=800&fit=crop",
+      "",
+      "",
     ],
   },
   {
@@ -305,7 +304,7 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
     scrapedAtIso: "Gerade eben",
     directAuthorized: true,
     bio: "Italienisch-schweizerischer Male Escort & sinnlicher Masseur in Zug, Cham & Zürich. 100% diskrete Begleitung für Frauen, Paare und Gentlemen im Hotel oder Privat-Apartment.",
-    thumbnail: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600&h=800&fit=crop",
+    thumbnail: "",
   },
   {
     sourcePortal: "iWantSexNow.ch (Direktbuchung)",
@@ -325,11 +324,11 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
     bust: "75C",
     languages: ["Schweizerdeutsch", "Deutsch", "English"],
     bio: "Exklusive Schweizer Begleiterin für anspruchsvolle Gentlemen in Zürich Paradeplatz und im Kanton Zug (Park Hotel / City Garden). 100% echte Bilder, diskrete Privat-Suite & pünktlicher Hotel-Outcall.",
-    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
+    thumbnail: "",
     gallery: [
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",
+      "",
+      "",
+      "",
     ],
   },
   { sourcePortal: "xdate.ch", rawName: "Sophia VIP Zürich", age: 26, rawPhone: "079 412 88 10", city: "Zürich", canton: "ZH", advertisedBaseChf: 500, includedTags: ["GFE"], incall: true, outcall: true, scrapedAtIso: "vor 2 Std." },
@@ -352,10 +351,10 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
     bust: "75B (Natur)",
     languages: ["Deutsch", "English", "Italiano"],
     bio: "Sinnliche, leidenschaftliche Freundin auf Zeit direkt in Zug & Cham. Ich empfange dich völlig diskret mit Tiefgaragen-Zugang oder besuche dich innerhalb von 20 Minuten im Hotel.",
-    thumbnail: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",
+    thumbnail: "",
     gallery: [
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop",
+      "",
+      "",
     ],
   },
   { sourcePortal: "and6.com", rawName: "Elena Zug/Cham", age: 24, rawPhone: "078 901 33 21", city: "Zug", canton: "ZG", advertisedBaseChf: 460, includedTags: ["GFE"], incall: true, outcall: true, scrapedAtIso: "vor 3 Std." },
@@ -373,7 +372,7 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
     outcall: true,
     scrapedAtIso: "Gerade eben",
     directAuthorized: true,
-    thumbnail: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",
+    thumbnail: "",
   },
   {
     sourcePortal: "iWantSexNow.ch (Direktbuchung)",
@@ -389,7 +388,7 @@ const CORE_SEED_OFFERS: RawScrapedOffer[] = [
     outcall: true,
     scrapedAtIso: "Gerade eben",
     directAuthorized: true,
-    thumbnail: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=800&fit=crop",
+    thumbnail: "",
   },
 ];
 

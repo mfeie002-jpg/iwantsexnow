@@ -1,20 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import { profilePhotoPlaceholder, profilePhotoSrc } from "@/components/night/profile-image-model";
 
-export const CARD_FALLBACKS = [
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=700&q=85",
-  "https://images.unsplash.com/photo-1526510747491-58f928ec870f?auto=format&fit=crop&w=700&q=85"
-];
+export const CARD_FALLBACKS: string[] = [];
 
 export function formatCleanName(raw: any): string {
   const s = String(raw || "").trim();
@@ -23,28 +11,19 @@ export function formatCleanName(raw: any): string {
   return cleaned.length > 32 ? cleaned.slice(0, 32).trim() + "…" : cleaned;
 }
 
-export function resolveProfilePhoto(offer: any, idx = 0): { primarySrc: string; backupSrc: string; photoCount: number } {
-  const pid = String(offer?.id || offer?.dedupClusterId || idx);
-  let hash = 0;
-  for (let i = 0; i < pid.length; i++) hash = (hash * 31 + pid.charCodeAt(i)) >>> 0;
-  const backupSrc = CARD_FALLBACKS[(hash + idx) % CARD_FALLBACKS.length];
-
+export function resolveProfilePhoto(offer: any, _idx = 0): { primarySrc: string; backupSrc: string; photoCount: number } {
+  const pid = String(offer?.id || offer?.dedupClusterId || "");
+  const name = String(offer?.displayName || offer?.rawName || offer?.name || "");
+  const backupSrc = profilePhotoPlaceholder(name);
   const list = [
     offer?.thumbnail,
     offer?.photoUrl,
     offer?.imageUrl,
     ...(Array.isArray(offer?.gallery) ? offer.gallery : []),
     ...(Array.isArray(offer?.galleryUrls) ? offer.galleryUrls : []),
-  ].filter((u) => typeof u === "string" && u.trim().startsWith("http") && !u.includes("placeholder") && !u.endsWith(".svg"));
-
-  if (list.length === 0) {
-    return { primarySrc: backupSrc, backupSrc, photoCount: 1 };
-  }
-
-  const first = list[0].trim();
-  const isDirectUnsplash = first.includes("unsplash.com");
+  ].filter((u) => typeof u === "string" && u.trim().startsWith("http") && !/unsplash\.|pexels\.|pixabay\.|bg_blur|placeholder/i.test(u) && !u.endsWith(".svg"));
   return {
-    primarySrc: isDirectUnsplash ? first : `/api/img?s=${encodeURIComponent(pid)}&u=${encodeURIComponent(first)}`,
+    primarySrc: pid ? profilePhotoSrc(pid) : backupSrc,
     backupSrc,
     photoCount: Math.max(1, list.length),
   };

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Star, MessageCircle, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { profilePhotoPlaceholder } from "@/components/night/profile-image-model";
 
 export function MutualMatches() {
   const matches = [
@@ -11,7 +12,7 @@ export function MutualMatches() {
       name: "Sarah",
       age: 26,
       location: "Zürich",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Sarah"),
       matchPercentage: 94,
       online: true,
       verified: true,
@@ -22,7 +23,7 @@ export function MutualMatches() {
       name: "Anna",
       age: 29,
       location: "Lugano",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Anna"),
       matchPercentage: 87,
       online: true,
       verified: true,
@@ -33,7 +34,7 @@ export function MutualMatches() {
       name: "Emma",
       age: 28,
       location: "Basel",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
+      image: profilePhotoPlaceholder("Emma"),
       matchPercentage: 82,
       online: false,
       verified: true,

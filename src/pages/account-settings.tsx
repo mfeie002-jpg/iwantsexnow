@@ -5,7 +5,6 @@ import { Switch } from "@/components/ui/switch";
 import { SEO } from "@/components/SEO";
 import { LuxuryHeader } from "@/components/LuxuryHeader";
 import { PageIntro } from "@/components/PageIntro";
-import { CorporateFooter } from "@/components/CorporateFooter";
 
 interface Booking {
   confirmationCode: string;
@@ -291,8 +290,6 @@ export default function AccountSettings() {
           </TabsContent>
         </Tabs>
       </main>
-
-      <CorporateFooter light />
     </div>
   );
 }

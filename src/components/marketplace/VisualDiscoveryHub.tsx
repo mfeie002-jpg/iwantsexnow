@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Search, MapPin, Check, Sparkles, SlidersHorizontal } from "lucide-react";
+import { profilePhotoPlaceholder } from "@/components/night/profile-image-model";
 
 export interface VisualFilterItem {
   id: string;
@@ -17,7 +18,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Alle Models",
     sub: "Kompletter Index",
     queryTag: "",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Alle Models"),
     count: "7.021",
   },
   {
@@ -25,7 +26,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Girlfriend (GFE)",
     sub: "Küssen & Begleitung",
     queryTag: "GFE",
-    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Girlfriend (GFE)"),
     count: "2.100",
   },
   {
@@ -33,7 +34,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Hotel & Outcall",
     sub: "Diskreter Besuch",
     queryTag: "Outcall",
-    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Hotel & Outcall"),
     count: "1.640",
   },
   {
@@ -41,7 +42,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Tantra & Massage",
     sub: "Body-to-Body & Nuru",
     queryTag: "Massage",
-    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Tantra & Massage"),
     count: "950",
   },
   {
@@ -49,7 +50,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Blond",
     sub: "High-Class Models",
     queryTag: "Blond",
-    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Blond"),
     count: "1.420",
   },
   {
@@ -57,7 +58,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Brünett",
     sub: "Natürlich & Elegant",
     queryTag: "Brunette",
-    image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Brünett"),
     count: "1.890",
   },
   {
@@ -65,7 +66,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Latina",
     sub: "Kurvig & Temperament",
     queryTag: "Latina",
-    image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Latina"),
     count: "1.180",
   },
   {
@@ -73,7 +74,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Ebony",
     sub: "Exotisch & Sinnlich",
     queryTag: "Ebony",
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Ebony"),
     count: "490",
   },
   {
@@ -81,7 +82,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Asian & Thai",
     sub: "Zart & Privat",
     queryTag: "Asia",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Asian & Thai"),
     count: "640",
   },
   {
@@ -89,7 +90,7 @@ export const VISUAL_PREFERENCE_CARDS: VisualFilterItem[] = [
     label: "Domina & Fetisch",
     sub: "BDSM & Privatstudio",
     queryTag: "Domina",
-    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=85",
+    image: profilePhotoPlaceholder("Domina & Fetisch"),
     count: "390",
   },
 ];
