@@ -7,16 +7,21 @@ import { SEO } from "@/components/SEO";
 import { useCatalogue } from "@/components/night/CatalogueContext";
 import { ProfileImage } from "@/components/night/ProfileImage";
 import { stepPhotoIndex } from "@/components/night/profile-experience-model";
+import { halfHourPriceLine, hourlyPriceLine } from "@/lib/honesty";
 import { cleanSwissPhone, getProfileCity, getProfileId, getProfileName, getProfilePhotos, getProfileRate, isVisibleProfile, safeExternalUrl } from "@/lib/night-catalogue";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = typeof params?.id === "string" ? params.id : "";
   const { default: rawOffers } = await import("@/data/harvested-offers.json");
   const { getCatalogueSnapshot } = await import("@/lib/night-catalogue-server");
+  const { publicCatalogueFacts } = await import("@/lib/public-catalogue-facts");
   const catalogue = await getCatalogueSnapshot();
   const offer = (rawOffers as any[]).find(item => getProfileId(item) === id);
   if (!offer || !isVisibleProfile(offer, catalogue.states, catalogue.blockedIds)) return { notFound: true };
-  const profile={id,rawName:offer.rawName||'',city:offer.city||'',canton:offer.canton||'',sourcePortal:offer.sourcePortal||'',sourceUrl:offer.sourceUrl||'',rawPhone:offer.rawPhone||'',bio:offer.bio||'',gallery:getProfilePhotos(offer,catalogue.states[id]),includedTags:offer.includedTags||[],languages:offer.languages||[]};
+  const hourly = Number(offer.advertisedBaseChf);
+  const halfHour = Number(offer.rate30Chf);
+  const scrapedAt = typeof offer.scrapedAtIso === "string" && offer.scrapedAtIso ? offer.scrapedAtIso : (typeof offer.scrapedAt === "string" ? offer.scrapedAt : "");
+  const profile={id,rawName:offer.rawName||'',city:offer.city||'',canton:offer.canton||'',sourcePortal:offer.sourcePortal||'',sourceUrl:offer.sourceUrl||'',rawPhone:offer.rawPhone||'',bio:offer.bio||'',gallery:getProfilePhotos(offer,catalogue.states[id]),includedTags:offer.includedTags||[],languages:offer.languages||[],advertisedBaseChf:Number.isFinite(hourly)&&hourly>0?hourly:null,rate30Chf:Number.isFinite(halfHour)&&halfHour>0?halfHour:null,scrapedAt};
   const publicOffer = catalogue.offers.find(item => getProfileId(item) === id);
   if (!publicOffer) return {notFound:true};
   const state = catalogue.states[id];
@@ -27,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     clubs: [],
     partial: true
   };
-  return {props:{profileId:id,profile,catalogue:scopedCatalogue}};
+  return {props:{profileId:id,profile,catalogue:scopedCatalogue,standLabel:publicCatalogueFacts().standLabel}};
 };
 
 export default function ProfileDetailPage({ profileId, profile }: { profileId: string; profile:any }) {
@@ -41,7 +46,8 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
   const state = catalogue.states[profileId] || {};
   const name = getProfileName(offer, state), city = getProfileCity(offer, state);
   const photos = getProfilePhotos(offer, state);
-  const rate30 = getProfileRate(state, 30), rate60 = getProfileRate(state, 60);
+  const rate30 = halfHourPriceLine({ confirmed: getProfileRate(state, 30), harvested: typeof offer.rate30Chf === "number" ? offer.rate30Chf : null, hourly: typeof offer.advertisedBaseChf === "number" ? offer.advertisedBaseChf : null });
+  const rate60 = hourlyPriceLine({ confirmed: getProfileRate(state, 60), harvested: typeof offer.advertisedBaseChf === "number" ? offer.advertisedBaseChf : null, halfHour: typeof offer.rate30Chf === "number" ? offer.rate30Chf : null });
   const source = safeExternalUrl(offer.sourceUrl);
   const digits = cleanSwissPhone(state.phoneDisplay || offer.rawPhone);
   const hasPhone = /^41(?:7[5-9]|[2-6]\d)\d{7}$/.test(digits);
@@ -80,12 +86,12 @@ export default function ProfileDetailPage({ profileId, profile }: { profileId: s
         </div>
         {comparisonFull && <p className="night-comparison-limit" id="profile-comparison-limit"><span>3/3 Profile ausgewählt. Entferne zuerst ein Profil.</span><Link href="/compare-escorts">Vergleich bearbeiten <ArrowRight size={14} aria-hidden="true" /></Link></p>}
         <div className="night-profile-facts">
-          <div><span>30 Minuten</span><strong>{rate30 === null ? "Nicht bestätigt" : `CHF ${rate30.toLocaleString("de-CH")}`}</strong></div>
-          <div><span>60 Minuten</span><strong>{rate60 === null ? "Nicht bestätigt" : `CHF ${rate60.toLocaleString("de-CH")}`}</strong></div>
+          <div><span>30 Minuten</span><strong>{rate30.label}</strong></div>
+          <div><span>60 Minuten</span><strong>{rate60.label}</strong></div>
           <div><span>Verfügbarkeit</span><strong>Direkt abklären</strong></div>
           <div><span>Quelle</span><strong>{String(offer.sourcePortal || "Nicht angegeben")}</strong></div>
         </div>
-        <p className="night-note">Fehlende Preise und aktuelle Verfügbarkeit werden nicht geschätzt.</p>
+        <p className="night-note">Geschätzte Beträge sind aus einem Standardwert oder aus der anderen Dauer abgeleitet. Ein Portal-Eintrag ist keine Live-Meldung und kein Freigabe-Status.</p>
         <section className="night-surface night-contact-panel" aria-labelledby="contact-title"><h2 id="contact-title">Kontakt laut Eintrag</h2><p className="night-note">Prüfe die aktuellen Angaben in der Quelle, bevor du Kontakt aufnimmst.</p><div className="night-stack">
           {source && <a href={source} target="_blank" rel="noopener noreferrer" className="night-button">Original-Inserat prüfen <ExternalLink size={16} /></a>}
           {hasPhone && <a href={`tel:+${digits}`} className="night-button secondary"><Phone size={16} /> +{digits}</a>}

@@ -68,7 +68,10 @@ export async function getCatalogueSnapshot() {
   const offers=(rawOffers as Record<string,any>[]).filter(o=>isVisibleProfile(o,states,blockedIds)).map(o=>{
     const text=[o.rawName,o.bio,...(o.includedTags||[])].join(' ');
     const services=[/\bgfe\b|girlfriend/i.test(text)?'gfe':'',o.outcall===true?'outcall':'',/dinner|abendbegleitung/i.test(text)?'dinner':'',/paare|couples|bisex/i.test(text)?'couples':''].filter(Boolean);
-    return {id:getProfileId(o),rawName:o.rawName||'',city:o.city||'',canton:o.canton||'',rubric:o.rubric||'',sourcePortal:o.sourcePortal||'',sourceUrl:o.sourceUrl||'',rawPhone:o.rawPhone||'',gallery:getProfilePhotos(o,states[getProfileId(o)]).slice(0,2),includedTags:o.includedTags||[],languages:o.languages||[],incall:o.incall===true,outcall:o.outcall===true,services};
+    const hourly = Number(o.advertisedBaseChf);
+    const halfHour = Number(o.rate30Chf);
+    const scrapedAt = typeof o.scrapedAtIso === 'string' && o.scrapedAtIso ? o.scrapedAtIso : (typeof o.scrapedAt === 'string' ? o.scrapedAt : '');
+    return {id:getProfileId(o),rawName:o.rawName||'',city:o.city||'',canton:o.canton||'',rubric:o.rubric||'',sourcePortal:o.sourcePortal||'',sourceUrl:o.sourceUrl||'',rawPhone:o.rawPhone||'',gallery:getProfilePhotos(o,states[getProfileId(o)]).slice(0,2),includedTags:o.includedTags||[],languages:o.languages||[],incall:o.incall===true,outcall:o.outcall===true,services,advertisedBaseChf:Number.isFinite(hourly)&&hourly>0?hourly:null,rate30Chf:Number.isFinite(halfHour)&&halfHour>0?halfHour:null,scrapedAt};
   });
   const clubs=(establishments as Record<string,any>[]).filter(o=>isVisibleProfile(o,states,blockedIds)).map(o=>({
     id:getProfileId(o),name:o.name||'',city:o.city||'',canton:o.canton||'',type:o.type||'',sourcePortal:o.sourcePortal||'',sourceUrl:o.sourceUrl||''

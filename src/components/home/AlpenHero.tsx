@@ -30,7 +30,7 @@ const RUBRICS: Opt[] = [
 
 const WHEN: Opt[] = [
   { value: "any", label: "egal wann" },
-  { value: "today", label: "heute noch frei" },
+  { value: "today", label: "nur mit bestätigtem Zeitfenster" },
 ];
 
 const BUDGET: Opt[] = [

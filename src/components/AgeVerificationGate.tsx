@@ -5,6 +5,21 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { DoorHanger, HeroScene } from "@/components/visuals";
 
 const STORAGE_KEY = "iwsn_age_verified_v2";
+const COOKIE_KEY = "iwsn_age_ok";
+const BOT_UA = /googlebot|bingbot|duckduckbot|baiduspider|yandexbot|applebot|facebookexternalhit|twitterbot|linkedinbot|slackbot|whatsapp|telegrambot|petalbot|ahrefsbot|semrushbot|dotbot|mj12bot|crawler|spider/i;
+
+function hasAgeCookie(): boolean {
+  return document.cookie.split(";").some((part) => part.trim() === `${COOKIE_KEY}=1`);
+}
+
+function rememberAgeConfirmation() {
+  try {
+    localStorage.setItem(STORAGE_KEY, "true");
+  } catch {
+    /* Private mode can block storage. The cookie below still records the choice. */
+  }
+  document.cookie = `${COOKIE_KEY}=1; Max-Age=31536000; Path=/; SameSite=Lax`;
+}
 
 export function AgeVerificationGate() {
   const router = useRouter();
@@ -13,22 +28,24 @@ export function AgeVerificationGate() {
 
   useEffect(() => {
     setMounted(true);
+    const agent = typeof navigator === "undefined" ? "" : navigator.userAgent || "";
+    if (BOT_UA.test(agent)) {
+      setVerified(true);
+      return;
+    }
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "true") {
+      if (hasAgeCookie() || localStorage.getItem(STORAGE_KEY) === "true") {
         setVerified(true);
-      } else {
-        setVerified(false);
+        return;
       }
     } catch {
-      setVerified(false);
+      /* Treat unreadable storage as not confirmed. */
     }
+    setVerified(false);
   }, []);
 
   const handleConfirm = () => {
-    try {
-      localStorage.setItem(STORAGE_KEY, "true");
-    } catch {}
+    rememberAgeConfirmation();
     setVerified(true);
   };
 

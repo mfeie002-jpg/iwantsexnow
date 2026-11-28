@@ -6,6 +6,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import {ArrowRight,Heart,House,MapPin,Menu,Search,SlidersHorizontal,Sparkles,UserRound,X} from 'lucide-react';
 import {brandAsset,CANTONS,CATEGORIES,CATALOGUE_SERVICES,REGIONS,filtersFromQuery,searchHref,CatalogueFilters} from '@/lib/night-catalogue';
 import {catalogueBudgetChoices,guideFilters,skipGuideStep} from '@/lib/night-guide-model';
+import {StandLabelContext} from '@/components/DataStandNote';
 import {NightTools,QuickActionsButton} from './NightTools';
 export {QuickActionsButton} from './NightTools';
 import {useCatalogue} from './CatalogueContext';
@@ -16,6 +17,7 @@ function Wordmark(){return <Link href="/" className="night-wordmark" aria-label=
 const nav=[['/suche','Entdecken'],['/regionen','Regionen'],['/portalvergleich','Portale vergleichen'],['/ratgeber','Ratgeber'],['/anbieter','Für Anbieterinnen']];
 export function NightShell({children,initialFilters}:{children:React.ReactNode;initialFilters?:CatalogueFilters}) {
  const router=useRouter();const {favorites,compareIds,selectionNotice,dismissSelectionNotice}=useCatalogue();
+ const standLabel=useContext(StandLabelContext);
  const [open,setOpen]=useState(false),[menu,setMenu]=useState(false),[step,setStep]=useState(0);
  const [choice,setChoice]=useState<CatalogueFilters>({canton:'ALL',category:'all',max:0});
  const guideOpener=useRef<HTMLElement|null>(null);
@@ -79,7 +81,7 @@ export function NightShell({children,initialFilters}:{children:React.ReactNode;i
    ['Entdecken',['/search','Alle Profile'],['/escort-zurich','Zürich'],['/orte/zug','Zug & Umgebung'],['/clubs','Clubs & Studios'],['/favorites','Meine Merkliste']],
    ['Klarheit',['/how-it-works','So funktioniert es'],['/reviews','Portalvergleich'],['/pricing','Preise verstehen'],['/safety','Sicherheit & Vertrauen'],['/report','Eintrag melden']],
    ['Dein Auftritt',['/advertise','Für Anbieter'],['/register','Profil vorbereiten'],['/creator-dashboard','Arbeitsbereich'],['/privacy','Datenschutz'],['/imprint','Kontakt & Impressum'],['/terms','AGB']],
-  ].map(([title,...links]:any)=><div key={title}><h2>{title}</h2>{links.map(([url,label]:string[])=><Link key={url} href={url}>{label}</Link>)}</div>)}</div><div className="night-footer-bottom"><span>© {new Date().getFullYear()} iwantsexnow.ch</span><span>Quellenangaben sind keine Identitätsprüfung.</span></div></div></footer>
+  ].map(([title,...links]:any)=><div key={title}><h2>{title}</h2>{links.map(([url,label]:string[])=><Link key={url} href={url}>{label}</Link>)}</div>)}</div><div className="night-footer-bottom"><span>© {new Date().getFullYear()} iwantsexnow.ch</span>{standLabel&&<span>Jüngster Erfassungszeitstempel: {standLabel}</span>}<span>Quellenangaben sind keine Identitätsprüfung.</span></div></div></footer>
   <nav className="night-bottom-nav" aria-label="Mobile Navigation"><Link href="/" aria-current={router.pathname==='/'?'page':undefined}><House size={21}/><span>Start</span></Link><Link href="/suche" aria-current={router.pathname==='/search'||router.pathname==='/suche'?'page':undefined}><Search size={21}/><span>Suche</span></Link><button type="button" className="flagship-mobile-xenia" onClick={()=>openGuide(0)}><Sparkles size={22}/><span>Xenia</span></button><Link href="/regionen"><MapPin size={21}/><span>Regionen</span></Link><Link href="/login"><UserRound size={21}/><span>Konto</span></Link></nav>
   <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Portal><Dialog.Overlay className="night-dialog-overlay"/><Dialog.Content className="night-dialog night-guide-2027" onCloseAutoFocus={event=>{event.preventDefault();if(guideOpener.current?.isConnected)guideOpener.current.focus();}}><Dialog.Close className="night-icon-button night-dialog-close" aria-label="Auswahl schliessen"><X/></Dialog.Close><p className="night-kicker">Mit Xenia entdecken</p><Dialog.Title>{['Deine Region.','Dein Bereich.','Deine Zeit.','Deine Auswahl steht.'][step]}</Dialog.Title><Dialog.Description>{['Wo beginnt dein Moment?','Was möchtest du näher kennenlernen?','Wann möchtest du dich umsehen?','Jeden Teil deiner Auswahl kannst du direkt bearbeiten.'][step]}</Dialog.Description>
    <nav className="night-guide-steps" aria-label="Auswahlschritte">{['Region','Bereich','Zeit'].map((label,i)=><button type="button" key={label} onClick={()=>setStep(i)} aria-current={step===i?'step':undefined}><span>{i+1}</span>{label}</button>)}</nav>

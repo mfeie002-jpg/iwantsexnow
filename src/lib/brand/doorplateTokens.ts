@@ -11,7 +11,7 @@ export const SWISS_DOORPLATE_TOKENS = {
     emeraldEnamel: "#ffffff",
     heatSignalRed: "#ffd3dc",
     states: {
-      FREI: { bg: "#bfebd6", border: "#1e2247", text: "#1e2247", dot: "#1e8a64", labelDe: "FREI · 4H LIVE" },
+      FREI: { bg: "#bfebd6", border: "#1e2247", text: "#1e2247", dot: "#1e8a64", labelDe: "Zeitfenster nur nach Bestätigung" },
       BESETZT: { bg: "#ffd3dc", border: "#1e2247", text: "#1e2247", dot: "#d92b52", labelDe: "BESETZT" },
       RESERVIERT: { bg: "#e1e1ec", border: "#1e2247", text: "#1e2247", dot: "#73759a", labelDe: "RESERVIERT" },
       NEU: { bg: "#ffe48a", border: "#1e2247", text: "#1e2247", dot: "#cc8400", labelDe: "NEU IM HAUS" },
@@ -38,6 +38,6 @@ export const SWISS_DOORPLATE_TOKENS = {
     errorState:
       "Das Schloss klemmt (Server-Fehler). Einmal neu klopfen, wir holen den Hausmeister.",
     successState:
-      "Tür steht auf FREI. Direktes +41 WhatsApp ist offen – benimm dich wie ein Gentleman.",
+      "Angaben bleiben Angaben. Ein Portal-Eintrag ist keine Live-Meldung.",
   },
 };

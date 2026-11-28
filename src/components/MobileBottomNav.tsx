@@ -31,7 +31,7 @@ export function MobileBottomNav() {
   const tabs = [
     { href: "/", label: "Start", icon: Home },
     { href: "/search", label: "Suche", icon: Search },
-    { href: "/stories", label: "Heute frei", icon: Flame, dot: true },
+    { href: "/stories", label: "Stories", icon: Flame },
     { href: "/clubs", label: "Clubs", icon: Building2 },
     { href: "/favorites", label: "Merkliste", icon: Heart, count: favCount },
   ];
@@ -55,7 +55,6 @@ export function MobileBottomNav() {
             >
               <span className="relative">
                 <Icon size={21} strokeWidth={active ? 2.4 : 1.9} />
-                {tab.dot && <span className="absolute -right-1 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-kirsche" />}
                 {typeof tab.count === "number" && tab.count > 0 && (
                   <span className="absolute -right-3.5 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-kirsche px-1 text-[11px] font-extrabold tabular-nums text-white">
                     {tab.count}
